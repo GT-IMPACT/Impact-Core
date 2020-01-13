@@ -1,0 +1,15 @@
+
+*.properties
+*.lock
+*.bin
+*.log
+*.txt
+*.iml
+*.ipr
+*.iws
+*.info
+*.xml
+*.launch
+*.prefs
+*.tree
+eclipse/.metadata/.plugins/org.eclipse.core.resources/.projects/Minecraft/.location
