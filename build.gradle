@@ -1,51 +1,166 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-    }
+        	jcenter()
+       		maven {
+       		   name = "gt"
+       		   url = "https://gregtech.overminddl1.com/"
+    		}
+    		maven {
+    			name = "sonatype"
+    			 url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    		}
+    		maven {
+            url "https://plugins.gradle.org/m2/"
+        	}
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath "de.undercouch:gradle-download-task:3.1.2"
     }
 }
 
+import de.undercouch.gradle.tasks.download.Download
 apply plugin: 'forge'
+apply plugin: 'signing'
 
-version = "0.0.1"
+allprojects {
+	    apply plugin: 'java'
+	    sourceCompatibility = 1.8
+	    targetCompatibility = 1.8
+}
+
+file "build.properties" withReader {
+	def prop = new Properties()
+	prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.coremod.version}"
 group= "GWPPCoreMod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "GWPPCOREMOD"
 
 minecraft {
-    version = "1.7.10-10.13.4.1614-1.7.10"
+    version = "${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}"
     runDir = "eclipse"
+
+    replaceIn "src/main/java/com/gwppcore/Libs/Refstrings.java"
+    replace "GRADLETOKEN_VERSION", project.version.split('-')[1]
+}
+
+repositories {
+    maven {
+        name 'Forge' // Applied Energistics
+        url 'http://files.minecraftforge.net/maven'
+    }
+    maven { // GalacticGreg, YAMCore,..
+        name 'UsrvDE'
+        url "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
+    }
+    maven { // Baubles
+    	name 'UsrvDE_3rdParty'
+    	url "http://jenkins.usrv.eu:8081/nexus/content/repositories/thirdparty/"
+    }
+    maven {
+        name = "chickenbones"
+        url = "http://chickenbones.net/maven/"
+    }
+    maven {
+        name = "ic2, forestry"
+        url = "http://maven.ic2.player.to/"
+    }
+    maven { // AppleCore
+        url "http://www.ryanliptak.com/maven/"
+    }
+    maven {
+         name = "tterrag"
+         url = "http://maven.tterrag.com/"
+    }
+    maven { // WAILA
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven { // OpenComputers
+        name "OpenComputers"
+        url "http://maven.cil.li"
+    }
+		ivy {
+        name 'gtnh_download_source_stupid_underscore_typo'
+        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]"
+    }
+
+	ivy {
+        name 'gtnh_download_source'
+        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
+    }
 }
 
 dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+	compile "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
 
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+	compile "com.azanor.baubles:Baubles:${config.baubles.version}:deobf"
 
+	compile ("appeng:appliedenergistics2:${config.ae2.version}:api") {
+		exclude module: '*'
+	}
+
+	compile "applecore:AppleCore:${config.applecore.version}:deobf"
+
+	compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
+
+	compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
+
+	compile "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+
+	compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
+
+	compile ("com.enderio:EnderIO:${config.minecraft.version}-${config.enderio.version}:dev") {
+        exclude group: "mcp.mobius.waila"
+    }
+
+    compile "com.enderio.core:EnderCore:${config.minecraft.version}-${config.endercore.version}:dev"
+
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
+
+task getForestryAPI(type: Download) {
+    onlyIf {
+        !file("libs/forestry_1.7.10-4.2.16.64-api.jar").exists()
+    }
+    src "https://gregtech.overminddl1.com/net/sengir/forestry/forestry_1.7.10/4.2.16.64/forestry_1.7.10-4.2.16.64-api.jar"
+    dest file("libs/forestry_1.7.10-4.2.16.64-api.jar")
+    mustRunAfter "deobfBinJar"
+    mustRunAfter "repackMinecraft"
+}
+
+	task getBartworks(type: Download, dependsOn: "getGalacticGreg") {
+	onlyIf {
+		!file("libs/bartworks.1.7.10.-0.3.22-dev.jar").exists()
+    }
+	src 'https://github.com/bartimaeusnek/bartworks/releases/download/untagged-37a034594f832f88c68d/bartworks.1.7.10.-0.3.22-dev.jar'
+    dest file("libs/bartworks.1.7.10.-0.3.22-dev.jar")
+    mustRunAfter "deobfBinJar"
+    mustRunAfter "repackMinecraft"
+}	}
+task getGtPlusPlus(type: Download, dependsOn: "getBartworks") {
+    onlyIf {
+        !file("libs/GT-PlusPlus-1.6.02-release.jar").exists()
+    }
+    src 'https://addons-origin.cursecdn.com/files/2478/265/GT-PlusPlus-1.6.02-release.jar'
+    dest file("libs/GT-PlusPlus-1.6.02-release.jar")
+    mustRunAfter "deobfBinJar"
+    mustRunAfter "repackMinecraft"
+}
+
+tasks.setupCIWorkspace.dependsOn getGtPlusPlus
+tasks.setupDevWorkspace.dependsOn getGtPlusPlus
+tasks.setupDecompWorkspace.dependsOn getGtPlusPlus
+tasks.compileJava.dependsOn getGtPlusPlus
+
 
 processResources
 {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
+     def cleanVersion = project.version.split('-')[1]
+	inputs.property "version", cleanVersion
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -53,7 +168,7 @@ processResources
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':cleanVersion, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info
@@ -61,3 +176,25 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
+
+task signJar(dependsOn: 'reobf'){
+    doLast {
+        ant.signjar(
+            destDir: jar.destinationDir,
+            jar: jar.getArchivePath(),
+            alias: findProperty('keyStoreAlias') ?: '',
+            keystore: findProperty('keyStore') ?: '',
+            storepass: findProperty('keyStorePass') ?: '',
+            digestalg: findProperty('signDigestAlg') ?: '',
+            tsaurl: findProperty('signTSAurl') ?: '',
+            verbose: true
+            )
+    }
+} 
+
