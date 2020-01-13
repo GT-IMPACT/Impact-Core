@@ -12,7 +12,9 @@
 *.launch
 *.prefs
 *.tree
-eclipse/.metadata/.plugins/org.eclipse.core.resources/.projects/Minecraft/.location
 *.class
-eclipse/mods/ic2/EJML-core-0.26.jar
 *.cfg
+*.gz
+*.kotlin_module
+*.ini
+eclipse/

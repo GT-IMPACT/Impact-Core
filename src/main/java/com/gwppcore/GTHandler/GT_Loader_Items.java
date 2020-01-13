@@ -1,6 +1,6 @@
-package com.gwppcore.GTHandler;
+package com.gwppcore.gthandler;
 
-import com.gwppcore.Item.ItemList;
+import com.gwppcore.item.ItemList;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 
 

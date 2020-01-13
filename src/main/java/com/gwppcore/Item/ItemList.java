@@ -1,8 +1,8 @@
-package com.gwppcore.Item;
+package com.gwppcore.item;
 
-import com.gwppcore.Creativetab.ModTabList;
-import com.gwppcore.Libs.Refstrings;
-import com.gwppcore.Core.gwppcore;
+import com.gwppcore.creativetab.ModTabList;
+import com.gwppcore.libs.Refstrings;
+import com.gwppcore.gwppcore;
 import eu.usrv.yamcore.items.ModItemManager;
 import eu.usrv.yamcore.items.ModSimpleBaseItem;
 import net.minecraft.item.ItemStack;

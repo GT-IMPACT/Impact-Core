@@ -1,11 +1,7 @@
-package com.gwppcore.GTHandler;
-
-import com.gwppcore.Item.ItemList;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+package com.gwppcore.gthandler;
 
 
-    public class GT_CustomLoader {
+public class GT_CustomLoader {
 
         private static final GT_Loader_Items ItemLoader = new GT_Loader_Items();
         private static final GT_MachineRecipeLoader MachineRecipeLoader = new GT_MachineRecipeLoader();

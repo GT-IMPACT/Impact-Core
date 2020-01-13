@@ -1,4 +1,4 @@
-package com.gwppcore.Config;
+package com.gwppcore.config;
 
 import eu.usrv.yamcore.config.ConfigManager;
 import java.io.File;

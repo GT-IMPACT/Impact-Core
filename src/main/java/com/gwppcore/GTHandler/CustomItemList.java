@@ -1,4 +1,4 @@
-package com.gwppcore.GTHandler;
+package com.gwppcore.gthandler;
 
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;

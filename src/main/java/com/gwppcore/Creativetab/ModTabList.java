@@ -1,17 +1,10 @@
-package com.gwppcore.Creativetab;
+package com.gwppcore.creativetab;
 
-import com.gwppcore.GTHandler.CustomItemList;
-import com.gwppcore.Item.ItemList;
+import com.gwppcore.item.ItemList;
 
 import eu.usrv.yamcore.creativetabs.CreativeTabsManager;
 import eu.usrv.yamcore.creativetabs.ModCreativeTab;
 import eu.usrv.yamcore.items.ModItemManager;
-import gregtech.api.GregTech_API;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import java.util.List;
 
 public class ModTabList {
 
