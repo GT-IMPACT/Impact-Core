@@ -28,6 +28,7 @@ import eu.usrv.yamcore.items.ModItemManager;
 import gregtech.GT_Mod;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import com.gwppcore.loginhandler.LoginHandler;
 
 import java.io.*;
 import java.util.Random;
@@ -59,7 +60,10 @@ public class gwppcore {
 	public static CoreModDispatcher NW;
 	public static Random Rnd;
 	public static LogHelper Logger = new LogHelper(Refstrings.MODID);
-	
+
+
+
+
 	public static void AddLoginError(String pMessage)
     {
 		if (Module_AdminErrorLogs != null) {
@@ -166,6 +170,16 @@ public class gwppcore {
         
         Logger.debug("LOAD Register Fluids");
         FluidManager.RegisterItems(TabManager);
+
+        if (CoreConfig.ModLoginMessage_Enabled)
+        {
+            FMLCommonHandler.instance().bus().register(new LoginHandler());
+        }
+        Logger.warn( "==================================================" );
+        Logger.warn( "Welcome to GregWorld:PlusPlus " + CoreModConfig.ModPackVersion );
+        Logger.warn( "Please bring comments to " + "https://discord.gg/bMf2qvd" );
+        Logger.warn( "==================================================" );
+
 
     }
 	

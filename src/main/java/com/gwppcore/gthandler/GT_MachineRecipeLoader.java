@@ -1,6 +1,5 @@
 package com.gwppcore.gthandler;
 
-import com.gwppcore.ttHandler.TTRecipeLoader;
 import com.spartakcore.gthandler.CustomItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;

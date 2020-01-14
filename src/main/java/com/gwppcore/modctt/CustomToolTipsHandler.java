@@ -51,7 +51,7 @@ public class CustomToolTipsHandler
   public void InitSampleConfig()
   {
     _mCustomToolTips = new CustomToolTips();
-    _mCustomToolTips.getToolTips().add( _mCttFactory.createCustomItemToolTip( "gwpp:Coin", "I`m God" ) );
+    _mCustomToolTips.getToolTips().add( _mCttFactory.createCustomItemToolTip( "gwppcore:item.Coin", "I`m God" ) );
   }
 
   /**

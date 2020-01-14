@@ -11,6 +11,23 @@ public enum ItemList {
 
 	Coin(new ModSimpleBaseItem("Coin",ModTabList.GWppTab)),
 
+        //STEAM AGE
+    WoodenBrickForm(new ModSimpleBaseItem("WoodenBrickForm",ModTabList.GWppTab)),
+    UnfiredSearedBrick(new ModSimpleBaseItem("UnfiredSearedBrick",ModTabList.GWppTab)),
+    UnfiredCokeOvenBrick(new ModSimpleBaseItem("UnfiredCokeOvenBrick",ModTabList.GWppTab)),
+    UnfiredClayBrick(new ModSimpleBaseItem("UnfiredClayBrick",ModTabList.GWppTab)),
+
+        //BC CHIPS
+    RedstoneRedChipset(new ModSimpleBaseItem("RedstoneRedChipset",ModTabList.GWppTab)),
+    RedstoneQuartzChipset(new ModSimpleBaseItem("RedstoneQuartzChipset",ModTabList.GWppTab)),
+    RedstonePulsatingChipset(new ModSimpleBaseItem("RedstonePulsatingChipset",ModTabList.GWppTab)),
+    RedstoneIronChipset(new ModSimpleBaseItem("RedstoneIronChipset",ModTabList.GWppTab)),
+    RedstoneGoldChipset(new ModSimpleBaseItem("RedstoneGoldChipset",ModTabList.GWppTab)),
+    RedstoneEmeraldChipset(new ModSimpleBaseItem("RedstoneEmeraldChipset",ModTabList.GWppTab)),
+    RedstoneDiamondChipset(new ModSimpleBaseItem("RedstoneDiamondChipset",ModTabList.GWppTab)),
+
+
+
 	
 	// Do not delete this
     EndOfList(null);
@@ -53,3 +70,4 @@ public enum ItemList {
     }
 
 }
+

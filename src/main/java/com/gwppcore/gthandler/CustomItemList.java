@@ -13,8 +13,11 @@ import static gregtech.api.enums.GT_Values.W;
 public enum CustomItemList implements IItemContainer {
 
 	//gwpp
-	Coin;
-	
+	Coin,RedstoneRedChipset,RedstoneQuartzChipset,RedstonePulsatingChipset,RedstoneIronChipset,RedstoneGoldChipset,
+	RedstoneEmeraldChipset,	RedstoneDiamondChipset,WoodenBrickForm,UnfiredSearedBrick,UnfiredCokeOvenBrick,UnfiredClayBrick
+
+
+	;
 	private ItemStack mStack;
 	private boolean mHasNotBeenSet = true;
 
