@@ -17,7 +17,7 @@ public class NEIGTgwppConfig implements IConfigureNEI
     @Override
     public String getName()
     {
-        return "GTSpartakCore-NEIConfig";
+        return "GTgwpp-NEIConfig";
     }
 
     @Override
