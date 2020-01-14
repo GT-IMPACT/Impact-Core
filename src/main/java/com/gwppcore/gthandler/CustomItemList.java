@@ -14,8 +14,13 @@ public enum CustomItemList implements IItemContainer {
 
 	//gwpp
 	Coin,RedstoneRedChipset,RedstoneQuartzChipset,RedstonePulsatingChipset,RedstoneIronChipset,RedstoneGoldChipset,
-	RedstoneEmeraldChipset,	RedstoneDiamondChipset,WoodenBrickForm,UnfiredSearedBrick,UnfiredCokeOvenBrick,UnfiredClayBrick
+	RedstoneEmeraldChipset,	RedstoneDiamondChipset,WoodenBrickForm,UnfiredSearedBrick,UnfiredCokeOvenBrick,UnfiredClayBrick,
 
+	packEuropa,	packBarnardaE,	packBarnardaF,	packCallisto,	packCentauriA,	packCeres,	packDeimos,	packEarth,
+	packEris,	packGanymed,	packHaumea,	packIapetus,	packIo,	packMakeMake,	packMercury,	packMoon,
+	packOberon,	packPhobos,	packPluto,	packTCetiE,	packTitan,	packTriton,	packVegaB,	packVenus,	packMars,
+	packProteus,	packAsteroids,	spacebox1,	spacebox2,	spacebox3,	spacebox4,	spacebox5,	spacebox6,	spacebox7,
+	spacebox8
 
 	;
 	private ItemStack mStack;
