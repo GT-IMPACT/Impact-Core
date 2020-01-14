@@ -1,6 +1,6 @@
 package com.gwppcore.gthandler;
 
-import com.gwppcore.ttHandler.TTRecipeLoader;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
