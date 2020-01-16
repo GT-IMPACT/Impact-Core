@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public enum ItemList {
 
-    Coin(new ModSimpleBaseItem("Coil",ModTabList.GWppTab)),
+    Coin(new ModSimpleBaseItem("Coin",ModTabList.GWppTab)),
 
 	// Do not delete this
     EndOfList(null);

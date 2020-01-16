@@ -7,18 +7,23 @@ import com.gwppcore.creativetab.ModTabList;
 import com.gwppcore.fluids.FluidList;
 import com.gwppcore.gthandler.GT_CoreModSupport;
 import com.gwppcore.gthandler.GT_CustomLoader;
+import com.gwppcore.gtsu.TierHelper;
+import com.gwppcore.gtsu.blocks.GTSUBlock;
+import com.gwppcore.gtsu.blocks.itemblocks.ItemBlockGTSU;
+import com.gwppcore.gtsu.gui.GuiHandler;
+import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
 import com.gwppcore.item.ItemList;
 import com.gwppcore.lib.Refstrings;
 import com.gwppcore.main.CommonProxy;
 import com.gwppcore.modctt.CustomToolTipsHandler;
 import com.gwppcore.network.CoreModDispatcher;
 import com.gwppcore.oredict.OreDictHandler;
-
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import eu.usrv.yamcore.blocks.ModBlockManager;
@@ -26,6 +31,7 @@ import eu.usrv.yamcore.creativetabs.CreativeTabsManager;
 import eu.usrv.yamcore.fluids.ModFluidManager;
 import eu.usrv.yamcore.items.ModItemManager;
 import gregtech.GT_Mod;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import com.gwppcore.loginhandler.LoginHandler;
@@ -39,7 +45,7 @@ import java.util.Random;
         version = Refstrings.VERSION,
         dependencies = 
         	"required-after:Forge@[10.13.2.1291,);"
-        +	"required-after:YAMCore@[0.5.76,);")
+        +	"required-after:YAMCore@[0.5.77,);")
 
 public class gwppcore {
 	
@@ -62,15 +68,13 @@ public class gwppcore {
 	public static LogHelper Logger = new LogHelper(Refstrings.MODID);
 
 
-
-
-	public static void AddLoginError(String pMessage)
+    public static void AddLoginError(String pMessage)
     {
 		if (Module_AdminErrorLogs != null) {
             Module_AdminErrorLogs.AddErrorLogOnAdminJoin(pMessage);
         }
     }
-	
+
 	@Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent)
     {
@@ -192,7 +196,6 @@ public class gwppcore {
 		// Register additional OreDictionary Names
         if(CoreConfig.OreDictItems_Enabled)
         OreDictHandler.register_all();
-
     }
 
 	private void RegisterModuleEvents()
@@ -207,6 +210,32 @@ public class gwppcore {
             FMLCommonHandler.instance().bus().register(Module_CustomToolTips);
         }
     }
+
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event){
+        registerSingleIC2StorageBlocks();
+
+    }
+
+    private void registerSingleIC2StorageBlocks()
+    {
+        GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
+        for (int i = 0; i < TierHelper.V.length; i++)
+        {
+            GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
+        }
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event){
+        NetworkRegistry.INSTANCE.registerGuiHandler(gwppcore.instance, new GuiHandler());
+
+    }
+
+
+
+
+
 	@Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent)
     {
@@ -218,8 +247,10 @@ public class gwppcore {
 		GTCustomLoader = new GT_CustomLoader();
         GTCustomLoader.run();
 
+
+
     }
-	
+
 	@Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent)
     {
@@ -232,4 +263,6 @@ public class gwppcore {
         }
 		
     }
+
+
 }
