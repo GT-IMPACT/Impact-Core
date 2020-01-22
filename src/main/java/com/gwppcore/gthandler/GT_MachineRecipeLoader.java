@@ -128,49 +128,49 @@ public class GT_MachineRecipeLoader implements Runnable{
 
 /*============= SPACE BOX RECIPES =============*/
 	//===0
-	GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 64), Materials.Glue.getFluid(1000), CustomItemList.packEarth.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 8);
+	    GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 64), Materials.Glue.getFluid(1000), CustomItemList.packEarth.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 8);
 	
 	//===1
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Moon, 64), Materials.Plastic.getMolten(144L), CustomItemList.packMoon.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 20);
 	
 	//===2
-        GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Mars, 64), Materials.Polyvinylchloride.getMolten(144L), CustomItemList.packMars.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 50);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.PhobosStoneDust", 64L, 0), Materials.Polyvinylchloride.getMolten(144L), CustomItemList.packPhobos.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 50);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.DeimosStoneDust", 64L, 0), Materials.Polyvinylchloride.getMolten(144L), CustomItemList.packDeimos.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 50);
+        GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Mars, 64), Materials.PolyvinylChloride.getMolten(144L), CustomItemList.packMars.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 50);
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.PhobosStoneDust", 64L, 0), Materials.PolyvinylChloride.getMolten(144L), CustomItemList.packPhobos.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 50);
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.DeimosStoneDust", 64L, 0), Materials.PolyvinylChloride.getMolten(144L), CustomItemList.packDeimos.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 50);
         
 	//===3
-	GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Asteroid, 64), Materials.Polystyrene.getMolten(144L), CustomItemList.packAsteroids.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 125);
-	GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.CeresStoneDust", 64L, 0), Materials.Polystyrene.getMolten(144L), CustomItemList.packCeres.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 125);
+	    GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Asteroid, 64), Materials.Polystyrene.getMolten(144L), CustomItemList.packAsteroids.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 125);
+	    GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.CeresStoneDust", 64L, 0), Materials.Polystyrene.getMolten(144L), CustomItemList.packCeres.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 125);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.EuropaStoneDust", 64L, 0), Materials.Polystyrene.getMolten(144L), CustomItemList.packEuropa.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 125);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.GanymedStoneDust", 64L, 0), Materials.Polystyrene.getMolten(144L), CustomItemList.packGanymed.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 125);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.CallistoStoneDust", 64L, 0), Materials.Polystyrene.getMolten(144L), CustomItemList.packCallisto.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 125);
         
 	//===4
-	GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.IoStoneDust", 64L, 0), Materials.Polytetrafluoroethylene.getMolten(144L), CustomItemList.packIo.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 312);
+	    GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.IoStoneDust", 64L, 0), Materials.Polytetrafluoroethylene.getMolten(144L), CustomItemList.packIo.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 312);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.VenusStoneDust", 64L, 0), Materials.Polytetrafluoroethylene.getMolten(144L), CustomItemList.packVenus.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 312);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.MercuryCoreDust", 64L, 0), Materials.Polytetrafluoroethylene.getMolten(144L), CustomItemList.packMercury.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 312);
         
 	//===5
-	GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.EnceladusStoneDust", 64L, 0), Materials.Polyphenylenesulfide.getMolten(144L), CustomItemList.packIapetus.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.TitanStoneDust", 64L, 0), Materials.Polyphenylenesulfide.getMolten(144L), CustomItemList.packTitan.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.OberonStoneDust", 64L, 0), Materials.Polyphenylenesulfide.getMolten(144L), CustomItemList.packOberon.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.MirandaStoneDust", 64L, 0), Materials.Polyphenylenesulfide.getMolten(144L), CustomItemList.packEris.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
+	    GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.EnceladusStoneDust", 64L, 0), Materials.PolyphenyleneSulfide.getMolten(144L), CustomItemList.packIapetus.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.TitanStoneDust", 64L, 0), Materials.PolyphenyleneSulfide.getMolten(144L), CustomItemList.packTitan.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.OberonStoneDust", 64L, 0), Materials.PolyphenyleneSulfide.getMolten(144L), CustomItemList.packOberon.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.MirandaStoneDust", 64L, 0), Materials.PolyphenyleneSulfide.getMolten(144L), CustomItemList.packEris.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 780);
         
 	//===6
-	GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.TritonStoneDust", 64L, 0), Materials.Polybenzimidazole.getMolten(144L), CustomItemList.packTriton.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 1950);
+	    GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.TritonStoneDust", 64L, 0), Materials.Polybenzimidazole.getMolten(144L), CustomItemList.packTriton.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 1950);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.ProteusStoneDust", 64L, 0), Materials.Polybenzimidazole.getMolten(144L), CustomItemList.packProteus.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 1950);
         
 	//===7
-	GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.PlutoStoneDust", 64L, 0), Materials.Polybenzimidazole.getMolten(288L), CustomItemList.packPluto.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 4875);
+	    GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.PlutoStoneDust", 64L, 0), Materials.Polybenzimidazole.getMolten(288L), CustomItemList.packPluto.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 4875);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.MakeMakeStoneDust", 64L, 0), Materials.Polybenzimidazole.getMolten(288L), CustomItemList.packMakeMake.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 4875);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.HaumeaStoneDust", 64L, 0), Materials.Polybenzimidazole.getMolten(288L), CustomItemList.packHaumea.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 4875);
         
 	//===8
-	GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.CentauriAStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packCentauriA.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.VegaBStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packVegaB.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.BarnardaEStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packBarnardaE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.BarnardaFStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packBarnardaF.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.TCetiEStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packTCetiE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
+//        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.CentauriAStoneDust", 64L, 0), Materials.Radox.getMolten(144L), CustomItemList.packCentauriA.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
+//        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.VegaBStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packVegaB.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
+//        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.BarnardaEStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packBarnardaE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
+//        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.BarnardaFStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packBarnardaF.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
+//        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.TCetiEStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packTCetiE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
         
 	}
 

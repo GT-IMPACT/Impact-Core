@@ -15,7 +15,12 @@ public enum CustomItemList implements IItemContainer {
 	//gwpp
 	Coin,RedstoneRedChipset,RedstoneQuartzChipset,RedstonePulsatingChipset,RedstoneIronChipset,RedstoneGoldChipset,
 	RedstoneEmeraldChipset,	RedstoneDiamondChipset,WoodenBrickForm,UnfiredSearedBrick,UnfiredCokeOvenBrick,UnfiredClayBrick,
-	CokeOvenBrick,
+	CokeOvenBrick, EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore, EngineeringProcessorFluidGoldCore,
+	EngineeringProcessorItemAdvEmeraldCore, EngineeringProcessorItemDiamondCore, EngineeringProcessorItemEmeraldCore,
+	EngineeringProcessorSpatialPulsatingCore, LogicProcessorItemGoldCore, EngravedDiamondCrystalChip, EngravedEnergyChip,
+	EngravedGoldChip, EngravedQuantumChip, GeneticCircuit, EnvironmentalCircuit, PulsatingSpatialCoreChip,
+	GoldFluidCoreChip, GoldCoreChip, DiamondCoreChip, DiamondFluidCoreChip, EmeraldAdvancedCoreChip, EmeraldAdvancedFluidCoreChip,
+	EmeraldHighAdvancedCoreChip,
 
 	packEuropa,	packBarnardaE,	packBarnardaF,	packCallisto,	packCentauriA,	packCeres,	packDeimos,	packEarth,
 	packEris,	packGanymed,	packHaumea,	packIapetus,	packIo,	packMakeMake,	packMercury,	packMoon,
