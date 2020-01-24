@@ -34,6 +34,21 @@ public class GT_MachineRecipeLoader implements Runnable{
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L), CustomItemList.RedstoneRedChipset.get(1L), CustomItemList.RedstoneDiamondChipset.get(1L), 100, 480);
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 1L), CustomItemList.RedstoneRedChipset.get(1L), CustomItemList.RedstoneEmeraldChipset.get(1L), 150, 480);
 
+	//Spatial Chip
+	GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), CustomItemList.RedstonePulsatingChipset.get(1L), CustomItemList.PulsatingSpatialCoreChip.get(1L), 300, 7680);
+	//Fluid Chips
+	GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), CustomItemList.RedstoneGoldChipset.get(1L), CustomItemList.GoldFluidCoreChip.get(1L), 300, 1920);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), CustomItemList.RedstoneDiamondChipset.get(1L), CustomItemList.DiamondFluidCoreChip.get(1L), 300, 4096);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), CustomItemList.RedstoneEmeraldChipset.get(1L), CustomItemList.EmeraldAdvancedFluidCoreChip.get(1L), 300, 7680);
+        //Item Chips
+	GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(CustomItemList.EngravedGoldChip.get(1L), CustomItemList.RedstoneGoldChipset.get(1L), CustomItemList.GoldCoreChip.get(1L), 300, 480);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(CustomItemList.EngravedDiamondCrystalChip.get(1L), CustomItemList.RedstoneDiamondChipset.get(1L), CustomItemList.DiamondCoreChip.get(1L), 300, 1920);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(CustomItemList.EngravedEnergyChip.get(1L), CustomItemList.RedstoneEmeraldChipset.get(1L), CustomItemList.EmeraldAdvancedCoreChip.get(1L), 300, 4096);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(CustomItemList.EngravedQuantumChip.get(1L), CustomItemList.RedstoneEmeraldChipset.get(1L), CustomItemList.EmeraldHighAdvancedCoreChip.get(1L), 300, 7680);
+	//Gendustry Chips
+	GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L), CustomItemList.RedstonePulsatingChipset.get(1L), CustomItemList.EmeraldAdvancedFluidCoreChip.get(1L), 300, 7680);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L), CustomItemList.RedstoneDiamondChipset.get(1L), CustomItemList.EnvironmentalCircuit.get(1L), 300, 7680);
+        
 /*============= SPARTAK CORE ITEMS CRAFTING =============*/
 
         GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("spartakcore", "item.PhobosStoneDust", 1L, 0),      GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.BandedIron, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Bauxite, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Molybdenite, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Desh, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L), new int[]{5000, 2500, 1000, 750, 500, 150}, 600, 60);
