@@ -26,7 +26,9 @@ public enum CustomItemList implements IItemContainer {
 	packEris,	packGanymed,	packHaumea,	packIapetus,	packIo,	packMakeMake,	packMercury,	packMoon,
 	packOberon,	packPhobos,	packPluto,	packTCetiE,	packTitan,	packTriton,	packVegaB,	packVenus,	packMars,
 	packProteus,	packAsteroids,	spacebox1,	spacebox2,	spacebox3,	spacebox4,	spacebox5,	spacebox6,	spacebox7,
-	spacebox8
+	spacebox8,
+
+	Machine_FREEZTEST
 
 	;
 	private ItemStack mStack;
