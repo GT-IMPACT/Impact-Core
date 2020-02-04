@@ -28,7 +28,7 @@ public enum CustomItemList implements IItemContainer {
 	packProteus,	packAsteroids,	spacebox1,	spacebox2,	spacebox3,	spacebox4,	spacebox5,	spacebox6,	spacebox7,
 	spacebox8,
 
-	Machine_FREEZTEST
+	Machine_FREEZTEST, Machine_BENDERTEST
 
 	;
 	private ItemStack mStack;
