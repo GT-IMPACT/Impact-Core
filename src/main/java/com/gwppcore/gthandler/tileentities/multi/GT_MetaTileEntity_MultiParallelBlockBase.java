@@ -1,5 +1,5 @@
 /*
- * Thanks bartimaeusnek for this
+ * Thanks bartimaeusnek for creating parallel recipes
  *
  * Description:
  *
@@ -23,30 +23,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.gwppcore.gthandler.tileentities.multi;
 
-
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTileEntity_MultiBlockBase {
 
+    /** === NAMED === */
     public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
+    /** === NAMED === */
     public GT_MetaTileEntity_MultiParallelBlockBase(final String aName) {
         super(aName);
     }
+    /** === IMPORT CLASS MULTIMACHINE SET PARALLEL === */
+    public abstract int Parallel();
 
+    /** === BASIC MULTIBLOCKS PROPERTY === */
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+    /** === BASIC MULTIBLOCKS PROPERTY === */
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
+    /** === BASIC MULTIBLOCKS PROPERTY === */
+    public boolean isFacingValid(byte aFacing) {
+        return aFacing > 1;
+    }
+    /** === BASIC MULTIBLOCKS PROPERTY === */
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+    /** === BASIC MULTIBLOCKS PROPERTY === */
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
+    /** === DRAIN ENERGY HATCH === */
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0)
             return true;
@@ -68,10 +92,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 returnset.add(false);
         return returnset.size() > 0 && !returnset.contains(false);
     }
-
-
-
-
+    /** === NOMINAL VOLTAGE === */
     public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
         long rVoltage = 0L;
         long rAmperage = 0L;
@@ -86,7 +107,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
 
         return rVoltage * rAmperage;
     }
-
+    /** === OVERCLOCKED PART 1 === */
     public static void calculateOverclockedNessMulti( int aEUt,  int aDuration,  int mAmperage,  long maxInputVoltage, GT_MetaTileEntity_MultiBlockBase base) {
         byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
         if (mTier == 0) {
@@ -111,7 +132,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
             while (tempEUt <= V[mTier - 1] * mAmperage) {
                 tempEUt <<= 2;//this actually controls overclocking
                 //xEUt *= 4;//this is effect of everclocking
-                base.mMaxProgresstime >>= 1;//this is effect of overclocking
+                base.mMaxProgresstime >>= 0;//this is effect of overclocking
                 xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
             }
 
@@ -133,7 +154,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
             }
         }
     }
-
+    /** === OVERCLOCKED PART 2 === */
     public static void calculateOverclockedNessMultiPefectOC( int aEUt,  int aDuration,  int mAmperage,  long maxInputVoltage, GT_MetaTileEntity_MultiBlockBase base) {
         byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
         if (mTier == 0) {
@@ -156,7 +177,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
 
             while (tempEUt <= V[mTier - 1] * mAmperage) {
                 tempEUt <<= 1;//this actually controls overclocking
-                base.mMaxProgresstime >>= 1;//this is effect of overclocking
+                //this is effect of overclocking
                 xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 1;//U know, if the time is less than 1 tick make the machine use less power
             }
 
@@ -177,5 +198,72 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
             }
         }
     }
-
+    /** === CHECK RECIPE === */
+    public boolean checkRecipe(ItemStack itemStack) {
+        ArrayList<ItemStack> tInputList = this.getStoredInputs();
+        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+        ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
+        FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        if (tInputList.size() > 0 || tFluidList.size() > 0) {
+            long tVoltage = this.getMaxInputVoltage();
+            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+            GT_Recipe tRecipe;
+            tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+            if (tRecipe != null) {
+                /* TODO FOR "IF" WORLD
+                if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100 &&
+                        !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
+                    return false;*/
+                ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+                ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+                boolean found_Recipe = false;
+                int processed = 0;
+                long nominalV = getnominalVoltage(this);
+                //int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+                //long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
+                while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
+                    if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                        found_Recipe = true;
+                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                            outputItems.add(tRecipe.getOutput(i));
+                        }
+                        for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                            outputFluids.add(tRecipe.getFluidOutput(i));
+                        }
+                        ++processed;
+                    } else
+                        break;
+                }
+                if (found_Recipe) {
+                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                    this.mEfficiencyIncrease = 10000;
+                    long actualEUT = (long) (tRecipe.mEUt) * processed;
+                    if (actualEUT > Integer.MAX_VALUE) {
+                        byte divider = 0;
+                        while (actualEUT > Integer.MAX_VALUE) {
+                            actualEUT = actualEUT/2;
+                            divider++;
+                        }
+                        GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
+                    } else
+                        GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                    //In case recipe is too OP for that machine
+                    if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+                        return false;
+                    if (this.mEUt > 0) {
+                        this.mEUt = (-this.mEUt);
+                    }
+                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+                    this.mMaxProgresstime = tRecipe.mDuration/Parallel(); //THIS PARALLEL
+                    this.mOutputItems = new ItemStack[outputItems.size()];
+                    this.mOutputItems = outputItems.toArray(this.mOutputItems);
+                    this.mOutputFluids = new FluidStack[outputFluids.size()];
+                    this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
+                    this.updateSlots();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
