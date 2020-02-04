@@ -1,6 +1,7 @@
 package com.gwppcore.gthandler;
 
 
+import com.gwppcore.gthandler.tileentities.multi.GT_TileEntity_MegaVacuumFreezer;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -25,7 +26,7 @@ public class GT_Loader_Machines {
 		long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
 				| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
 
-		CustomItemList.Machine_FREEZTEST.set(new GT_MetaTileEntity_VacuumFreezer(14010, "multimachine.freeztest", "Machine_FREEZTEST").getStackForm(1L));
+		CustomItemList.Machine_FREEZTEST.set(new GT_TileEntity_MegaVacuumFreezer(14010, "multimachine.freeztest", "Machine_FREEZTEST").getStackForm(1L));
 	}
 
 }
