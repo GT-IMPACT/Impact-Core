@@ -66,6 +66,7 @@ public class gwppcore {
 	public static CoreModDispatcher NW;
 	public static Random Rnd;
 	public static LogHelper Logger = new LogHelper(Refstrings.MODID);
+    public static final byte CORETexturePage1=3;
 
 
     public static void AddLoginError(String pMessage)
