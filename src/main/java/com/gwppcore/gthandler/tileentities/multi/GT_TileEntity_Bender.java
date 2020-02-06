@@ -1,11 +1,11 @@
 package com.gwppcore.gthandler.tileentities.multi;
 
-import com.gwppcore.gthandler.casings.GT_Container_CasingsParall;
-import com.gwppcore.gthandler.tileentities.multi.render.CORE_RenderedTexture;
+//import com.gwppcore.gthandler.casings.GT_Container_CasingsParall;
+import com.gwppcore.gthandler.casings.GT_Block_CasingsSC;
+import com.gwppcore.gthandler.casings.GT_Container_CasingsSC;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -21,7 +21,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-import static com.gwppcore.gthandler.casings.GT_Block_CasingsParall.texturePage;
+//import static com.gwppcore.gthandler.casings.GT_Block_CasingsParall.texturePage;
 
 public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -29,14 +29,14 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     String INDEX_GUI = "VacuumFreezer.png";
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[texturePage][4];
+   // ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[texturePage][4];
     int INDEX_CASE1 = 17;
     /** === SET BLOCKS STRUCTURE === */
-    Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE = GT_Container_CasingsSC.sBlockCasingsSC;
     byte INDEX_CASE_PAGE = 4;
 
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
-    Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE_PARALLEL = GT_Container_CasingsSC.sBlockCasingsSC;
 
     /** === SET OVERLAY CONTROLER === */
     Textures.BlockIcons INDEX_OVERLAY_ACTIVE = Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
@@ -96,11 +96,9 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     /** === TEXTURE === */
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? INDEX_OVERLAY_ACTIVE : INDEX_OVERLAY)};
-        }
-        return new ITexture[]{INDEX_CASE};
+        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[INDEX_CASE1], new GT_RenderedTexture(aActive ?  INDEX_OVERLAY_ACTIVE : INDEX_OVERLAY)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[INDEX_CASE1]};
     }
 
     /** === GUI === */
