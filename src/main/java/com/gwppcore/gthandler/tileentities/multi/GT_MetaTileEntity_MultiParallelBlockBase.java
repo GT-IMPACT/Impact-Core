@@ -25,6 +25,7 @@
  */
 package com.gwppcore.gthandler.tileentities.multi;
 
+import com.gwppcore.gthandler.tileentities.multi.render.CORE_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-//import static com.gwppcore.gthandler.casings.GT_Block_CasingsParall.texturePage;
+import static com.gwppcore.gthandler.casings.GT_Block_CasingsParall.texturePage;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
