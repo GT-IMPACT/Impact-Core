@@ -30,12 +30,15 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -202,8 +205,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     public boolean checkRecipe(ItemStack itemStack) {
         ArrayList<ItemStack> tInputList = this.getStoredInputs();
         ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-        ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
-        FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        ItemStack[] tInputs = (ItemStack[])((ItemStack[])tInputList.toArray(new ItemStack[tInputList.size()]));
+        FluidStack[] tFluids = (FluidStack[])((FluidStack[])tFluidList.toArray(new FluidStack[tFluidList.size()]));
         if (tInputList.size() > 0 || tFluidList.size() > 0) {
             long tVoltage = this.getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -253,7 +256,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                     if (this.mEUt > 0) {
                         this.mEUt = (-this.mEUt);
                     }
-                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                     this.mMaxProgresstime = tRecipe.mDuration/Parallel(); //THIS PARALLEL
                     this.mOutputItems = new ItemStack[outputItems.size()];
                     this.mOutputItems = outputItems.toArray(this.mOutputItems);
@@ -265,5 +267,33 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
             }
         }
         return false;
+    }
+
+    /** === INFO DATA === */
+    @Override
+    public String[] getInfoData() {
+        long storedEnergy=0;
+        long maxEnergy=0;
+        for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        EnumChatFormatting GREEN = EnumChatFormatting.GREEN;
+        EnumChatFormatting RESET = EnumChatFormatting.RESET;
+        EnumChatFormatting YELLOW = EnumChatFormatting.YELLOW;
+        EnumChatFormatting RED = EnumChatFormatting.RED;
+        return new String[]{
+                "Progress: " + GREEN + mProgresstime/20 + RESET +" s / " + mMaxProgresstime/20 + RESET +" s",
+                "Storage: " + GREEN + storedEnergy + RESET + " / " + RESET + YELLOW+ maxEnergy + RESET +" EU" ,
+                "Usage Energy: " + RED + -mEUt + RESET +  " EU/t",
+                "Max Voltage: " + YELLOW +getMaxInputVoltage() + RESET + " EU/t " + YELLOW + VN[GT_Utility.getTier(getMaxInputVoltage())]+ RESET,
+                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
+                        ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F  + " %" + RESET
+                        : RED + "Has Problems " + mEfficiency / 100.0F  + " %" + RESET),
+                "Parallel Point: "+ YELLOW + Parallel() + " / 256",
+                "Pollution: " + RED + Parallel()*50 + RESET
+        };
     }
 }
