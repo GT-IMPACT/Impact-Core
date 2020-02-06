@@ -20,7 +20,7 @@ public class Worldgenloader implements Runnable {
 
         new GT_Worldgenerator();
 
-        new GT_Worldgen_GT_Ore_Layer("ore.mix.galliumniobiumgiant", true, 35, 45, 100, 10, 32, false, true, false, GT_CoreModSupport.Trinium, Materials.Draconium, GT_CoreModSupport.Trinium, Materials.Draconium);
+//        new GT_Worldgen_GT_Ore_Layer("ore.mix.galliumniobiumgiant", true, 35, 45, 100, 10, 32, false, true, false, GT_CoreModSupport.Trinium, Materials.Draconium, GT_CoreModSupport.Trinium, Materials.Draconium);
 
 
         //DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there), which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also Reflexion is slow.
