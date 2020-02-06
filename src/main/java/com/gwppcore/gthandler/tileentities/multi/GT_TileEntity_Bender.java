@@ -1,11 +1,9 @@
 package com.gwppcore.gthandler.tileentities.multi;
 
 import com.gwppcore.gthandler.casings.GT_Container_CasingsParall;
-import com.gwppcore.gthandler.tileentities.multi.render.CORE_RenderedTexture;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -21,7 +19,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-import static com.gwppcore.gthandler.casings.GT_Block_CasingsParall.texturePage;
+
+
 
 public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -29,8 +28,8 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     String INDEX_GUI = "VacuumFreezer.png";
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[texturePage][4];
-    int INDEX_CASE1 = 17;
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
+    int INDEX_CASE1 = 388;
     /** === SET BLOCKS STRUCTURE === */
     Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
     byte INDEX_CASE_PAGE = 4;
@@ -38,9 +37,14 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
     Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
 
-    /** === SET OVERLAY CONTROLER === */
-    Textures.BlockIcons INDEX_OVERLAY_ACTIVE = Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
-    Textures.BlockIcons INDEX_OVERLAY= Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
+    /** === SET TEXTURE === */
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[3][4], new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[3][4]};
+    }
 
     /** === NAMED === */
     public GT_TileEntity_Bender(int aID, String aName, String aNameRegional) {
@@ -81,26 +85,6 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
         } else {
             return b.getStructureInformation();
         }
-    }
-
-    /** === SET OVERLAY CONTROLER === */
-    public static Textures.BlockIcons.CustomIcon MACHINE_ON;
-    public static Textures.BlockIcons.CustomIcon MACHINE_OFF;
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        super.registerIcons(aBlockIconRegister);
-        MACHINE_ON = new Textures.BlockIcons.CustomIcon("iconsets/BENDER_OVERLAY_ACTIVE");;
-        MACHINE_OFF = new Textures.BlockIcons.CustomIcon("iconsets/BENDER_OVERLAY");
-    }
-
-    /** === TEXTURE === */
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? INDEX_OVERLAY_ACTIVE : INDEX_OVERLAY)};
-        }
-        return new ITexture[]{INDEX_CASE};
     }
 
     /** === GUI === */

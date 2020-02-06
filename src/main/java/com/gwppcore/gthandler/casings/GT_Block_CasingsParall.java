@@ -1,7 +1,6 @@
 package com.gwppcore.gthandler.casings;
 
 import com.gwppcore.gthandler.CustomItemList;
-import com.gwppcore.gthandler.casings.GT_Item_CasingsParall;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -10,28 +9,23 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import java.util.List;
 
-import static com.gwppcore.gwppcore.CORETexturePage1;
 
 
 public class GT_Block_CasingsParall
         extends GT_Block_Casings_Abstract {
     //public static boolean mConnectedMachineTextures = true;
-    public static final byte texturePage=CORETexturePage1;
 
     private static IIcon Up1, Up2, Up3, Up4, BendC;
 
     public GT_Block_CasingsParall() {
         super(GT_Item_CasingsParall.class, "gt.blockcasingsParall", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[3][b] = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring*/
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Upgrade Casing T1");//384
