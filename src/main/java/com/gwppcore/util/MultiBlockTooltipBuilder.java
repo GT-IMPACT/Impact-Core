@@ -45,12 +45,18 @@ public class MultiBlockTooltipBuilder {
 	 * @return Instance this method was called on.
 	 */
 	public MultiBlockTooltipBuilder addSeparator() {
-		iLines.add("-----------------------------------------");
+		//iLines.add("---------------------------------");
+		iLines.add(" ");
 		return this;
 	}
 
-	public MultiBlockTooltipBuilder addParallelInfo(String info) {
-		iLines.add(EnumChatFormatting.AQUA +"Parallel Point: "+EnumChatFormatting.GRAY + info);
+	public MultiBlockTooltipBuilder addParallelInfo(int Basic, int Max) {
+		iLines.add(EnumChatFormatting.AQUA +"Parallel Point: " + EnumChatFormatting.GRAY + "basic "+ EnumChatFormatting.AQUA + Basic + EnumChatFormatting.GRAY + ", max "+ EnumChatFormatting.AQUA + Max);
+		return this;
+	}
+
+	public MultiBlockTooltipBuilder addPollution(int Min, int Max) {
+		iLines.add("Pollution: min " + Min + ", max "+ Max);
 		return this;
 	}
 
@@ -153,7 +159,7 @@ public class MultiBlockTooltipBuilder {
 	 * @return The result of all build calls.
 	 */
 	public void signAndFinalize(String author) {
-		iLines.add("Hold " +EnumChatFormatting.DARK_BLUE +  EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to display structure guidelines");
+		iLines.add("Hold " +EnumChatFormatting.DARK_BLUE +  EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
 		iLines.add("Added by " + author);
 		iArray = new String[iLines.size()];
 		sArray = new String[sLines.size()];
