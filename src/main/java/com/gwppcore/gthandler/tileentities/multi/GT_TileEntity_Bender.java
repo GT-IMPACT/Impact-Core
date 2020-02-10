@@ -2,30 +2,21 @@ package com.gwppcore.gthandler.tileentities.multi;
 
 import com.gwppcore.gthandler.casings.GT_Container_CasingsParall;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.common.gui.GT_GUIContainer_MultiParallelBlock;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-
-
-
 public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBase {
-
-    /** === SET GUI CONTROLER === */
-    String INDEX_GUI = "VacuumFreezer.png";
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
@@ -41,9 +32,9 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[3][4], new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)};
+            return new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)};
         }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[3][4]};
+        return new ITexture[]{INDEX_CASE};
     }
 
     /** === NAMED === */
@@ -69,11 +60,11 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 .addInfo("One-block machine analog")
                 .addParallelInfo(4,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                .addPollution(4*50, 256*50)
+                .addPollution(200, 12800)
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
                 .addController("Front middle center")
-                .addParallelCase("Middle Center")
+                .addParallelCase("Middle сenter")
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (only x1)")
@@ -90,7 +81,7 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), INDEX_GUI);
+        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", GT_Recipe.GT_Recipe_Map.sBenderRecipes.mNEIName);
     }
 
     /** === RECIPE MAP === */

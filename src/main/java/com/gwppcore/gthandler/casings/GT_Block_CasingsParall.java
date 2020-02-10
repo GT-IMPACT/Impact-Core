@@ -20,7 +20,7 @@ public class GT_Block_CasingsParall
         extends GT_Block_Casings_Abstract {
     //public static boolean mConnectedMachineTextures = true;
 
-    private static IIcon Up1, Up2, Up3, Up4, BendC;
+    private static IIcon Up1, Up2, Up3, Up4, BendC, LaserC, PressC, ExtrudC, AssembC, CircAssembC;
 
     public GT_Block_CasingsParall() {
         super(GT_Item_CasingsParall.class, "gt.blockcasingsParall", GT_Material_Casings.INSTANCE);
@@ -33,6 +33,11 @@ public class GT_Block_CasingsParall
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Upgrade Casing T3");//386
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Upgrade Casing T4");//387
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Bending Casing");//388
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Laser Engraver Casing");//389
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Pressing Casing");//390
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Extruding Casing");//391
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Assembling Casing");//392
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Circuit Assembling Casing");//393
 
 /*
         ================================================================================================================
@@ -43,6 +48,11 @@ public class GT_Block_CasingsParall
         CustomItemList.Upgradet3.set(new ItemStack(this, 1, 2));
         CustomItemList.Upgradet4.set(new ItemStack(this, 1, 3));
         CustomItemList.BenderCase.set(new ItemStack(this, 1, 4));
+        CustomItemList.LaserCase.set(new ItemStack(this, 1, 5));
+        CustomItemList.PresserCase.set(new ItemStack(this, 1, 6));
+        CustomItemList.ExtruderCase.set(new ItemStack(this, 1, 7));
+        CustomItemList.ExtruderCase.set(new ItemStack(this, 1, 8));
+        CustomItemList.ExtruderCase.set(new ItemStack(this, 1, 9));
     }
 
     @Override
@@ -53,6 +63,11 @@ public class GT_Block_CasingsParall
         Up3 = aIconRegister.registerIcon("gregtech:iconsets/UPGRATE_CASING_T3");
         Up4 = aIconRegister.registerIcon("gregtech:iconsets/UPGRATE_CASING_T4");
         BendC = aIconRegister.registerIcon("gregtech:iconsets/BENDER_CASING");
+        LaserC = aIconRegister.registerIcon("gregtech:iconsets/LASER_CASING");
+        PressC = aIconRegister.registerIcon("gregtech:iconsets/PRESS_CASING");
+        ExtrudC = aIconRegister.registerIcon("gregtech:iconsets/EXTRUDER_CASING");
+        AssembC = aIconRegister.registerIcon("gregtech:iconsets/ASSEMBLER_CASING");
+        CircAssembC = aIconRegister.registerIcon("gregtech:iconsets/CIRCUIT_ASSEMBLER_CASING");
     }
 
     @Override
@@ -69,6 +84,16 @@ public class GT_Block_CasingsParall
                 return Up4;
             case 4:
                 return BendC;
+            case 5:
+                return LaserC;
+            case 6:
+                return PressC;
+            case 7:
+                return ExtrudC;
+            case 8:
+                return AssembC;
+            case 9:
+                return CircAssembC;
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }

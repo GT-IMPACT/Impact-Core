@@ -29,6 +29,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,6 +52,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     }
     /** === IMPORT CLASS MULTIMACHINE SET PARALLEL === */
     public abstract int Parallel();
+
 
     /** === BASIC MULTIBLOCKS PROPERTY === */
     public int getMaxEfficiency(ItemStack aStack) {
@@ -268,6 +270,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         return false;
     }
 
+    public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+        return false;
+    }
     /** === INFO DATA === */
     @Override
     public String[] getInfoData() {
