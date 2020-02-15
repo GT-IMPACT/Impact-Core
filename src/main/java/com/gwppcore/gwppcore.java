@@ -219,8 +219,9 @@ public class gwppcore {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
         registerSingleIC2StorageBlocks();
-
+        ItemList.init();
     }
+
 
     private void registerSingleIC2StorageBlocks()
     {
