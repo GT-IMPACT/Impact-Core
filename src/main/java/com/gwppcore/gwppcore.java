@@ -12,16 +12,19 @@ import com.gwppcore.gtsu.blocks.GTSUBlock;
 import com.gwppcore.gtsu.blocks.itemblocks.ItemBlockGTSU;
 import com.gwppcore.gtsu.gui.GuiHandler;
 import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
+import com.gwppcore.guihandler.GUIHandler;
 import com.gwppcore.item.ItemList;
 import com.gwppcore.lib.Refstrings;
 import com.gwppcore.main.CommonProxy;
 import com.gwppcore.modctt.CustomToolTipsHandler;
 import com.gwppcore.network.CoreModDispatcher;
 import com.gwppcore.oredict.OreDictHandler;
+import com.gwppcore.util.SendUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
@@ -66,6 +69,8 @@ public class gwppcore {
 	public static CoreModDispatcher NW;
 	public static Random Rnd;
 	public static LogHelper Logger = new LogHelper(Refstrings.MODID);
+    public static SendUtils SendUtils_instance = new SendUtils();
+    public static final IGuiHandler GH = new GUIHandler();
 
 
     public static void AddLoginError(String pMessage)
@@ -264,5 +269,8 @@ public class gwppcore {
 		
     }
 
-
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent postinit) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(gwppcore.instance, gwppcore.GH);
+    }
 }
