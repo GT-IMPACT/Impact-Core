@@ -8,25 +8,43 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_MultiParallelBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
-public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBase {
+import java.util.ArrayList;
 
-    /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
-    int INDEX_CASE1 = 388;
+import static gregtech.api.enums.GT_Values.V;
+
+public class GT_TileEntity_PlasmaArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
+
     /** === SET BLOCKS STRUCTURE === */
     Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
-    byte INDEX_CASE_PAGE = 4;
+    int INDEX_CASE_PAGE = 12;
+
+    /** === SET TEXTURES HATCHES AND CONTROLLER === */
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][INDEX_CASE_PAGE];
+    int INDEX_CASE1 = INDEX_CASE_PAGE+(3*128);
 
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
     Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
+
+    /** === RECIPE MAP === */
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes;
+    }
+    /** === GUI === */
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", getRecipeMap().mNEIName);
+    }
 
     /** === SET TEXTURE === */
     @Override
@@ -38,18 +56,18 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     /** === NAMED === */
-    public GT_TileEntity_Bender(int aID, String aName, String aNameRegional) {
+    public GT_TileEntity_PlasmaArcFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
     /** === NAMED === */
-    public GT_TileEntity_Bender(String aName) {
+    public GT_TileEntity_PlasmaArcFurnace(String aName) {
         super(aName);
     }
 
     /** === META ENTITY === */
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_TileEntity_Bender(this.mName);
+        return new GT_TileEntity_PlasmaArcFurnace(this.mName);
     }
 
     /** === DESCRIPTION === */
@@ -64,12 +82,13 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
                 .addController("Front middle center")
-                .addParallelCase("Middle center")
+                .addParallelCase("Middle сenter")
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (only x1)")
                 .addOutputBus("Any casing (only x1)")
-                .addCasingInfo("Bending Casing", 20)
+                .addInputHatch("Any casing (only x1)")
+                .addCasingInfo("Arc Casing", 18)
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -77,18 +96,75 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
             return b.getStructureInformation();
         }
     }
-
-    /** === GUI === */
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", GT_Recipe.GT_Recipe_Map.sBenderRecipes.mNEIName);
+    /** === CHECK RECIPE === */
+    public boolean checkRecipe(ItemStack itemStack) {
+        ArrayList<ItemStack> tInputList = this.getStoredInputs();
+        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+        ItemStack[] tInputs = (ItemStack[])((ItemStack[])tInputList.toArray(new ItemStack[tInputList.size()]));
+        FluidStack[] tFluids = (FluidStack[])((FluidStack[])tFluidList.toArray(new FluidStack[tFluidList.size()]));
+        if (tInputList.size() > 0 || tFluidList.size() > 0) {
+            long tVoltage = this.getMaxInputVoltage();
+            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+            GT_Recipe tRecipe;
+            tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+            if (tRecipe != null) {
+                /* TODO FOR "IF" WORLD
+                if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100 &&
+                        !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
+                    return false;*/
+                ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+                ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+                boolean found_Recipe = false;
+                int processed = 0;
+                long nominalV = getnominalVoltage(this);
+                //int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+                //long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
+                while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
+                    if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                        found_Recipe = true;
+                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                            outputItems.add(tRecipe.getOutput(i));
+                        }
+                        for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                            outputFluids.add(tRecipe.getFluidOutput(i));
+                        }
+                        ++processed;
+                    } else
+                        break;
+                }
+                if (found_Recipe) {
+                    this.mEfficiency = 10000;
+                    this.mEfficiencyIncrease = 10000;
+                    long actualEUT = (long) (tRecipe.mEUt) * processed;
+                    if (actualEUT > Integer.MAX_VALUE) {
+                        byte divider = 0;
+                        while (actualEUT > Integer.MAX_VALUE) {
+                            actualEUT = actualEUT/2;
+                            divider++;
+                        }
+                        GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
+                    } else
+                        GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                    //In case recipe is too OP for that machine
+                    if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+                        return false;
+                    if (this.mEUt > 0) {
+                        this.mEUt = (-this.mEUt);
+                    }
+                    this.mMaxProgresstime = tRecipe.mDuration/Parallel(); //THIS PARALLEL
+                    this.mOutputItems = new ItemStack[outputItems.size()];
+                    this.mOutputItems = outputItems.toArray(this.mOutputItems);
+                    this.mOutputFluids = new FluidStack[outputFluids.size()];
+                    this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
+                    this.updateSlots();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    /** === RECIPE MAP === */
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sBenderRecipes;
-    }
+
 
     /** === CHECK STRUCTURE === */
     private int mLevel = 0;
@@ -142,8 +218,10 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
                         if ((!addMaintenanceToMachineList(tTileEntity, INDEX_CASE1))
                         &&  (!addMufflerToMachineList(tTileEntity, INDEX_CASE1))
+                        &&  (!addInputHatchParallel(tTileEntity, INDEX_CASE1))
                         &&  (!addInputBusParallel(tTileEntity, INDEX_CASE1))
                         &&  (!addOutputBusParallel(tTileEntity, INDEX_CASE1))
+                        &&  (!addOutputHatchParallel(tTileEntity, INDEX_CASE1))
                         &&  (!addEnergyInputToMachineList(tTileEntity, INDEX_CASE1))) {
                             if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE) {
                                 return false;
@@ -157,7 +235,7 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 }
             }
         }
-        return casingAmount >= 20;
+        return casingAmount >= 18;
     }
 
 
@@ -190,4 +268,5 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
         } else
             return 0;
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
+
 }

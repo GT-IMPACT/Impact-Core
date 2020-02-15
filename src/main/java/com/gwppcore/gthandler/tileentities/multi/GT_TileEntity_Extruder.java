@@ -63,7 +63,7 @@ public class GT_TileEntity_Extruder extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public String[] getDescription() {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-        b.addInfo("Boo, he's bad! We want BENDER")
+        b
                 .addInfo("One-block machine analog")
                 .addParallelInfo(4,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
@@ -76,7 +76,7 @@ public class GT_TileEntity_Extruder extends GT_MetaTileEntity_MultiParallelBlock
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (only x1)")
                 .addOutputBus("Any casing (only x1)")
-                .addCasingInfo("Bending Casing", 18)
+                .addCasingInfo("Extruding Casing", 20)
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();

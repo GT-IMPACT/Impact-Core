@@ -16,17 +16,23 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GT_TileEntity_Wiremill extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
-    int INDEX_CASE1 = 388;
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][11];
+    int INDEX_CASE1 = 395;
     /** === SET BLOCKS STRUCTURE === */
     Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
-    byte INDEX_CASE_PAGE = 4;
+    byte INDEX_CASE_PAGE = 11;
 
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
     Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
+
+    /** === RECIPE MAP === */
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
+    }
 
     /** === SET TEXTURE === */
     @Override
@@ -38,18 +44,18 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     /** === NAMED === */
-    public GT_TileEntity_Bender(int aID, String aName, String aNameRegional) {
+    public GT_TileEntity_Wiremill(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
     /** === NAMED === */
-    public GT_TileEntity_Bender(String aName) {
+    public GT_TileEntity_Wiremill(String aName) {
         super(aName);
     }
 
     /** === META ENTITY === */
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_TileEntity_Bender(this.mName);
+        return new GT_TileEntity_Wiremill(this.mName);
     }
 
     /** === DESCRIPTION === */
@@ -64,12 +70,12 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
                 .addController("Front middle center")
-                .addParallelCase("Middle center")
+                .addParallelCase("Middle сenter")
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (only x1)")
                 .addOutputBus("Any casing (only x1)")
-                .addCasingInfo("Bending Casing", 20)
+                .addCasingInfo("Wiremill Casing", 20)
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -81,13 +87,7 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", GT_Recipe.GT_Recipe_Map.sBenderRecipes.mNEIName);
-    }
-
-    /** === RECIPE MAP === */
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", getRecipeMap().mNEIName);
     }
 
     /** === CHECK STRUCTURE === */

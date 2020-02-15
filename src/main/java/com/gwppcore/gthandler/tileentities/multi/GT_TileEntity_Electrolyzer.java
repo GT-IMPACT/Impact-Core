@@ -16,17 +16,29 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
-    int INDEX_CASE1 = 388;
     /** === SET BLOCKS STRUCTURE === */
     Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
-    byte INDEX_CASE_PAGE = 4;
+    int INDEX_CASE_PAGE = 13;
+
+    /** === SET TEXTURES HATCHES AND CONTROLLER === */
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][INDEX_CASE_PAGE];
+    int INDEX_CASE1 = INDEX_CASE_PAGE+(3*128);
 
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
     Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
+
+    /** === RECIPE MAP === */
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes;
+    }
+    /** === GUI === */
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", getRecipeMap().mNEIName);
+    }
 
     /** === SET TEXTURE === */
     @Override
@@ -38,18 +50,18 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     /** === NAMED === */
-    public GT_TileEntity_Bender(int aID, String aName, String aNameRegional) {
+    public GT_TileEntity_Electrolyzer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
     /** === NAMED === */
-    public GT_TileEntity_Bender(String aName) {
+    public GT_TileEntity_Electrolyzer(String aName) {
         super(aName);
     }
 
     /** === META ENTITY === */
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_TileEntity_Bender(this.mName);
+        return new GT_TileEntity_Electrolyzer(this.mName);
     }
 
     /** === DESCRIPTION === */
@@ -64,12 +76,14 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
                 .addController("Front middle center")
-                .addParallelCase("Middle center")
+                .addParallelCase("Middle сenter")
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (only x1)")
                 .addOutputBus("Any casing (only x1)")
-                .addCasingInfo("Bending Casing", 20)
+                .addInputHatch("Any casing (only x1)")
+                .addOutputHatch("Any casing (max x3)")
+                .addCasingInfo("Electrolyzer Casing", 16)
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -78,17 +92,8 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
         }
     }
 
-    /** === GUI === */
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", GT_Recipe.GT_Recipe_Map.sBenderRecipes.mNEIName);
-    }
 
-    /** === RECIPE MAP === */
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sBenderRecipes;
-    }
+
 
     /** === CHECK STRUCTURE === */
     private int mLevel = 0;
@@ -131,19 +136,21 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 for (int h = -1; h < 2; h++) {
                     if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
                         /** todo info hathes
-                         Muffler       -   addMufflerToMachineList(tTileEntity, INDEX_CASE)
-                         InputBus      -   addInputBusParallel(tTileEntity, INDEX_CASE)
-                         InputHatch    -   addInputHatchParallel(tTileEntity, INDEX_CASE)
-                         OutputBus     -   addOutputBusParallel(tTileEntity, INDEX_CASE)
-                         OutputHatch   -   addOutputHatchParallel(tTileEntity, INDEX_CASE)
-                         Maintenance   -   addMaintenanceToMachineList(tTileEntity, INDEX_CASE)
-                         EnergyInput   -   addEnergyInputToMachineList(tTileEntity, INDEX_CASE)
+                         Muffler       -   addMufflerToMachineList(tTileEntity, INDEX_CASE1)
+                         InputBus      -   addInputBusParallel(tTileEntity, INDEX_CASE1)
+                         InputHatch    -   addInputHatchParallel(tTileEntity, INDEX_CASE1)
+                         OutputBus     -   addOutputBusParallel(tTileEntity, INDEX_CASE1)
+                         OutputHatch   -   addOutputHatchParallel(tTileEntity, INDEX_CASE1)
+                         Maintenance   -   addMaintenanceToMachineList(tTileEntity, INDEX_CASE1)
+                         EnergyInput   -   addEnergyInputToMachineList(tTileEntity, INDEX_CASE1)
                         */
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
                         if ((!addMaintenanceToMachineList(tTileEntity, INDEX_CASE1))
                         &&  (!addMufflerToMachineList(tTileEntity, INDEX_CASE1))
+                        &&  (!addInputHatchParallel(tTileEntity, INDEX_CASE1))
                         &&  (!addInputBusParallel(tTileEntity, INDEX_CASE1))
                         &&  (!addOutputBusParallel(tTileEntity, INDEX_CASE1))
+                        &&  (!addOutputHatchParallel(tTileEntity, INDEX_CASE1))
                         &&  (!addEnergyInputToMachineList(tTileEntity, INDEX_CASE1))) {
                             if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE) {
                                 return false;
@@ -157,7 +164,7 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 }
             }
         }
-        return casingAmount >= 20;
+        return casingAmount >= 16;
     }
 
 
@@ -190,4 +197,5 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
         } else
             return 0;
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
+
 }
