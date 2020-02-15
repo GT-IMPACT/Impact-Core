@@ -1,7 +1,9 @@
 package com.gwppcore.gthandler;
 
+import com.gwppcore.item.Circuit_Programmer.CircuitProgrammer;
 import com.gwppcore.item.ItemList;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
+import net.minecraft.item.Item;
 
 public class GT_Loader_Items
 {
@@ -15,6 +17,8 @@ public class GT_Loader_Items
 	
 	private void registerItems()
 	{
+
+
 		/*=======================
 
 		 		ID 401++

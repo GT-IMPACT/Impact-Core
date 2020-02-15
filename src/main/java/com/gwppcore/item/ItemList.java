@@ -1,22 +1,24 @@
 package com.gwppcore.item;
 
 import com.gwppcore.creativetab.ModTabList;
+import com.gwppcore.item.Circuit_Programmer.CircuitProgrammer;
 import com.gwppcore.lib.Refstrings;
 import com.gwppcore.gwppcore;
 import eu.usrv.yamcore.items.ModItemManager;
 import eu.usrv.yamcore.items.ModSimpleBaseItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public enum ItemList {
 
     Coin(new ModSimpleBaseItem("Coin",ModTabList.GWppTab)),
 
+
 	// Do not delete this
     EndOfList(null);
-
-
-
     // ################################################################################
+
+
     public ModSimpleBaseItem Item;
 
     ItemList(ModSimpleBaseItem pItem)
@@ -52,5 +54,7 @@ public enum ItemList {
     {
         return new ItemStack(Item.getConstructedItem(), amount);
     }
+
+    public static final net.minecraft.item.Item CIRCUIT_PROGRAMMER = new CircuitProgrammer();
 }
 
