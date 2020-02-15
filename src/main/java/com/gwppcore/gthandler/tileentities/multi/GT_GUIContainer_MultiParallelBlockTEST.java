@@ -75,7 +75,7 @@ public class GT_GUIContainer_MultiParallelBlockTEST extends GT_GUIContainerMetaT
                 } else {
                     double tScale = ( (double) this.mContainer.mProgressTime / (double) this.mContainer.mMaxProgressTime)*100;
                     if ((int)tScale > 0 && (int)tScale < 100) {
-                        fontRendererObj.drawString("Progress: " +EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mContainer.mProgressTime) +EnumChatFormatting.WHITE + " / " +EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.mContainer.mMaxProgressTime) +EnumChatFormatting.WHITE + " sec", 10, 22, 16448255);
+                        fontRendererObj.drawString("Progress: " +EnumChatFormatting.GREEN + this.mContainer.mProgressTime +EnumChatFormatting.WHITE + " / " +EnumChatFormatting.YELLOW + this.mContainer.mMaxProgressTime +EnumChatFormatting.WHITE + " sec", 10, 22, 16448255);
                         fontRendererObj.drawString(GT_Utility.formatNumbers((int) tScale) + "%", 71, 56, 16448255);
                     }
                 }

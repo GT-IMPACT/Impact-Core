@@ -20,7 +20,7 @@ public class GT_Block_CasingsParall
         extends GT_Block_Casings_Abstract {
     //public static boolean mConnectedMachineTextures = true;
 
-    private static IIcon Up1, Up2, Up3, Up4, BendC, LaserC, PressC, ExtrudC, AssembC, CircAssembC;
+    private static IIcon Up1, Up2, Up3, Up4, BendC, LaserC, PressC, ExtrudC, AssembC, CircAssembC, WireAssembC, WiremillC, ArcC, ElectrC;
 
     public GT_Block_CasingsParall() {
         super(GT_Item_CasingsParall.class, "gt.blockcasingsParall", GT_Material_Casings.INSTANCE);
@@ -28,16 +28,20 @@ public class GT_Block_CasingsParall
             Textures.BlockIcons.casingTexturePages[3][b] = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring*/
         }
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Upgrade Casing T1");//384
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Upgrade Casing T2");//385
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Upgrade Casing T3");//386
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Upgrade Casing T4");//387
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Bending Casing");//388
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Laser Engraver Casing");//389
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Pressing Casing");//390
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Extruding Casing");//391
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Assembling Casing");//392
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Circuit Assembling Casing");//393
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Upgrade Casing T1");         // 0   384
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Upgrade Casing T2");         // 1   385
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Upgrade Casing T3");         // 2   386
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Upgrade Casing T4");         // 3   387
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Bending Casing");            // 4   388
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Laser Engraver Casing");     // 5   389
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Pressing Casing");           // 6   390
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Extruding Casing");          // 7   391
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Assembling Casing");         // 8   392
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Circuit Assembling Casing"); // 9   393
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Wire Assembling Casing");   // 10  394
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Wiremill Casing");          // 11  395
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Arc Casing");               // 12  396
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Electrolyser Casing");      // 13  397
 
 /*
         ================================================================================================================
@@ -51,8 +55,12 @@ public class GT_Block_CasingsParall
         CustomItemList.LaserCase.set(new ItemStack(this, 1, 5));
         CustomItemList.PresserCase.set(new ItemStack(this, 1, 6));
         CustomItemList.ExtruderCase.set(new ItemStack(this, 1, 7));
-        CustomItemList.ExtruderCase.set(new ItemStack(this, 1, 8));
-        CustomItemList.ExtruderCase.set(new ItemStack(this, 1, 9));
+        CustomItemList.AssemblerCase.set(new ItemStack(this, 1, 8));
+        CustomItemList.CircuitAssemblerCase.set(new ItemStack(this, 1, 9));
+        CustomItemList.WireAssemblerCase.set(new ItemStack(this, 1, 10));
+        CustomItemList.WiremillCase.set(new ItemStack(this, 1, 11));
+        CustomItemList.ArcPlasmaCase.set(new ItemStack(this, 1, 12));
+        CustomItemList.ElectrolyzerCase.set(new ItemStack(this, 1, 12));
     }
 
     @Override
@@ -68,34 +76,33 @@ public class GT_Block_CasingsParall
         ExtrudC = aIconRegister.registerIcon("gregtech:iconsets/EXTRUDER_CASING");
         AssembC = aIconRegister.registerIcon("gregtech:iconsets/ASSEMBLER_CASING");
         CircAssembC = aIconRegister.registerIcon("gregtech:iconsets/CIRCUIT_ASSEMBLER_CASING");
+        WireAssembC = aIconRegister.registerIcon("gregtech:iconsets/WIRE_ASSEMBLER_CASING");
+        WiremillC = aIconRegister.registerIcon("gregtech:iconsets/WIREMILL_CASING");
+        ArcC = aIconRegister.registerIcon("gregtech:iconsets/ARC_FURNACE_CASING");
+        ElectrC = aIconRegister.registerIcon("gregtech:iconsets/ELECTROLYZER_CASING");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
-            case 0:
-                return Up1;
-            case 1:
-                return Up2;
-            case 2:
-                return Up3;
-            case 3:
-                return Up4;
-            case 4:
-                return BendC;
-            case 5:
-                return LaserC;
-            case 6:
-                return PressC;
-            case 7:
-                return ExtrudC;
-            case 8:
-                return AssembC;
-            case 9:
-                return CircAssembC;
-            default:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+            case  0: return Up1;
+            case  1: return Up2;
+            case  2: return Up3;
+            case  3: return Up4;
+            case  4: return BendC;
+            case  5: return LaserC;
+            case  6: return PressC;
+            case  7: return ExtrudC;
+            case  8: return AssembC;
+            case  9: return CircAssembC;
+            case 10: return WireAssembC;
+            case 11: return WiremillC;
+            case 12: return ArcC;
+            case 13: return ElectrC;
+
+
+            default: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
     }
     @Override

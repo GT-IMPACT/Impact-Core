@@ -13,7 +13,7 @@ import static gregtech.api.enums.GT_Values.W;
 public enum CustomItemList implements IItemContainer {
 
 	//gwpp
-	Coin,RedstoneRedChipset,RedstoneQuartzChipset,RedstonePulsatingChipset,RedstoneIronChipset,RedstoneGoldChipset,
+	Coin, RedstoneRedChipset,RedstoneQuartzChipset,RedstonePulsatingChipset,RedstoneIronChipset,RedstoneGoldChipset,
 	RedstoneEmeraldChipset,	RedstoneDiamondChipset,WoodenBrickForm,UnfiredSearedBrick,UnfiredCokeOvenBrick,UnfiredClayBrick,
 	CokeOvenBrick, EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore, EngineeringProcessorFluidGoldCore,
 	EngineeringProcessorItemAdvEmeraldCore, EngineeringProcessorItemDiamondCore, EngineeringProcessorItemEmeraldCore,
@@ -28,11 +28,23 @@ public enum CustomItemList implements IItemContainer {
 	packProteus,	packAsteroids,	spacebox1,	spacebox2,	spacebox3,	spacebox4,	spacebox5,	spacebox6,	spacebox7,
 	spacebox8,
 
-	Machine_Extruder, Machine_Bender, Machine_LaserEngraver, Machine_Presser, Machine_Assembler, Machine_CircuitAssembler,
+	//BASIC
+	Portable_Tank_ULV, Portable_Tank_LV, Portable_Tank_MV, Portable_Tank_HV, Portable_Tank_EV, Portable_Tank_IV,
+	Portable_Tank_LuV, Portable_Tank_ZPM, Portable_Tank_UV,
 
+	//HATCHES
+	Dynamo_Capacity_EV,
+	Dynamo_4A_LuV,
+
+	Energy_Capacity_EV,
+
+	//MULTI
+	Machine_Extruder, Machine_Bender, Machine_LaserEngraver, Machine_Presser, Machine_Assembler, Machine_CircuitAssembler,
+	Machine_WireAssembler, Machine_WireMill, ArcFurnace, PlasmaArcFurnace, Electrolyzer, PowerStation,
 
 	//Cases
-	Upgradet1, Upgradet2, Upgradet3, Upgradet4, BenderCase, LaserCase, PresserCase,ExtruderCase
+	Upgradet1, Upgradet2, Upgradet3, Upgradet4, BenderCase, LaserCase, PresserCase, ExtruderCase, AssemblerCase, CircuitAssemblerCase,
+	WireAssemblerCase, WiremillCase, ArcPlasmaCase, ElectrolyzerCase
 
 	;
 	private ItemStack mStack;
