@@ -5,25 +5,18 @@ import com.gwppcore.command.*;
 import com.gwppcore.config.CoreModConfig;
 import com.gwppcore.creativetab.ModTabList;
 import com.gwppcore.fluids.FluidList;
-import com.gwppcore.gthandler.GT_CoreModSupport;
-import com.gwppcore.gthandler.GT_CustomLoader;
-import com.gwppcore.gtsu.TierHelper;
-import com.gwppcore.gtsu.blocks.GTSUBlock;
-import com.gwppcore.gtsu.blocks.itemblocks.ItemBlockGTSU;
-import com.gwppcore.gtsu.gui.GuiHandler;
-import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
+import com.gwppcore.GregTech.GTregister.GT_Materials;
 import com.gwppcore.item.ItemList;
 import com.gwppcore.lib.Refstrings;
+import com.gwppcore.loader.MainLoader;
 import com.gwppcore.main.CommonProxy;
 import com.gwppcore.modctt.CustomToolTipsHandler;
 import com.gwppcore.network.CoreModDispatcher;
-import com.gwppcore.oredict.OreDictHandler;
+import com.gwppcore.util.SendUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import eu.usrv.yamcore.blocks.ModBlockManager;
@@ -31,7 +24,6 @@ import eu.usrv.yamcore.creativetabs.CreativeTabsManager;
 import eu.usrv.yamcore.fluids.ModFluidManager;
 import eu.usrv.yamcore.items.ModItemManager;
 import gregtech.GT_Mod;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import com.gwppcore.loginhandler.LoginHandler;
@@ -61,12 +53,11 @@ public class gwppcore {
 	public static ModBlockManager BlockManager;
 	public static CustomToolTipsHandler Module_CustomToolTips;
 	public static IngameErrorLog Module_AdminErrorLogs;
-	public static GT_CustomLoader GTCustomLoader;
 	public static CoreModConfig CoreConfig;
 	public static CoreModDispatcher NW;
 	public static Random Rnd;
 	public static LogHelper Logger = new LogHelper(Refstrings.MODID);
-
+    public static SendUtils SendUtils_instance = new SendUtils();
 
     public static void AddLoginError(String pMessage)
     {
@@ -123,7 +114,7 @@ public class gwppcore {
         
       //Materials init
         if (!GT_Mod.gregtechproxy.mEnableAllMaterials) {
-            new GT_CoreModSupport();
+            new GT_Materials();
         }
         
      // ------------------------------------------------------------
@@ -192,10 +183,8 @@ public class gwppcore {
     {
 		// register events in modules
         RegisterModuleEvents();
-        
-		// Register additional OreDictionary Names
-        if(CoreConfig.OreDictItems_Enabled)
-        OreDictHandler.register_all();
+
+        MainLoader.load();
     }
 
 	private void RegisterModuleEvents()
@@ -212,57 +201,42 @@ public class gwppcore {
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event){
-        registerSingleIC2StorageBlocks();
-
-    }
-
-    private void registerSingleIC2StorageBlocks()
+    public void preInit(FMLPreInitializationEvent event)
     {
-        GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
-        for (int i = 0; i < TierHelper.V.length; i++)
-        {
-            GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
-        }
+        MainLoader.preInit();
     }
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event){
-        NetworkRegistry.INSTANCE.registerGuiHandler(gwppcore.instance, new GuiHandler());
-
-    }
-
-
-
-
 
 	@Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent)
     {
-		
-		if (CoreConfig.ModCustomToolTips_Enabled) {
-            Module_CustomToolTips.LoadConfig();
-        }
-		
-		GTCustomLoader = new GT_CustomLoader();
-        GTCustomLoader.run();
+		if (CoreConfig.ModCustomToolTips_Enabled) Module_CustomToolTips.LoadConfig();
 
-
-
+        MainLoader.postLoad();
     }
 
 	@Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent)
     {
+
 		if (CoreConfig.ModCustomToolTips_Enabled) {
             pEvent.registerServerCommand(new CustomToolTipsCommand());
         }
-		
 		if (CoreConfig.ModItemInHandInfo_Enabled) {
             pEvent.registerServerCommand(new ItemInHandInfoCommand());
         }
 		
     }
 
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent postinit)
+    {
+        MainLoader.postInit();
+    }
+
+    @Mod.EventHandler
+    public void Init(FMLPostInitializationEvent init)
+    {
+        MainLoader.Init();
+    }
 
 }

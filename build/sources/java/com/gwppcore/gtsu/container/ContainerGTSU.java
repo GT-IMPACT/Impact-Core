@@ -1,6 +1,6 @@
-package com.gwppcore.gtsu.container;
+package com.gwppcore.GTSU.container;
 
-import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
+import com.gwppcore.GTSU.tileentity.TileEntityGTSU;
 import ic2.core.ContainerFullInv;
 import ic2.core.slot.SlotArmor;
 import ic2.core.slot.SlotInvSlot;

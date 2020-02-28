@@ -1,4 +1,4 @@
-package com.gwppcore.gtsu;
+package com.gwppcore.GTSU;
 
 
 public class TierHelper

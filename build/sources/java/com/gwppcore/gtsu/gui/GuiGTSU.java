@@ -1,9 +1,9 @@
-package com.gwppcore.gtsu.gui;
+package com.gwppcore.GTSU.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import com.gwppcore.gtsu.NumberPrettifier;
-import com.gwppcore.gtsu.container.ContainerGTSU;
+import com.gwppcore.GTSU.NumberPrettifier;
+import com.gwppcore.GTSU.container.ContainerGTSU;
 import ic2.core.GuiIconButton;
 import ic2.core.IC2;
 import ic2.core.util.GuiTooltipHelper;

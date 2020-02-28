@@ -1,4 +1,4 @@
-package com.gwppcore.gtsu.helper;
+package com.gwppcore.GTSU.helper;
 
 
 import cpw.mods.fml.common.FMLLog;

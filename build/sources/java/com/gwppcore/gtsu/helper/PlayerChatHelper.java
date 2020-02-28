@@ -1,4 +1,4 @@
-package com.gwppcore.gtsu.helper;
+package com.gwppcore.GTSU.helper;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;

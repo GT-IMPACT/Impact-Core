@@ -11,12 +11,12 @@ public enum ItemList {
 
     Coin(new ModSimpleBaseItem("Coin",ModTabList.GWppTab)),
 
+
 	// Do not delete this
     EndOfList(null);
-
-
-
     // ################################################################################
+
+
     public ModSimpleBaseItem Item;
 
     ItemList(ModSimpleBaseItem pItem)
@@ -52,5 +52,11 @@ public enum ItemList {
     {
         return new ItemStack(Item.getConstructedItem(), amount);
     }
+
+
+
+
+
+
 }
 

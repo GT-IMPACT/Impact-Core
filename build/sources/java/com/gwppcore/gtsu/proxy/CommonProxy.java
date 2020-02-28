@@ -1,4 +1,4 @@
-package com.gwppcore.gtsu.proxy;
+package com.gwppcore.GTSU.proxy;
 
 public class CommonProxy {
 	

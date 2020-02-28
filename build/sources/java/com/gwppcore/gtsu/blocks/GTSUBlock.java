@@ -1,10 +1,10 @@
-package com.gwppcore.gtsu.blocks;
+package com.gwppcore.GTSU.blocks;
 
 import com.gwppcore.gwppcore;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import com.gwppcore.gtsu.TierHelper;
-import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
+import com.gwppcore.GTSU.TierHelper;
+import com.gwppcore.GTSU.tileentity.TileEntityGTSU;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;

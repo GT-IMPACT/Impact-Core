@@ -1,6 +1,6 @@
-package com.gwppcore.gtsu.tileentity;
+package com.gwppcore.GTSU.tileentity;
 
-import com.gwppcore.gtsu.TierHelper;
+import com.gwppcore.GTSU.TierHelper;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
@@ -22,7 +22,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.gwppcore.gtsu.TierHelper.V;
+import static com.gwppcore.GTSU.TierHelper.V;
 
 public class TileEntityGTSU extends TileEntityInventory implements INetworkClientTileEntityEventListener, IEnergySink, IEnergySource {
 	public static final String NBTVAL_REDSTONE_MODE = "redstoneMode";

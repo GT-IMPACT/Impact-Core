@@ -1,4 +1,4 @@
-package com.gwppcore.gtsu.helper;
+package com.gwppcore.GTSU.helper;
 
 public class Enums {
 	public enum EN_EnergyType

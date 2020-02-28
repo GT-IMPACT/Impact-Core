@@ -1,8 +1,8 @@
-package com.gwppcore.gtsu.blocks.itemblocks;
+package com.gwppcore.GTSU.blocks.itemblocks;
 
-import com.gwppcore.gtsu.NumberPrettifier;
-import com.gwppcore.gtsu.TierHelper;
-import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
+import com.gwppcore.GTSU.NumberPrettifier;
+import com.gwppcore.GTSU.TierHelper;
+import com.gwppcore.GTSU.tileentity.TileEntityGTSU;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -11,7 +11,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-import static com.gwppcore.gtsu.TierHelper.V;
+import static com.gwppcore.GTSU.TierHelper.V;
 
 public class ItemBlockGTSU extends ItemBlock {
 
