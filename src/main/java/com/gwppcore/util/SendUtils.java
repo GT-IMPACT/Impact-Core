@@ -102,4 +102,18 @@ public class SendUtils extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> 
             aPacket.process(aPlayer == null ? null : GT_Values.GT.getThePlayer().worldObj);
         }
     }
+    public static <V> String getDataStringFromArray(V[] parameterTypes) {
+        if (parameterTypes == null || parameterTypes.length == 0) {
+            return "empty/null";
+        }
+        else {
+            String aData = "";
+            for (V y : parameterTypes) {
+                if (y != null) {
+                    aData += ", "+y.toString();
+                }
+            }
+            return aData;
+        }
+    }
 }
