@@ -1,12 +1,11 @@
 package com.gwppcore.item;
 
 import com.gwppcore.block.Core_GlassBlocks;
-import com.gwppcore.gthandler.casings.glass1.glassed.GlassBlocksItem;
+import com.gwppcore.GregTech.casings.glass1.glassed.GlassBlocksItem;
 import com.gwppcore.item.Circuit_Programmer.CircuitProgrammer;
 import com.gwppcore.item.GT_Pump.GregtechPump;
 import com.gwppcore.lib.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 
 
 public class ItemRegistery {

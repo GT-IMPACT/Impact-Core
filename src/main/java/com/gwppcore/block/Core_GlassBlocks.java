@@ -1,9 +1,7 @@
 package com.gwppcore.block;
 
-import com.gwppcore.gthandler.casings.glass1.glassed.GlassBlocksItem;
 import com.gwppcore.lib.Refstrings;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -15,8 +13,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import static com.gwppcore.item.ItemRegistery.*;
 
 public class Core_GlassBlocks extends Core_Blocks {
 

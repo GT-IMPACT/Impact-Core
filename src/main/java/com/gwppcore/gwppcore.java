@@ -5,7 +5,7 @@ import com.gwppcore.command.*;
 import com.gwppcore.config.CoreModConfig;
 import com.gwppcore.creativetab.ModTabList;
 import com.gwppcore.fluids.FluidList;
-import com.gwppcore.gthandler.GT_Materials;
+import com.gwppcore.GregTech.GTregister.GT_Materials;
 import com.gwppcore.item.ItemList;
 import com.gwppcore.lib.Refstrings;
 import com.gwppcore.loader.MainLoader;

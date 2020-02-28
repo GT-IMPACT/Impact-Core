@@ -13,8 +13,8 @@ public class LoginHandler
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
     {
         event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
-        event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BOLD + "Welcome to GregWorld:PlusPlus " + EnumChatFormatting.BOLD + EnumChatFormatting.GREEN + CoreModConfig.ModPackVersion) );
-        event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "Please bring comments to" + "https://discord.gg/bMf2qvd" ));
+        event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BOLD + "Welcome to IMPACT " + EnumChatFormatting.BOLD + EnumChatFormatting.GREEN + CoreModConfig.ModPackVersion) );
+        event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "Please bring comments to " + EnumChatFormatting.AQUA + "https://discord.gg/bMf2qvd" ));
         event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
     }
 }

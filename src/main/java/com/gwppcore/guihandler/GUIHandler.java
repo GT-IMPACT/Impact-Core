@@ -1,13 +1,12 @@
 package com.gwppcore.guihandler;
 
-import com.gwppcore.gtsu.container.ContainerGTSU;
-import com.gwppcore.gtsu.gui.GuiGTSU;
-import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
+import com.gwppcore.GTSU.container.ContainerGTSU;
+import com.gwppcore.GTSU.gui.GuiGTSU;
+import com.gwppcore.GTSU.tileentity.TileEntityGTSU;
 import com.gwppcore.item.Circuit_Programmer.GT_Container_CircuitProgrammer;
 import com.gwppcore.item.Circuit_Programmer.GT_GUIContainer_CircuitProgrammer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

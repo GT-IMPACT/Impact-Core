@@ -1,10 +1,9 @@
 package com.gwppcore.loader;
 
-import com.gwppcore.gthandler.GT_CustomLoader;
-import com.gwppcore.gtsu.TierHelper;
-import com.gwppcore.gtsu.blocks.GTSUBlock;
-import com.gwppcore.gtsu.blocks.itemblocks.ItemBlockGTSU;
-import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
+import com.gwppcore.GTSU.TierHelper;
+import com.gwppcore.GTSU.blocks.GTSUBlock;
+import com.gwppcore.GTSU.blocks.itemblocks.ItemBlockGTSU;
+import com.gwppcore.GTSU.tileentity.TileEntityGTSU;
 import com.gwppcore.guihandler.GUIHandler;
 import com.gwppcore.gwppcore;
 import com.gwppcore.item.ItemRegistery;
@@ -58,7 +57,7 @@ public class MainLoader {
         registerSingleIC2StorageBlocks();
 
         progressBarPostLoad.step("GT Loading");
-        new GT_CustomLoader().run();
+        new GT_ModLoader().run();
 
         ProgressManager.pop(progressBarPostLoad);
     }

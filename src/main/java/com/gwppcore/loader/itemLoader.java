@@ -1,6 +1,6 @@
 package com.gwppcore.loader;
 
-import com.gwppcore.gthandler.casings.glass1.glassed.GlassBlocks;
+import com.gwppcore.GregTech.casings.glass1.glassed.GlassBlocks;
 import com.gwppcore.block.Core_GlassBlocks;
 
 public class itemLoader implements Runnable {

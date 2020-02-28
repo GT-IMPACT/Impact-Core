@@ -1,14 +1,11 @@
 package com.gwppcore.main;
 
-import com.gwppcore.gthandler.casings.glass1.glassed.GlassBlocks;
-import com.gwppcore.gthandler.casings.glass1.glassed.GlassBlocksRender;
+import com.gwppcore.GregTech.casings.glass1.glassed.GlassBlocks;
+import com.gwppcore.GregTech.casings.glass1.glassed.GlassBlocksRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Loader;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
 import static com.gwppcore.main.ConfigHandler.CONFIG_HANDLER;
