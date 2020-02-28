@@ -1,9 +1,11 @@
 package com.gwppcore.gthandler;
 
-import com.gwppcore.gthandler.tileentities.basic.GT_MetaTileEntity_PortableTank;
+
+import com.gwppcore.gthandler.tileentities.storage.*;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_PortableTank;
 
 public class GT_Loader_MachinesBasic {
 	public void run()
@@ -28,7 +30,9 @@ public class GT_Loader_MachinesBasic {
 			CustomItemList.Portable_Tank_LuV.set(new GT_MetaTileEntity_PortableTank(ID++, "fluidtank.tier.06", "LuV Portable Tank", 6).getStackForm(1L));
 			CustomItemList.Portable_Tank_ZPM.set(new GT_MetaTileEntity_PortableTank(ID++, "fluidtank.tier.07", "ZPM Portable Tank", 7).getStackForm(1L));
 			CustomItemList.Portable_Tank_UV.set(new GT_MetaTileEntity_PortableTank(ID++,  "fluidtank.tier.08", "UV Portable Tank", 8).getStackForm(1L));
+			CustomItemList.Dynamo_4A_IV.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo4A.tier.05", "IV Dynamo Hatch 4A", 5, 4).getStackForm(1L));
 			CustomItemList.Dynamo_4A_LuV.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo4A.tier.06", "LuV Dynamo Hatch 4A", 6, 4).getStackForm(1L));
+			CustomItemList.Dynamo_4A_ZPM.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo4A.tier.07", "ZPM Dynamo Hatch 4A", 7, 4).getStackForm(1L));
 			CustomItemList.Energy_Capacity_EV.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energycapacity.tier.06", "EV Energy Hatch Battery", 4, 512000L).getStackForm(1L));
 			CustomItemList.Dynamo_Capacity_EV.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.04", "EV Dynamo Hatch Battery", 4, 512000L).getStackForm(1L));
 

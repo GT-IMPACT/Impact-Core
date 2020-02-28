@@ -23,13 +23,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.gwppcore.gthandler.tileentities.multi;
+package com.gwppcore.gthandler.tileentities.multi.debug;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -205,76 +203,89 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         }
     }
     /** === CHECK RECIPE === */
+
+
+
+
     public boolean checkRecipe(ItemStack itemStack) {
-        ArrayList<ItemStack> tInputList = this.getStoredInputs();
-        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-        ItemStack[] tInputs = (ItemStack[])((ItemStack[])tInputList.toArray(new ItemStack[tInputList.size()]));
-        FluidStack[] tFluids = (FluidStack[])((FluidStack[])tFluidList.toArray(new FluidStack[tFluidList.size()]));
-        if (tInputList.size() > 0 || tFluidList.size() > 0) {
-            long tVoltage = this.getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe;
-            tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
-            if (tRecipe != null) {
+        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+            tBus.mRecipeMap = getRecipeMap();
+            if (isValidMetaTileEntity(tBus)) {
+                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                }
+            }
+            ArrayList<ItemStack> tInputList = this.getStoredInputs();
+            ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+            ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
+            FluidStack[] tFluids = (FluidStack[]) ((FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]));
+            if (tInputList.size() > 0 || tFluidList.size() > 0) {
+                long tVoltage = this.getMaxInputVoltage();
+                byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+                GT_Recipe tRecipe;
+                tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs );
+
+
+                if (tRecipe != null) {
                 /* TODO FOR "IF" WORLD
                 if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100 &&
                         !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
                     return false;*/
-                ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
-                ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
-                boolean found_Recipe = false;
-                int processed = 0;
-                long nominalV = getnominalVoltage(this);
-                //int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
-                //long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
-                while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
-                    if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-                        found_Recipe = true;
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            outputItems.add(tRecipe.getOutput(i));
-                        }
-                        for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-                            outputFluids.add(tRecipe.getFluidOutput(i));
-                        }
-                        ++processed;
-                    } else
-                        break;
-                }
-                if (found_Recipe) {
-                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    long actualEUT = (long) (tRecipe.mEUt) * processed;
-                    if (actualEUT > Integer.MAX_VALUE) {
-                        byte divider = 0;
-                        while (actualEUT > Integer.MAX_VALUE) {
-                            actualEUT = actualEUT/2;
-                            divider++;
-                        }
-                        GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
-                    } else
-                        GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
-                    //In case recipe is too OP for that machine
-                    if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
-                        return false;
-                    if (this.mEUt > 0) {
-                        this.mEUt = (-this.mEUt);
+                    ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+                    ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+                    boolean found_Recipe = false;
+                    int processed = 0;
+                    long nominalV = getnominalVoltage(this);
+                    //int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+                    //long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
+                    while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
+                        if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                            found_Recipe = true;
+                            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                                outputItems.add(tRecipe.getOutput(i));
+                            }
+                            for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                                outputFluids.add(tRecipe.getFluidOutput(i));
+                            }
+                            ++processed;
+                        } else
+                            break;
                     }
-                    this.mMaxProgresstime = tRecipe.mDuration/Parallel(); //THIS PARALLEL
-                    this.mOutputItems = new ItemStack[outputItems.size()];
-                    this.mOutputItems = outputItems.toArray(this.mOutputItems);
-                    this.mOutputFluids = new FluidStack[outputFluids.size()];
-                    this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
-                    this.updateSlots();
-                    return true;
+                    if (found_Recipe) {
+                        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                        this.mEfficiencyIncrease = 10000;
+                        long actualEUT = (long) (tRecipe.mEUt) * processed;
+                        if (actualEUT > Integer.MAX_VALUE) {
+                            byte divider = 0;
+                            while (actualEUT > Integer.MAX_VALUE) {
+                                actualEUT = actualEUT / 2;
+                                divider++;
+                            }
+                            GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
+                        } else
+                            GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                        //In case recipe is too OP for that machine
+                        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+                            return false;
+                        if (this.mEUt > 0) {
+                            this.mEUt = (-this.mEUt);
+                        }
+                        this.mMaxProgresstime = tRecipe.mDuration / Parallel(); //THIS PARALLEL
+                        this.mOutputItems = new ItemStack[outputItems.size()];
+                        this.mOutputItems = outputItems.toArray(this.mOutputItems);
+                        this.mOutputFluids = new FluidStack[outputFluids.size()];
+                        this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
+                        this.updateSlots();
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
 
-    public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        return false;
-    }
     /** === INFO DATA === */
     @Override
     public String[] getInfoData() {

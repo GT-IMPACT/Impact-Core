@@ -11,20 +11,15 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_MultiParallelBlock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBase {
-
-    private byte mFormingMode = -1;
+public class GT_TileEntity_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
@@ -32,6 +27,10 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore1;
     byte CASING_META = 4;
+    Block GLASS = CORE_API.sGlassCore1;
+    byte GLASS_META = 0;
+
+    private final String glass = "GlassBlock6";
 
     /** === SET TEXTURE === */
     @Override
@@ -46,18 +45,18 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     /** === NAMED === */
-    public GT_TileEntity_Bender(int aID, String aName, String aNameRegional) {
+    public GT_TileEntity_Centrifuge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
     /** === NAMED === */
-    public GT_TileEntity_Bender(String aName) {
+    public GT_TileEntity_Centrifuge(String aName) {
         super(aName);
     }
 
     /** === META ENTITY === */
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_TileEntity_Bender(this.mName);
+        return new GT_TileEntity_Centrifuge(this.mName);
     }
 
     /** === DESCRIPTION === */
@@ -75,9 +74,11 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                 .addParallelCase("Middle center")
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
-                .addInputBus("Any casing (only x1)")
-                .addOutputBus("Any casing (only x1)")
-                .addCasingInfo("Bending Casing", 20)
+                .addInputBus("Any casing (max x5)")
+                .addInputHatch("Any casing (max x5)")
+                .addOutputHatch("Any casing (max x5)")
+                .addOutputBus("Any casing (max x1)")
+                .addCasingInfo("Named Casing", 0)
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -95,7 +96,7 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return mFormingMode == 0 ?  GT_Recipe.GT_Recipe_Map.sPressRecipes : mFormingMode == 1 ? GT_Recipe.GT_Recipe_Map.sBenderRecipes : GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
+        return GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes;
     }
 
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
@@ -135,64 +136,48 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
 
     private int mLevel = 0;
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-        // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
-
-        int minCasingAmount = 12; // Минимальное количество кейсов
-        boolean formationChecklist = true; // Если все ок, машина собралась
-
-        // Фронт сайз
-
-        // [к][к][к]  [к][][][][]
-        // [к][Г][к]  [Г][][][][]
-        // [к][к][к]  [к][][][][]
-
-        for(int X = -1; X <= 1; X++) {
-            for(int Y = -1; Y <= 1; Y++) {
-                if(X == 0 && Y == 0) {
-                    continue; // Здесь контролер
-                }
-
-                // Следущее ТЕ
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
-                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-
-                // Хэтчи
-                if (       !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-                    // Кейсы вместо хэтчей
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                        minCasingAmount--;
-                    } else {
-                        formationChecklist = false;
-                    }
-                }
-            }
-        }
-
-        //Мидл сайз
-        // [к][к][к]      [][к][к][к][]
-        // [к][к][к]      [][к][к][к][]
-        // [к][к][к]      [][к][к][к][]
-        for(int X = -1; X <= 1; X++) {
-            for(int Y = -1; Y <= 1; Y++) {
-                for(int Z = -1; Z >= -3; Z--) {
-
+        int minCasingAmount = 12;
+        boolean formationChecklist = true;
+        for(int X = -2; X <= 2; X++) {
+            for (int Y = 0; Y <= 3; Y++) {
+                for (int Z = -4; Z <= 0; Z++) {
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-
-                    if(X == 0 && Y == 0) {
-                        // [к][к][к]      [][ [к] ][ [к] ][ [к] ][]
-                        // [к][п][к]      [][ [п] ][ [п] ][ [п] ][]
-                        // [к][к][к]      [][ [к] ][ [к] ][ [к] ][]
-                               if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                    int flowY = Y == 1 ? 1 : 2;
+                    if (X == 0 && Z == 0 && Y == flowY) {
+                        IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
+                        if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                                minCasingAmount--;
+                            } else {
+                                formationChecklist = false;
+                            }
+                        }
+                        continue;
+                    }
+                    if (X == 0 && Z == 0) {
+                        continue; // Здесь контролер
+                    }
+                    if (X == (X == -2 ? -2 : 2) && Z == (Z == -4 ? -4 : 0) && Y == flowY) {
+                        continue;
+                    }
+                    if (X == (X==-2? -2 : X==-1 ? -1 : X==1? 1 : 2)  && Z == (Z==-4? -4: Z==-3? -3 : Z==-1? -1 : 0)  && Y == flowY) {
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glass)) {
+                        } else {
+                            formationChecklist = false;
+                        }
+                        continue;
+                    }
+                    if (X == 0 && Z == -2 && Y == flowY) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                             this.mLevel = 4;
                         } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -209,18 +194,15 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
                         }
                         continue;
                     }
-
-                    // Следущее ТЕ
+                    if (X == (X == -1? -1 : X == 0? 0 : 1) && Z == (Z == -1 ? -1 : Z == -2 ? -2 : -3 ) && Y == flowY) {
+                        continue;
+                    }
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-
-                    // Хэтчи
-                    if (       !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-                        // Кейсы вместо хэтчей
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                             minCasingAmount--;
@@ -232,49 +214,20 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
             }
         }
 
-        //Бэк Сайз
-
-        // [к][к][к]    [][][][][к]
-        // [к][к][к]    [][][][][к]
-        // [к][к][к]    [][][][][к]
-
-        for(int X = -1; X <= 1; X++) {
-            for(int Y = -1; Y <= 1; Y++) {
-
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -4);
-                // Следущее ТЕ
-                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-
-                //Хэтчи
-                if (       !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                    // Кейсы
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                        minCasingAmount--;
-                    } else {
-                        formationChecklist = false;
-                    }
-                }
-            }
-        }
 
         if(minCasingAmount > 0) {
             formationChecklist = false;
         }
-        if(this.mInputBusses.size() > 15) {
+        if(this.mInputBusses.size() > 5) {
             formationChecklist = false;
         }
-        if(this.mInputHatches.size() !=0) {
+        if(this.mInputHatches.size() > 5) {
             formationChecklist = false;
         }
         if(this.mOutputBusses.size() !=1) {
             formationChecklist = false;
         }
-        if(this.mOutputHatches.size() !=0) {
+        if(this.mOutputHatches.size() > 5) {
             formationChecklist = false;
         }
         if(this.mMufflerHatches.size() != 1) {
@@ -313,28 +266,4 @@ public class GT_TileEntity_Bender extends GT_MetaTileEntity_MultiParallelBlockBa
         } else
             return 0;
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
-
-
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-             if (mFormingMode == -1) { mFormingMode += 1; }
-        else if (mFormingMode ==  0) { mFormingMode += 1; }
-        else if (mFormingMode ==  1) { mFormingMode += 1; }
-                                else { mFormingMode =  0; }
-
-        String mMode = (mFormingMode == 0 ? " Forming Press " : mFormingMode == 1 ? " Bending " : mFormingMode == 2 ? " Extruder " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now running in" + mMode + "Mode.");
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mInternalMode", mFormingMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        this.mFormingMode = aNBT.getByte("mInternalMode");
-        super.loadNBTData(aNBT);
-    }
-
 }

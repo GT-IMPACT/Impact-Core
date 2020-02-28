@@ -1,23 +1,13 @@
 package com.gwppcore.gthandler;
 
 
-import com.gwppcore.gthandler.GT_CoreModSupport;
-import cpw.mods.fml.common.Loader;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MachineRecipeLoader implements Runnable{
@@ -186,7 +176,8 @@ public class GT_MachineRecipeLoader implements Runnable{
 //        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.BarnardaEStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packBarnardaE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
 //        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.BarnardaFStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packBarnardaF.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
 //        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("spartakcore", "item.TCetiEStoneDust", 64L, 0), Materials.Radoxpoly.getMolten(144L), CustomItemList.packTCetiE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
-        
-	}
 
+        GT_Values.RA.addNuclearReactorRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 2), null, null, 512*20);
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.gwppcore.gthandler.tileentities.multi;
 
-import com.gwppcore.gthandler.casings.GT_Container_CasingsParall;
+import com.gwppcore.gthandler.casings.CORE_API;
+import com.gwppcore.gthandler.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -22,11 +23,11 @@ public class GT_TileEntity_CircuitAssembler extends GT_MetaTileEntity_MultiParal
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][9];
     int INDEX_CASE1 = 393;
     /** === SET BLOCKS STRUCTURE === */
-    Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE = CORE_API.sCaseCore1;
     byte INDEX_CASE_PAGE = 9;
 
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
-    Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE_PARALLEL = CORE_API.sCaseCore1;
 
     /** === RECIPE MAP === */
     @Override

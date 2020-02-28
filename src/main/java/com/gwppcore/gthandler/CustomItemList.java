@@ -34,17 +34,24 @@ public enum CustomItemList implements IItemContainer {
 
 	//HATCHES
 	Dynamo_Capacity_EV,
-	Dynamo_4A_LuV,
+	Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM,
 
 	Energy_Capacity_EV,
 
+	Nuclear_Resistant_OH,
+
 	//MULTI
 	Machine_Extruder, Machine_Bender, Machine_LaserEngraver, Machine_Presser, Machine_Assembler, Machine_CircuitAssembler,
-	Machine_WireAssembler, Machine_WireMill, ArcFurnace, PlasmaArcFurnace, Electrolyzer, PowerStation,
+	Machine_WireAssembler, Machine_WireMill, ArcFurnace, PlasmaArcFurnace, Electrolyzer, PowerStation, PowerReactor, PowerTurbine,
+	Machine_Mixer, Machine_Centrifuge,
+
+	Naquadah_multi,
 
 	//Cases
 	Upgradet1, Upgradet2, Upgradet3, Upgradet4, BenderCase, LaserCase, PresserCase, ExtruderCase, AssemblerCase, CircuitAssemblerCase,
-	WireAssemblerCase, WiremillCase, ArcPlasmaCase, ElectrolyzerCase
+	WireAssemblerCase, WiremillCase, ArcPlasmaCase, ElectrolyzerCase, NukeTurbineCase,
+
+	GLASS_CASSING_1, GLASS_CASSING_2
 
 	;
 	private ItemStack mStack;

@@ -1,4 +1,4 @@
-package com.gwppcore.gthandler.tileentities.multi;
+package com.gwppcore.gthandler.tileentities.multi.debug;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;

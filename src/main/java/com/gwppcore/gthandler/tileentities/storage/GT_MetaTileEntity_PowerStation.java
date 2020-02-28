@@ -1,6 +1,6 @@
 package com.gwppcore.gthandler.tileentities.storage;
 
-import com.gwppcore.gthandler.casings.GT_Container_CasingsParall;
+import com.gwppcore.gthandler.casings.CORE_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -23,7 +23,7 @@ import static gregtech.api.enums.GT_Values.VN;
 public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlockBase {
 
     /** === SET BLOCKS STRUCTURE === */
-    Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE = CORE_API.sCaseCore1;
     int INDEX_CASE_PAGE = 6;
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
@@ -31,7 +31,7 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
     int INDEX_CASE1 = INDEX_CASE_PAGE+(3*128);
 
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
-    Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE_PARALLEL = CORE_API.sCaseCore1;
 
     public GT_MetaTileEntity_PowerStation(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -72,6 +72,11 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
     long nowStored = 0;
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+//        if (this.mLevel == 5000000000000000000L) {
+//            nowStored = 5000000000000000000L;  // debug mod
+//        } else {
+//            nowStored = 0;
+//        }
         int maxAmpers = 256;
         for(GT_MetaTileEntity_Hatch_Energy aHatch: mEnergyHatches){
             if(maxAmpers <= 0)
@@ -151,44 +156,43 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
 
     private long mLevel = 0;
     public boolean checkMachineFunction(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
         this.mLevel = 0;
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 3, zDir);
         switch (tUsedMeta) {
             case 0:
-                this.mLevel = 512000000/6;
+                this.mLevel = 50000000000L;
                 break;
             case 1:
-                this.mLevel = 512000000/4;
+                this.mLevel = 50000000000000L;
                 break;
             case 2:
-                this.mLevel = 512000000/2;
+                this.mLevel = 50000000000000000L;
                 break;
             case 3:
-                this.mLevel = 512000000;
+                this.mLevel = 5000000000000000000L;
                 break;
             default:
                 return false;
         }
-        for (int i = -2; i < 3; i++) {
-            for (int j = -2; j < 3; j++) {
-                for (int h = 0; h < 5; h++) {
+        for (int i = -3; i < 4; i++) {
+            for (int j = -3; j < 4; j++) {
+                for (int h = 0; h < 7; h++) {
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                    if ((i != -2 && i != 2) && (j != -2 && j != 2)) {
+                    if ((i != -3 && i != 3) && (j != -3 && j != 3)) {
                         if(h == 0){
                             if ((!addMaintenanceToMachineList(tTileEntity, INDEX_CASE1)) && (!addDynamoToMachineList(tTileEntity, INDEX_CASE1)) && (!addEnergyInputToMachineList(tTileEntity, INDEX_CASE1))) {
-                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE) {
+                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE_PARALLEL) {
                                     return false;
                                 }
                                 if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != INDEX_CASE_PAGE) {
                                     return false;
                                 }
                             }
-                        } else if (h == 4) {
+                        } else if (h == 6) {
                             if ((!addDynamoToMachineList(tTileEntity, INDEX_CASE1)) && (!addEnergyInputToMachineList(tTileEntity, INDEX_CASE1))) {
-                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE) {
+                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE_PARALLEL) {
                                     return false;
                                 }
                                 if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != INDEX_CASE_PAGE) {
@@ -207,7 +211,7 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
                         if (h == 0) {
                             if ((!addMaintenanceToMachineList(tTileEntity, INDEX_CASE1)) && (!addDynamoToMachineList(tTileEntity, INDEX_CASE1)) && (!addEnergyInputToMachineList(tTileEntity, INDEX_CASE1))) {
                                 if ((xDir + i != 0) || (zDir + j != 0)) {
-                                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE) {
+                                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE_PARALLEL) {
                                         return false;
                                     }
                                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != INDEX_CASE_PAGE) {
@@ -217,7 +221,7 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
                             }
                         } else {
                             if ((!addDynamoToMachineList(tTileEntity, INDEX_CASE1)) && (!addEnergyInputToMachineList(tTileEntity, INDEX_CASE1))) {
-                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE) {
+                                if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != INDEX_PAGE_PARALLEL) {
                                     return false;
                                 }
                                 if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != INDEX_CASE_PAGE) {
@@ -232,11 +236,14 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
         return true;
     }
 
+
+
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack){
         boolean result= this.checkMachineFunction(aBaseMetaTileEntity,aStack);
         if (!result) this.mLevel=0;
         return result;
     }
+
 
     public long Capacity() {
         return this.mLevel;
@@ -264,10 +271,11 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
         long input = 0, output  = 0;
         long inputV = 0, outputV  = 0;
         int iAmp = 0, oAmp = 0;
+
         for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (isValidMetaTileEntity(tHatch)) {
                 input+=tHatch.getBaseMetaTileEntity().getAverageElectricInput();
-                inputV+=tHatch.getBaseMetaTileEntity().getInputVoltage();
+                inputV=tHatch.getBaseMetaTileEntity().getInputVoltage();
                 iAmp+=tHatch.getBaseMetaTileEntity().getInputAmperage();
 
             }
@@ -275,7 +283,7 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
         for(GT_MetaTileEntity_Hatch_Dynamo tDynamo : mDynamoHatches) {
             if (isValidMetaTileEntity(tDynamo)) {
                 output+=tDynamo.getBaseMetaTileEntity().getAverageElectricOutput();
-                outputV+=tDynamo.getBaseMetaTileEntity().getOutputVoltage();
+                outputV=tDynamo.getBaseMetaTileEntity().getOutputVoltage();
                 oAmp+=tDynamo.getBaseMetaTileEntity().getOutputAmperage();
 
             }
@@ -284,13 +292,14 @@ public class GT_MetaTileEntity_PowerStation extends GT_MetaTileEntity_MultiBlock
         EnumChatFormatting RESET = EnumChatFormatting.RESET;
         EnumChatFormatting YELLOW = EnumChatFormatting.YELLOW;
         EnumChatFormatting RED = EnumChatFormatting.RED;
+
         return new String[]{
                 "Storage:",
                 GREEN + Long.toString(nowStored),
                 "Max Storage:",
                 YELLOW + Long.toString(Capacity()) + RESET +" EU",
-                "I: " + GREEN + Long.toString(input) + RESET + " EU/t " + YELLOW + VN[GT_Utility.getTier(inputV)] + RESET + " | " + YELLOW + iAmp + RESET + " A",
-                "O: " + RED + Long.toString(output) + RESET + " EU/t " + YELLOW + VN[GT_Utility.getTier(outputV)] + RESET + " | " + YELLOW + oAmp + RESET+ " A",
+                "I: " + GREEN + Long.toString(Math.abs(input)) + RESET + " EU/t " + YELLOW + VN[GT_Utility.getTier(inputV)] + RESET + " | " + YELLOW + iAmp + RESET + " A",
+                "O: " + RED + Long.toString(Math.abs(output)) + RESET + " EU/t " + YELLOW + VN[GT_Utility.getTier(outputV)] + RESET + " | " + YELLOW + oAmp + RESET+ " A",
                 "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
                         ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F  + " %" + RESET
                         : RED + "Problems " + mEfficiency / 100.0F  + " %" + RESET)

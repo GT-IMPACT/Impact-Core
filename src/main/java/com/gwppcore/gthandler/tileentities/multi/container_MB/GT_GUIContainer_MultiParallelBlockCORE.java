@@ -1,4 +1,4 @@
-package com.gwppcore.gthandler.tileentities.multi;
+package com.gwppcore.gthandler.tileentities.multi.container_MB;
 
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
@@ -17,19 +17,18 @@ import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
 
-public class GT_GUIContainer_MultiParallelBlockTEST extends GT_GUIContainerMetaTile_Machine {
+public class GT_GUIContainer_MultiParallelBlockCORE extends GT_GUIContainerMetaTile_Machine {
     public String mNEI;
     String mName = "";
     private boolean  mWorkUpdate = false, mWorks = true;
     public int mEUt = 0;
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList();
 
-    public GT_GUIContainer_MultiParallelBlockTEST(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI) {
-        super(new GT_Container_MultiMachine(aInventoryPlayer, aTileEntity, true), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile ));
+    public GT_GUIContainer_MultiParallelBlockCORE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI) {
+        super(new GT_Container_MB(aInventoryPlayer, aTileEntity, true), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile ));
         mName = aName;
         mNEI = aNEI;
     }
-
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRendererObj.drawString(mName, 10, 8, 16448255);
@@ -38,9 +37,9 @@ public class GT_GUIContainer_MultiParallelBlockTEST extends GT_GUIContainerMetaT
         if (this.mContainer != null) {
             if (mContainer != null) {
                 if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 64) != 0) {
-                    fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 10+10+5, 30, 0);
-                    fontRendererObj.drawString(EnumChatFormatting.RED + "Incomplete Structure", 10+10+5, 40, 0);
-                    fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 10+10+5, 50, 0);
+                    fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 30, 0);
+                    fontRendererObj.drawString(EnumChatFormatting.RED + "Incomplete Structure", 25, 40, 0);
+                    fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 50, 0);
                 } else {
                     if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 1) != 0) {
                         this.fontRendererObj.drawString(this.trans("132", EnumChatFormatting.WHITE +"Need" + EnumChatFormatting.RED +" Wrench"), 10, 20, 0);
@@ -65,7 +64,6 @@ public class GT_GUIContainer_MultiParallelBlockTEST extends GT_GUIContainerMetaT
                     if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 32) != 0) {
                         this.fontRendererObj.drawString(this.trans("137", EnumChatFormatting.WHITE +"Need"+ EnumChatFormatting.RED +" Crowbar"), 10, 65, 0);
                     }
-
                 }
             }
 
@@ -75,13 +73,14 @@ public class GT_GUIContainer_MultiParallelBlockTEST extends GT_GUIContainerMetaT
                 } else {
                     double tScale = ( (double) this.mContainer.mProgressTime / (double) this.mContainer.mMaxProgressTime)*100;
                     if ((int)tScale > 0 && (int)tScale < 100) {
-                        fontRendererObj.drawString("Progress: " +EnumChatFormatting.GREEN + this.mContainer.mProgressTime +EnumChatFormatting.WHITE + " / " +EnumChatFormatting.YELLOW + this.mContainer.mMaxProgressTime +EnumChatFormatting.WHITE + " sec", 10, 22, 16448255);
+                        fontRendererObj.drawString("Progress: " +EnumChatFormatting.GREEN + this.mContainer.mProgressTime/20 +EnumChatFormatting.WHITE + " / " +EnumChatFormatting.YELLOW + this.mContainer.mMaxProgressTime/20 +EnumChatFormatting.WHITE + " sec", 10, 22, 16448255);
                         fontRendererObj.drawString(GT_Utility.formatNumbers((int) tScale) + "%", 71, 56, 16448255);
                     }
                 }
             }
         }
     }
+
 
 
 

@@ -1,12 +1,12 @@
 package com.gwppcore.gthandler;
 
 
-import com.gwppcore.gthandler.casings.GT_Loader_CasingsParall;
+import com.gwppcore.gthandler.casings.GT_Loader_Casings;
 
 public class GT_CustomLoader {
 
 	private static final GT_Loader_Items ItemLoader = new GT_Loader_Items();
-	private static final GT_Loader_CasingsParall CasingsLoader = new GT_Loader_CasingsParall();
+	private static final GT_Loader_Casings CasingsLoader = new GT_Loader_Casings();
 	private static final GT_Loader_MachinesMulti MachineMultiLoader = new GT_Loader_MachinesMulti();
 	private static final GT_Loader_MachinesBasic MachineBasicLoader = new GT_Loader_MachinesBasic();
 	private static final GT_MachineRecipeLoader MachineRecipeLoader = new GT_MachineRecipeLoader();

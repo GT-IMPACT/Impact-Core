@@ -1,6 +1,7 @@
 package com.gwppcore.gthandler.tileentities.multi;
 
-import com.gwppcore.gthandler.casings.GT_Container_CasingsParall;
+import com.gwppcore.gthandler.casings.CORE_API;
+import com.gwppcore.gthandler.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -19,7 +20,7 @@ import org.lwjgl.input.Keyboard;
 public class GT_TileEntity_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     /** === SET BLOCKS STRUCTURE === */
-    Block INDEX_PAGE = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE = CORE_API.sCaseCore1;
     int INDEX_CASE_PAGE = 12;
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
@@ -27,7 +28,7 @@ public class GT_TileEntity_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlo
     int INDEX_CASE1 = INDEX_CASE_PAGE+(3*128);
 
     /** === SET BLOCKS STRUCTURE PARALLEL UPGRADE === */
-    Block INDEX_PAGE_PARALLEL = GT_Container_CasingsParall.sBlockCasingsParall;
+    Block INDEX_PAGE_PARALLEL = CORE_API.sCaseCore1;
 
     /** === RECIPE MAP === */
     @Override
