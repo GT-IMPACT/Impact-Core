@@ -1,9 +1,10 @@
-package com.gwppcore.gthandler.casings;
+package com.gwppcore.gthandler.casings.case1;
 
 import com.gwppcore.gthandler.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
@@ -16,16 +17,17 @@ import net.minecraft.world.IBlockAccess;
 
 
 
-public class GT_Block_CasingsParall
+public class GT_Block_Case1
         extends GT_Block_Casings_Abstract {
     //public static boolean mConnectedMachineTextures = true;
+    public static final String RES_BLOCK = "gregtech:iconsets/";
 
-    private static IIcon Up1, Up2, Up3, Up4, BendC, LaserC, PressC, ExtrudC, AssembC, CircAssembC, WireAssembC, WiremillC, ArcC, ElectrC;
 
-    public GT_Block_CasingsParall() {
-        super(GT_Item_CasingsParall.class, "gt.blockcasingsParall", GT_Material_Casings.INSTANCE);
+
+    public GT_Block_Case1() {
+        super(GT_Item_Case1.class, "gt.blockCase1", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[3][b] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[3][b] /** 16 */ = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring*/
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Upgrade Casing T1");         // 0   384
@@ -63,48 +65,53 @@ public class GT_Block_CasingsParall
         CustomItemList.ElectrolyzerCase.set(new ItemStack(this, 1, 12));
     }
 
+    private static IIcon UPGRATE_CASING_T1, UPGRATE_CASING_T2, UPGRATE_CASING_T3, UPGRATE_CASING_T4, BENDER_CASING,
+                         LASER_CASING, PRESS_CASING, EXTRUDER_CASING, ASSEMBLER_CASING, CIRCUIT_ASSEMBLER_CASING,
+                         WIRE_ASSEMBLER_CASING, WIREMILL_CASING, ARC_FURNACE_CASING, ELECTROLYZER_CASING;
+
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         //super.registerBlockIcons(aIconRegister);
-        Up1 = aIconRegister.registerIcon("gregtech:iconsets/UPGRATE_CASING_T1");
-        Up2 = aIconRegister.registerIcon("gregtech:iconsets/UPGRATE_CASING_T2");
-        Up3 = aIconRegister.registerIcon("gregtech:iconsets/UPGRATE_CASING_T3");
-        Up4 = aIconRegister.registerIcon("gregtech:iconsets/UPGRATE_CASING_T4");
-        BendC = aIconRegister.registerIcon("gregtech:iconsets/BENDER_CASING");
-        LaserC = aIconRegister.registerIcon("gregtech:iconsets/LASER_CASING");
-        PressC = aIconRegister.registerIcon("gregtech:iconsets/PRESS_CASING");
-        ExtrudC = aIconRegister.registerIcon("gregtech:iconsets/EXTRUDER_CASING");
-        AssembC = aIconRegister.registerIcon("gregtech:iconsets/ASSEMBLER_CASING");
-        CircAssembC = aIconRegister.registerIcon("gregtech:iconsets/CIRCUIT_ASSEMBLER_CASING");
-        WireAssembC = aIconRegister.registerIcon("gregtech:iconsets/WIRE_ASSEMBLER_CASING");
-        WiremillC = aIconRegister.registerIcon("gregtech:iconsets/WIREMILL_CASING");
-        ArcC = aIconRegister.registerIcon("gregtech:iconsets/ARC_FURNACE_CASING");
-        ElectrC = aIconRegister.registerIcon("gregtech:iconsets/ELECTROLYZER_CASING");
+        UPGRATE_CASING_T1 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T1");
+        UPGRATE_CASING_T2 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T2");
+        UPGRATE_CASING_T3 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T3");
+        UPGRATE_CASING_T4 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T4");
+        BENDER_CASING = aIconRegister.registerIcon(RES_BLOCK + "BENDER_CASING");
+        LASER_CASING = aIconRegister.registerIcon(RES_BLOCK + "LASER_CASING");
+        PRESS_CASING = aIconRegister.registerIcon(RES_BLOCK + "PRESS_CASING");
+        EXTRUDER_CASING = aIconRegister.registerIcon(RES_BLOCK + "EXTRUDER_CASING");
+        ASSEMBLER_CASING = aIconRegister.registerIcon(RES_BLOCK + "ASSEMBLER_CASING");
+        CIRCUIT_ASSEMBLER_CASING = aIconRegister.registerIcon(RES_BLOCK +"CIRCUIT_ASSEMBLER_CASING");
+        WIRE_ASSEMBLER_CASING = aIconRegister.registerIcon(RES_BLOCK + "WIRE_ASSEMBLER_CASING");
+        WIREMILL_CASING = aIconRegister.registerIcon(RES_BLOCK + "WIREMILL_CASING");
+        ARC_FURNACE_CASING = aIconRegister.registerIcon(RES_BLOCK + "ARC_FURNACE_CASING");
+        ELECTROLYZER_CASING = aIconRegister.registerIcon(RES_BLOCK + "ELECTROLYZER_CASING");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
-            case  0: return Up1;
-            case  1: return Up2;
-            case  2: return Up3;
-            case  3: return Up4;
-            case  4: return BendC;
-            case  5: return LaserC;
-            case  6: return PressC;
-            case  7: return ExtrudC;
-            case  8: return AssembC;
-            case  9: return CircAssembC;
-            case 10: return WireAssembC;
-            case 11: return WiremillC;
-            case 12: return ArcC;
-            case 13: return ElectrC;
-
+            case  0: return UPGRATE_CASING_T1;
+            case  1: return UPGRATE_CASING_T2;
+            case  2: return UPGRATE_CASING_T3;
+            case  3: return UPGRATE_CASING_T4;
+            case  4: return BENDER_CASING;
+            case  5: return LASER_CASING;
+            case  6: return PRESS_CASING;
+            case  7: return EXTRUDER_CASING;
+            case  8: return ASSEMBLER_CASING;
+            case  9: return CIRCUIT_ASSEMBLER_CASING;
+            case 10: return WIRE_ASSEMBLER_CASING;
+            case 11: return WIREMILL_CASING;
+            case 12: return ARC_FURNACE_CASING;
+            case 13: return ELECTROLYZER_CASING;
 
             default: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
     }
+
+
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
