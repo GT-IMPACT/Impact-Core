@@ -1,2 +1,2 @@
-# GWPPCoreMod
-Core mod for GWPP
+# CoreMod
+Core mod for ModPack
