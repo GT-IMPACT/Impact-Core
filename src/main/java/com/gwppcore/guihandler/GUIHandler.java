@@ -1,11 +1,15 @@
 package com.gwppcore.guihandler;
 
+import com.gwppcore.gtsu.container.ContainerGTSU;
+import com.gwppcore.gtsu.gui.GuiGTSU;
+import com.gwppcore.gtsu.tileentity.TileEntityGTSU;
 import com.gwppcore.item.Circuit_Programmer.GT_Container_CircuitProgrammer;
 import com.gwppcore.item.Circuit_Programmer.GT_GUIContainer_CircuitProgrammer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class GUIHandler implements IGuiHandler {
@@ -16,6 +20,12 @@ public class GUIHandler implements IGuiHandler {
             case 1:
                 return new GT_Container_CircuitProgrammer(player.inventory);
         }
+
+        TileEntity entity = world.getTileEntity(x, y, z);
+        if(entity instanceof TileEntityGTSU) {
+            return new ContainerGTSU(player, (TileEntityGTSU)entity);
+        }
+
         return null;
     }
 
@@ -28,6 +38,12 @@ public class GUIHandler implements IGuiHandler {
             }
         } else
             return getServerGuiElement(ID, player, world, x, y, z);
+
+        TileEntity entity = world.getTileEntity(x, y, z);
+        if(entity instanceof TileEntityGTSU) {
+            return new GuiGTSU(ID, new ContainerGTSU(player, (TileEntityGTSU)entity));
+        }
+
         return null;
     }
 }

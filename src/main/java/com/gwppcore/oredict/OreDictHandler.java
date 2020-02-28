@@ -13,7 +13,7 @@ public class OreDictHandler {
 
 	}
 	
-	public static void register_all() {
+	public static void run() {
 		reg_additional();
 	}
 }

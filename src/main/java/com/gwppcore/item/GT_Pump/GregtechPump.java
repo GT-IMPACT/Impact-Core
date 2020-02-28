@@ -1,16 +1,11 @@
 package com.gwppcore.item.GT_Pump;
 
-import static gregtech.api.enums.GT_Values.V;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import com.gwppcore.gwppcore;
 import com.gwppcore.item.GT_Pump.api.AutoMap;
-import com.gwppcore.item.ItemList;
 import com.gwppcore.lib.Refstrings;
 import com.gwppcore.util.Utilits;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,7 +19,6 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
@@ -55,6 +49,9 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
+
+import static com.gwppcore.item.ItemRegistery.toolGregtechPump;
+import static gregtech.api.enums.GT_Values.V;
 
 public class GregtechPump extends Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
 
@@ -104,7 +101,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
     public final HashMap<Short, Short> mBurnValues = new LinkedHashMap<Short, Short>();
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
-        ItemList.toolGregtechPump.registerItem(aID, // ID
+        toolGregtechPump.registerItem(aID, // ID
                 aPumpName, // Name
                 aEuMax, // Eu Storage
                 (short) aTier, // Tier
