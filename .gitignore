@@ -19,3 +19,5 @@
 *.ini
 eclipse/
 out/
+build/
+idea/

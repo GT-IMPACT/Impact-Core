@@ -1,15 +1,19 @@
 buildscript {
     repositories {
         mavenCentral()
-		jcenter()
-		maven {
-			name = "gt"
-			url = "https://gregtech.overminddl1.com/"
-		}
-        //maven {
-        //    name = "forge"
-        //    url = "http://files.minecraftforge.net/maven"
-        //}
+        jcenter()
+        maven {
+            name = "MavenRepo"
+            url = "https://repo.maven.apache.org/maven2"
+        }
+        maven {
+            name = "gt"
+            url = "https://gregtech.overminddl1.com/"
+        }
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -41,126 +45,42 @@ file "build.properties" withReader {
 }
 
 version = "${config.coremod.version}"
-group= "com.impact" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "impact"
+group= "Impact" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Impact"
 
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}"
-    runDir = "eclipse"
+    runDir = "idea"
 }
 
-repositories {
-    maven {
-        name 'Forge' // Applied Energistics
-        url 'http://files.minecraftforge.net/maven'
-    }
-    maven { // GalacticGreg, YAMCore,..
-        name 'UsrvDE'
-        url "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
-    }
-    maven { // Baubles
-    	name 'UsrvDE_3rdParty'
-    	url "http://jenkins.usrv.eu:8081/nexus/content/repositories/thirdparty/"
-    }
-    maven {
-        name = "chickenbones"
-        url = "http://chickenbones.net/maven/"
-    }
-    maven {
-        name = "ic2, forestry"
-        url = "http://maven.ic2.player.to/"
-    }
-    maven { // AppleCore
-        url "http://www.ryanliptak.com/maven/"
-    }
-    maven {
-         name = "tterrag"
-         url = "http://maven.tterrag.com/"
-    }
-    maven { // WAILA
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
-    }
-    maven { // OpenComputers
-        name "OpenComputers"
-        url "http://maven.cil.li"
-    }
-		ivy {
-        name 'gtnh_download_source_stupid_underscore_typo'
-        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]"
-    }
-
-	ivy {
-        name 'gtnh_download_source'
-        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
-    }
-}
+repositories {}
 
 dependencies {
-    compile "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
-    compile "com.azanor.baubles:Baubles:${config.baubles.version}:deobf"
-    
-    compile ("appeng:appliedenergistics2:${config.ae2.version}:api") {
-        exclude module: '*'
-    }
-
-    compile "applecore:AppleCore:${config.applecore.version}:deobf"
-    compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
-    compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
-    compile "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
-    compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    compile ("com.enderio:EnderIO:${config.minecraft.version}-${config.enderio.version}:dev") {
-        exclude group: "mcp.mobius.waila"
-    }
-
-    compile "com.enderio.core:EnderCore:${config.minecraft.version}-${config.endercore.version}:dev"
-
-    compile fileTree(dir: 'libs', include: '*.jar')
+compile files("libs/AppleCore-mc1.7.10-1.3.9.jar")
+compile files("libs/appliedenergistics2-rv3-beta-20.jar")
+compile files("libs/CodeChickenCore-1.7.10-1.0.7.47-universal.jar")
+compile files("libs/CodeChickenLib-1.7.10-1.1.3.138-universal.jar")
+compile files("libs/EnderCore-1.7.10-0.2.0.39_beta.jar")
+compile files("libs/EnderIO-1.7.10-2.3.0.432_beta.jar")
+compile files("libs/GalacticGreg-1.7.10-0.9.9.jar")
+compile files("libs/Galacticraft-API-1.7-3.0.12.504.jar")
+compile files("libs/GalacticraftCore-1.7-3.0.12.504.jar")
+compile files("libs/Galacticraft-Planets-1.7-3.0.12.504.jar")
+compile files("libs/GalaxySpace-1.1.3a STABLE.jar")
+compile files("libs/gregtech-5.09.34.58[0.08]-dev.jar")
+compile files("libs/IC2NuclearControl-2.3.4a.jar")
+compile files("libs/industrialcraft-2-2.2.828-experimental-dev.jar")
+compile files("libs/Mantle-1.7.10-0.3.2b.jar")
+compile files("libs/MicdoodleCore-1.7-3.0.12.504.jar")
+compile files("libs/neiaddons-1.12.15.41-mc1.7.10.jar")
+compile files("libs/NEIIntegration-MC1.7.10-1.1.2.jar")
+compile files("libs/NotEnoughItems-1.7.10-1.0.5.120-universal.jar")
+compile files("libs/SpartakCore-1.7.10-0.0.5[0.08]-dev.jar")
+compile files("libs/TConstruct-1.7.10-1.8.9.12-GTNH.jar")
+compile files("libs/Waila-1.5.10_1.7.10.jar")
+compile files("libs/WAILAPlugins-MC1.7.10-0.2.3.jar")
+compile files("libs/YAMCore-1.7.10-0.5.77.jar")
 }
-
-task getForestryAPI(type: Download) {
-    onlyIf {
-        !file("libs/forestry_1.7.10-4.2.16.64-api.jar").exists()
-    }
-    src "https://gregtech.overminddl1.com/net/sengir/forestry/forestry_1.7.10/4.2.16.64/forestry_1.7.10-4.2.16.64-api.jar"
-    dest file("libs/forestry_1.7.10-4.2.16.64-api.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-
-task getGalacticGreg(type: Download, dependsOn: "getForestryAPI") {
-    onlyIf {
-        !file("libs/GalacticGreg-${config.minecraft.version}-${config.ggreg.version}-deobf.jar").exists()
-    }
-    src "http://jenkins.usrv.eu:8080/job/GalacticGreg/${config.ggreg.jenkinsbuild}/artifact/build/libs/GalacticGreg-${config.minecraft.version}-${config.ggreg.version}-deobf.jar"
-    dest file("libs/GalacticGreg-${config.minecraft.version}-${config.ggreg.version}-deobf.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-
-task getBartworks(type: Download, dependsOn: "getGalacticGreg") {
-	onlyIf {
-		!file("libs/bartworks.1.7.10.-0.3.22-dev.jar").exists()
-    }
-	src 'https://github.com/bartimaeusnek/bartworks/releases/download/untagged-37a034594f832f88c68d/bartworks.1.7.10.-0.3.22-dev.jar'
-    dest file("libs/bartworks.1.7.10.-0.3.22-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-//task getGtPlusPlus(type: Download, dependsOn: "getBartworks") {
-//    onlyIf {
-//        !file("libs/GT-PlusPlus-1.6.02-release.jar").exists()
-//    }
-//    src 'https://addons-origin.cursecdn.com/files/2478/265/GT-PlusPlus-1.6.02-release.jar'
-//    dest file("libs/GT-PlusPlus-1.6.02-release.jar")
-//    mustRunAfter "deobfBinJar"
-//    mustRunAfter "repackMinecraft"
-//}
-
-//tasks.setupCIWorkspace.dependsOn getGtPlusPlus
-//tasks.setupDevWorkspace.dependsOn getGtPlusPlus
-//tasks.setupDecompWorkspace.dependsOn getGtPlusPlus
-//tasks.compileJava.dependsOn getGtPlusPlus
 
 processResources
 {
@@ -180,7 +100,7 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-	exclude '**/Thumbs.db'
+    exclude '**/Thumbs.db'
 }
 
 task sourceJar(type: Jar) {
@@ -192,8 +112,6 @@ task devJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
     manifest {
-        //attributes 'FMLCorePlugin': 'WhateverLoaderClass'
-        //attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 }
 

@@ -37,7 +37,7 @@ public class GT_Machines_MultiRegister {
 			GT_ItemList.Machine_Mixer.set(new GT_TileEntity_Mixer(						ID++, "multimachine.mixer", "Multi Mixer").getStackForm(1L));
 			GT_ItemList.Machine_Centrifuge.set(new GT_TileEntity_Centrifuge(				ID++, "multimachine.centrifuge", "Multi Centrifuge").getStackForm(1L));
 			GT_ItemList.Naquadah_multi.set(new GT_TileEntity_NaquadahGenerator(			ID++, "multimachine.nqgen", "Nq Gen").getStackForm(1L));
-			GT_ItemList.Machine_FreezerSolidifier.set(new GT_MetaTileEntity_FreezerSolidifier(ID++, "multimachine.freezersolidifier", "Freezer Solidifier").getStackForm(1L));
+			//GT_ItemList.Machine_FreezerSolidifier.set(new GT_MetaTileEntity_FreezerSolidifier(ID++, "multimachine.freezersolidifier", "Freezer Solidifier").getStackForm(1L));
 		/** CRAFTING MANAGER */
 
 			//ЗДЕСЬ ПИШИ КРАФТ
