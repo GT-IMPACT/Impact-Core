@@ -33,7 +33,7 @@ public class GT_Block_Case1
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Upgrade Casing T2");         // 1   385
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Upgrade Casing T3");         // 2   386
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Upgrade Casing T4");         // 3   387
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Bending Casing");            // 4   388
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "PBE Casing");                // 4   388
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Laser Engraver Casing");     // 5   389
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Pressing Casing");           // 6   390
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Extruding Casing");          // 7   391
