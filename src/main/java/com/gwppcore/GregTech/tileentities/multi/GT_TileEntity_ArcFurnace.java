@@ -83,7 +83,7 @@ public class GT_TileEntity_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlo
                 .addInputBus("Any casing (only x1)")
                 .addOutputBus("Any casing (only x1)")
                 .addInputHatch("Any casing (only x1)")
-                .addCasingInfo("Arc Casing", 19)
+                .addCasingInfo("Arc Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();

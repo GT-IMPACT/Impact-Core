@@ -79,7 +79,8 @@ public class MultiBlockTooltipBuilder {
 		return this;
 	}
 	public MultiBlockTooltipBuilder beginStructureBlock(int w, int h, int l) {
-		sLines.add("Dimensions: " + w + "x" + h + "x" + l + " (WxHxL)");
+		//sLines.add("Dimensions: " + w + "x" + h + "x" + l + " (WxHxL)");
+		sLines.add(EnumChatFormatting.RED + "[WIP]" + EnumChatFormatting.GRAY + " Coming soon..");
 		sLines.add("Structure:");
 		return this;
 	}
@@ -89,8 +90,8 @@ public class MultiBlockTooltipBuilder {
 		return this;
 	}
 	
-	public MultiBlockTooltipBuilder addCasingInfo(String info, int minCount) {
-		sLines.add(TAB +"x" + minCount + " " + EnumChatFormatting.GREEN + info +EnumChatFormatting.GRAY+" (at least)");
+	public MultiBlockTooltipBuilder addCasingInfo(String info) {
+		sLines.add(TAB + "" + EnumChatFormatting.GREEN + info +EnumChatFormatting.GRAY+" (at least)");
 		return this;
 	}
 	
@@ -101,6 +102,11 @@ public class MultiBlockTooltipBuilder {
 	
 	public MultiBlockTooltipBuilder addDynamoHatch(String info) {
 		sLines.add(TAB + "Dynamo Hatch: " + info);
+		return this;
+	}
+
+	public MultiBlockTooltipBuilder addMuffler(String info) {
+		sLines.add(TAB +EnumChatFormatting.GREEN + "Muffler Hatch: " +EnumChatFormatting.GRAY+ info);
 		return this;
 	}
 	

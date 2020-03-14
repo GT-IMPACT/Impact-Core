@@ -78,7 +78,7 @@ public class GT_TileEntity_Assembler extends GT_MetaTileEntity_MultiParallelBloc
                 .addInputBus("Any casing (only x1)")
                 .addOutputBus("Any casing (only x1)")
                 .addInputHatch("Any casing (only x1)")
-                .addCasingInfo("Assembling Casing", 19)
+                .addCasingInfo("Assembling Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();

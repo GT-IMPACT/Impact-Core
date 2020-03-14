@@ -78,7 +78,7 @@ public class GT_TileEntity_Centrifuge extends GT_MetaTileEntity_MultiParallelBlo
                 .addInputHatch("Any casing (max x5)")
                 .addOutputHatch("Any casing (max x5)")
                 .addOutputBus("Any casing (max x1)")
-                .addCasingInfo("Named Casing", 0)
+                .addCasingInfo("Named Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();

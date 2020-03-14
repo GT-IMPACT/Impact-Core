@@ -85,7 +85,7 @@ public class GT_TileEntity_REACTOR extends GT_MetaTileEntity_MultiParallelBlockB
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (only x1)")
                 .addOutputBus("Any casing (only x1)")
-                .addCasingInfo("Wiremill Casing", 20)
+                .addCasingInfo("Wiremill Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
