@@ -2,8 +2,8 @@ package com.gwppcore.GregTech.tileentities.multi;
 
 import com.gwppcore.GregTech.casings.CORE_API;
 import com.gwppcore.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.gwppcore.GregTech.tileentities.multi.gui.GUI_NotMultiMachine;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
-import com.gwppcore.util.Utilits;
 import com.gwppcore.util.Vector3i;
 import com.gwppcore.util.Vector3ic;
 import gregtech.api.enums.Textures;
@@ -12,28 +12,24 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_GUIContainer_MultiParallelBlock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    private boolean mFormingMode = false;
+    private byte mMode = -1;
 
-    /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
-    int CASING_TEXTURE_ID = 388;
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore1;
-    byte CASING_META = 4;
-    private final String glass = "GlassBlock1";
+    byte CASING_META = 8;
+
+    /** === SET TEXTURES HATCHES AND CONTROLLER === */
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
+    int CASING_TEXTURE_ID = CASING_META + 128*3;
 
     /** === SET TEXTURE === */
     @Override
@@ -68,20 +64,23 @@ public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelB
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
                 .addInfo("One-block machine analog")
-                .addParallelInfo(4,256)
+                .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                .addPollution(200, 12800)
+                //.addPollution(200, 12800)
+                .addTypeMachine("Electrolyzer")
+                .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
-                .addController("Front middle center")
-                .addParallelCase("Middle center")
+                .addController("-")
+                .addParallelCase("-")
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
-                .addInputBus("Any casing (max x5)")
-                .addInputHatch("Any casing (max x5)")
-                .addOutputHatch("Any casing (max x5)")
-                .addOutputBus("Any casing (max x1)")
-                .addCasingInfo("Named Casing")
+                .addMuffler("Any casing")
+                .addInputBus("Any casing (max x6)")
+                .addOutputBus("Any casing (max x3)")
+                .addOutputHatch("Any casing (max x6)")
+                .addInputHatch("Any casing (max x6)")
+                .addCasingInfo("Electrolyzer Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -91,9 +90,9 @@ public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelB
     }
 
     /** === GUI === */
-    @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", getRecipeMap().mNEIName);
+        return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
+                "MultiParallelBlockGUI.png"," Electrolyzer ");
     }
 
     /** === RECIPE MAP === */
@@ -139,33 +138,40 @@ public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelB
 
     private int mLevel = 0;
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
 
-        int minCasingAmount = 12;
-        boolean formationChecklist = true;
+        int minCasingAmount = 12; // Минимальное количество кейсов
+        boolean formationChecklist = true; // Если все ок, машина собралась
 
-        for(int X = -1; X <= 1; X++) {
-            for(int Y = -1; Y <= 2; Y++) {
-                for(int Z = -4; Z <= 0; Z++) {
+        for(byte X = -1; X <= 1; X++) {
+            for(byte Y = -1; Y <= 2; Y++) {
+                for (byte Z = 0; Z >= -4; Z--) {
+
+                    if ( X!=0 && Y==-1 && (Z==-1 || Z==-2 || Z==-3) ) continue;
+
+                    if (X==0 && Z==0 && Y==0) continue;
 
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-                    int flow = (Z==-3 ? -3 : Z==-2 ? -2 : -1);
+                    String glass = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
+                    boolean glassed = ( glass.equals("GlassBlock1") || glass.equals("GlassBlock2") || glass.equals("GlassBlock3") || glass.equals("GlassBlock4")
+                            || glass.equals("GlassBlock5") || glass.equals("GlassBlock6") || glass.equals("GlassBlock7") || glass.equals("GlassBlock8")
+                            || glass.equals("GlassBlock9") || glass.equals("GlassBlock10")|| glass.equals("GlassBlock11")|| glass.equals("GlassBlock12")
+                            || glass.equals("GlassBlock13")|| glass.equals("GlassBlock14")|| glass.equals("GlassBlock15")|| glass.equals("GlassBlock16") );
 
-                    if (X == (X == -1 ? -1 : 1) && Z == flow) {
+                    if ( X!=0 && Y==1 && (Z==-1 || Z==-2 || Z==-3) ) {
+                        if ( glassed ){} else  {
+                            formationChecklist = false;
+                        }
                         continue;
                     }
 
-                    if(X == 0 && Z == 0 && Y == 0) {
-                        continue; // Здесь контролер
-                    }
-                    //чек середина
-
-                    if(X == 0 && Z == flow && Y == (Y == 0 ? 0 : 1)) {
-                               if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                    if ( X==0 && Y==1 && (Z==-1 || Z==-2 || Z==-3) ) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                             this.mLevel = 4;
                         } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -177,39 +183,28 @@ public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelB
                         } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
                             this.mLevel = 256;
+                        } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
+                            this.mLevel = 1;
                         } else {
                             formationChecklist = false;
                         }
                         continue;
                     }
 
-                    if(X == (X == -1 ? -1 : 1) && Z == flow && Y == (Y == 0 ? 0 : 1))  {
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glass)) {
-                        } else {
+                    if ( X==0 && Y==2 && (Z==-1 || Z==-2 || Z==-3) ) {
+                        if (glassed){} else  {
                             formationChecklist = false;
                         }
                         continue;
                     }
 
-                    if(X == 0 && Z == flow && Y ==2) {
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glass)) {
-                        } else {
-                            formationChecklist = false;
-                        }
-                        continue;
-                    }
-
-                    // Следущее ТЕ
-                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-
-                    // Хэтчи
-                    if (       !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
-                        // Кейсы вместо хэтчей
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                             minCasingAmount--;
@@ -221,19 +216,18 @@ public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelB
             }
         }
 
-        if(minCasingAmount > 0) {
+
+
+        if(this.mInputBusses.size() > 6) {
             formationChecklist = false;
         }
-        if(this.mInputBusses.size() > 5) {
+        if(this.mInputHatches.size() > 6) {
             formationChecklist = false;
         }
-        if(this.mInputHatches.size() > 5) {
+        if(this.mOutputBusses.size() > 3) {
             formationChecklist = false;
         }
-        if(this.mOutputBusses.size() !=1) {
-            formationChecklist = false;
-        }
-        if(this.mOutputHatches.size() > 5) {
+        if(this.mOutputHatches.size() > 6) {
             formationChecklist = false;
         }
         if(this.mMufflerHatches.size() != 1) {
@@ -258,40 +252,42 @@ public class GT_TileEntity_Electrolyzer extends GT_MetaTileEntity_MultiParallelB
     /** === POLLUTION === */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        if (this.mLevel == 4 ) {
-            return 4*50;
-        }
-        else if (this.mLevel == 16 ) {
-            return 16*50;
-        }
-        else if (this.mLevel == 64 ) {
-            return 64*50;
-        }
-        else if (this.mLevel == 256) {
-            return 256*50;
-        } else
+//        if (this.mLevel == 4 ) {
+//            return 4*50;
+//        }
+//        else if (this.mLevel == 16 ) {
+//            return 16*50;
+//        }
+//        else if (this.mLevel == 64 ) {
+//            return 64*50;
+//        }
+//        else if (this.mLevel == 256) {
+//            return 256*50;
+//        } else
             return 0;
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
 
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mFormingMode", mFormingMode);
-        super.saveNBTData(aNBT);
-    }
 
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        mFormingMode = aNBT.getBoolean("mFormingMode");
-        super.loadNBTData(aNBT);
-    }
+//    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+//             if (mMode == -1) { mMode += 1; }
+//        else if (mMode ==  0) { mMode += 1; }
+//        else if (mMode ==  1) { mMode += 1; }
+//                                else { mMode =  0; }
+//
+//        String mModed = (mMode == 0 ? " Forming Press " : mMode == 1 ? " Bending " : mMode == 2 ? " Extruder " : null);
+//        GT_Utility.sendChatToPlayer(aPlayer, "Now " + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+//    }
+//
+//    @Override
+//    public void saveNBTData(NBTTagCompound aNBT) {
+//        aNBT.setByte("mMode", mMode);
+//        super.saveNBTData(aNBT);
+//    }
+//
+//    @Override
+//    public void loadNBTData(NBTTagCompound aNBT) {
+//        this.mMode = aNBT.getByte("mMode");
+//        super.loadNBTData(aNBT);
+//    }
 
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mFormingMode = Utilits.invertBoolean(mFormingMode);
-        if (mFormingMode){
-            GT_Utility.sendChatToPlayer(aPlayer, "Now running in Forming Press Mode.");
-        }
-        else {
-            GT_Utility.sendChatToPlayer(aPlayer, "Now running in Bending Mode.");
-        }
-    }
 }
