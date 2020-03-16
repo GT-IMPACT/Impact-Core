@@ -150,12 +150,10 @@ public class GT_TileEntity_Utility extends GT_MetaTileEntity_MultiParallelBlockB
         int minCasingAmount = 12; // Минимальное количество кейсов
         boolean formationChecklist = true; // Если все ок, машина собралась
 
-        for(byte X = -2; X <= 2; X++) {
-            for (byte Y = -2; Y <= 2; Y++) {
-                if (X == 0 && Y == 0) continue;
-               if ((X==2||X==-2)&&(Y==2||Y==-2)) continue;
+        for(byte X = -1; X <= 4; X++) {
+            for (byte Z = 0; Z >= -4; Z--) {
 
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 0, Y);
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, -1, Z);
                 IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                         && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -171,33 +169,14 @@ public class GT_TileEntity_Utility extends GT_MetaTileEntity_MultiParallelBlockB
                 }
             }
         }
-        for(byte X = -2; X <= 2; X++) {
-            for (byte Y = -2; Y <= 2; Y++) {
-                for (byte Z = -1; Z >= -3; Z--) {
+        for(byte X = -1; X <= 1; X++) {
+            for (byte Z = 0; Z >= -4; Z--) {
+                for (byte Y = 0; Y <= 1; Y++) {
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-                    if ((X==2||X==-2)&&(Y==2||Y==-2)) continue;
+                    if (X==0&&Y==0&&Z==0) continue;
 
-                    if (X==1&&Y==1||X==-1&&Y==-1||X==1&&Y==-1||X==-1&&Y==1
-                        || X==0&&Y==1||X==0&&Y==-1||X==1&&Y==0||X==-1&&Y==0 ) continue;
-
-
-                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Z, Y);
-
-                    String glass = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
-                    if ( Y==2 && X==1 || Y==-2 && X==1 || Y==2 && X==-1 || Y==-2 && X==-1
-                            || Y==1 && X==2 || Y==-1 && X==2 || Y==1 && X==-2 || Y==-1 && X==-2) {
-                        if ( glass.equals("GlassBlock1") || glass.equals("GlassBlock2") || glass.equals("GlassBlock3") || glass.equals("GlassBlock4")
-                                || glass.equals("GlassBlock5") || glass.equals("GlassBlock6") || glass.equals("GlassBlock7") || glass.equals("GlassBlock8")
-                                || glass.equals("GlassBlock9") || glass.equals("GlassBlock10")|| glass.equals("GlassBlock11")|| glass.equals("GlassBlock12")
-                                || glass.equals("GlassBlock13")|| glass.equals("GlassBlock14")|| glass.equals("GlassBlock15")|| glass.equals("GlassBlock16") ){
-                        } else  {
-                            formationChecklist = false;
-                        }
-                        continue;
-                    }
-
-
-                    if (X==0&&Y==0) {
+                    if ((Z==-1||Z==-2||Z==-3) && X==0 && Y==0) {
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                             this.mLevel = 4;
@@ -217,7 +196,17 @@ public class GT_TileEntity_Utility extends GT_MetaTileEntity_MultiParallelBlockB
                         }
                         continue;
                     }
-
+                    String glass = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
+                    if ((Z==-1||Z==-2||Z==-3) && X==-1 && Y==0) {
+                        if ( glass.equals("GlassBlock1") || glass.equals("GlassBlock2") || glass.equals("GlassBlock3") || glass.equals("GlassBlock4")
+                                || glass.equals("GlassBlock5") || glass.equals("GlassBlock6") || glass.equals("GlassBlock7") || glass.equals("GlassBlock8")
+                                || glass.equals("GlassBlock9") || glass.equals("GlassBlock10")|| glass.equals("GlassBlock11")|| glass.equals("GlassBlock12")
+                                || glass.equals("GlassBlock13")|| glass.equals("GlassBlock14")|| glass.equals("GlassBlock15")|| glass.equals("GlassBlock16") ){
+                        } else  {
+                            formationChecklist = false;
+                        }
+                        continue;
+                    }
 
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                     if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -225,7 +214,6 @@ public class GT_TileEntity_Utility extends GT_MetaTileEntity_MultiParallelBlockB
                             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                             minCasingAmount--;
@@ -236,49 +224,50 @@ public class GT_TileEntity_Utility extends GT_MetaTileEntity_MultiParallelBlockB
                 }
             }
         }
-        for(byte X = -2; X <= 2; X++) {
-            for (byte Y = -2; Y <= 2; Y++) {
-                if (X == 0 && Y == 0) continue;
-                if ((X==2||X==-2)&&(Y==2||Y==-2)) continue;
+        for(byte X = 2; X <= 4; X++) {
+            for (byte Z = -1; Z >= -3; Z--) {
+                for (byte Y = 0; Y <= 2; Y++) {
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, -4, Y);
-                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                        minCasingAmount--;
-                    } else {
-                        formationChecklist = false;
+                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
+                        }
                     }
                 }
             }
         }
 
-//        if(this.mInputBusses.size() > 6) {
-//            formationChecklist = false;
-//        }
-//        if(this.mInputHatches.size() != 0) {
-//            formationChecklist = false;
-//        }
-//        if(this.mOutputBusses.size() > 3) {
-//            formationChecklist = false;
-//        }
-//        if(this.mOutputHatches.size() !=0) {
-//            formationChecklist = false;
-//        }
-//        if(this.mEnergyHatches.size() != 1) {
-//            formationChecklist = false;
-//        }
-//        if(this.mMuffler.size() != 1) {
-//            formationChecklist = false;
-//        }
-//        if(this.mMaintenanceHatches.size() != 1) {
-//            formationChecklist = false;
-//        }
+
+        if(this.mInputBusses.size() > 6) {
+            formationChecklist = false;
+        }
+        if(this.mInputHatches.size() != 0) {
+            formationChecklist = false;
+        }
+        if(this.mOutputBusses.size() > 3) {
+            formationChecklist = false;
+        }
+        if(this.mOutputHatches.size() !=0) {
+            formationChecklist = false;
+        }
+        if(this.mEnergyHatches.size() != 1) {
+            formationChecklist = false;
+        }
+        if(this.mMufflerHatches.size() != 1) {
+            formationChecklist = false;
+        }
+        if(this.mMaintenanceHatches.size() != 1) {
+            formationChecklist = false;
+        }
 
         return formationChecklist;
     }
