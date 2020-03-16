@@ -2,6 +2,7 @@ package com.gwppcore.GregTech.tileentities.multi;
 
 import com.gwppcore.GregTech.casings.CORE_API;
 import com.gwppcore.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.gwppcore.GregTech.tileentities.multi.gui.GUI_PressBendExtrud;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
 import com.gwppcore.util.Vector3i;
 import com.gwppcore.util.Vector3ic;
@@ -12,7 +13,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_GUIContainer_MultiParallelBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,13 +25,15 @@ import org.lwjgl.input.Keyboard;
 public class GT_TileEntity_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     private byte mMode = -1;
+    public static String mModed;
 
-    /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][4];
-    int CASING_TEXTURE_ID = 388;
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore1;
     byte CASING_META = 4;
+
+    /** === SET TEXTURES HATCHES AND CONTROLLER === */
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
+    int CASING_TEXTURE_ID = CASING_META + 128*3;
 
     /** === SET TEXTURE === */
     @Override
@@ -69,6 +71,8 @@ public class GT_TileEntity_PressBendExtrud extends GT_MetaTileEntity_MultiParall
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 .addPollution(200, 12800)
+                .addTypeMachine("Extruder, Bender, Presser")
+                .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
                 .addController("-")
@@ -90,7 +94,7 @@ public class GT_TileEntity_PressBendExtrud extends GT_MetaTileEntity_MultiParall
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", getRecipeMap().mNEIName);
+        return new GUI_PressBendExtrud(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
     }
 
     /** === RECIPE MAP === */
@@ -145,9 +149,9 @@ public class GT_TileEntity_PressBendExtrud extends GT_MetaTileEntity_MultiParall
         int minCasingAmount = 12; // Минимальное количество кейсов
         boolean formationChecklist = true; // Если все ок, машина собралась
 
-        for(int X = -1; X <= 1; X++) {
-            for (int Y = -1; Y <= 1; Y++) {
-                for (int Z = 0; Z >= -4; Z--) {
+        for(byte X = -1; X <= 1; X++) {
+            for (byte Y = -1; Y <= 1; Y++) {
+                for (byte Z = 0; Z >= -4; Z--) {
 
                     if (X == 0 && Y == 0 && Z ==0) continue;
 
@@ -249,8 +253,8 @@ public class GT_TileEntity_PressBendExtrud extends GT_MetaTileEntity_MultiParall
         else if (mMode ==  1) { mMode += 1; }
                                 else { mMode =  0; }
 
-        String mModed = (mMode == 0 ? " Forming Press " : mMode == 1 ? " Bending " : mMode == 2 ? " Extruder " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now " + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        mModed = (mMode == 0 ? " Forming Press " : mMode == 1 ? " Bending " : mMode == 2 ? " Extruder " : null);
+        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
     }
 
     @Override
