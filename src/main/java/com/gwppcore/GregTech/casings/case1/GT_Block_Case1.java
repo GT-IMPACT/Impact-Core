@@ -38,9 +38,9 @@ public class GT_Block_Case1
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Assembler Casing");          // 6   390
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Centrifuge Casing");         // 7   391
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Electrolyzer Casing");       // 8   392
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Circuit Assembling Casing"); // 9   393
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Wire Assembling Casing");   // 10  394
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Wiremill Casing");          // 11  395
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Wire Factory Casing");       // 9   393
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Supply Production Casing"); // 10  394
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Utility Machine Casing");   // 11  395
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Arc Casing");               // 12  396
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Electrolyser Casing");      // 13  397
 
