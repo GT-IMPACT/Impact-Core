@@ -43,9 +43,9 @@ public enum GT_ItemList implements IItemContainer {
 	Nuclear_Resistant_OH,
 
 	//MULTI
-	Machine_Extruder, Machine_Bender, Machine_LaserEngraver, Machine_Presser, Machine_Assembler, Machine_CircuitAssembler,
-	Machine_WireAssembler, Machine_WireMill, ArcFurnace, PlasmaArcFurnace, Electrolyzer, PowerStation, PowerReactor, PowerTurbine,
-	Machine_Mixer, Machine_Centrifuge,
+	Machine_PBE, Machine_LaserEngraver, Machine_Assembler, Machine_Centrifuge, Machine_Electrolyzer, Machine_Wire, Machine_Supply,
+	Machine_Utility,
+	PowerStation, PowerReactor, PowerTurbine,
 
 	Naquadah_multi,
 
