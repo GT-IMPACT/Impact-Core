@@ -4,6 +4,7 @@ import com.gwppcore.GregTech.GTregister.GT_ItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
@@ -41,7 +42,7 @@ public class GT_Block_Case1
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Wire Factory Casing");       // 9   393
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Supply Production Casing"); // 10  394
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Utility Machine Casing");   // 11  395
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Arc Casing");               // 12  396
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Brewmenter Casing");               // 12  396
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Electrolyser Casing");      // 13  397
 
 /*
@@ -67,6 +68,15 @@ public class GT_Block_Case1
     private static IIcon UPGRATE_CASING_T1, UPGRATE_CASING_T2, UPGRATE_CASING_T3, UPGRATE_CASING_T4, BENDER_CASING,
                          LASER_CASING, PRESS_CASING, EXTRUDER_CASING, ASSEMBLER_CASING, CIRCUIT_ASSEMBLER_CASING,
                          WIRE_ASSEMBLER_CASING, WIREMILL_CASING, ARC_FURNACE_CASING, ELECTROLYZER_CASING;
+
+//    public static final IIconContainer[] mTextures = new IIconContainer[]
+//            {
+//                    new Textures.BlockIcons.CustomIcon(RES_BLOCK + "UPGRATE_CASING_T1"),
+//                    new Textures.BlockIcons.CustomIcon(RES_BLOCK + "UPGRATE_CASING_T1"),
+//                    new Textures.BlockIcons.CustomIcon(RES_BLOCK + "UPGRATE_CASING_T1"),
+//                    new Textures.BlockIcons.CustomIcon(RES_BLOCK + "UPGRATE_CASING_T1"),
+//                    new Textures.BlockIcons.CustomIcon(RES_BLOCK + "UPGRATE_CASING_T1"),
+//            };
 
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
