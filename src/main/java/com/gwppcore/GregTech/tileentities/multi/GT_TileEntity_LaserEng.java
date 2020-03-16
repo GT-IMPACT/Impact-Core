@@ -2,6 +2,7 @@ package com.gwppcore.GregTech.tileentities.multi;
 
 import com.gwppcore.GregTech.casings.CORE_API;
 import com.gwppcore.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.gwppcore.GregTech.tileentities.multi.gui.GUI_NotMultiMachine;
 import com.gwppcore.util.MultiBlockTooltipBuilder;
 import com.gwppcore.util.Vector3i;
 import com.gwppcore.util.Vector3ic;
@@ -11,13 +12,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_GUIContainer_MultiParallelBlock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
@@ -26,12 +23,13 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
 
     private byte mMode = -1;
 
-    /** === SET TEXTURES HATCHES AND CONTROLLER === */
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][5];
-    int CASING_TEXTURE_ID = 389;
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore1;
     byte CASING_META = 5;
+
+    /** === SET TEXTURES HATCHES AND CONTROLLER === */
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
+    int CASING_TEXTURE_ID = CASING_META + 128*3;
 
     /** === SET TEXTURE === */
     @Override
@@ -69,6 +67,8 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 //.addPollution(200, 12800)
+                .addTypeMachine("Laser Engraver")
+                .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
                 .addController("-")
@@ -87,9 +87,9 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     /** === GUI === */
-    @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiParallelBlock(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", getRecipeMap().mNEIName);
+        return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
+                "MultiParallelBlockGUI.png"," Laser Engraver ");
     }
 
     /** === RECIPE MAP === */
@@ -144,8 +144,8 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
         int minCasingAmount = 12; // Минимальное количество кейсов
         boolean formationChecklist = true; // Если все ок, машина собралась
 
-        for(int X = -1; X <= 1; X++) {
-                for (int Z = 0; Z >= -3; Z--) {
+        for(byte X = -1; X <= 1; X++) {
+                for (byte Z = 0; Z >= -3; Z--) {
 
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, -1, Z);
 
@@ -166,8 +166,8 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
                     }
                 }
         }
-        for(int X = -1; X <= 1; X++) {
-                for (int Z = 0; Z >= -3; Z--) {
+        for(byte X = -1; X <= 1; X++) {
+                for (byte Z = 0; Z >= -3; Z--) {
 
 
                     if (X == 0 && Z == 0) continue;
@@ -215,8 +215,8 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
                     }
                 }
         }
-        for(int X = -1; X <= 1; X++) {
-            for (int Y = -1; Y <= 3; Y++) {
+        for(byte X = -1; X <= 1; X++) {
+            for (byte Y = -1; Y <= 3; Y++) {
 
 
                 final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -4);
@@ -238,8 +238,8 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
                 }
             }
         }
-        for(int X = -1; X <= 1; X++) {
-            for (int Z = -1; Z >= -3; Z--) {
+        for(byte X = -1; X <= 1; X++) {
+            for (byte Z = -1; Z >= -3; Z--) {
 
 
                 final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 3, Z);
@@ -282,7 +282,7 @@ public class GT_TileEntity_LaserEng extends GT_MetaTileEntity_MultiParallelBlock
                 }
             }
         }
-        for(int X = 0; X <= 0; X++) {
+        for(byte X = 0; X <= 0; X++) {
             final Vector3ic glass = rotateOffsetVector(forgeDirection, X, 2, -2);
             if (X==0) {
                 if (thisController.getBlockOffset(glass.x(), glass.y(), glass.z()).getUnlocalizedName().equals("GlassBlock15")) {
