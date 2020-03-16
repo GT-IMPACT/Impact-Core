@@ -22,16 +22,14 @@ public class GT_Machines_MultiRegister {
 		/** MULTIBLOCKS */
 
 			GT_ItemList.Machine_Bender.set(new GT_TileEntity_PressBendExtrud(		ID++, "multimachine.pbe", 			"Multi PBE Machine").getStackForm(1L));
-			GT_ItemList.Machine_LaserEngraver.set(new GT_TileEntity_LaserEng(	ID++, "multimachine.laserengraver", "Multi Laser Engraver").getStackForm(1L));
-
+			GT_ItemList.Machine_LaserEngraver.set(new GT_TileEntity_LaserEng(		ID++, "multimachine.laserengraver", "Multi Laser Engraver").getStackForm(1L));
 			GT_ItemList.Machine_Assembler.set(new GT_TileEntity_Assembler(			ID++, "multimachine.assembler", 	"Multi Assembling Machine").getStackForm(1L));
-			GT_ItemList.ArcFurnace.set(new GT_TileEntity_ArcFurnace(				ID++, "multimachine.arcfurnace", 	"Multi Arc Furnace").getStackForm(1L));
+			GT_ItemList.Machine_Centrifuge.set(new GT_TileEntity_Centrifuge(		ID++, "multimachine.centrifuge", 	"Multi Centrifuge").getStackForm(1L));
 			GT_ItemList.Electrolyzer.set(new GT_TileEntity_Electrolyzer(			ID++, "multimachine.electrolyzer",  "Multi Electrolyzer").getStackForm(1L));
+
 			GT_ItemList.PowerStation.set(new GT_MetaTileEntity_PowerStation(		ID++, "multimachine.powerstation",  "Power Station").getStackForm(1L));
 			GT_ItemList.PowerReactor.set(new GT_TileEntity_REACTOR(					ID++, "multimachine.powerreactor",  "Power Reactor").getStackForm(1L));
 			GT_ItemList.PowerTurbine.set(new GT_TileEntity_NuclearTurbine(			ID++, "multimachine.powerturb", 	"Power Turbine").getStackForm(1L));
-			GT_ItemList.Machine_Mixer.set(new GT_TileEntity_Mixer(					ID++, "multimachine.mixer", 		"Multi Mixer").getStackForm(1L));
-			GT_ItemList.Machine_Centrifuge.set(new GT_TileEntity_Centrifuge(		ID++, "multimachine.centrifuge", 	"Multi Centrifuge").getStackForm(1L));
 
 
 
