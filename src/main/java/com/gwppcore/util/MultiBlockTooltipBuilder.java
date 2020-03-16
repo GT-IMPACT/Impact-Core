@@ -60,6 +60,16 @@ public class MultiBlockTooltipBuilder {
 		return this;
 	}
 
+	public MultiBlockTooltipBuilder addTypeMachine(String info) {
+		iLines.add(EnumChatFormatting.YELLOW + info);
+		return this;
+	}
+
+	public MultiBlockTooltipBuilder addScrew() {
+		iLines.add("Select type machine with Screwdriver click in Controler");
+		return this;
+	}
+
 	
 	/**
 	 * Begin adding structural information by adding a line about the structure's dimensions
