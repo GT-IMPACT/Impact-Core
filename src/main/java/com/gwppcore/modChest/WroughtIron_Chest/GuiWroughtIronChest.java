@@ -1,15 +1,7 @@
 package com.gwppcore.modChest.WroughtIron_Chest;
 
-/*
- * Created by WanionCane(https://github.com/WanionCane).
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
-
-import com.gwppcore.modChest.Gui_BaseChest;
-import com.gwppcore.modChest.TE_BaseChest;
+import com.gwppcore.modChest.BASE.Gui_BaseChest;
+import com.gwppcore.modChest.BASE.TE_BaseChest;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -40,6 +32,9 @@ public final class GuiWroughtIronChest extends Gui_BaseChest
 	}
 	protected int getYSize(){
 		return 185;
+	}
+	protected int getScale(){
+		return 512;
 	}
 	protected int getNamedPos(){
 		return 8;
