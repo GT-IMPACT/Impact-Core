@@ -1,4 +1,4 @@
-package com.gwppcore.modChest.invTweaks;
+package com.gwppcore.modChest.BASE.invTweaks;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

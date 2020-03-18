@@ -1,12 +1,4 @@
-package com.gwppcore.modChest;
-
-/*
- * Created by WanionCane(https://github.com/WanionCane).
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
+package com.gwppcore.modChest.BASE;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -35,9 +27,9 @@ public abstract class Gui_BaseChest extends GuiContainer
 		final Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(guiLeft, guiTop, 0, 0.0, 0.0); // начальная позиция
-		tessellator.addVertexWithUV(guiLeft, guiTop + xSize*3-13, 0, 0.0, 1.0);
-		tessellator.addVertexWithUV(guiLeft + xSize*3-13, guiTop + xSize*3-13, 0, 1.0, 1.0);
-		tessellator.addVertexWithUV(guiLeft + xSize*3-1, guiTop, 0, 1.0, 0.0);
+		tessellator.addVertexWithUV(guiLeft, guiTop + getScale(), 0, 0.0, 1.0);
+		tessellator.addVertexWithUV(guiLeft + getScale(), guiTop + getScale(), 0, 1.0, 1.0);
+		tessellator.addVertexWithUV(guiLeft + getScale(), guiTop, 0, 1.0, 0.0);
 		tessellator.draw();
 	}
 
@@ -52,5 +44,6 @@ public abstract class Gui_BaseChest extends GuiContainer
 	protected abstract ResourceLocation getPathTexture();
 	protected abstract int getXSize();
 	protected abstract int getYSize();
+	protected abstract int getScale();
 	protected abstract int getNamedPos();
 }
