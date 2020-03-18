@@ -204,6 +204,8 @@ public class gwppcore {
     public void preInit(FMLPreInitializationEvent event)
     {
         MainLoader.preInit();
+        MainLoader.preInitClient();
+
     }
 
 	@Mod.EventHandler

@@ -8,10 +8,20 @@ import com.gwppcore.guihandler.GUIHandler;
 import com.gwppcore.gwppcore;
 import com.gwppcore.item.ItemRegistery;
 import com.gwppcore.lib.Refstrings;
+import com.gwppcore.modChest.Item_BaseChest;
+import com.gwppcore.modChest.Renderer_BaseChest;
+import com.gwppcore.modChest.WroughtIron_Chest.WroughtIronChest;
+import com.gwppcore.modChest.WroughtIron_Chest.ItemRendererWroughtIronChest;
+import com.gwppcore.modChest.WroughtIron_Chest.TEWroughtIronChest;
 import com.gwppcore.oredict.OreDictHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 import static com.gwppcore.gwppcore.CoreConfig;
 
@@ -21,6 +31,7 @@ public class MainLoader {
 
     public static void Init() {
         ProgressManager.ProgressBar progressBarLoad = ProgressManager.push(Refstrings.MODID +" Init", 1);
+
         progressBarLoad.step("Item Registery");
         new ItemRegistery().run();
 
@@ -28,7 +39,11 @@ public class MainLoader {
     }
 
     public static void preInit() {
-        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push(Refstrings.MODID +" Pre Init", 2);
+        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push(Refstrings.MODID +" Pre Init", 3);
+        progressBarLoad.step("Chests");
+        GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "CompressedChest");
+        GameRegistry.registerTileEntity(TEWroughtIronChest.class, "Avaritiaddons:CompressedChest");
+
 
         progressBarLoad.step("GT Pump");
         ItemRegistery.GregtechPump();
@@ -38,6 +53,14 @@ public class MainLoader {
 
         ProgressManager.pop(progressBarLoad);
     }
+
+    @SideOnly(Side.CLIENT)
+    public static void preInitClient()
+    {
+        ClientRegistry.bindTileEntitySpecialRenderer(TEWroughtIronChest.class, Renderer_BaseChest.instance);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(WroughtIronChest.instance), new ItemRendererWroughtIronChest());
+    }
+
     public static void load() {
         ProgressManager.ProgressBar progressBarLoad = ProgressManager.push(Refstrings.MODID +" Load", 2);
 

@@ -1,6 +1,7 @@
 package com.gwppcore.main;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -30,5 +31,14 @@ public class CommonProxy implements IGuiHandler
     public void registerRenderers() {}
 
     public void load() {
+    }
+    public EntityPlayer getPlayerEntity(final MessageContext context)
+    {
+        return context.getServerHandler().playerEntity;
+    }
+
+    public EntityPlayer getEntityPlayerFromContext(final MessageContext ctx)
+    {
+        return ctx.getServerHandler().playerEntity;
     }
 }
