@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import static com.gwppcore.guihandler.GUIHandler.GUI_ID_CIRCUITPROGRAMMER;
+
 public class CircuitProgrammer extends GT_Generic_Item implements IElectricItem {
 
     public CircuitProgrammer() {
@@ -37,7 +39,7 @@ public class CircuitProgrammer extends GT_Generic_Item implements IElectricItem 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (ElectricItem.manager.use(aStack, 100, aPlayer)) {
-            aPlayer.openGui(gwppcore.instance, 1, aWorld, 0, 0, 0);
+            aPlayer.openGui(gwppcore.instance, GUI_ID_CIRCUITPROGRAMMER, aWorld, 0, 0, 0);
         }
         return aStack;
     }

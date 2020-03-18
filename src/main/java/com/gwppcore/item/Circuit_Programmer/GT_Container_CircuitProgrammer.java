@@ -1,9 +1,5 @@
 package com.gwppcore.item.Circuit_Programmer;
 
-import com.gwppcore.gwppcore;
-import com.gwppcore.item.Circuit_Programmer.CircuitProgrammer;
-import com.gwppcore.item.Circuit_Programmer.CircuitProgrammerPacket;
-import com.gwppcore.util.SendUtils;
 import com.gwppcore.util.Utilits;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

@@ -1,10 +1,8 @@
 package com.gwppcore.item.Circuit_Programmer;
 
-import com.gwppcore.gwppcore;
 import com.gwppcore.lib.Refstrings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.GT_Slot_Holo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,7 +14,7 @@ import static com.gwppcore.lib.Refstrings.MODID;
 @SideOnly(Side.CLIENT)
 public class GT_GUIContainer_CircuitProgrammer extends GuiContainer {
 
-    public static final ResourceLocation texture = new ResourceLocation(Refstrings.MODID, "textures/GUI/GUI_Circuit.png");
+    public static final ResourceLocation texture = new ResourceLocation(Refstrings.MODID, "textures/gui/GUI_Circuit.png");
 
     public GT_GUIContainer_CircuitProgrammer(InventoryPlayer p_i1072_1_) {
         super(new GT_Container_CircuitProgrammer(p_i1072_1_));
