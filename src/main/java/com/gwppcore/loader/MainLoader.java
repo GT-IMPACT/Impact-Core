@@ -8,8 +8,11 @@ import com.gwppcore.guihandler.GUIHandler;
 import com.gwppcore.gwppcore;
 import com.gwppcore.item.ItemRegistery;
 import com.gwppcore.lib.Refstrings;
-import com.gwppcore.modChest.Item_BaseChest;
-import com.gwppcore.modChest.Renderer_BaseChest;
+import com.gwppcore.modChest.BASE.Item_BaseChest;
+import com.gwppcore.modChest.BASE.Renderer_BaseChest;
+import com.gwppcore.modChest.Steel_Chest.ItemRendererSteelChest;
+import com.gwppcore.modChest.Steel_Chest.SteelChest;
+import com.gwppcore.modChest.Steel_Chest.TESteelChest;
 import com.gwppcore.modChest.WroughtIron_Chest.WroughtIronChest;
 import com.gwppcore.modChest.WroughtIron_Chest.ItemRendererWroughtIronChest;
 import com.gwppcore.modChest.WroughtIron_Chest.TEWroughtIronChest;
@@ -41,8 +44,11 @@ public class MainLoader {
     public static void preInit() {
         ProgressManager.ProgressBar progressBarLoad = ProgressManager.push(Refstrings.MODID +" Pre Init", 3);
         progressBarLoad.step("Chests");
-        GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "CompressedChest");
-        GameRegistry.registerTileEntity(TEWroughtIronChest.class, "Avaritiaddons:CompressedChest");
+        GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "Wrought Iron Chest");
+        GameRegistry.registerTileEntity(TEWroughtIronChest.class, "impact:WroughtIronChest");
+
+        GameRegistry.registerBlock(SteelChest.instance, Item_BaseChest.class, "Steel Chest");
+        GameRegistry.registerTileEntity(TESteelChest.class, "impact:SteelChest");
 
 
         progressBarLoad.step("GT Pump");
@@ -59,6 +65,9 @@ public class MainLoader {
     {
         ClientRegistry.bindTileEntitySpecialRenderer(TEWroughtIronChest.class, Renderer_BaseChest.instance);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(WroughtIronChest.instance), new ItemRendererWroughtIronChest());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TESteelChest.class, Renderer_BaseChest.instance);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteelChest.instance), new ItemRendererSteelChest());
     }
 
     public static void load() {
