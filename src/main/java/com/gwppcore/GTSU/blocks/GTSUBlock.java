@@ -32,6 +32,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
+import static com.gwppcore.guihandler.GUIHandler.GUI_ID_GTSU;
+
 public class GTSUBlock extends Block{
 
     @Override
@@ -52,7 +54,7 @@ public class GTSUBlock extends Block{
             return true;
         }
 		if (!player.isSneaking()) {
-            player.openGui(gwppcore.instance, 0, world, x, y, z);
+            player.openGui(gwppcore.instance, GUI_ID_GTSU, world, x, y, z);
             return true;
         }
         return false;

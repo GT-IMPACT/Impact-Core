@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ContainerGTSU extends ContainerFullInv<TileEntityGTSU> {
 
-	public ContainerGTSU(EntityPlayer player,  TileEntityGTSU tileentity) {
+	public ContainerGTSU(TileEntityGTSU tileentity, EntityPlayer player) {
 		super(player, tileentity, 179, 166);
 		for (int i = 0; i < 4; i++){
 			addSlotToContainer(new SlotArmor(player.inventory, i, 152, 5 + i * 18));
