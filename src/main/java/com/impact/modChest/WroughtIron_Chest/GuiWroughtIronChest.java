@@ -1,5 +1,6 @@
 package com.impact.modChest.WroughtIron_Chest;
 
+import com.impact.lib.Refstrings;
 import com.impact.modChest.BASE.Gui_BaseChest;
 import com.impact.modChest.BASE.TE_BaseChest;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,7 +26,7 @@ public final class GuiWroughtIronChest extends Gui_BaseChest
 		return TEWroughtIronChest;
 	}
 	protected ResourceLocation getPathTexture(){
-		return new ResourceLocation("gwppcore", "textures/gui/WroughtIronChest.png");
+		return new ResourceLocation(Refstrings.MODID, "textures/gui/WroughtIronChest.png");
 	}
 	protected int getXSize(){
 		return 175;

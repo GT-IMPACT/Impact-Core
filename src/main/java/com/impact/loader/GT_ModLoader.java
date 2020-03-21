@@ -24,6 +24,7 @@ public class GT_ModLoader {
 	private static final LaserEngraverRecipe LaserEngraverRecipe = new LaserEngraverRecipe();
 	private static final FormingPressRecipe FormingPressRecipe = new FormingPressRecipe();
 	private static final ChemicalBathRecipe ChemicalBathRecipe = new ChemicalBathRecipe();
+	private static final AssemblerRecipe AssemblerRecipe = new AssemblerRecipe();
 
 	public static void run()
     {
@@ -40,5 +41,6 @@ public class GT_ModLoader {
 		LaserEngraverRecipe.run();
 		FormingPressRecipe.run();
 		ChemicalBathRecipe.run();
+		AssemblerRecipe.run();
     }
 }

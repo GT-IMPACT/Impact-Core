@@ -1,4 +1,4 @@
-//package com.gwppcore.GregTech.tileentities.multi;
+//package com.impact.GregTech.tileentities.multi;
 //
 //import gregtech.api.GregTech_API;
 //import gregtech.api.enums.Textures;

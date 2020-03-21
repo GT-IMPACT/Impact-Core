@@ -2,12 +2,12 @@ package com.impact.lib;
 
 public final class Refstrings {
 	
-	public static final String MODID = "gwppcore";
-	public static final String NAME = "GWPP CORE";
+	public static final String MODID = "impact";
+	public static final String NAME = "IMPACT CORE";
 	public static final String VERSION = "GRADLETOKEN_VERSION";
-	public static final String CLIENTSIDE = "com.gwppcore.main.ClientProxy";
-	public static final String SERVERSIDE = "com.gwppcore.main.CommonProxy";
-	public static final String COLLECTIONID = "GWPPCore";
+	public static final String CLIENTSIDE = "com.impact.main.ClientProxy";
+	public static final String SERVERSIDE = "com.impact.main.CommonProxy";
+	public static final String COLLECTIONID = "impact";
 
     private Refstrings() {}
 }

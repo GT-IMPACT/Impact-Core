@@ -1,5 +1,6 @@
 package com.impact.modChest.chestHSLA;
 
+import com.impact.lib.Refstrings;
 import com.impact.modChest.BASE.Gui_BaseChest;
 import com.impact.modChest.BASE.TE_BaseChest;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,7 +25,7 @@ public final class GuiChestHSLA extends Gui_BaseChest
 		return TEChestHSLA;
 	}
 	protected ResourceLocation getPathTexture(){
-		return new ResourceLocation("gwppcore", "textures/gui/ChestHSLA.png");
+		return new ResourceLocation(Refstrings.MODID, "textures/gui/ChestHSLA.png");
 	}
 	protected int getXSize(){
 		return 211;

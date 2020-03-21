@@ -1,5 +1,6 @@
 package com.impact.modChest.chestNt;
 
+import com.impact.lib.Refstrings;
 import com.impact.modChest.BASE.Gui_BaseChest;
 import com.impact.modChest.BASE.TE_BaseChest;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,7 +25,7 @@ public final class GuiChestNt extends Gui_BaseChest
 		return TEChestNt;
 	}
 	protected ResourceLocation getPathTexture(){
-		return new ResourceLocation("gwppcore", "textures/gui/ChestNt.png");
+		return new ResourceLocation(Refstrings.MODID, "textures/gui/ChestNt.png");
 	}
 	protected int getXSize(){
 		return 428;

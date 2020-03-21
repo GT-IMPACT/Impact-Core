@@ -1,5 +1,6 @@
 package com.impact.modChest.chestAL;
 
+import com.impact.lib.Refstrings;
 import com.impact.modChest.BASE.TE_BaseChest;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public final class TEChestAl extends TE_BaseChest
 {
-	public static ResourceLocation MODEL_CHEST = new ResourceLocation("gwppcore", "textures/entity/chestAl.png");
+	public static ResourceLocation MODEL_CHEST = new ResourceLocation(Refstrings.MODID, "textures/entity/chestAl.png");
 
 	public TEChestAl() {
 		super(64, 81);

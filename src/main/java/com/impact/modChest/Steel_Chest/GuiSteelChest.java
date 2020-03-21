@@ -1,5 +1,6 @@
 package com.impact.modChest.Steel_Chest;
 
+import com.impact.lib.Refstrings;
 import com.impact.modChest.BASE.Gui_BaseChest;
 import com.impact.modChest.BASE.TE_BaseChest;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,7 +25,7 @@ public final class GuiSteelChest extends Gui_BaseChest
 		return TESteelChest;
 	}
 	protected ResourceLocation getPathTexture(){
-		return new ResourceLocation("gwppcore", "textures/gui/SteelChest.png");
+		return new ResourceLocation(Refstrings.MODID, "textures/gui/SteelChest.png");
 	}
 	protected int getXSize(){
 		return 175;
