@@ -17,19 +17,19 @@ public class ContainerWroughtIronChest extends Container_BaseChest
 
 	@Override
 	public int getSlot(){
-		return 36;
-	}
+		return 45;
+	} // Общее количество слотов
 	protected int getX(){
 		return 9;
-	}
+	}  // Количество слотов в ряду
 	protected int getY(){
-		return 4;
-	}
+		return 5;
+	}  // Количество слотов в столбце
 	protected int getPosXInv(){
 		return 8;
-	}
+	}// Начала координаты инвентаря игрока по X
 	protected int getPosYInv(){
-		return 104;
-	}
+		return 122;
+	} // Начала координаты инвентаря игрока по Y
 
 }

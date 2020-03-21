@@ -9,10 +9,10 @@ import javax.annotation.Nonnull;
 
 public final class TEWroughtIronChest extends TE_BaseChest
 {
-	public static ResourceLocation MODEL_CHEST = new ResourceLocation("gwppcore", "textures/entity/WroughtIronChest.png");
+	public static ResourceLocation MODEL_CHEST = new ResourceLocation("gwppcore", "textures/entity/chestWroughtIron.png");
 
 	public TEWroughtIronChest() {
-		super(64, 36);
+		super(64, 45);
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public final class TEWroughtIronChest extends TE_BaseChest
 
 	@Override
 	public int invSize(){
-		return 36;
+		return 45;
 	}
 
 

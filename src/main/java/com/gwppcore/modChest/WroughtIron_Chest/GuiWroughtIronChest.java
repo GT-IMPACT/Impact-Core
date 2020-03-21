@@ -31,10 +31,10 @@ public final class GuiWroughtIronChest extends Gui_BaseChest
 		return 175;
 	}
 	protected int getYSize(){
-		return 185;
+		return 203;
 	}
 	protected int getScale(){
-		return 512;
+		return 500;
 	}
 	protected int getNamedPos(){
 		return 8;

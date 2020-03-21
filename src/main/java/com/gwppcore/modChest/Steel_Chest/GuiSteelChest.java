@@ -30,7 +30,7 @@ public final class GuiSteelChest extends Gui_BaseChest
 		return 175;
 	}
 	protected int getYSize(){
-		return 203;
+		return 239;
 	}
 	protected int getScale(){
 		return 500;

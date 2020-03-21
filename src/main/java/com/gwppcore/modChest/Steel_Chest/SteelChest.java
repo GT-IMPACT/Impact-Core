@@ -24,7 +24,7 @@ public final class SteelChest extends BaseChest
 		setBlockName("SteelChest")
 		.setHardness(5.0F)
 		.setStepSound(soundTypeMetal)
-		.setHarvestLevel("pickaxe", 0);
+		.setHarvestLevel("wrench", 0);
 	}
 
 	@Override
@@ -43,6 +43,6 @@ public final class SteelChest extends BaseChest
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(final IIconRegister iIconRegister)
 	{
-		this.blockIcon = iIconRegister.registerIcon("planks_big_oak");
+		this.blockIcon = iIconRegister.registerIcon("snow");
 	}
 }

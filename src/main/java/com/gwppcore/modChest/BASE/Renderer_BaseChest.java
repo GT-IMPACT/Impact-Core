@@ -17,7 +17,7 @@ public class Renderer_BaseChest extends TileEntitySpecialRenderer
 
 	private Renderer_BaseChest() {}
 
-	public void renderTileEntityAt(final TileEntity tileEntity, final double x, final double y, final double z, final float distance)
+	public void renderTileEntityAt( TileEntity tileEntity, double x, double y, double z, float distance)
 	{
 		final TE_BaseChest TEBaseChest = (TE_BaseChest) tileEntity;
 		bindTexture(TEBaseChest.getTexture());

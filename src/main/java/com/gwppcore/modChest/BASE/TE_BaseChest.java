@@ -237,4 +237,6 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 	@SideOnly(Side.CLIENT)
 	@Nonnull
 	protected abstract ResourceLocation getTexture();
+
+	public void removeAdornments() {}
 }

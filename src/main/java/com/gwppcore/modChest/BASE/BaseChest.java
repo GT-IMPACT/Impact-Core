@@ -45,7 +45,7 @@ public abstract class BaseChest extends BlockContainer
 	}
 
 	@Override
-	public final void breakBlock(final World world, final int x, final int y, final int z, final Block block, final int metadata)
+	public final void breakBlock( World world,  int x,  int y,  int z,  Block block,  int metadata)
 	{
 		final TE_BaseChest TEBaseChest = (TE_BaseChest) world.getTileEntity(x, y, z);
 		if (TEBaseChest != null) {
