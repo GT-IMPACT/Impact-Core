@@ -63,7 +63,4 @@ public abstract class Container_BaseChest extends Container
 	protected abstract int getY();
 	protected abstract int getPosXInv();
 	protected abstract int getPosYInv();
-
-
-
 }
