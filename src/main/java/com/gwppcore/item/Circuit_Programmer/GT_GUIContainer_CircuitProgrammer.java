@@ -1,5 +1,6 @@
 package com.gwppcore.item.Circuit_Programmer;
 
+import com.gwppcore.GTSU.container.ContainerGTSU;
 import com.gwppcore.lib.Refstrings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,15 +10,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import static com.gwppcore.lib.Refstrings.MODID;
 
 @SideOnly(Side.CLIENT)
 public class GT_GUIContainer_CircuitProgrammer extends GuiContainer {
 
     public static final ResourceLocation texture = new ResourceLocation(Refstrings.MODID, "textures/gui/GUI_Circuit.png");
 
-    public GT_GUIContainer_CircuitProgrammer(InventoryPlayer p_i1072_1_) {
-        super(new GT_Container_CircuitProgrammer(p_i1072_1_));
+    public GT_GUIContainer_CircuitProgrammer(GT_Container_CircuitProgrammer container) {
+        super(container);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class GT_GUIContainer_CircuitProgrammer extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
         GL11.glColor4f(1F, 1F, 1F, 1F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(GT_GUIContainer_CircuitProgrammer.texture);
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, 256, 190);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, 177, 183);
     }
 }

@@ -31,13 +31,13 @@ public class GT_Container_CircuitProgrammer extends Container {
         this.addSlotToContainer(new Slot(inv, 0, 81, 79));//-45, 84));
 
         for (int i = 1; i < 9; i++) {
-            this.addSlotToContainer(new GT_Slot_Holo(inv, i, 0 + i * 18, 22, false, false, 1));
+            this.addSlotToContainer(new GT_Slot_Holo(inv, i, i * 18, 22, false, false, 1));
         }
         for (int i = 1; i < 9; i++) {
-            this.addSlotToContainer(new GT_Slot_Holo(inv, i, 0 + i * 18, 40, false, false, 1));
+            this.addSlotToContainer(new GT_Slot_Holo(inv, i, i * 18, 40, false, false, 1));
         }
         for (int i = 1; i < 9; i++) {
-            this.addSlotToContainer(new GT_Slot_Holo(inv, i, 0 + i * 18, 58, false, false, 1));
+            this.addSlotToContainer(new GT_Slot_Holo(inv, i, i * 18, 58, false, false, 1));
         }
 
         for (int i = 0; i < 3; i++) {

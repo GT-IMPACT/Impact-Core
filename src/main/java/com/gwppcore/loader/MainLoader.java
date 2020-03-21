@@ -16,6 +16,18 @@ import com.gwppcore.modChest.Steel_Chest.TESteelChest;
 import com.gwppcore.modChest.WroughtIron_Chest.WroughtIronChest;
 import com.gwppcore.modChest.WroughtIron_Chest.ItemRendererWroughtIronChest;
 import com.gwppcore.modChest.WroughtIron_Chest.TEWroughtIronChest;
+import com.gwppcore.modChest.chestAL.ChestAl;
+import com.gwppcore.modChest.chestAL.ItemRendererChestAl;
+import com.gwppcore.modChest.chestAL.TEChestAl;
+import com.gwppcore.modChest.chestHSLA.ChestHSLA;
+import com.gwppcore.modChest.chestHSLA.ItemRendererChestHSLA;
+import com.gwppcore.modChest.chestHSLA.TEChestHSLA;
+import com.gwppcore.modChest.chestTi.ChestTi;
+import com.gwppcore.modChest.chestTi.ItemRendererChestTi;
+import com.gwppcore.modChest.chestTi.TEChestTi;
+import com.gwppcore.modChest.chestW.ChestW;
+import com.gwppcore.modChest.chestW.ItemRendererChestW;
+import com.gwppcore.modChest.chestW.TEChestW;
 import com.gwppcore.oredict.OreDictHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.ProgressManager;
@@ -43,12 +55,20 @@ public class MainLoader {
 
     public static void preInit() {
         ProgressManager.ProgressBar progressBarLoad = ProgressManager.push(Refstrings.MODID +" Pre Init", 3);
+
         progressBarLoad.step("Chests");
         GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "Wrought Iron Chest");
-        GameRegistry.registerTileEntity(TEWroughtIronChest.class, "impact:WroughtIronChest");
-
+            GameRegistry.registerTileEntity(TEWroughtIronChest.class, "impact:WroughtIronChest");
         GameRegistry.registerBlock(SteelChest.instance, Item_BaseChest.class, "Steel Chest");
-        GameRegistry.registerTileEntity(TESteelChest.class, "impact:SteelChest");
+            GameRegistry.registerTileEntity(TESteelChest.class, "impact:SteelChest");
+        GameRegistry.registerBlock(ChestAl.instance, Item_BaseChest.class, "Aluminium Chest");
+            GameRegistry.registerTileEntity(TEChestAl.class, "impact:AluminiumChest");
+        GameRegistry.registerBlock(ChestHSLA.instance, Item_BaseChest.class, "HSLA Chest");
+            GameRegistry.registerTileEntity(TEChestHSLA.class, "impact:HSLAChest");
+        GameRegistry.registerBlock(ChestTi.instance, Item_BaseChest.class, "Titanium Chest");
+            GameRegistry.registerTileEntity(TEChestTi.class, "impact:TitaniumChest");
+        GameRegistry.registerBlock(ChestW.instance, Item_BaseChest.class, "Tungsten Steel Chest");
+            GameRegistry.registerTileEntity(TEChestW.class, "impact:TungstenSteelChest");
 
 
         progressBarLoad.step("GT Pump");
@@ -68,6 +88,18 @@ public class MainLoader {
 
         ClientRegistry.bindTileEntitySpecialRenderer(TESteelChest.class, Renderer_BaseChest.instance);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteelChest.instance), new ItemRendererSteelChest());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestAl.class, Renderer_BaseChest.instance);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestAl.instance), new ItemRendererChestAl());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestHSLA.class, Renderer_BaseChest.instance);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestHSLA.instance), new ItemRendererChestHSLA());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestTi.class, Renderer_BaseChest.instance);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestTi.instance), new ItemRendererChestTi());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestW.class, Renderer_BaseChest.instance);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestW.instance), new ItemRendererChestW());
     }
 
     public static void load() {
@@ -96,12 +128,14 @@ public class MainLoader {
     public static void postInit() {
         ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push(Refstrings.MODID +" Post Init", 1);
 
-        progressBarPostLoad.step("GUI Circuit Programmer");
+        progressBarPostLoad.step("GUI");
         NetworkRegistry.INSTANCE.registerGuiHandler(gwppcore.instance, new GUIHandler());
 
 
         ProgressManager.pop(progressBarPostLoad);
     }
+
+
     private static void registerSingleIC2StorageBlocks() {
         GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
         for (int i = 0; i < TierHelper.V.length; i++)

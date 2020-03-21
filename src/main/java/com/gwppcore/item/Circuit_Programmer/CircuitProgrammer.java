@@ -1,6 +1,7 @@
 package com.gwppcore.item.Circuit_Programmer;
 
 import com.gwppcore.gwppcore;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
@@ -12,13 +13,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
 import java.util.List;
 
 import static com.gwppcore.guihandler.GUIHandler.GUI_ID_CIRCUITPROGRAMMER;
+import static com.gwppcore.guihandler.GUIHandler.GUI_ID_SteelChest;
 
 public class CircuitProgrammer extends GT_Generic_Item implements IElectricItem {
 
@@ -39,7 +38,7 @@ public class CircuitProgrammer extends GT_Generic_Item implements IElectricItem 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (ElectricItem.manager.use(aStack, 100, aPlayer)) {
-            aPlayer.openGui(gwppcore.instance, GUI_ID_CIRCUITPROGRAMMER, aWorld, 0, 0, 0);
+            FMLNetworkHandler.openGui(aPlayer, gwppcore.instance, 10, aWorld, 0, 0, 0);
         }
         return aStack;
     }
