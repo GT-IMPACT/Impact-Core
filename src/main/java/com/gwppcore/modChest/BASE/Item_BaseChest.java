@@ -25,9 +25,7 @@ public class Item_BaseChest extends ItemBlock
 	@SideOnly(Side.CLIENT)
 	public void addInformation(final ItemStack itemStack, final EntityPlayer entityPlayer, final List list, final boolean bool)
 	{
-		list.add("");
 		list.add(EnumChatFormatting.YELLOW +"Warning! When break chest, item not dropped");
-		list.add("");
 	}
 
 

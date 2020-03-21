@@ -19,9 +19,21 @@ import com.gwppcore.modChest.WroughtIron_Chest.TEWroughtIronChest;
 import com.gwppcore.modChest.chestAL.ChestAl;
 import com.gwppcore.modChest.chestAL.ItemRendererChestAl;
 import com.gwppcore.modChest.chestAL.TEChestAl;
+import com.gwppcore.modChest.chestCr.ChestCr;
+import com.gwppcore.modChest.chestCr.ItemRendererChestCr;
+import com.gwppcore.modChest.chestCr.TEChestCr;
 import com.gwppcore.modChest.chestHSLA.ChestHSLA;
 import com.gwppcore.modChest.chestHSLA.ItemRendererChestHSLA;
 import com.gwppcore.modChest.chestHSLA.TEChestHSLA;
+import com.gwppcore.modChest.chestIr.ChestIr;
+import com.gwppcore.modChest.chestIr.ItemRendererChestIr;
+import com.gwppcore.modChest.chestIr.TEChestIr;
+import com.gwppcore.modChest.chestNt.ChestNt;
+import com.gwppcore.modChest.chestNt.ItemRendererChestNt;
+import com.gwppcore.modChest.chestNt.TEChestNt;
+import com.gwppcore.modChest.chestOs.ChestOs;
+import com.gwppcore.modChest.chestOs.ItemRendererChestOs;
+import com.gwppcore.modChest.chestOs.TEChestOs;
 import com.gwppcore.modChest.chestTi.ChestTi;
 import com.gwppcore.modChest.chestTi.ItemRendererChestTi;
 import com.gwppcore.modChest.chestTi.TEChestTi;
@@ -69,7 +81,14 @@ public class MainLoader {
             GameRegistry.registerTileEntity(TEChestTi.class, "impact:TitaniumChest");
         GameRegistry.registerBlock(ChestW.instance, Item_BaseChest.class, "Tungsten Steel Chest");
             GameRegistry.registerTileEntity(TEChestW.class, "impact:TungstenSteelChest");
-
+        GameRegistry.registerBlock(ChestCr.instance, Item_BaseChest.class, "Chrome Chest");
+            GameRegistry.registerTileEntity(TEChestCr.class, "impact:ChromeChest");
+        GameRegistry.registerBlock(ChestIr.instance, Item_BaseChest.class, "Iridium Chest");
+            GameRegistry.registerTileEntity(TEChestIr.class, "impact:IridiumChest");
+        GameRegistry.registerBlock(ChestOs.instance, Item_BaseChest.class, "Osmium Chest");
+            GameRegistry.registerTileEntity(TEChestOs.class, "impact:OsmiumChest");
+        GameRegistry.registerBlock(ChestNt.instance, Item_BaseChest.class, "Neutronium Chest");
+            GameRegistry.registerTileEntity(TEChestNt.class, "impact:NeutroniumChest");
 
         progressBarLoad.step("GT Pump");
         ItemRegistery.GregtechPump();
@@ -84,22 +103,25 @@ public class MainLoader {
     public static void preInitClient()
     {
         ClientRegistry.bindTileEntitySpecialRenderer(TEWroughtIronChest.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(WroughtIronChest.instance), new ItemRendererWroughtIronChest());
-
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(WroughtIronChest.instance), new ItemRendererWroughtIronChest());
         ClientRegistry.bindTileEntitySpecialRenderer(TESteelChest.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteelChest.instance), new ItemRendererSteelChest());
-
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteelChest.instance), new ItemRendererSteelChest());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestAl.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestAl.instance), new ItemRendererChestAl());
-
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestAl.instance), new ItemRendererChestAl());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestHSLA.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestHSLA.instance), new ItemRendererChestHSLA());
-
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestHSLA.instance), new ItemRendererChestHSLA());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestTi.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestTi.instance), new ItemRendererChestTi());
-
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestTi.instance), new ItemRendererChestTi());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestW.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestW.instance), new ItemRendererChestW());
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestW.instance), new ItemRendererChestW());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestCr.class, Renderer_BaseChest.instance);
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestCr.instance), new ItemRendererChestCr());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestIr.class, Renderer_BaseChest.instance);
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestIr.instance), new ItemRendererChestIr());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestOs.class, Renderer_BaseChest.instance);
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestOs.instance), new ItemRendererChestOs());
+        ClientRegistry.bindTileEntitySpecialRenderer(TEChestNt.class, Renderer_BaseChest.instance);
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestNt.instance), new ItemRendererChestNt());
     }
 
     public static void load() {

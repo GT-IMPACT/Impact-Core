@@ -8,6 +8,10 @@ tile.AlChest.name= Aluminium Chest
 tile.HSLAChest.name= HSLA Chest
 tile.TitaniumChest.name= Titanium Chest
 tile.TungstenSteelChest.name= Tungsten Steel Chest
+tile.ChromeChest.name= Chrome Chest
+tile.IridiumChest.name= Iridium Chest
+tile.OsmiumChest.name= Osmium Chest
+tile.NeutroniumChest.name= Neutronium Chest
 
 #Glass
 tile.GlassBlock1.name= Fake TecTech Glass

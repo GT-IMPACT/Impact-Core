@@ -14,9 +14,21 @@ import com.gwppcore.modChest.WroughtIron_Chest.TEWroughtIronChest;
 import com.gwppcore.modChest.chestAL.ContainerChestAl;
 import com.gwppcore.modChest.chestAL.GuiChestAl;
 import com.gwppcore.modChest.chestAL.TEChestAl;
+import com.gwppcore.modChest.chestCr.ContainerChestCr;
+import com.gwppcore.modChest.chestCr.GuiChestCr;
+import com.gwppcore.modChest.chestCr.TEChestCr;
 import com.gwppcore.modChest.chestHSLA.ContainerChestHSLA;
 import com.gwppcore.modChest.chestHSLA.GuiChestHSLA;
 import com.gwppcore.modChest.chestHSLA.TEChestHSLA;
+import com.gwppcore.modChest.chestIr.ContainerChestIr;
+import com.gwppcore.modChest.chestIr.GuiChestIr;
+import com.gwppcore.modChest.chestIr.TEChestIr;
+import com.gwppcore.modChest.chestNt.ContainerChestNt;
+import com.gwppcore.modChest.chestNt.GuiChestNt;
+import com.gwppcore.modChest.chestNt.TEChestNt;
+import com.gwppcore.modChest.chestOs.ContainerChestOs;
+import com.gwppcore.modChest.chestOs.GuiChestOs;
+import com.gwppcore.modChest.chestOs.TEChestOs;
 import com.gwppcore.modChest.chestTi.ContainerChestTi;
 import com.gwppcore.modChest.chestTi.GuiChestTi;
 import com.gwppcore.modChest.chestTi.TEChestTi;
@@ -31,8 +43,10 @@ import net.minecraft.world.World;
 
 public class GUIHandler implements IGuiHandler {
 
-    public static final int GUI_ID_CIRCUITPROGRAMMER = 10, GUI_ID_GTSU = 0, GUI_ID_WroughtIronChest = 1, GUI_ID_SteelChest = 2,
-            GUI_ID_AlChest = 3, GUI_ID_HSLA = 4, GUI_ID_TiChest = 5, GUI_ID_WChest = 6;
+    public static final int GUI_ID_CIRCUITPROGRAMMER = 20, GUI_ID_GTSU = 0, GUI_ID_WroughtIronChest = 1, GUI_ID_SteelChest = 2,
+            GUI_ID_AlChest = 3, GUI_ID_HSLA = 4, GUI_ID_TiChest = 5, GUI_ID_WChest = 6, GUI_ID_CrChest = 7, GUI_ID_IrChest = 8,
+            GUI_ID_OsChest = 9, GUI_ID_NtChest = 10
+            ;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -61,6 +75,18 @@ public class GUIHandler implements IGuiHandler {
             case GUI_ID_WChest:
                 if (entity instanceof TEChestW)
                     return new ContainerChestW((TEChestW) entity, player.inventory);
+            case GUI_ID_CrChest:
+                if (entity instanceof TEChestCr)
+                    return new ContainerChestCr((TEChestCr) entity, player.inventory);
+            case GUI_ID_IrChest:
+                if (entity instanceof TEChestIr)
+                    return new ContainerChestIr((TEChestIr) entity, player.inventory);
+            case GUI_ID_OsChest:
+                if (entity instanceof TEChestOs)
+                    return new ContainerChestOs((TEChestOs) entity, player.inventory);
+            case GUI_ID_NtChest:
+                if (entity instanceof TEChestNt)
+                    return new ContainerChestNt((TEChestNt) entity, player.inventory);
 
 
 
@@ -98,6 +124,18 @@ public class GUIHandler implements IGuiHandler {
                 case GUI_ID_WChest:
                     if (entity instanceof TEChestW)
                         return new GuiChestW((TEChestW) entity, player.inventory);
+                case GUI_ID_CrChest:
+                    if (entity instanceof TEChestCr)
+                        return new GuiChestCr((TEChestCr) entity, player.inventory);
+                case GUI_ID_IrChest:
+                    if (entity instanceof TEChestIr)
+                        return new GuiChestIr((TEChestIr) entity, player.inventory);
+                case GUI_ID_OsChest:
+                    if (entity instanceof TEChestOs)
+                        return new GuiChestOs((TEChestOs) entity, player.inventory);
+                case GUI_ID_NtChest:
+                    if (entity instanceof TEChestNt)
+                        return new GuiChestNt((TEChestNt) entity, player.inventory);
 
 
                 case GUI_ID_CIRCUITPROGRAMMER:
