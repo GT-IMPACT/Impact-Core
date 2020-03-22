@@ -1,6 +1,6 @@
 package com.impact.block;
 
-import com.impact.lib.Refstrings;
+import com.impact.System.Refstrings;
 import com.impact.impact;
 import eu.usrv.yamcore.blocks.ModBlockManager;
 import eu.usrv.yamcore.blocks.ModSimpleBaseBlock;

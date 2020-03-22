@@ -1,6 +1,6 @@
 package com.impact.item.Circuit_Programmer;
 
-import com.impact.lib.Refstrings;
+import com.impact.System.Refstrings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;

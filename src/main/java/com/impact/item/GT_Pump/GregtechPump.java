@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import com.impact.item.GT_Pump.api.AutoMap;
-import com.impact.lib.Refstrings;
+import com.impact.System.Refstrings;
 import com.impact.util.Utilits;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -50,7 +50,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
-import static com.impact.item.ItemRegistery.toolGregtechPump;
+import static com.impact.loader.ItemRegistery.toolGregtechPump;
 import static gregtech.api.enums.GT_Values.V;
 
 public class GregtechPump extends Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
@@ -106,7 +106,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                 aEuMax, // Eu Storage
                 (short) aTier, // Tier
                 "Can be used to remove fluids from GT machine input & output slots.", // Tooltip
-                aTier <= 0 ? EnumRarity.common : aTier == 1 ? EnumRarity.uncommon : aTier == 2 ? EnumRarity.rare : aTier == 3 ? EnumRarity.epic : EnumRarity.common, // Rarity
+                EnumRarity.common, // Rarity
                 EnumChatFormatting.GRAY, // Desc colour
                 false // Effect?
         );

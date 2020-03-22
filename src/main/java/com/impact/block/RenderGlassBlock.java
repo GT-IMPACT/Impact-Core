@@ -1,6 +1,6 @@
 package com.impact.block;
 
-import com.impact.lib.Refstrings;
+import com.impact.System.Refstrings;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;

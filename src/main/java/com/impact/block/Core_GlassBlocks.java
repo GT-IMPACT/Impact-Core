@@ -1,6 +1,6 @@
 package com.impact.block;
 
-import com.impact.lib.Refstrings;
+import com.impact.System.Refstrings;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
