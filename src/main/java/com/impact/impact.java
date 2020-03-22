@@ -1,17 +1,17 @@
 package com.impact;
 
 import com.impact.block.BlockList;
-import com.impact.command.*;
-import com.impact.config.CoreModConfig;
-import com.impact.creativetab.ModTabList;
-import com.impact.fluids.FluidList;
-import com.impact.GregTech.GTregister.GT_Materials;
-import com.impact.item.ItemList;
-import com.impact.lib.Refstrings;
+import com.impact.util.command.*;
+import com.impact.System.CoreModConfig;
+import com.impact.System.ModTabList;
+import com.impact.loader.FluidList;
+import com.impact.mods.GregTech.GTregister.GT_Materials;
+import com.impact.loader.ItemList;
+import com.impact.System.Refstrings;
 import com.impact.loader.MainLoader;
-import com.impact.main.CommonProxy;
-import com.impact.modctt.CustomToolTipsHandler;
-import com.impact.network.CoreModDispatcher;
+import com.impact.System.CommonProxy;
+import com.impact.util.modctt.CustomToolTipsHandler;
+import com.impact.util.network.CoreModDispatcher;
 import com.impact.util.SendUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -26,7 +26,7 @@ import eu.usrv.yamcore.items.ModItemManager;
 import gregtech.GT_Mod;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import com.impact.loginhandler.LoginHandler;
+import com.impact.System.LoginHandler;
 
 import java.io.*;
 import java.util.Random;
@@ -59,16 +59,14 @@ public class impact {
 	public static LogHelper Logger = new LogHelper(Refstrings.MODID);
     public static SendUtils SendUtils_instance = new SendUtils();
 
-    public static void AddLoginError(String pMessage)
-    {
+    public static void AddLoginError(String pMessage) {
 		if (Module_AdminErrorLogs != null) {
             Module_AdminErrorLogs.AddErrorLogOnAdminJoin(pMessage);
         }
     }
 
 	@Mod.EventHandler
-    public void PreLoad(FMLPreInitializationEvent PreEvent)
-    {
+    public void PreLoad(FMLPreInitializationEvent PreEvent) {
 		Logger.setDebugOutput(true);
 
 	    Rnd = new Random(System.currentTimeMillis());
@@ -81,8 +79,7 @@ public class impact {
         }
      // ------------------------------------------------------------
 
-        if (CoreConfig.ModAdminErrorLogs_Enabled)
-        {
+        if (CoreConfig.ModAdminErrorLogs_Enabled) {
             Logger.debug("Module_AdminErrorLogs is enabled");
             Module_AdminErrorLogs = new IngameErrorLog();
         }
@@ -119,8 +116,7 @@ public class impact {
         
      // ------------------------------------------------------------
         Logger.debug("PRELOAD Create Items");
-        if (!ItemList.AddToItemManager(ItemManager))
-        {
+        if (!ItemList.AddToItemManager(ItemManager)) {
             Logger.warn("Some items failed to register. Check the logfile for details");
             AddLoginError("[CoreMod-Items] Some items failed to register. Check the logfile for details");
         }
@@ -128,8 +124,7 @@ public class impact {
 
      // ------------------------------------------------------------
         Logger.info("PRELOAD Create Blocks");
-        if (!BlockList.AddToItemManager(BlockManager))
-        {
+        if (!BlockList.AddToItemManager(BlockManager)) {
             Logger.warn("Some blocks failed to register. Check the logfile for details");
             AddLoginError("[CoreMod-Blocks] Some blocks failed to register. Check the logfile for details");
         }
@@ -140,8 +135,7 @@ public class impact {
         // Init Modules
         Logger.debug("PRELOAD Init Modules");
 
-        if (CoreConfig.ModCustomToolTips_Enabled)
-        {
+        if (CoreConfig.ModCustomToolTips_Enabled) {
             //Logger.debug("Module_HazardousItems is enabled");
             Module_CustomToolTips = new CustomToolTipsHandler();
             // Module_CustomToolTips.LoadConfig();
@@ -150,8 +144,7 @@ public class impact {
      // ------------------------------------------------------------
         Logger.debug("PRELOAD Create Fluids");
         FluidManager = new ModFluidManager(Refstrings.MODID);
-        if (!FluidList.AddToItemManager(FluidManager))
-        {
+        if (!FluidList.AddToItemManager(FluidManager)) {
             Logger.warn("Some fluids failed to register. Check the logfile for details");
             AddLoginError("[CoreMod-Fluids] Some fluids failed to register. Check the logfile for details");
         }
@@ -166,8 +159,7 @@ public class impact {
         Logger.debug("LOAD Register Fluids");
         FluidManager.RegisterItems(TabManager);
 
-        if (CoreConfig.ModLoginMessage_Enabled)
-        {
+        if (CoreConfig.ModLoginMessage_Enabled) {
             FMLCommonHandler.instance().bus().register(new LoginHandler());
         }
         Logger.warn( "==================================================" );
@@ -179,16 +171,14 @@ public class impact {
     }
 	
 	@Mod.EventHandler
-    public void load(FMLInitializationEvent event)
-    {
+    public void load(FMLInitializationEvent event) {
 		// register events in modules
         RegisterModuleEvents();
 
         MainLoader.load();
     }
 
-	private void RegisterModuleEvents()
-    {
+	private void RegisterModuleEvents() {
 		if (CoreConfig.ModAdminErrorLogs_Enabled) {
             FMLCommonHandler.instance().bus().register(Module_AdminErrorLogs);
         }
@@ -201,24 +191,21 @@ public class impact {
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         MainLoader.preInit();
         MainLoader.preInitClient();
 
     }
 
 	@Mod.EventHandler
-    public void PostLoad(FMLPostInitializationEvent PostEvent)
-    {
+    public void PostLoad(FMLPostInitializationEvent PostEvent) {
 		if (CoreConfig.ModCustomToolTips_Enabled) Module_CustomToolTips.LoadConfig();
 
         MainLoader.postLoad();
     }
 
 	@Mod.EventHandler
-    public void serverLoad(FMLServerStartingEvent pEvent)
-    {
+    public void serverLoad(FMLServerStartingEvent pEvent) {
 
 		if (CoreConfig.ModCustomToolTips_Enabled) {
             pEvent.registerServerCommand(new CustomToolTipsCommand());
