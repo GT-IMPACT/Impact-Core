@@ -19,13 +19,14 @@ public class GT_ModLoader {
 	private static final HandRecipe CraftingRecipeLoader = new HandRecipe();
 	private static final GT_WorldGenRegister Worldgenloader = new GT_WorldGenRegister();
 
-	private static final DEBUG_Recipe MachineRecipeLoader = new DEBUG_Recipe();
-	private static final com.impact.recipes.machines.CentrifugeRecipe CentrifugeRecipe = new CentrifugeRecipe();
+	private static final DEBUG_Recipe DEBUG_Recipe = new DEBUG_Recipe();
+	private static final CentrifugeRecipe CentrifugeRecipe = new CentrifugeRecipe();
 	private static final PulveriserRecipe PulveriserRecipe = new PulveriserRecipe();
-	private static final com.impact.recipes.machines.LaserEngraverRecipe LaserEngraverRecipe = new LaserEngraverRecipe();
-	private static final com.impact.recipes.machines.FormingPressRecipe FormingPressRecipe = new FormingPressRecipe();
-	private static final com.impact.recipes.machines.ChemicalBathRecipe ChemicalBathRecipe = new ChemicalBathRecipe();
-	private static final com.impact.recipes.machines.AssemblerRecipe AssemblerRecipe = new AssemblerRecipe();
+	private static final LaserEngraverRecipe LaserEngraverRecipe = new LaserEngraverRecipe();
+	private static final FormingPressRecipe FormingPressRecipe = new FormingPressRecipe();
+	private static final ChemicalBathRecipe ChemicalBathRecipe = new ChemicalBathRecipe();
+	private static final AssemblerRecipe AssemblerRecipe = new AssemblerRecipe();
+	private static final FreezSolidifier FreezSolidifier = new FreezSolidifier();
 
 	public static void run()
     {
@@ -36,12 +37,13 @@ public class GT_ModLoader {
 		CraftingRecipeLoader.run();
 		Worldgenloader.run();
 	/** ========================= */
-		MachineRecipeLoader.run();
+		DEBUG_Recipe.run();
 		CentrifugeRecipe.run();
 		PulveriserRecipe.run();
 		LaserEngraverRecipe.run();
 		FormingPressRecipe.run();
 		ChemicalBathRecipe.run();
 		AssemblerRecipe.run();
+		FreezSolidifier.run();
     }
 }
