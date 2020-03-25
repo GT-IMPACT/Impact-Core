@@ -1,6 +1,7 @@
 package com.impact;
 
 import com.impact.block.BlockList;
+import com.impact.mods.GregTech.GTregister.GT_Item_Block_And_Fluid;
 import com.impact.util.command.*;
 import com.impact.System.CoreModConfig;
 import com.impact.System.ModTabList;
@@ -226,6 +227,11 @@ public class impact {
     public void Init(FMLPostInitializationEvent init)
     {
         MainLoader.Init();
+    }
+
+    @Mod.EventHandler
+    public void onPreLoad(FMLPreInitializationEvent aEvent) {
+        new GT_Item_Block_And_Fluid().run();
     }
 
 }
