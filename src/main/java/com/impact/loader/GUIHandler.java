@@ -35,6 +35,8 @@ import com.impact.mods.modChest.chestTi.TEChestTi;
 import com.impact.mods.modChest.chestW.ContainerChestW;
 import com.impact.mods.modChest.chestW.GuiChestW;
 import com.impact.mods.modChest.chestW.TEChestW;
+import com.impact.mods.modSolar.client.GuiAdvSolarPanel;
+import com.impact.mods.modSolar.common.TE.TileEntitySolarPanel;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +47,7 @@ public class GUIHandler implements IGuiHandler {
 
     public static final int GUI_ID_CIRCUITPROGRAMMER = 20, GUI_ID_GTSU = 0, GUI_ID_WroughtIronChest = 1, GUI_ID_SteelChest = 2,
             GUI_ID_AlChest = 3, GUI_ID_HSLA = 4, GUI_ID_TiChest = 5, GUI_ID_WChest = 6, GUI_ID_CrChest = 7, GUI_ID_IrChest = 8,
-            GUI_ID_OsChest = 9, GUI_ID_NtChest = 10
+            GUI_ID_OsChest = 9, GUI_ID_NtChest = 10, GUI_ID_Solar = 11
             ;
 
     @Override
@@ -87,7 +89,9 @@ public class GUIHandler implements IGuiHandler {
             case GUI_ID_NtChest:
                 if (entity instanceof TEChestNt)
                     return new ContainerChestNt((TEChestNt) entity, player.inventory);
-
+            case GUI_ID_Solar:
+                if (entity instanceof TileEntitySolarPanel)
+                    return ((TileEntitySolarPanel)entity).getGuiContainer(player.inventory);
 
 
             case GUI_ID_CIRCUITPROGRAMMER:
@@ -136,6 +140,9 @@ public class GUIHandler implements IGuiHandler {
                 case GUI_ID_NtChest:
                     if (entity instanceof TEChestNt)
                         return new GuiChestNt((TEChestNt) entity, player.inventory);
+                case GUI_ID_Solar:
+                    if (entity instanceof TileEntitySolarPanel)
+                        return new GuiAdvSolarPanel(player.inventory, (TileEntitySolarPanel) entity);
 
 
                 case GUI_ID_CIRCUITPROGRAMMER:
@@ -146,5 +153,4 @@ public class GUIHandler implements IGuiHandler {
 
         return null;
     }
-
 }

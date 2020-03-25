@@ -37,8 +37,10 @@ import com.impact.mods.modChest.chestTi.TEChestTi;
 import com.impact.mods.modChest.chestW.ChestW;
 import com.impact.mods.modChest.chestW.ItemRendererChestW;
 import com.impact.mods.modChest.chestW.TEChestW;
+import com.impact.mods.modSolar.ASP;
 import com.impact.util.oredict.OreDictHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -57,33 +59,35 @@ public class MainLoader {
 
     }
 
-    public static void preInit() {
+    public static void preInit(FMLPreInitializationEvent event) {
 
-            GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "WroughtIronChest");
-            GameRegistry.registerTileEntity(TEWroughtIronChest.class, "impact:WroughtIronChest");
-            GameRegistry.registerBlock(SteelChest.instance, Item_BaseChest.class, "SteelChest");
-            GameRegistry.registerTileEntity(TESteelChest.class, "impact:SteelChest");
-            GameRegistry.registerBlock(ChestAl.instance, Item_BaseChest.class, "AluminiumChest");
-            GameRegistry.registerTileEntity(TEChestAl.class, "impact:AluminiumChest");
-            GameRegistry.registerBlock(ChestHSLA.instance, Item_BaseChest.class, "HSLAChest");
-            GameRegistry.registerTileEntity(TEChestHSLA.class, "impact:HSLAChest");
-            GameRegistry.registerBlock(ChestTi.instance, Item_BaseChest.class, "TitaniumChest");
-            GameRegistry.registerTileEntity(TEChestTi.class, "impact:TitaniumChest");
-            GameRegistry.registerBlock(ChestW.instance, Item_BaseChest.class, "TungstenSteelChest");
-            GameRegistry.registerTileEntity(TEChestW.class, "impact:TungstenSteelChest");
-            GameRegistry.registerBlock(ChestCr.instance, Item_BaseChest.class, "ChromeChest");
-            GameRegistry.registerTileEntity(TEChestCr.class, "impact:ChromeChest");
-            GameRegistry.registerBlock(ChestIr.instance, Item_BaseChest.class, "IridiumChest");
-            GameRegistry.registerTileEntity(TEChestIr.class, "impact:IridiumChest");
-            GameRegistry.registerBlock(ChestOs.instance, Item_BaseChest.class, "OsmiumChest");
-            GameRegistry.registerTileEntity(TEChestOs.class, "impact:OsmiumChest");
-            GameRegistry.registerBlock(ChestNt.instance, Item_BaseChest.class, "NeutroniumChest");
-            GameRegistry.registerTileEntity(TEChestNt.class, "impact:NeutroniumChest");
+        GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "WroughtIronChest");
+        GameRegistry.registerTileEntity(TEWroughtIronChest.class, "impact:WroughtIronChest");
+        GameRegistry.registerBlock(SteelChest.instance, Item_BaseChest.class, "SteelChest");
+        GameRegistry.registerTileEntity(TESteelChest.class, "impact:SteelChest");
+        GameRegistry.registerBlock(ChestAl.instance, Item_BaseChest.class, "AluminiumChest");
+        GameRegistry.registerTileEntity(TEChestAl.class, "impact:AluminiumChest");
+        GameRegistry.registerBlock(ChestHSLA.instance, Item_BaseChest.class, "HSLAChest");
+        GameRegistry.registerTileEntity(TEChestHSLA.class, "impact:HSLAChest");
+        GameRegistry.registerBlock(ChestTi.instance, Item_BaseChest.class, "TitaniumChest");
+        GameRegistry.registerTileEntity(TEChestTi.class, "impact:TitaniumChest");
+        GameRegistry.registerBlock(ChestW.instance, Item_BaseChest.class, "TungstenSteelChest");
+        GameRegistry.registerTileEntity(TEChestW.class, "impact:TungstenSteelChest");
+        GameRegistry.registerBlock(ChestCr.instance, Item_BaseChest.class, "ChromeChest");
+        GameRegistry.registerTileEntity(TEChestCr.class, "impact:ChromeChest");
+        GameRegistry.registerBlock(ChestIr.instance, Item_BaseChest.class, "IridiumChest");
+        GameRegistry.registerTileEntity(TEChestIr.class, "impact:IridiumChest");
+        GameRegistry.registerBlock(ChestOs.instance, Item_BaseChest.class, "OsmiumChest");
+        GameRegistry.registerTileEntity(TEChestOs.class, "impact:OsmiumChest");
+        GameRegistry.registerBlock(ChestNt.instance, Item_BaseChest.class, "NeutroniumChest");
+        GameRegistry.registerTileEntity(TEChestNt.class, "impact:NeutroniumChest");
 
-            ItemRegistery.GregtechPump();
+        ItemRegistery.GregtechPump();
 
-           // ItemRegistery.CircuitProgrammer();
+        ItemRegistery.CircuitProgrammer();
 
+        //solar
+        ASP.preInit();
     }
 
     @SideOnly(Side.CLIENT)
@@ -113,11 +117,10 @@ public class MainLoader {
     }
 
     public static void load() {
-
         new itemLoader().run();
-
         OreDictHandler.run();
-
+        //solar
+        ASP.load();
     }
 
     public static void postLoad() {

@@ -31,3 +31,20 @@ GlassBlock13.name= Purple I-Glass
 GlassBlock14.name= Red I-Glass
 GlassBlock15.name= White I-Glass
 GlassBlock16.name= Yellow I-Glass
+
+#Solar
+blockULVSolarPanel.name=ULV Solar Panel
+blockLVSolarPanel.name=LV Solar Panel
+blockMVSolarPanel.name=MV Solar Panel
+blockHVSolarPanel.name=HV Solar Panel
+blockEVSolarPanel.name=EV Solar Panel
+blockIVSolarPanel.name=IV Solar Panel
+blockLuvSolarPanel.name=LuV Solar Panel
+blockZPMSolarPanel.name=ZPM Solar Panel
+blockUVSolarPanel.name=UV Solar Panel
+blockUHVSolarPanel.name=UHV Solar Panel
+blockUEVSolarPanel.name=UEV Solar Panel
+gui.AdvancedSolarPanel.storage=Storage
+gui.AdvancedSolarPanel.maxOutput=Max Output
+gui.AdvancedSolarPanel.generating=Generating
+gui.AdvancedSolarPanel.energyPerTick=EU/t
