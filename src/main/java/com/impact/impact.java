@@ -192,7 +192,7 @@ public class impact {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        MainLoader.preInit();
+        MainLoader.preInit(event);
         MainLoader.preInitClient();
 
     }
