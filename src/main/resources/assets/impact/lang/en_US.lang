@@ -1,0 +1,50 @@
+item.Coin.name=Impact coin
+itemGroup.tabGWpp=IMPACT CORE MOD
+
+#Chest
+tile.WroughtIronChest.name= Wrought Iron Chest
+tile.SteelChest.name= Steel Chest
+tile.AlChest.name= Aluminium Chest
+tile.HSLAChest.name= HSLA Chest
+tile.TitaniumChest.name= Titanium Chest
+tile.TungstenSteelChest.name= Tungsten Steel Chest
+tile.ChromeChest.name= Chrome Chest
+tile.IridiumChest.name= Iridium Chest
+tile.OsmiumChest.name= Osmium Chest
+tile.NeutroniumChest.name= Neutronium Chest
+
+#Glass
+tile.GlassBlock1.name= Fake TecTech Glass
+GlassBlock1.name= Brown I-Glass
+GlassBlock2.name= Cyan I-Glass
+GlassBlock3.name= Black I-Glass
+GlassBlock4.name= Blue I-Glass
+GlassBlock5.name= Gray I-Glass
+GlassBlock6.name= Green I-Glass
+GlassBlock7.name= Light Gray I-Glass
+GlassBlock8.name= Light Blue I-Glass
+GlassBlock9.name= Lime I-Glass
+GlassBlock10.name= Magenta I-Glass
+GlassBlock11.name= Orange I-Glass
+GlassBlock12.name= Pink I-Glass
+GlassBlock13.name= Purple I-Glass
+GlassBlock14.name= Red I-Glass
+GlassBlock15.name= White I-Glass
+GlassBlock16.name= Yellow I-Glass
+
+#Solar
+blockULVSolarPanel.name=ULV Solar Panel
+blockLVSolarPanel.name=LV Solar Panel
+blockMVSolarPanel.name=MV Solar Panel
+blockHVSolarPanel.name=HV Solar Panel
+blockEVSolarPanel.name=EV Solar Panel
+blockIVSolarPanel.name=IV Solar Panel
+blockLuvSolarPanel.name=LuV Solar Panel
+blockZPMSolarPanel.name=ZPM Solar Panel
+blockUVSolarPanel.name=UV Solar Panel
+blockUHVSolarPanel.name=UHV Solar Panel
+blockUEVSolarPanel.name=UEV Solar Panel
+gui.AdvancedSolarPanel.storage=Storage
+gui.AdvancedSolarPanel.maxOutput=Max Output
+gui.AdvancedSolarPanel.generating=Generating
+gui.AdvancedSolarPanel.energyPerTick=EU/t

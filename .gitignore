@@ -21,3 +21,5 @@ eclipse/
 out/
 build/
 idea/
+*.psd
+*.jar1
