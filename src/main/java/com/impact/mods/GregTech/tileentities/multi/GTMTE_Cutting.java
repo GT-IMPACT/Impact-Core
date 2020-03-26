@@ -25,7 +25,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore1;
-    byte CASING_META = 5;
+    byte CASING_META = 14;
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
@@ -67,7 +67,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 //.addPollution(200, 12800)
-                .addTypeMachine("Laser Engraver")
+                .addTypeMachine("Cutting Machine")
                 .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
@@ -76,8 +76,9 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (max x16)")
+                .addInputHatch("Any casing (max x3)")
                 .addOutputBus("Any casing (max x1)")
-                .addCasingInfo("Engraver Casing")
+                .addCasingInfo("Cutting Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -89,13 +90,13 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
     /** === GUI === */
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "MultiParallelBlockGUI.png"," Laser Engraver ");
+                "MultiParallelBlockGUI.png"," Cutting ");
     }
 
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+        return GT_Recipe.GT_Recipe_Map.sCutterRecipes;
     }
 
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
@@ -144,11 +145,49 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
         int minCasingAmount = 12; // Минимальное количество кейсов
         boolean formationChecklist = true; // Если все ок, машина собралась
 
-        for(byte X = -1; X <= 1; X++) {
-                for (byte Z = 0; Z >= -3; Z--) {
+        for(byte X = -2; X <= 2; X++) {
+            for (byte Z = 0; Z >= -2; Z--) {
+                for (byte Y = -1;Y <= 2;Y++) {
 
-                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, -1, Z);
+                    if ( X==0 && Y==0 && Z==0 ) continue;
 
+                    if ( (X==-2||X==-1) && Y==2 ) continue;
+
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+
+                    String glass = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
+
+                    if ( (X==1 && (Y==0||Y==1||Y==2) && (Z==0||Z==-2)) || (X==1 && Y==2 && Z==-1) ){
+                        if ( glass.equals("GlassBlock1") || glass.equals("GlassBlock2") || glass.equals("GlassBlock3") || glass.equals("GlassBlock4")
+                                || glass.equals("GlassBlock5") || glass.equals("GlassBlock6") || glass.equals("GlassBlock7") || glass.equals("GlassBlock8")
+                                || glass.equals("GlassBlock9") || glass.equals("GlassBlock10")|| glass.equals("GlassBlock11")|| glass.equals("GlassBlock12")
+                                || glass.equals("GlassBlock13")|| glass.equals("GlassBlock14")|| glass.equals("GlassBlock15")|| glass.equals("GlassBlock16") ){
+                        } else  {
+                            formationChecklist = false;
+                        }
+                        continue;
+                    }
+
+                    if ( X==1 && (Y==0||Y==1) && Z==-1 ) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                            this.mLevel = 4;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
+                            this.mLevel = 16;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
+                            this.mLevel = 64;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
+                            this.mLevel = 256;
+                        } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
+                            this.mLevel = 1;
+                        } else {
+                            formationChecklist = false;
+                        }
+                        continue;
+                    }
 
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                     if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -156,7 +195,6 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
                             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                             minCasingAmount--;
@@ -165,139 +203,14 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
                         }
                     }
                 }
-        }
-        for(byte X = -1; X <= 1; X++) {
-                for (byte Z = 0; Z >= -3; Z--) {
-
-
-                    if (X == 0 && Z == 0) continue;
-
-                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 0, Z);
-
-
-                        if (X==-1 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock14")) {
-                            } else  {
-                                formationChecklist = false;
-                            }
-                            continue;
-                        }
-
-                        if (X==0 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock6")) {
-                            } else  {
-                                formationChecklist = false;
-                            }
-                            continue;
-                        }
-
-                        if (X==1 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock4")) {
-                            } else  {
-                                formationChecklist = false;
-                            }
-                            continue;
-                        }
-
-                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                            minCasingAmount--;
-                        } else {
-                            formationChecklist = false;
-                        }
-                    }
-                }
-        }
-        for(byte X = -1; X <= 1; X++) {
-            for (byte Y = -1; Y <= 3; Y++) {
-
-
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -4);
-
-
-                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                        minCasingAmount--;
-                    } else {
-                        formationChecklist = false;
-                    }
-                }
-            }
-        }
-        for(byte X = -1; X <= 1; X++) {
-            for (byte Z = -1; Z >= -3; Z--) {
-
-
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 3, Z);
-
-                if (X==0 && (Z==-2 || Z==-3)) {
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-                        this.mLevel = 4;
-                    } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-                        this.mLevel = 16;
-                    } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-                        this.mLevel = 64;
-                    } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-                        this.mLevel = 256;
-                    } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                        this.mLevel = 1;
-                    } else {
-                        formationChecklist = false;
-                    }
-                    continue;
-                }
-
-                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                        minCasingAmount--;
-                    } else {
-                        formationChecklist = false;
-                    }
-                }
-            }
-        }
-        for(byte X = 0; X <= 0; X++) {
-            final Vector3ic glass = rotateOffsetVector(forgeDirection, X, 2, -2);
-            if (X==0) {
-                if (thisController.getBlockOffset(glass.x(), glass.y(), glass.z()).getUnlocalizedName().equals("GlassBlock15")) {
-                } else {
-                    formationChecklist = false;
-                }
-                continue;
             }
         }
 
 
-        if(this.mInputBusses.size() > 16) {
+        if(this.mInputBusses.size() > 6) {
             formationChecklist = false;
         }
-        if(this.mInputHatches.size() !=0) {
+        if(this.mInputHatches.size() > 3) {
             formationChecklist = false;
         }
         if(this.mOutputBusses.size() > 1) {
