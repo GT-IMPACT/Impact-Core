@@ -25,7 +25,9 @@
  */
 package com.impact.mods.GregTech.tileentities.multi.debug;
 
+import gregtech.GT_Mod;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
@@ -35,8 +37,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -204,9 +206,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     }
     /** === CHECK RECIPE === */
 
-
-
-
     public boolean checkRecipe(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
             ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
@@ -227,12 +226,17 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 GT_Recipe tRecipe;
                 tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs );
 
-
                 if (tRecipe != null) {
-                /* TODO FOR "IF" WORLD
-                if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100 &&
-                        !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
-                    return false;*/
+
+                    if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100) &&
+                            !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
+                        return false;
+                    }
+
+                    if (tRecipe.mSpecialValue == -200 && (mCleanroom == null || mCleanroom.mEfficiency == 0))
+                        return false;
+
+
                     ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
                     ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
                     boolean found_Recipe = false;
