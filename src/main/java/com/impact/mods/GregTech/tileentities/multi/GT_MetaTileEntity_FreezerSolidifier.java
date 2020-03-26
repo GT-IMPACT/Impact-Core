@@ -1,5 +1,7 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
+import com.impact.util.Vector3i;
+import com.impact.util.Vector3ic;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -44,10 +46,12 @@ public class GT_MetaTileEntity_FreezerSolidifier extends GT_MetaTileEntity_Multi
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[17], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
-        }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[17]};
+        return aSide == 1
+                ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[17],
+                new GT_RenderedTexture(aActive
+                        ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE
+                        : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)}
+                : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[17]};
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -142,27 +146,103 @@ public class GT_MetaTileEntity_FreezerSolidifier extends GT_MetaTileEntity_Multi
         return false;
     }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*2;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*2;
-        for (int i = -2; i < 3; i++) {
-            for (int j = -2; j < 3; j++) {
-                IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-                if ((!addMaintenanceToMachineList(tTileEntity, 17)) && (!addInputToMachineList(tTileEntity, 17)) && (!addOutputToMachineList(tTileEntity, 17)) && (!addEnergyInputToMachineList(tTileEntity, 17))) {
-                    if (Math.abs(i)==2 || Math.abs(j)==2){
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != GregTech_API.sBlockCasings2) {
-                            return false;
-                        }
-                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 1) {
-                            return false;
+    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
+        final Vector3i offset = new Vector3i();
+
+        // В любом направлении по оси Z
+        if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
+            offset.x = x;
+            offset.y = y;
+            offset.z = z;
+        }
+        if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
+            offset.x = -x;
+            offset.y = y;
+            offset.z = -z;
+        }
+        // В любом направлении по оси X
+        if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
+            offset.x = z;
+            offset.y = y;
+            offset.z = -x;
+        }
+        if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
+            offset.x = -z;
+            offset.y = y;
+            offset.z = x;
+        }
+        // в любом направлении по оси Y
+        if(forgeDirection.y() == -1) {
+            offset.x = x;
+            offset.y = z;
+            offset.z = y;
+        }
+
+        return offset;
+    }
+
+    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+        final Vector3ic forgeDirection = new Vector3i(
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
+
+        int minCasingAmount = 12; // Минимальное количество кейсов
+        boolean formationChecklist = true; // Если все ок, машина собралась
+
+        for(byte X = -2; X <= 2; X++) {
+            for(byte Z = 0; Z >= -3; Z--) {
+                for( byte Y = -2; Y <= 2; Y++) {
+
+                    if (X==0&&Y==0&&Z==0) continue;
+                    if ((X==2||X==-2)&&(Y==2||Y==-2)) continue;
+                    if ( (Z==-1||Z==-2) && ( ((X==2||X==-2)&&Y==0) || ((Y==2||Y==-2)&&X==0)) ) continue;
+
+                    if ( (Z==-1||Z==-2)&& ( (X==0&&Y==0) || (X==-1&&(Y==1||Y==-1)) || (X==1&&(Y==1||Y==-1)) ) ) continue;
+
+
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Z, Y);
+
+                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+                    if (!super.addMaintenanceToMachineList(currentTE, 17)
+                            && !super.addInputToMachineList(currentTE, 17)
+                            && !super.addMufflerToMachineList(currentTE, 17)
+                            && !super.addEnergyInputToMachineList(currentTE, 17)
+                            && !super.addOutputToMachineList(currentTE, 17)) {
+
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == GregTech_API.sBlockCasings2)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
                         }
                     }
                 }
             }
         }
-        return true;
+
+       if(this.mInputBusses.size() > 2) {
+           formationChecklist = false;
+       }
+       if(this.mInputHatches.size() !=2) {
+           formationChecklist = false;
+       }
+       if(this.mOutputBusses.size() !=1) {
+           formationChecklist = false;
+       }
+       if(this.mOutputHatches.size() !=0) {
+           formationChecklist = false;
+       }
+       if(this.mEnergyHatches.size() > 2) {
+           formationChecklist = false;
+       }
+       if(this.mMaintenanceHatches.size() != 1) {
+           formationChecklist = false;
+       }
+        return formationChecklist;
     }
+
 
 
     public int getMaxEfficiency(ItemStack aStack) {

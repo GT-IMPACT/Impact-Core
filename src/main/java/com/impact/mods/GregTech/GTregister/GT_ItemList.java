@@ -45,7 +45,7 @@ public enum GT_ItemList implements IItemContainer {
 	//MULTI
 	Machine_PBE, Machine_LaserEngraver, Machine_Assembler, Machine_Centrifuge, Machine_Electrolyzer, Machine_Wire, Machine_Supply,
 	Machine_Utility, Machine_Brewmenter,
-	PowerStation, PowerReactor, PowerTurbine,
+	PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter,
 
 	Naquadah_multi,
 

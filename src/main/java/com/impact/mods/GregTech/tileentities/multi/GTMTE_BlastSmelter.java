@@ -1,19 +1,19 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
+import com.impact.util.Vector3i;
+import com.impact.util.Vector3ic;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -29,6 +29,7 @@ import static gregtech.api.enums.GT_Values.VN;
 public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
     private int mHeatingCapacity = 0;
     private int controllerY;
+    private Block CASING = GregTech_API.sBlockCasings5;
     private FluidStack[] pollutionFluidStacks = new FluidStack[]{};
 
     public GTMTE_BlastSmelter(int aID, String aName, String aNameRegional) {
@@ -84,66 +85,75 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
+        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+            tBus.mRecipeMap = getRecipeMap();
+            if (isValidMetaTileEntity(tBus)) {
+                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                }
+            }
+            ArrayList<ItemStack> tInputList = getStoredInputs();
+            int tInputList_sS = tInputList.size();
+            for (int i = 0; i < tInputList_sS - 1; i++) {
+                for (int j = i + 1; j < tInputList_sS; j++) {
+                    if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+                        if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
+                            tInputList.remove(j--);
+                            tInputList_sS = tInputList.size();
+                        } else {
+                            tInputList.remove(i--);
+                            tInputList_sS = tInputList.size();
+                            break;
+                        }
                     }
                 }
             }
-        }
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
-
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
+            ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
+            ArrayList<FluidStack> tFluidList = getStoredFluids();
+            int tFluidList_sS = tFluidList.size();
+            for (int i = 0; i < tFluidList_sS - 1; i++) {
+                for (int j = i + 1; j < tFluidList_sS; j++) {
+                    if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
+                        if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
+                            tFluidList.remove(j--);
+                            tFluidList_sS = tFluidList.size();
+                        } else {
+                            tFluidList.remove(i--);
+                            tFluidList_sS = tFluidList.size();
+                            break;
+                        }
                     }
                 }
             }
-        }
-        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-        if (tInputList.size() > 0) {
-            long tVoltage = getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastSmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-            if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-                int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue)/900;
-                byte overclockCount=calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
-                //In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                    return false;
-                if (this.mEUt > 0) {
-                    this.mEUt = (-this.mEUt);
+            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+            if (tInputList.size() > 0) {
+                long tVoltage = getMaxInputVoltage();
+                byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+                GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastSmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+                if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+                    this.mEfficiencyIncrease = 10000;
+                    int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+                    byte overclockCount = calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                        return false;
+                    if (this.mEUt > 0) {
+                        this.mEUt = (-this.mEUt);
+                    }
+                    if (tHeatCapacityDivTiers > 0) {
+                        this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
+                        this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount);//extra free overclocking if possible
+                        if (this.mMaxProgresstime < 1) this.mMaxProgresstime = 1;//no eu efficiency correction
+                    }
+                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+                    this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
+                    this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
+                    updateSlots();
+                    return true;
                 }
-                if(tHeatCapacityDivTiers>0){
-                    this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-                    this.mMaxProgresstime >>=Math.min(tHeatCapacityDivTiers/2,overclockCount);//extra free overclocking if possible
-                    if(this.mMaxProgresstime<1) this.mMaxProgresstime=1;//no eu efficiency correction
-                }
-                this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
-                this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
-                updateSlots();
-                return true;
             }
         }
         return false;
@@ -197,102 +207,142 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
         return timesOverclocked;
     }
 
-    private boolean checkMachineFunction(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        controllerY = aBaseMetaTileEntity.getYCoord();
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*2;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*2;
+    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
+        final Vector3i offset = new Vector3i();
 
-        this.mHeatingCapacity = 0;
-        if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-            return false;
+        // В любом направлении по оси Z
+        if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
+            offset.x = x;
+            offset.y = y;
+            offset.z = z;
         }
-        if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
-            return false;
+        if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
+            offset.x = -x;
+            offset.y = y;
+            offset.z = -z;
         }
-        if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), 179)) {
-            return false;
+        // В любом направлении по оси X
+        if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
+            offset.x = z;
+            offset.y = y;
+            offset.z = -x;
         }
-        byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 2, 2, zDir);
-        switch (tUsedMeta) {
-            case 0:
-                this.mHeatingCapacity = 1801;
-                break;
-            case 1:
-                this.mHeatingCapacity = 2701;
-                break;
-            case 2:
-                this.mHeatingCapacity = 3601;
-                break;
-            case 3:
-                this.mHeatingCapacity = 4501;
-                break;
-            case 4:
-                this.mHeatingCapacity = 5401;
-                break;
-            case 5:
-                this.mHeatingCapacity = 7201;
-                break;
-            case 6:
-                this.mHeatingCapacity = 9001;
-                break;
-            case 7:
-                this.mHeatingCapacity = 10801;
-                break;
-            case 8:
-                this.mHeatingCapacity = 12601;
-                break;
-            default:
-                return false;
+        if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
+            offset.x = -z;
+            offset.y = y;
+            offset.z = x;
         }
-        for (int i = -2; i < 3; i++) {
-            for (int j = -2; j < 3; j++) {
-                if (Math.abs(i)==2 || Math.abs(j)==2) {
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings5) {
-                        return false;
+        // в любом направлении по оси Y
+        if(forgeDirection.y() == -1) {
+            offset.x = x;
+            offset.y = z;
+            offset.z = y;
+        }
+
+        return offset;
+    }
+
+    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+        final Vector3ic forgeDirection = new Vector3i(
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
+
+        int minCasingAmount = 12; // Минимальное количество кейсов
+        boolean formationChecklist = true; // Если все ок, машина собралась
+
+        for(byte X = -2; X <= 2; X++) {
+            for(byte Z = 0; Z >= -4; Z--) {
+                for( byte Y = 0; Y <= 3; Y++) {
+
+                    if (X==0&&Y==0&&Z==0) continue;
+                    if ( (Y==1||Y==2) && ((X==1&&(Z==-1||Z==-2||Z==-3)) || (X==-1&&(Z==-1||Z==-2||Z==-3)) || (X==0&&(Z==-1||Z==-2||Z==-3))) ) continue;
+
+
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+
+                    if ((Y==1||Y==2)) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                            this.mHeatingCapacity = 1801;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
+                            this.mHeatingCapacity = 2701;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
+                            this.mHeatingCapacity = 3601;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
+                            this.mHeatingCapacity = 4501;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
+                            this.mHeatingCapacity = 5401;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 5)) {
+                            this.mHeatingCapacity = 7201;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 6)) {
+                            this.mHeatingCapacity = 9001;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 7)) {
+                            this.mHeatingCapacity = 10801;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 8)) {
+                            this.mHeatingCapacity = 12601;
+                        } else {
+                            formationChecklist = false;
+                        }
+                        continue;
                     }
-                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != tUsedMeta) {
-                        return false;
-                    }
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings5) {
-                        return false;
-                    }
-                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
-                        return false;
+
+                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+                    if (!super.addMaintenanceToMachineList(currentTE, 179)
+                            && !super.addInputToMachineList(currentTE, 179)
+                            && !super.addMufflerToMachineList(currentTE, 179)
+                            && !super.addEnergyInputToMachineList(currentTE, 179)
+                            && !super.addOutputToMachineList(currentTE, 179)) {
+
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == GregTech_API.sBlockCasings8)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
+                        }
                     }
                 }
             }
         }
-        for (int i = -2; i < 3; i++) {
-            for (int j = -2; j < 3; j++) {
-                if ((xDir + i != 0) || (zDir + j != 0)) {
-                    IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-                    if ((!addMaintenanceToMachineList(tTileEntity, 179)) && (!addInputToMachineList(tTileEntity, 179)) && (!addOutputToMachineList(tTileEntity, 179)) && (!addEnergyInputToMachineList(tTileEntity, 179))) {
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != GregTech_API.sBlockCasings8) {
-                            return false;
-                        }
-                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 3) {
-                            return false;
-                        }
-                    }
-                }
-            }
+
+        if(this.mInputBusses.size() > 5) {
+            formationChecklist = false;
+        }
+        if(this.mInputHatches.size() > 3) {
+            formationChecklist = false;
+        }
+        if(this.mOutputBusses.size() !=0) {
+            formationChecklist = false;
+        }
+        if(this.mOutputHatches.size() !=1) {
+            formationChecklist = false;
+        }
+        if(this.mEnergyHatches.size() > 4) {
+            formationChecklist = false;
+        }
+        if(this.mMaintenanceHatches.size() != 1) {
+            formationChecklist = false;
         }
         this.mHeatingCapacity += 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
-        return true;
+        return formationChecklist;
+    }
 
-    }
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack){
-        boolean result= this.checkMachineFunction(aBaseMetaTileEntity,aStack);
-        if (!result) this.mHeatingCapacity=0;
-        return result;
-    }
 
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 20;
+        return 200;
     }
 
     public int getDamageToComponent(ItemStack aStack) {
