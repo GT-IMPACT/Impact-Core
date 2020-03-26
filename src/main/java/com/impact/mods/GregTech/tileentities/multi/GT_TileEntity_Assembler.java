@@ -264,7 +264,7 @@ public class GT_TileEntity_Assembler extends GT_MetaTileEntity_MultiParallelBloc
         if(this.mInputBusses.size() > 15) {
             formationChecklist = false;
         }
-        if(this.mInputHatches.size() !=0) {
+        if(this.mInputHatches.size() > 6) {
             formationChecklist = false;
         }
         if(this.mOutputBusses.size() > 3) {
