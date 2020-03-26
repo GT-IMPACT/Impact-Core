@@ -29,44 +29,51 @@ public class GT_Block_Case1
             Textures.BlockIcons.casingTexturePages[3][b] /** 16 */ = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring*/
         }
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Upgrade Casing T1");         // 0   384
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Upgrade Casing T2");         // 1   385
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Upgrade Casing T3");         // 2   386
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Upgrade Casing T4");         // 3   387
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "PBE Casing");                // 4   388
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Engraver Casing");           // 5   389
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Assembler Casing");          // 6   390
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Centrifuge Casing");         // 7   391
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Electrolyzer Casing");       // 8   392
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Wire Factory Casing");       // 9   393
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Supply Production Casing"); // 10  394
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Utility Machine Casing");   // 11  395
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Brewmenter Casing");               // 12  396
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Electrolyser Casing");      // 13  397
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name",  "Upgrade Casing T1"         );  // 0   384
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name",  "Upgrade Casing T2"         );  // 1   385
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name",  "Upgrade Casing T3"         );  // 2   386
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name",  "Upgrade Casing T4"         );  // 3   387
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name",  "PBE Casing"                );  // 4   388
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name",  "Engraver Casing"           );  // 5   389
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name",  "Assembler Casing"          );  // 6   390
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name",  "Centrifuge Casing"         );  // 7   391
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name",  "Electrolyzer Casing"       );  // 8   392
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name",  "Wire Factory Casing"       );  // 9   393
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Supply Production Casing"  );  // 10  394
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Utility Machine Casing"    );  // 11  395
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Brewmenter Casing"         );  // 12  396
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Arc Casing"                );  // 13  397
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Cutting Casing"            );  // 14  398
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Mixing Casing"             );  // 15  399
 
 /*
         ================================================================================================================
         ================================================================================================================
 */
-        GT_ItemList.Upgradet1.set(new ItemStack(this, 1, 0));
-        GT_ItemList.Upgradet2.set(new ItemStack(this, 1, 1));
-        GT_ItemList.Upgradet3.set(new ItemStack(this, 1, 2));
-        GT_ItemList.Upgradet4.set(new ItemStack(this, 1, 3));
-        GT_ItemList.BenderCase.set(new ItemStack(this, 1, 4));
-        GT_ItemList.LaserCase.set(new ItemStack(this, 1, 5));
-        GT_ItemList.PresserCase.set(new ItemStack(this, 1, 6));
-        GT_ItemList.ExtruderCase.set(new ItemStack(this, 1, 7));
-        GT_ItemList.AssemblerCase.set(new ItemStack(this, 1, 8));
-        GT_ItemList.CircuitAssemblerCase.set(new ItemStack(this, 1, 9));
-        GT_ItemList.WireAssemblerCase.set(new ItemStack(this, 1, 10));
-        GT_ItemList.WiremillCase.set(new ItemStack(this, 1, 11));
-        GT_ItemList.ArcPlasmaCase.set(new ItemStack(this, 1, 12));
-        GT_ItemList.ElectrolyzerCase.set(new ItemStack(this, 1, 12));
+        GT_ItemList.UpgradeCasingT1         .set(new ItemStack(this, 1, 0));
+        GT_ItemList.UpgradeCasingT2         .set(new ItemStack(this, 1, 1));
+        GT_ItemList.UpgradeCasingT3         .set(new ItemStack(this, 1, 2));
+        GT_ItemList.UpgradeCasingT4         .set(new ItemStack(this, 1, 3));
+        GT_ItemList.PBECasing               .set(new ItemStack(this, 1, 4));
+        GT_ItemList.EngraverCasing          .set(new ItemStack(this, 1, 5));
+        GT_ItemList.AssemblerCasing         .set(new ItemStack(this, 1, 6));
+        GT_ItemList.CentrifugeCasing        .set(new ItemStack(this, 1, 7));
+        GT_ItemList.ElectrolyzerCasing      .set(new ItemStack(this, 1, 8));
+        GT_ItemList.WireFactoryCasing       .set(new ItemStack(this, 1, 9));
+        GT_ItemList.SupplyProductionCasing  .set(new ItemStack(this, 1, 10));
+        GT_ItemList.UtilityMachineCasing    .set(new ItemStack(this, 1, 11));
+        GT_ItemList.BrewmenterCasing        .set(new ItemStack(this, 1, 12));
+        GT_ItemList.ArcCasing               .set(new ItemStack(this, 1, 13));
+        GT_ItemList.CuttingCasing           .set(new ItemStack(this, 1, 14));
+        GT_ItemList.MixingCasing            .set(new ItemStack(this, 1, 15));
     }
 
-    private static IIcon UPGRATE_CASING_T1, UPGRATE_CASING_T2, UPGRATE_CASING_T3, UPGRATE_CASING_T4, BENDER_CASING,
-                         LASER_CASING, PRESS_CASING, EXTRUDER_CASING, ASSEMBLER_CASING, CIRCUIT_ASSEMBLER_CASING,
-                         WIRE_ASSEMBLER_CASING, WIREMILL_CASING, ARC_FURNACE_CASING, ELECTROLYZER_CASING;
+    private static IIcon UpgradeCasingT1, UpgradeCasingT2, UpgradeCasingT3, UpgradeCasingT4, PBECasing,
+    EngraverCasing, AssemblerCasing, CentrifugeCasing, ElectrolyzerCasing, WireFactoryCasing,
+    SupplyProductionCasing, UtilityMachineCasing, BrewmenterCasing, ArcCasing, CuttingCasing,
+    MixingCasing
+
+    ;
 
 //    public static final IIconContainer[] mTextures = new IIconContainer[]
 //            {
@@ -80,40 +87,44 @@ public class GT_Block_Case1
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         //super.registerBlockIcons(aIconRegister);
-        UPGRATE_CASING_T1 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T1");
-        UPGRATE_CASING_T2 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T2");
-        UPGRATE_CASING_T3 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T3");
-        UPGRATE_CASING_T4 = aIconRegister.registerIcon(RES_BLOCK + "UPGRATE_CASING_T4");
-        BENDER_CASING = aIconRegister.registerIcon(RES_BLOCK + "BENDER_CASING");
-        LASER_CASING = aIconRegister.registerIcon(RES_BLOCK + "LASER_CASING");
-        PRESS_CASING = aIconRegister.registerIcon(RES_BLOCK + "PRESS_CASING");
-        EXTRUDER_CASING = aIconRegister.registerIcon(RES_BLOCK + "EXTRUDER_CASING");
-        ASSEMBLER_CASING = aIconRegister.registerIcon(RES_BLOCK + "ASSEMBLER_CASING");
-        CIRCUIT_ASSEMBLER_CASING = aIconRegister.registerIcon(RES_BLOCK +"CIRCUIT_ASSEMBLER_CASING");
-        WIRE_ASSEMBLER_CASING = aIconRegister.registerIcon(RES_BLOCK + "WIRE_ASSEMBLER_CASING");
-        WIREMILL_CASING = aIconRegister.registerIcon(RES_BLOCK + "WIREMILL_CASING");
-        ARC_FURNACE_CASING = aIconRegister.registerIcon(RES_BLOCK + "ARC_FURNACE_CASING");
-        ELECTROLYZER_CASING = aIconRegister.registerIcon(RES_BLOCK + "ELECTROLYZER_CASING");
+        UpgradeCasingT1         = aIconRegister.registerIcon(RES_BLOCK +  "UpgradeCasingT1"         );
+        UpgradeCasingT2         = aIconRegister.registerIcon(RES_BLOCK +  "UpgradeCasingT2"         );
+        UpgradeCasingT3         = aIconRegister.registerIcon(RES_BLOCK +  "UpgradeCasingT3"         );
+        UpgradeCasingT4         = aIconRegister.registerIcon(RES_BLOCK +  "UpgradeCasingT4"         );
+        PBECasing               = aIconRegister.registerIcon(RES_BLOCK +  "PBECasing"               );
+        EngraverCasing          = aIconRegister.registerIcon(RES_BLOCK +  "EngraverCasing"          );
+        AssemblerCasing         = aIconRegister.registerIcon(RES_BLOCK +  "AssemblerCasing"         );
+        CentrifugeCasing        = aIconRegister.registerIcon(RES_BLOCK +  "CentrifugeCasing"        );
+        ElectrolyzerCasing      = aIconRegister.registerIcon(RES_BLOCK +  "ElectrolyzerCasing"      );
+        WireFactoryCasing       = aIconRegister.registerIcon(RES_BLOCK +  "WireFactoryCasing"       );
+        SupplyProductionCasing  = aIconRegister.registerIcon(RES_BLOCK +  "SupplyProductionCasing"  );
+        UtilityMachineCasing    = aIconRegister.registerIcon(RES_BLOCK +  "UtilityMachineCasing"    );
+        BrewmenterCasing        = aIconRegister.registerIcon(RES_BLOCK +  "BrewmenterCasing"        );
+        ArcCasing               = aIconRegister.registerIcon(RES_BLOCK +  "ArcCasing"               );
+        CuttingCasing           = aIconRegister.registerIcon(RES_BLOCK +  "CuttingCasing"           );
+        MixingCasing            = aIconRegister.registerIcon(RES_BLOCK +  "MixingCasing"            );
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
-            case  0: return UPGRATE_CASING_T1;
-            case  1: return UPGRATE_CASING_T2;
-            case  2: return UPGRATE_CASING_T3;
-            case  3: return UPGRATE_CASING_T4;
-            case  4: return BENDER_CASING;
-            case  5: return LASER_CASING;
-            case  6: return PRESS_CASING;
-            case  7: return EXTRUDER_CASING;
-            case  8: return ASSEMBLER_CASING;
-            case  9: return CIRCUIT_ASSEMBLER_CASING;
-            case 10: return WIRE_ASSEMBLER_CASING;
-            case 11: return WIREMILL_CASING;
-            case 12: return ARC_FURNACE_CASING;
-            case 13: return ELECTROLYZER_CASING;
+            case  0: return UpgradeCasingT1;
+            case  1: return UpgradeCasingT2;
+            case  2: return UpgradeCasingT3;
+            case  3: return UpgradeCasingT4;
+            case  4: return PBECasing;
+            case  5: return EngraverCasing;
+            case  6: return AssemblerCasing;
+            case  7: return CentrifugeCasing;
+            case  8: return ElectrolyzerCasing;
+            case  9: return WireFactoryCasing;
+            case 10: return SupplyProductionCasing;
+            case 11: return UtilityMachineCasing;
+            case 12: return BrewmenterCasing;
+            case 13: return ArcCasing;
+            case 14: return CuttingCasing;
+            case 15: return MixingCasing;
 
             default: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
