@@ -36,10 +36,9 @@ public class GT_Machines_MultiRegister {
 			GT_ItemList.PowerStation.set(new GT_MetaTileEntity_PowerStation(		ID++, "multimachine.powerstation",  "Power Station").getStackForm(1L));
 			GT_ItemList.PowerReactor.set(new GT_TileEntity_REACTOR(					ID++, "multimachine.powerreactor",  "Power Reactor").getStackForm(1L));
 			GT_ItemList.PowerTurbine.set(new GT_TileEntity_NuclearTurbine(			ID++, "multimachine.powerturb", 	"Power Turbine").getStackForm(1L));
+			GT_ItemList.Machine_FreezSolidifier.set(new GT_MetaTileEntity_FreezerSolidifier(ID++, "multimachine.freezsolidifier", 	"Freezer Solidifier").getStackForm(1L));
+			GT_ItemList.Machine_BlastSmelter.set(new GTMTE_BlastSmelter(			ID++, "multimachine.blastsmelter", 	"Blast Smelter").getStackForm(1L));
 
-
-
-			//GT_ItemList.Machine_FreezerSolidifier.set(new GT_MetaTileEntity_FreezerSolidifier(ID++, "multimachine.freezersolidifier", "Freezer Solidifier").getStackForm(1L));
 		/** CRAFTING MANAGER */
 
 			//ЗДЕСЬ ПИШИ КРАФТ
