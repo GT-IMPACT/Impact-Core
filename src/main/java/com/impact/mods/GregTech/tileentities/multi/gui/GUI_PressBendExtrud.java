@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.tileentities.multi.gui;
 
-import com.impact.mods.GregTech.tileentities.multi.GT_TileEntity_PressBendExtrud;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_PressBendExtrud;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -12,6 +12,6 @@ public class GUI_PressBendExtrud extends GUI_BASE {
 
     @Override
     String getmMode() {
-        return GT_TileEntity_PressBendExtrud.mModed;
+        return GTMTE_PressBendExtrud.mModed;
     }
 }

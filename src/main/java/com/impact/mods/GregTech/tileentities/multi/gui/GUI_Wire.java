@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.tileentities.multi.gui;
 
-import com.impact.mods.GregTech.tileentities.multi.GT_TileEntity_Wire;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_Wire;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -12,6 +12,6 @@ public class GUI_Wire extends GUI_BASE {
 
     @Override
     String getmMode() {
-        return GT_TileEntity_Wire.mModed;
+        return GTMTE_Wire.mModed;
     }
 }
