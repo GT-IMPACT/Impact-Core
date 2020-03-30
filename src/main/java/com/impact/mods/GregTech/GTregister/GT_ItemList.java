@@ -45,17 +45,19 @@ public enum GT_ItemList implements IItemContainer {
 	//MULTI
 	Machine_PBE, Machine_LaserEngraver, Machine_Assembler, Machine_Centrifuge, Machine_Electrolyzer, Machine_Wire, Machine_Supply,
 	Machine_Utility, Machine_Brewmenter, Machine_ArcFurnace, Machine_Cutting, Machine_Extradifier, Machine_Macerator, Machine_Mixer,
-	Machine_Siftarator,
+	Machine_Siftarator, Machine_DDDPrinter,
 	PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter,
 
 	Naquadah_multi,
 
 	//Cases
+	//Page1
 	UpgradeCasingT1, UpgradeCasingT2, UpgradeCasingT3, UpgradeCasingT4, PBECasing, EngraverCasing, AssemblerCasing,
 	CentrifugeCasing, ElectrolyzerCasing, WireFactoryCasing, SupplyProductionCasing, UtilityMachineCasing, BrewmenterCasing, ArcCasing,
 	CuttingCasing, MixingCasing,
 
-	NukeTurbineCase,
+	//Page2
+	NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing,
 
 	GLASS_CASSING_1, GLASS_CASSING_2
 

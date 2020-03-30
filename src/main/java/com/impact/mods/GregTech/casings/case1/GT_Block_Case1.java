@@ -86,7 +86,6 @@ public class GT_Block_Case1
 
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        //super.registerBlockIcons(aIconRegister);
         UpgradeCasingT1         = aIconRegister.registerIcon(RES_BLOCK +  "UpgradeCasingT1"         );
         UpgradeCasingT2         = aIconRegister.registerIcon(RES_BLOCK +  "UpgradeCasingT2"         );
         UpgradeCasingT3         = aIconRegister.registerIcon(RES_BLOCK +  "UpgradeCasingT3"         );

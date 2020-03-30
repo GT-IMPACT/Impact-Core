@@ -19,30 +19,20 @@ public class GT_Item_Case1
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
+        aList.add(this.mNoMobsToolTip);
+        aList.add(this.mNoTileEntityToolTip);
         switch (getDamage(aStack)) {
             case 0:
                 aList.add(this.mUpgrade1Tooltip);
-                aList.add(this.mNoMobsToolTip);
-                aList.add(this.mNoTileEntityToolTip);
-                aList.add(this.mAuthor);
                 break;
             case 1:
                 aList.add(this.mUpgrade2Tooltip);
-                aList.add(this.mNoMobsToolTip);
-                aList.add(this.mNoTileEntityToolTip);
-                aList.add(this.mAuthor);
                 break;
             case 2:
                 aList.add(this.mUpgrade3Tooltip);
-                aList.add(this.mNoMobsToolTip);
-                aList.add(this.mNoTileEntityToolTip);
-                aList.add(this.mAuthor);
                 break;
             case 3:
                 aList.add(this.mUpgrade4Tooltip);
-                aList.add(this.mNoMobsToolTip);
-                aList.add(this.mNoTileEntityToolTip);
-                aList.add(this.mAuthor);
                 break;
 
         }

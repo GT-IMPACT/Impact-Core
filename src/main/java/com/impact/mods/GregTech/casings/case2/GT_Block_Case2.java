@@ -30,31 +30,40 @@ public class GT_Block_Case2
             Textures.BlockIcons.casingTexturePages[3][b+16] /** 32 */ = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring*/
         }
-        int ENG = 0;
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + ENG++ + ".name", "Nuclear Turbine Casing"); //400
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Nuclear Turbine Casing"     ); //400
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Electromagnetic Casing"     ); //401
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Extradification Casing"     ); //402
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Maceration Casing"          ); //403
 
 /*================================================================================================================*/
 /*================================================================================================================*/
 
-     int CS = 0;
-        GT_ItemList.NukeTurbineCase.set(new ItemStack(this, 1, CS++));
+        GT_ItemList.NukeTurbineCasing       .set(new ItemStack(this, 1, 0));
+        GT_ItemList.ElectromagneticCasing   .set(new ItemStack(this, 1, 1));
+        GT_ItemList.ExtradificationCasing   .set(new ItemStack(this, 1, 2));
+        GT_ItemList.MacerationCasing        .set(new ItemStack(this, 1, 3));
 
     }
 
-    private static IIcon TEXTURES;
+    private static IIcon ElectromagneticCasing, ExtradificationCasing, MacerationCasing;
     private static Textures.BlockIcons.CustomIcon NUKE_TURBINE_ST1, NUKE_TURBINE_ST2, NUKE_TURBINE_ST3, NUKE_TURBINE_ST4,
     NUKE_TURBINE_ST5, NUKE_TURBINE_ST6, NUKE_TURBINE_ST7, NUKE_TURBINE_ST8, NUKE_TURBINE_ST9;
+
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        //TEXTURES = aIconRegister.registerIcon(RES_BLOCK + "TEXTURES");
-
+        ElectromagneticCasing   = aIconRegister.registerIcon(RES_BLOCK +  "ElectromagneticCasing"  );
+        ExtradificationCasing   = aIconRegister.registerIcon(RES_BLOCK +  "ExtradificationCasing"  );
+        MacerationCasing        = aIconRegister.registerIcon(RES_BLOCK +  "MacerationCasing"       );
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
-           case  0: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+           case 0: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+           case 1: return ElectromagneticCasing;
+           case 2: return ExtradificationCasing;
+           case 3: return MacerationCasing;
 
            default: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
