@@ -34,6 +34,9 @@ public class GT_Block_Case2
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Electromagnetic Casing"     ); //401
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Extradification Casing"     ); //402
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Maceration Casing"          ); //403
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "3D Printed Casing"          ); //404
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Configuration 3x3 Casing"   ); //405
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Configuration 4x4 Casing"   ); //406
 
 /*================================================================================================================*/
 /*================================================================================================================*/
@@ -42,10 +45,15 @@ public class GT_Block_Case2
         GT_ItemList.ElectromagneticCasing   .set(new ItemStack(this, 1, 1));
         GT_ItemList.ExtradificationCasing   .set(new ItemStack(this, 1, 2));
         GT_ItemList.MacerationCasing        .set(new ItemStack(this, 1, 3));
+        GT_ItemList.DDDPrinterCasing        .set(new ItemStack(this, 1, 4));
+        GT_ItemList.DDDPrinterCasing3x3     .set(new ItemStack(this, 1, 5));
+        GT_ItemList.DDDPrinterCasing4x4     .set(new ItemStack(this, 1, 6));
 
     }
 
-    private static IIcon ElectromagneticCasing, ExtradificationCasing, MacerationCasing;
+    private static IIcon ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
+    DDDPrinterCasing4x4,
+    end;
     private static Textures.BlockIcons.CustomIcon NUKE_TURBINE_ST1, NUKE_TURBINE_ST2, NUKE_TURBINE_ST3, NUKE_TURBINE_ST4,
     NUKE_TURBINE_ST5, NUKE_TURBINE_ST6, NUKE_TURBINE_ST7, NUKE_TURBINE_ST8, NUKE_TURBINE_ST9;
 
@@ -54,6 +62,9 @@ public class GT_Block_Case2
         ElectromagneticCasing   = aIconRegister.registerIcon(RES_BLOCK +  "ElectromagneticCasing"  );
         ExtradificationCasing   = aIconRegister.registerIcon(RES_BLOCK +  "ExtradificationCasing"  );
         MacerationCasing        = aIconRegister.registerIcon(RES_BLOCK +  "MacerationCasing"       );
+        DDDPrinterCasing        = aIconRegister.registerIcon(RES_BLOCK +  "3DPrinterCasing"        );
+        DDDPrinterCasing3x3     = aIconRegister.registerIcon(RES_BLOCK +  "3DPrinterCasing3x3"     );
+        DDDPrinterCasing4x4     = aIconRegister.registerIcon(RES_BLOCK +  "3DPrinterCasing4x4"     );
     }
 
     @Override
@@ -64,6 +75,9 @@ public class GT_Block_Case2
            case 1: return ElectromagneticCasing;
            case 2: return ExtradificationCasing;
            case 3: return MacerationCasing;
+           case 4: return DDDPrinterCasing;
+           case 5: return DDDPrinterCasing3x3;
+           case 6: return DDDPrinterCasing4x4;
 
            default: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }

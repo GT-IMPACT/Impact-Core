@@ -57,11 +57,12 @@ public enum GT_ItemList implements IItemContainer {
 	CuttingCasing, MixingCasing,
 
 	//Page2
-	NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing,
+	NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
+	DDDPrinterCasing4x4,
 
-	GLASS_CASSING_1, GLASS_CASSING_2
+	GLASS_CASSING_1, GLASS_CASSING_2,
 
-	;
+	end;
 	private ItemStack mStack;
 	private boolean mHasNotBeenSet = true;
 
