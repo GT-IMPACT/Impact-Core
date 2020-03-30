@@ -13,7 +13,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import minetweaker.api.chat.IChatMessage;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,9 +31,7 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore2;
-    byte CASING_META = 1;
-    private IGregTechTileEntity Controller;
-    private ItemStack SlotItem;
+    byte CASING_META = 4;
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16+CASING_META];
@@ -70,9 +70,9 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
                 .addInfo("One-block machine analog")
-                .addParallelInfo(1,256)
-                .addInfo("Parallel Point will upped Upgrade Casing")
-                .addTypeMachine("WireMill, Wire Assembler")
+                //.addParallelInfo(1,256)
+                //.addInfo("Parallel Point will upped Upgrade Casing")
+                .addTypeMachine("3x3 Crafting, 4x4 Crafting")
                 .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
@@ -80,10 +80,9 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addParallelCase("-")
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
-                .addInputBus("Any casing (max x6)")
-                .addOutputBus("Any casing (max x3)")
-                .addInputHatch("Any casing (max x3)")
-                .addCasingInfo("Wire Factory Casing")
+                .addInputBus("Any casing (max x30)")
+                .addOutputBus("Any casing (max x1)")
+                .addCasingInfo("3D Printed Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -161,9 +160,9 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
                         if ( (X==1||X==2||X==3) && (Z==-1||Z==-2||Z==-3) && Y==0) {
-                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore1)
-                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-                                this.mLevel = 9;
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore2)
+                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 5)) {
+                                this.mLevel = 1;
                             } else {
                                 formationChecklist = false;
                             }
@@ -220,9 +219,9 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
                         if ( (X==1||X==2||X==3||X==4) && (Z==-1||Z==-2||Z==-3||Z==-4) && Y==0) {
-                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore1)
-                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-                                this.mLevel = 16;
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore2)
+                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 6)) {
+                                this.mLevel = 1;
                             } else {
                                 formationChecklist = false;
                             }
@@ -273,28 +272,27 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
         }
 
 
-        //if(this.mInputBusses.size() > 6) {
-        //    formationChecklist = false;
-        //}
-        //if(this.mInputHatches.size() > 3) {
-        //    formationChecklist = false;
-        //}
-        //if(this.mOutputBusses.size() > 3) {
-        //    formationChecklist = false;
-        //}
-        //if(this.mOutputHatches.size() != 0) {
-        //    formationChecklist = false;
-        //}
-        //if(this.mMufflerHatches.size() != 0) {
-        //    formationChecklist = false;
-        //}
-        //if(this.mEnergyHatches.size() != 1) {
-        //    formationChecklist = false;
-        //}
-        //if(this.mMaintenanceHatches.size() != 1) {
-        //    formationChecklist = false;
-        //}
-
+        if(this.mInputBusses.size() > 30) {
+            formationChecklist = false;
+        }
+        if(this.mInputHatches.size() != 0) {
+            formationChecklist = false;
+        }
+        if(this.mOutputBusses.size() > 1) {
+            formationChecklist = false;
+        }
+        if(this.mOutputHatches.size() != 0) {
+            formationChecklist = false;
+        }
+        if(this.mMufflerHatches.size() != 0) {
+            formationChecklist = false;
+        }
+        if(this.mEnergyHatches.size() != 1) {
+            formationChecklist = false;
+        }
+        if(this.mMaintenanceHatches.size() != 1) {
+            formationChecklist = false;
+        }
         return formationChecklist;
     }
 
@@ -329,7 +327,6 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
              if (mMode == -1) { mMode += 1; }
         else if (mMode ==  0) { mMode += 1; }
                                 else { mMode =  0; }
-
         mModed = (mMode == 0 ? " 3D Printer 3x3 " : mMode == 1 ? " 3D Printer 4x4 " : null);
         GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.GREEN + mModed);
     }
