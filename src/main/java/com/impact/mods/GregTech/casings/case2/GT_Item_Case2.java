@@ -18,5 +18,13 @@ public class GT_Item_Case2
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         aList.add(this.mNoMobsToolTip);
         aList.add(this.mNoTileEntityToolTip);
+        switch (getDamage(aStack)) {
+            case 5:
+                aList.add(this.mConfiguration3Dprinter3x3);
+                break;
+            case 6:
+                aList.add(this.mConfiguration3Dprinter4x4);
+                break;
+        }
     }
 }
