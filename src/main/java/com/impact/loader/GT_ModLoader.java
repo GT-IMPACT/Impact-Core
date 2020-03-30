@@ -27,6 +27,7 @@ public class GT_ModLoader {
 	private static final ChemicalBathRecipe ChemicalBathRecipe = new ChemicalBathRecipe();
 	private static final AssemblerRecipe AssemblerRecipe = new AssemblerRecipe();
 	private static final FreezSolidifier FreezSolidifier = new FreezSolidifier();
+	private static final Printer3DRecipe Printer3DRecipe = new Printer3DRecipe();
 
 	public static void run()
     {
@@ -45,5 +46,6 @@ public class GT_ModLoader {
 		ChemicalBathRecipe.run();
 		AssemblerRecipe.run();
 		FreezSolidifier.run();
+		Printer3DRecipe.run();
     }
 }
