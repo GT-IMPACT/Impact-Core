@@ -1,5 +1,9 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
+import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.GregTech.tileentities.multi.gui.GUI_NotMultiMachine;
+import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
 import gregtech.api.GregTech_API;
@@ -14,12 +18,16 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
-public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiBlockBase {
+public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBlockBase {
+
+
 
     public GTMTE_FreezerSolidifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -33,16 +41,34 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiBlockBase {
         return new GTMTE_FreezerSolidifier(this.mName);
     }
 
+    /** === DESCRIPTION === */
+    @Override
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Freezer Solidifier",
-                "Super cools hot ingots and cells",
-                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
-                "1x Input Bus (Any casing)",
-                "1x Output Bus (Any casing)",
-                "1x Maintenance Hatch (Any casing)",
-                "1x Energy Hatch (Any casing)",
-                "Frost Proof Machine Casings for the rest (16 at least!)"};
+        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+        b
+                .addInfo("One-block machine analog")
+                .addParallelInfo(1,256)
+                .addInfo("Parallel Point will upped Upgrade Casing")
+                //.addPollution(200, 12800)
+                .addTypeMachine("Freezer Solidification")
+                .addScrew()
+                .addSeparator()
+                .beginStructureBlock(3, 3, 3)
+                .addController("-")
+                .addParallelCase("-")
+                .addEnergyHatch("Any casing")
+                .addMaintenanceHatch("Any casing")
+                .addInputBus("Any casing (max x2)")
+                .addInputHatch("Any casing (max x2)")
+                .addOutputBus("Any casing (max x1)")
+                .addMuffler("Any casing (max x1)")
+                .addCasingInfo("Frost Proof Machine Casing")
+                .signAndFinalize(": "+ EnumChatFormatting.RED+"IMPACT");
+        if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return b.getInformation();
+        } else {
+            return b.getStructureInformation();
+        }
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -54,8 +80,10 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiBlockBase {
                 : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[17]};
     }
 
+    /** === GUI === */
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "VacuumFreezer.png");
+        return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
+                "MultiParallelBlockGUI.png"," Freezification ");
     }
 
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
@@ -70,82 +98,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiBlockBase {
         return aFacing > 1;
     }
 
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        tInputList.add(mInventory[1]);
-        ItemStack[] inputs = tInputList.toArray(new ItemStack[tInputList.size()]);
-
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-
-        if (inputs.length > 0 || fluids.length > 0) {
-            long voltage = getMaxInputVoltage();
-            byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-            GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sFreezerSolidficationRecipes.findRecipe(getBaseMetaTileEntity(), false,
-                    false, gregtech.api.enums.GT_Values.V[tier], fluids, inputs);
-            if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-
-                int EUt = recipe.mEUt;
-                int maxProgresstime = recipe.mDuration;
-
-                while (EUt <= gregtech.api.enums.GT_Values.V[tier - 1] && maxProgresstime > 2) {
-                    EUt *= 4;
-                    maxProgresstime /= 4;
-                }
-                if (maxProgresstime < 2) {
-                    maxProgresstime = 2;
-                    EUt = recipe.mEUt * recipe.mDuration / 2;
-                }
-
-                this.mEUt = -EUt;
-                this.mMaxProgresstime = maxProgresstime;
-                mOutputItems = new ItemStack[recipe.mOutputs.length];
-                for (int i = 0; i < recipe.mOutputs.length; i++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
-                        this.mOutputItems[i] = recipe.getOutput(i);
-                    }
-                }
-                this.mOutputFluids = recipe.mFluidOutputs;
-                this.updateSlots();
-                return true;
-            }
-        }
-        return false;
-    }
-
+    private int mLevel = 0;
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
         final Vector3i offset = new Vector3i();
 
@@ -199,10 +152,32 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiBlockBase {
                     if ((X==2||X==-2)&&(Y==2||Y==-2)) continue;
                     if ( (Z==-1||Z==-2) && ( ((X==2||X==-2)&&Y==0) || ((Y==2||Y==-2)&&X==0)) ) continue;
 
-                    if ( (Z==-1||Z==-2)&& ( (X==0&&Y==0) || (X==-1&&(Y==1||Y==-1)) || (X==1&&(Y==1||Y==-1)) ) ) continue;
-
+                    if ( (Z==-1||Z==-2)&& ( (X==-1&&(Y==1||Y==-1)) || (X==1&&(Y==1||Y==-1)) ) ) continue;
 
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Z, Y);
+                    if ( (Z==-1||Z==-2) && Y==0 && X==0 ) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore1)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                            this.mLevel = 4;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  CORE_API.sCaseCore1)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
+                            this.mLevel = 16;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  CORE_API.sCaseCore1)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
+                            this.mLevel = 64;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  CORE_API.sCaseCore1)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
+                            this.mLevel = 256;
+                        } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
+                            this.mLevel = 1;
+                        } else {
+                            formationChecklist = false;
+                        }
+                        continue;
+                    }
+
+
+
 
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                     if (!super.addMaintenanceToMachineList(currentTE, 17)
@@ -243,22 +218,12 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiBlockBase {
         return formationChecklist;
     }
 
-
-
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
+    /** === SET PARALLEL === */
+    public int Parallel() {
+        return this.mLevel;
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
         return 0;
     }
-
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
 }
