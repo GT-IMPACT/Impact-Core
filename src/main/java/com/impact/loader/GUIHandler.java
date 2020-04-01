@@ -39,13 +39,14 @@ import com.impact.mods.modSolar.client.GuiAdvSolarPanel;
 import com.impact.mods.modSolar.common.TE.TileEntitySolarPanel;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class GUIHandler implements IGuiHandler {
 
-    public static final int GUI_ID_CIRCUITPROGRAMMER = 20, GUI_ID_GTSU = 0, GUI_ID_WroughtIronChest = 1, GUI_ID_SteelChest = 2,
+    public static final int GUI_ID_CIRCUITPROGRAMMER = 1, GUI_ID_GTSU = 0, GUI_ID_WroughtIronChest = 12, GUI_ID_SteelChest = 2,
             GUI_ID_AlChest = 3, GUI_ID_HSLA = 4, GUI_ID_TiChest = 5, GUI_ID_WChest = 6, GUI_ID_CrChest = 7, GUI_ID_IrChest = 8,
             GUI_ID_OsChest = 9, GUI_ID_NtChest = 10, GUI_ID_Solar = 11
             ;
@@ -53,12 +54,14 @@ public class GUIHandler implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         final TileEntity entity = world.getTileEntity(x, y, z);
+        EntityPlayer aPlayer = Minecraft.getMinecraft().thePlayer;
         if (entity == null) return null;
         switch (ID) {
-
             case GUI_ID_GTSU:
                 if(entity instanceof TileEntityGTSU)
                     return new ContainerGTSU((TileEntityGTSU)entity, player);
+            case GUI_ID_CIRCUITPROGRAMMER:
+                    return new GT_Container_CircuitProgrammer(aPlayer.inventory);
             case GUI_ID_WroughtIronChest:
                 if (entity instanceof TEWroughtIronChest)
                     return new ContainerWroughtIronChest((TEWroughtIronChest) entity, player.inventory);
@@ -92,10 +95,6 @@ public class GUIHandler implements IGuiHandler {
             case GUI_ID_Solar:
                 if (entity instanceof TileEntitySolarPanel)
                     return ((TileEntitySolarPanel)entity).getGuiContainer(player.inventory);
-
-
-            case GUI_ID_CIRCUITPROGRAMMER:
-                return new GT_Container_CircuitProgrammer(player.inventory);
         }
         return null;
     }
@@ -104,12 +103,14 @@ public class GUIHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (FMLCommonHandler.instance().getSide().isClient()) {
             TileEntity entity = world.getTileEntity(x, y, z);
+            EntityPlayer aPlayer = Minecraft.getMinecraft().thePlayer;
             if (entity == null) return null;
             switch (ID) {
-
                 case GUI_ID_GTSU:
                     if (entity instanceof TileEntityGTSU)
-                        return new GuiGTSU(ID, new ContainerGTSU((TileEntityGTSU) entity, player));
+                        return new GuiGTSU(new ContainerGTSU((TileEntityGTSU) entity, player));
+                case GUI_ID_CIRCUITPROGRAMMER:
+                        return new GT_GUIContainer_CircuitProgrammer(player.inventory);
                 case GUI_ID_WroughtIronChest:
                     if (entity instanceof TEWroughtIronChest)
                         return new GuiWroughtIronChest((TEWroughtIronChest) entity, player.inventory);
@@ -142,11 +143,7 @@ public class GUIHandler implements IGuiHandler {
                         return new GuiChestNt((TEChestNt) entity, player.inventory);
                 case GUI_ID_Solar:
                     if (entity instanceof TileEntitySolarPanel)
-                        return new GuiAdvSolarPanel(player.inventory, (TileEntitySolarPanel) entity);
-
-
-                case GUI_ID_CIRCUITPROGRAMMER:
-                    return new GT_GUIContainer_CircuitProgrammer(new GT_Container_CircuitProgrammer(player.inventory));
+                        return new GuiAdvSolarPanel((TileEntitySolarPanel) entity, player.inventory);
             }
         } else
             return getServerGuiElement(ID, player, world, x, y, z);
