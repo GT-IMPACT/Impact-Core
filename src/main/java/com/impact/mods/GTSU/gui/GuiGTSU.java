@@ -24,7 +24,7 @@ public class GuiGTSU extends GuiContainer {
 	private final String name;
 	private static final ResourceLocation BACKGROUND = new ResourceLocation("gtsu:textures/gui/gui_gtsu.png");
 
-	public GuiGTSU(int ID, ContainerGTSU container) {
+	public GuiGTSU(ContainerGTSU container) {
 		super(container);
 		
 		this.xSize = 176;
