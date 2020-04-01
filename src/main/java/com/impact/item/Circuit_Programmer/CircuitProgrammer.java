@@ -8,6 +8,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +16,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import java.util.List;
+
+import static com.impact.loader.GUIHandler.GUI_ID_CIRCUITPROGRAMMER;
 
 public class CircuitProgrammer extends GT_Generic_Item implements IElectricItem {
 
@@ -33,9 +36,11 @@ public class CircuitProgrammer extends GT_Generic_Item implements IElectricItem 
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+    public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer player) {
+        EntityPlayer aPlayer = Minecraft.getMinecraft().thePlayer;
         if (ElectricItem.manager.use(aStack, 100, aPlayer)) {
-            FMLNetworkHandler.openGui(aPlayer, impact.instance, 10, aWorld, 0, 0, 0);
+
+            aPlayer.openGui(impact.instance, GUI_ID_CIRCUITPROGRAMMER, aPlayer.worldObj,(int)aPlayer.posX,(int)aPlayer.posY,(int)aPlayer.posZ);
         }
         return aStack;
     }
