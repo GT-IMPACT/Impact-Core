@@ -37,16 +37,13 @@ public class GT_Machines_MultiRegister {
 			GT_ItemList.Machine_Mixer			.set(new GTMTE_Mixer(ID++, "multimachine.mixer",  						"Multi Mixing Machine").getStackForm(1L));
 			GT_ItemList.Machine_Siftarator		.set(new GTMTE_Siftarator(ID++, "multimachine.siftarator",  			"Multi Siftaration Unit").getStackForm(1L));
 			GT_ItemList.Machine_DDDPrinter		.set(new GTMTE_3DPrinter(ID++, "multimachine.dddprinter",  				"3D Printer").getStackForm(1L));
-
-			GT_ItemList.PowerStation			.set(new GTMTE_PowerStation(ID++, "multimachine.powerstation",  		"Power Station").getStackForm(1L));
-			GT_ItemList.PowerReactor			.set(new GTMTE_REACTOR(ID++, "multimachine.powerreactor",  				"Power Reactor").getStackForm(1L));
-			GT_ItemList.PowerTurbine			.set(new GTMTE_NuclearTurbine(ID++, "multimachine.powerturb", 			"Power Turbine").getStackForm(1L));
 			GT_ItemList.Machine_FreezSolidifier	.set(new GTMTE_FreezerSolidifier(ID++, "multimachine.freezsolidifier", 	"Freezer Solidifier").getStackForm(1L));
 			GT_ItemList.Machine_BlastSmelter	.set(new GTMTE_BlastSmelter(ID++, "multimachine.blastsmelter", 			"Blast Smelter").getStackForm(1L));
 
-		/** CRAFTING MANAGER */
 
-			//ЗДЕСЬ ПИШИ КРАФТ
+			//GT_ItemList.PowerStation			.set(new GTMTE_PowerStation(ID++, "multimachine.powerstation",  		"Power Station").getStackForm(1L));
+			//GT_ItemList.PowerReactor			.set(new GTMTE_REACTOR(ID++, "multimachine.powerreactor",  				"Power Reactor").getStackForm(1L));
+			//GT_ItemList.PowerTurbine			.set(new GTMTE_NuclearTurbine(ID++, "multimachine.powerturb", 			"Power Turbine").getStackForm(1L));
 
 	}
 }
