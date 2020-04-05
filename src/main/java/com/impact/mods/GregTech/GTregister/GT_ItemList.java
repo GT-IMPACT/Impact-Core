@@ -35,10 +35,10 @@ public enum GT_ItemList implements IItemContainer {
 	Portable_Tank_LuV, Portable_Tank_ZPM, Portable_Tank_UV,
 
 	//HATCHES
-	Dynamo_Capacity_EV,
-	Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM,
+	Energy_4A_IV, Energy_4A_LuV, Energy_4A_ZPM, Energy_4A_UV, Energy_16A_LuV, Energy_16A_ZPM, Energy_16A_UV, Energy_64A_ZPM, Energy_64A_UV, Energy_256A_UV,
 
-	Energy_Capacity_EV,
+	Dynamo_2A_EV, Dynamo_2A_IV, Dynamo_2A_LuV, Dynamo_2A_ZPM, Dynamo_2A_UV, Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM, Dynamo_4A_UV, Dynamo_16A_LuV, Dynamo_16A_ZPM,
+	Dynamo_16A_UV, Dynamo_64A_ZPM, Dynamo_64A_UV, Dynamo_256A_UV,
 
 	Nuclear_Resistant_OH,
 
