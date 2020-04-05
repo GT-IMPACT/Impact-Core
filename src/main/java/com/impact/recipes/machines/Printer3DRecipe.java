@@ -127,21 +127,21 @@ public class Printer3DRecipe implements Runnable{
         }, GT_ItemList.UpgradeCasingT1.get(1L, new Object[0]), null, 80*20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[] {
-                ItemList.Hull_LuV.get(1L), GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 0), GT_ItemList.UpgradeCasingT1.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iron, 16),//HastelloyN
+                ItemList.Hull_LuV.get(1L), GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 0), GT_ItemList.UpgradeCasingT1.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, GT_Materials.HastelloyN, 16),
                 ItemList.Electric_Motor_LuV.get(4L), ItemList.Electric_Piston_LuV.get(4L), ItemList.Conveyor_Module_LuV.get(4L), ItemList.Robot_Arm_LuV.get(4L),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate, 16), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Chrome, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NeodymiumMagnetic, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 32), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 32)
         }, GT_ItemList.UpgradeCasingT2.get(1L, new Object[0]), null, 120*20, 30720);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[] {
-                ItemList.Hull_ZPM.get(1L), GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 1), GT_ItemList.UpgradeCasingT2.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 16),//Lafium
+                ItemList.Hull_ZPM.get(1L), GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 1), GT_ItemList.UpgradeCasingT2.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, GT_Materials.Lafium, 16),
                 ItemList.Electric_Motor_ZPM.get(4L), ItemList.Electric_Piston_ZPM.get(4L), ItemList.Conveyor_Module_ZPM.get(4L), ItemList.Robot_Arm_ZPM.get(4L),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 16), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iridium, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 48), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 48)
         }, GT_ItemList.UpgradeCasingT3.get(1L, new Object[0]), null, 160*20, 122880);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[] {
-                ItemList.Hull_UV.get(1L), GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 2), GT_ItemList.UpgradeCasingT3.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 16),//CinobiteA243
+                ItemList.Hull_UV.get(1L), GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 2), GT_ItemList.UpgradeCasingT3.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, GT_Materials.CinobiteA243, 16),
                 ItemList.Electric_Motor_UV.get(4L), ItemList.Electric_Piston_UV.get(4L), ItemList.Conveyor_Module_UV.get(4L), ItemList.Robot_Arm_UV.get(4L),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 8), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 16), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Osmium, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 16),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 64)
