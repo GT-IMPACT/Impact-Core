@@ -1,14 +1,23 @@
 package com.impact.loader;
 
+import com.impact.block.Core_Blocks;
 import com.impact.block.Core_GlassBlocks;
+import com.impact.block.DecorateBlocksItem;
 import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocksItem;
 import com.impact.item.Circuit_Programmer.CircuitProgrammer;
 import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 
 
 public class ItemRegistery {
+
+    public static final Block[] decorateBlock = {
+            new Core_Blocks("ItemDecorateBlock", new String[] {
+                    Refstrings.MODID + ":blockConcrete",
+            }, 0),
+    };
 
     public static void run() {
 
@@ -16,7 +25,10 @@ public class ItemRegistery {
             GameRegistry.registerBlock(new Core_GlassBlocks("GlassBlock"+i, new String[]{ Refstrings.MODID + ":blockGB"+i },null, true, true), GlassBlocksItem.class, "GlassBlock"+i);
         }
 
+        GameRegistry.registerBlock(ItemRegistery.decorateBlock[0], DecorateBlocksItem.class, "DecorateBlock");
     }
+
+
 
     public static CircuitProgrammer toolCircuitProgrammer;
     public static void CircuitProgrammer() {

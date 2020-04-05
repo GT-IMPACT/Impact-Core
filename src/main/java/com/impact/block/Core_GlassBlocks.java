@@ -33,6 +33,7 @@ public class Core_GlassBlocks extends Core_Blocks {
         super(name, texture, tabs, Material.glass);
         setBlockBounds(0, 0, 0, 1, 1, 1);
         setHarvestLevel("pickaxe", 1);
+        setHarvestLevel("wrench", 1);
         setHardness(5);
         setResistance(5);
         setLightOpacity(0);

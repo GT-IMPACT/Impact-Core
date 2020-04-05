@@ -16,7 +16,8 @@ public class GlassBlocksItem extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        aList.add( "STEKLO EPTA");//Glassy & Classy
+        aList.add( "Use as a decorative");//Glassy & Classy
+        aList.add( "Use as GT Casing");//Glassy & Classy
 
 
     }

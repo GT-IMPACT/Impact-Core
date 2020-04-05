@@ -48,6 +48,16 @@ public class Core_Blocks extends Block {
         this.setCreativeTab(tabs);
     }
 
+    public Core_Blocks(String name, String[] texture, int MassiveForReg) {
+        super(Material.anvil);
+        setHarvestLevel("pickaxe", 1);
+        setHardness(1);
+        setResistance(1);
+        setStepSound(Block.soundTypeStone);
+        this.name = name;
+        this.textureNames = texture;
+    }
+
     @Override
     public int damageDropped(int meta) {
         return meta;
