@@ -28,5 +28,9 @@ public class FreezSolidifierRecipe implements Runnable{
         GT_Values.RA.addFreezerSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(1L), FluidRegistry.getFluidStack("ic2coolant", 125), GT_Materials.Mangalloy.getMoltenHot(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, GT_Materials.Mangalloy, 1L), 20*20, 1920);
         GT_Values.RA.addFreezerSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(1L), FluidRegistry.getFluidStack("ic2coolant", 125), GT_Materials.MaragingSteel300.getMoltenHot(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, GT_Materials.MaragingSteel300, 1L), 20*20, 1920);
         GT_Values.RA.addFreezerSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(1L), FluidRegistry.getFluidStack("ic2coolant", 125), GT_Materials.Stellite.getMoltenHot(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, GT_Materials.Stellite, 1L), 20*20, 1920);
+        GT_Values.RA.addFreezerSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(1L), FluidRegistry.getFluidStack("ic2coolant", 125), GT_Materials.Zeron100.getMoltenHot(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, GT_Materials.Zeron100, 1L), 20*20, 1920);
+        GT_Values.RA.addFreezerSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(1L), FluidRegistry.getFluidStack("ic2coolant", 125), GT_Materials.CinobiteA243.getMoltenHot(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, GT_Materials.CinobiteA243, 1L), 20*20, 1920);
+        GT_Values.RA.addFreezerSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(1L), FluidRegistry.getFluidStack("ic2coolant", 125), GT_Materials.HastelloyN.getMoltenHot(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, GT_Materials.HastelloyN, 1L), 20*20, 1920);
+        GT_Values.RA.addFreezerSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(1L), FluidRegistry.getFluidStack("ic2coolant", 125), GT_Materials.Lafium.getMoltenHot(144L), GT_OreDictUnificator.get(OrePrefixes.ingot, GT_Materials.Lafium, 1L), 20*20, 1920);
     }
 }
