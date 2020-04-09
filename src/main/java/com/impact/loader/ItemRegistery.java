@@ -9,23 +9,24 @@ import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 
 public class ItemRegistery {
 
     public static final Block[] decorateBlock = {
-            new Core_Blocks("ItemDecorateBlock", new String[] {
-                    Refstrings.MODID + ":blockConcrete",
-            }, 0),
+            new Core_Blocks("DecorateBlock", new String[] { Refstrings.MODID + ":blockConcrete", }, 0),
     };
 
     public static void run() {
 
-        for (int i=1; i<=16; i++) {
-            GameRegistry.registerBlock(new Core_GlassBlocks("GlassBlock"+i, new String[]{ Refstrings.MODID + ":blockGB"+i },null, true, true), GlassBlocksItem.class, "GlassBlock"+i);
+        for (int i=0; i<=15; i++) {
+            GameRegistry.registerBlock(new Core_GlassBlocks("GlassBlock"+i, new String[]{ Refstrings.MODID + ":glass/blockGB"+i },null, true, true), GlassBlocksItem.class, "GlassBlock"+i);
         }
 
         GameRegistry.registerBlock(ItemRegistery.decorateBlock[0], DecorateBlocksItem.class, "DecorateBlock");
+        OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
     }
 
 

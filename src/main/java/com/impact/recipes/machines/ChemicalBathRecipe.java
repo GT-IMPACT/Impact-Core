@@ -1,6 +1,7 @@
 package com.impact.recipes.machines;
 
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -52,9 +53,24 @@ public class ChemicalBathRecipe implements Runnable{
 
 /* ================================= end CORE MOD =================================*/
 
-/** ================================= start ANOTHER MOD =================================*/
+/** ================================= start CORE MOD =================================*/
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("minecraft", "glass", 1L, 0),Materials.BorosilicateGlass.getMolten(144L), GT_ModHandler.getModItem("impact", "GlassBlock0", 1L, 0), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 2);
 
-/* ================================= end ANOTHER MOD =================================*/
+        for (byte i = 0; i <= 15; i = (byte) (i + 1)) {
+            for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
+                if (i != 15) {
+                    GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("impact", "GlassBlock0", 1L, 0), Dyes.VALUES[i].getFluidDye(j, 18L), GT_ModHandler.getModItem("impact", "GlassBlock" + (15 - i), 1L, 0), GT_Values.NI, GT_Values.NI, null, 200, 2);
+                }
+            }
+        }
+
+        for (byte i = 1; i <= 15; i++) {
+            if (i != 0) {
+                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("impact", "GlassBlock" + i, 1L, 0), Materials.Chlorine.getMolten(50L), GT_ModHandler.getModItem("impact", "GlassBlock0", 1L, 0), GT_Values.NI, GT_Values.NI, null, 200, 2);
+            }
+        }
+
+/* ================================= end CORE MOD =================================*/
 
 
 

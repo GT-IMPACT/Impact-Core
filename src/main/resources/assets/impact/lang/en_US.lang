@@ -14,23 +14,22 @@ tile.OsmiumChest.name= Osmium Chest
 tile.NeutroniumChest.name= Neutronium Chest
 
 #Glass
-tile.GlassBlock1.name= Fake TecTech Glass
-GlassBlock1.name= Brown I-Glass
-GlassBlock2.name= Cyan I-Glass
-GlassBlock3.name= Black I-Glass
-GlassBlock4.name= Blue I-Glass
-GlassBlock5.name= Gray I-Glass
-GlassBlock6.name= Green I-Glass
-GlassBlock7.name= Light Gray I-Glass
-GlassBlock8.name= Light Blue I-Glass
-GlassBlock9.name= Lime I-Glass
-GlassBlock10.name= Magenta I-Glass
-GlassBlock11.name= Orange I-Glass
-GlassBlock12.name= Pink I-Glass
-GlassBlock13.name= Purple I-Glass
+GlassBlock0.name= White I-Glass
+GlassBlock1.name= Orange I-Glass
+GlassBlock2.name= Magenta I-Glass
+GlassBlock3.name= Light Blue I-Glass
+GlassBlock4.name= Yellow I-Glass
+GlassBlock5.name= Lime I-Glass
+GlassBlock6.name= Pink I-Glass
+GlassBlock7.name= Gray I-Glass
+GlassBlock8.name= Light Gray I-Glass
+GlassBlock9.name= Cyan I-Glass
+GlassBlock10.name= Purple I-Glass
+GlassBlock11.name= Blue I-Glass
+GlassBlock12.name= Brown I-Glass
+GlassBlock13.name= Green I-Glass
 GlassBlock14.name= Red I-Glass
-GlassBlock15.name= White I-Glass
-GlassBlock16.name= Yellow I-Glass
+GlassBlock15.name= Black I-Glass
 
 #Solar
 blockULVSolarPanel.name=ULV Solar Panel
@@ -48,3 +47,6 @@ gui.AdvancedSolarPanel.storage=Storage
 gui.AdvancedSolarPanel.maxOutput=Max Output
 gui.AdvancedSolarPanel.generating=Generating
 gui.AdvancedSolarPanel.energyPerTick=EU/t
+
+#Decorated Block
+DecorateBlock.0.name= Concrete

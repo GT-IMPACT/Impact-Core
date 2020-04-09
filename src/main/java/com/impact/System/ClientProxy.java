@@ -1,7 +1,7 @@
 package com.impact.System;
 
-import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocks;
-import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocksRender;
+
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +14,8 @@ public class ClientProxy extends CommonProxy {
 
 
 	@Override
-    public void registerRenderInfo()
-    {
+    public void registerRenderInfo() {
 		MinecraftForge.EVENT_BUS.register(CONFIG_HANDLER);
-
-        GlassBlocks.renderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(GlassBlocks.renderID, new GlassBlocksRender());
-
     }
 	
 	@Override
