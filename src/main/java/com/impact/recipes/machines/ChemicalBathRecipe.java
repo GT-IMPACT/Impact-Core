@@ -7,6 +7,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 public class ChemicalBathRecipe implements Runnable{
     @Override
@@ -72,6 +73,11 @@ public class ChemicalBathRecipe implements Runnable{
 
 /* ================================= end CORE MOD =================================*/
 
+        //Lens
+        GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 1L), Materials.Chlorine.getGas(100L), GT_ItemList.RefinedReinforcedGlassLense.get(1L), GT_Values.NI, GT_Values.NI, null, 600, 16);
+        GT_Values.RA.addChemicalBathRecipe(GT_ItemList.RefinedReinforcedGlassLense.get(1L), Materials.Radon.getGas(250), GT_ItemList.ChargedGlassLense.get(1L), null, null, null, 384, 480);
+        GT_Values.RA.addChemicalBathRecipe(GT_ItemList.HugeRefinedReinforcedGlassLense.get(1L), Materials.Radon.getGas(1250), GT_ItemList.HugeChargedGlassLense.get(1L), null, null, null, 384, 1920);
+        GT_Values.RA.addLaserEngraverRecipe(GT_ItemList.RefinedReinforcedGlassLense.get(3L), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)), GT_ItemList.HugeRefinedReinforcedGlassLense.get(1L), 2400, 2000, false);
 
 
     }

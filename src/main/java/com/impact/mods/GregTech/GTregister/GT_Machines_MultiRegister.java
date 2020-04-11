@@ -2,9 +2,8 @@ package com.impact.mods.GregTech.GTregister;
 
 
 import com.impact.mods.GregTech.tileentities.multi.*;
-import com.impact.mods.GregTech.tileentities.multi.NuclearReactor.GTMTE_NuclearTurbine;
-import com.impact.mods.GregTech.tileentities.multi.NuclearReactor.GTMTE_REACTOR;
-import com.impact.mods.GregTech.tileentities.storage.GTMTE_PowerStation;
+import com.spartakcore.gthandler.tileentities.multi.GT_MetaTileEntity_CokeOven;
+import com.spartakcore.gthandler.tileentities.multi.GT_MetaTileEntity_Farm;
 import gregtech.api.util.GT_ModHandler;
 
 public class GT_Machines_MultiRegister {
@@ -40,6 +39,8 @@ public class GT_Machines_MultiRegister {
 			GT_ItemList.Machine_FreezSolidifier	.set(new GTMTE_FreezerSolidifier(ID++, "multimachine.freezsolidifier", 	"Freezer Solidifier").getStackForm(1L));
 			GT_ItemList.Machine_BlastSmelter	.set(new GTMTE_BlastSmelter(ID++, "multimachine.blastsmelter", 			"Blast Smelter").getStackForm(1L));
 
+			GT_ItemList.Machine_CokeOven.set(new GT_MetaTileEntity_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
+			GT_ItemList.Machine_Multi_Farm.set(new GT_MetaTileEntity_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));
 
 			//GT_ItemList.PowerStation			.set(new GTMTE_PowerStation(ID++, "multimachine.powerstation",  		"Power Station").getStackForm(1L));
 			//GT_ItemList.PowerReactor			.set(new GTMTE_REACTOR(ID++, "multimachine.powerreactor",  				"Power Reactor").getStackForm(1L));

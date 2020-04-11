@@ -30,19 +30,47 @@ public enum GT_ItemList implements IItemContainer {
 
 	Machine_FreezerSolidifier,
 
+	ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump, RefinedReinforcedGlassLense, ChargedGlassLense,
+	HugeRefinedReinforcedGlassLense, HugeChargedGlassLense,
+
 	//BASIC
 	Portable_Tank_ULV, Portable_Tank_LV, Portable_Tank_MV, Portable_Tank_HV, Portable_Tank_EV, Portable_Tank_IV,
 	Portable_Tank_LuV, Portable_Tank_ZPM, Portable_Tank_UV,
 
-	//HATCHES
-	Energy_4A_IV, Energy_4A_LuV, Energy_4A_ZPM, Energy_4A_UV, Energy_16A_LuV, Energy_16A_ZPM, Energy_16A_UV, Energy_64A_ZPM, Energy_64A_UV, Energy_256A_UV,
+	DustWasherULV, DustWasherLV, DustWasherMV, DustWasherHV, DustWasherEV, DustWasherIV, DustWasherLuV, DustWasherZPM,
+	DustWasherUV, DustWasherUHV, DustWasherUEV,
 
-	Dynamo_2A_EV, Dynamo_2A_IV, Dynamo_2A_LuV, Dynamo_2A_ZPM, Dynamo_2A_UV, Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM, Dynamo_4A_UV, Dynamo_16A_LuV, Dynamo_16A_ZPM,
-	Dynamo_16A_UV, Dynamo_64A_ZPM, Dynamo_64A_UV, Dynamo_256A_UV,
+	Machine_LV_ComponentAssembler, Machine_MV_ComponentAssembler, Machine_HV_ComponentAssembler, Machine_EV_ComponentAssembler,
+	Machine_IV_ComponentAssembler, Machine_LuV_ComponentAssembler, Machine_ZPM_ComponentAssembler, Machine_UV_ComponentAssembler,
+	Machine_UHV_ComponentAssembler, Machine_UEV_ComponentAssembler,
+
+	Machine_ULV_Assembler,
+
+	Generator_Steam_Turbine_ULV, Generator_Diesel_ULV, Generator_Gas_Turbine_ULV, Generator_Semi_Turbine_ULV, Generator_Semi_Turbine_LV,
+	Generator_Semi_Turbine_MV, Generator_Semi_Turbine_HV,
+
+	Water_Tank,
+
+	//HATCHES
+	Hatch_Output_Prim, Bus_Input_Prim, Bus_Output_Prim,
+
+	Hatch_Input_UEV, Hatch_Input_UIV, Hatch_Input_UMV, Hatch_Input_UXV, Hatch_Input_OPV, Hatch_Input_MAX,
+	Hatch_Output_UEV, Hatch_Output_UIV, Hatch_Output_UMV, Hatch_Output_UXV, Hatch_Output_OPV, Hatch_Output_MAX,
+
+	Bus_Input_UEV, Bus_Input_UIV, Bus_Input_UMV, Bus_Input_UXV, Bus_Input_OPV, Bus_Input_MAX,
+	Bus_Output_UEV, Bus_Output_UIV, Bus_Output_UMV, Bus_Output_UXV, Bus_Output_OPV, Bus_Output_MAX,
+
+	Energy_4A_IV, Energy_4A_LuV, Energy_4A_ZPM, Energy_4A_UV, Energy_16A_LuV, Energy_16A_ZPM, Energy_16A_UV, Energy_64A_ZPM,
+	Energy_64A_UV, Energy_256A_UV,
+
+	Dynamo_2A_EV, Dynamo_2A_IV, Dynamo_2A_LuV, Dynamo_2A_ZPM, Dynamo_2A_UV, Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM,
+	Dynamo_4A_UV, Dynamo_16A_LuV, Dynamo_16A_ZPM,  Dynamo_16A_UV, Dynamo_64A_ZPM, Dynamo_64A_UV, Dynamo_256A_UV,
 
 	Nuclear_Resistant_OH,
 
 	//MULTI
+	Machine_CokeOven, Machine_Multi_Farm,
+
 	Machine_PBE, Machine_LaserEngraver, Machine_Assembler, Machine_Centrifuge, Machine_Electrolyzer, Machine_Wire, Machine_Supply,
 	Machine_Utility, Machine_Brewmenter, Machine_ArcFurnace, Machine_Cutting, Machine_Extradifier, Machine_Macerator, Machine_Mixer,
 	Machine_Siftarator, Machine_DDDPrinter,

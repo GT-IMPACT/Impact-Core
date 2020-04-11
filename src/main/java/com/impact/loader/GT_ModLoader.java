@@ -29,6 +29,9 @@ public class GT_ModLoader {
 	private static final FreezSolidifierRecipe FreezSolidifierRecipe = new FreezSolidifierRecipe();
 	private static final Printer3DRecipe Printer3DRecipe = new Printer3DRecipe();
 	private static final BlastSmelterRecipe BlastSmelterRecipe = new BlastSmelterRecipe();
+	private static final ComponentAssemblerRecipe ComponentAssemblerRecipe = new ComponentAssemblerRecipe();
+	private static final CompessorRecipe CompessorRecipe = new CompessorRecipe();
+	private static final AlloySmelterRecipe AlloySmelterRecipe = new AlloySmelterRecipe();
 
 	public static void run()
     {
@@ -49,5 +52,8 @@ public class GT_ModLoader {
 		FreezSolidifierRecipe.run();
 		Printer3DRecipe.run();
 		BlastSmelterRecipe.run();
+		ComponentAssemblerRecipe.run();
+		CompessorRecipe.run();
+		AlloySmelterRecipe.run();
     }
 }

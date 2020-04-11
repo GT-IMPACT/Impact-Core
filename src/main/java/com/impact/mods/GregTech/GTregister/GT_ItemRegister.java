@@ -1,6 +1,11 @@
 package com.impact.mods.GregTech.GTregister;
 
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
+import gregtech.api.objects.GT_MultiTexture;
+import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.common.covers.GT_Cover_Pump;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -14,19 +19,22 @@ public class GT_ItemRegister {
 	private GT_MetaGenerated_Item_04 GT;
 	
 	private void registerItems() {
+		GT_ItemList.CokeOvenBrick.set(GT.addItem(1,"Coke Oven Brick",""));
 
-
-		/*=======================
-		 		ID 401++
-		=======================*/
-
-
-		/* === STEAM AGE === */
+		GT_ItemList.ULVPump.set(GT.addItem(395,"Electric Pump (ULV)","640 L/sec (as Cover"));
+		GregTech_API.registerCover(GT_ItemList.ULVPump.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[0][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(32));
+		GT_ItemList.ULVMotor.set(GT.addItem(396,"Electric Motor (ULV)",""));
+		GT_ItemList.ULVPiston.set(GT.addItem(397,"Electric Piston (ULV)",""));
+		GT_ItemList.ULVRobotArm.set(GT.addItem(398,"Robot Arm (ULV)",""));
+		GT_ItemList.ULVConveyorModule.set(GT.addItem(399,"Conveyor Module (ULV)",""));
 		GT_ItemList.WoodenBrickForm.set(GT.addItem( 402,"Wooden Brick Form",EnumChatFormatting.RED+"WIP"));
 		GT_ItemList.UnfiredSearedBrick.set(GT.addItem(403,"Unfired Seared Brick",EnumChatFormatting.RED+"WIP"));
 		GT_ItemList.UnfiredCokeOvenBrick.set(GT.addItem(404,"Unfired Coke Oven Brick",EnumChatFormatting.RED+"WIP"));
 		GT_ItemList.UnfiredClayBrick.set(GT.addItem(405,"Unfired Clay Brick",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.CokeOvenBrick.set(GT.addItem(406,"Coke Oven Brick",EnumChatFormatting.RED+"WIP"));
+		GT_ItemList.RefinedReinforcedGlassLense.set(GT.addItem(406,"Refined Reinforced Glass Lens",""));
+		GT_ItemList.ChargedGlassLense.set(GT.addItem(407,"Charged Reinforced Glass Lens",""));
+		GT_ItemList.HugeRefinedReinforcedGlassLense.set(GT.addItem(408,"Huge Refined Reinforced Glass Lens",""));
+		GT_ItemList.HugeChargedGlassLense.set(GT.addItem(409,"Huge Charged Reinforced Glass Lens",""));
 
 		/* === CHIPSETS === */
 		GT_ItemList.EngineeringProcessorFluidDiamondCore.set(GT.addItem(471,"Engineering Processor Fluid Diamond Core", EnumChatFormatting.RED+"WIP"));
