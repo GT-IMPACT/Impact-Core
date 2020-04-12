@@ -299,7 +299,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
         else if (mMode ==  0) { mMode += 1; }
         else { mMode =  0; }
 
-        mModed = (mMode == 0 ? " Arc Furnace " : mMode == 1 ? " Plasma Arc Furnace " : null);
+        mModed = (mMode == 0 ? " Arc Furnace " : mMode == 1 ? " Plasma Arc Furnace not worked " : null);
         GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
     }
 

@@ -101,7 +101,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sCompressorRecipes : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sExtractorRecipes :
                mMode == 2 ? GT_Recipe.GT_Recipe_Map.sCannerRecipes : mMode == 3 ? GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes :
-               mMode == 3 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes : GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+               mMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes : GT_Recipe.GT_Recipe_Map.sHammerRecipes;
     }
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
         final Vector3i offset = new Vector3i();

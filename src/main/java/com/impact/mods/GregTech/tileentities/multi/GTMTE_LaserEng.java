@@ -184,7 +184,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
                         }
 
                         if (X==0 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock6")) {
+                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock13")) {
                             } else  {
                                 formationChecklist = false;
                             }
@@ -192,7 +192,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
                         }
 
                         if (X==1 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock4")) {
+                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock11")) {
                             } else  {
                                 formationChecklist = false;
                             }
@@ -285,7 +285,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
         for(byte X = 0; X <= 0; X++) {
             final Vector3ic glass = rotateOffsetVector(forgeDirection, X, 2, -2);
             if (X==0) {
-                if (thisController.getBlockOffset(glass.x(), glass.y(), glass.z()).getUnlocalizedName().equals("GlassBlock15")) {
+                if (thisController.getBlockOffset(glass.x(), glass.y(), glass.z()).getUnlocalizedName().equals("GlassBlock0")) {
                 } else {
                     formationChecklist = false;
                 }
