@@ -32,6 +32,8 @@ public class GT_ModLoader {
 	private static final ComponentAssemblerRecipe ComponentAssemblerRecipe = new ComponentAssemblerRecipe();
 	private static final CompessorRecipe CompessorRecipe = new CompessorRecipe();
 	private static final AlloySmelterRecipe AlloySmelterRecipe = new AlloySmelterRecipe();
+	private static final MixerRecipe MixerRecipe = new MixerRecipe();
+	private static final EBFRecipe EBFRecipe = new EBFRecipe();
 
 	public static void run()
     {
@@ -55,5 +57,7 @@ public class GT_ModLoader {
 		ComponentAssemblerRecipe.run();
 		CompessorRecipe.run();
 		AlloySmelterRecipe.run();
+		MixerRecipe.run();
+		EBFRecipe.run();
     }
 }
