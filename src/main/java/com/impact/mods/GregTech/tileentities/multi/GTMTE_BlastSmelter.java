@@ -259,6 +259,8 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
                     if (X==0&&Y==0&&Z==0) continue;
                     if ( (Y==1||Y==2) && ((X==1&&(Z==-1||Z==-2||Z==-3)) || (X==-1&&(Z==-1||Z==-2||Z==-3)) || (X==0&&(Z==-1||Z==-2||Z==-3))) ) continue;
 
+                    if ((X==-2||X==2) && (Z==0||Z==-4)) continue;
+
 
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
@@ -317,16 +319,16 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
         if(this.mInputBusses.size() > 5) {
             formationChecklist = false;
         }
-        if(this.mInputHatches.size() > 3) {
+        if(this.mInputHatches.size() !=0) {
             formationChecklist = false;
         }
         if(this.mOutputBusses.size() !=0) {
             formationChecklist = false;
         }
-        if(this.mOutputHatches.size() !=1) {
+        if(this.mOutputHatches.size() > 5) {
             formationChecklist = false;
         }
-        if(this.mEnergyHatches.size() > 4) {
+        if(this.mEnergyHatches.size() >= 2) {
             formationChecklist = false;
         }
         if(this.mMaintenanceHatches.size() != 1) {
@@ -350,67 +352,6 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        int tX = aBaseMetaTileEntity.getXCoord() + xDir;
-        int tY = (int) aBaseMetaTileEntity.getYCoord();
-        int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
-        int tUsedMeta;
-        for (int xPos = tX - 1; xPos <= tX + 1; xPos++) {
-            for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
-                if ((xPos == tX) && (zPos == tZ)) {
-                    continue;
-                }
-                for (int yPos = tY + 1; yPos <= tY + 2; yPos++) {
-                    tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
-                    if (tUsedMeta >= 12 && tUsedMeta <= 14 && aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) == GregTech_API.sBlockCasings8) {
-                        aBaseMetaTileEntity.getWorld().setBlock(xPos, yPos, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 4);
-                    }
-                }
-            }
-        }
-    }
-    @Override
-    public boolean addOutput(FluidStack aLiquid) {
-        if (aLiquid == null) return false;
-        int targetHeight;
-        FluidStack tLiquid = aLiquid.copy();
-        boolean isOutputPollution = false;
-        for (FluidStack pollutionFluidStack : pollutionFluidStacks) {
-            if (tLiquid.isFluidEqual(pollutionFluidStack)) {
-                isOutputPollution = true;
-                break;
-            }
-        }
-        if (isOutputPollution) {
-            targetHeight = this.controllerY + 3;
-            int pollutionReduction = 0;
-            for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-                if (isValidMetaTileEntity(tHatch)) {
-                    pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
-                    break;
-                }
-            }
-            tLiquid.amount = tLiquid.amount * (pollutionReduction + 5) / 100;
-        } else {
-            targetHeight = this.controllerY;
-        }
-        for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-            if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam() : tHatch.outputsLiquids()) {
-                if (tHatch.getBaseMetaTileEntity().getYCoord() == targetHeight) {
-                    int tAmount = tHatch.fill(tLiquid, false);
-                    if (tAmount >= tLiquid.amount) {
-                        return tHatch.fill(tLiquid, true) >= tLiquid.amount;
-                    } else if (tAmount > 0) {
-                        tLiquid.amount = tLiquid.amount - tHatch.fill(tLiquid, true);
-                    }
-                }
-            }
-        }
         return false;
     }
 
