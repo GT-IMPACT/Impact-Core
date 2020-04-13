@@ -4,6 +4,7 @@ import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.GregTech.tileentities.multi.gui.GUI_ArcFurnace;
 import com.impact.mods.GregTech.tileentities.multi.gui.GUI_Assembler;
+import com.impact.mods.GregTech.tileentities.multi.gui.GUI_NotMultiMachine;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -71,7 +72,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 //.addPollution(200, 12800)
-                .addTypeMachine("Arc Furnace, Plasma Arc Furnace")
+                .addTypeMachine("Arc Furnace")
                 .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
@@ -95,13 +96,13 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_ArcFurnace(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
+        return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " Arc Furnace ");
     }
 
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return mMode == 0 ?  GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes : GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes;
+        return GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes;
     }
 
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
@@ -265,7 +266,6 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
         if(this.mMaintenanceHatches.size() != 1) {
             formationChecklist = false;
         }
-
         return formationChecklist;
     }
 
@@ -294,25 +294,25 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
 
 
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-             if (mMode == -1) { mMode += 1; }
-        else if (mMode ==  0) { mMode += 1; }
-        else { mMode =  0; }
-
-        mModed = (mMode == 0 ? " Arc Furnace " : mMode == 1 ? " Plasma Arc Furnace not worked " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mMode", mMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        this.mMode = aNBT.getByte("mMode");
-        super.loadNBTData(aNBT);
-    }
+//    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+//             if (mMode == -1) { mMode += 1; }
+//        else if (mMode ==  0) { mMode += 1; }
+//        else { mMode =  0; }
+//
+//        mModed = (mMode == 0 ? " Arc Furnace " : mMode == 1 ? " Plasma Arc Furnace not worked " : null);
+//        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+//    }
+//
+//    @Override
+//    public void saveNBTData(NBTTagCompound aNBT) {
+//        aNBT.setByte("mMode", mMode);
+//        super.saveNBTData(aNBT);
+//    }
+//
+//    @Override
+//    public void loadNBTData(NBTTagCompound aNBT) {
+//        this.mMode = aNBT.getByte("mMode");
+//        super.loadNBTData(aNBT);
+//    }
 
 }
