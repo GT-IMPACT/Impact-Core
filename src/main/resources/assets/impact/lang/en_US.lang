@@ -31,6 +31,18 @@ GlassBlock13.name= Green I-Glass
 GlassBlock14.name= Red I-Glass
 GlassBlock15.name= Black I-Glass
 
+#Crafting blocks
+BufferCasing.0.name= Buffer Casing ULV
+BufferCasing.1.name= Buffer Casing LV
+BufferCasing.2.name= Buffer Casing MV
+BufferCasing.3.name= Buffer Casing HV
+BufferCasing.4.name= Buffer Casing EV
+BufferCasing.5.name= Buffer Casing IV
+BufferCasing.6.name= Buffer Casing LuV
+BufferCasing.7.name= Buffer Casing ZPM
+BufferCasing.8.name= Buffer Casing UV
+BufferCasing.9.name= Buffer Casing UHV
+
 #Solar
 blockULVSolarPanel.name=ULV Solar Panel
 blockLVSolarPanel.name=LV Solar Panel
