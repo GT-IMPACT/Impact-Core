@@ -871,12 +871,6 @@ public class Printer3DRecipe implements Runnable{
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Aluminium, 8), ItemList.Casing_FrostHazard.get(1L)
         }, ItemList.Machine_Multi_VacuumFreezer.get(1L), null, 30*20, 256);
 
-        //Steel
-        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[] {
-                ItemList.Hull_HV.get(1L), ItemList.Casing_Firebox_Steel.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 3),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 4), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 12)
-        }, ItemList.Machine_Multi_LargeBoiler_Steel.get(1L), null, 20*20, 120);
-
         //Titanium
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[] {
                 ItemList.Hull_EV.get(1L), ItemList.Casing_Firebox_Titanium.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 3),
@@ -906,13 +900,6 @@ public class Printer3DRecipe implements Runnable{
                 ItemList.Machine_EV_Electrolyzer.get(1L), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Aluminium, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Tungsten, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 8)
         }, ItemList.Machine_MultiblockElectrolyzer.get(1L), null, 40*20, 480);
-
-        //Cleanroom
-        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[] {
-                ItemList.Hull_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2), ItemList.Electric_Motor_HV.get(3L),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 3), ItemList.Component_Filter.get(3L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 3),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 8)
-        }, ItemList.Machine_Multi_Cleanroom.get(1L), null, 20*20, 120);
 
         //Solar Panel LV 32 EU
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[] {
