@@ -84,7 +84,7 @@ public class MainLoader {
 
         ItemRegistery.GregtechPump();
 
-        ItemRegistery.CircuitProgrammer();
+        //ItemRegistery.CircuitProgrammer();
 
         //solar
         ASP.preInit();
@@ -125,7 +125,7 @@ public class MainLoader {
 
     public static void postLoad() {
 
-        registerSingleIC2StorageBlocks();
+        //registerSingleIC2StorageBlocks();
 
         new GT_ModLoader();
         GT_ModLoader.run();
