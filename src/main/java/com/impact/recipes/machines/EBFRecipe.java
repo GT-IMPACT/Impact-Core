@@ -12,7 +12,7 @@ public class EBFRecipe implements Runnable{
     public void run(){
 
 /** ================================= start CORE MOD =================================*/
-        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, GT_Materials.HastelloyC276, 1L), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, GT_Materials.HastelloyC276, 1L), null, 60*20, 1920, 3601);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HastelloyC276, 1L), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.HastelloyC276, 1L), null, 60*20, 1920, 3601);
 /* ================================= end CORE MOD =================================*/
 
 

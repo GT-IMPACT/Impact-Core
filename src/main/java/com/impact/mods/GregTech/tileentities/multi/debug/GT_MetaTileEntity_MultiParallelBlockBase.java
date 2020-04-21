@@ -27,7 +27,6 @@ package com.impact.mods.GregTech.tileentities.multi.debug;
 
 import gregtech.GT_Mod;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
