@@ -5,7 +5,6 @@ import com.impact.block.Core_Blocks;
 import com.impact.block.Core_GlassBlocks;
 import com.impact.block.DecorateBlocksItem;
 import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocksItem;
-import com.impact.item.Circuit_Programmer.CircuitProgrammer;
 import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;

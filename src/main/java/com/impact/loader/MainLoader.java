@@ -1,10 +1,13 @@
 package com.impact.loader;
 
+import com.impact.block.Core_GlassBlocks;
 import com.impact.mods.GTSU.TierHelper;
 import com.impact.mods.GTSU.blocks.GTSUBlock;
 import com.impact.mods.GTSU.blocks.itemblocks.ItemBlockGTSU;
 import com.impact.mods.GTSU.tileentity.TileEntityGTSU;
 import com.impact.impact;
+import com.impact.mods.GregTech.GTregister.GT_Item_Block_And_Fluid;
+import com.impact.mods.GregTech.GTregister.GT_Materials;
 import com.impact.mods.modChest.BASE.Item_BaseChest;
 import com.impact.mods.modChest.BASE.Renderer_BaseChest;
 import com.impact.mods.modChest.Steel_Chest.ItemRendererSteelChest;
@@ -38,13 +41,10 @@ import com.impact.mods.modChest.chestW.ChestW;
 import com.impact.mods.modChest.chestW.ItemRendererChestW;
 import com.impact.mods.modChest.chestW.TEChestW;
 import com.impact.mods.modSolar.ASP;
-import com.impact.util.oredict.OreDictHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -53,14 +53,55 @@ public class MainLoader {
     private MainLoader(){}
 
     public static void Init() {
-
         new ItemRegistery();
         ItemRegistery.run();
-
     }
 
     public static void preInit(FMLPreInitializationEvent event) {
+        //chest mod
+        chestRegister();
+        //GT pump
+        ItemRegistery.GregtechPump();
+        //GT circuit_programmer
+        //ItemRegistery.CircuitProgrammer();
+        //Materials initial
+        new GT_Materials();
+        //solar
+        ASP.preInit();
+    }
 
+    public static void load() {
+        //glass
+        Core_GlassBlocks.run();
+        //solar
+        ASP.load();
+    }
+
+    public static void onPreLoad() {
+        new GT_Item_Block_And_Fluid().run();
+    }
+
+    public static void postLoad() {
+        //GTSU
+        //registerSingleIC2StorageBlocks();
+        //GT runnable
+        new GT_ModLoader();
+        GT_ModLoader.run();
+    }
+
+    public static void postInit() {
+        NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, new GUIHandler());
+    }
+
+    private static void registerSingleIC2StorageBlocks() {
+        GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
+        for (int i = 0; i < TierHelper.V.length; i++)
+        {
+            GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
+        }
+    }
+
+    private static void chestRegister() {
         GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "WroughtIronChest");
         GameRegistry.registerTileEntity(TEWroughtIronChest.class, "impact:WroughtIronChest");
         GameRegistry.registerBlock(SteelChest.instance, Item_BaseChest.class, "SteelChest");
@@ -82,17 +123,6 @@ public class MainLoader {
         GameRegistry.registerBlock(ChestNt.instance, Item_BaseChest.class, "NeutroniumChest");
         GameRegistry.registerTileEntity(TEChestNt.class, "impact:NeutroniumChest");
 
-        ItemRegistery.GregtechPump();
-
-        //ItemRegistery.CircuitProgrammer();
-
-        //solar
-        ASP.preInit();
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void preInitClient() {
-
         ClientRegistry.bindTileEntitySpecialRenderer(TEWroughtIronChest.class, Renderer_BaseChest.instance);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(WroughtIronChest.instance), new ItemRendererWroughtIronChest());
         ClientRegistry.bindTileEntitySpecialRenderer(TESteelChest.class, Renderer_BaseChest.instance);
@@ -113,37 +143,6 @@ public class MainLoader {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestOs.instance), new ItemRendererChestOs());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestNt.class, Renderer_BaseChest.instance);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestNt.instance), new ItemRendererChestNt());
-
-    }
-
-    public static void load() {
-        new itemLoader().run();
-        OreDictHandler.run();
-        //solar
-        ASP.load();
-    }
-
-    public static void postLoad() {
-
-        //registerSingleIC2StorageBlocks();
-
-        new GT_ModLoader();
-        GT_ModLoader.run();
-
-    }
-    public static void postInit() {
-
-        NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, new GUIHandler());
-
-    }
-
-
-    private static void registerSingleIC2StorageBlocks() {
-        GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
-        for (int i = 0; i < TierHelper.V.length; i++)
-        {
-            GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
-        }
     }
 
 }

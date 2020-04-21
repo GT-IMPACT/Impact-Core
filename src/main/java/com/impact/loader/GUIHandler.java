@@ -46,9 +46,9 @@ import net.minecraft.world.World;
 
 public class GUIHandler implements IGuiHandler {
 
-    public static final int GUI_ID_CIRCUITPROGRAMMER = 1, GUI_ID_GTSU = 0, GUI_ID_WroughtIronChest = 12, GUI_ID_SteelChest = 2,
-            GUI_ID_AlChest = 3, GUI_ID_HSLA = 4, GUI_ID_TiChest = 5, GUI_ID_WChest = 6, GUI_ID_CrChest = 7, GUI_ID_IrChest = 8,
-            GUI_ID_OsChest = 9, GUI_ID_NtChest = 10, GUI_ID_Solar = 11
+    public static final int GUI_ID_GTSU = 0, GUI_ID_CIRCUITPROGRAMMER = 1,  GUI_ID_WroughtIronChest = 2, GUI_ID_SteelChest = 3,
+            GUI_ID_AlChest = 4, GUI_ID_HSLA = 5, GUI_ID_TiChest = 6, GUI_ID_WChest = 7, GUI_ID_CrChest = 8, GUI_ID_IrChest = 9,
+            GUI_ID_OsChest = 10, GUI_ID_NtChest = 11, GUI_ID_Solar = 12
             ;
 
     @Override
