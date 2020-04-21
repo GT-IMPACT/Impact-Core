@@ -88,7 +88,7 @@ public class GTMTE_NuclearTurbine extends GT_MetaTileEntity_MultiBlockBase {
                         if (hatchFluid1.isFluidEqual(tLiquid)) {
                             fuelConsumption = tLiquid.amount = (dynamo / aFuel.mSpecialValue);
                             dynamo = (outputV == 8192 ? 8192 : outputV == 32768 ? 32768 : outputV == 131072 ? 131072 : 0);
-                            if (outputV < 8192 || outputV > 131072 || oAmp < 4 || oAmp > 4) {
+                            if (outputV < 8192 || outputV > 131072 || oAmp != 4) {
                                 stopMachine();
                             }
                             if(depleteInput(tLiquid)) {

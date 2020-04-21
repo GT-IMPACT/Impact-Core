@@ -169,7 +169,7 @@ public class GTMTE_REACTOR extends GT_MetaTileEntity_MultiParallelBlockBase {
             this.amountFuel=this.mMaxProgresstime*1;
             long amount = (((this.amountFuel * Parallel()) +160)/5);
             depleteInput(Materials.Water.getFluid(amount));
-            addOutput(GT_Materials.SupercriticalSteam.getFluid(this.amountFuel * Parallel()));
+            addOutput(Materials.SupercriticalSteam.getFluid(this.amountFuel * Parallel()));
         }
         return true;
     }
