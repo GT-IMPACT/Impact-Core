@@ -14,12 +14,10 @@ import net.minecraft.world.World;
 import static com.impact.loader.GUIHandler.GUI_ID_IrChest;
 
 
-public final class ChestIr extends BaseChest
-{
-	public static final ChestIr instance = new ChestIr();
+public class ChestIr extends BaseChest {
+	public static ChestIr instance = new ChestIr();
 
-	private ChestIr()
-	{
+	private ChestIr() {
 		super(Material.iron);
 		setBlockName("IridiumChest")
 		.setHardness(5.0F)
@@ -28,21 +26,19 @@ public final class ChestIr extends BaseChest
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int metadata)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return new TEChestIr();
 	}
 
-	public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer entityPlayer, final int side, final float hitX, final float hitY, final float hitZ)
-	{
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote)
 			FMLNetworkHandler.openGui(entityPlayer, impact.instance, GUI_ID_IrChest, world, x, y, z);
 		return true;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(final IIconRegister iIconRegister)
-	{
+	public void registerBlockIcons( IIconRegister iIconRegister) {
 		this.blockIcon = iIconRegister.registerIcon("snow");
 	}
 }

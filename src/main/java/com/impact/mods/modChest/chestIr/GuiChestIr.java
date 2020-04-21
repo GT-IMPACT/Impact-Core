@@ -8,35 +8,32 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public final class GuiChestIr extends Gui_BaseChest
-{
-	private final TEChestIr TEChestIr;
+public class GuiChestIr extends Gui_BaseChest {
+	private TEChestIr TEChestIr;
 
-	public GuiChestIr(@Nonnull final TEChestIr TEChestIr, final InventoryPlayer inventoryPlayer)
-	{
+	public GuiChestIr( TEChestIr TEChestIr, InventoryPlayer inventoryPlayer) {
 		super(new ContainerChestIr(TEChestIr, inventoryPlayer));
 		this.TEChestIr = TEChestIr;
 	}
 
 	@Nonnull
 	@Override
-	protected TE_BaseChest getTileEntity()
-	{
+	public TE_BaseChest getTileEntity() {
 		return TEChestIr;
 	}
-	protected ResourceLocation getPathTexture(){
+	public ResourceLocation getPathTexture(){
 		return new ResourceLocation(Refstrings.MODID, "textures/gui/ChestIr.png");
 	}
-	protected int getXSize(){
+	public int getXSize(){
 		return 356;
 	}
-	protected int getYSize(){
+	public int getYSize(){
 		return 275;
 	}
-	protected int getScale(){
+	public int getScale(){
 		return 500;
 	}
-	protected int getNamedPos(){
+	public int getNamedPos(){
 		return 8;
 	}
 

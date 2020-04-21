@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 @SideOnly(Side.CLIENT)
-public final class ItemRendererChestTi implements IItemRenderer
+public class ItemRendererChestTi implements IItemRenderer
 {
-	private static final TEChestTi TE_TI_CHEST = new TEChestTi();
+	private static TEChestTi TE_TI_CHEST = new TEChestTi();
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)

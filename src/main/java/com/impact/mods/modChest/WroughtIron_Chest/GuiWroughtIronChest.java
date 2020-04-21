@@ -9,11 +9,11 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public final class GuiWroughtIronChest extends Gui_BaseChest
+public class GuiWroughtIronChest extends Gui_BaseChest
 {
-	private final TEWroughtIronChest TEWroughtIronChest;
+	private  TEWroughtIronChest TEWroughtIronChest;
 
-	public GuiWroughtIronChest(@Nonnull final TEWroughtIronChest TEWroughtIronChest, final InventoryPlayer inventoryPlayer)
+	public GuiWroughtIronChest(TEWroughtIronChest TEWroughtIronChest,  InventoryPlayer inventoryPlayer)
 	{
 		super(new ContainerWroughtIronChest(TEWroughtIronChest, inventoryPlayer));
 		this.TEWroughtIronChest = TEWroughtIronChest;
@@ -21,23 +21,23 @@ public final class GuiWroughtIronChest extends Gui_BaseChest
 
 	@Nonnull
 	@Override
-	protected TE_BaseChest getTileEntity()
+	public TE_BaseChest getTileEntity()
 	{
 		return TEWroughtIronChest;
 	}
-	protected ResourceLocation getPathTexture(){
+	public ResourceLocation getPathTexture(){
 		return new ResourceLocation(Refstrings.MODID, "textures/gui/WroughtIronChest.png");
 	}
-	protected int getXSize(){
+	public int getXSize(){
 		return 175;
 	}
-	protected int getYSize(){
+	public int getYSize(){
 		return 203;
 	}
-	protected int getScale(){
+	public int getScale(){
 		return 500;
 	}
-	protected int getNamedPos(){
+	public int getNamedPos(){
 		return 8;
 	}
 

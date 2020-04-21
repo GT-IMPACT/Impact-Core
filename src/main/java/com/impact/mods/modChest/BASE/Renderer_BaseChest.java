@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class Renderer_BaseChest extends TileEntitySpecialRenderer
 {
-	public static final Renderer_BaseChest instance = new Renderer_BaseChest();
+	public static Renderer_BaseChest instance = new Renderer_BaseChest();
 
 	private ModelChest modelChest = new ModelChest();
 
@@ -19,7 +19,7 @@ public class Renderer_BaseChest extends TileEntitySpecialRenderer
 
 	public void renderTileEntityAt( TileEntity tileEntity, double x, double y, double z, float distance)
 	{
-		final TE_BaseChest TEBaseChest = (TE_BaseChest) tileEntity;
+		TE_BaseChest TEBaseChest = (TE_BaseChest) tileEntity;
 		bindTexture(TEBaseChest.getTexture());
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);

@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 
 import static com.impact.loader.GUIHandler.GUI_ID_WroughtIronChest;
 
-public final class WroughtIronChest extends BaseChest
+public class WroughtIronChest extends BaseChest
 {
-	public static final WroughtIronChest instance = new WroughtIronChest();
+	public static WroughtIronChest instance = new WroughtIronChest();
 
 	private WroughtIronChest()
 	{
@@ -27,12 +27,12 @@ public final class WroughtIronChest extends BaseChest
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int metadata)
+	public TileEntity createNewTileEntity( World world,  int metadata)
 	{
 		return new TEWroughtIronChest();
 	}
 
-	public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer entityPlayer, final int side, final float hitX, final float hitY, final float hitZ)
+	public boolean onBlockActivated( World world,  int x,  int y,  int z,  EntityPlayer entityPlayer,  int side, float hitX, float hitY, float hitZ)
 	{
 		if (!world.isRemote)
 			FMLNetworkHandler.openGui(entityPlayer, impact.instance, GUI_ID_WroughtIronChest, world, x, y, z);
@@ -40,7 +40,7 @@ public final class WroughtIronChest extends BaseChest
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(final IIconRegister iIconRegister)
+	public void registerBlockIcons( IIconRegister iIconRegister)
 	{
 		this.blockIcon = iIconRegister.registerIcon("snow");
 	}

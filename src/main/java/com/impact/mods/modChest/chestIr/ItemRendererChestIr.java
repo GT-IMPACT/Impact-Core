@@ -7,9 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 @SideOnly(Side.CLIENT)
-public final class ItemRendererChestIr implements IItemRenderer
-{
-	private static final TEChestIr TE_Ir_CHEST = new TEChestIr();
+public class ItemRendererChestIr implements IItemRenderer {
+	private static TEChestIr TE_Ir_CHEST = new TEChestIr();
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
@@ -24,8 +23,7 @@ public final class ItemRendererChestIr implements IItemRenderer
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-	{
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		if (type == ItemRenderType.ENTITY)
 			Renderer_BaseChest.instance.renderTileEntityAt(TE_Ir_CHEST, -0.5F, -0.5F, -0.5F, 0);
 		else

@@ -7,25 +7,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 @SideOnly(Side.CLIENT)
-public final class ItemRendererChestAl implements IItemRenderer
-{
-	private static final TEChestAl TE_AL_CHEST = new TEChestAl();
+public class ItemRendererChestAl implements IItemRenderer {
+	private static TEChestAl TE_AL_CHEST = new TEChestAl();
 
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type)
-	{
+	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return true;
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-	{
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
 		return true;
 	}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-	{
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		if (type == ItemRenderType.ENTITY)
 			Renderer_BaseChest.instance.renderTileEntityAt(TE_AL_CHEST, -0.5F, -0.5F, -0.5F, 0);
 		else

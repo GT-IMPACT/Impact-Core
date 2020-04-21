@@ -12,31 +12,27 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class Item_BaseChest extends ItemBlock
-{
+public class Item_BaseChest extends ItemBlock {
 
-	public Item_BaseChest(final Block block)
+	public Item_BaseChest( Block block)
 	{
 		super(block);
 	}
 
 	@SuppressWarnings("unchecked")
 	@SideOnly(Side.CLIENT)
-	public void addInformation(final ItemStack itemStack, final EntityPlayer entityPlayer, final List list, final boolean bool)
-	{
+	public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean bool) {
 		list.add(EnumChatFormatting.YELLOW +"Warning! When break chest, item not dropped");
 	}
 
 
 	@Override
-	public boolean hasCustomEntity(final ItemStack itemStack)
-	{
+	public boolean hasCustomEntity(ItemStack itemStack) {
 		return itemStack != null && itemStack.getItem() instanceof Item_BaseChest;
 	}
 
 	@Override
-	public Entity createEntity(final World world, final Entity entity, final ItemStack itemStack)
-	{
+	public Entity createEntity(World world, Entity entity,  ItemStack itemStack) {
 		return null;
 	}
 }

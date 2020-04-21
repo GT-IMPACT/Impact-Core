@@ -7,11 +7,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import javax.annotation.Nonnull;
 
 @ChestContainer
-public class ContainerChestNt extends Container_BaseChest
-{
+public class ContainerChestNt extends Container_BaseChest {
 
-	public ContainerChestNt(@Nonnull final TEChestNt TEChestNt, final InventoryPlayer inventoryPlayer)
-	{
+	public ContainerChestNt(TEChestNt TEChestNt, InventoryPlayer inventoryPlayer) {
 		super(TEChestNt, inventoryPlayer);
 	}
 
@@ -19,16 +17,16 @@ public class ContainerChestNt extends Container_BaseChest
 	public int getSlot(){
 		return 207;
 	}// Общее количество слотов
-	protected int getX(){
+	public int getX(){
 		return 23;
 	} // Количество слотов в ряду
-	protected int getY(){
+	public int getY(){
 		return 9;
 	}// Количество слотов в столбце
-	protected int getPosXInv(){
+	public int getPosXInv(){
 		return 134;
 	}// Начала координаты инвентаря игрока по X
-	protected int getPosYInv(){
+	public int getPosYInv(){
 		return 194;
 	}// Начала координаты инвентаря игрока по Y
 

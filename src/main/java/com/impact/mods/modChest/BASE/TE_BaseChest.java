@@ -18,36 +18,33 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public abstract class TE_BaseChest extends TileEntity implements IInventory
-{
+public abstract class TE_BaseChest extends TileEntity implements IInventory {
 
-
-	private int ticksSinceSync;
-	private int facingSide = 0;
+	public int ticksSinceSync;
+	public int facingSide = 0;
 
 	float lidAngle;
 	float prevLidAngle;
-	private int numPlayersUsing;
+	public int numPlayersUsing;
 
 	int maxStackSize;
 	int slot;
 
-	public final ItemStack[] contents = new ItemStack[getSizeInventory()];
+	public ItemStack[] contents = new ItemStack[getSizeInventory()];
 
-	public TE_BaseChest(final int maxStackSize, final int slot) {
+	public TE_BaseChest(int maxStackSize, int slot) {
 		this.maxStackSize = maxStackSize;
 		this.slot = slot;
 
 	}
 
 	@Override
-	public final boolean isUseableByPlayer(final EntityPlayer entityPlayer) {
+	public boolean isUseableByPlayer( EntityPlayer entityPlayer) {
 		return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && entityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
 	}
 
 	@Override
-	public final void openInventory()
-	{
+	public void openInventory() {
 		if (worldObj == null)
 			return;
 		if (numPlayersUsing < 0)
@@ -56,25 +53,25 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 	}
 
 	@Override
-	public final void closeInventory() {
+	public void closeInventory() {
 		if (worldObj != null)
 			worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 1, --numPlayersUsing);
 	}
 
 	@Override
-	public final Packet getDescriptionPacket() {
-		final NBTTagCompound nbttagcompound = new NBTTagCompound();
+	public Packet getDescriptionPacket() {
+		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		writeToNBT(nbttagcompound);
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 3, nbttagcompound);
 	}
 
 	@Override
-	public final void onDataPacket(final NetworkManager networkManager, final S35PacketUpdateTileEntity packet) {
+	public void onDataPacket(NetworkManager networkManager, S35PacketUpdateTileEntity packet) {
 		readFromNBT(packet.func_148857_g());
 	}
 
 	@Override
-	public final boolean receiveClientEvent(final int argument, final int value) {
+	public boolean receiveClientEvent(int argument, int value) {
 		if (argument == 1) {
 			this.numPlayersUsing = value;
 			return true;
@@ -84,35 +81,35 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 	}
 
 	@Override
-	public final void readFromNBT(final NBTTagCompound nbtTagCompound) {
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 		facingSide = nbtTagCompound.getInteger("FacingSide");
 		readCustomNBT(nbtTagCompound);
 	}
 
 	@Override
-	public final void writeToNBT(final NBTTagCompound nbtTagCompound) {
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
 		nbtTagCompound.setInteger("FacingSide", facingSide);
 		writeCustomNBT(nbtTagCompound);
 	}
 
-	public void readCustomNBT(final NBTTagCompound nbtTagCompound) {
-		final NBTTagList nbtTagList = nbtTagCompound.getTagList("Contents", 10);
+	public void readCustomNBT(NBTTagCompound nbtTagCompound) {
+		NBTTagList nbtTagList = nbtTagCompound.getTagList("Contents", 10);
 		for (int i = 0; i < nbtTagList.tagCount(); i++) {
-			final NBTTagCompound slotCompound = nbtTagList.getCompoundTagAt(i);
-			final int slot = slotCompound.getShort("Slot");
+			NBTTagCompound slotCompound = nbtTagList.getCompoundTagAt(i);
+			int slot = slotCompound.getShort("Slot");
 			if (slot >= 0 && slot < invSize())
 			setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(slotCompound));
 		}
 	}
 
-	public NBTTagCompound writeCustomNBT(final NBTTagCompound nbtTagCompound) {
-		final NBTTagList nbtTagList = new NBTTagList();
+	public NBTTagCompound writeCustomNBT(NBTTagCompound nbtTagCompound) {
+		NBTTagList nbtTagList = new NBTTagList();
 		for (int i = 0; i < this.slot; i++) {
-			final ItemStack itemStack = getStackInSlot(i);
+			ItemStack itemStack = getStackInSlot(i);
 			if (itemStack != null) {
-				final NBTTagCompound slotCompound = new NBTTagCompound();
+				NBTTagCompound slotCompound = new NBTTagCompound();
 				slotCompound.setShort("Slot", (short) i);
 				nbtTagList.appendTag(itemStack.writeToNBT(slotCompound));
 			}
@@ -127,7 +124,7 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 	}
 
 	@Override
-	public final void updateEntity() {
+	public void updateEntity() {
 		++ticksSinceSync;
 		float f;
 
@@ -156,7 +153,7 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.chestopen", 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 
 		if (numPlayersUsing == 0 && lidAngle > 0.0F || numPlayersUsing > 0 && lidAngle < 1.0F) {
-			final float f1 = lidAngle;
+			float f1 = lidAngle;
 
 			if (numPlayersUsing > 0)
 				lidAngle += f;
@@ -175,16 +172,16 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 	}
 
 	@Override
-	public ItemStack getStackInSlot(final int slot) {
+	public ItemStack getStackInSlot(int slot) {
 		return contents[slot];
 	}
 
 	@Override
-	public ItemStack decrStackSize(final int slot, final int howMuch) {
-		final ItemStack slotStack = contents[slot];
+	public ItemStack decrStackSize(int slot, int howMuch) {
+		ItemStack slotStack = contents[slot];
 		if (slotStack != null) {
-			final int quantity = MathHelper.clamp_int(MathHelper.clamp_int(howMuch, 1, slotStack.getMaxStackSize()), 1, slotStack.stackSize);
-			final ItemStack newStack = slotStack.copy();
+			int quantity = MathHelper.clamp_int(MathHelper.clamp_int(howMuch, 1, slotStack.getMaxStackSize()), 1, slotStack.stackSize);
+			ItemStack newStack = slotStack.copy();
 			newStack.stackSize = quantity;
 			if ((slotStack.stackSize -= quantity) == 0)
 				contents[slot] = null;
@@ -195,13 +192,13 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(final int slot)
+	public ItemStack getStackInSlotOnClosing(int slot)
 	{
 		return contents[slot];
 	}
 
 	@Override
-	public void setInventorySlotContents(final int slot, final ItemStack itemStack) {
+	public void setInventorySlotContents(int slot, ItemStack itemStack) {
 		contents[slot] = itemStack;
 		markDirty();
 	}
@@ -212,22 +209,22 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int slot, final ItemStack itemStack) {
+	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
 		return true;
 	}
 
 	@Override
-	public final boolean hasCustomInventoryName()
+	public boolean hasCustomInventoryName()
 	{
 		return false;
 	}
 
-	protected final void setFacingSide(final int facingSide)
+	public void setFacingSide(int facingSide)
 	{
 		this.facingSide = facingSide;
 	}
 
-	protected final int getFacingSide()
+	public int getFacingSide()
 	{
 		return facingSide;
 	}
@@ -236,7 +233,7 @@ public abstract class TE_BaseChest extends TileEntity implements IInventory
 
 	@SideOnly(Side.CLIENT)
 	@Nonnull
-	protected abstract ResourceLocation getTexture();
+	public abstract ResourceLocation getTexture();
 
 	public void removeAdornments() {}
 }

@@ -9,12 +9,10 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public abstract class Container_BaseChest extends Container
-{
+public abstract class Container_BaseChest extends Container {
 	public TE_BaseChest TEBaseChest;
 
-	public Container_BaseChest(@Nonnull final TE_BaseChest TEBaseChest, final InventoryPlayer inventoryPlayer)
-	{
+	public Container_BaseChest( TE_BaseChest TEBaseChest,  InventoryPlayer inventoryPlayer) {
 		for (int y = 0; y < getY(); y++)
 			for (int x = 0; x < getX(); x++)
 				addSlotToContainer(new Slot(TEBaseChest, y * getX() + x, 8 + (18 * x), 18 + (18 * y)));
@@ -27,16 +25,14 @@ public abstract class Container_BaseChest extends Container
 	}
 
 	@Override
-	public final boolean canInteractWith(final EntityPlayer entityPlayer)
-	{
+	public boolean canInteractWith(EntityPlayer entityPlayer) {
 		return TEBaseChest.isUseableByPlayer(entityPlayer);
 	}
 
 	@Override
-	public final ItemStack transferStackInSlot(final EntityPlayer entityPlayer, final int slot)
-	{
+	public ItemStack transferStackInSlot(EntityPlayer entityPlayer,  int slot) {
 		ItemStack itemstack = null;
-		final Slot actualSlot = (Slot) this.inventorySlots.get(slot);
+		Slot actualSlot = (Slot) this.inventorySlots.get(slot);
 		if (actualSlot != null && actualSlot.getHasStack()) {
 			ItemStack itemstack1 = actualSlot.getStack();
 			itemstack = itemstack1.copy();
@@ -53,14 +49,13 @@ public abstract class Container_BaseChest extends Container
 		return itemstack;
 	}
 
-	public final void onContainerClosed(final EntityPlayer entityPlayer)
-	{
+	public void onContainerClosed(EntityPlayer entityPlayer) {
 		super.onContainerClosed(entityPlayer);
 		TEBaseChest.closeInventory();
 	}
 	public abstract int getSlot();
-	protected abstract int getX();
-	protected abstract int getY();
-	protected abstract int getPosXInv();
-	protected abstract int getPosYInv();
+	public abstract int getX();
+	public abstract int getY();
+	public abstract int getPosXInv();
+	public abstract int getPosYInv();
 }

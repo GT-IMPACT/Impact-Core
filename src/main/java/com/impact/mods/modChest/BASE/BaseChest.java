@@ -15,41 +15,39 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public abstract class BaseChest extends BlockContainer
-{
-	private final static Random rand = new Random();
+public abstract class BaseChest extends BlockContainer {
+	private static Random rand = new Random();
 
-	public BaseChest(@Nonnull final Material material)
-	{
+	public BaseChest(Material material) {
 		super(material);
 		setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
 		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	@Override
-	public final boolean isOpaqueCube()
+	public boolean isOpaqueCube()
 	{
 		return false;
 	}
 
 	@Override
-	public final boolean renderAsNormalBlock()
+	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
 
 	@Override
-	public final int getRenderType()
+	public int getRenderType()
 	{
 		return -1;
 	}
 
 	@Override
-	public final void breakBlock( World world,  int x,  int y,  int z,  Block block,  int metadata)
+	public void breakBlock( World world,  int x,  int y,  int z,  Block block,  int metadata)
 	{
-		final TE_BaseChest TEBaseChest = (TE_BaseChest) world.getTileEntity(x, y, z);
+		TE_BaseChest TEBaseChest = (TE_BaseChest) world.getTileEntity(x, y, z);
 		if (TEBaseChest != null) {
-			final ItemStack droppedStack = new ItemStack(block, 1, 0);
+			ItemStack droppedStack = new ItemStack(block, 1, 0);
 			droppedStack.setTagCompound(TEBaseChest.writeCustomNBT(new NBTTagCompound()));
 			world.spawnEntityInWorld(new EntityItem(world, x + rand.nextFloat() * 0.8F + 0.1F, y + rand.nextFloat() * 0.8F + 0.1F, z + rand.nextFloat() * 0.8F + 0.1F, droppedStack));
 		}
@@ -64,10 +62,10 @@ public abstract class BaseChest extends BlockContainer
 	}
 
 	@Override
-	public final void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack itemStack)
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
 	{
-		final int side = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		final TE_BaseChest TEBaseChest = (TE_BaseChest) world.getTileEntity(x, y, z);
+		int side = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		TE_BaseChest TEBaseChest = (TE_BaseChest) world.getTileEntity(x, y, z);
 		if (TEBaseChest != null) {
 			TEBaseChest.setFacingSide(side == 0 ? 180 : side == 1 ? -90 : side == 2 ? 0 : side == 3 ? 90 : 0);
 			if (itemStack.stackTagCompound != null)

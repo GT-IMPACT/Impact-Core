@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 @SideOnly(Side.CLIENT)
-public final class ItemRendererWroughtIronChest implements IItemRenderer
+public class ItemRendererWroughtIronChest implements IItemRenderer
 {
 	private static final TEWroughtIronChest TE_WROUGHT_IRON_CHEST = new TEWroughtIronChest();
 

@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public final class TESteelChest extends TE_BaseChest
+public class TESteelChest extends TE_BaseChest
 {
 	public static ResourceLocation MODEL_CHEST = new ResourceLocation(Refstrings.MODID, "textures/entity/chestSteel.png");
 
@@ -17,7 +17,7 @@ public final class TESteelChest extends TE_BaseChest
 	}
 
 	@Override
-	public final String getInventoryName()
+	public  String getInventoryName()
 	{
 		return "Steel Chest";
 	}
@@ -32,7 +32,7 @@ public final class TESteelChest extends TE_BaseChest
 	@Override
 	@SideOnly(Side.CLIENT)
 	@Nonnull
-	protected ResourceLocation getTexture()
+	public ResourceLocation getTexture()
 	{
 		return MODEL_CHEST;
 	}
