@@ -1,5 +1,6 @@
 package com.impact.loader;
 
+import codechicken.nei.api.ItemInfo;
 import com.impact.block.Core_GlassBlocks;
 import com.impact.mods.GTSU.TierHelper;
 import com.impact.mods.GTSU.blocks.GTSUBlock;
@@ -46,7 +47,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
+
+import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class MainLoader {
 
@@ -59,7 +63,7 @@ public class MainLoader {
 
     public static void preInit(FMLPreInitializationEvent event) {
         //chest mod
-        chestRegister();
+        //chestRegister();
         //GT pump
         ItemRegistery.GregtechPump();
         //GT circuit_programmer
@@ -68,6 +72,11 @@ public class MainLoader {
         new GT_Materials();
         //solar
         ASP.preInit();
+
+        ItemInfo.hiddenItems.add(new ItemStack(decorateBlock[2], 1, 0));
+        ItemInfo.hiddenItems.remove(new ItemStack(decorateBlock[2], 1, 1));
+        ItemInfo.hiddenItems.remove(new ItemStack(decorateBlock[2], 1, 2));
+        ItemInfo.hiddenItems.remove(new ItemStack(decorateBlock[2], 1, 3));
     }
 
     public static void load() {
