@@ -1,5 +1,4 @@
-item.Coin.name=Impact coin
-itemGroup.tabGWpp=IMPACT CORE MOD
+#LANG FILE IMPACT
 
 #Chest
 tile.WroughtIronChest.name= Wrought Iron Chest
@@ -30,6 +29,12 @@ GlassBlock12.name= Brown I-Glass
 GlassBlock13.name= Green I-Glass
 GlassBlock14.name= Red I-Glass
 GlassBlock15.name= Black I-Glass
+
+#FakeBlock
+FakeBlock.0.name=Fake Glass
+FakeBlock.1.name=Fake Red Glass
+FakeBlock.2.name=Fake Green Glass
+FakeBlock.3.name=Fake Blue Glass
 
 #Crafting blocks
 BufferCasing.0.name= Buffer Casing ULV

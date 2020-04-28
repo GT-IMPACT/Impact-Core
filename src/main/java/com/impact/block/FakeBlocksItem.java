@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.casings.glass1.glassed;
+package com.impact.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,16 +10,29 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class GlassBlocksItem extends ItemBlock {
+public class FakeBlocksItem extends ItemBlock {
 
-    public GlassBlocksItem(Block block) {
+    public FakeBlocksItem(Block block) {
         super(block);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
 
     @Override
+    public int getMetadata(int aMeta) {
+        return aMeta;
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack aStack) {
+        return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        aList.add( "Use as a decorative");//Glassy & Classy
-        aList.add( "Use as GT Casing");//Glassy & Classy
+        aList.add("Its Fake Glass for Holo");
     }
 
     @Override
@@ -39,4 +52,6 @@ public class GlassBlocksItem extends ItemBlock {
     public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
         return this.field_150939_a.getIcon(0, par2);
     }
+
 }
+

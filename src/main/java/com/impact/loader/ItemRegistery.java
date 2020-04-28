@@ -1,14 +1,13 @@
 package com.impact.loader;
 
-import com.impact.block.BufferItem;
-import com.impact.block.Core_Blocks;
-import com.impact.block.Core_GlassBlocks;
-import com.impact.block.DecorateBlocksItem;
+import codechicken.nei.api.ItemInfo;
+import com.impact.block.*;
 import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocksItem;
 import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -16,18 +15,38 @@ import net.minecraftforge.oredict.OreDictionary;
 public class ItemRegistery {
 
     public static final Block[] decorateBlock = {
-            new Core_Blocks("DecorateBlock", new String[] { Refstrings.MODID + ":blockConcrete", }, 0),
-            new Core_Blocks("BufferCasing", new String[] { Refstrings.MODID + ":bufferULV", Refstrings.MODID + ":bufferLV", Refstrings.MODID + ":bufferMV", Refstrings.MODID + ":bufferHV", Refstrings.MODID + ":bufferEV", Refstrings.MODID + ":bufferIV", Refstrings.MODID + ":bufferLuV", Refstrings.MODID + ":bufferZPM", Refstrings.MODID + ":bufferUV", Refstrings.MODID + ":bufferUHV"}, 1),
-    };
+            new Core_Blocks("DecorateBlock", new String[] {
+                    Refstrings.MODID + ":blockConcrete",
+            }, 0),
+            new Core_Blocks("BufferCasing", new String[] {
+                    Refstrings.MODID + ":bufferULV",
+                    Refstrings.MODID + ":bufferLV",
+                    Refstrings.MODID + ":bufferMV",
+                    Refstrings.MODID + ":bufferHV",
+                    Refstrings.MODID + ":bufferEV",
+                    Refstrings.MODID + ":bufferIV",
+                    Refstrings.MODID + ":bufferLuV",
+                    Refstrings.MODID + ":bufferZPM",
+                    Refstrings.MODID + ":bufferUV",
+                    Refstrings.MODID + ":bufferUHV"
+            }, 1),
+            new Core_FakeBlock("FakeBlock", new String[]{
+                    Refstrings.MODID + ":glass/blockGB0",
+                    Refstrings.MODID + ":glass/blockGB14",
+                    Refstrings.MODID + ":glass/blockGB13",
+                    Refstrings.MODID + ":glass/blockGB11",
+            }, 2),
+};
 
     public static void run() {
 
-        for (int i=0; i<=15; i++) {
-            GameRegistry.registerBlock(new Core_GlassBlocks("GlassBlock"+i, new String[]{ Refstrings.MODID + ":glass/blockGB"+i },null, true, true), GlassBlocksItem.class, "GlassBlock"+i);
-        }
+       for (int i=0; i<=15; i++) {
+           GameRegistry.registerBlock(new Core_GlassBlocks("GlassBlock"+i, new String[]{ Refstrings.MODID + ":glass/blockGB"+i },null, true, true), GlassBlocksItem.class, "GlassBlock"+i);
+       }
         GameRegistry.registerBlock(ItemRegistery.decorateBlock[0], DecorateBlocksItem.class, "DecorateBlock");
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
         GameRegistry.registerBlock(ItemRegistery.decorateBlock[1], BufferItem.class, "BufferCasing");
+        GameRegistry.registerBlock(ItemRegistery.decorateBlock[2], FakeBlocksItem.class, "FakeBlock");
     }
 
 
