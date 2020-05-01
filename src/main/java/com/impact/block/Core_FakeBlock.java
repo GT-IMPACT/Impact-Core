@@ -16,41 +16,15 @@ import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
-public class Core_FakeBlock extends Block {
+public class Core_FakeBlock extends Core_GTBlocks {
 
     @SideOnly(Side.CLIENT)
-    protected IIcon[] texture;
+    private IIcon[] texture;
     String[] textureNames;
-    protected String name;
-
-    public Core_FakeBlock(String name, String[] texture) {
-        super(Material.anvil);
-        this.setHardness(15.0F);
-        this.setResistance(30.0F);
-        this.name = name;
-        this.textureNames = texture;
-    }
-
-    public Core_FakeBlock(String name, String[] texture, CreativeTabs tabs) {
-        super(Material.anvil);
-        this.setHardness(15.0F);
-        this.setResistance(30.0F);
-        this.name = name;
-        this.textureNames = texture;
-        this.setCreativeTab(tabs);
-    }
-
-    public Core_FakeBlock(String name, String[] texture, CreativeTabs tabs, Material material) {
-        super(material);
-        this.setHardness(15.0F);
-        this.setResistance(30.0F);
-        this.name = name;
-        this.textureNames = texture;
-        this.setCreativeTab(tabs);
-    }
+    private String name;
 
     public Core_FakeBlock(String name, String[] texture, int MassiveForReg) {
-        super(Material.anvil);
+        super(name, texture, null, Material.glass);
         setHarvestLevel("pickaxe", 1);
         setHardness(1);
         setResistance(1);
@@ -60,19 +34,8 @@ public class Core_FakeBlock extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderBlockPass() {
-        return 1;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isOpaqueCube() {
         return false;
-    }
-
-    @Override
-    public int damageDropped(int meta) {
-        return meta;
     }
 
     @Override
@@ -81,15 +44,6 @@ public class Core_FakeBlock extends Block {
         if (worldClient.getBlock(xCoord, yCoord, zCoord) instanceof Core_FakeBlock)
             return false;
         return super.shouldSideBeRendered(worldClient, xCoord, yCoord, zCoord, aSide);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < this.textureNames.length; i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
     }
 
     @Override
@@ -108,28 +62,29 @@ public class Core_FakeBlock extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess worldClient, int xCoord, int yCoord, int zCoord, int aSide) {
+        return super.getIcon(worldClient, xCoord, yCoord, zCoord, aSide);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getRenderBlockPass() {
+        return 1;
+    }
+
+    @Override
     public int getRenderType() {
         return RenderGlassBlock.RID;
     }
 
     @Override
-    public String getUnlocalizedName() {
-        return this.name;
-    }
-
-    @Override
-    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
+    public boolean renderAsNormalBlock() {
         return false;
     }
 
     @Override
-    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+    protected boolean canSilkHarvest() {
         return false;
     }
-
-    @Override
-    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
-        return false;
-    }
-
 }
