@@ -50,9 +50,11 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_PressBendExtrud tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 1, 0,hintsOnly);
+
+
             }
 
             @Override
@@ -87,7 +89,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Assembler tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         6, 1, 0,hintsOnly);
             }
@@ -125,7 +127,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_BlastSmelter tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 3, 0,hintsOnly);
             }
@@ -163,7 +165,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_FreezerSolidifier tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 0, 2,hintsOnly);
             }
@@ -206,7 +208,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_LaserEng tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 3, 0,hintsOnly);
             }
@@ -245,7 +247,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Centrifuge tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 3, 0,hintsOnly);
             }
@@ -284,7 +286,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Electrolyzer tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 2, 0,hintsOnly);
             }
@@ -321,7 +323,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Wire tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 1, 0,hintsOnly);
             }
@@ -360,7 +362,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Supply tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 0, 2,hintsOnly);
             }
@@ -399,7 +401,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Utility tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 2, 0,hintsOnly);
             }
@@ -438,7 +440,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Brewmenter tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 3, 0,hintsOnly);
             }
@@ -475,7 +477,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_ArcFurnace tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 3, 0,hintsOnly);
             }
@@ -512,7 +514,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Cutting tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 2, 0,hintsOnly);
             }
@@ -551,7 +553,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Extradifier tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         2, 4, 0,hintsOnly);
             }
@@ -586,7 +588,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Macerator tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 5, 0,hintsOnly);
             }
@@ -624,7 +626,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Mixer tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 3, 0,hintsOnly);
             }
@@ -659,7 +661,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Siftarator tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         1, 3, 0,hintsOnly);
             }
@@ -704,7 +706,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_3DPrinter tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
+                definition.buildOrHints(tileEntity, stackSize,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
                         7, 1, 0,hintsOnly);
             }
