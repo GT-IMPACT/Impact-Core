@@ -11,6 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore1;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
@@ -20,6 +21,7 @@ import static gregtech.api.enums.GT_Values.E;
 
 public class TecTech_BuildGuide_Impact implements Runnable {
 
+    @SuppressWarnings({"Deprecated"})
     @Override
     public void run() {
         //PBE
@@ -70,7 +72,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                                     {"000000000","000000000","000000000",},
                             })
                             .addElement('0', ofBlock(sCaseCore1,6))
-                            .addElement('1', ofBlock(decorateBlock[2],0))
+                            .addElement('1', ofBlock(decorateBlock[3],0))
                             .addElement('2', ofBlock(sCaseCore1,0))
                             .build();
             private final String[] desc=new String[]{
@@ -187,10 +189,10 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,5))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],3))
-                            .addElement('3', ofBlock(decorateBlock[2],2))
-                            .addElement('4', ofBlock(decorateBlock[2],1))
-                            .addElement('5', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],11))
+                            .addElement('3', ofBlock(decorateBlock[3],13))
+                            .addElement('4', ofBlock(decorateBlock[3],14))
+                            .addElement('5', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -229,7 +231,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,7))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -268,7 +270,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,8))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -305,7 +307,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,9))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -344,7 +346,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,10))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -383,7 +385,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,11))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -422,7 +424,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,12))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -496,7 +498,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,14))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -535,7 +537,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore2,2))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -608,7 +610,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                             })
                             .addElement('0', ofBlock(sCaseCore1,15))
                             .addElement('1', ofBlock(sCaseCore1,0))
-                            .addElement('2', ofBlock(decorateBlock[2],0))
+                            .addElement('2', ofBlock(decorateBlock[3],0))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -674,27 +676,20 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             private final IStructureDefinition<GTMTE_3DPrinter> definition=
                     StructureDefinition.<GTMTE_3DPrinter>builder()
                             .addShapeOldApi("main", new String[][]{
-                                    {".03330",".03330",".00000",},
-                                    {".03330",".01110",".00000",},
-                                    {".03330",".01110",".00000",},
-                                    {".03330",".01110",".00000",},
-                                    {".03330",".03334",".00000",},
-                                    {E,E,E,},
-                                    {E,E,E,},
-                                    {E,E,E,},
-                                    {"033330","033335","000000",},
-                                    {"033330","022220","000000",},
-                                    {"033330","022220","000000",},
-                                    {"033330","022220","000000",},
-                                    {"033330","022220","000000",},
-                                    {"033330","033330","000000",},
+
+                                    {"033330...03330","433330...43330","000000...00000",},
+                                    {"033330...03330","022220...01110","000000...00000",},
+                                    {"033330...03330","022220...01110","000000...00000",},
+                                    {"033330...03330","022220...01110","000000...00000",},
+                                    {"033330...03330","022220...03330","000000...00000",},
+                                    {"033330........","033330........","000000........",},
                             })
                             .addElement('0', ofBlock(sCaseCore2,4))
                             .addElement('1', ofBlock(sCaseCore2,5))
                             .addElement('2', ofBlock(sCaseCore2,6))
-                            .addElement('3', ofBlock(decorateBlock[2],0))
-                            .addElement('4', ofBlock(decorateBlock[2],1))
-                            .addElement('5', ofBlock(decorateBlock[2],3))
+                            .addElement('3', ofBlock(decorateBlock[3],0))
+                            .addElement('4', ofBlockHint(decorateBlock[2],1))
+                            .addElement('5', ofBlockHint(decorateBlock[2],3))
                             .build();
             private final String[] desc=new String[]{
                     EnumChatFormatting.RED+"Impact Details:",
@@ -711,7 +706,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                 definition.buildOrHints(tileEntity,"main", base.getWorld(),aSide,
                         base.getXCoord(),base.getYCoord(),base.getZCoord(),
-                        5, 1, 6,hintsOnly);
+                        7, 1, 0,hintsOnly);
             }
 
             @Override
