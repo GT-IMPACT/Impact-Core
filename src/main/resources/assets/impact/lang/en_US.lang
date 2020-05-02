@@ -13,28 +13,29 @@ tile.OsmiumChest.name= Osmium Chest
 tile.NeutroniumChest.name= Neutronium Chest
 
 #Glass
-GlassBlock0.name= White I-Glass
-GlassBlock1.name= Orange I-Glass
-GlassBlock2.name= Magenta I-Glass
-GlassBlock3.name= Light Blue I-Glass
-GlassBlock4.name= Yellow I-Glass
-GlassBlock5.name= Lime I-Glass
-GlassBlock6.name= Pink I-Glass
-GlassBlock7.name= Gray I-Glass
-GlassBlock8.name= Light Gray I-Glass
-GlassBlock9.name= Cyan I-Glass
-GlassBlock10.name= Purple I-Glass
-GlassBlock11.name= Blue I-Glass
-GlassBlock12.name= Brown I-Glass
-GlassBlock13.name= Green I-Glass
-GlassBlock14.name= Red I-Glass
-GlassBlock15.name= Black I-Glass
+GlassBlock.0.name= White I-Glass
+GlassBlock.1.name= Orange I-Glass
+GlassBlock.2.name= Magenta I-Glass
+GlassBlock.3.name= Light Blue I-Glass
+GlassBlock.4.name= Yellow I-Glass
+GlassBlock.5.name= Lime I-Glass
+GlassBlock.6.name= Pink I-Glass
+GlassBlock.7.name= Gray I-Glass
+GlassBlock.8.name= Light Gray I-Glass
+GlassBlock.9.name= Cyan I-Glass
+GlassBlock.10.name= Purple I-Glass
+GlassBlock.11.name= Blue I-Glass
+GlassBlock.12.name= Brown I-Glass
+GlassBlock.13.name= Green I-Glass
+GlassBlock.14.name= Red I-Glass
+GlassBlock.15.name= Black I-Glass
 
 #FakeBlock
-FakeBlock.0.name=Fake Glass
-FakeBlock.1.name=Fake Red Glass
-FakeBlock.2.name=Fake Green Glass
-FakeBlock.3.name=Fake Blue Glass
+FakeBlock.0.name= White Hologram Element
+FakeBlock.1.name= Red Hologram Element
+FakeBlock.2.name= Green Hologram Element
+FakeBlock.3.name= Blue Hologram Element
+FakeBlock.4.name= FrameBox Hologram Element
 
 #Crafting blocks
 BufferCasing.0.name= Buffer Casing ULV

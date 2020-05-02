@@ -80,8 +80,6 @@ public class MainLoader {
     }
 
     public static void load() {
-        //glass
-        Core_GlassBlocks.run();
         //solar
         ASP.load();
     }

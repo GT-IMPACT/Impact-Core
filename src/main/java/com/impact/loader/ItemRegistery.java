@@ -1,22 +1,22 @@
 package com.impact.loader;
 
-import codechicken.nei.api.ItemInfo;
 import com.impact.block.*;
 import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocksItem;
 import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import static codechicken.nei.api.API.hideItem;
 
 
 public class ItemRegistery {
 
     public static final Block[] decorateBlock = {
             new Core_Blocks("DecorateBlock", new String[] {
-                    Refstrings.MODID + ":blockConcrete",
+                    Refstrings.MODID + ":Concrete",
             }, 0),
             new Core_Blocks("BufferCasing", new String[] {
                     Refstrings.MODID + ":bufferULV",
@@ -35,18 +35,44 @@ public class ItemRegistery {
                     Refstrings.MODID + ":glass/blockGB14",
                     Refstrings.MODID + ":glass/blockGB13",
                     Refstrings.MODID + ":glass/blockGB11",
+                    Refstrings.MODID + ":glass/frameGt",
             }, 2),
+            new Core_GlassBlocks("GlassBlock", new String[]{
+                    Refstrings.MODID + ":glass/blockGB0", // white
+                    Refstrings.MODID + ":glass/blockGB1", // orange
+                    Refstrings.MODID + ":glass/blockGB2", // magenta
+                    Refstrings.MODID + ":glass/blockGB3", // light blue
+                    Refstrings.MODID + ":glass/blockGB4", // yellow
+                    Refstrings.MODID + ":glass/blockGB5", // lime
+                    Refstrings.MODID + ":glass/blockGB6", // pink
+                    Refstrings.MODID + ":glass/blockGB7", // gray
+                    Refstrings.MODID + ":glass/blockGB8", // light gray
+                    Refstrings.MODID + ":glass/blockGB9", // cyan
+                    Refstrings.MODID + ":glass/blockGB10", // purple
+                    Refstrings.MODID + ":glass/blockGB11", // blue
+                    Refstrings.MODID + ":glass/blockGB12", // brown
+                    Refstrings.MODID + ":glass/blockGB13", // green
+                    Refstrings.MODID + ":glass/blockGB14", // red
+                    Refstrings.MODID + ":glass/blockGB15", // black
+            },false, true)
 };
 
     public static void run() {
+        //Blocks
+        GameRegistry.registerBlock(decorateBlock[0], DecorateBlocksItem.class, "DecorateBlock");
+        GameRegistry.registerBlock(decorateBlock[1], BufferItem.class, "BufferCasing");
+        GameRegistry.registerBlock(decorateBlock[2], FakeBlocksItem.class, "FakeBlock");
+        GameRegistry.registerBlock(decorateBlock[3], GlassBlocksItem.class, "GlassBlock");
 
-       for (int i=0; i<=15; i++) {
-           GameRegistry.registerBlock(new Core_GlassBlocks("GlassBlock"+i, new String[]{ Refstrings.MODID + ":glass/blockGB"+i },null, true, true), GlassBlocksItem.class, "GlassBlock"+i);
-       }
-        GameRegistry.registerBlock(ItemRegistery.decorateBlock[0], DecorateBlocksItem.class, "DecorateBlock");
+        //NEI hide
+        hideItem(new ItemStack(decorateBlock[2], 1, 0));
+        hideItem(new ItemStack(decorateBlock[2], 1, 1));
+        hideItem(new ItemStack(decorateBlock[2], 1, 2));
+        hideItem(new ItemStack(decorateBlock[2], 1, 3));
+        hideItem(new ItemStack(decorateBlock[2], 1, 4));
+
+        //OreDictionary
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
-        GameRegistry.registerBlock(ItemRegistery.decorateBlock[1], BufferItem.class, "BufferCasing");
-        GameRegistry.registerBlock(ItemRegistery.decorateBlock[2], FakeBlocksItem.class, "FakeBlock");
     }
 
 
@@ -56,13 +82,13 @@ public class ItemRegistery {
     //    toolCircuitProgrammer = new CircuitProgrammer();
     //}
 
-    public static GregtechPump toolGregtechPump;
+    public static GregtechPump GTPump;
     public static void GregtechPump() {
-        toolGregtechPump = new GregtechPump();
-        toolGregtechPump.registerPumpType(0, "LV Hand Pump", 0, 0);
-        toolGregtechPump.registerPumpType(1, "MV Hand Pump", 32000, 1);
-        toolGregtechPump.registerPumpType(2, "HV Hand Pump", 128000, 2);
-        toolGregtechPump.registerPumpType(3, "EV Hand Pump", 512000, 3);
+        GTPump = new GregtechPump();
+        GTPump.registerPumpType(0, "LV Hand Pump", 0, 0);
+        GTPump.registerPumpType(1, "MV Hand Pump", 32000, 1);
+        GTPump.registerPumpType(2, "HV Hand Pump", 128000, 2);
+        GTPump.registerPumpType(3, "EV Hand Pump", 512000, 3);
     }
 
 }

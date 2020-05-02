@@ -14,12 +14,24 @@ public class GlassBlocksItem extends ItemBlock {
 
     public GlassBlocksItem(Block block) {
         super(block);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         aList.add( "Use as a decorative");//Glassy & Classy
         aList.add( "Use as GT Casing");//Glassy & Classy
+    }
+
+    @Override
+    public int getMetadata(int aMeta) {
+        return aMeta;
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack aStack) {
+        return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
     }
 
     @Override

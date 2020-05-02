@@ -19,6 +19,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
+import static com.impact.loader.ItemRegistery.decorateBlock;
+
 public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     private byte mMode = -1;
@@ -176,7 +178,8 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
                         if (X==-1 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock14")) {
+                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3] &
+                                    thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 14) {
                             } else  {
                                 formationChecklist = false;
                             }
@@ -184,7 +187,8 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
                         }
 
                         if (X==0 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock13")) {
+                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3] &
+                                    thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 13) {
                             } else  {
                                 formationChecklist = false;
                             }
@@ -192,7 +196,8 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
                         }
 
                         if (X==1 && (Z==-1 || Z==-2 || Z==-3)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("GlassBlock11")) {
+                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3] &
+                                    thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 11) {
                             } else  {
                                 formationChecklist = false;
                             }
@@ -285,7 +290,8 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
         for(byte X = 0; X <= 0; X++) {
             final Vector3ic glass = rotateOffsetVector(forgeDirection, X, 2, -2);
             if (X==0) {
-                if (thisController.getBlockOffset(glass.x(), glass.y(), glass.z()).getUnlocalizedName().equals("GlassBlock0")) {
+                if (thisController.getBlockOffset(glass.x(), glass.y(), glass.z()) == decorateBlock[3] &
+                        thisController.getMetaIDOffset(glass.x(), glass.y(), glass.z()) == 0) {
                 } else {
                     formationChecklist = false;
                 }

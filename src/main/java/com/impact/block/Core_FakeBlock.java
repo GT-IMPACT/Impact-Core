@@ -75,7 +75,7 @@ public class Core_FakeBlock extends Core_GTBlocks {
 
     @Override
     public int getRenderType() {
-        return RenderGlassBlock.RID;
+        return 0;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class FakeBlocksItem extends ItemBlock {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        aList.add("Its Fake Glass for Holo");
+        aList.add("Its Fake block for Holography");
     }
 
     @Override
