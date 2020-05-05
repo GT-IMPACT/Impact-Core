@@ -1,7 +1,7 @@
 package com.impact.loader;
 
 import com.impact.block.*;
-import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocksItem;
+import com.impact.block.GlassBlocksItem;
 import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -17,6 +17,8 @@ public class ItemRegistery {
     public static final Block[] decorateBlock = {
             new Core_Blocks("DecorateBlock", new String[] {
                     Refstrings.MODID + ":Concrete",
+                    Refstrings.MODID + ":CokeCoal",
+                    Refstrings.MODID + ":PistonBlock",
             }, 0),
             new Core_Blocks("BufferCasing", new String[] {
                     Refstrings.MODID + ":bufferULV",
@@ -73,6 +75,7 @@ public class ItemRegistery {
 
         //OreDictionary
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
+        OreDictionary.registerOre("blockCokeCoal", new ItemStack(decorateBlock[0], 1, 1));
     }
 
 
