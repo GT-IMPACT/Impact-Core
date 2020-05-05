@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.casings.glass1.glassed;
+package com.impact.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

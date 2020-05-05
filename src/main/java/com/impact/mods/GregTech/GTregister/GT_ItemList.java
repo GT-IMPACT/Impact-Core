@@ -30,8 +30,7 @@ public enum GT_ItemList implements IItemContainer {
 
 	Machine_FreezerSolidifier,
 
-	ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump, RefinedReinforcedGlassLense, ChargedGlassLense,
-	HugeRefinedReinforcedGlassLense, HugeChargedGlassLense,
+	ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump,
 
 	//BASIC
 	Portable_Tank_ULV, Portable_Tank_LV, Portable_Tank_MV, Portable_Tank_HV, Portable_Tank_EV, Portable_Tank_IV,
@@ -79,16 +78,16 @@ public enum GT_ItemList implements IItemContainer {
 	Naquadah_multi,
 
 	//Cases
-	//Page1
+	//Page3 1-15
 	UpgradeCasingT1, UpgradeCasingT2, UpgradeCasingT3, UpgradeCasingT4, PBECasing, EngraverCasing, AssemblerCasing,
 	CentrifugeCasing, ElectrolyzerCasing, WireFactoryCasing, SupplyProductionCasing, UtilityMachineCasing, BrewmenterCasing, ArcCasing,
 	CuttingCasing, MixingCasing,
-
-	//Page2
+	//Page3 16-31
 	NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
 	DDDPrinterCasing4x4,
+	//Page3 16-31
+	Casing_Farm,
 
-	GLASS_CASSING_1, GLASS_CASSING_2,
 
 	end;
 	private ItemStack mStack;

@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.casings.case1;
+package com.impact.mods.GregTech.casings.Page3_0_15;
 
 import com.impact.mods.GregTech.casings.GT_Item_Casings_Abstract;
 import cpw.mods.fml.relauncher.Side;

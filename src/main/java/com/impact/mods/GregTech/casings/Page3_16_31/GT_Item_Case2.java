@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.casings.case2;
+package com.impact.mods.GregTech.casings.Page3_16_31;
 
 import com.impact.mods.GregTech.casings.GT_Item_Casings_Abstract;
 import net.minecraft.block.Block;

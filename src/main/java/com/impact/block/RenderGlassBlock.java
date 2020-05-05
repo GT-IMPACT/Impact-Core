@@ -1,10 +1,7 @@
 package com.impact.block;
 
-import com.impact.System.Refstrings;
-import com.impact.mods.GregTech.casings.glass1.glassed.GlassBlocksItem;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
