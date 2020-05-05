@@ -1,11 +1,17 @@
 package com.impact.recipes.machines;
 
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
+
 
 public class CompessorRecipe implements Runnable {
     public void run() {
         GT_Values.RA.addCompressorRecipe(GT_ItemList.CokeOvenBrick.get(4L), ItemList.Casing_CokeOvenBrick.get(1L), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CokeCoal, 9L), GregTech_API.getStackofAmountFromOreDict("blockCokeCoal", 1), 200, 8);
     }
 }
