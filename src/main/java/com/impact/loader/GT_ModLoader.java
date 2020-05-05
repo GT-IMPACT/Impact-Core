@@ -17,6 +17,8 @@ public class GT_ModLoader {
 	private static final GT_WorldGenRegister Worldgenloader = new GT_WorldGenRegister();
 	private static final TecTech_BuildGuide_Impact TecTech_BuildGuide_Impact = new TecTech_BuildGuide_Impact();
 	private static final TecTech_BuildGuide_GregTech TecTech_BuildGuide_GregTech = new TecTech_BuildGuide_GregTech();
+	private static final ModLoader ModLoader = new ModLoader();
+
 	/** ========================= */
 	private static final DEBUG_Recipe DEBUG_Recipe = new DEBUG_Recipe();
 	private static final CentrifugeRecipe CentrifugeRecipe = new CentrifugeRecipe();
@@ -33,6 +35,13 @@ public class GT_ModLoader {
 	private static final AlloySmelterRecipe AlloySmelterRecipe = new AlloySmelterRecipe();
 	private static final MixerRecipe MixerRecipe = new MixerRecipe();
 	private static final EBFRecipe EBFRecipe = new EBFRecipe();
+	private static final FluidCannerRecipe FluidCannerRecipe = new FluidCannerRecipe();
+	private static final CircuitAssemblerRecipe CircuitAssemblerRecipe = new CircuitAssemblerRecipe();
+	private static final FarmRecipe FarmRecipe = new FarmRecipe();
+	private static final CuttingRecipe CuttingRecipe = new CuttingRecipe();
+	private static final VacuumFreezerRecipe VacuumFreezerRecipe = new VacuumFreezerRecipe();
+	private static final AssemblyLineRecipe AssemblyLineRecipe = new AssemblyLineRecipe();
+	private static final OpenComputersRecipe OpenComputersRecipe = new OpenComputersRecipe();
 
 	public static void run() {
 		ItemLoader.run();
@@ -43,6 +52,7 @@ public class GT_ModLoader {
 		Worldgenloader.run();
 		TecTech_BuildGuide_Impact.run();
 		TecTech_BuildGuide_GregTech.run();
+		ModLoader.run();
 	/** ========================= */
 		DEBUG_Recipe.run();
 		CentrifugeRecipe.run();
@@ -59,5 +69,12 @@ public class GT_ModLoader {
 		AlloySmelterRecipe.run();
 		MixerRecipe.run();
 		EBFRecipe.run();
+		FluidCannerRecipe.run();
+		CircuitAssemblerRecipe.run();
+		FarmRecipe.run();
+		CuttingRecipe.run();
+		VacuumFreezerRecipe.run();
+		AssemblyLineRecipe.run();
+		OpenComputersRecipe.run();
     }
 }

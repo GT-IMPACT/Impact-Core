@@ -8,6 +8,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class Utilits {
 
     public static boolean invertBoolean(final boolean booleans) {
@@ -112,6 +115,32 @@ public class Utilits {
         catch (final Throwable e){
             return null;
         }
+    }
+
+    public static ItemStack[] toItemStackArray(List<ItemStack> stacksList) {
+        if(stacksList.size() == 0) {
+            return null;
+        }
+
+        ItemStack[] ret = new ItemStack[stacksList.size()];
+        Iterator<ItemStack> iterator = stacksList.iterator();
+        for(int i = 0; i < ret.length; i++	) {
+            ret[i] = iterator.next();
+        }
+        return ret;
+    }
+
+    public static FluidStack[] toFluidStackArray(List<FluidStack> stacksList) {
+        if(stacksList.size() == 0) {
+            return null;
+        }
+
+        FluidStack[] ret = new FluidStack[stacksList.size()];
+        Iterator<FluidStack> iterator = stacksList.iterator();
+        for(int i = 0; i < ret.length; i++	) {
+            ret[i] = iterator.next();
+        }
+        return ret;
     }
 
 }
