@@ -1,21 +1,17 @@
 package com.impact.mods.GregTech.GTregister;
 
-import com.spartakcore.gthandler.tileentities.basic.GT_MetaTileEntity_WaterTank;
-import com.spartakcore.gthandler.tileentities.generators.GT_MetaTileEntity_SemifluidGenerator;
-import com.spartakcore.gthandler.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
-import com.spartakcore.gthandler.tileentities.hatches.GT_MetaTileEntity_Primitive_InputBus;
-import com.spartakcore.gthandler.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_DieselGenerator;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_GasTurbine;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_PortableTank;
+
+import gregtech.api.metatileentity.implementations.*;
+import gregtech.common.tileentities.generators.*;
+import gregtech.common.tileentities.storage.*;
+import com.impact.mods.GregTech.tileentities.basic.*;
+import com.impact.mods.GregTech.tileentities.hatches.*;
 
 public class GT_Machines_BasicRegister {
 	public void run()
@@ -98,14 +94,16 @@ public class GT_Machines_BasicRegister {
 		GT_ItemList.Generator_Steam_Turbine_ULV.set(new GT_MetaTileEntity_SteamTurbine(13025, "basicgenerator.steamturbine.tier.00", "First Steam Turbine", 0).getStackForm(1L));
 		GT_ItemList.Generator_Diesel_ULV.set(new GT_MetaTileEntity_DieselGenerator(13026, "basicgenerator.diesel.tier.00", "First Combustion Generator", 0).getStackForm(1L));
 		GT_ItemList.Generator_Gas_Turbine_ULV.set(new GT_MetaTileEntity_GasTurbine(13027, "basicgenerator.gasturbine.tier.00", "First Gas Turbine", 0).getStackForm(1L));
-		GT_ItemList.Generator_Semi_Turbine_ULV.set(new GT_MetaTileEntity_SemifluidGenerator(13028, "basicgenerator.semifluid.tier.00", "First Semifluid Generator", 0).getStackForm(1L));
+		GT_ItemList.Generator_Semi_Turbine_ULV.set(new GTMTE_SemifluidGenerator(13028, "basicgenerator.semifluid.tier.00", "First Semifluid Generator", 0).getStackForm(1L));
+
 		GT_ItemList.Hatch_Output_Prim.set(new GT_MetaTileEntity_Primitive_Hatch_Output(14013, "primitive.hatchoutput", "Primitive Output Hatch",0).getStackForm(1L));
 		GT_ItemList.Bus_Input_Prim.set(new GT_MetaTileEntity_Primitive_InputBus(14012, "primitive.input", "Primitive Input Bus",0).getStackForm(1L));
 		GT_ItemList.Bus_Output_Prim.set(new GT_MetaTileEntity_Primitive_OutputBus(14011, "primitive.output", "Primitive Output Bus",0).getStackForm(1L));
-		GT_ItemList.Generator_Semi_Turbine_LV.set(new GT_MetaTileEntity_SemifluidGenerator(13029, "basicgenerator.semifluid.tier.01", "Basic Semifluid Generator", 1).getStackForm(1L));
-		GT_ItemList.Generator_Semi_Turbine_MV.set(new GT_MetaTileEntity_SemifluidGenerator(13030, "basicgenerator.semifluid.tier.02", "Advanced Semifluid Generator", 2).getStackForm(1L));
-		GT_ItemList.Generator_Semi_Turbine_HV.set(new GT_MetaTileEntity_SemifluidGenerator(13031, "basicgenerator.semifluid.tier.03", "Turbo Semifluid Generator", 3).getStackForm(1L));
-		GT_ItemList.Water_Tank.set(new GT_MetaTileEntity_WaterTank(13034, "basicmachine.watertank", "Water Tank",0).getStackForm(1L));
+
+		GT_ItemList.Generator_Semi_Turbine_LV.set(new GTMTE_SemifluidGenerator(13029, "basicgenerator.semifluid.tier.01", "Basic Semifluid Generator", 1).getStackForm(1L));
+		GT_ItemList.Generator_Semi_Turbine_MV.set(new GTMTE_SemifluidGenerator(13030, "basicgenerator.semifluid.tier.02", "Advanced Semifluid Generator", 2).getStackForm(1L));
+		GT_ItemList.Generator_Semi_Turbine_HV.set(new GTMTE_SemifluidGenerator(13031, "basicgenerator.semifluid.tier.03", "Turbo Semifluid Generator", 3).getStackForm(1L));
+		GT_ItemList.Water_Tank.set(new GTMTE_WaterTank(13034, "basicmachine.watertank", "Water Tank",0).getStackForm(1L));
 
 		GT_ItemList.Hatch_Input_UEV.set(new GT_MetaTileEntity_Hatch_Input(12250, "hatch.input.tier.10", "Input Hatch (UEV)",10).getStackForm(1L));
 		GT_ItemList.Hatch_Input_UIV.set(new GT_MetaTileEntity_Hatch_Input(12251, "hatch.input.tier.11", "Input Hatch (UIV)",11).getStackForm(1L));
