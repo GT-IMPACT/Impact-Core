@@ -203,16 +203,6 @@ public class AssemblerRecipe implements Runnable {
             //Casings
             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), CoreItems2.getRecipe(SteelBars.getMetaID(), 6), Casing_Farm.get(1L), 50, 16);
 
-            //Casings
-            if (Loader.isModLoaded("miscutils")) {
-
-            } else {
-                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_IV.get(1L, new Object[0]), 50, 16);
-                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_LuV.get(1L, new Object[0]), 50, 16);
-                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_ZPM.get(1L, new Object[0]), 50, 16);
-                GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 8L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L, new Object[0]), ItemList.Casing_UV.get(1L, new Object[0]), 50, 16);
-            }
-
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L)}, Materials.Redstone.getMolten(72L), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), 100, 30, false);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Bronze, 1L)}, Materials.Redstone.getMolten(72L), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), 100, 30, false);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(PistonPlate.getMetaID(), 1), 100, 30, false);
