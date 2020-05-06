@@ -1276,7 +1276,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                                     {"000","000","000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings8,0))
-                            .addElement('1', ofBlock(sBlockCasings2,1))
+                            .addElement('1', ofBlock(sBlockCasings8,1))
                             .addElement('2', ofBlock(sBlockCasings5,0))
                             .build();
             private final String[] desc=new String[]{
