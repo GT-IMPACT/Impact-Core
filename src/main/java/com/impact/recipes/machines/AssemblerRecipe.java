@@ -229,8 +229,8 @@ public class AssemblerRecipe implements Runnable {
 
             //Quantum Armor Parts
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 4), CoreItems2.getRecipe(QuantumPartBoots.getMetaID(), 1), 1200, 1920);
-            GT_Values.RA.addAssemblerRecipe(Loader.isModLoaded("GraviSuite") ? GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W) : GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 8), CoreItems2.getRecipe(QuantumPartChestplate.getMetaID(), 7), 1200, 1920);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 5), CoreItems2.getRecipe(QuantumPartHelmetEmpty.getMetaID(), 7), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(Loader.isModLoaded("GraviSuite") ? GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W) : GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 8), CoreItems2.getRecipe(QuantumPartChestplate.getMetaID(), 1), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 5), CoreItems2.getRecipe(QuantumPartHelmetEmpty.getMetaID(), 1), 1200, 1920);
             GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(QuantumPartHelmetEmpty.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 8L), CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1), 1200, 1920);
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoLeggings", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 7), CoreItems2.getRecipe(QuantumPartLeggings.getMetaID(), 1), 1200, 1920);
 
