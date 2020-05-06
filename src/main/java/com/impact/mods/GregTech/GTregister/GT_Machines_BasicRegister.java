@@ -48,7 +48,7 @@ public class GT_Machines_BasicRegister {
 			GT_ItemList.Energy_64A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy64A.tier.08", "UV Energy Hatch 64A",   8, 64).getStackForm(1L));
 			GT_ItemList.Energy_256A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy256A.tier.08","UV Energy Hatch 256A",  8, 256).getStackForm(1L));
 
-			GT_ItemList.Dynamo_2A_EV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.04",  "IV Dynamo Hatch 2A",    4, 2).getStackForm(1L));
+			GT_ItemList.Dynamo_2A_EV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.04",  "EV Dynamo Hatch 2A",    4, 2).getStackForm(1L));
 			GT_ItemList.Dynamo_2A_IV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.05",  "IV Dynamo Hatch 2A",    5, 2).getStackForm(1L));
 			GT_ItemList.Dynamo_2A_LuV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.06",  "LuV Dynamo Hatch 2A",   6, 2).getStackForm(1L));
 			GT_ItemList.Dynamo_2A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.07",  "ZPM Dynamo Hatch 2A",   7, 2).getStackForm(1L));
