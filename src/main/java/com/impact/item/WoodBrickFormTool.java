@@ -2,66 +2,65 @@ package com.impact.item;
 
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
-import eu.usrv.yamcore.auxiliary.enums.ItemRecipeBehaviorEnum;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class Core_Items2 extends Item {
+public class WoodBrickFormTool extends Item {
 
-    public static int x = 68; //количество предметов
+    public static WoodBrickFormTool WoodBrickFormTool = new WoodBrickFormTool();
+    private IIcon icons;
 
-    private static Core_Items2 Core_Items2 = new Core_Items2();
-    private final IIcon[] icons = new IIcon[x + 1];
-
-    private Core_Items2() {
+    private WoodBrickFormTool() {
     }
 
-    public static Core_Items2 getInstance() {
-        return Core_Items2;
+    public static WoodBrickFormTool getInstance() {
+        return WoodBrickFormTool;
     }
 
     public void registerItem() {
         super.setHasSubtypes(true);
-        final String unlocalizedName = "impact_item2";
+        final String unlocalizedName = "impact_WoodBrickFormTool";
         super.setUnlocalizedName(unlocalizedName);
-        super.setMaxStackSize(64);
+        super.setContainerItem(this);
+        super.setMaxStackSize(1);
+        super.setMaxDamage(50);
+        super.setNoRepair();
         GameRegistry.registerItem(getInstance(), unlocalizedName);
     }
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        for (int i = 0; i <= x; i++)
-            icons[i] = reg.registerIcon(Refstrings.MODID + ":/impact-metaitem.01/" + i);
+        icons = reg.registerIcon(Refstrings.MODID + ":/impact-metatool.01/4");
     }
 
     @Override
     public IIcon getIconFromDamage(int meta) {
-        return icons[meta];
+        return icons;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < icons.length; i++) {
+        for (int i = 0; i < 1; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + stack.getItemDamage();
+        return super.getUnlocalizedName();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+        list.add("Reusable: "+ (stack.getMaxDamage()-stack.getItemDamage()));
     }
 
     @Override
@@ -70,12 +69,12 @@ public class Core_Items2 extends Item {
     @Override
     public boolean showDurabilityBar(ItemStack stack) { return false; }
 
-    public ItemStack getStackFromDamage(int meta) {
-        return new ItemStack(getInstance(), 1, meta);
-    }
-
-    public ItemStack getRecipe(int meta, int amount) {
-        return new ItemStack(getInstance(), amount, meta);
+    public ItemStack getContainerItem(ItemStack stack) {
+        if (stack.getItemDamage() >= 0) {
+            stack.setItemDamage(stack.getItemDamage() + 1);
+            return stack;
+        }
+        return super.getContainerItem(stack);
     }
 
 }

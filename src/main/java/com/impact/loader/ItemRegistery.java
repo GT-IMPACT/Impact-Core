@@ -1,9 +1,8 @@
 package com.impact.loader;
 
-import com.impact.block.*;
-import com.impact.block.GlassBlocksItem;
-import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.System.Refstrings;
+import com.impact.block.*;
+import com.impact.item.GT_Pump.GregtechPump;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -15,12 +14,12 @@ import static codechicken.nei.api.API.hideItem;
 public class ItemRegistery {
 
     public static final Block[] decorateBlock = {
-            new Core_Blocks("DecorateBlock", new String[] {
+            new Core_Blocks("DecorateBlock", new String[]{
                     Refstrings.MODID + ":Concrete",
                     Refstrings.MODID + ":CokeCoal",
                     Refstrings.MODID + ":PistonBlock",
             }, 0),
-            new Core_Blocks("BufferCasing", new String[] {
+            new Core_Blocks("BufferCasing", new String[]{
                     Refstrings.MODID + ":bufferULV",
                     Refstrings.MODID + ":bufferLV",
                     Refstrings.MODID + ":bufferMV",
@@ -56,8 +55,8 @@ public class ItemRegistery {
                     Refstrings.MODID + ":glass/blockGB13", // green
                     Refstrings.MODID + ":glass/blockGB14", // red
                     Refstrings.MODID + ":glass/blockGB15", // black
-            },false, true)
-};
+            }, false, true)
+    };
 
     public static void run() {
         //Blocks
@@ -79,13 +78,13 @@ public class ItemRegistery {
     }
 
 
-
-    //public static CircuitProgrammer toolCircuitProgrammer;
-    //public static void CircuitProgrammer() {
-    //    toolCircuitProgrammer = new CircuitProgrammer();
-    //}
+//    public static CircuitProgrammer toolCircuitProgrammer;
+//    public static void CircuitProgrammer() {
+//        toolCircuitProgrammer = new CircuitProgrammer();
+//    }
 
     public static GregtechPump GTPump;
+
     public static void GregtechPump() {
         GTPump = new GregtechPump();
         GTPump.registerPumpType(0, "LV Hand Pump", 0, 0);
@@ -93,5 +92,4 @@ public class ItemRegistery {
         GTPump.registerPumpType(2, "HV Hand Pump", 128000, 2);
         GTPump.registerPumpType(3, "EV Hand Pump", 512000, 3);
     }
-
 }

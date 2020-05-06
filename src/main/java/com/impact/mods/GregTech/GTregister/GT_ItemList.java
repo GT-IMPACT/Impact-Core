@@ -12,10 +12,10 @@ import static gregtech.api.enums.GT_Values.W;
 
 public enum GT_ItemList implements IItemContainer {
 
-	//gwpp
+	//items
 	Coin, RedstoneRedChipset,RedstoneQuartzChipset,RedstonePulsatingChipset,RedstoneIronChipset,RedstoneGoldChipset,
-	RedstoneEmeraldChipset,	RedstoneDiamondChipset,WoodenBrickForm,UnfiredSearedBrick,UnfiredCokeOvenBrick,UnfiredClayBrick,
-	CokeOvenBrick, EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore, EngineeringProcessorFluidGoldCore,
+	RedstoneEmeraldChipset,	RedstoneDiamondChipset,
+	EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore, EngineeringProcessorFluidGoldCore,
 	EngineeringProcessorItemAdvEmeraldCore, EngineeringProcessorItemDiamondCore, EngineeringProcessorItemEmeraldCore,
 	EngineeringProcessorSpatialPulsatingCore, LogicProcessorItemGoldCore, EngravedDiamondCrystalChip, EngravedEnergyChip,
 	EngravedGoldChip, EngravedQuantumChip, GeneticCircuit, EnvironmentalCircuit, PulsatingSpatialCoreChip,
@@ -43,7 +43,7 @@ public enum GT_ItemList implements IItemContainer {
 	Machine_IV_ComponentAssembler, Machine_LuV_ComponentAssembler, Machine_ZPM_ComponentAssembler, Machine_UV_ComponentAssembler,
 	Machine_UHV_ComponentAssembler, Machine_UEV_ComponentAssembler,
 
-	Machine_ULV_Assembler,
+	Machine_ULV_Assembler, CircuitProgrammer,
 
 	Generator_Steam_Turbine_ULV, Generator_Diesel_ULV, Generator_Gas_Turbine_ULV, Generator_Semi_Turbine_ULV, Generator_Semi_Turbine_LV,
 	Generator_Semi_Turbine_MV, Generator_Semi_Turbine_HV,

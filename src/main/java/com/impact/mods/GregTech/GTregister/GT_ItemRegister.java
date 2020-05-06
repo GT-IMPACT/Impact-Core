@@ -19,20 +19,12 @@ public class GT_ItemRegister {
 	private GT_MetaGenerated_Item_04 GT;
 	
 	private void registerItems() {
-		GT_ItemList.CokeOvenBrick.set(GT.addItem(1,"Coke Oven Brick",""));
-
 		GT_ItemList.ULVPump.set(GT.addItem(395,"Electric Pump (ULV)","640 L/sec (as Cover"));
 		GregTech_API.registerCover(GT_ItemList.ULVPump.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[0][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(32));
 		GT_ItemList.ULVMotor.set(GT.addItem(396,"Electric Motor (ULV)",""));
 		GT_ItemList.ULVPiston.set(GT.addItem(397,"Electric Piston (ULV)",""));
 		GT_ItemList.ULVRobotArm.set(GT.addItem(398,"Robot Arm (ULV)",""));
 		GT_ItemList.ULVConveyorModule.set(GT.addItem(399,"Conveyor Module (ULV)",""));
-
-		GT_ItemList.WoodenBrickForm.set(GT.addItem( 402,"Wooden Brick Form",""));
-
-		GT_ItemList.UnfiredSearedBrick.set(GT.addItem(403,"Unfired Seared Brick",""));
-		GT_ItemList.UnfiredCokeOvenBrick.set(GT.addItem(404,"Unfired Coke Oven Brick",""));
-		GT_ItemList.UnfiredClayBrick.set(GT.addItem(405,"Unfired Clay Brick",""));
 
 		/* === CHIPSETS === */
 		GT_ItemList.EngineeringProcessorFluidDiamondCore.set(GT.addItem(471,"Engineering Processor Fluid Diamond Core", ""));

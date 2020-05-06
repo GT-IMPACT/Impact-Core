@@ -107,6 +107,12 @@ public enum Core_List_Items {
     SpruceScheme(62, 1),
     BirchScheme(63, 1),
     RubberScheme(64, 1),
+    CokeOvenBrick(65,1),
+    UnfiredSearedBrick(66,1),
+    UnfiredCokeOvenBrick(67,1),
+    UnfiredClayBrick(68,1),
+
+    WoodenBrickForm1(0,2),
 
     ;
 
@@ -169,6 +175,8 @@ public enum Core_List_Items {
         return
                 identifier == 0 ?
                         new ItemStack(Core_Items.getInstance(), amount, this.getMetaID()) :
+                identifier == 2 ?
+                        new ItemStack(WoodBrickFormTool.getInstance(), amount, this.getMetaID()) :
                         new ItemStack(Core_Items2.getInstance(), amount, this.getMetaID());
     }
 
@@ -176,7 +184,9 @@ public enum Core_List_Items {
         return this.getOreDictName() != null ? GregTech_API.getStackofAmountFromOreDict(this.getOreDictName(), amount) :
                 identifier == 0 ?
                         new ItemStack(Core_Items.getInstance(), amount, this.getMetaID()) :
-                        new ItemStack(Core_Items2.getInstance(), amount, this.getMetaID());
+                        identifier == 2 ?
+                                new ItemStack(WoodBrickFormTool.getInstance(), amount, this.getMetaID()) :
+                                new ItemStack(Core_Items2.getInstance(), amount, this.getMetaID());
     }
 
     public String getOreDictName() {
