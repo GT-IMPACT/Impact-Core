@@ -1,35 +1,59 @@
 package com.impact.loader;
 
 import codechicken.nei.api.ItemInfo;
-import com.impact.item.*;
+import com.impact.impact;
+import com.impact.item.Core_Items;
+import com.impact.item.Core_Items2;
+import com.impact.item.WoodBrickFormTool;
 import com.impact.mods.BartWorks.BacteriaRegistry;
 import com.impact.mods.GTSU.TierHelper;
 import com.impact.mods.GTSU.blocks.GTSUBlock;
 import com.impact.mods.GTSU.blocks.itemblocks.ItemBlockGTSU;
 import com.impact.mods.GTSU.tileentity.TileEntityGTSU;
-import com.impact.impact;
 import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
 import com.impact.mods.GregTech.GTregister.GT_Item_Block_And_Fluid;
 import com.impact.mods.GregTech.GTregister.GT_Materials;
 import com.impact.mods.modChest.BASE.Item_BaseChest;
 import com.impact.mods.modChest.BASE.Renderer_BaseChest;
-import com.impact.mods.modChest.Steel_Chest.*;
-import com.impact.mods.modChest.WroughtIron_Chest.*;;
-import com.impact.mods.modChest.chestAL.*;
-import com.impact.mods.modChest.chestCr.*;
-import com.impact.mods.modChest.chestHSLA.*;
-import com.impact.mods.modChest.chestIr.*;
-import com.impact.mods.modChest.chestNt.*;
-import com.impact.mods.modChest.chestOs.*;
-import com.impact.mods.modChest.chestTi.*;
-import com.impact.mods.modChest.chestW.*;
+import com.impact.mods.modChest.Steel_Chest.ItemRendererSteelChest;
+import com.impact.mods.modChest.Steel_Chest.SteelChest;
+import com.impact.mods.modChest.Steel_Chest.TESteelChest;
+import com.impact.mods.modChest.WroughtIron_Chest.ItemRendererWroughtIronChest;
+import com.impact.mods.modChest.WroughtIron_Chest.TEWroughtIronChest;
+import com.impact.mods.modChest.WroughtIron_Chest.WroughtIronChest;
+import com.impact.mods.modChest.chestAL.ChestAl;
+import com.impact.mods.modChest.chestAL.ItemRendererChestAl;
+import com.impact.mods.modChest.chestAL.TEChestAl;
+import com.impact.mods.modChest.chestCr.ChestCr;
+import com.impact.mods.modChest.chestCr.ItemRendererChestCr;
+import com.impact.mods.modChest.chestCr.TEChestCr;
+import com.impact.mods.modChest.chestHSLA.ChestHSLA;
+import com.impact.mods.modChest.chestHSLA.ItemRendererChestHSLA;
+import com.impact.mods.modChest.chestHSLA.TEChestHSLA;
+import com.impact.mods.modChest.chestIr.ChestIr;
+import com.impact.mods.modChest.chestIr.ItemRendererChestIr;
+import com.impact.mods.modChest.chestIr.TEChestIr;
+import com.impact.mods.modChest.chestNt.ChestNt;
+import com.impact.mods.modChest.chestNt.ItemRendererChestNt;
+import com.impact.mods.modChest.chestNt.TEChestNt;
+import com.impact.mods.modChest.chestOs.ChestOs;
+import com.impact.mods.modChest.chestOs.ItemRendererChestOs;
+import com.impact.mods.modChest.chestOs.TEChestOs;
+import com.impact.mods.modChest.chestTi.ChestTi;
+import com.impact.mods.modChest.chestTi.ItemRendererChestTi;
+import com.impact.mods.modChest.chestTi.TEChestTi;
+import com.impact.mods.modChest.chestW.ChestW;
+import com.impact.mods.modChest.chestW.ItemRendererChestW;
+import com.impact.mods.modChest.chestW.TEChestW;
 import com.impact.mods.modSolar.ASP;
+import com.impact.recipes.AfterGregTechPostLoadRecipes;
 import com.impact.util.OreDictRegister;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -37,12 +61,15 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import static com.impact.item.Core_List_Items.registerOreDictNames;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
+;
+
 public class MainLoader {
 
     private static BacteriaRegistry BacteriaRegistry;
     private static SpaceDimRegisterer SpaceDimReg;
 
-    private MainLoader(){}
+    private MainLoader() {
+    }
 
     public static void Init() {
         new ItemRegistery();
@@ -55,7 +82,7 @@ public class MainLoader {
         //GT pump
         ItemRegistery.GregtechPump();
         //GT circuit_programmer
-        //ItemRegistery.CircuitProgrammer();
+//        ItemRegistery.CircuitProgrammer();
         //Materials initial
         new GT_Materials();
         //solar
@@ -64,6 +91,7 @@ public class MainLoader {
         //MetaItems
         Core_Items.getInstance().registerItem();
         Core_Items2.getInstance().registerItem();
+        WoodBrickFormTool.getInstance().registerItem();
         registerOreDictNames();
 
         ItemInfo.hiddenItems.add(new ItemStack(decorateBlock[2], 1, 0));
@@ -77,7 +105,7 @@ public class MainLoader {
         // Register Dimensions in GalacticGregGT5
         if (Loader.isModLoaded("galacticgreg")) {
             SpaceDimReg = new SpaceDimRegisterer();
-            if (SpaceDimReg.Init())  {
+            if (SpaceDimReg.Init()) {
                 SpaceDimReg.Register();
             }
         }
@@ -97,12 +125,14 @@ public class MainLoader {
     }
 
     public static void postLoad() {
+
         //GTSU
         //registerSingleIC2StorageBlocks();
 
         //GT runnable
         new GT_ModLoader();
         GT_ModLoader.run();
+        addAfterGregTechPostLoadRunner();
     }
 
     public static void postInit() {
@@ -111,8 +141,7 @@ public class MainLoader {
 
     private static void registerSingleIC2StorageBlocks() {
         GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
-        for (int i = 0; i < TierHelper.V.length; i++)
-        {
+        for (int i = 0; i < TierHelper.V.length; i++) {
             GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
         }
     }
@@ -159,6 +188,12 @@ public class MainLoader {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestOs.instance), new ItemRendererChestOs());
         ClientRegistry.bindTileEntitySpecialRenderer(TEChestNt.class, Renderer_BaseChest.instance);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestNt.instance), new ItemRendererChestNt());
+    }
+
+    public static void addAfterGregTechPostLoadRunner() {
+        GregTech_API.sAfterGTPostload.add(() -> {
+            new AfterGregTechPostLoadRecipes().run();
+        });
     }
 
 }
