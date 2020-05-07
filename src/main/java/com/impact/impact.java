@@ -15,8 +15,7 @@ import com.impact.System.LoginHandler;
         name = Refstrings.NAME,
         version = Refstrings.VERSION,
         dependencies = 
-        	"required-after:Forge@[10.13.2.1291,);"
-        +	"required-after:YAMCore@[0.5.77,);")
+        	"required-after:Forge@[10.13.2.1291,);")
 
 public class impact {
 	
