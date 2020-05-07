@@ -6,6 +6,7 @@ import com.impact.recipes.*;
 import com.impact.mods.GregTech.casings.GT_Loader_Casings;
 import com.impact.recipes.debug.DEBUG_Recipe;
 import com.impact.recipes.machines.*;
+import cpw.mods.fml.common.Loader;
 
 public class GT_ModLoader {
 
@@ -15,9 +16,8 @@ public class GT_ModLoader {
 	private static final GT_Machines_BasicRegister MachineBasicLoader = new GT_Machines_BasicRegister();
 	private static final HandRecipe CraftingRecipeLoader = new HandRecipe();
 	private static final GT_WorldGenRegister Worldgenloader = new GT_WorldGenRegister();
-	private static final TecTech_BuildGuide_Impact TecTech_BuildGuide_Impact = new TecTech_BuildGuide_Impact();
-	private static final TecTech_BuildGuide_GregTech TecTech_BuildGuide_GregTech = new TecTech_BuildGuide_GregTech();
 	private static final ModLoader ModLoader = new ModLoader();
+
 
 	/** ========================= */
 	private static final DEBUG_Recipe DEBUG_Recipe = new DEBUG_Recipe();
@@ -50,8 +50,6 @@ public class GT_ModLoader {
 		MachineBasicLoader.run();
 		CraftingRecipeLoader.run();
 		Worldgenloader.run();
-		TecTech_BuildGuide_Impact.run();
-		TecTech_BuildGuide_GregTech.run();
 		ModLoader.run();
 	/** ========================= */
 		DEBUG_Recipe.run();

@@ -1,6 +1,8 @@
 package com.impact.loader;
 
 import com.impact.item.Core_Items;
+import com.impact.mods.GregTech.GTregister.TecTech_BuildGuide_GregTech;
+import com.impact.mods.GregTech.GTregister.TecTech_BuildGuide_Impact;
 import com.impact.recipes.GTplusplusRecipe;
 import com.impact.recipes.TecTechRecipe;
 import cpw.mods.fml.common.Loader;
@@ -28,6 +30,8 @@ public class ModLoader implements Runnable {
         // --- TecTech
         if (Loader.isModLoaded("tectech")) {
             new TecTechRecipe().run();
+            new TecTech_BuildGuide_Impact().run();
+            new TecTech_BuildGuide_GregTech().run();
         }
 
         // --- GalaxySpace
