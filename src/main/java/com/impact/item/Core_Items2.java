@@ -38,7 +38,7 @@ public class Core_Items2 extends Item {
     @Override
     public void registerIcons(IIconRegister reg) {
         for (int i = 0; i <= x; i++)
-            icons[i] = reg.registerIcon(Refstrings.MODID + ":/impact-metaitem.01/" + i);
+            icons[i] = reg.registerIcon(Refstrings.MODID + ":impact_metaitem.01/" + i);
     }
 
     @Override

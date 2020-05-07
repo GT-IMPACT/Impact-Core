@@ -113,7 +113,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
     }
 
     public GregtechPump() {
-        this("impact-metatool.01", null, (short) 1000, (short) 31766);
+        this("impact_metatool.01", null, (short) 1000, (short) 31766);
     }
 
     public GregtechPump(final String unlocalizedName, final CreativeTabs creativeTab, final short aOffset,

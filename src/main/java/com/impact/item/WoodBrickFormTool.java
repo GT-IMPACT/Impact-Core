@@ -36,7 +36,7 @@ public class WoodBrickFormTool extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        icons = reg.registerIcon(Refstrings.MODID + ":/impact-metatool.01/4");
+        icons = reg.registerIcon(Refstrings.MODID + ":impact_metatool.01/4");
     }
 
     @Override
