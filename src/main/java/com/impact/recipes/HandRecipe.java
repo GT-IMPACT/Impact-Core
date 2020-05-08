@@ -245,6 +245,20 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(98, 1), bits, new Object[]{"PRP", "ICI", "PMP", 'P', CoreItems2.getRecipe(84, 1), 'R', OrePrefixes.rotor.get(Materials.Iridium), 'M', ItemList.Electric_Motor_ZPM, 'I', ItemList.Neutron_Reflector, 'C', ItemList.Reactor_Coolant_Le_3});
 
+        /**====START SOLAR COVER====*/
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(109, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(101, 1), 'A', OrePrefixes.plateAlloy.get(Materials.Carbon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(110, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(102, 1), 'A', OrePrefixes.plate.get(Materials.Silicon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(111, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(103, 1), 'A', OrePrefixes.plate.get(Materials.Tungsten), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(112, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(104, 1), 'A', OrePrefixes.plate.get(Materials.TungstenSteel), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(113, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(105, 1), 'A', OrePrefixes.plate.get(Materials.Diamond), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(114, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(106, 1), 'A', OrePrefixes.plateAlloy.get(Materials.Iridium), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(115, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(107, 1), 'A', OrePrefixes.plate.get(Materials.MysteriousCrystal), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(116, 1), bits, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(108, 1), 'A', OrePrefixes.plate.get(Materials.BlackPlutonium), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
+
+        GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel.get(1L), bits, new Object[]{"SGS", "CPC", "TRT", 'C', OrePrefixes.circuit.get(Materials.Basic), 'G', GT_ModHandler.getIC2Item("reinforcedGlass", 1L), 'P', OrePrefixes.plateAlloy.get(Materials.Carbon), 'S', ItemList.Circuit_Silicon_Wafer, 'T', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'R', CoreItems2.getRecipe(101, 1)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Cover_SolarPanel_8V.get(1L), bits, new Object[]{"GSG", "CRC", "PAP", 'C', OrePrefixes.circuit.get(Materials.Good), 'G', ItemList.Cover_SolarPanel.get(1L), 'P', OrePrefixes.wireGt01.get(Materials.Tin), 'S', ItemList.Circuit_Silicon_Wafer, 'R', OrePrefixes.plate.get(Materials.GalliumArsenide), 'A', CoreItems2.getRecipe(109, 1)});
+
+        /*====END SOLAR COVER====*/
         /**====START SPACE ADDITION====*/
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(97, 1), bits, new Object[]{"SdS", "BTA", "ShS", 'T', GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 1L, 9), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'B', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualBronze", 1L, 0), 'A', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualAluminium", 1L, 0)});
 

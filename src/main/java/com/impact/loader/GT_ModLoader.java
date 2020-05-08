@@ -46,6 +46,7 @@ public class GT_ModLoader {
 	private static final FluidExtractorRecipe FluidExtractorRecipe = new FluidExtractorRecipe();
 	private static final ExtruderRecipe ExtruderRecipe = new ExtruderRecipe();
 	private static final ImplosionCompressorRecipe ImplosionCompressorRecipe = new ImplosionCompressorRecipe();
+	private static final FluidSolidifierRecipe FluidSolidifierRecipe = new FluidSolidifierRecipe();
 
 	public static void run() {
 		ItemLoader.run();
@@ -82,5 +83,6 @@ public class GT_ModLoader {
 		FluidExtractorRecipe.run();
 		ExtruderRecipe.run();
 		ImplosionCompressorRecipe.run();
+		FluidSolidifierRecipe.run();
     }
 }

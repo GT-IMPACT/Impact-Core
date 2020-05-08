@@ -147,6 +147,39 @@ public enum Core_List_Items {
     AdvancedCoolingCore(98,1),
     MiningCrystal(99,1),
     NanoCrystal(100,1),
+    AluminiumIronPlate(101,1),
+    TitaniumIronPlate(102,1),
+    TungstenIronPlate(103,1),
+    TungstenSteelIronPlate(104,1),
+    ChromeIronPlate(105,1),
+    IridiumIronPlate(106,1),
+    NaquadriaIronPlate(107,1),
+    NeutroniumIronPlate(108,1),
+    ReinforcedAluminiumIronPlate(109,1),
+    ReinforcedTitaniumIronPlate(110,1),
+    ReinforcedTungstenIronPlate(111,1),
+    ReinforcedTungstenSteelIronPlate(112,1),
+    ReinforcedChromeIronPlate(113,1),
+    ReinforcedIridiumIronPlate(114,1),
+    ReinforcedNaquadriaIronPlate(115,1),
+    ReinforcedNeutroniumIronPlate(116,1),
+    IrradiantReinforcedAluminiumPlate(117,1),
+    IrradiantReinforcedTitaniumPlate(118,1),
+    IrradiantReinforcedTungstenPlate(119,1),
+    IrradiantReinforcedTungstenSteelPlate(120,1),
+    IrradiantReinforcedChromePlate(121,1),
+    IrradiantReinforcedIridiumPlate(122,1),
+    IrradiantReinforcedNaquadriaPlate(123,1),
+    IrradiantReinforcedNeutroniumPlate(124,1),
+    SunnariumPiece(125,1),
+    Sunnarium(126,1),
+    SunnariumAlloy(127,1),
+    IrradiantUranium(128,1),
+    EnrichedSunnarium(129,1),
+    EnrichedSunnariumAlloy(130,1),
+    EnrichedNaquadriaSunnariumAlloy(131,1),
+    EnrichedNeutroniumSunnariumAlloy(132,1),
+
 
     WoodenBrickForm1(0,2),
 
@@ -188,7 +221,6 @@ public enum Core_List_Items {
         CokeOvenBrick.setOreDictName("ingotCokeOvenBrick");
         BlackPlutoniumCompressedPlate.setOreDictName("compressedBlackPlutonium");
         MeitneriumCompressedPlate.setOreDictName("compressedDraconium");
-        LedoxCompressedPlate.setOreDictName("compressedLedox");
         NaquadahCompressedPlate.setOreDictName("compressedNaquadah");
         QuantiumCompressedPlate.setOreDictName("compressedQuantium");
         MytrylCompressedPlate.setOreDictName("compressedMytryl");
