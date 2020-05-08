@@ -30,7 +30,7 @@ public class MixerRecipe implements Runnable {
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 16L), GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NI, Materials.Helium.getPlasma(2304L), GT_Values.NF, CoreItems.getRecipe(34,16), 3600, 122880);
 
 /** ================================= start GT =================================*/
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ledox, 1L), GT_Values.NI, GT_Values.NI, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.SuperCoolant.getFluid(2000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L), 200, 480);
+        GT_Values.RA.addMixerRecipe(CoreItems.getRecipe(2,1), CoreItems.getRecipe(10,1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ledox, 1L), GT_Values.NI, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 3000), Materials.SuperCoolant.getFluid(3000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 3L), 300, 480);
         /* ================================= end GT =================================*/
     }
 }
