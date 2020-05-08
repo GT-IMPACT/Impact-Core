@@ -17,13 +17,16 @@ public class MultiBlockTooltipBuilder {
 	
 	private final List<String> iLines;
 	private final List<String> sLines;
-	
+	private final List<String> cLines;
+
 	private String[] iArray;
 	private String[] sArray;
-	
+	private String[] cArray;
+
 	public MultiBlockTooltipBuilder() {
 		iLines = new LinkedList<>();
 		sLines = new LinkedList<>();
+		cLines = new LinkedList<>();
 	}
 	
 	/**
@@ -88,6 +91,17 @@ public class MultiBlockTooltipBuilder {
 		sLines.add(TAB + EnumChatFormatting.RED + "Upgrade Case: "+EnumChatFormatting.GRAY + info);
 		return this;
 	}
+
+	public MultiBlockTooltipBuilder addinfoB(String info) {
+		sLines.add(info);
+		return this;
+	}
+
+	public MultiBlockTooltipBuilder addinfoBTab(String info) {
+		sLines.add(TAB + info);
+		return this;
+	}
+
 	public MultiBlockTooltipBuilder beginStructureBlock(int w, int h, int l) {
 		//sLines.add("Dimensions: " + w + "x" + h + "x" + l + " (WxHxL)");
 		sLines.add(EnumChatFormatting.RED + "[WIP]" + EnumChatFormatting.GRAY + " Coming soon..");
@@ -176,11 +190,14 @@ public class MultiBlockTooltipBuilder {
 	 */
 	public void signAndFinalize(String author) {
 		iLines.add("Hold " +EnumChatFormatting.DARK_BLUE +  EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
+		iLines.add("Hold " +EnumChatFormatting.DARK_BLUE +  EnumChatFormatting.BOLD + "[LCTRL]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to more info");
 		iLines.add("Added by " + author);
 		iArray = new String[iLines.size()];
 		sArray = new String[sLines.size()];
+		cArray = new String[cLines.size()];
 		iLines.toArray(iArray);
 		sLines.toArray(sArray);
+		cLines.toArray(cArray);
 	}
 	
 	public String[] getInformation() {
@@ -189,5 +206,9 @@ public class MultiBlockTooltipBuilder {
 	
 	public String[] getStructureInformation() {
 		return sArray;
+	}
+
+	public String[] getControlInfo() {
+		return cArray;
 	}
 }
