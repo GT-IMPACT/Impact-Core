@@ -1,5 +1,7 @@
 package com.impact.recipes.machines;
 
+import com.impact.item.Core_Items;
+import com.impact.item.Core_Items2;
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -8,6 +10,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class FormingPressRecipe implements Runnable {
+
+    final Core_Items CoreItems = Core_Items.getInstance();
+    final Core_Items2 CoreItems2 = Core_Items2.getInstance();
+
     @Override
     public void run() {
 
@@ -33,6 +39,10 @@ public class FormingPressRecipe implements Runnable {
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L), GT_ItemList.RedstoneRedChipset.get(1L), GT_ItemList.RedstoneGoldChipset.get(1L), 200, 120);
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L), GT_ItemList.RedstoneRedChipset.get(1L), GT_ItemList.RedstoneDiamondChipset.get(1L), 100, 480);
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 1L), GT_ItemList.RedstoneRedChipset.get(1L), GT_ItemList.RedstoneEmeraldChipset.get(1L), 150, 480);
+
+        GT_Values.RA.addFormingPressRecipe(CoreItems.getRecipe(2, 4), ItemList.Shape_Extruder_Ingot.get(0L), CoreItems2.getRecipe(70, 1), 200, 120);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 4L), ItemList.Shape_Extruder_Ingot.get(0L), CoreItems2.getRecipe(73, 1), 300, 480);
+
         /* ================================= end CORE MOD =================================*/
 
     }
