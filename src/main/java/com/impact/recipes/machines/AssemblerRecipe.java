@@ -262,6 +262,24 @@ public class AssemblerRecipe implements Runnable {
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(14,1), CoreItems2.getRecipe(77,1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Adamantium, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.CinobiteA243/*Quantum*/, 16)}, Materials.Phoenixite.getMolten(288), CoreItems2.getRecipe(20,1), 900, 4194304);
 
             /*====END SPACE ADDITION====*/
+            /**====START CASINGS====*/
+            //LuV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyN, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HastelloyN, 6), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 4), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.HastelloyN, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 4)}, null, ItemList.Casing_LuV.get(1L), 200, 7680);
+
+            //ZPM
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Lafium, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lafium, 8), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 8), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Lafium, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 8)}, null, ItemList.Casing_ZPM.get(1L), 400, 30720);
+
+            //UV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 8), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 12), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 12), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 12), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 12)}, null, ItemList.Casing_UV.get(1L), 600, 122880);
+
+            //UHV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Pikyonium64B*/, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 10), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243/*Pikyonium64B*/, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 16), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243/*Pikyonium64B*/, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)}, null, ItemList.Casing_MAX.get(1L), 800, 500000);
+
+            //UEV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Quantum*/, 1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 12), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243/*Quantum*/, 20), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Phoenixite, 20), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243/*Quantum*/, 10), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 24)}, null, ItemList.Casing_UEV.get(1L), 1000, 2000000);
+
+            /*====END CASINGS====*/
+
 
         }
 

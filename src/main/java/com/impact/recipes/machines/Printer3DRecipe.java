@@ -674,35 +674,6 @@ public class Printer3DRecipe implements Runnable {
         /* ================================= end  Compact-Kinetic =================================*/
 
 /** ================================= start GT =================================*/
-        //LuV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyN, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HastelloyN, 6), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.HastelloyN, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 4)
-        }, ItemList.Casing_LuV.get(1L), null, 10 * 20, 7680);
-
-        //ZPM
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Lafium, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lafium, 8), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 8),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Lafium, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 8)
-        }, ItemList.Casing_ZPM.get(1L), null, 20 * 20, 30720);
-
-        //UV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 8), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 12), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Iridium, 12),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 12), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 12)
-        }, ItemList.Casing_UV.get(1L), null, 30 * 20, 122880);
-
-        //UHV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Pikyonium64B*/, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 10), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243/*Pikyonium64B*/, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 16),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243/*Pikyonium64B*/, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
-        }, ItemList.Casing_MAX.get(1L), null, 40 * 20, 500000);
-
-        //UEV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Quantum, 1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 12), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Quantum, 20), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Phoenixite, 20),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Quantum, 10), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 24)
-        }, ItemList.Casing_UEV.get(1L), null, 50 * 20, 2000000);
 
         //Teleporter
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
