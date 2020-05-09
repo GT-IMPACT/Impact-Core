@@ -14,6 +14,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import static com.impact.item.Core_List_Items.*;
 import static com.impact.mods.GregTech.GTregister.GT_ItemList.Casing_Farm;
@@ -191,39 +193,150 @@ public class AssemblerRecipe implements Runnable {
             GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), Materials.HSSG.getMolten(576), ItemList.Field_Generator_EV.get(1), 600, 1920);
             GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), Materials.HSSS.getMolten(576), ItemList.Field_Generator_IV.get(1L), 600, 7680);
 
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(Empty180SpCell.getMetaID(), 1), 100, 120);
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(Empty180SpCell.getMetaID(), 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 3L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, CoreItems2.getRecipe(Empty360SpCell.getMetaID(), 1), 200, 256);
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(Empty180SpCell.getMetaID(), 3), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, CoreItems2.getRecipe(Empty540SpCell.getMetaID(), 1), 300, 480);
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(Empty180SpCell.getMetaID(), 1), CoreItems2.getRecipe(Empty360SpCell.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 7L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(Empty540SpCell.getMetaID(), 1), 100, 480);
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(Empty540SpCell.getMetaID(), 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.ElectrumFlux, 1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, CoreItems2.getRecipe(Empty1080SpCell.getMetaID(), 1), 200, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(54, 1), 100, 120);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(54, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 3L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, CoreItems2.getRecipe(55, 1), 200, 256);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(54, 3), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, CoreItems2.getRecipe(56, 1), 300, 480);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(54, 1), CoreItems2.getRecipe(55, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 7L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(56, 1), 100, 480);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(56, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.ElectrumFlux, 1L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, CoreItems2.getRecipe(57, 1), 200, 1024);
 
             //Bars
-            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 3L), GT_Utility.getIntegratedCircuit(3), CoreItems2.getRecipe(SteelBars.getMetaID(), 4), 400, 48);
+            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 3L), GT_Utility.getIntegratedCircuit(3), CoreItems2.getRecipe(51, 4), 400, 48);
 
             //Casings
             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), CoreItems2.getRecipe(SteelBars.getMetaID(), 6), Casing_Farm.get(1L), 50, 16);
 
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L)}, Materials.Redstone.getMolten(72L), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), 100, 30, false);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Bronze, 1L)}, Materials.Redstone.getMolten(72L), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), 100, 30, false);
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(PistonPlate.getMetaID(), 1), 100, 30, false);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
 
             if (Loader.isModLoaded("Natura"))
-                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Natura", "Natura.fence", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(PistonPlate.getMetaID(), 1), 100, 30, false);
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Natura", "Natura.fence", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
 
             if (Loader.isModLoaded("Forestry")) {
-                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Forestry", "fences", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(PistonPlate.getMetaID(), 1), 100, 30, false);
-                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Forestry", "fencesFireproof", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(PistonPlate.getMetaID(), 1), 100, 30, false);
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Forestry", "fences", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Forestry", "fencesFireproof", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
             }
 
-            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(PistonPlate.getMetaID(), 1), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), null, new ItemStack(Blocks.piston, 1), 100, 8);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(53, 1), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), null, new ItemStack(Blocks.piston, 1), 100, 8);
 
             //Quantum Armor Parts
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 4), CoreItems2.getRecipe(QuantumPartBoots.getMetaID(), 1), 1200, 1920);
-            GT_Values.RA.addAssemblerRecipe(Loader.isModLoaded("GraviSuite") ? GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W) : GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 8), CoreItems2.getRecipe(QuantumPartChestplate.getMetaID(), 1), 1200, 1920);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 5), CoreItems2.getRecipe(QuantumPartHelmetEmpty.getMetaID(), 1), 1200, 1920);
-            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(QuantumPartHelmetEmpty.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 8L), CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1), 1200, 1920);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoLeggings", 1L, GT_Values.W), CoreItems2.getRecipe(IridiumAlloyItemCasing.getMetaID(), 7), CoreItems2.getRecipe(QuantumPartLeggings.getMetaID(), 1), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W), CoreItems2.getRecipe(52, 4), CoreItems2.getRecipe(41, 1), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(Loader.isModLoaded("GraviSuite") ? GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W) : GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, GT_Values.W), CoreItems2.getRecipe(52, 8), CoreItems2.getRecipe(42, 1), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W), CoreItems2.getRecipe(52, 5), CoreItems2.getRecipe(44, 1), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(43, 1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 8L), CoreItems2.getRecipe(44, 1), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoLeggings", 1L, GT_Values.W), CoreItems2.getRecipe(52, 7), CoreItems2.getRecipe(45, 1), 1200, 1920);
 
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(78, 1), CoreItems2.getRecipe(82, 1)}, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), CoreItems2.getRecipe(80, 1), 1000, 480);
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 3), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 6), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 8)}, Materials.Duranium.getMolten(288L), CoreItems2.getRecipe(88, 1), 600, 1920);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(88, 1), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 7), CoreItems2.getRecipe(87, 1)}, Materials.Tritanium .getMolten(288L), CoreItems2.getRecipe(89, 1), 1200, 7680);
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2)}, null, CoreItems2.getRecipe(99,1), 100, 30);
+
+            /**====START SOLAR PARTS====*/
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(109,1), GT_ModHandler.getModItem("minecraft", "glowstone", 1L), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Iron, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(144), CoreItems2.getRecipe(117,1), 600, 120);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(110,1), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.MeteoricIron, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(288), CoreItems2.getRecipe(118,1), 600, 480);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(111,1), GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 1), GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Uranium, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(576), CoreItems2.getRecipe(119,1), 600, 1920);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(112,1), CoreItems2.getRecipe(126,1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Naquadah, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Plutonium, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(1152), CoreItems2.getRecipe(120,1), 600, 7680);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(113,1), CoreItems2.getRecipe(127,1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Draconium, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(2304), CoreItems2.getRecipe(121,1), 600, 30720);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(114,1), CoreItems2.getRecipe(130,1), CoreItems2.getRecipe(83,1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(4608), CoreItems2.getRecipe(122,1), 600, 122880);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(115,1), CoreItems2.getRecipe(131,1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Quantium, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(9216), CoreItems2.getRecipe(123,1), 600, 500000);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(116,1), CoreItems2.getRecipe(132,1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.BlackPlutonium, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(18432), CoreItems2.getRecipe(124,1), 600, 2000000);
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Sunnarium, 4), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 8)}, null, CoreItems2.getRecipe(127,1), 800, 30720);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Uranium, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 4)}, null, CoreItems2.getRecipe(128,1), 600, 1920);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(126,1), CoreItems2.getRecipe(128,8)}, null, CoreItems2.getRecipe(129,1), 1200, 7680);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(127,1), CoreItems2.getRecipe(129,8)}, null, CoreItems2.getRecipe(130,1), 1600, 122880);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(130,1), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Naquadria, 8)}, null, CoreItems2.getRecipe(131,1), 1800, 500000);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(131,1), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 8)}, Materials.ElectrumFlux.getMolten(1152), CoreItems2.getRecipe(132,1), 2000, 2000000);
+
+            /*====END SOLAR PARTS====*/
+            /**====START SPACE ADDITION====*/
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Bronze, 1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Aluminium, 1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Steel, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSLA, 8)}, Materials.StainlessSteel.getMolten(288), ItemList.Ingot_Heavy1.get(1L, new Object[0]), 200, 256);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 1L), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L), CoreItems2.getRecipe(93,1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 8)}, Materials.Titanium.getMolten(288), ItemList.Ingot_Heavy2.get(1L, new Object[0]), 300, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 3), CoreItems2.getRecipe(90,1), CoreItems2.getRecipe(96,1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Inconel690, 8)}, Materials.TungstenSteel.getMolten(288), ItemList.Ingot_Heavy3.get(1L, new Object[0]), 400, 4096);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L), CoreItems2.getRecipe(84,1), CoreItems2.getRecipe(92,1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HastelloyN, 8)}, Materials.Chrome.getMolten(288), CoreItems2.getRecipe(16,1), 500, 16384);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(11,1), CoreItems2.getRecipe(86,1), CoreItems2.getRecipe(91,1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Lafium, 10)}, Materials.Iridium.getMolten(288), CoreItems2.getRecipe(17,1), 600, 65536);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(12,1), CoreItems2.getRecipe(89,1), CoreItems2.getRecipe(94,1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.CinobiteA243, 12)}, Materials.Osmium.getMolten(288), CoreItems2.getRecipe(18,1), 700, 262144);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(13,1), CoreItems2.getRecipe(79,1), CoreItems2.getRecipe(95,1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.CinobiteA243/*Pikyonium64B*/, 14)}, Materials.Neutronium.getMolten(288), CoreItems2.getRecipe(19,1), 800, 1048576);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(14,1), CoreItems2.getRecipe(77,1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Adamantium, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.CinobiteA243/*Quantum*/, 16)}, Materials.Phoenixite.getMolten(288), CoreItems2.getRecipe(20,1), 900, 4194304);
+
+            /*====END SPACE ADDITION====*/
+            /**====START CASINGS====*/
+            //LuV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyN, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HastelloyN, 6), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 4), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.HastelloyN, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 4)}, null, ItemList.Casing_LuV.get(1L), 200, 7680);
+
+            //ZPM
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Lafium, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lafium, 8), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 8), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Lafium, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 8)}, null, ItemList.Casing_ZPM.get(1L), 400, 30720);
+
+            //UV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 8), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 12), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 12), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 12), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 12)}, null, ItemList.Casing_UV.get(1L), 600, 122880);
+
+            //UHV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Pikyonium64B*/, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 10), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243/*Pikyonium64B*/, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 16), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243/*Pikyonium64B*/, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)}, null, ItemList.Casing_MAX.get(1L), 800, 500000);
+
+            //UEV
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Quantum*/, 1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 12), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243/*Quantum*/, 20), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Phoenixite, 20), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243/*Quantum*/, 10), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 24)}, null, ItemList.Casing_UEV.get(1L), 1000, 2000000);
+
+            /*====END CASINGS====*/
+            /**====START QUANTUM SUITE====*/
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumHelmet", 1, GT_Values.W));
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1),
+                            CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
+                            ItemList.Energy_LapotronicOrb.get(1L),
+                            ItemList.Sensor_IV.get(1L),
+                            ItemList.Field_Generator_EV.get(1L),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
+                            GT_Utility.getIntegratedCircuit(10)},
+                    Materials.Titanium.getMolten(1728L),
+                    GT_ModHandler.getIC2Item("quantumHelmet", 1L, 26), 1500, 7680);
+
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1, GT_Values.W));
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1),
+                            CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 6),
+                            ItemList.Energy_LapotronicOrb.get(1L),
+                            ItemList.Field_Generator_EV.get(3L),
+                            ItemList.Electric_Motor_IV.get(2L),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
+                            GT_Utility.getIntegratedCircuit(11)},
+                    Materials.Titanium.getMolten(2880L),
+                    GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, 26), 1500, 7680);
+
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumLeggings", 1, GT_Values.W));
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartLeggings.getMetaID(), 1),
+                            CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 6),
+                            ItemList.Energy_LapotronicOrb.get(1L),
+                            ItemList.Field_Generator_EV.get(2L),
+                            ItemList.Electric_Motor_IV.get(4L),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
+                            GT_Utility.getIntegratedCircuit(12)},
+                    Materials.Titanium.getMolten(2304L),
+                    GT_ModHandler.getIC2Item("quantumLeggings", 1L, 26), 1500, 7680);
+
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1, GT_Values.W));
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartBoots.getMetaID(), 1),
+                            CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
+                            ItemList.Energy_LapotronicOrb.get(1L),
+                            ItemList.Field_Generator_EV.get(1L),
+                            ItemList.Electric_Piston_IV.get(2L),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
+                            GT_Utility.getIntegratedCircuit(12)},
+                    Materials.Titanium.getMolten(1440L),
+                    GT_ModHandler.getIC2Item("quantumBoots", 1L, 26), 1500, 7680);
+            /*====END QUANTUM SUITE====*/
+            
         }
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};

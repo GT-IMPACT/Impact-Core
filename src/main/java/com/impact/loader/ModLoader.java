@@ -3,7 +3,6 @@ package com.impact.loader;
 import com.impact.item.Core_Items;
 import com.impact.mods.GregTech.GTregister.TecTech_BuildGuide_GregTech;
 import com.impact.mods.GregTech.GTregister.TecTech_BuildGuide_Impact;
-import com.impact.recipes.GTplusplusRecipe;
 import com.impact.recipes.TecTechRecipe;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
@@ -22,10 +21,6 @@ public class ModLoader implements Runnable {
     final Core_Items CoreItems = Core_Items.getInstance();
     @Override
     public void run() {
-        // --- GT++
-        if (Loader.isModLoaded("miscutils")) {
-            new GTplusplusRecipe().run();
-        }
 
         // --- TecTech
         if (Loader.isModLoaded("tectech")) {

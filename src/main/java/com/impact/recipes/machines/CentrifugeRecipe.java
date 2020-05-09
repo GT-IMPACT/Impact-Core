@@ -1,5 +1,7 @@
 package com.impact.recipes.machines;
 
+import com.impact.item.Core_Items;
+import com.impact.item.Core_Items2;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -7,6 +9,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class CentrifugeRecipe implements Runnable {
+
+    final Core_Items CoreItems = Core_Items.getInstance();
+
     @Override
     public void run() {
 
@@ -40,6 +45,9 @@ public class CentrifugeRecipe implements Runnable {
         GT_Values.RA.addCentrifugeRecipe(GregTech_API.getStackofAmountFromOreDict("dustTCetiE", 1), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lapis, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Apatite, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.BlackPlutonium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Draconium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.InfinityCatalyst, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Trinium, 1L), new int[]{5000, 2500, 1000, 750, 150, 50}, 1800, 4096);
         GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrotine, 8L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 10000}, 400, 480);
         GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackPlutonium, 1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CosmicNeutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CosmicNeutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CosmicNeutronium, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{1000, 500, 100}, 200, 500000);
+
+        GT_Values.RA.addCentrifugeRecipe(CoreItems.getRecipe(31, 1), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Clay, 2L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.SiliconDioxide, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Brick, 1L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 9000, 7500}, 400, 30);
+        GT_Values.RA.addCentrifugeRecipe(CoreItems.getRecipe(32, 1), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Brick, 2L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Stone, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SiliconDioxide, 1L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 7500, 6000}, 400, 30);
 
         /* ================================= end CORE MOD =================================*/
     }

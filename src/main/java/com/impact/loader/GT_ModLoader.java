@@ -42,6 +42,11 @@ public class GT_ModLoader {
 	private static final VacuumFreezerRecipe VacuumFreezerRecipe = new VacuumFreezerRecipe();
 	private static final AssemblyLineRecipe AssemblyLineRecipe = new AssemblyLineRecipe();
 	private static final OpenComputersRecipe OpenComputersRecipe = new OpenComputersRecipe();
+	private static final ForgeHammerRecipe ForgeHammerRecipe = new ForgeHammerRecipe();
+	private static final FluidExtractorRecipe FluidExtractorRecipe = new FluidExtractorRecipe();
+	private static final ExtruderRecipe ExtruderRecipe = new ExtruderRecipe();
+	private static final ImplosionCompressorRecipe ImplosionCompressorRecipe = new ImplosionCompressorRecipe();
+	private static final FluidSolidifierRecipe FluidSolidifierRecipe = new FluidSolidifierRecipe();
 
 	public static void run() {
 		ItemLoader.run();
@@ -74,5 +79,10 @@ public class GT_ModLoader {
 		VacuumFreezerRecipe.run();
 		AssemblyLineRecipe.run();
 		OpenComputersRecipe.run();
+		ForgeHammerRecipe.run();
+		FluidExtractorRecipe.run();
+		ExtruderRecipe.run();
+		ImplosionCompressorRecipe.run();
+		FluidSolidifierRecipe.run();
     }
 }

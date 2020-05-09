@@ -40,6 +40,13 @@ public enum Core_List_Items {
     TCetiESeaweedExtract(28, 0),
     DustSmallFertilizer(29, 0),
     DustTinyFertilizer(30, 0),
+    CokeOvenBrickDust(31,1),
+    SearedBrickDust(32,1),
+    ClearGlassDust(33,1),
+    RawNeutroniumDust(34,1),
+    BarnardaCBiomass(35,1),
+    StargateCrystalDust(36,1),
+    ConcreteDust(37,1),
 
     //MetaItems1
     SchematicsTier1(0, 1),
@@ -111,6 +118,88 @@ public enum Core_List_Items {
     UnfiredSearedBrick(66,1),
     UnfiredCokeOvenBrick(67,1),
     UnfiredClayBrick(68,1),
+    CallistoIceColdIngot(69,1),
+    CallistoIceIngot(70,1),
+    LedoxColdIngot(71,1),
+    MysteriousCrystalColdIngot(72,1),
+    MysteriousCrystalIngot(73,1),
+    CallistoIcePlate(74,1),
+    LedoxColdPlate(75,1),
+    MysteriousCrystalColdPlate(76,1),
+    BlackPlutoniumCompressedPlate(77,1),
+    CallistoIceCompressedPlate(78,1),
+    MeitneriumCompressedPlate(79,1),
+    IceCompressedPlate(80,1),
+    IridiumAlloyCompressedPlate(81,1),
+    LedoxCompressedPlate(82,1),
+    MysteriousCrystalCompressedPlate(83,1),
+    NaquadahCompressedPlate(84,1),
+    QuantiumCompressedPlate(85,1),
+    MytrylCompressedPlate(86,1),
+    PalladiumCompressedPlate(87,1),
+    LeadNickelCompressedPlate(88,1),
+    LeadOriharukonCompressedPlate(89,1),
+    DeshDualCompressedPlate(90,1),
+    IceDualCompressedPlate(91,1),
+    IridiumAlloyDualCompressedPlate(92,1),
+    MeteoricIronDualCompressedPlate(93,1),
+    MysteriousCrystalDualCompressedPlate(94,1),
+    QuantiumDualCompressedPlate(95,1),
+    TitaniumDualCompressedPlate(96,1),
+    RawSDHCAlloy(97,1),
+    AdvancedCoolingCore(98,1),
+    MiningCrystal(99,1),
+    NanoCrystal(100,1),
+    AluminiumIronPlate(101,1),
+    TitaniumIronPlate(102,1),
+    TungstenIronPlate(103,1),
+    TungstenSteelIronPlate(104,1),
+    ChromeIronPlate(105,1),
+    IridiumIronPlate(106,1),
+    NaquadriaIronPlate(107,1),
+    NeutroniumIronPlate(108,1),
+    ReinforcedAluminiumIronPlate(109,1),
+    ReinforcedTitaniumIronPlate(110,1),
+    ReinforcedTungstenIronPlate(111,1),
+    ReinforcedTungstenSteelIronPlate(112,1),
+    ReinforcedChromeIronPlate(113,1),
+    ReinforcedIridiumIronPlate(114,1),
+    ReinforcedNaquadriaIronPlate(115,1),
+    ReinforcedNeutroniumIronPlate(116,1),
+    IrradiantReinforcedAluminiumPlate(117,1),
+    IrradiantReinforcedTitaniumPlate(118,1),
+    IrradiantReinforcedTungstenPlate(119,1),
+    IrradiantReinforcedTungstenSteelPlate(120,1),
+    IrradiantReinforcedChromePlate(121,1),
+    IrradiantReinforcedIridiumPlate(122,1),
+    IrradiantReinforcedNaquadriaPlate(123,1),
+    IrradiantReinforcedNeutroniumPlate(124,1),
+    SunnariumPiece(125,1),
+    Sunnarium(126,1),
+    SunnariumAlloy(127,1),
+    IrradiantUranium(128,1),
+    EnrichedSunnarium(129,1),
+    EnrichedSunnariumAlloy(130,1),
+    EnrichedNaquadriaSunnariumAlloy(131,1),
+    EnrichedNeutroniumSunnariumAlloy(132,1),
+    MediumFuelCanister(133,1),
+    LargeFuelCanister(134,1),
+    ExtraLargeFuelCanister(135,1),
+    CarbonPartHelmet(136,1),
+    CarbonPartHelmetNightVision(137,1),
+    CarbonPartChestplate(138,1),
+    CarbonPartLeggings(139,1),
+    CarbonPartBoots(140,1),
+    NeutronReflectorSmallParts(141,1),
+    NeutronReflectorParts(142,1),
+    TenKCell(143,1),
+    ThirtyKCell(144,1),
+    SixtyKCell(145,1),
+    IndustryFrame(146,1),
+    StargateShieldingFoil(147,1),
+    StargateFramePart(148,1),
+    StargateChevron(149,1),
+
 
     WoodenBrickForm1(0,2),
 
@@ -147,6 +236,16 @@ public enum Core_List_Items {
         VegaBStoneDust.setOreDictName("dustVegaB");
         DustSmallFertilizer.setOreDictName("dustSmallFertilizer");
         DustTinyFertilizer.setOreDictName("dustTinyFertilizer");
+        CokeOvenBrickDust.setOreDictName("dustCokeOven");
+        SearedBrickDust.setOreDictName("dustSearedBrick");
+        CokeOvenBrick.setOreDictName("ingotCokeOvenBrick");
+        BlackPlutoniumCompressedPlate.setOreDictName("compressedBlackPlutonium");
+        MeitneriumCompressedPlate.setOreDictName("compressedDraconium");
+        NaquadahCompressedPlate.setOreDictName("compressedNaquadah");
+        QuantiumCompressedPlate.setOreDictName("compressedQuantium");
+        MytrylCompressedPlate.setOreDictName("compressedMytryl");
+        PalladiumCompressedPlate.setOreDictName("compressedPalladium");
+
     }
 
     private final int metaID;

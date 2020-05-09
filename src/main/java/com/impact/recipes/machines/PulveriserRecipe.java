@@ -1,5 +1,7 @@
 package com.impact.recipes.machines;
 
+import com.impact.item.Core_Items;
+import com.impact.item.Core_Items2;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -8,7 +10,12 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 
+import static com.impact.item.Core_List_Items.CokeOvenBrick;
+
 public class PulveriserRecipe implements Runnable {
+    final Core_Items CoreItems = Core_Items.getInstance();
+    final Core_Items2 CoreItems2 = Core_Items2.getInstance();
+
     @Override
     public void run() {
 
@@ -76,5 +83,11 @@ public class PulveriserRecipe implements Runnable {
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "tcetieblocks", 1L, 2), new ItemStack[]{GregTech_API.getStackofAmountFromOreDict("dustTCetiE", 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lapis, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Apatite, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.BlackPlutonium, 1)}, new int[]{10000, 2500, 2000, 1500}, 400, 4096);
 
         /* ================================= end SPARTAK CORE =================================*/
+/** ================================= start CUSTOM RECIPES =================================*/
+        GT_Values.RA.addPulveriserRecipe(GregTech_API.getStackofAmountFromOreDict("ingotCokeOvenBrick", 1),   new ItemStack[]{CoreItems.getRecipe(31, 1)}, new int[]{10000}, 300, 2);
+        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("TConstruct", "materials", 1L, 2),   new ItemStack[]{CoreItems.getRecipe(32, 1)}, new int[]{10000}, 300, 2);
+        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock", 1L, 0),   new ItemStack[]{CoreItems.getRecipe(33, 1)}, new int[]{10000}, 300, 2);
+
+        /* ================================= end CUSTOM RECIPES =================================*/
     }
 }

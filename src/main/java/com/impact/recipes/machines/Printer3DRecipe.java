@@ -1,5 +1,6 @@
 package com.impact.recipes.machines;
 
+import com.impact.item.Core_Items2;
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -10,6 +11,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 
 public class Printer3DRecipe implements Runnable {
+
+    final Core_Items2 CoreItems2 = Core_Items2.getInstance();
+
     @Override
     public void run() {
 /** ================================= start IMPACT MOD =================================*/
@@ -561,14 +565,14 @@ public class Printer3DRecipe implements Runnable {
                 GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, 1), ItemList.Transformer_ZPM_LuV.get(1L), GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1, 1), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
                 GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 2), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 3), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Duranium, 2),
                 ItemList.Energy_LapotronicOrb2.get(1L), ItemList.Field_Generator_IV.get(2L), ItemList.Electric_Motor_ZPM.get(2L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Duranium, 4)
-        }, GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, 26), null, 50 * 20, 7680);
+        }, GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, 26), null, 50 * 20, 30720);
 
         //K2P4
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, 1), ItemList.Transformer_UV_ZPM.get(1L), GT_ModHandler.getModItem("GraviSuite", "epicLappack", 1, 1), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 8, 1),
-                GT_ModHandler.getModItem("customthings", "item", 2, 142), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 7), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Tritanium, 2),
+                CoreItems2.getRecipe(98,4), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 7), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Tritanium, 2),
                 ItemList.Energy_Module.get(1L), ItemList.Field_Generator_LuV.get(2L), ItemList.Electric_Motor_UV.get(2L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tritanium, 8)
-        }, GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, 26), null, 60 * 20, 30720);
+        }, GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, 26), null, 60 * 20, 122880);
         /* ================================= end  Gravisuite =================================*/
 
 /** ================================= start IC2 =================================*/
@@ -670,35 +674,6 @@ public class Printer3DRecipe implements Runnable {
         /* ================================= end  Compact-Kinetic =================================*/
 
 /** ================================= start GT =================================*/
-        //LuV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyN, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Chrome, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HastelloyN, 6), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 4),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.HastelloyN, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 4)
-        }, ItemList.Casing_LuV.get(1L), null, 10 * 20, 7680);
-
-        //ZPM
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Lafium, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lafium, 8), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 8),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Lafium, 4), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 8)
-        }, ItemList.Casing_ZPM.get(1L), null, 20 * 20, 30720);
-
-        //UV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium, 8), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 12), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Iridium, 12),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 12), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 12)
-        }, ItemList.Casing_UV.get(1L), null, 30 * 20, 122880);
-
-        //UHV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Pikyonium64B*/, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 10), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243/*Pikyonium64B*/, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 16),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.CinobiteA243/*Pikyonium64B*/, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
-        }, ItemList.Casing_MAX.get(1L), null, 40 * 20, 500000);
-
-        //UEV
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Quantum, 1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 12), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Quantum, 20), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Phoenixite, 20),
-                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Quantum, 10), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 24)
-        }, ItemList.Casing_UEV.get(1L), null, 50 * 20, 2000000);
 
         //Teleporter
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
@@ -740,6 +715,23 @@ public class Printer3DRecipe implements Runnable {
                 ItemList.Neutron_Reflector.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.ElectrumFlux, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 8), ItemList.Casing_Fusion.get(60L),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Phoenixite, 20), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 64)
         }, ItemList.Casing_Fusion2.get(60L), null, 200 * 20, 2000000);
+
+        //Fusion Casing MK3
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Field_Generator_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243, 4), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 4, 1),
+                ItemList.Neutron_Reflector.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Duranium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 8), ItemList.Casing_Fusion2.get(8L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 12), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 16)
+        }, ItemList.Casing_Fusion3.get(8L), null, 50 * 20, 500000);
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Field_Generator_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Pikyonium64B*/, 6), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
+                ItemList.Neutron_Reflector.get(10L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.ElectrumFlux, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 8), ItemList.Casing_Fusion2.get(20L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Phoenixite, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 32)
+        }, ItemList.Casing_Fusion3.get(20L), null, 100 * 20, 2000000);
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Field_Generator_UEV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 8), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Quantium*/, 8), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 8, 1),
+                ItemList.neutroniumHeatCapacitor.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackPlutonium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 8), ItemList.Casing_Fusion2.get(60L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 20), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 64)
+        }, ItemList.Casing_Fusion3.get(60L), null, 200 * 20, 8000000);
 
         //Steam Turbine
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
@@ -903,56 +895,56 @@ public class Printer3DRecipe implements Runnable {
         //Solar Panel LV 32 EU
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Cover_SolarPanel_8V.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4),
-                ItemList.Circuit_Silicon_Wafer2.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 4), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 4)
+                ItemList.Circuit_Silicon_Wafer2.get(4L), CoreItems2.getRecipe(117,4), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 4)
         }, ItemList.Cover_SolarPanel_LV.get(1L), null, 20 * 20, 120);
 
         //Solar Panel MV 128 EU
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Cover_SolarPanel_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Epoxid, 2), ItemList.Circuit_Chip_ULPIC.get(2L),
                 GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4), ItemList.Circuit_Silicon_Wafer2.get(4L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 4), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 4)
+                CoreItems2.getRecipe(118,4), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 4)
         }, ItemList.Cover_SolarPanel_MV.get(1L), null, 40 * 20, 480);
 
         //Solar Panel HV 512 EU
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Cover_SolarPanel_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.IndiumGalliumPhosphide, 2), ItemList.Circuit_Chip_LPIC.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 4),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 6), ItemList.Circuit_Silicon_Wafer2.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MeteoricSteel, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 6), ItemList.Circuit_Silicon_Wafer2.get(4L), CoreItems2.getRecipe(119,4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorEV, 6)
         }, ItemList.Cover_SolarPanel_HV.get(1L), null, 60 * 20, 1920);
 
         //Solar Panel EV 2048 EU
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Cover_SolarPanel_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 4), ItemList.Circuit_Chip_PIC.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 6),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 6), ItemList.Circuit_Silicon_Wafer4.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Desh, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silicon, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 6), ItemList.Circuit_Silicon_Wafer4.get(4L), CoreItems2.getRecipe(120,4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silicon, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorIV, 6)
         }, ItemList.Cover_SolarPanel_EV.get(1L), null, 80 * 20, 7680);
 
         //Solar Panel IV 8192 EU
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Cover_SolarPanel_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Sunnarium, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 6), ItemList.Circuit_Chip_HPIC.get(4L),
-                GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8), ItemList.Circuit_Silicon_Wafer3.get(6L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Naquadah, 6),
-                GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Silicon, 6), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 8)
+                ItemList.Cover_SolarPanel_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 6), ItemList.Circuit_Chip_HPIC.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8), ItemList.Circuit_Silicon_Wafer3.get(6L), CoreItems2.getRecipe(121,4), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Silicon, 6),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 8)
         }, ItemList.Cover_SolarPanel_IV.get(1L), null, 100 * 20, 30720);
 
         //Solar Panel LuV 32768 EU
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Cover_SolarPanel_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Sunnarium, 6), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polybenzimidazole, 8), ItemList.Circuit_Chip_UHPIC.get(6L),
-                GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 10), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), ItemList.Circuit_Silicon_Wafer7.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Oriharukon, 6),
-                GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Silicon, 6), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 8)
+                ItemList.Cover_SolarPanel_IV.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polybenzimidazole, 8), ItemList.Circuit_Chip_UHPIC.get(6L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 10),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), ItemList.Circuit_Silicon_Wafer7.get(8L), CoreItems2.getRecipe(122,6), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Silicon, 6),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 8)
         }, ItemList.Cover_SolarPanel_LuV.get(1L), null, 120 * 20, 122880);
 
         //Solar Panel ZPM 131072 EU
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Cover_SolarPanel_LuV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Sunnarium, 8), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Polybenzimidazole, 10), ItemList.Circuit_Chip_QPIC.get(8L),
-                GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 12), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 10), ItemList.Circuit_Silicon_Wafer8.get(10L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Quantium, 6),
-                GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Silicon, 8), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUV, 10)
+                ItemList.Cover_SolarPanel_LuV.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Polybenzimidazole, 10), ItemList.Circuit_Chip_QPIC.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 12),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 10), ItemList.Circuit_Silicon_Wafer8.get(10L), CoreItems2.getRecipe(123,6), GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Silicon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUV, 10)
         }, ItemList.Cover_SolarPanel_ZPM.get(1L), null, 140 * 20, 500000);
 
         //Solar Panel UV 524288 EU
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Cover_SolarPanel_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.ElectrumFlux, 10), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Polybenzimidazole, 12), ItemList.Circuit_Chip_FPIC.get(10L),
-                GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 14), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 10), ItemList.Circuit_Silicon_Wafer10.get(12L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackPlutonium, 8),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Silicon, 8), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Superconductor, 12)
+                ItemList.Cover_SolarPanel_ZPM.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Polybenzimidazole, 12), ItemList.Circuit_Chip_FPIC.get(10L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 14),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 10), ItemList.Circuit_Silicon_Wafer10.get(12L), CoreItems2.getRecipe(124,8), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Silicon, 8),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Superconductor, 12)
         }, ItemList.Cover_SolarPanel_UV.get(1L), null, 160 * 20, 2000000);
         /* ================================= end  GT =================================*/
 
