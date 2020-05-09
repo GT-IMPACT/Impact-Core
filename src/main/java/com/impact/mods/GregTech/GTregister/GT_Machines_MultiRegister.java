@@ -36,8 +36,8 @@ public class GT_Machines_MultiRegister {
 			GT_ItemList.Machine_DDDPrinter		.set(new GTMTE_3DPrinter(ID++, "multimachine.dddprinter",  				"3D Printer").getStackForm(1L));
 			GT_ItemList.Machine_FreezSolidifier	.set(new GTMTE_FreezerSolidifier(ID++, "multimachine.freezsolidifier", 	"Freezer Solidifier").getStackForm(1L));
 			GT_ItemList.Machine_BlastSmelter	.set(new GTMTE_BlastSmelter(ID++, "multimachine.blastsmelter", 			"Blast Smelter").getStackForm(1L));
-			GT_ItemList.WaterDrill				.set(new GTMTE_DrillerWater(ID++, "multimachine.waterdrill", 			"Water Drillr").getStackForm(1L));
-			GT_ItemList.BasicWaterPump			.set(new GTMTE_BasicWaterPump(ID++, "multimachine.basicwaterpump", 		"Water Drillrвasd").getStackForm(1L));
+			GT_ItemList.WaterDrill				.set(new GTMTE_DrillerWater(ID++, "multimachine.waterdrill", 			"Electric Water Drilling Rig").getStackForm(1L));
+			GT_ItemList.BasicWaterPump			.set(new GTMTE_BasicWaterPump(ID++, "multimachine.basicwaterpump", 		"Primitive Water Pump").getStackForm(1L));
 
 			GT_ItemList.Machine_CokeOven.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
 			GT_ItemList.Machine_Multi_Farm.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));

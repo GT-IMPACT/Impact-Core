@@ -2,7 +2,6 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_Wire;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -87,21 +86,19 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     public String[] getDescription() {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
-                .addInfo("One-block machine analog")
-                .addParallelInfo(1, 256)
-                .addInfo("Parallel Point will upped Upgrade Casing")
-                .addTypeMachine("WireMill, Wire Assembler")
-                .addScrew()
+                .addInfo("Drilling water from Bedrock")
                 .addSeparator()
-                .beginStructureBlock(3, 3, 3)
-                .addController("-")
-                .addParallelCase("-")
-                .addEnergyHatch("Any casing")
-                .addMaintenanceHatch("Any casing")
-                .addInputBus("Any casing (max x6)")
-                .addOutputBus("Any casing (max x3)")
-                .addInputHatch("Any casing (max x3)")
-                .addCasingInfo("Wire Factory Casing")
+                .addinfoB("Biome Coefficient:")
+                .addinfoBTab("Ocean, River - 1000 L/t")
+                .addinfoBTab("Taiga - 175 L/t")
+                .addinfoBTab("Jungle - 350 L/t")
+                .addinfoBTab("Swampland - 800 L/t")
+                .addinfoBTab("Snow, Iceland - 300 L/t")
+                .addinfoBTab("Beach - 170 L/t")
+                .addinfoBTab("Plans, Forest - 250 L/t")
+                .addinfoBTab("Hills, Mountains, Savana, Desert, Mesa - 100 L/t")
+                .addSeparator()
+                .addCasingInfo("Primitive Pump Deck and Wood Frame Box")
                 .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT", true);
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -122,7 +119,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-
         return true;
     }
 

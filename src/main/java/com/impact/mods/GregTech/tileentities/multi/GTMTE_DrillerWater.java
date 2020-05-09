@@ -33,8 +33,6 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
                 .addInfo("Drilling water from Bedrock")
-                .addInfo("Water drilling is performed according to ")
-                .addInfo("the formula \"2 * (1 << Tier Hatch) * Biome Coefficient\"")
                 .addInfo("Energy Hatch and Output Hatch must be of the same Tier")
                 .addSeparator()
                 .addinfoB("Biome Coefficient:")

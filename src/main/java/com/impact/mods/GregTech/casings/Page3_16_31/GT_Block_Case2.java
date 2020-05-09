@@ -32,7 +32,7 @@ public class GT_Block_Case2
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "3D Printed Casing"             ); //404
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Configuration 3x3 Casing"      ); //405
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Configuration 4x4 Casing"      ); //406
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Primitive Water Pump Casing"   ); //407
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Primitive Pump Deck"   ); //407
 
 /*================================================================================================================*/
 /*================================================================================================================*/
