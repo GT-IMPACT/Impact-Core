@@ -22,63 +22,6 @@ public class AssemblyLineRecipe implements Runnable {
     final Core_Items2 CoreItems2 = Core_Items2.getInstance();
 
     public void run() {
-        //Quantum Armor
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumHelmet", 1, GT_Values.W));
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1),
-                        CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
-                        ItemList.Energy_LapotronicOrb.get(1L),
-                        ItemList.Sensor_IV.get(1L),
-                        ItemList.Field_Generator_EV.get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(10)},
-                Materials.Titanium.getMolten(1728L),
-                GT_ModHandler.getIC2Item("quantumHelmet", 1L, 26), 1500, 7680);
-
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1, GT_Values.W));
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1),
-                        CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 6),
-                        ItemList.Energy_LapotronicOrb.get(1L),
-                        ItemList.Field_Generator_EV.get(3L),
-                        ItemList.Electric_Motor_IV.get(2L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(11)},
-                Materials.Titanium.getMolten(2880L),
-                GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, 26), 1500, 7680);
-
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumLeggings", 1, GT_Values.W));
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartLeggings.getMetaID(), 1),
-                        CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 6),
-                        ItemList.Energy_LapotronicOrb.get(1L),
-                        ItemList.Field_Generator_EV.get(2L),
-                        ItemList.Electric_Motor_IV.get(4L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(12)},
-                Materials.Titanium.getMolten(2304L),
-                GT_ModHandler.getIC2Item("quantumLeggings", 1L, 26), 1500, 7680);
-
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1, GT_Values.W));
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartBoots.getMetaID(), 1),
-                        CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
-                        ItemList.Energy_LapotronicOrb.get(1L),
-                        ItemList.Field_Generator_EV.get(1L),
-                        ItemList.Electric_Piston_IV.get(2L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4),
-                        GT_Utility.getIntegratedCircuit(12)},
-                Materials.Titanium.getMolten(1440L),
-                GT_ModHandler.getIC2Item("quantumBoots", 1L, 26), 1500, 7680);
-
         //Integration without TT
         if (Loader.isModLoaded("tectech")) {
 
