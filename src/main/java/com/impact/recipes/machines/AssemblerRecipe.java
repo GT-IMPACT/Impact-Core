@@ -336,7 +336,16 @@ public class AssemblerRecipe implements Runnable {
                     Materials.Titanium.getMolten(1440L),
                     GT_ModHandler.getIC2Item("quantumBoots", 1L, 26), 1500, 7680);
             /*====END QUANTUM SUITE====*/
-            
+
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), true, false, true);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium, 2)}, null, GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), 600, 64);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 1)}, null, GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), 600, 64);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1)}, null, ItemList.Neutron_Reflector.get(1), 1200, 256);
+
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Glass, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(143, 1), 100, 30);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(143, 3), GT_Utility.getIntegratedCircuit(3), CoreItems2.getRecipe(144, 1), 300, 60);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(144, 2), GT_Utility.getIntegratedCircuit(2), CoreItems2.getRecipe(145, 1), 600, 90);
+
         }
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
