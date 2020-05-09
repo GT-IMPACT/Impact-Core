@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Core_Items2 extends Item {
 
-    public static int x = 132; //количество предметов
+    public static int x = 149; //количество предметов
 
     private static Core_Items2 Core_Items2 = new Core_Items2();
     private final IIcon[] icons = new IIcon[x + 1];

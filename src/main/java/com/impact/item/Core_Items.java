@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Core_Items extends Item {
 
-    public static int x = 34;  //количество предметов
+    public static int x = 37;  //количество предметов
 
     private static Core_Items Core_Items = new Core_Items();
     private final IIcon[] icons = new IIcon[x+1];

@@ -44,6 +44,9 @@ public enum Core_List_Items {
     SearedBrickDust(32,1),
     ClearGlassDust(33,1),
     RawNeutroniumDust(34,1),
+    BarnardaCBiomass(35,1),
+    StargateCrystalDust(36,1),
+    ConcreteDust(37,1),
 
     //MetaItems1
     SchematicsTier1(0, 1),
@@ -179,6 +182,23 @@ public enum Core_List_Items {
     EnrichedSunnariumAlloy(130,1),
     EnrichedNaquadriaSunnariumAlloy(131,1),
     EnrichedNeutroniumSunnariumAlloy(132,1),
+    MediumFuelCanister(133,1),
+    LargeFuelCanister(134,1),
+    ExtraLargeFuelCanister(135,1),
+    CarbonPartHelmet(136,1),
+    CarbonPartHelmetNightVision(137,1),
+    CarbonPartChestplate(138,1),
+    CarbonPartLeggings(139,1),
+    CarbonPartBoots(140,1),
+    NeutronReflectorSmallParts(141,1),
+    NeutronReflectorParts(142,1),
+    TenKCell(143,1),
+    ThirtyKCell(144,1),
+    SixtyKCell(145,1),
+    IndustryFrame(146,1),
+    StargateShieldingFoil(147,1),
+    StargateFramePart(148,1),
+    StargateChevron(149,1),
 
 
     WoodenBrickForm1(0,2),

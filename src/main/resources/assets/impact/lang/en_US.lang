@@ -107,6 +107,9 @@ item.impact_item.31.name=Coke Oven Brick Dust
 item.impact_item.32.name=Seared Brick Dust
 item.impact_item.33.name=Clear Glass Dust
 item.impact_item.34.name=Raw Neutronium Dust
+item.impact_item.35.name=Barnarda C Biomass
+item.impact_item.36.name=Stargate Crystal Dust
+item.impact_item.37.name=Concrete Dust
 
 #MetaItems.01
 item.impact_item2.0.name=Schematics Rocket Tier 1 Chip
@@ -242,5 +245,22 @@ item.impact_item2.129.name=Enriched Sunnarium
 item.impact_item2.130.name=Enriched Sunnarium Alloy
 item.impact_item2.131.name=Enriched Naquadria Sunnarium Alloy
 item.impact_item2.132.name=Enriched Neutronium Sunnarium Alloy
+item.impact_item2.133.name=Medium Fuel Canister
+item.impact_item2.134.name=Large Fuel Canister
+item.impact_item2.135.name=Extra Large Fuel Canister
+item.impact_item2.136.name=Carbon Part Helmet
+item.impact_item2.137.name=Carbon Part Helmet Night Vision
+item.impact_item2.138.name=Carbon Part Chestplate
+item.impact_item2.139.name=Carbon Part Leggings
+item.impact_item2.140.name=Carbon Part Boots
+item.impact_item2.141.name=Small Neutron Reflector Parts
+item.impact_item2.142.name=Neutron Reflector Parts
+item.impact_item2.143.name=10K Cell
+item.impact_item2.144.name=30K Cell
+item.impact_item2.145.name=60K Cell
+item.impact_item2.146.name=Industrial Frame
+item.impact_item2.147.name=Stargate-Radiation-Containment-Plate
+item.impact_item2.148.name=Stargate Frame Part
+item.impact_item2.149.name=Stargate Chevron
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
