@@ -20,8 +20,16 @@ public class FluidCannerRecipe implements Runnable{
         GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(Empty540SpCell.getMetaID(), 1), ItemList.Reactor_Coolant_Le_3.get(1L), Materials.SuperCoolant.getFluid(3000L), GT_Values.NF);
         GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(Empty1080SpCell.getMetaID(), 1), ItemList.Reactor_Coolant_Le_6.get(1L), Materials.SuperCoolant.getFluid(6000L), GT_Values.NF);
 
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(143, 1), ItemList.Reactor_Coolant_He_1.get(1L), Materials.Helium.getGas(1000L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(144, 1), ItemList.Reactor_Coolant_He_3.get(1L), Materials.Helium.getGas(3000L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(145, 1), ItemList.Reactor_Coolant_He_6.get(1L), Materials.Helium.getGas(6000L), GT_Values.NF);
 
-/* ================================= end GT =================================*/
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(143, 1), ItemList.Reactor_Coolant_NaK_1.get(1L), Materials.SodiumPotassium.getFluid(1000L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(144, 1), ItemList.Reactor_Coolant_NaK_3.get(1L), Materials.SodiumPotassium.getFluid(3000L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(145, 1), ItemList.Reactor_Coolant_NaK_6.get(1L), Materials.SodiumPotassium.getFluid(6000L), GT_Values.NF);
+
+
+        /* ================================= end GT =================================*/
 
     }
 }
