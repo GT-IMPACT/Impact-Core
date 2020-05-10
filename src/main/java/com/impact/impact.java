@@ -1,5 +1,6 @@
 package com.impact;
 
+import com.impact.System.Config;
 import com.impact.System.Refstrings;
 import com.impact.loader.MainLoader;
 import com.impact.System.CommonProxy;
@@ -9,6 +10,12 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import com.impact.System.LoginHandler;
+import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
+
+import static com.impact.System.impactLog.INFO;
+import static java.util.logging.Level.INFO;
 
 @Mod (
 		modid = Refstrings.MODID,
@@ -26,21 +33,28 @@ public class impact {
     public static impact instance;
     public static SendUtils SendUtils_instance = new SendUtils();
     public static String ModPackVersion = "1.0 RELEASE";
+    public static Config mConfig;
 
 	@Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         FMLCommonHandler.instance().bus().register(new LoginHandler());
+        INFO("Loading LoginHandler");
     }
 	
 	@Mod.EventHandler
     public void load(FMLInitializationEvent event) {
         MainLoader.load();
+        INFO("Loading MainLoader LOAD");
     }
 
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        mConfig = new Config(new File("config/IMPACT/impact.cfg"));
+        INFO("Register Config");
+
         MainLoader.preInit(event);
+        INFO("Loading MainLoader PREINIT");
         //MainLoader.preInitClient();
     }
 
