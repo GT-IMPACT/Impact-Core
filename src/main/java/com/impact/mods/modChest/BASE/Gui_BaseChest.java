@@ -1,45 +1,50 @@
 package com.impact.mods.modChest.BASE;
 
+import com.impact.System.Refstrings;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nonnull;
+public class Gui_BaseChest extends GuiContainer {
 
-public abstract class Gui_BaseChest extends GuiContainer {
+    private static int mScale;
+    private static int mNamedPos;
+    public static TE_BaseChest TE;
+    private static int IDgui;
 
-	public Gui_BaseChest(Container container) {
-		super(container);
-		xSize = getXSize();
-		ySize = getYSize();
-	}
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture( getPathTexture() );
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(guiLeft, guiTop, 0, 0.0, 0.0); // начальная позиция
-		tessellator.addVertexWithUV(guiLeft, guiTop + getScale(), 0, 0.0, 1.0);
-		tessellator.addVertexWithUV(guiLeft + getScale(), guiTop + getScale(), 0, 1.0, 1.0);
-		tessellator.addVertexWithUV(guiLeft + getScale(), guiTop, 0, 1.0, 0.0);
-		tessellator.draw();
-	}
+    public void RegisterGui(
+    int aIDgui, TE_BaseChest aTE, int aGuiXSize, int aGuiYSize, int aGuiScale, int aGuiNamedPos) {
+        xSize = aGuiXSize;
+        ySize = aGuiYSize;
+        IDgui = aIDgui;
+        TE = aTE;
+        mScale = aGuiScale;
+        mNamedPos = aGuiNamedPos;
+    }
 
-	@Override
-	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-		fontRendererObj.drawString(I18n.format(getTileEntity().getInventoryName()), getNamedPos(), 7, 0x404040);
-	}
+    public Gui_BaseChest(TE_BaseChest aTE, InventoryPlayer aIP) {
+        super(new Container_BaseChest(TE, aIP));
+    }
 
-	@Nonnull
-	public abstract TE_BaseChest getTileEntity();
-	public abstract ResourceLocation getPathTexture();
-	public abstract int getXSize();
-	public abstract int getYSize();
-	public abstract int getScale();
-	public abstract int getNamedPos();
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.getTextureManager().bindTexture(new ResourceLocation(Refstrings.MODID, "textures/gui/chest" + IDgui + ".png"));
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(guiLeft, guiTop, 0, 0.0, 0.0); // начальная позиция
+        tessellator.addVertexWithUV(guiLeft, guiTop + mScale, 0, 0.0, 1.0);
+        tessellator.addVertexWithUV(guiLeft + mScale, guiTop + mScale, 0, 1.0, 1.0);
+        tessellator.addVertexWithUV(guiLeft + mScale, guiTop, 0, 1.0, 0.0);
+        tessellator.draw();
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+        fontRendererObj.drawString(I18n.format(TE.getInventoryName()), mNamedPos, 7, 0x404040);
+    }
 }

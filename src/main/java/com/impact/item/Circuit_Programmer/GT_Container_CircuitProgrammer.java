@@ -20,13 +20,13 @@ import static com.impact.impact.SendUtils_instance;
 
 public class GT_Container_CircuitProgrammer extends Container {
 
-    EntityPlayer player;
+    InventoryPlayer inventory;
 
-    public GT_Container_CircuitProgrammer(InventoryPlayer inventory) {
+    public GT_Container_CircuitProgrammer(EntityPlayer aPlayer) {
 
-        this.player = inventory.player;
+        this.inventory = aPlayer.inventory;
 
-        IInventory inv = new pinv(this.player);
+        IInventory inv = new pinv(aPlayer);
 
         this.addSlotToContainer(new Slot(inv, 0, 81, 79));//-45, 84));
 

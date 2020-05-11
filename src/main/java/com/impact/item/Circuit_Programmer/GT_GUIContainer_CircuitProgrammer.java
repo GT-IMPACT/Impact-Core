@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -12,10 +13,11 @@ import org.lwjgl.opengl.GL11;
 
 public class GT_GUIContainer_CircuitProgrammer extends GuiContainer {
 
+    EntityPlayer Player;
     public static final ResourceLocation texture = new ResourceLocation(Refstrings.MODID, "textures/gui/GUI_Circuit.png");
 
-    public GT_GUIContainer_CircuitProgrammer(final InventoryPlayer inventoryPlayer) {
-        super(new GT_Container_CircuitProgrammer(inventoryPlayer));
+    public GT_GUIContainer_CircuitProgrammer(final EntityPlayer Player) {
+        super(new GT_Container_CircuitProgrammer(Player));
     }
 
     @Override
@@ -36,7 +38,6 @@ public class GT_GUIContainer_CircuitProgrammer extends GuiContainer {
     }
 
     @Override
-
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
         GL11.glColor4f(1F, 1F, 1F, 1F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(GT_GUIContainer_CircuitProgrammer.texture);
