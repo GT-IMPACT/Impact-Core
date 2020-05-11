@@ -24,7 +24,7 @@ public class ImplosionCompressorRecipe implements Runnable {
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(75, 3), 1, CoreItems2.getRecipe(82, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(76, 3), 1, CoreItems2.getRecipe(83, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(GT_ModHandler.getModItem("IC2", "itemPartIridium", 3L), 2, CoreItems2.getRecipe(81, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 2L));
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Desh, 2L), 1, CoreItems2.getRecipe(90, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.null", 2L, 5), 1, CoreItems2.getRecipe(90, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(80, 2), 1, CoreItems2.getRecipe(91, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(81, 2), 2, CoreItems2.getRecipe(92, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 2L));
         GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.MeteoricIron, 2L), 1, CoreItems2.getRecipe(93, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));

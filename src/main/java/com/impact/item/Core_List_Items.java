@@ -199,7 +199,9 @@ public enum Core_List_Items {
     StargateShieldingFoil(147,1),
     StargateFramePart(148,1),
     StargateChevron(149,1),
-
+    BarnardaCScheme(150, 1),
+    BarnardaCBall(151, 1),
+    BarnardaCBiochaff(152, 1),
 
     WoodenBrickForm1(0,2),
 

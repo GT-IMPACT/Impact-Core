@@ -1,7 +1,9 @@
 package com.impact.recipes;
 
+import com.impact.item.Core_Items2;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -14,6 +16,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TecTechRecipe implements Runnable {
+
+    final Core_Items2 CoreItems2 = Core_Items2.getInstance();
+
     @Override
     public void run() {
 
@@ -905,5 +910,60 @@ public class TecTechRecipe implements Runnable {
                         Materials.SolderingAlloy.getMolten(23040)},
                 ItemList.Hatch_Dynamo_UIV.get(1, new Object[]{}), 1400, 32000000);
 
+        //Stargate Stuff
+        //if (Loader.isModLoaded("SGCraft")) {
+            TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.CosmicNeutronium, 1L),
+                    192000, 512, 2000000, 32, new ItemStack[]{
+                            ItemList.Sensor_UV.get(16L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Adamantium, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Osmiridium, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 16L)
+                    },
+                    new FluidStack[]{
+                            Materials.Neutronium.getMolten(36864L),
+                            Materials.Tritanium.getMolten(36864L),
+                            Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(36864L),
+                            Materials.Silver.getPlasma(36864L)
+                    },
+                    CoreItems2.getRecipe(147, 1), 72000, 2000000);
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(CoreItems2.getRecipe(147, 1),
+                    192000, 512, 2000000, 32, new ItemStack[]{
+                            ItemList.Electric_Piston_UV.get(16L),
+                            ItemList.Electric_Motor_UV.get(64L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Adamantium, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.GarnetRed, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 32L)
+                    },
+                    new FluidStack[]{
+                            Materials.Neutronium.getMolten(9216L),
+                            Materials.Tritanium.getMolten(9216L),
+                            Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(9216L),
+                            Materials.Silver.getPlasma(9216L)
+                    },
+                    CoreItems2.getRecipe(149, 1), 72000, 2000000);
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
+                    192000, 512, 2000000, 32, new ItemStack[]{
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Adamantium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.CosmicNeutronium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmiridium, 64L)
+                    },
+                    new FluidStack[]{
+                            Materials.Neutronium.getMolten(73728L),
+                            Materials.Tritanium.getMolten(73728L),
+                            Materials.Concrete.getMolten(73728L)
+                    },
+                    CoreItems2.getRecipe(148, 1), 72000, 2000000);
+        //}
     }
 }

@@ -6,11 +6,13 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class CentrifugeRecipe implements Runnable {
 
     final Core_Items CoreItems = Core_Items.getInstance();
+    final Core_Items2 CoreItems2 = Core_Items2.getInstance();
 
     @Override
     public void run() {
@@ -48,6 +50,14 @@ public class CentrifugeRecipe implements Runnable {
 
         GT_Values.RA.addCentrifugeRecipe(CoreItems.getRecipe(31, 1), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Clay, 2L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.SiliconDioxide, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Brick, 1L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 9000, 7500}, 400, 30);
         GT_Values.RA.addCentrifugeRecipe(CoreItems.getRecipe(32, 1), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Brick, 2L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Stone, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SiliconDioxide, 1L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 7500, 6000}, 400, 30);
+
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCgrass", 1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, CoreItems2.getRecipe(151, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Neutronium, 1L), GT_ModHandler.getModItem("minecraft", "sand", 1L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{5000, 1000, 5000}, 1600, 2000000);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCdirt", 1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, CoreItems2.getRecipe(151, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Neutronium, 1L), GT_ModHandler.getModItem("minecraft", "sand", 1L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{2500, 1000, 5000}, 1600, 2000000);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaClog", 1L), GT_Values.NI, GT_Values.NF, Materials.Radon.getGas(60L), CoreItems.getRecipe(151, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{3750, 2500, 2500}, 800, 2000000);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCdandelion3", 64L), GT_Values.NI, GT_Values.NF, Materials.Biomass.getGas(1000L), GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 64L), CoreItems2.getRecipe(151, 16), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 4L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 10000, 10000}, 1200, 2000000);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCreed", 64L), GT_Values.NI, GT_Values.NF, Materials.Biomass.getGas(1000L), GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 64L), CoreItems2.getRecipe(151, 16), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 4L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 10000, 10000}, 1200, 2000000);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCdandelions", 64L), GT_Values.NI, GT_Values.NF, Materials.Biomass.getGas(1000L), GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 64L), CoreItems2.getRecipe(151, 16), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 4L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 10000, 10000}, 1200, 2000000);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCdandelions", 64L, 1), GT_Values.NI, GT_Values.NF, Materials.Biomass.getGas(1000L), GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 64L), CoreItems2.getRecipe(151, 16), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 4L), GT_Values.NI, GT_Values.NI,  GT_Values.NI, new int[]{10000, 10000, 10000}, 1200, 2000000);
 
         /* ================================= end CORE MOD =================================*/
     }

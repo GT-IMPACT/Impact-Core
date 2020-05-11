@@ -53,7 +53,7 @@ public class MainLoader {
         //GT pump
         ItemRegistery.GregtechPump();
         //GT circuit_programmer
-        ItemRegistery.CircuitProgrammer();
+        //ItemRegistery.CircuitProgrammer();
         //Materials initial
         new GT_Materials();
         //solar
