@@ -1,6 +1,7 @@
 package com.impact.recipes.machines;
 
 import com.impact.item.Core_Items2;
+import com.impact.mods.GregTech.GTregister.GT_ItemList;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
@@ -21,67 +22,19 @@ public class CircuitAssemblerRecipe implements Runnable {
 
 /** ================================= start GT =================================*/
 
-//Rocket Circuits
-        final int[] EUperRecipe = new int[]{
-                480,                //t2 = HV
-                1920,                //t3 = EV
-                7680,                //t4 = IV
-                30720,                //t5 = LuV
-                122880,                //t6 = ZPM
-                500000,                //t7 = UV
-                2000000,                //t8 = UHV
-        };
-
-        ItemStack[] RocketMaterial = new ItemStack[8];
-        RocketMaterial[0] = GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 1L);
-        RocketMaterial[1] = GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 3);
-        RocketMaterial[2] = GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L);
-        RocketMaterial[3] = CoreItems2.getRecipe(HeavyDutyPlateTier4.getMetaID(), 1);
-        RocketMaterial[4] = CoreItems2.getRecipe(HeavyDutyPlateTier5.getMetaID(), 1);
-        RocketMaterial[5] = CoreItems2.getRecipe(HeavyDutyPlateTier6.getMetaID(), 1);
-        RocketMaterial[6] = CoreItems2.getRecipe(HeavyDutyPlateTier7.getMetaID(), 1);
-        RocketMaterial[7] = CoreItems2.getRecipe(HeavyDutyPlateTier8.getMetaID(), 1);
-
-        ItemStack[] RocketChip = new ItemStack[8];
-        RocketChip[0] = CoreItems2.getRecipe(SchematicsTier1.getMetaID(), 1);
-        RocketChip[1] = CoreItems2.getRecipe(SchematicsTier2.getMetaID(), 1);
-        RocketChip[2] = CoreItems2.getRecipe(SchematicsTier3.getMetaID(), 1);
-        RocketChip[3] = CoreItems2.getRecipe(SchematicsTier4.getMetaID(), 1);
-        RocketChip[4] = CoreItems2.getRecipe(SchematicsTier5.getMetaID(), 1);
-        RocketChip[5] = CoreItems2.getRecipe(SchematicsTier6.getMetaID(), 1);
-        RocketChip[6] = CoreItems2.getRecipe(SchematicsTier7.getMetaID(), 1);
-        RocketChip[7] = CoreItems2.getRecipe(SchematicsTier8.getMetaID(), 1);
-
-        ItemStack[] ExtraChips = new ItemStack[3];
-        ExtraChips[0] = CoreItems2.getRecipe(SchematicsMoonBuggy.getMetaID(), 1);
-        ExtraChips[1] = CoreItems2.getRecipe(SchematicsCargoRocket.getMetaID(), 1);
-        ExtraChips[2] = CoreItems2.getRecipe(SchematicsAstroMiner.getMetaID(), 1);
-
         for (Materials tMat : Materials.values()) {
             if (tMat.mStandardMoltenFluid != null && tMat.contains(SubTag.SOLDERING_MATERIAL) && !(GregTech_API.mUseOnlyGoodSolderingMaterials && !tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD))) {
                 int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1 : tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
 
                 //Rocket Circuits
-                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Quantumprocessor.get(1L), RocketMaterial[0], GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(576L * tMultiplier / 2L), RocketChip[0], 9000, 480, true);
-                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Data.get(1L), RocketMaterial[0], GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(576L * tMultiplier / 2L), RocketChip[0], 9000, 480, true);
-                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Nanocomputer.get(1L), RocketMaterial[0], GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(576L * tMultiplier / 2L), RocketChip[0], 9000, 480, true);
-
-                for (byte i = 2; i < 9; ++i) {
-                    ItemStack DataStickWScheme = ItemList.Tool_DataStick.get(1L);
-                    DataStickWScheme.setTagCompound(GT_Utility.getNBTContainingShort(new NBTTagCompound(), "rocket_tier", (short) i));
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{RocketMaterial[(i - 1)], ItemList.Circuit_Elite.get(1L), DataStickWScheme.splitStack(0)}, tMat.getMolten(576L * tMultiplier / 2L), RocketChip[(i - 1)], 9000, EUperRecipe[(i - 2)], true);
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{RocketMaterial[(i - 1)], ItemList.Circuit_Elitenanocomputer.get(1L), DataStickWScheme.splitStack(0)}, tMat.getMolten(576L * tMultiplier / 2L), RocketChip[(i - 1)], 9000, EUperRecipe[(i - 2)], true);
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{RocketMaterial[(i - 1)], ItemList.Circuit_Quantumcomputer.get(1L), DataStickWScheme.splitStack(0)}, tMat.getMolten(576L * tMultiplier / 2L), RocketChip[(i - 1)], 9000, EUperRecipe[(i - 2)], true);
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{RocketMaterial[(i - 1)], ItemList.Circuit_Crystalprocessor.get(1L), DataStickWScheme.splitStack(0)}, tMat.getMolten(576L * tMultiplier / 2L), RocketChip[(i - 1)], 9000, EUperRecipe[(i - 2)], true);
-                }
-
-                for (byte i = 0; i < 3; ++i) {
-                    ItemStack DataStickWScheme = ItemList.Tool_DataStick.get(1L);
-                    DataStickWScheme.setTagCompound(GT_Utility.getNBTContainingShort(new NBTTagCompound(), "rocket_tier", (short) (i + 100)));
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{RocketMaterial[i], ItemList.Circuit_Quantumprocessor.get(1L), DataStickWScheme.splitStack(0)}, tMat.getMolten(576L * tMultiplier / 2L), ExtraChips[i], 9000, EUperRecipe[i], true);
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{RocketMaterial[i], ItemList.Circuit_Data.get(1L), DataStickWScheme.splitStack(0)}, tMat.getMolten(576L * tMultiplier / 2L), ExtraChips[i], 9000, EUperRecipe[i], true);
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{RocketMaterial[i], ItemList.Circuit_Nanocomputer.get(1L), DataStickWScheme.splitStack(0)}, tMat.getMolten(576L * tMultiplier / 2L), ExtraChips[i], 9000, EUperRecipe[i], true);
-                }
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1L), GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 1L, 0), GT_ItemList.spacebox1.get(1L)}, tMat.getMolten(288L * tMultiplier / 2L), CoreItems2.getRecipe(0,1), 1000, 256);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L), GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 3), GT_ItemList.spacebox2.get(1L)}, tMat.getMolten(576L * tMultiplier / 2L), CoreItems2.getRecipe(1,1), 1600, 480);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L, 0), GT_ItemList.spacebox3.get(2L)}, tMat.getMolten(1152L * tMultiplier / 2L), CoreItems2.getRecipe(2,1), 2200, 1920);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L), CoreItems2.getRecipe(11,1), GT_ItemList.spacebox4.get(4L)}, tMat.getMolten(2304L * tMultiplier / 2L), CoreItems2.getRecipe(3,1), 2800, 4096);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1L), CoreItems2.getRecipe(12,1), GT_ItemList.spacebox5.get(8L)}, tMat.getMolten(4608L * tMultiplier / 2L), CoreItems2.getRecipe(4,1), 3400, 16384);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1L), CoreItems2.getRecipe(13,1), GT_ItemList.spacebox6.get(16L)}, tMat.getMolten(9216L * tMultiplier / 2L), CoreItems2.getRecipe(5,1), 4000, 65536);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1L), CoreItems2.getRecipe(14,1), GT_ItemList.spacebox7.get(32L)}, tMat.getMolten(18432L * tMultiplier / 2L), CoreItems2.getRecipe(6,1), 4600, 262144);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 1L), CoreItems2.getRecipe(15,1), GT_ItemList.spacebox8.get(64L)}, tMat.getMolten(36864L * tMultiplier / 2L), CoreItems2.getRecipe(7,1), 5200, 1048576);
 
                 //Farm Circuits
                 GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1L), GT_ModHandler.getModItem("minecraft", "sapling", 64L, 0)}, tMat.getMolten(144L * tMultiplier / 2L), CoreItems2.getRecipe(OakScheme.getMetaID(), 1), 200, 30);
@@ -91,6 +44,7 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1L), GT_ModHandler.getModItem("minecraft", "sapling", 64L, 4)}, tMat.getMolten(144L * tMultiplier / 2L), CoreItems2.getRecipe(AcaciaScheme.getMetaID(), 1), 200, 30);
                 GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1L), GT_ModHandler.getModItem("minecraft", "sapling", 64L, 5)}, tMat.getMolten(144L * tMultiplier / 2L), CoreItems2.getRecipe(DarkOakScheme.getMetaID(), 1), 200, 30);
                 GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1L), GT_ModHandler.getModItem("IC2", "blockRubSapling", 64L, 0)}, tMat.getMolten(144L * tMultiplier / 2L), CoreItems2.getRecipe(RubberScheme.getMetaID(), 1), 200, 30);
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L), GT_ModHandler.getModItem("GalaxySpace", "barnardaCsapling", 64L)}, tMat.getMolten(1152L * tMultiplier / 2L), CoreItems2.getRecipe(BarnardaCScheme.getMetaID(), 1), 1000, 2000000);
 
 
                 //ALL Circuits

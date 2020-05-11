@@ -8,6 +8,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import static com.impact.item.Core_List_Items.CokeOvenBrick;
@@ -23,6 +24,8 @@ public class CompessorRecipe implements Runnable {
         GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CokeCoal, 9L), GregTech_API.getStackofAmountFromOreDict("blockCokeCoal", 1), 200, 8);
         GT_Values.RA.addCompressorRecipe(CoreItems.getRecipe(33, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 1L), 200, 2);
         GT_Values.RA.addCompressorRecipe(CoreItems2.getRecipe(125, 9), CoreItems2.getRecipe(126, 1), 400, 1920);
+
+        GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCsapling", 8L), CoreItems2.getRecipe(151, 1), 200, 2000000);
 
     }
 }

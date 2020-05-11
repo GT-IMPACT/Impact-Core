@@ -222,9 +222,19 @@ public class AssemblerRecipe implements Runnable {
             //Quantum Armor Parts
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W), CoreItems2.getRecipe(52, 4), CoreItems2.getRecipe(41, 1), 1200, 1920);
             GT_Values.RA.addAssemblerRecipe(Loader.isModLoaded("GraviSuite") ? GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W) : GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, GT_Values.W), CoreItems2.getRecipe(52, 8), CoreItems2.getRecipe(42, 1), 1200, 1920);
-            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W), CoreItems2.getRecipe(52, 5), CoreItems2.getRecipe(44, 1), 1200, 1920);
+            GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W), CoreItems2.getRecipe(52, 5), CoreItems2.getRecipe(43, 1), 1200, 1920);
             GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(43, 1), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 8L), CoreItems2.getRecipe(44, 1), 1200, 1920);
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoLeggings", 1L, GT_Values.W), CoreItems2.getRecipe(52, 7), CoreItems2.getRecipe(45, 1), 1200, 1920);
+
+            //Nano Armor
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoHelmet", 1, GT_Values.W));
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBodyarmor", 1, GT_Values.W));
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoLeggings", 1, GT_Values.W));
+            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBoots", 1, GT_Values.W));
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(137, 1), CoreItems2.getRecipe(100, 1), GT_ModHandler.getIC2Item("nanoHelmet", 1L, 27), 400, 120);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(138, 1), CoreItems2.getRecipe(100, 1), GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, 27), 400, 120);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(139, 1), CoreItems2.getRecipe(100, 1), GT_ModHandler.getIC2Item("nanoLeggings", 1L, 27), 400, 120);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(140, 1), CoreItems2.getRecipe(100, 1), GT_ModHandler.getIC2Item("nanoBoots", 1L, 27), 400, 120);
 
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(78, 1), CoreItems2.getRecipe(82, 1)}, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), CoreItems2.getRecipe(80, 1), 1000, 480);
 
@@ -261,6 +271,15 @@ public class AssemblerRecipe implements Runnable {
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(13,1), CoreItems2.getRecipe(79,1), CoreItems2.getRecipe(95,1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.CinobiteA243/*Pikyonium64B*/, 14)}, Materials.Neutronium.getMolten(288), CoreItems2.getRecipe(19,1), 800, 1048576);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(14,1), CoreItems2.getRecipe(77,1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Adamantium, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.CinobiteA243/*Quantum*/, 16)}, Materials.Phoenixite.getMolten(288), CoreItems2.getRecipe(20,1), 900, 4194304);
 
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packEarth.get(64L)}, Materials.HSLA.getMolten(288), GT_ItemList.spacebox1.get(1L), 1200, 64);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packMoon.get(64L)}, Materials.Titanium.getMolten(288), GT_ItemList.spacebox2.get(1L), 1200, 256);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packMars.get(64L), GT_ItemList.packDeimos.get(64L), GT_ItemList.packPhobos.get(64L)}, Materials.HastelloyC276.getMolten(288), GT_ItemList.spacebox3.get(1L), 1200, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packAsteroids.get(64L), GT_ItemList.packCeres.get(64L), GT_ItemList.packEuropa.get(64L), GT_ItemList.packGanymed.get(64L)}, Materials.HastelloyN.getMolten(288), GT_ItemList.spacebox4.get(1L), 1200, 4096);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packIo.get(64L), GT_ItemList.packMercury.get(64L), GT_ItemList.packVenus.get(64L)}, Materials.Lafium.getMolten(288), GT_ItemList.spacebox5.get(1L), 1200, 16384);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packIapetus.get(64L), GT_ItemList.packTitan.get(64L), GT_ItemList.packEris.get(64L), GT_ItemList.packOberon.get(64L)}, Materials.CinobiteA243.getMolten(288), GT_ItemList.spacebox6.get(1L), 1200, 65536);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packProteus.get(64L), GT_ItemList.packTriton.get(64L)}, Materials.CinobiteA243/*Pikyonium64B*/.getMolten(288), GT_ItemList.spacebox7.get(1L), 1200, 262144);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.packPluto.get(64L), GT_ItemList.packHaumea.get(64L), GT_ItemList.packMakeMake.get(64L)}, Materials.CinobiteA243/*Quantum*/.getMolten(288), GT_ItemList.spacebox8.get(1L), 1200, 1048576);
+
             /*====END SPACE ADDITION====*/
             /**====START CASINGS====*/
             //LuV
@@ -296,7 +315,7 @@ public class AssemblerRecipe implements Runnable {
 
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1, GT_Values.W));
 
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1),
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartChestplate.getMetaID(), 1),
                             CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 6),
@@ -345,6 +364,12 @@ public class AssemblerRecipe implements Runnable {
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Glass, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(143, 1), 100, 30);
             GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(143, 3), GT_Utility.getIntegratedCircuit(3), CoreItems2.getRecipe(144, 1), 300, 60);
             GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(144, 2), GT_Utility.getIntegratedCircuit(2), CoreItems2.getRecipe(145, 1), 600, 90);
+
+            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 5), GT_Utility.getIntegratedCircuit(5), CoreItems2.getRecipe(136, 1), 500, 120);
+            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 8), GT_Utility.getIntegratedCircuit(8), CoreItems2.getRecipe(138, 1), 800, 120);
+            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 7), GT_Utility.getIntegratedCircuit(7), CoreItems2.getRecipe(139, 1), 700, 120);
+            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 4), GT_Utility.getIntegratedCircuit(4), CoreItems2.getRecipe(140, 1), 400, 120);
+            GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(136, 1), GT_ModHandler.getModItem("IC2", "itemNightvisionGoggles", 1L, GT_Values.W), CoreItems2.getRecipe(137, 1), 600, 256);
 
         }
 

@@ -109,7 +109,7 @@ item.impact_item.33.name=Clear Glass Dust
 item.impact_item.34.name=Raw Neutronium Dust
 item.impact_item.35.name=Barnarda C Biomass
 item.impact_item.36.name=Stargate Crystal Dust
-item.impact_item.37.name=Concrete Dust
+item.impact_item.37.name=Wet Concrete Dust
 
 #MetaItems.01
 item.impact_item2.0.name=Schematics Rocket Tier 1 Chip
@@ -262,5 +262,8 @@ item.impact_item2.146.name=Industrial Frame
 item.impact_item2.147.name=Stargate-Radiation-Containment-Plate
 item.impact_item2.148.name=Stargate Frame Part
 item.impact_item2.149.name=Stargate Chevron
+item.impact_item2.150.name=BarnardaC Wood Schematics
+item.impact_item2.151.name=BarnardaC Plantball
+item.impact_item2.152.name=BarnardaC Bio Chaff
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form

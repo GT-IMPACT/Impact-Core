@@ -47,6 +47,11 @@ public class GT_ModLoader {
 	private static final ExtruderRecipe ExtruderRecipe = new ExtruderRecipe();
 	private static final ImplosionCompressorRecipe ImplosionCompressorRecipe = new ImplosionCompressorRecipe();
 	private static final FluidSolidifierRecipe FluidSolidifierRecipe = new FluidSolidifierRecipe();
+	private static final AutoclaveRecipe AutoclaveRecipe = new AutoclaveRecipe();
+	private static final BreweryRecipe BreweryRecipe = new BreweryRecipe();
+	private static final ExtractorRecipe ExtractorRecipe = new ExtractorRecipe();
+	private static final ChemicalReactorRecipe ChemicalReactorRecipe = new ChemicalReactorRecipe();
+	private static final SifterRecipe SifterRecipe = new SifterRecipe();
 
 	public static void run() {
 		ItemLoader.run();
@@ -60,7 +65,7 @@ public class GT_ModLoader {
 		DEBUG_Recipe.run();
 		CentrifugeRecipe.run();
 		PulveriserRecipe.run();
-		LaserEngraverRecipe.run();
+		//LaserEngraverRecipe.run();
 		FormingPressRecipe.run();
 		ChemicalBathRecipe.run();
 		AssemblerRecipe.run();
@@ -84,5 +89,10 @@ public class GT_ModLoader {
 		ExtruderRecipe.run();
 		ImplosionCompressorRecipe.run();
 		FluidSolidifierRecipe.run();
+		AutoclaveRecipe.run();
+		BreweryRecipe.run();
+		ExtractorRecipe.run();
+		ChemicalReactorRecipe.run();
+		SifterRecipe.run();
     }
 }
