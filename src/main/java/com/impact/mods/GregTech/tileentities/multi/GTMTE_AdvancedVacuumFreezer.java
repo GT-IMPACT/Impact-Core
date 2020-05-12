@@ -11,7 +11,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import ic2.core.init.BlocksItems;
@@ -127,9 +126,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick %20 ==0) {
+        if (aTick % 20 == 0) {
             if (mEfficiency > 0 && depleteInput(getFluidStack("supercoolant", 50))) {
-                addOutput(getFluidStack("ic2hotcoolant", 20));
+                addOutput(getFluidStack("ic2hotcoolant", 25));
             } else stopMachine();
         }
     }
