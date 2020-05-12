@@ -92,6 +92,8 @@ public class PulveriserRecipe implements Runnable {
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCleaves", 8L),   new ItemStack[]{CoreItems2.getRecipe(152, 1), GT_ModHandler.getModItem("GalaxySpace", "barnardaCdandelion3", 1L)}, new int[]{10000, 5000}, 200, 2000000);
         GT_Values.RA.addPulveriserRecipe(CoreItems2.getRecipe(152, 1),   new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "barnardaCdirt", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L)}, new int[]{10000, 2000}, 100, 2000000);
 
+        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1),   new ItemStack[]{CoreItems.getRecipe(38, 1)}, new int[]{10000}, 300, 2);
+
         /* ================================= end CUSTOM RECIPES =================================*/
     }
 }

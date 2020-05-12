@@ -31,6 +31,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1, GT_Values.W));
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTelePad", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTransceiver", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockController", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockChest", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockDrive", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0), true, false, false);
@@ -41,11 +42,12 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockSpatialIOPort", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockInterface", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyAcceptor", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.ItemMultiPart", 1L, 500), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.ItemMultiPart", 1L, 260), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.ItemMultiPart", 1L, 240), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.ItemMultiPart", 1L, 220), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.ItemMultiPart", 1L, 460), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 500), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 260), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 240), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 220), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 460), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 140), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 1), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 2), true, false, false);

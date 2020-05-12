@@ -4,6 +4,7 @@ import com.impact.item.Core_Items;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -51,5 +52,9 @@ public class MixerRecipe implements Runnable {
         GT_Values.RA.addMixerRecipe(CoreItems.getRecipe(37,4), GT_Utility.getIntegratedCircuit(1), GT_Values.NI, GT_Values.NI, Materials.Water.getFluid(1000L), Materials.Concrete.getMolten(1152L), GT_Values.NI, 40, 16);
 
         /* ================================= end GT =================================*/
+        /** ================================= start AE =================================*/
+        GT_Values.RA.addMixerRecipe(CoreItems.getRecipe(38,1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L), GT_Values.NI, Materials.Water.getFluid(500L), GT_Values.NF, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 2L, 8), 20, 16);
+
+        /* ================================= end AE =================================*/
     }
 }

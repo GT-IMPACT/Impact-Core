@@ -28,5 +28,6 @@ public class ChemicalReactorRecipe implements Runnable {
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{CoreItems.getRecipe(TCetiESeaweedExtract.getMetaID(), 1), GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{Materials.Radon.getGas(1000)}, new FluidStack[]{Materials.OilHeavy.getFluid(500), Materials.Ethanol.getFluid(300), Materials.EnrichedBacterialSludge.getFluid(200)}, new ItemStack[]{Materials.AlienOrganic.getDust(1)}, 500, 500000);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{CoreItems.getRecipe(35, 1), GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{Materials.Radon.getGas(1000)}, new FluidStack[]{Materials.OilMedium.getFluid(500), Materials.Methanol.getFluid(350), Materials.EnrichedBacterialSludge.getFluid(150)}, new ItemStack[]{Materials.AlienOrganic.getDust(1)}, 500, 500000);
 
+        GT_Values.RA.addChemicalRecipe(CoreItems.getRecipe(38, 3), Materials.Sodium.getDust(1), Materials.Water.getFluid(1000L), null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 3L, 1), 500);
     }
 }
