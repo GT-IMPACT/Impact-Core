@@ -5,6 +5,8 @@ import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
 import com.impact.mods.GregTech.tileentities.multi.gui.GUI_CokeOven;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,6 +15,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,6 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GTMTE_CokeOven extends GT_MetaTileEntity_MultiBlockBase {
     public ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output> mOutputHatches1 = new ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output>();
@@ -128,7 +132,7 @@ public class GTMTE_CokeOven extends GT_MetaTileEntity_MultiBlockBase {
                         this.mOutputItems[i] = recipe.getOutput(i);
                     }
                 }
-                this.mOutputFluids = recipe.mFluidOutputs;
+                addFluidOutputs1(recipe.mFluidOutputs);
                 this.updateSlots();
                 return true;
             }
@@ -139,7 +143,6 @@ public class GTMTE_CokeOven extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        System.out.println(aTick);
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             if (aTick == 60)
             checkRecipe(mInventory[1]);
@@ -230,7 +233,20 @@ public class GTMTE_CokeOven extends GT_MetaTileEntity_MultiBlockBase {
         return false;
     }
 
-    public boolean addOutput(ItemStack aStack) {
+    public boolean addOutput1(FluidStack aLiquid) {
+        if (aLiquid == null) {
+            return false;
+        } else {
+            FluidStack copiedFluidStack = aLiquid.copy();
+            if (!this.dumpFluid(copiedFluidStack, true)) {
+                this.dumpFluid(copiedFluidStack, false);
+            }
+
+            return false;
+        }
+    }
+
+    public boolean addOutput1(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return false;
         aStack = GT_Utility.copy(aStack);
 //		FluidStack aLiquid = GT_Utility.getFluidForFilledItem(aStack, true);
@@ -274,6 +290,17 @@ public class GTMTE_CokeOven extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
         return false;
+    }
+
+    protected void addFluidOutputs1(FluidStack[] mOutputFluids2) {
+        FluidStack[] var2 = mOutputFluids2;
+        int var3 = mOutputFluids2.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            FluidStack outputFluidStack = var2[var4];
+            this.addOutput1(outputFluidStack);
+        }
+
     }
 
     public ArrayList<ItemStack> getStoredOutputs() {
