@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_Primitive_InputBus extends GT_MetaTileEntity_Hatc
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Primitive_OutputBus(mName, mTier, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_Primitive_InputBus(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
