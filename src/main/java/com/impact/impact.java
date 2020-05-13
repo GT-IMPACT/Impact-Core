@@ -10,12 +10,10 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import com.impact.System.LoginHandler;
-import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
 import static com.impact.System.impactLog.INFO;
-import static java.util.logging.Level.INFO;
 
 @Mod (
 		modid = Refstrings.MODID,
@@ -34,27 +32,26 @@ public class impact {
     public static SendUtils SendUtils_instance = new SendUtils();
     public static String ModPackVersion = "1.0 RELEASE";
     public static Config mConfig;
-
 	@Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         FMLCommonHandler.instance().bus().register(new LoginHandler());
-        INFO("Loading LoginHandler");
+        INFO("LoginHandler Loaded");
     }
 	
 	@Mod.EventHandler
     public void load(FMLInitializationEvent event) {
         MainLoader.load();
-        INFO("Loading MainLoader LOAD");
+        INFO("MainLoader LOAD Loaded");
     }
 
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         mConfig = new Config(new File("config/IMPACT/impact.cfg"));
-        INFO("Register Config");
+        INFO("Config Loaded");
 
-        MainLoader.preInit(event);
-        INFO("Loading MainLoader PREINIT");
+        MainLoader.preInit();
+        INFO("MainLoader PREINIT Loaded ");
         //MainLoader.preInitClient();
     }
 
