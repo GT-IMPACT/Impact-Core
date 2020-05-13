@@ -2,10 +2,10 @@ package com.impact.loader;
 
 import com.impact.System.Refstrings;
 import com.impact.block.*;
-import com.impact.item.Circuit_Programmer.CircuitProgrammer;
 import com.impact.item.GT_Pump.GregtechPump;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -58,7 +58,6 @@ public class ItemRegistery {
                     Refstrings.MODID + ":glass/blockGB15", // black
             }, false, true)
     };
-    public static CircuitProgrammer toolCircuitProgrammer;
     public static GregtechPump GTPump;
 
     public static void run() {
@@ -79,10 +78,6 @@ public class ItemRegistery {
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
         OreDictionary.registerOre("blockCokeCoal", new ItemStack(decorateBlock[0], 1, 1));
     }
-
-//    public static void CircuitProgrammer() {
-//        toolCircuitProgrammer = new CircuitProgrammer();
-//    }
 
     public static void GregtechPump() {
         GTPump = new GregtechPump();

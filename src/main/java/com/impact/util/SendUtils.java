@@ -2,7 +2,6 @@ package com.impact.util;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import com.impact.item.Circuit_Programmer.CircuitProgrammerPacket;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -34,11 +33,9 @@ import java.util.List;
 public class SendUtils extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> implements IGT_NetworkHandler {
 
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
-    private final GT_Packet[] mSubChannels;
 
     public SendUtils() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("IMPACT", this, new SendUtils.HandlerShared());
-        this.mSubChannels = new GT_Packet[]{new CircuitProgrammerPacket(),};
     }
 
     protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
@@ -47,7 +44,6 @@ public class SendUtils extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> 
 
     protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput) throws Exception {
         ByteArrayDataInput aData = ByteStreams.newDataInput(aPacket.payload().array());
-        aOutput.add(this.mSubChannels[aData.readByte()].decode(aData));
     }
 
     public void sendToPlayer(@Nonnull GT_Packet aPacket, @Nonnull EntityPlayerMP aPlayer) {

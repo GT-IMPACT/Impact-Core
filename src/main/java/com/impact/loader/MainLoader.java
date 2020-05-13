@@ -47,10 +47,11 @@ public class MainLoader {
         ItemRegistery.run();
     }
 
-    public static void preInit(FMLPreInitializationEvent event) {
+    public static void preInit() {
+
         //Chest mod
         //chestRegister();
-        //GT pump
+        //GTpump Register
         ItemRegistery.GregtechPump();
         //GT circuit_programmer
         //ItemRegistery.CircuitProgrammer();
@@ -82,7 +83,6 @@ public class MainLoader {
         }
 
         OreDictRegister.register_all();
-
         //solar
         ASP.load();
     }
