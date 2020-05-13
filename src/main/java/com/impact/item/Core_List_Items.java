@@ -47,6 +47,7 @@ public enum Core_List_Items {
     BarnardaCBiomass(35,1),
     StargateCrystalDust(36,1),
     ConcreteDust(37,1),
+    ChargedQuartzDust(38,1),
 
     //MetaItems1
     SchematicsTier1(0, 1),
@@ -202,6 +203,7 @@ public enum Core_List_Items {
     BarnardaCScheme(150, 1),
     BarnardaCBall(151, 1),
     BarnardaCBiochaff(152, 1),
+    ChargedQuartzRod(153, 1),
 
     WoodenBrickForm1(0,2),
 

@@ -52,6 +52,9 @@ public class GT_ModLoader {
 	private static final ExtractorRecipe ExtractorRecipe = new ExtractorRecipe();
 	private static final ChemicalReactorRecipe ChemicalReactorRecipe = new ChemicalReactorRecipe();
 	private static final SifterRecipe SifterRecipe = new SifterRecipe();
+	private static final LatheRecipe LatheRecipe = new LatheRecipe();
+	private static final WiremillRecipe WiremillRecipe = new WiremillRecipe();
+
 
 	public static void run() {
 		ItemLoader.run();
@@ -94,5 +97,7 @@ public class GT_ModLoader {
 		ExtractorRecipe.run();
 		ChemicalReactorRecipe.run();
 		SifterRecipe.run();
+		LatheRecipe.run();
+		WiremillRecipe.run();
     }
 }

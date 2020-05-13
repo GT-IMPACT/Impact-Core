@@ -227,10 +227,6 @@ public class AssemblerRecipe implements Runnable {
             GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoLeggings", 1L, GT_Values.W), CoreItems2.getRecipe(52, 7), CoreItems2.getRecipe(45, 1), 1200, 1920);
 
             //Nano Armor
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoHelmet", 1, GT_Values.W));
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBodyarmor", 1, GT_Values.W));
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoLeggings", 1, GT_Values.W));
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBoots", 1, GT_Values.W));
             GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(137, 1), CoreItems2.getRecipe(100, 1), GT_ModHandler.getIC2Item("nanoHelmet", 1L, 27), 400, 120);
             GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(138, 1), CoreItems2.getRecipe(100, 1), GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, 27), 400, 120);
             GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(139, 1), CoreItems2.getRecipe(100, 1), GT_ModHandler.getIC2Item("nanoLeggings", 1L, 27), 400, 120);
@@ -299,8 +295,6 @@ public class AssemblerRecipe implements Runnable {
 
             /*====END CASINGS====*/
             /**====START QUANTUM SUITE====*/
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumHelmet", 1, GT_Values.W));
-
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1),
                             CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
@@ -312,8 +306,6 @@ public class AssemblerRecipe implements Runnable {
                             GT_Utility.getIntegratedCircuit(10)},
                     Materials.Titanium.getMolten(1728L),
                     GT_ModHandler.getIC2Item("quantumHelmet", 1L, 26), 1500, 7680);
-
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1, GT_Values.W));
 
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartChestplate.getMetaID(), 1),
                             CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
@@ -327,8 +319,6 @@ public class AssemblerRecipe implements Runnable {
                     Materials.Titanium.getMolten(2880L),
                     GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, 26), 1500, 7680);
 
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumLeggings", 1, GT_Values.W));
-
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartLeggings.getMetaID(), 1),
                             CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),
                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
@@ -340,8 +330,6 @@ public class AssemblerRecipe implements Runnable {
                             GT_Utility.getIntegratedCircuit(12)},
                     Materials.Titanium.getMolten(2304L),
                     GT_ModHandler.getIC2Item("quantumLeggings", 1L, 26), 1500, 7680);
-
-            GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1, GT_Values.W));
 
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartBoots.getMetaID(), 1),
                             CoreItems2.getRecipe(QuantumCrystal.getMetaID(), 1),

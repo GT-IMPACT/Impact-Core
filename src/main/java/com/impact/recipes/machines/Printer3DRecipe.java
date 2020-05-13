@@ -285,13 +285,6 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumSteel, 8)
         }, GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyAcceptor", 1, 0), null, 200, 480);
 
-        //Enegery Acceptor
-        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyCell", 1, 0), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.EnergeticAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2),
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4, 7)/*crystal*/, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4, 24), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Vanadium, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumSteel, 8)
-        }, GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyAcceptor", 1, 0), null, 200, 480);
-
         //New Pattern Terminal
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1, 52), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 340), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
