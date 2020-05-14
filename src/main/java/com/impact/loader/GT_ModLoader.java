@@ -54,7 +54,9 @@ public class GT_ModLoader {
 	private static final SifterRecipe SifterRecipe = new SifterRecipe();
 	private static final LatheRecipe LatheRecipe = new LatheRecipe();
 	private static final WiremillRecipe WiremillRecipe = new WiremillRecipe();
-
+	private static final ElectrolyzerRecipe ElectrolyzerRecipe = new ElectrolyzerRecipe();
+    private static final WireassemblerRecipe WireassemblerRecipe = new WireassemblerRecipe();
+	private static final FusionRecipe FusionRecipe = new FusionRecipe();
 
 	public static void run() {
 		ItemLoader.run();
@@ -99,5 +101,8 @@ public class GT_ModLoader {
 		SifterRecipe.run();
 		LatheRecipe.run();
 		WiremillRecipe.run();
+		ElectrolyzerRecipe.run();
+        WireassemblerRecipe.run();
+		FusionRecipe.run();
     }
 }

@@ -166,8 +166,8 @@ public class TecTechRecipe implements Runnable {
                 24000, 32, 100000, 4, new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 4L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 8L),
-                        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 8L),
-                        GT_OreDictUnificator.get(OrePrefixes.round, Materials.Neutronium, 32L),
+                        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Quantium, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.round, Materials.Quantium, 32L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
@@ -317,13 +317,8 @@ public class TecTechRecipe implements Runnable {
                 24000, 32, 100000, 4, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
                         ItemList.Electric_Motor_UHV.get(1L),
-                        ItemList.Emitter_UV.get(1, new Object() {
-                        }),
-                        ItemList.Emitter_ZPM.get(2, new Object() {
-                        }),
-                        ItemList.Emitter_LuV.get(4, new Object() {
-                        }),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.MysteriousCrystal, 4L),
                         new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
@@ -338,13 +333,8 @@ public class TecTechRecipe implements Runnable {
                 48000, 64, 200000, 8, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
                         ItemList.Electric_Motor_UEV.get(1L),
-                        ItemList.Emitter_UHV.get(1, new Object() {
-                        }),
-                        ItemList.Emitter_UV.get(2, new Object() {
-                        }),
-                        ItemList.Emitter_ZPM.get(4, new Object() {
-                        }),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Phoenixite, 12L),
+                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.EnrichedMysteriousCrystal, 8L),
                         new Object[]{OrePrefixes.circuit.get(Materials.Bio), 4L},
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infuscolium, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infuscolium, 64L),
@@ -360,13 +350,8 @@ public class TecTechRecipe implements Runnable {
                 24000, 32, 100000, 4, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
                         ItemList.Electric_Motor_UHV.get(1L),
-                        ItemList.Sensor_UV.get(1, new Object() {
-                        }),
-                        ItemList.Sensor_ZPM.get(2, new Object() {
-                        }),
-                        ItemList.Sensor_LuV.get(4, new Object() {
-                        }),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.MysteriousCrystal, 4L),
                         new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.ElectrumFlux, 64L),
@@ -381,13 +366,8 @@ public class TecTechRecipe implements Runnable {
                 48000, 64, 200000, 8, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
                         ItemList.Electric_Motor_UEV.get(1),
-                        ItemList.Sensor_UHV.get(1, new Object() {
-                        }),
-                        ItemList.Sensor_UV.get(2, new Object() {
-                        }),
-                        ItemList.Sensor_ZPM.get(4, new Object() {
-                        }),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Phoenixite, 12L),
+                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.EnrichedMysteriousCrystal, 8L),
                         new Object[]{OrePrefixes.circuit.get(Materials.Bio), 4L},
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infuscolium, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infuscolium, 64L),
@@ -651,7 +631,7 @@ public class TecTechRecipe implements Runnable {
                 ItemList.Sensor_UHV.get(4L),
                 ItemList.Emitter_UHV.get(4L),
                 new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},
-                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 32),
+                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnrichedMysteriousCrystal, 32),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Superconductor, 16)
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(2000),
