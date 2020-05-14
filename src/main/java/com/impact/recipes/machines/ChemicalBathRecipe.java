@@ -83,6 +83,9 @@ public class ChemicalBathRecipe implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(CoreItems2.getRecipe(HugeRefinedReinforcedGlassLense.getMetaID(), 1), Materials.Radon.getGas(1250), CoreItems2.getRecipe(HugeChargedGlassLense.getMetaID(), 1), null, null, null, 384, 1920);
         GT_Values.RA.addLaserEngraverRecipe(CoreItems2.getRecipe(RefinedReinforcedGlassLense.getMetaID(), 3), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)), CoreItems2.getRecipe(HugeRefinedReinforcedGlassLense.getMetaID(), 1), 2400, 2000, false);
 
+        GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Mithril, 2), Materials.SulfuricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Mytryl, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SluiceSand, 1), new int[]{10000, 8000, 7500}, 400, 1920);
+        GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Forcicium, 2), Materials.SulfuricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1), new int[]{10000, 8000, 7500}, 600, 30720);
+
 
     }
 }

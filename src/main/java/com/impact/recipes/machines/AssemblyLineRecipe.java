@@ -22,6 +22,48 @@ public class AssemblyLineRecipe implements Runnable {
     final Core_Items2 CoreItems2 = Core_Items2.getInstance();
 
     public void run() {
+        //Motors
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Motor_IV.get(1, new Object(){}),144000,new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NeodymiumMagnetic, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.MeteoricSteel, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.round, Materials.MeteoricSteel, 16L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L)}, new FluidStack[]{
+                Materials.SolderingAlloy.getMolten(144),
+                Materials.Lubricant.getFluid(250)}, ItemList.Electric_Motor_LuV.get(1), 600, 6000);
+
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Motor_LuV.get(1, new Object(){}),144000,new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.EuropiumoxideMagnetic, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmiridium, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Desh, 6L),
+                GT_OreDictUnificator.get(OrePrefixes.round, Materials.Desh, 24L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Naquadah, 2L)}, new FluidStack[]{
+                Materials.SolderingAlloy.getMolten(288),
+                Materials.Lubricant.getFluid(750)}, ItemList.Electric_Motor_ZPM.get(1, new Object[]{}), 600, 24000);
+
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Motor_ZPM.get(1, new Object(){}),288000,new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.EuropiumoxideMagnetic, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Tritanium, 6L),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Oriharukon, 8L),
+                GT_OreDictUnificator.get(OrePrefixes.round, Materials.Oriharukon, 32L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2L)}, new FluidStack[]{
+                Materials.SolderingAlloy.getMolten(1296),
+                Materials.Lubricant.getFluid(2000),
+                Materials.Naquadria.getMolten(1296)}, ItemList.Electric_Motor_UV.get(1, new Object[]{}), 600, 100000);
+
+
         //Integration without TT
         if (Loader.isModLoaded("tectech")) {
 

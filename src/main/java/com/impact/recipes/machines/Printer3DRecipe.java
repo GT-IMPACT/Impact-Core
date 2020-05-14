@@ -187,7 +187,7 @@ public class Printer3DRecipe implements Runnable {
         //ME Controller
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyAcceptor", 1, 0), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 2, 24)/*Diamond*/, GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 76), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 4, 76), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 4),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 8)
         }, GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockController", 1, 0), null, 30 * 20, 1920);
 
@@ -577,7 +577,7 @@ public class Printer3DRecipe implements Runnable {
 
         //Kinetic Generator
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                ItemList.Hatch_Energy_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tungsten, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium, 2),
+                ItemList.Hatch_Dynamo_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tungsten, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), ItemList.Electric_Motor_HV.get(2L), ItemList.Casing_Motor.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 6)
         }, GT_ModHandler.getModItem("IC2", "blockGenerator", 1L, 9), null, 10 * 20, 480);
@@ -607,7 +607,7 @@ public class Printer3DRecipe implements Runnable {
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 0), null, 20 * 20, 1024);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.HSSG, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Draconium/*Mytryl*/, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.HSSG, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Trinium, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
                 ItemList.Electric_Motor_IV.get(2L), GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 2L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HastelloyN, 8)
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 1), null, 30 * 20, 4096);
 
@@ -629,7 +629,7 @@ public class Printer3DRecipe implements Runnable {
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 4), null, 20 * 20, 1024);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.HSSG, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Draconium/*Mytryl*/, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.HSSG, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Trinium, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
                 ItemList.Electric_Pump_IV.get(2L), GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 2L, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HastelloyN, 8)
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 5), null, 30 * 20, 4096);
 
@@ -645,23 +645,23 @@ public class Printer3DRecipe implements Runnable {
 
         //Kinetic Generator
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                ItemList.Hatch_Energy_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tungsten, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Desh, 2),
+                ItemList.Hatch_Dynamo_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tungsten, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Desh, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2), ItemList.Electric_Motor_EV.get(2L), GT_ModHandler.getModItem("IC2", "blockGenerator", 1, 9),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 6)
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 8), null, 20 * 20, 1024);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hatch_Energy_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.HSSG, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Draconium/*Mytryl*/, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                ItemList.Hatch_Dynamo_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.HSSG, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Trinium, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
                 ItemList.Electric_Motor_IV.get(2L), GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 8), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HastelloyN, 8)
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 9), null, 30 * 20, 4096);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hatch_Energy_LuV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.VanadiumGallium, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Draconium, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
+                ItemList.Hatch_Dynamo_LuV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.VanadiumGallium, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Draconium, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
                 ItemList.Electric_Motor_LuV.get(2L), GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 9), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lafium, 10)
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 10), null, 40 * 20, 16384);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hatch_Energy_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt12, Materials.Duranium, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Oriharukon, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
+                ItemList.Hatch_Dynamo_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt12, Materials.Duranium, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Oriharukon, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
                 ItemList.Electric_Motor_ZPM.get(2L), GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 10), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CinobiteA243, 12)
         }, GT_ModHandler.getModItem("compactkineticgenerators", "BlockCkg", 1L, 11), null, 50 * 20, 65536);
         /* ================================= end  Compact-Kinetic =================================*/
@@ -713,17 +713,17 @@ public class Printer3DRecipe implements Runnable {
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Field_Generator_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243, 4), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 4, 1),
                 ItemList.Neutron_Reflector.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Duranium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 8), ItemList.Casing_Fusion2.get(8L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 12), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 16)
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 12), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Adamantium, 16)
         }, ItemList.Casing_Fusion3.get(8L), null, 50 * 20, 500000);
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Field_Generator_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Pikyonium64B*/, 6), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
                 ItemList.Neutron_Reflector.get(10L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.ElectrumFlux, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 8), ItemList.Casing_Fusion2.get(20L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Phoenixite, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 32)
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Phoenixite, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Adamantium, 32)
         }, ItemList.Casing_Fusion3.get(20L), null, 100 * 20, 2000000);
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Field_Generator_UEV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 8), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CinobiteA243/*Quantum*/, 8), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 8, 1),
                 ItemList.neutroniumHeatCapacitor.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackPlutonium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 8), ItemList.Casing_Fusion2.get(60L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 20), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 64)
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 20), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Adamantium, 64)
         }, ItemList.Casing_Fusion3.get(60L), null, 200 * 20, 8000000);
 
         //Steam Turbine
@@ -787,25 +787,25 @@ public class Printer3DRecipe implements Runnable {
 
         //OreDrill2
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), ItemList.Electric_Motor_IV.get(2L), ItemList.Electric_Pump_IV.get(2L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TungstenSteel, 4),
+                ItemList.Hull_IV.get(1L), ItemList.Electric_Motor_IV.get(2L), ItemList.Conveyor_Module_IV.get(2L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Desh, 4),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 12), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 16)
         }, ItemList.OreDrill2.get(1L), null, 60 * 20, 1920);
 
         //OreDrill3
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_LuV.get(1L), ItemList.Electric_Motor_LuV.get(2L), ItemList.Electric_Pump_LuV.get(2L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmiridium, 4),
+                ItemList.Hull_LuV.get(1L), ItemList.Electric_Motor_LuV.get(2L), ItemList.Conveyor_Module_LuV.get(2L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Trinium, 8),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 12), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 20)
         }, ItemList.OreDrill3.get(1L), null, 80 * 20, 7680);
 
         //OreDrill4
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_ZPM.get(1L), ItemList.Electric_Motor_ZPM.get(4L), ItemList.Electric_Pump_ZPM.get(4L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Tritanium, 8),
+                ItemList.Hull_ZPM.get(1L), ItemList.Electric_Motor_ZPM.get(4L), ItemList.Conveyor_Module_ZPM.get(4L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Oriharukon, 12),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 12), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 16), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmiridium, 24)
         }, ItemList.OreDrill4.get(1L), null, 100 * 20, 30720);
 
         //OreDrill4
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_UV.get(1L), ItemList.Electric_Motor_UV.get(6L), ItemList.Electric_Pump_UV.get(6L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.ElectrumFlux, 12),
+                ItemList.Hull_UV.get(1L), ItemList.Electric_Motor_UV.get(6L), ItemList.Conveyor_Module_UV.get(6L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Adamantium, 16),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 16), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 20), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Tritanium, 26)
         }, ItemList.OreDrill5.get(1L), null, 120 * 20, 122880);
 
