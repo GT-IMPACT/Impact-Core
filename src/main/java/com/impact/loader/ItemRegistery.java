@@ -81,7 +81,7 @@ public class ItemRegistery {
         OreDictionary.registerOre("blockCokeCoal", new ItemStack(decorateBlock[0], 1, 1));
         INFO("[Init] Item Registery Blocks OreDict - Loaded");
     }
-
+    public static GregtechPump GTPump;
     public static void GregtechPump() {
         GregtechPump GTPump;
         GTPump = new GregtechPump();
