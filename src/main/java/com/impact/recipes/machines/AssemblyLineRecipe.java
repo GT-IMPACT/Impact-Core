@@ -817,5 +817,80 @@ public class AssemblyLineRecipe implements Runnable {
 
 
         }
+
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(3, 1), 144000, new Object[]{
+                        CoreItems2.getRecipe(21, 1),
+                        GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 4L, 0),
+                        CoreItems2.getRecipe(11, 14),
+                        CoreItems2.getRecipe(31, 6),
+                        CoreItems2.getRecipe(36, 4),
+                        CoreItems2.getRecipe(133, 4),
+                        CoreItems2.getRecipe(26, 2)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(576),
+                        Materials.Lubricant.getFluid(500),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 500)},
+                GT_ModHandler.getModItem("GalaxySpace", "item.Tier4Rocket", 1L, 0), 3000, 16384);
+
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(4, 1), 288000, new Object[]{
+                        CoreItems2.getRecipe(22, 1),
+                        CoreItems2.getRecipe(11, 6),
+                        CoreItems2.getRecipe(12, 16),
+                        CoreItems2.getRecipe(32, 6),
+                        CoreItems2.getRecipe(37, 4),
+                        CoreItems2.getRecipe(134, 2),
+                        CoreItems2.getRecipe(27, 3)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(1152),
+                        Materials.Lubricant.getFluid(1000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000),
+                        Materials.Duranium.getMolten(576)},
+                GT_ModHandler.getModItem("GalaxySpace", "item.Tier5Rocket", 1L, 0), 4000, 65536);
+
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(5, 1), 432000, new Object[]{
+                        CoreItems2.getRecipe(23, 1),
+                        CoreItems2.getRecipe(12, 8),
+                        CoreItems2.getRecipe(13, 18),
+                        CoreItems2.getRecipe(33, 8),
+                        CoreItems2.getRecipe(38, 6),
+                        CoreItems2.getRecipe(134, 4),
+                        CoreItems2.getRecipe(28, 4)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(2304),
+                        Materials.Lubricant.getFluid(2000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                        Materials.Tritanium.getMolten(1152)},
+                GT_ModHandler.getModItem("GalaxySpace", "item.Tier6Rocket", 1L, 0), 5000, 262144);
+
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(6, 1), 576000, new Object[]{
+                        CoreItems2.getRecipe(24, 1),
+                        CoreItems2.getRecipe(13, 10),
+                        CoreItems2.getRecipe(14, 20),
+                        CoreItems2.getRecipe(34, 10),
+                        CoreItems2.getRecipe(39, 8),
+                        CoreItems2.getRecipe(135, 2),
+                        CoreItems2.getRecipe(29, 5)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(4608),
+                        Materials.Lubricant.getFluid(4000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
+                        Materials.Neutronium.getMolten(2304)},
+                GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L, 0), 6000, 1000000);
+
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(7, 1), 576000, new Object[]{
+                        CoreItems2.getRecipe(25, 1),
+                        CoreItems2.getRecipe(14, 12),
+                        CoreItems2.getRecipe(15, 24),
+                        CoreItems2.getRecipe(35, 12),
+                        CoreItems2.getRecipe(40, 10),
+                        CoreItems2.getRecipe(135, 4),
+                        CoreItems2.getRecipe(30, 6)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(9216),
+                        Materials.Lubricant.getFluid(8000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
+                        Materials.Phoenixite.getMolten(4608)},
+                GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L, 0), 7000, 4000000);
+
     }
 }

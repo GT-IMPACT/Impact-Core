@@ -940,6 +940,26 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Superconductor, 12)
         }, ItemList.Cover_SolarPanel_UV.get(1L), null, 160 * 20, 2000000);
         /* ================================= end  GT =================================*/
+        /** ================================= START GALACTICRAFT =================================*/
+        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+                CoreItems2.getRecipe(0, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.noseCone", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 3L, 0),
+                GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 8L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.rocketFins", 4L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallFuelCanister", 1L, 0),
+                GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 1L, 0)
+        }, GT_ModHandler.getModItem("GalacticraftCore", "item.spaceship", 1L, 0), null, 100 * 20, 480);
+
+        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+                CoreItems2.getRecipe(1, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.noseCone", 1L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 3L, 0),
+                GT_ModHandler.getModItem("GalacticraftMars", "item.null", 10L, 3), GT_ModHandler.getModItem("GalacticraftCore", "item.rocketFins", 4L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 2L, 1),
+                GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallFuelCanister", 2L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 2L, 0)
+        }, GT_ModHandler.getModItem("GalacticraftMars", "item.spaceshipTier2", 1L, 0), null, 120 * 20, 1920);
+
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                CoreItems2.getRecipe(2, 0), GT_ModHandler.getModItem("GalacticraftMars", "item.heavyNoseCone", 1L, 0), GT_ModHandler.getModItem("GalacticraftMars", "item.null", 4L, 3), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 12L, 0),
+                GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 4L, 2), GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 4L, 1), CoreItems2.getRecipe(133, 2),
+                GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L, 1)
+        }, GT_ModHandler.getModItem("GalacticraftMars", "item.itemTier3Rocket", 1L, 0), null, 140 * 20, 7680);
+
+        /* ================================= END GALACTICRAFT =================================*/
 
     }
 }
