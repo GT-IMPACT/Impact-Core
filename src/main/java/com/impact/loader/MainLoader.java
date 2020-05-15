@@ -93,8 +93,8 @@ public class MainLoader {
     }
 
     public static void postLoad() {
-        GregTechRecipesPostLoad();
-        INFO("[postLoad] Before GregTech PostLoad Runner - Loaded");
+        GregTechRunner();
+        INFO("[postLoad] GregTech Runner - Loaded");
 
         addAfterGregTechPostLoadRunner();
         INFO("[postLoad] After GregTech PostLoad Runner - Loaded");
@@ -116,8 +116,7 @@ public class MainLoader {
         GregTech_API.sAfterGTPostload.add(() -> new AfterGregTechPostLoadRecipes().run());
     }
 
-    public static void GregTechRecipesPostLoad() {
-        GregTech_API.sBeforeGTPostload.add(() -> {
+    public static void GregTechRunner() {
             new GT_ItemRegister().run();
             new GT_Loader_Casings().run();
             new GT_Machines_MultiRegister().run();
@@ -162,6 +161,5 @@ public class MainLoader {
             new ElectrolyzerRecipe().run();
             new WireassemblerRecipe().run();
             new FusionRecipe().run();
-        });
     }
 }
