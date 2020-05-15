@@ -5,11 +5,11 @@ import com.impact.block.*;
 import com.impact.item.GT_Pump.GregtechPump;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static codechicken.nei.api.API.hideItem;
+import static com.impact.System.impactLog.INFO;
 
 
 public class ItemRegistery {
@@ -58,7 +58,7 @@ public class ItemRegistery {
                     Refstrings.MODID + ":glass/blockGB15", // black
             }, false, true)
     };
-    public static GregtechPump GTPump;
+
 
     public static void run() {
         //Blocks
@@ -66,6 +66,7 @@ public class ItemRegistery {
         GameRegistry.registerBlock(decorateBlock[1], BufferItem.class, "BufferCasing");
         GameRegistry.registerBlock(decorateBlock[2], FakeBlocksItem.class, "FakeBlock");
         GameRegistry.registerBlock(decorateBlock[3], GlassBlocksItem.class, "GlassBlock");
+        INFO("[Init] Item Registery Blocks - Loaded");
 
         //NEI hide
         hideItem(new ItemStack(decorateBlock[2], 1, 0));
@@ -73,13 +74,16 @@ public class ItemRegistery {
         hideItem(new ItemStack(decorateBlock[2], 1, 2));
         hideItem(new ItemStack(decorateBlock[2], 1, 3));
         hideItem(new ItemStack(decorateBlock[2], 1, 4));
+        INFO("[Init] Item Registery Hide Fake BLocks - Loaded");
 
         //OreDictionary
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
         OreDictionary.registerOre("blockCokeCoal", new ItemStack(decorateBlock[0], 1, 1));
+        INFO("[Init] Item Registery Blocks OreDict - Loaded");
     }
 
     public static void GregtechPump() {
+        GregtechPump GTPump;
         GTPump = new GregtechPump();
         GTPump.registerPumpType(0, "LV Hand Pump", 0, 0);
         GTPump.registerPumpType(1, "MV Hand Pump", 32000, 1);
