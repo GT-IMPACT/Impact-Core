@@ -83,7 +83,6 @@ public class ItemRegistery {
     }
     public static GregtechPump GTPump;
     public static void GregtechPump() {
-        GregtechPump GTPump;
         GTPump = new GregtechPump();
         GTPump.registerPumpType(0, "LV Hand Pump", 0, 0);
         GTPump.registerPumpType(1, "MV Hand Pump", 32000, 1);
