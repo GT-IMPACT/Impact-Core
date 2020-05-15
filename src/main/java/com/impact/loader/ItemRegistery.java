@@ -3,6 +3,7 @@ package com.impact.loader;
 import com.impact.System.Refstrings;
 import com.impact.block.*;
 import com.impact.item.GT_Pump.GregtechPump;
+import com.impact.util.SendUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

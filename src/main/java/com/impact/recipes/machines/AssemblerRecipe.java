@@ -1,7 +1,9 @@
 package com.impact.recipes.machines;
 
 import com.impact.item.Core_Items2;
+import com.impact.loader.ItemRegistery;
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
+import com.impact.util.SendUtils;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
@@ -18,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static com.impact.item.Core_List_Items.*;
 import static com.impact.mods.GregTech.GTregister.GT_ItemList.Casing_Farm;
+import static com.impact.util.SendUtils.simpleMetaStack;
 
 public class AssemblerRecipe implements Runnable {
 
@@ -102,10 +105,10 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 8), ItemList.Large_Fluid_Cell_Neutronium.get(1L), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, GT_ItemList.Portable_Tank_UV.get(1L), 900, 500000);
 
         //Hand Pump
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.ULVPump.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Copper, 1), ItemList.Cell_Empty.get(1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iron, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, GT_ModHandler.getModItem("impact", "impact-metatool.01", 1L, 1000), 100, 6);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1), ItemList.Large_Fluid_Cell_Steel.get(1L), ItemList.Battery_RE_LV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, GT_ModHandler.getModItem("impact", "impact-metatool.01", 1L, 1001), 120, 20);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_MV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1), ItemList.Large_Fluid_Cell_Aluminium.get(1L), ItemList.Battery_RE_MV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, GT_ModHandler.getModItem("impact", "impact-metatool.01", 1L, 1002), 140, 48);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_HV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1), ItemList.Large_Fluid_Cell_StainlessSteel.get(1L), ItemList.Battery_RE_HV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Electrum, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, GT_ModHandler.getModItem("impact", "impact-metatool.01", 1L, 1003), 160, 96);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.ULVPump.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Copper, 1), ItemList.Cell_Empty.get(1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iron, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, simpleMetaStack(ItemRegistery.GTPump, 1000, 1), 100, 6);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1), ItemList.Large_Fluid_Cell_Steel.get(1L), ItemList.Battery_RE_LV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, simpleMetaStack(ItemRegistery.GTPump, 1001, 1), 120, 20);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_MV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1), ItemList.Large_Fluid_Cell_Aluminium.get(1L), ItemList.Battery_RE_MV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, simpleMetaStack(ItemRegistery.GTPump, 1002, 1), 140, 48);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_HV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1), ItemList.Large_Fluid_Cell_StainlessSteel.get(1L), ItemList.Battery_RE_HV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Electrum, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, simpleMetaStack(ItemRegistery.GTPump, 1003, 1), 160, 96);
 
         /* ================================= end IMPACT MOD =================================*/
 

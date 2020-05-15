@@ -18,6 +18,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.MessageToMessageCodec;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -112,4 +114,19 @@ public class SendUtils extends MessageToMessageCodec<FMLProxyPacket, GT_Packet> 
             return aData;
         }
     }
+
+    public static ItemStack simpleMetaStack(final Item item, int meta, int size) {
+        if (item == null) {
+            return null;
+        }
+        if (meta < 0 || meta > Short.MAX_VALUE) {
+            meta = 0;
+        }
+        if (size < 0 || size > 64) {
+            size = 1;
+        }
+        final ItemStack metaStack = new ItemStack(item, size, meta);
+        return metaStack;
+    }
+
 }
