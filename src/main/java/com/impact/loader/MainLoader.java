@@ -161,5 +161,6 @@ public class MainLoader {
             new ElectrolyzerRecipe().run();
             new WireassemblerRecipe().run();
             new FusionRecipe().run();
+            new ArcFurnaceRecipe().run();
     }
 }
