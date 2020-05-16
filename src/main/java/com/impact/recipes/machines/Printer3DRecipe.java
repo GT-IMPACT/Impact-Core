@@ -167,6 +167,13 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Titanium, 16)
         }, GT_ItemList.Machine_FreezSolidifier.get(1L), null, 40 * 20, 1920);
 
+        //AdvancedFreezer
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Hull_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Lafium, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 6), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 8),
+                ItemList.Electric_Pump_ZPM.get(4L), ItemList.Robot_Arm_ZPM.get(4L), ItemList.Reactor_Coolant_Le_3.get(1L), ItemList.Reactor_Coolant_Le_3.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 8), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Osmiridium, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 64)
+        }, GT_ItemList.AdvVacuumFreezer.get(1L), null, 200 * 20, 122880);
+
 
         /* ================================= end IMPACT MOD =================================*/
 
