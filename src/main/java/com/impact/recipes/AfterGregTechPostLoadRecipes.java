@@ -48,9 +48,29 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 220), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 460), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 140), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 35), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 36), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 37), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 38), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 32), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 33), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 34), true, false, false);
+
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 1), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 2), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 2), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 3), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 4), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 5), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 6), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 7), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 8), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 9), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 10), true, false, false);
+
         removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarry", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "endMarker", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "dark_portal", 1L, 2), true, false, false);
