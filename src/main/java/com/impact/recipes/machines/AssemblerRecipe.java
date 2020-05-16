@@ -362,6 +362,19 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 4), GT_Utility.getIntegratedCircuit(4), CoreItems2.getRecipe(140, 1), 400, 120);
         GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(136, 1), GT_ModHandler.getModItem("IC2", "itemNightvisionGoggles", 1L, GT_Values.W), CoreItems2.getRecipe(137, 1), 600, 256);
 
+        /** ==== START AE ==== */
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 22), GT_ItemList.GoldCoreChip.get(1L), GT_ItemList.LogicProcessorItemGoldCore.get(1L), 100, 480);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.DiamondCoreChip.get(1L), GT_ItemList.EngineeringProcessorItemDiamondCore.get(1L), 100, 1920);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.EmeraldAdvancedCoreChip.get(1L), GT_ItemList.EngineeringProcessorItemEmeraldCore.get(1L), 100, 4096);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.EmeraldHighAdvancedCoreChip.get(1L), GT_ItemList.EngineeringProcessorItemAdvEmeraldCore.get(1L), 100, 30720);
+
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.GoldFluidCoreChip.get(1L), GT_ItemList.EngineeringProcessorFluidGoldCore.get(1L), 100, 480);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.DiamondFluidCoreChip.get(1L), GT_ItemList.EngineeringProcessorFluidDiamondCore.get(1L), 100, 1920);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), GT_ItemList.EngineeringProcessorFluidEmeraldCore.get(1L), 100, 4096);
+
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.PulsatingSpatialCoreChip.get(1L), GT_ItemList.EngineeringProcessorSpatialPulsatingCore.get(1L), 100, 4096);
+
+        /* ==== START AE ==== */
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
         ItemStack[] outHatches = {GT_ItemList.Hatch_Output_UEV.get(1), GT_ItemList.Hatch_Output_UIV.get(1), GT_ItemList.Hatch_Output_UMV.get(1), GT_ItemList.Hatch_Output_UXV.get(1), GT_ItemList.Hatch_Output_OPV.get(1), GT_ItemList.Hatch_Output_MAX.get(1)};
