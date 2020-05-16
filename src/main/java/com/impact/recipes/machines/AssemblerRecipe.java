@@ -1,5 +1,6 @@
 package com.impact.recipes.machines;
 
+import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
@@ -24,6 +25,7 @@ import static com.impact.util.SendUtils.simpleMetaStack;
 
 public class AssemblerRecipe implements Runnable {
 
+    final Core_Items CoreItems = Core_Items.getInstance();
     final Core_Items2 CoreItems2 = Core_Items2.getInstance();
 
     @Override
@@ -362,7 +364,7 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 4), GT_Utility.getIntegratedCircuit(4), CoreItems2.getRecipe(140, 1), 400, 120);
         GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(136, 1), GT_ModHandler.getModItem("IC2", "itemNightvisionGoggles", 1L, GT_Values.W), CoreItems2.getRecipe(137, 1), 600, 256);
 
-        /** ==== START AE ==== */
+        /** ==== START AE/EC2 ==== */
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 22), GT_ItemList.GoldCoreChip.get(1L), GT_ItemList.LogicProcessorItemGoldCore.get(1L), 100, 480);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.DiamondCoreChip.get(1L), GT_ItemList.EngineeringProcessorItemDiamondCore.get(1L), 100, 1920);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.EmeraldAdvancedCoreChip.get(1L), GT_ItemList.EngineeringProcessorItemEmeraldCore.get(1L), 100, 4096);
@@ -374,7 +376,116 @@ public class AssemblerRecipe implements Runnable {
 
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_ItemList.PulsatingSpatialCoreChip.get(1L), GT_ItemList.EngineeringProcessorSpatialPulsatingCore.get(1L), 100, 4096);
 
-        /* ==== START AE ==== */
+        // --- Storage Cell Component - 1K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_Ram.get(4), CoreItems.getRecipe(38, 4), GT_ItemList.LogicProcessorItemGoldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 35), 120, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_NAND.get(3), CoreItems.getRecipe(38, 4), GT_ItemList.GoldCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 35), 160, 1920);
+
+        // --- Storage Cell Component - 4K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 35), ItemList.Circuit_Chip_Ram.get(4), GT_ItemList.LogicProcessorItemGoldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 36), 160, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 35), ItemList.Circuit_Chip_NAND.get(3), GT_ItemList.GoldCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 36), 240, 1920);
+
+        // --- Storage Cell Component - 16K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 36), ItemList.Circuit_Chip_Ram.get(4), GT_ItemList.EngineeringProcessorItemDiamondCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 37), 180, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 36), ItemList.Circuit_Chip_NAND.get(3), GT_ItemList.DiamondCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 37), 260, 7680);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_Ram.get(32), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 32L, 8), ItemList.Circuit_Chip_SoC.get(1), GT_ItemList.DiamondCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Europium.getMolten(36), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 37), 30, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_NAND.get(16), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 16L, 8), ItemList.Circuit_Chip_SoC2.get(1), GT_ItemList.EngravedDiamondCrystalChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 37), 30, 122880);
+
+        // --- Storage Cell Component - 64K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 37), ItemList.Circuit_Chip_Ram.get(4), GT_ItemList.EngineeringProcessorItemDiamondCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 38), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 37), ItemList.Circuit_Chip_NAND.get(3), GT_ItemList.DiamondCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 38), 280, 7680);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 3L, 37), ItemList.Circuit_Chip_SoC.get(1), GT_ItemList.DiamondCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Europium.getMolten(36), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 38), 30, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 2L, 37), ItemList.Circuit_Chip_SoC2.get(1), GT_ItemList.EngravedDiamondCrystalChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 38), 30, 122880);
+
+        // --- Storage Cell Component - 256K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 38), ItemList.Circuit_Chip_NAND.get(4), GT_ItemList.EngineeringProcessorItemEmeraldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 0), 200, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 38), ItemList.Circuit_Chip_NOR.get(3), GT_ItemList.EmeraldAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 0), 280, 30720);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 3L, 38), ItemList.Circuit_Chip_SoC2.get(1), GT_ItemList.EmeraldAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 0), 30, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 2L, 38), ItemList.Circuit_Chip_SoC3.get(1), GT_ItemList.EngravedEnergyChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Neutronium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 0), 30, 500000);
+
+        // --- Storage Cell Component - 1024K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 0), ItemList.Circuit_Chip_NAND.get(4), GT_ItemList.EngineeringProcessorItemEmeraldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 1), 220, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 0), ItemList.Circuit_Chip_NOR.get(3), GT_ItemList.EmeraldAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 1), 300, 30720);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 3), GT_ModHandler.getModItem("extracells", "storage.component", 3L, 0), ItemList.Circuit_Chip_SoC2.get(1), GT_ItemList.EmeraldAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 1), 30, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1), GT_ModHandler.getModItem("extracells", "storage.component", 2L, 0), ItemList.Circuit_Chip_SoC3.get(1), GT_ItemList.EngravedEnergyChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Neutronium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 1), 30, 500000);
+
+        // --- Storage Cell Component - 4096K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 1), ItemList.Circuit_Chip_NAND.get(4), GT_ItemList.EngineeringProcessorItemAdvEmeraldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 2), 240, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 1), ItemList.Circuit_Chip_NOR.get(3), GT_ItemList.EmeraldHighAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 2), 320, 122880);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 3), GT_ModHandler.getModItem("extracells", "storage.component", 3L, 1), ItemList.Circuit_Chip_SoC3.get(1), GT_ItemList.EmeraldHighAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Neutronium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 2), 30, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1), GT_ModHandler.getModItem("extracells", "storage.component", 2L, 1), ItemList.Circuit_Chip_SoC4.get(1), GT_ItemList.EngravedQuantumChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Phoenixite.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 2), 30, 2000000);
+
+        // --- Storage Cell Component - 16384K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 2), ItemList.Circuit_Chip_NAND.get(4), GT_ItemList.EngineeringProcessorItemAdvEmeraldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 3), 260, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 2), ItemList.Circuit_Chip_NOR.get(3), GT_ItemList.EmeraldHighAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 3), 340, 122880);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 3), GT_ModHandler.getModItem("extracells", "storage.component", 3L, 2), ItemList.Circuit_Chip_SoC3.get(1), GT_ItemList.EmeraldHighAdvancedCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Neutronium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 3), 30, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 1), GT_ModHandler.getModItem("extracells", "storage.component", 2L, 2), ItemList.Circuit_Chip_SoC4.get(1), GT_ItemList.EngravedQuantumChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Phoenixite.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 3), 30, 2000000);
+
+
+        // --- Fluid Storage Cell Component - 1K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_Ram.get(4), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 4), GT_ItemList.EngineeringProcessorFluidGoldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 4), 120, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_NAND.get(3), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 4), GT_ItemList.GoldFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 4), 160, 1920);
+
+        // --- Fluid Storage Cell Component - 4K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 4), ItemList.Circuit_Chip_Ram.get(4), GT_ItemList.EngineeringProcessorFluidGoldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 5), 160, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 4), ItemList.Circuit_Chip_NAND.get(3), GT_ItemList.GoldFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 5), 240, 1920);
+
+        // --- Fluid Storage Cell Component - 16K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 5), ItemList.Circuit_Chip_Ram.get(4), GT_ItemList.EngineeringProcessorFluidDiamondCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 6), 180, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 5), ItemList.Circuit_Chip_NAND.get(3), GT_ItemList.DiamondFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 6), 260, 7680);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_Ram.get(32), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 32), ItemList.Circuit_Chip_SoC.get(1), GT_ItemList.DiamondFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Europium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 6), 30, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_NAND.get(16), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 16), ItemList.Circuit_Chip_SoC2.get(1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 6), 30, 122880);
+
+        // --- Fluid Storage Cell Component - 64K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 6), ItemList.Circuit_Chip_Ram.get(4), GT_ItemList.EngineeringProcessorFluidDiamondCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 7), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 6), ItemList.Circuit_Chip_NAND.get(3), GT_ItemList.DiamondFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 7), 280, 7680);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 3), GT_ModHandler.getModItem("extracells", "storage.component", 3L, 6), ItemList.Circuit_Chip_SoC.get(1), GT_ItemList.DiamondFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Europium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 7), 30, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1), GT_ModHandler.getModItem("extracells", "storage.component", 2L, 6), ItemList.Circuit_Chip_SoC2.get(1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 7), 30, 122880);
+
+        // --- Fluid Storage Cell Component - 256K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 7), ItemList.Circuit_Chip_NAND.get(4), GT_ItemList.EngineeringProcessorFluidEmeraldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 8), 200, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 7), ItemList.Circuit_Chip_NOR.get(3), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 8), 280, 30720);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 3), GT_ModHandler.getModItem("extracells", "storage.component", 3L, 7), ItemList.Circuit_Chip_SoC2.get(1), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 8), 30, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1), GT_ModHandler.getModItem("extracells", "storage.component", 2L, 7), ItemList.Circuit_Chip_SoC3.get(1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Neutronium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 8), 30, 500000);
+
+        // --- Fluid Storage Cell Component - 1024K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 8), ItemList.Circuit_Chip_NAND.get(4), GT_ItemList.EngineeringProcessorFluidEmeraldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 9), 220, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 8), ItemList.Circuit_Chip_NOR.get(3), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 9), 300, 30720);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 3), GT_ModHandler.getModItem("extracells", "storage.component", 3L, 8), ItemList.Circuit_Chip_SoC2.get(1), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 9), 30, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1), GT_ModHandler.getModItem("extracells", "storage.component", 2L, 8), ItemList.Circuit_Chip_SoC3.get(1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Neutronium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 9), 30, 500000);
+
+        // --- Fluid Storage Cell Component - 4096K
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 9), ItemList.Circuit_Chip_NAND.get(4), GT_ItemList.EngineeringProcessorFluidEmeraldCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 10), 240, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 3), GT_ModHandler.getModItem("extracells", "storage.component", 4L, 9), ItemList.Circuit_Chip_NOR.get(3), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("extracells", "storage.component", 1L, 10), 320, 122880);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 3), GT_ModHandler.getModItem("extracells", "storage.component", 3L, 9), ItemList.Circuit_Chip_SoC3.get(1), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Neutronium.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 10), 30, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1), GT_ModHandler.getModItem("extracells", "storage.component", 2L, 9), ItemList.Circuit_Chip_SoC4.get(1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Phoenixite.getMolten(36), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 10), 30, 2000000);
+
+
+        // --- 2 Spatial Component
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Niobium, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 9), GT_ItemList.EngineeringProcessorSpatialPulsatingCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 32), 160, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Niobium, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 9), GT_ItemList.PulsatingSpatialCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 32), 200, 7680);
+
+        // --- 16 Spatial Component
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 32), GT_ItemList.EngineeringProcessorSpatialPulsatingCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 33), 160, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 32), GT_ItemList.PulsatingSpatialCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 33), 200, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 3L, 32), ItemList.Circuit_Chip_SoC.get(1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Europium.getMolten(36), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 33), 30, 30720);
+
+        // --- 128 Spatial Component
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 33), GT_ItemList.EngineeringProcessorSpatialPulsatingCore.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 34), 200, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 33), GT_ItemList.PulsatingSpatialCoreChip.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 34), 240, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 3L, 33), ItemList.Circuit_Chip_SoC.get(1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Americium.getMolten(36), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 34), 30, 122880);
+
+        /* ==== END AE/EC2 ==== */
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
         ItemStack[] outHatches = {GT_ItemList.Hatch_Output_UEV.get(1), GT_ItemList.Hatch_Output_UIV.get(1), GT_ItemList.Hatch_Output_UMV.get(1), GT_ItemList.Hatch_Output_UXV.get(1), GT_ItemList.Hatch_Output_OPV.get(1), GT_ItemList.Hatch_Output_MAX.get(1)};
