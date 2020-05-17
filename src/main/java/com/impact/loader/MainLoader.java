@@ -113,7 +113,10 @@ public class MainLoader {
 //    }
 
     public static void addAfterGregTechPostLoadRunner() {
-        GregTech_API.sAfterGTPostload.add(() -> new AfterGregTechPostLoadRecipes().run());
+        GregTech_API.sAfterGTPostload.add(() -> {
+            new AfterGregTechPostLoadRecipes().run();
+            new OpenComputersRecipe().run();
+        });
     }
 
     public static void GregTechRunner() {
@@ -145,7 +148,6 @@ public class MainLoader {
             new CuttingRecipe().run();
             new VacuumFreezerRecipe().run();
             new AssemblyLineRecipe().run();
-            new OpenComputersRecipe().run();
             new ForgeHammerRecipe().run();
             new FluidExtractorRecipe().run();
             new ExtruderRecipe().run();
