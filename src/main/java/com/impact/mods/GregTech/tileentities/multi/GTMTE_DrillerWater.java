@@ -34,6 +34,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
         b
                 .addInfo("Drilling water from Bedrock")
                 .addInfo("Energy Hatch and Output Hatch must be of the same Tier")
+                .addInfo("When drilling it is necessary to consider the Biome Coefficient and tier Hatches")
                 .addSeparator()
                 .addinfoB("Biome Coefficient:")
                 .addinfoBTab("Ocean, River - 1000 L/t")

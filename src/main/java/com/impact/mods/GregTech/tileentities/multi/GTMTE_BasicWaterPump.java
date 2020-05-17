@@ -44,20 +44,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
     /**
-     * === SET TEXTURE ===
-     */
-    @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-                                 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return aSide == aFacing
-                ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
-                aActive
-                        ? Textures.BlockIcons.OVERLAY_PUMP
-                        : Textures.BlockIcons.OVERLAY_PUMP)}
-                : new ITexture[]{INDEX_CASE};
-    }
-
-    /**
      * === NAMED ===
      */
     public GTMTE_BasicWaterPump(int aID, String aName, String aNameRegional) {
@@ -69,6 +55,20 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
      */
     public GTMTE_BasicWaterPump(String aName) {
         super(aName);
+    }
+
+    /**
+     * === SET TEXTURE ===
+     */
+    @Override
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+                                 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return aSide == aFacing
+                ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
+                aActive
+                        ? Textures.BlockIcons.OVERLAY_PUMP
+                        : Textures.BlockIcons.OVERLAY_PUMP)}
+                : new ITexture[]{INDEX_CASE};
     }
 
     /**
@@ -86,7 +86,11 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     public String[] getDescription() {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
-                .addInfo("Drilling water from Bedrock")
+                .addInfo("Drilling water from ground")
+                .addInfo("Water output depends on the hatch")
+                .addInfo("ULV Output Hatch: Biome Coefficient * 1 * WaterSource")
+                .addInfo("LV Output Hatch: Biome Coefficient * 3 * WaterSource ")
+                .addInfo("WaterSource: its area around the pump is covered with water = 200 or 0 L/t")
                 .addSeparator()
                 .addinfoB("Biome Coefficient:")
                 .addinfoBTab("Ocean, River - 1000 L/t")
@@ -100,13 +104,11 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
                 .addSeparator()
                 .addCasingInfo("Primitive Pump Deck and Wood Frame Box")
                 .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT", true);
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return b.getInformation();
-        } else if (!Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
             return b.getControlInfo();
-        } else {
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             return b.getStructureInformation();
-        }
+        return b.getInformation();
     }
 
     /**
