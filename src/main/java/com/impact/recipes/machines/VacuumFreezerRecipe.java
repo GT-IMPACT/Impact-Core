@@ -63,6 +63,7 @@ public class VacuumFreezerRecipe implements Runnable {
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.BlackPlutonium, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.BlackPlutonium, 1L), 400, 122880);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Adamantium, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Adamantium, 1L), 800, 30720);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Trinium, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Trinium, 1L), 294, 7860);
+        GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.BT6, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.BT6, 1L), 164, 480);
 
         GT_Values.RA.addVacuumFreezerRecipe(CoreItems2.getRecipe(70, 1), CoreItems2.getRecipe(69, 1), 400, 480);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Ledox, 1L), CoreItems2.getRecipe(71, 1), 400, 480);
