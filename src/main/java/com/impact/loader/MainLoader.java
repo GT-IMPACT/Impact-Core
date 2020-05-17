@@ -5,7 +5,7 @@ import com.impact.impact;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.item.WoodBrickFormTool;
-import com.impact.mods.BartWorks.BacteriaRegistry;
+//import com.impact.mods.BartWorks.BacteriaRegistry;
 import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
@@ -86,10 +86,10 @@ public class MainLoader {
     }
 
     public static void onPreLoad() {
-        if (Loader.isModLoaded("bartworks")) {
-            new BacteriaRegistry();
-            INFO("[onPreLoad] Bacteria Register - Loaded");
-        }
+//        if (Loader.isModLoaded("bartworks")) {
+//            new BacteriaRegistry();
+//            INFO("[onPreLoad] Bacteria Register - Loaded");
+//        }
     }
 
     public static void postLoad() {
