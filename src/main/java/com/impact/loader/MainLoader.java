@@ -24,6 +24,8 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import net.minecraft.item.ItemStack;
+
+import static codechicken.nei.api.API.hideItem;
 import static com.impact.System.impactLog.INFO;
 import static com.impact.System.impactLog.WARNING;
 import static com.impact.item.Core_List_Items.registerOreDictNames;
@@ -63,10 +65,8 @@ public class MainLoader {
         registerOreDictNames();
         INFO("[preInit] Meta Items OreDict List - Loaded");
 
-        ItemInfo.hiddenItems.add(new ItemStack(decorateBlock[2], 1, 0));
-        ItemInfo.hiddenItems.remove(new ItemStack(decorateBlock[2], 1, 1));
-        ItemInfo.hiddenItems.remove(new ItemStack(decorateBlock[2], 1, 2));
-        ItemInfo.hiddenItems.remove(new ItemStack(decorateBlock[2], 1, 3));
+        for (byte i = 0; i <= 7; i++)
+            hideItem(new ItemStack(FakeCircuits.getInstance(), 1, i));
         INFO("[preInit] Hide NEI Items - Loaded");
     }
 
