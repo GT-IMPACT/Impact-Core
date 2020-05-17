@@ -4,6 +4,7 @@ import codechicken.nei.api.ItemInfo;
 import com.impact.impact;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
+import com.impact.item.FakeCircuits;
 import com.impact.item.WoodBrickFormTool;
 //import com.impact.mods.BartWorks.BacteriaRegistry;
 import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
@@ -55,6 +56,9 @@ public class MainLoader {
 
         WoodBrickFormTool.getInstance().registerItem();
         INFO("[preInit] Wood Brick Form Tool - Loaded");
+
+        FakeCircuits.getInstance().registerItem();
+        INFO("[preInit] Fake Circuits - Loaded");
 
         registerOreDictNames();
         INFO("[preInit] Meta Items OreDict List - Loaded");

@@ -269,3 +269,12 @@ item.impact_item2.152.name=BarnardaC Bio Chaff
 item.impact_item2.153.name=Charged Quartz Rod
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
+
+item.impact_fake.0.name=Any MV Circuit
+item.impact_fake.1.name=Any EV Circuit
+item.impact_fake.2.name=Any IV Circuit
+item.impact_fake.3.name=Any LuV Circuit
+item.impact_fake.4.name=Any ZPM Circuit
+item.impact_fake.5.name=Any UV Circuit
+item.impact_fake.6.name=Any UHV Circuit
+item.impact_fake.7.name=Any UEV Circuit

@@ -207,6 +207,15 @@ public enum Core_List_Items {
 
     WoodenBrickForm1(0,2),
 
+    FakeMVCircuit(0,3),
+    FakeEVCircuit(1,3),
+    FakeIVCircuit(2,3),
+    FakeLuVCircuit(3,3),
+    FakeZPMCircuit(4,3),
+    FakeUVCircuit(5,3),
+    FakeUHVCircuit(6,3),
+    FakeUEVCircuit(7,3),
+
     ;
 
     static {
@@ -249,7 +258,14 @@ public enum Core_List_Items {
         QuantiumCompressedPlate.setOreDictName("compressedQuantium");
         MytrylCompressedPlate.setOreDictName("compressedMytryl");
         PalladiumCompressedPlate.setOreDictName("compressedPalladium");
-
+        FakeMVCircuit.setOreDictName("circuitGood");
+        FakeEVCircuit.setOreDictName("circuitData");
+        FakeIVCircuit.setOreDictName("circuitElite");
+        FakeLuVCircuit.setOreDictName("circuitMaster");
+        FakeZPMCircuit.setOreDictName("circuitUltimate");
+        FakeUVCircuit.setOreDictName("circuitSuperconductor");
+        FakeUHVCircuit.setOreDictName("circuitInfinite");
+        FakeUEVCircuit.setOreDictName("circuitBio");
     }
 
     private final int metaID;
@@ -278,9 +294,12 @@ public enum Core_List_Items {
         return
                 identifier == 0 ?
                         new ItemStack(Core_Items.getInstance(), amount, this.getMetaID()) :
+                identifier == 1 ?
+                        new ItemStack(Core_Items2.getInstance(), amount, this.getMetaID()) :
                 identifier == 2 ?
                         new ItemStack(WoodBrickFormTool.getInstance(), amount, this.getMetaID()) :
-                        new ItemStack(Core_Items2.getInstance(), amount, this.getMetaID());
+//                identifier == 3 ?
+                        new ItemStack(FakeCircuits.getInstance(), amount, this.getMetaID());
     }
 
     public ItemStack getOreDictedItemStack(int amount) {
