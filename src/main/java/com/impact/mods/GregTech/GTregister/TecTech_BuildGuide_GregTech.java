@@ -1457,7 +1457,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                 definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                         base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                        1, 3, 0, hintsOnly);
+                        1, 1, 0, hintsOnly);
             }
 
             @Override
@@ -1473,7 +1473,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                     StructureDefinition.<GT_MetaTileEntity_MultiblockElectrolyzer>builder()
                             .addShapeOldApi("main", new String[][]{
                                     {"000", "000", "0.0",},
-                                    {"020", "010", "000",},
+                                    {"010", "020", "000",},
                                     {"000", "000", "000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings4, 2))
@@ -1493,7 +1493,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                 definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                         base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                        1, 3, 0, hintsOnly);
+                        1, 1, 0, hintsOnly);
             }
 
             @Override

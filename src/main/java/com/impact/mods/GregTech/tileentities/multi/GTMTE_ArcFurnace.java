@@ -71,7 +71,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addInfo("One-block machine analog")
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                //.addPollution(200, 12800)
+                .addPollution(200, 12800)
                 .addTypeMachine("Arc Furnace")
                 .addScrew()
                 .addSeparator()
@@ -84,6 +84,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addOutputBus("Any casing (max x1)")
                 .addInputHatch("Any casing (max x3)")
                 .addOutputHatch("Any casing (max x1)")
+                .addMuffler("Any casing (max x1)")
                 .addCasingInfo("Arc Casing")
                 .signAndFinalize(": "+EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {

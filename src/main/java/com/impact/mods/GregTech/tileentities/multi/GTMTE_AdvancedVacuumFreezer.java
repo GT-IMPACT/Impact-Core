@@ -6,13 +6,17 @@ import com.impact.mods.GregTech.tileentities.multi.gui.GUI_NotMultiMachine;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
@@ -20,9 +24,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
+
 import static com.impact.util.Utilits.getFluidStack;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -33,6 +42,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     byte CASING_META = 1;
     byte CASING_TEXTURE_ID = 17;
     private int mLevel = 0;
+    public static boolean mFluidConsume = false, bFluidInput = false;
+    public static int FluidOutputAmount;
+    public static String FluidOutput, FluidInput;
 
     /**
      * === NAMED ===
@@ -122,6 +134,96 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     public void setRecipe() {
         setRecipe(true, "supercoolant", 50, "ic2hotcoolant", 25);
     }
+
+    public void setRecipe(boolean aFluidConsume, String aFluidInput, int aAmountInput, String aFluidOutput, int aAmountOutput) {
+        mFluidConsume = aFluidConsume;
+        bFluidInput = depleteInput(getFluidStack(aFluidInput, aAmountInput));
+        FluidInput = aFluidInput;
+        FluidOutput = aFluidOutput;
+        FluidOutputAmount = aAmountOutput;
+    }
+
+    public boolean checkRecipe(ItemStack itemStack) {
+        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+            tBus.mRecipeMap = getRecipeMap();
+            if (isValidMetaTileEntity(tBus)) {
+                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                }
+            }
+            for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+                tHatch.isIgnoreMap(true, getFluidStack(FluidInput, 1).getFluid());
+                ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+                FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+                ArrayList<ItemStack> tInputList = this.getStoredInputs();
+                ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
+                if (tInputList.size() > 0) {
+                    long tVoltage = this.getMaxInputVoltage();
+                    byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+                    GT_Recipe tRecipe;
+                    tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+
+                    if (tRecipe != null) {
+
+                        if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100) &&
+                                !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
+                            return false;
+                        }
+
+                        if (tRecipe.mSpecialValue == -200 && (mCleanroom == null || mCleanroom.mEfficiency == 0))
+                            return false;
+
+
+                        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+                        boolean found_Recipe = false;
+                        int processed = 0;
+                        long nominalV = getnominalVoltage(this);
+                        //int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+                        //long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
+                        while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
+                            if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                                found_Recipe = true;
+                                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                                    outputItems.add(tRecipe.getOutput(i));
+                                }
+                                ++processed;
+                            } else
+                                break;
+                        }
+                        if (found_Recipe) {
+                            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                            this.mEfficiencyIncrease = 10000;
+                            long actualEUT = (long) (tRecipe.mEUt) * processed;
+                            if (actualEUT > Integer.MAX_VALUE) {
+                                byte divider = 0;
+                                while (actualEUT > Integer.MAX_VALUE) {
+                                    actualEUT = actualEUT / 2;
+                                    divider++;
+                                }
+                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
+                            } else
+                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                            //In case recipe is too OP for that machine
+                            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+                                return false;
+                            if (this.mEUt > 0) {
+                                this.mEUt = (-this.mEUt);
+                            }
+                            this.mMaxProgresstime = tRecipe.mDuration / Parallel(); //THIS PARALLEL
+                            this.mOutputItems = new ItemStack[outputItems.size()];
+                            this.mOutputItems = outputItems.toArray(this.mOutputItems);
+                            this.updateSlots();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
