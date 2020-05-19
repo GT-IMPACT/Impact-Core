@@ -627,7 +627,7 @@ public class TecTechRecipe implements Runnable {
                 ItemList.Teleporter.get(1L),
                 ItemList.Casing_Dyson_Ring.get(16L),
                 ItemList.Casing_Fusion_Coil.get(16L),
-                ItemList.Field_Generator_UHV.get(4L),
+                ItemList.Field_Generator_UV.get(4L),
                 ItemList.Sensor_UHV.get(4L),
                 ItemList.Emitter_UHV.get(4L),
                 new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},

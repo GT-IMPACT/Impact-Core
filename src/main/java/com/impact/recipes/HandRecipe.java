@@ -160,7 +160,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Generator_Semi_Turbine_LV.get(1L), bitsd, new Object[]{"GCG", "EME", "PWP", 'M', ItemList.Hull_LV, 'P', ItemList.Electric_Piston_LV, 'E', ItemList.Electric_Motor_LV, 'C', OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.cableGt01.get(Materials.Tin), 'G', OrePrefixes.gearGt.get(Materials.Steel)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Generator_Semi_Turbine_MV.get(1L), bitsd, new Object[]{"GCG", "EME", "PWP", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Piston_MV, 'E', ItemList.Electric_Motor_MV, 'C', OrePrefixes.circuit.get(Materials.Good), 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'G', OrePrefixes.gearGt.get(Materials.Aluminium)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Generator_Semi_Turbine_HV.get(1L), bitsd, new Object[]{"GCG", "EME", "PWP", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E', ItemList.Electric_Motor_HV, 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt01.get(Materials.Gold), 'G', OrePrefixes.gearGt.get(Materials.StainlessSteel)});
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.Water_Tank.get(1L), bitsd, new Object[]{"POP", "PWP", "PRP", 'P', OrePrefixes.plank.get(Materials.Wood), 'O', OrePrefixes.ring.get(Materials.Iron), 'W', OrePrefixes.pipeLarge.get(Materials.Wood), 'R', ItemList.IC2_Resin});
+        //GT_ModHandler.addCraftingRecipe(GT_ItemList.Water_Tank.get(1L), bitsd, new Object[]{"POP", "PWP", "PRP", 'P', OrePrefixes.plank.get(Materials.Wood), 'O', OrePrefixes.ring.get(Materials.Iron), 'W', OrePrefixes.pipeLarge.get(Materials.Wood), 'R', ItemList.IC2_Resin});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Machine_Multi_Farm.get(1L), bitsd, new Object[]{"ROR", "CHC", "PWP", 'H', ItemList.Hull_MV, 'W', OrePrefixes.cableGt02.get(Materials.Copper), 'C', OrePrefixes.circuit.get(Materials.Good), 'P', ItemList.Electric_Pump_MV, 'R', ItemList.Robot_Arm_MV, 'O', OreDictNames.craftingDiamondBlade});
 
         //=== Super / Quant tanks ===//
@@ -295,6 +295,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(IndustryFrame.getMetaID(), 1), bits, new Object[]{"PPP", "SBS", "SSS", 'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1), 'S', GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmium, 1), 'B', GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1)});
 
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(WoodBrickFormTool.WoodBrickFormTool, 1), bits, new Object[]{GT_ModHandler.getModItem("TConstruct", "blankPattern", 1L), ToolDictNames.craftingToolKnife});
+
+        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.string, 2, 0), bits, new Object[]{new ItemStack(Blocks.wool, 1, 32767), ToolDictNames.craftingToolKnife});
 
         //WaterPump
         GT_ModHandler.addCraftingRecipe(GT_ItemList.PrimitiveWaterPumpCase.get(1L), bits, new Object[]{"SWS", "dCr", 'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'W', OrePrefixes.plank.get(Materials.Wood), 'C', OrePrefixes.slab.get(Materials.Cobblestone)});

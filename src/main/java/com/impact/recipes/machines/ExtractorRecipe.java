@@ -4,6 +4,7 @@ import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -22,6 +23,8 @@ public class ExtractorRecipe implements Runnable {
             GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("GalaxySpace", "tcetiedandelions", 64L, i), CoreItems.getRecipe(TCetiESeaweedExtract.getMetaID(), 1), 3600, 262144);
 
         GT_Values.RA.addExtractorRecipe(CoreItems2.getRecipe(151, 64), CoreItems.getRecipe(35, 1), 3600, 262144);
+        GT_Values.RA.addExtractorRecipe(ItemList.Casing_CokeOvenBrick.get(1L), CoreItems2.getRecipe(65, 4), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("TConstruct", "Smeltery", 1L, 2), GT_ModHandler.getModItem("TConstruct", "materials", 4L, 2), 300, 2);
 
     }
 }
