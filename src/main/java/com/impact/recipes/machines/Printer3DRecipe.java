@@ -892,6 +892,12 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Tungsten, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 8)
         }, ItemList.Machine_MultiblockElectrolyzer.get(1L), null, 40 * 20, 480);
 
+        //Flotation Unit
+        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+                ItemList.Hull_EV.get(1L), ItemList.Electric_Pump_EV.get(4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 6),
+                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 8), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 12)
+        }, ItemList.Machine_FlotationUnit.get(1L), null, 40 * 20, 480);
+
         //Solar Panel LV 32 EU
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Cover_SolarPanel_8V.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 2), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4),
