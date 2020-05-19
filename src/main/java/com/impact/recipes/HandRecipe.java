@@ -296,6 +296,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(WoodBrickFormTool.WoodBrickFormTool, 1), bits, new Object[]{GT_ModHandler.getModItem("TConstruct", "blankPattern", 1L), ToolDictNames.craftingToolKnife});
 
+        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.string, 2, 0), bits, new Object[]{new ItemStack(Blocks.wool, 1, 32767), ToolDictNames.craftingToolKnife});
+
         //WaterPump
         GT_ModHandler.addCraftingRecipe(GT_ItemList.PrimitiveWaterPumpCase.get(1L), bits, new Object[]{"SWS", "dCr", 'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'W', OrePrefixes.plank.get(Materials.Wood), 'C', OrePrefixes.slab.get(Materials.Cobblestone)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.BasicWaterPump.get(1L), bits, new Object[]{"RPS", "OWd", "CHC", 'O', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Iron, 1), 'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'R', GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1), 'P', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Wood, 1), 'H', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1), 'W', OrePrefixes.plank.get(Materials.Wood), 'C', OrePrefixes.slab.get(Materials.Cobblestone)});
