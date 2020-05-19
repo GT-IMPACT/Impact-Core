@@ -1368,9 +1368,9 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
             private final IStructureDefinition<GT_MetaTileEntity_FlotationUnit> definition =
                     StructureDefinition.<GT_MetaTileEntity_FlotationUnit>builder()
                             .addShapeOldApi("main", new String[][]{
-                                    {"000", "121", "121", "2.2",},
-                                    {"0.0", "2A2", "2A2", "222",},
-                                    {"000", "121", "121", "222",},
+                                    {"000", "121", "121", "0.0",},
+                                    {"0.0", "2A2", "2A2", "000",},
+                                    {"000", "121", "121", "000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings4, 2))
                             .addElement('1', ofBlock(sBlockCasings2, 14))
