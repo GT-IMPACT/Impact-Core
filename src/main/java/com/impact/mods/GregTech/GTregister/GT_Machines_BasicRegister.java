@@ -96,7 +96,8 @@ public class GT_Machines_BasicRegister {
 		GT_ItemList.Generator_Gas_Turbine_ULV.set(new GT_MetaTileEntity_GasTurbine(13027, "basicgenerator.gasturbine.tier.00", "First Gas Turbine", 0).getStackForm(1L));
 		GT_ItemList.Generator_Semi_Turbine_ULV.set(new GTMTE_SemifluidGenerator(13028, "basicgenerator.semifluid.tier.00", "First Semifluid Generator", 0).getStackForm(1L));
 
-		GT_ItemList.Hatch_Output_Prim.set(new GT_MetaTileEntity_Primitive_Hatch_Output(14013, "primitive.hatchoutput", "Primitive Output Hatch",0).getStackForm(1L));
+		GT_ItemList.Hatch_Output_Prim.set(new GT_MetaTileEntity_Primitive_Hatch_Output(14013, "primitive.hatchoutput", "Primitive Output Hatch",0, 0).getStackForm(1L));
+		GT_ItemList.Hatch_Output_Pump.set(new GT_MetaTileEntity_Primitive_Hatch_Output(14014, "primitive.hatchoutput1", "Pump Output Hatch",0, 1).getStackForm(1L));
 		GT_ItemList.Bus_Input_Prim.set(new GT_MetaTileEntity_Primitive_InputBus(14012, "primitive.input", "Primitive Input Bus",0).getStackForm(1L));
 		GT_ItemList.Bus_Output_Prim.set(new GT_MetaTileEntity_Primitive_OutputBus(14011, "primitive.output", "Primitive Output Bus",0).getStackForm(1L));
 

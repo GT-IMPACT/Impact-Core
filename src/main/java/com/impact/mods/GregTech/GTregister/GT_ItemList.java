@@ -51,7 +51,7 @@ public enum GT_ItemList implements IItemContainer {
 	Water_Tank,
 
 	//HATCHES
-	Hatch_Output_Prim, Bus_Input_Prim, Bus_Output_Prim,
+	Hatch_Output_Prim, Bus_Input_Prim, Bus_Output_Prim, Hatch_Output_Pump,
 
 	Hatch_Input_UEV, Hatch_Input_UIV, Hatch_Input_UMV, Hatch_Input_UXV, Hatch_Input_OPV, Hatch_Input_MAX,
 	Hatch_Output_UEV, Hatch_Output_UIV, Hatch_Output_UMV, Hatch_Output_UXV, Hatch_Output_OPV, Hatch_Output_MAX,

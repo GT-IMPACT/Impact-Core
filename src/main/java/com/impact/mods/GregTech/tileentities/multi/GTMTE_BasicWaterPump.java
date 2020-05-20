@@ -1,6 +1,7 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
@@ -10,6 +11,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
@@ -20,12 +22,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
+
+import java.util.ArrayList;
 
 import static gregtech.api.enums.GT_Values.W;
 import static net.minecraftforge.common.BiomeDictionary.Type.*;
 
 public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBase {
+
+    public ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output> mOutputHatches1 = new ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output>();
 
     protected int boimeWater;
     int mIsWaterSource;
@@ -88,8 +95,9 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         b
                 .addInfo("Drilling water from ground")
                 .addInfo("Water output depends on the hatch")
-                .addInfo("ULV Output Hatch: Biome Coefficient * 1 * WaterSource")
-                .addInfo("LV Output Hatch: Biome Coefficient * 3 * WaterSource ")
+                .addInfo("Pump Hatch: Biome Coefficient * 1 + WaterSource ")
+                .addInfo("ULV Output Hatch: Biome Coefficient * 2 + WaterSource")
+                .addInfo("LV Output Hatch: Biome Coefficient * 3 + WaterSource ")
                 .addInfo("WaterSource: its area around the pump is covered with water = 200 or 0 L/s")
                 .addSeparator()
                 .addinfoB("Biome Coefficient:")
@@ -120,6 +128,11 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return null;
+    }
+
+    @Override
     public boolean checkRecipe(ItemStack aStack) {
         return true;
     }
@@ -127,7 +140,10 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aTick % 20 == 0) {
-            addOutput(GT_ModHandler.getWater(((getWaterInBiomes() * ((getTierFluidHatch() * 3) + 1)) + mIsWaterSource)));
+            if (getTierFluidHatch()==0)
+                addOutput1(GT_ModHandler.getWater((getWaterInBiomes() * ((getTierFluidHatch() + 1)) + mIsWaterSource)));
+            addOutput(GT_ModHandler.getWater(((getWaterInBiomes() * ((getTierFluidHatch() + 1)) + mIsWaterSource))));
+
         }
         if (aTick % 1200 == 0 || aTick == 20) {
             checkMachine(aBaseMetaTileEntity, mInventory[1]);
@@ -170,6 +186,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        mOutputHatches1.clear();
         if (BiomeDictionary.isBiomeOfType(thisController.getBiome(), WATER)
         ) this.boimeWater = 1000;
 
@@ -219,7 +236,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 
                 if (X == -2 && Z == -1) {
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-                    if (!super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if ((!super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) && (!addPrimOutputToMachineList(currentTE, CASING_TEXTURE_ID))){
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                         } else {
@@ -314,7 +331,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         mSolderingTool = true;
         mCrowbar = true;
 
-        if (getTierFluidHatch() > 1) formationChecklist = false;
+        if (getTierFluidHatch() > 2) formationChecklist = false;
 
         return formationChecklist;
     }
@@ -322,6 +339,8 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     public int getTierFluidHatch() {
         int Tier = 0;
         for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches)
+            if (isValidMetaTileEntity(tHatch)) Tier = tHatch.mTier+1;
+        for (GT_MetaTileEntity_Primitive_Hatch_Output tHatch : mOutputHatches1)
             if (isValidMetaTileEntity(tHatch)) Tier = tHatch.mTier;
         return Tier;
     }
@@ -340,6 +359,60 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
         return 0;
+    }
+
+    private boolean dumpFluid(FluidStack copiedFluidStack, boolean restrictiveHatchesOnly) {
+        for (GT_MetaTileEntity_Primitive_Hatch_Output tHatch : mOutputHatches1) {
+            if (!isValidMetaTileEntity(tHatch) || (restrictiveHatchesOnly && tHatch.mMode == 0)) {
+                continue;
+            }
+            if (GT_ModHandler.isSteam(copiedFluidStack)) {
+                if (!tHatch.outputsSteam()) {
+                    continue;
+                }
+            } else {
+                if (!tHatch.outputsLiquids()) {
+                    continue;
+                }
+                if (tHatch.isFluidLocked() && tHatch.getLockedFluidName() != null && !tHatch.getLockedFluidName().equals(copiedFluidStack.getUnlocalizedName())) {
+                    continue;
+                }
+            }
+            int tAmount = tHatch.fill(copiedFluidStack, false);
+            if (tAmount >= copiedFluidStack.amount) {
+                boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
+                tHatch.onEmptyingContainerWhenEmpty();
+                return filled;
+            } else if (tAmount > 0) {
+                copiedFluidStack.amount = copiedFluidStack.amount - tHatch.fill(copiedFluidStack, true);
+                tHatch.onEmptyingContainerWhenEmpty();
+            }
+        }
+        return false;
+    }
+
+    public boolean addOutput1(FluidStack aLiquid) {
+        if (aLiquid == null) {
+            return false;
+        } else {
+            FluidStack copiedFluidStack = aLiquid.copy();
+            if (!this.dumpFluid(copiedFluidStack, true)) {
+                this.dumpFluid(copiedFluidStack, false);
+            }
+
+            return false;
+        }
+    }
+
+    public boolean addPrimOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Primitive_Hatch_Output) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mOutputHatches1.add((GT_MetaTileEntity_Primitive_Hatch_Output) aMetaTileEntity);
+        }
+        return false;
     }
 
 }
