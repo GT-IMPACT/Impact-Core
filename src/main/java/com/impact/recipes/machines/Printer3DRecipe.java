@@ -200,7 +200,7 @@ public class Printer3DRecipe implements Runnable {
 
         //ME Chest
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                GT_ModHandler.getModItem("OpenComputers", "diskDrive", 1, 0), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 380), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 16),
+                GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 3), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 380), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 16),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.EnergeticAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumSteel, 2),
                 GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4, 22)/*Gold*/, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Vanadium, 12)
         }, GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockChest", 1, 0), null, 20 * 20, 480);
@@ -214,7 +214,7 @@ public class Printer3DRecipe implements Runnable {
 
         //CraftingUnit
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 1), GT_ModHandler.getModItem("OpenComputers", "item", 1, 29), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 1), /*GT_ModHandler.getModItem("OpenComputers", "item", 1, 29), */GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
                 GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4, 23)/*Processor*/, GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 4, 56),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumSteel, 12)
         }, GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1, 0), null, 30 * 20, 1920);
