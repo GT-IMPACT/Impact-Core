@@ -852,13 +852,13 @@ public class Printer3DRecipe implements Runnable {
 
         //Implosion Compressor
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                ItemList.Machine_HV_Compressor.get(1L), ItemList.Electric_Piston_HV.get(2L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 2),
+                ItemList.Hull_HV.get(1L), ItemList.Electric_Piston_HV.get(2L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 8), ItemList.Casing_ExplosionHazard.get(1L)
         }, ItemList.Machine_Multi_ImplosionCompressor.get(1L), null, 30 * 20, 256);
 
         //Vacuum Freezer
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                ItemList.Machine_HV_Extractor.get(1L), ItemList.Electric_Pump_HV.get(2L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2),
+                ItemList.Hull_HV.get(1L), ItemList.Electric_Pump_HV.get(2L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Aluminium, 8), ItemList.Casing_FrostHazard.get(1L)
         }, ItemList.Machine_Multi_VacuumFreezer.get(1L), null, 30 * 20, 256);
 
