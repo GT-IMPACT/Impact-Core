@@ -2,8 +2,7 @@ name: GitActionGradlew
 
 on:
   push:
-    tags: 
-      - 'build'
+    branches: [Release]
     paths-ignore:
       - 'README.md'
 jobs:
