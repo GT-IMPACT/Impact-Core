@@ -1,5 +1,3 @@
-
-*.properties
 *.lock
 *.bin
 *.log
@@ -21,4 +19,7 @@ eclipse/
 out/
 build/
 idea/
+.gradle/
+*.psd
+*.jar1
 *.psd
