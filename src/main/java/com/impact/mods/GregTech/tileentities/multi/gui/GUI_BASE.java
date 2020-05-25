@@ -49,7 +49,6 @@ abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRendererObj.drawString(mName, 10, 8, 16448255);
-        fontRendererObj.drawString("NEI", 154, 67, 16448255);
 
         if (this.mContainer != null) {
             if (mContainer != null) {
@@ -116,10 +115,10 @@ abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
         if (this.mContainer != null) {
             if (((GT_Container_MultiMachine) mContainer).mDisplayErrorCode == 0) {
                 if (((GT_Container_MultiMachine) mContainer).mActive == 0) {
-                    drawTexturedModalRect(x + 136, y + 9, 238, 0, 9, 9);
+                    drawTexturedModalRect(x + 157, y + 16, 238, 0, 9, 9);
 
                 } else
-                    drawTexturedModalRect(x + 136, y + 9, 247, 0, 9, 9);
+                    drawTexturedModalRect(x + 157, y + 16, 247, 0, 9, 9);
                 double tScale = (double) this.mContainer.mProgressTime / (double) this.mContainer.mMaxProgressTime;
                 drawTexturedModalRect(x + 22, y + 55, 0, 232, Math.min(113, (int) (tScale * 113)), 9);
                 drawTexturedModalRect(x + 19, y + 52, 0, 241, 119, 15);

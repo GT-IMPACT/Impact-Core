@@ -12,10 +12,10 @@ import static gregtech.api.enums.GT_Values.W;
 
 public enum GT_ItemList implements IItemContainer {
 
-	//gwpp
+	//items
 	Coin, RedstoneRedChipset,RedstoneQuartzChipset,RedstonePulsatingChipset,RedstoneIronChipset,RedstoneGoldChipset,
-	RedstoneEmeraldChipset,	RedstoneDiamondChipset,WoodenBrickForm,UnfiredSearedBrick,UnfiredCokeOvenBrick,UnfiredClayBrick,
-	CokeOvenBrick, EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore, EngineeringProcessorFluidGoldCore,
+	RedstoneEmeraldChipset,	RedstoneDiamondChipset,
+	EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore, EngineeringProcessorFluidGoldCore,
 	EngineeringProcessorItemAdvEmeraldCore, EngineeringProcessorItemDiamondCore, EngineeringProcessorItemEmeraldCore,
 	EngineeringProcessorSpatialPulsatingCore, LogicProcessorItemGoldCore, EngravedDiamondCrystalChip, EngravedEnergyChip,
 	EngravedGoldChip, EngravedQuantumChip, GeneticCircuit, EnvironmentalCircuit, PulsatingSpatialCoreChip,
@@ -30,32 +30,67 @@ public enum GT_ItemList implements IItemContainer {
 
 	Machine_FreezerSolidifier,
 
+	ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump,
+
 	//BASIC
 	Portable_Tank_ULV, Portable_Tank_LV, Portable_Tank_MV, Portable_Tank_HV, Portable_Tank_EV, Portable_Tank_IV,
 	Portable_Tank_LuV, Portable_Tank_ZPM, Portable_Tank_UV,
 
-	//HATCHES
-	Dynamo_Capacity_EV,
-	Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM,
+	DustWasherULV, DustWasherLV, DustWasherMV, DustWasherHV, DustWasherEV, DustWasherIV, DustWasherLuV, DustWasherZPM,
+	DustWasherUV, DustWasherUHV, DustWasherUEV,
 
-	Energy_Capacity_EV,
+	Machine_LV_ComponentAssembler, Machine_MV_ComponentAssembler, Machine_HV_ComponentAssembler, Machine_EV_ComponentAssembler,
+	Machine_IV_ComponentAssembler, Machine_LuV_ComponentAssembler, Machine_ZPM_ComponentAssembler, Machine_UV_ComponentAssembler,
+	Machine_UHV_ComponentAssembler, Machine_UEV_ComponentAssembler,
+
+	Machine_ULV_Assembler, CircuitProgrammer,
+
+	Generator_Steam_Turbine_ULV, Generator_Diesel_ULV, Generator_Gas_Turbine_ULV, Generator_Semi_Turbine_ULV, Generator_Semi_Turbine_LV,
+	Generator_Semi_Turbine_MV, Generator_Semi_Turbine_HV,
+
+	Water_Tank,
+
+	//HATCHES
+	Hatch_Output_Prim, Bus_Input_Prim, Bus_Output_Prim, Hatch_Output_Pump,
+
+	Hatch_Input_UEV, Hatch_Input_UIV, Hatch_Input_UMV, Hatch_Input_UXV, Hatch_Input_OPV, Hatch_Input_MAX,
+	Hatch_Output_UEV, Hatch_Output_UIV, Hatch_Output_UMV, Hatch_Output_UXV, Hatch_Output_OPV, Hatch_Output_MAX,
+
+	Bus_Input_UEV, Bus_Input_UIV, Bus_Input_UMV, Bus_Input_UXV, Bus_Input_OPV, Bus_Input_MAX,
+	Bus_Output_UEV, Bus_Output_UIV, Bus_Output_UMV, Bus_Output_UXV, Bus_Output_OPV, Bus_Output_MAX,
+
+	Energy_4A_IV, Energy_4A_LuV, Energy_4A_ZPM, Energy_4A_UV, Energy_16A_LuV, Energy_16A_ZPM, Energy_16A_UV, Energy_64A_ZPM,
+	Energy_64A_UV, Energy_256A_UV,
+
+	Dynamo_2A_EV, Dynamo_2A_IV, Dynamo_2A_LuV, Dynamo_2A_ZPM, Dynamo_2A_UV, Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM,
+	Dynamo_4A_UV, Dynamo_16A_LuV, Dynamo_16A_ZPM,  Dynamo_16A_UV, Dynamo_64A_ZPM, Dynamo_64A_UV, Dynamo_256A_UV,
 
 	Nuclear_Resistant_OH,
 
 	//MULTI
+	Machine_CokeOven, Machine_Multi_Farm,
+
 	Machine_PBE, Machine_LaserEngraver, Machine_Assembler, Machine_Centrifuge, Machine_Electrolyzer, Machine_Wire, Machine_Supply,
-	Machine_Utility, Machine_Brewmenter,
-	PowerStation, PowerReactor, PowerTurbine,
+	Machine_Utility, Machine_Brewmenter, Machine_ArcFurnace, Machine_Cutting, Machine_Extradifier, Machine_Macerator, Machine_Mixer,
+	Machine_Siftarator, Machine_DDDPrinter,
+	PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
+	AdvVacuumFreezer,
 
 	Naquadah_multi,
 
 	//Cases
-	Upgradet1, Upgradet2, Upgradet3, Upgradet4, BenderCase, LaserCase, PresserCase, ExtruderCase, AssemblerCase, CircuitAssemblerCase,
-	WireAssemblerCase, WiremillCase, ArcPlasmaCase, ElectrolyzerCase, NukeTurbineCase,
+	//Page3 1-15
+	UpgradeCasingT1, UpgradeCasingT2, UpgradeCasingT3, UpgradeCasingT4, PBECasing, EngraverCasing, AssemblerCasing,
+	CentrifugeCasing, ElectrolyzerCasing, WireFactoryCasing, SupplyProductionCasing, UtilityMachineCasing, BrewmenterCasing, ArcCasing,
+	CuttingCasing, MixingCasing,
+	//Page3 16-31
+	NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
+	DDDPrinterCasing4x4, PrimitiveWaterPumpCase,
+	//Page3 16-31
+	Casing_Farm,
 
-	GLASS_CASSING_1, GLASS_CASSING_2
 
-	;
+	end;
 	private ItemStack mStack;
 	private boolean mHasNotBeenSet = true;
 

@@ -1,149 +1,170 @@
 package com.impact.loader;
 
-import com.impact.mods.GTSU.TierHelper;
-import com.impact.mods.GTSU.blocks.GTSUBlock;
-import com.impact.mods.GTSU.blocks.itemblocks.ItemBlockGTSU;
-import com.impact.mods.GTSU.tileentity.TileEntityGTSU;
+import codechicken.nei.api.ItemInfo;
 import com.impact.impact;
-import com.impact.mods.modChest.BASE.Item_BaseChest;
-import com.impact.mods.modChest.BASE.Renderer_BaseChest;
-import com.impact.mods.modChest.Steel_Chest.ItemRendererSteelChest;
-import com.impact.mods.modChest.Steel_Chest.SteelChest;
-import com.impact.mods.modChest.Steel_Chest.TESteelChest;
-import com.impact.mods.modChest.WroughtIron_Chest.WroughtIronChest;
-import com.impact.mods.modChest.WroughtIron_Chest.ItemRendererWroughtIronChest;
-import com.impact.mods.modChest.WroughtIron_Chest.TEWroughtIronChest;
-import com.impact.mods.modChest.chestAL.ChestAl;
-import com.impact.mods.modChest.chestAL.ItemRendererChestAl;
-import com.impact.mods.modChest.chestAL.TEChestAl;
-import com.impact.mods.modChest.chestCr.ChestCr;
-import com.impact.mods.modChest.chestCr.ItemRendererChestCr;
-import com.impact.mods.modChest.chestCr.TEChestCr;
-import com.impact.mods.modChest.chestHSLA.ChestHSLA;
-import com.impact.mods.modChest.chestHSLA.ItemRendererChestHSLA;
-import com.impact.mods.modChest.chestHSLA.TEChestHSLA;
-import com.impact.mods.modChest.chestIr.ChestIr;
-import com.impact.mods.modChest.chestIr.ItemRendererChestIr;
-import com.impact.mods.modChest.chestIr.TEChestIr;
-import com.impact.mods.modChest.chestNt.ChestNt;
-import com.impact.mods.modChest.chestNt.ItemRendererChestNt;
-import com.impact.mods.modChest.chestNt.TEChestNt;
-import com.impact.mods.modChest.chestOs.ChestOs;
-import com.impact.mods.modChest.chestOs.ItemRendererChestOs;
-import com.impact.mods.modChest.chestOs.TEChestOs;
-import com.impact.mods.modChest.chestTi.ChestTi;
-import com.impact.mods.modChest.chestTi.ItemRendererChestTi;
-import com.impact.mods.modChest.chestTi.TEChestTi;
-import com.impact.mods.modChest.chestW.ChestW;
-import com.impact.mods.modChest.chestW.ItemRendererChestW;
-import com.impact.mods.modChest.chestW.TEChestW;
+import com.impact.item.Core_Items;
+import com.impact.item.Core_Items2;
+import com.impact.item.FakeCircuits;
+import com.impact.item.WoodBrickFormTool;
+//import com.impact.mods.BartWorks.BacteriaRegistry;
+import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
+import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
+import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
+import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
+import com.impact.mods.GregTech.GTregister.GT_WorldGenRegister;
+import com.impact.mods.GregTech.casings.GT_Loader_Casings;
 import com.impact.mods.modSolar.ASP;
-import com.impact.util.oredict.OreDictHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import com.impact.recipes.AfterGregTechPostLoadRecipes;
+import com.impact.recipes.HandRecipe;
+import com.impact.recipes.OpenComputersRecipe;
+import com.impact.recipes.debug.DEBUG_Recipe;
+import com.impact.recipes.machines.*;
+import com.impact.util.OreDictRegister;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
+import gregtech.api.GregTech_API;
+import net.minecraft.item.ItemStack;
+
+import static codechicken.nei.api.API.hideItem;
+import static com.impact.System.impactLog.INFO;
+import static com.impact.System.impactLog.WARNING;
+import static com.impact.item.Core_List_Items.registerOreDictNames;
+import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class MainLoader {
 
-    private MainLoader(){}
+    private MainLoader() {
+    }
 
     public static void Init() {
-
         new ItemRegistery();
         ItemRegistery.run();
-
+        INFO("[Init] Item Registery - Loaded");
     }
 
-    public static void preInit(FMLPreInitializationEvent event) {
-
-        GameRegistry.registerBlock(WroughtIronChest.instance, Item_BaseChest.class, "WroughtIronChest");
-        GameRegistry.registerTileEntity(TEWroughtIronChest.class, "impact:WroughtIronChest");
-        GameRegistry.registerBlock(SteelChest.instance, Item_BaseChest.class, "SteelChest");
-        GameRegistry.registerTileEntity(TESteelChest.class, "impact:SteelChest");
-        GameRegistry.registerBlock(ChestAl.instance, Item_BaseChest.class, "AluminiumChest");
-        GameRegistry.registerTileEntity(TEChestAl.class, "impact:AluminiumChest");
-        GameRegistry.registerBlock(ChestHSLA.instance, Item_BaseChest.class, "HSLAChest");
-        GameRegistry.registerTileEntity(TEChestHSLA.class, "impact:HSLAChest");
-        GameRegistry.registerBlock(ChestTi.instance, Item_BaseChest.class, "TitaniumChest");
-        GameRegistry.registerTileEntity(TEChestTi.class, "impact:TitaniumChest");
-        GameRegistry.registerBlock(ChestW.instance, Item_BaseChest.class, "TungstenSteelChest");
-        GameRegistry.registerTileEntity(TEChestW.class, "impact:TungstenSteelChest");
-        GameRegistry.registerBlock(ChestCr.instance, Item_BaseChest.class, "ChromeChest");
-        GameRegistry.registerTileEntity(TEChestCr.class, "impact:ChromeChest");
-        GameRegistry.registerBlock(ChestIr.instance, Item_BaseChest.class, "IridiumChest");
-        GameRegistry.registerTileEntity(TEChestIr.class, "impact:IridiumChest");
-        GameRegistry.registerBlock(ChestOs.instance, Item_BaseChest.class, "OsmiumChest");
-        GameRegistry.registerTileEntity(TEChestOs.class, "impact:OsmiumChest");
-        GameRegistry.registerBlock(ChestNt.instance, Item_BaseChest.class, "NeutroniumChest");
-        GameRegistry.registerTileEntity(TEChestNt.class, "impact:NeutroniumChest");
+    public static void preInit() {
 
         ItemRegistery.GregtechPump();
+        INFO("[preInit] Gregtech Pump - Loaded");
 
-        ItemRegistery.CircuitProgrammer();
-
-        //solar
         ASP.preInit();
-    }
+        INFO("[preInit] Solar Panel - Loaded");
 
-    @SideOnly(Side.CLIENT)
-    public static void preInitClient() {
+        Core_Items.getInstance().registerItem();
+        INFO("[preInit] Meta Items 1 - Loaded");
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TEWroughtIronChest.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(WroughtIronChest.instance), new ItemRendererWroughtIronChest());
-        ClientRegistry.bindTileEntitySpecialRenderer(TESteelChest.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteelChest.instance), new ItemRendererSteelChest());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestAl.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestAl.instance), new ItemRendererChestAl());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestHSLA.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestHSLA.instance), new ItemRendererChestHSLA());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestTi.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestTi.instance), new ItemRendererChestTi());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestW.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestW.instance), new ItemRendererChestW());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestCr.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestCr.instance), new ItemRendererChestCr());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestIr.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestIr.instance), new ItemRendererChestIr());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestOs.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestOs.instance), new ItemRendererChestOs());
-        ClientRegistry.bindTileEntitySpecialRenderer(TEChestNt.class, Renderer_BaseChest.instance);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ChestNt.instance), new ItemRendererChestNt());
+        Core_Items2.getInstance().registerItem();
+        INFO("[preInit] Meta Items 2 - Loaded");
 
+        WoodBrickFormTool.getInstance().registerItem();
+        INFO("[preInit] Wood Brick Form Tool - Loaded");
+
+        FakeCircuits.getInstance().registerItem();
+        INFO("[preInit] Fake Circuits - Loaded");
+
+        registerOreDictNames();
+        INFO("[preInit] Meta Items OreDict List - Loaded");
+
+        for (byte i = 0; i <= 7; i++)
+            hideItem(new ItemStack(FakeCircuits.getInstance(), 1, i));
+        INFO("[preInit] Hide NEI Items - Loaded");
     }
 
     public static void load() {
-        new itemLoader().run();
-        OreDictHandler.run();
-        //solar
+
+        // Register Dimensions in GalacticGregGT5
+        if (Loader.isModLoaded("galacticgreg")) {
+            SpaceDimRegisterer spaceDimReg = new SpaceDimRegisterer();
+            if (spaceDimReg.Init()) {
+                spaceDimReg.Register();
+                INFO("[load] Space Dimension Register - Loaded");
+            }
+            WARNING("[load] Space Dimension Register - Not Loaded");
+        }
+
+        OreDictRegister.register_all();
+        INFO("[load] OreDict Register List - Loaded");
+
         ASP.load();
+        INFO("[load] Solar Panel 2 - Loaded");
+    }
+
+    public static void onPreLoad() {
+//        if (Loader.isModLoaded("bartworks")) {
+//            new BacteriaRegistry();
+//            INFO("[onPreLoad] Bacteria Register - Loaded");
+//        }
     }
 
     public static void postLoad() {
+        GregTechRunner();
+        INFO("[postLoad] GregTech Runner - Loaded");
 
-        registerSingleIC2StorageBlocks();
-
-        new GT_ModLoader();
-        GT_ModLoader.run();
-
+        addAfterGregTechPostLoadRunner();
+        INFO("[postLoad] After GregTech PostLoad Runner - Loaded");
     }
+
     public static void postInit() {
-
         NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, new GUIHandler());
-
+        INFO("[postInit] GUI Handler - Loaded");
     }
 
+//    private static void registerSingleIC2StorageBlocks() {
+//        GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
+//        for (int i = 0; i < TierHelper.V.length; i++) {
+//            GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
+//        }
+//    }
 
-    private static void registerSingleIC2StorageBlocks() {
-        GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
-        for (int i = 0; i < TierHelper.V.length; i++)
-        {
-            GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
-        }
+    public static void addAfterGregTechPostLoadRunner() {
+        GregTech_API.sAfterGTPostload.add(() -> new AfterGregTechPostLoadRecipes().run());
     }
 
+    public static void GregTechRunner() {
+            new GT_ItemRegister().run();
+            new GT_Loader_Casings().run();
+            new GT_Machines_MultiRegister().run();
+            new GT_Machines_BasicRegister().run();
+            new HandRecipe().run();
+            new GT_WorldGenRegister().run();
+            new ModLoader().run();
+            new DEBUG_Recipe().run();
+            new CentrifugeRecipe().run();
+            new PulveriserRecipe().run();
+            new LaserEngraverRecipe();
+            new FormingPressRecipe().run();
+            new ChemicalBathRecipe().run();
+            new AssemblerRecipe().run();
+            new FreezSolidifierRecipe().run();
+            new Printer3DRecipe().run();
+            new BlastSmelterRecipe().run();
+            new ComponentAssemblerRecipe().run();
+            new CompessorRecipe().run();
+            new AlloySmelterRecipe().run();
+            new MixerRecipe().run();
+            new EBFRecipe().run();
+            new FluidCannerRecipe().run();
+            new CircuitAssemblerRecipe().run();
+            new FarmRecipe().run();
+            new CuttingRecipe().run();
+            new VacuumFreezerRecipe().run();
+            new AssemblyLineRecipe().run();
+            new OpenComputersRecipe().run();
+            new ForgeHammerRecipe().run();
+            new FluidExtractorRecipe().run();
+            new ExtruderRecipe().run();
+            new ImplosionCompressorRecipe().run();
+            new FluidSolidifierRecipe().run();
+            new AutoclaveRecipe().run();
+            new BreweryRecipe().run();
+            new ExtractorRecipe().run();
+            new ChemicalReactorRecipe().run();
+            new SifterRecipe().run();
+            new LatheRecipe().run();
+            new WiremillRecipe().run();
+            new ElectrolyzerRecipe().run();
+            new WireassemblerRecipe().run();
+            new FusionRecipe().run();
+            new ArcFurnaceRecipe().run();
+    }
 }

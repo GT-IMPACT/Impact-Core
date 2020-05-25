@@ -50,7 +50,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
-import static com.impact.loader.ItemRegistery.toolGregtechPump;
+import static com.impact.loader.ItemRegistery.GTPump;
 import static gregtech.api.enums.GT_Values.V;
 
 public class GregtechPump extends Item implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
@@ -101,7 +101,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
     public final HashMap<Short, Short> mBurnValues = new LinkedHashMap<Short, Short>();
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
-        toolGregtechPump.registerItem(aID, // ID
+        GTPump.registerItem(aID, // ID
                 aPumpName, // Name
                 aEuMax, // Eu Storage
                 (short) aTier, // Tier
@@ -113,7 +113,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
     }
 
     public GregtechPump() {
-        this("impact-metatool.01", null, (short) 1000, (short) 31766);
+        this("impact_metatool.01", null, (short) 1000, (short) 31766);
     }
 
     public GregtechPump(final String unlocalizedName, final CreativeTabs creativeTab, final short aOffset,

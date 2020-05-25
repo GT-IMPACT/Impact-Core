@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.tileentities.multi.gui;
 
-import com.impact.mods.GregTech.tileentities.multi.GT_TileEntity_Centrifuge;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_Centrifuge;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -12,6 +12,6 @@ public class GUI_Centrifuge extends GUI_BASE {
 
     @Override
     String getmMode() {
-        return GT_TileEntity_Centrifuge.mModed;
+        return GTMTE_Centrifuge.mModed;
     }
 }

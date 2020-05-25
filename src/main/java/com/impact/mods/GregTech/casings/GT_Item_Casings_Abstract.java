@@ -13,12 +13,13 @@ import java.util.List;
 public abstract class GT_Item_Casings_Abstract
         extends ItemBlock {
     protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    protected final String mAuthor = GT_LanguageManager.addStringLocalization("gt.authorcase", "Added by " + EnumChatFormatting.YELLOW +"4gname");
     protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
     protected final String mUpgrade1Tooltip = GT_LanguageManager.addStringLocalization("gt.upgradeparallel1", "Upgrade to" + EnumChatFormatting.AQUA + " 4"+ EnumChatFormatting.GRAY +" Parallel Point");
     protected final String mUpgrade2Tooltip = GT_LanguageManager.addStringLocalization("gt.upgradeparallel2", "Upgrade to" + EnumChatFormatting.AQUA + " 16"+ EnumChatFormatting.GRAY +" Parallel Point");
     protected final String mUpgrade3Tooltip = GT_LanguageManager.addStringLocalization("gt.upgradeparallel3", "Upgrade to" + EnumChatFormatting.AQUA + " 64"+ EnumChatFormatting.GRAY +" Parallel Point");
     protected final String mUpgrade4Tooltip = GT_LanguageManager.addStringLocalization("gt.upgradeparallel4", "Upgrade to" + EnumChatFormatting.AQUA + " 256"+ EnumChatFormatting.GRAY +" Parallel Point");
+    protected final String mConfiguration3Dprinter3x3 = GT_LanguageManager.addStringLocalization("gt.3Dprinter33", "Configuration Casing for 3D Printer: " + EnumChatFormatting.GREEN + "3x3");
+    protected final String mConfiguration3Dprinter4x4 = GT_LanguageManager.addStringLocalization("gt.3Dprinter44", "Configuration Casing for 3D Printer: " + EnumChatFormatting.GREEN + "4x4");
 
 
     public GT_Item_Casings_Abstract(Block par1) {

@@ -13,7 +13,7 @@ public class GuiAdvSolarPanel extends GuiContainer {
     public TileEntitySolarPanel tileentity;
     private static ResourceLocation tex = new ResourceLocation("advancedsolarpanel", "textures/gui/GUIAdvancedSolarPanel.png");
 
-    public GuiAdvSolarPanel(InventoryPlayer inventoryplayer, TileEntitySolarPanel tileentitysolarpanel) {
+    public GuiAdvSolarPanel(TileEntitySolarPanel tileentitysolarpanel, InventoryPlayer inventoryplayer) {
         super(new ContainerAdvSolarPanel(inventoryplayer, tileentitysolarpanel));
         this.tileentity = tileentitysolarpanel;
         this.allowUserInput = false;

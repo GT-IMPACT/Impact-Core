@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.tileentities.multi.gui;
 
-import com.impact.mods.GregTech.tileentities.multi.GT_TileEntity_Assembler;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_Assembler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -12,7 +12,7 @@ public class GUI_Assembler extends GUI_BASE {
 
     @Override
     String getmMode() {
-        return GT_TileEntity_Assembler.mModed;
+        return GTMTE_Assembler.mModed;
     }
 
 }

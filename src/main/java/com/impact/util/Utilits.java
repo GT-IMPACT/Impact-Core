@@ -1,12 +1,20 @@
 package com.impact.util;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class Utilits {
 
@@ -17,9 +25,9 @@ public class Utilits {
         return true;
     }
 
-    public static String translateGTItemStack(ItemStack itemStack){
+    public static String translateGTItemStack(ItemStack itemStack) {
         if (!GT_Utility.isStackValid(itemStack))
-            return "Not a Valid ItemStack:"+itemStack;
+            return "Not a Valid ItemStack:" + itemStack;
         String ret = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));
         if (!ret.contains("%material"))
             return ret;
@@ -94,12 +102,11 @@ public class Utilits {
         return tNBT.getString(aTag);
     }
 
-    public static FluidStack getFluidStack(final String fluidName, final int amount){
+    public static FluidStack getFluidStack(final String fluidName, final int amount) {
         try {
             FluidStack x = FluidRegistry.getFluidStack(fluidName, amount);
             return x != null ? x.copy() : null;
-        }
-        catch (final Throwable e){
+        } catch (final Throwable e) {
             return null;
         }
     }
@@ -108,10 +115,34 @@ public class Utilits {
         try {
             FluidStack x = FluidRegistry.getFluidStack(vmoltenFluid.getFluid().getName(), fluidAmount);
             return x != null ? x.copy() : null;
-        }
-        catch (final Throwable e){
+        } catch (final Throwable e) {
             return null;
         }
     }
 
+    public static ItemStack[] toItemStackArray(List<ItemStack> stacksList) {
+        if (stacksList.size() == 0) {
+            return null;
+        }
+
+        ItemStack[] ret = new ItemStack[stacksList.size()];
+        Iterator<ItemStack> iterator = stacksList.iterator();
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = iterator.next();
+        }
+        return ret;
+    }
+
+    public static FluidStack[] toFluidStackArray(List<FluidStack> stacksList) {
+        if (stacksList.size() == 0) {
+            return null;
+        }
+
+        FluidStack[] ret = new FluidStack[stacksList.size()];
+        Iterator<FluidStack> iterator = stacksList.iterator();
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = iterator.next();
+        }
+        return ret;
+    }
 }
