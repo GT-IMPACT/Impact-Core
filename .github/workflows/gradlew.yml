@@ -2,12 +2,12 @@ name: Java CI
 
 on:
   push:
-    branches: [master]
+    branches: [Release]
     paths-ignore:
       - 'README.md'
       - 'docs/**'
   pull_request:
-    branches: [master]
+    branches: [Release]
     paths-ignore:
       - 'README.md'
       - 'docs/**'
