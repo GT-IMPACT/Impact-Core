@@ -29,7 +29,7 @@ public class WoodBrickFormTool extends Item {
         super.setUnlocalizedName(unlocalizedName);
         super.setContainerItem(this);
         super.setMaxStackSize(1);
-        super.setMaxDamage(50);
+        super.setMaxDamage(1000);
         super.setNoRepair();
         GameRegistry.registerItem(getInstance(), unlocalizedName);
     }

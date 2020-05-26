@@ -61,7 +61,6 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                 .addInputBus("Any casing (max x2)")
                 .addInputHatch("Any casing (max x2)")
                 .addOutputBus("Any casing (max x1)")
-                .addMuffler("Any casing (max x1)")
                 .addCasingInfo("Frost Proof Machine Casing")
                 .signAndFinalize(": "+ EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -209,7 +208,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
        if(this.mOutputHatches.size() !=0) {
            formationChecklist = false;
        }
-       if(this.mEnergyHatches.size() > 2) {
+       if(this.mEnergyHatches.size() > 4) {
            formationChecklist = false;
        }
        if(this.mMaintenanceHatches.size() != 1) {

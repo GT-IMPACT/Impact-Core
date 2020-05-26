@@ -312,7 +312,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
         if(this.mOutputHatches.size() !=0) {
             formationChecklist = false;
         }
-        if(this.mEnergyHatches.size() != 1) {
+        if(this.mEnergyHatches.size() > 4) {
             formationChecklist = false;
         }
         if(this.mMaintenanceHatches.size() != 1) {

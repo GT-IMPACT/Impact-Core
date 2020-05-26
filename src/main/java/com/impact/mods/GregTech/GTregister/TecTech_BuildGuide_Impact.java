@@ -5,13 +5,15 @@ import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContain
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.GregTech.tileentities.multi.*;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore1;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
@@ -715,5 +717,136 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                 return desc;
             }
         });
+
+        //AdvancedVacuumFreezer
+        registerMetaClass(GTMTE_AdvancedVacuumFreezer.class, new IMultiblockInfoContainer<GTMTE_AdvancedVacuumFreezer>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_AdvancedVacuumFreezer> definition =
+                    StructureDefinition.<GTMTE_AdvancedVacuumFreezer>builder()
+                            .addShapeOldApi("main", new String[][]{
+
+                                    {".000.", ".000.", ".0.0.", ".000.",},
+                                    {".020.", ".020.", "00200", "00000",},
+                                    {".020.", "00200", "00200", "00000",},
+                                    {".020.", "00000", "00000", "00000",},
+                                    {".000.", ".111.", ".111.", ".000.",},
+                            })
+                            .addElement('0', ofBlock(sBlockCasings2, 1))
+                            .addElement('1', ofBlock(sCaseCore1, 0))
+                            .addElement('2', ofBlockHint(decorateBlock[2], 1))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Frost Proof Machine Casing",
+                    "- Upgrade Casing (Tier 1-4) or Frost Proof Machine Casing (no parallel)",
+                    "- " + EnumChatFormatting.RED + "Red:" + EnumChatFormatting.RESET +" Fluid Coolant",
+                    "- Hatches (any Frost Proof Machine Casing)",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_AdvancedVacuumFreezer tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        2, 2, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+        //Water Driller
+        registerMetaClass(GTMTE_DrillerWater.class, new IMultiblockInfoContainer<GTMTE_DrillerWater>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_DrillerWater> definition =
+                    StructureDefinition.<GTMTE_DrillerWater>builder()
+                            .addShapeOldApi("main", new String[][]{
+
+                                    {".....", ".....", ".....", ".....", ".....", ".....", "11.11", "0...0", "0...0",},
+                                    {".....", ".....", ".....", ".111.", ".0.0.", ".0.0.", "11111", ".....", ".....",},
+                                    {"..0..", "..0..", "..0..", ".111.", ".....", ".....", "11.11", ".....", ".....",},
+                                    {".....", ".....", ".....", ".111.", ".0.0.", ".0.0.", "11111", ".....", ".....",},
+                                    {".....", ".....", ".....", ".....", ".....", ".....", "11111", "0...0", "0...0",},
+                            })
+                            .addElement('0', ofHintDeferred(() -> new IIcon[]{
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                            }, Materials.Steel.mRGBa))
+                            .addElement('1', ofBlock(sBlockCasings2, 0))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Steel Frame Box",
+                    "- Solid Steel Machine Casing",
+                    "- Hatches (any Solid Steel Machine Casing)",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_DrillerWater tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        2, 6, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+        //Basic Water Pump
+        registerMetaClass(GTMTE_BasicWaterPump.class, new IMultiblockInfoContainer<GTMTE_BasicWaterPump>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_BasicWaterPump> definition =
+                    StructureDefinition.<GTMTE_BasicWaterPump>builder()
+                            .addShapeOldApi("main", new String[][]{
+
+                                    {".1..",".1..","000.",},
+                                    {"1111","1..1","0200",},
+                                    {".1..",".1..","0000",},
+
+                            })
+                            .addElement('1', ofHintDeferred(() -> new IIcon[]{
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                            }, Materials.Wood.mRGBa))
+                            .addElement('0', ofBlock(sCaseCore2, 7))
+                            .addElement('2', ofBlockHint(decorateBlock[2], 1))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Wood Frame Box",
+                    "- Primitive Pump Deck",
+                    "- " + EnumChatFormatting.RED + "Red:" + EnumChatFormatting.RESET +" Pump/ULV/LV Output Hatches",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_BasicWaterPump tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        3, 2, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
     }
 }

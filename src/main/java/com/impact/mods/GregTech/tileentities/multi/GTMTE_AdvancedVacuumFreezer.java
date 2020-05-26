@@ -93,7 +93,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 .addParallelInfo(1, 256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 .addInfo("Super Coolant is required for operation: 50 per second")
-                .addInfo("At the output, get Hot Сoolant: 25 per second")
+                .addInfo("At the output, get Hot Coolant: 25 per second")
                 //.addPollution(200, 12800)
                 .addTypeMachine("Vacuum Freezer")
                 .addSeparator()
@@ -309,7 +309,8 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                         } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore1)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
                             this.mLevel = 256;
-                        } else if ((thisController.getAirOffset(offset.x(), offset.y(), offset.z()))) {
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                             this.mLevel = 1;
                         } else {
                             formationChecklist = false;
@@ -385,7 +386,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
         if (this.mInputHatches.size() != 1) formationChecklist = false;
         if (this.mOutputBusses.size() > 1) formationChecklist = false;
         if (this.mOutputHatches.size() != 1) formationChecklist = false;
-        if (this.mEnergyHatches.size() != 1) formationChecklist = false;
+        if (this.mEnergyHatches.size() > 4) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
         return formationChecklist;
     }

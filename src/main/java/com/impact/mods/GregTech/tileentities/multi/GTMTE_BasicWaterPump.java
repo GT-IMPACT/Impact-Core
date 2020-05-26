@@ -17,7 +17,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.BiomeDictionary;
@@ -35,8 +34,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     public ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output> mOutputHatches1 = new ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output>();
 
     protected int boimeWater;
-    int mIsWaterSource;
-    long tTime = System.currentTimeMillis();
 
     /**
      * === SET BLOCKS STRUCTURE ===
@@ -95,10 +92,9 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         b
                 .addInfo("Drilling water from ground")
                 .addInfo("Water output depends on the hatch")
-                .addInfo("Pump Hatch: Biome Coefficient * 1 + WaterSource ")
-                .addInfo("ULV Output Hatch: Biome Coefficient * 2 + WaterSource")
-                .addInfo("LV Output Hatch: Biome Coefficient * 3 + WaterSource ")
-                .addInfo("WaterSource: its area around the pump is covered with water = 200 or 0 L/s")
+                .addInfo("Pump Hatch: Biome Coefficient * 1")
+                .addInfo("ULV Output Hatch: Biome Coefficient * 2")
+                .addInfo("LV Output Hatch: Biome Coefficient * 3")
                 .addSeparator()
                 .addinfoB("Biome Coefficient:")
                 .addinfoBTab("Ocean, River - 1000 L/s")
@@ -134,20 +130,15 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        this.mEfficiency = 10000;
+        if(this.mEfficiency > 0) {
+            if (getTierFluidHatch() == 0)
+                addOutput1(GT_ModHandler.getWater(getWaterInBiomes() * (getTierFluidHatch() + 1)));
+            addOutput(GT_ModHandler.getWater(getWaterInBiomes() * (getTierFluidHatch() + 1)));
+        }
+        this.mEUt = 0;
+        this.mMaxProgresstime = 20;
         return true;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aTick % 20 == 0) {
-            if (getTierFluidHatch()==0)
-                addOutput1(GT_ModHandler.getWater((getWaterInBiomes() * ((getTierFluidHatch() + 1)) + mIsWaterSource)));
-            addOutput(GT_ModHandler.getWater(((getWaterInBiomes() * ((getTierFluidHatch() + 1)) + mIsWaterSource))));
-
-        }
-        if (aTick % 1200 == 0 || aTick == 20) {
-            checkMachine(aBaseMetaTileEntity, mInventory[1]);
-        }
     }
 
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
@@ -313,16 +304,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
                 formationChecklist = false;
             }
         }
-
-        for (byte X = 1; X >= -4; X--) {
-            for (byte Z = 1; Z >= -3; Z--) {
-                final Vector3ic offset7 = rotateOffsetVector(forgeDirection, X, -1, Z);
-                if (thisController.getBlockOffset(offset7.x(), offset7.y(), offset7.z()) == Blocks.water) {
-                    this.mIsWaterSource = 200;
-                } else this.mIsWaterSource = 0;
-            }
-        }
-
 
         mWrench = true;
         mScrewdriver = true;

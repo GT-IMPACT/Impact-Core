@@ -328,7 +328,7 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
         if(this.mOutputHatches.size() > 5) {
             formationChecklist = false;
         }
-        if(this.mEnergyHatches.size() >= 2) {
+        if(this.mEnergyHatches.size() > 4) {
             formationChecklist = false;
         }
         if(this.mMaintenanceHatches.size() != 1) {
