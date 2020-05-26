@@ -1,6 +1,7 @@
 package com.impact.loader;
 
 import codechicken.nei.api.ItemInfo;
+import com.impact.block.Block_LapotronicEnergyUnit;
 import com.impact.impact;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
@@ -64,6 +65,9 @@ public class MainLoader {
 
         registerOreDictNames();
         INFO("[preInit] Meta Items OreDict List - Loaded");
+
+        ItemRegistery.registerBlocks_LSC();
+        INFO("[preInit] Lapotronic Energy Unit - Loaded");
 
         for (byte i = 0; i <= 7; i++)
             hideItem(new ItemStack(FakeCircuits.getInstance(), 1, i));

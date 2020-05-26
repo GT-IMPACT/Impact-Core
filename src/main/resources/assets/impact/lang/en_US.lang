@@ -278,3 +278,10 @@ item.impact_fake.4.name=Any ZPM Circuit
 item.impact_fake.5.name=Any UV Circuit
 item.impact_fake.6.name=Any UHV Circuit
 item.impact_fake.7.name=Any UEV Circuit
+
+tile.impact_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
+tile.impact_lapotronicenergyunit_block.1.name=Lapotronic Capacitor (IV)
+tile.impact_lapotronicenergyunit_block.2.name=Lapotronic Capacitor (LuV)
+tile.impact_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
+tile.impact_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
+tile.impact_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)

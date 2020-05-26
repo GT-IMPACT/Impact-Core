@@ -2,6 +2,7 @@ package com.impact.mods.GregTech.GTregister;
 
 
 import com.impact.mods.GregTech.tileentities.multi.*;
+import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import gregtech.api.util.GT_ModHandler;
 
 public class GT_Machines_MultiRegister {
@@ -39,6 +40,7 @@ public class GT_Machines_MultiRegister {
 			GT_ItemList.WaterDrill				.set(new GTMTE_DrillerWater(ID++, "multimachine.waterdrill", 			"Electric Water Drilling Rig").getStackForm(1L));
 			GT_ItemList.BasicWaterPump			.set(new GTMTE_BasicWaterPump(ID++, "multimachine.basicwaterpump", 		"Primitive Water Pump").getStackForm(1L));
 			GT_ItemList.AdvVacuumFreezer		.set(new GTMTE_AdvancedVacuumFreezer(ID++, "multimachine.advvf", 		"Advanced Vacuum Freezer").getStackForm(1L));
+			GT_ItemList.LapPowerStation			.set(new GTMTE_LapPowerStation(ID++, "multimachine.supercapacitor", 	"Lapotronic Supercapacitor").getStackForm(1L));
 
 			GT_ItemList.Machine_CokeOven.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
 			GT_ItemList.Machine_Multi_Farm.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));

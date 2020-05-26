@@ -90,4 +90,8 @@ public class ItemRegistery {
         GTPump.registerPumpType(2, "HV Hand Pump", 400000, 2);
         GTPump.registerPumpType(3, "EV Hand Pump", 1600000, 3);
     }
+    public static Block lscLapotronicEnergyUnit;
+    public static void registerBlocks_LSC() {
+        lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
+    }
 }

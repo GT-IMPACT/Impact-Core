@@ -180,10 +180,8 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                         boolean found_Recipe = false;
                         int processed = 0;
                         long nominalV = getnominalVoltage(this);
-                        //int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
-                        //long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
                         while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
-                            if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
                                 found_Recipe = true;
                                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                                     outputItems.add(tRecipe.getOutput(i));
@@ -202,9 +200,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                                     actualEUT = actualEUT / 2;
                                     divider++;
                                 }
-                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
+                                calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, nominalV, this);
                             } else
-                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
+                                calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
                             //In case recipe is too OP for that machine
                             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                                 return false;

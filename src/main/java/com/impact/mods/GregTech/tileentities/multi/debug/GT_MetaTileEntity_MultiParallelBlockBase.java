@@ -36,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnegative;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -88,52 +89,52 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     /**
      * === OVERCLOCKED PART 1 ===
      */
-    public static void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-        if (mTier == 0) {
-            //Long time calculation
-            long xMaxProgresstime = ((long) aDuration) << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                //make impossible if too long
-                base.mEUt = Integer.MAX_VALUE - 1;
-                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+    public static void calculateOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
+            byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+            if (mTier == 0) {
+                //Long time calculation
+                long xMaxProgresstime = ((long) aDuration) << 1;
+                if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
+                    //make impossible if too long
+                    base.mEUt = Integer.MAX_VALUE - 1;
+                    base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+                } else {
+                    base.mEUt = aEUt >> 2;
+                    base.mMaxProgresstime = (int) xMaxProgresstime;
+                }
             } else {
-                base.mEUt = aEUt >> 2;
-                base.mMaxProgresstime = (int) xMaxProgresstime;
-            }
-        } else {
-            //Long EUt calculation
-            long xEUt = aEUt;
-            //Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
+                //Long EUt calculation
+                long xEUt = aEUt;
+                //Isnt too low EUt check?
+                long tempEUt = Math.max(xEUt, V[1]);
 
-            base.mMaxProgresstime = aDuration;
+                base.mMaxProgresstime = aDuration;
 
-            while (tempEUt <= V[mTier - 1] * mAmperage) {
-                tempEUt <<= 2;//this actually controls overclocking
-                //xEUt *= 4;//this is effect of everclocking
-                base.mMaxProgresstime >>= 1;//this is effect of overclocking
-                xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
-            }
+                while (tempEUt <= V[mTier - 1] * mAmperage) {
+                    tempEUt <<= 2;//this actually controls overclocking
+                    //xEUt *= 4;//this is effect of everclocking
+                    base.mMaxProgresstime >>= 1;//this is effect of overclocking
+                    xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
+                }
 
-            while (xEUt > maxInputVoltage){
-                //downclock one notch until we are good again, we have overshot.
-                xEUt >>=2;
-                base.mMaxProgresstime <<= 1;
-            }
+                while (xEUt > maxInputVoltage){
+                    //downclock one notch until we are good again, we have overshot.
+                    xEUt >>=2;
+                    base.mMaxProgresstime <<= 1;
+                }
 
-            if (xEUt > Integer.MAX_VALUE - 1) {
-                base.mEUt = Integer.MAX_VALUE - 1;
-                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                base.mEUt = (int) xEUt;
-                if (base.mEUt == 0)
-                    base.mEUt = 1;
-                if (base.mMaxProgresstime <= 0)
-                    base.mMaxProgresstime = 1;//set time to 1 tick
+                if (xEUt > Integer.MAX_VALUE - 1) {
+                    base.mEUt = Integer.MAX_VALUE - 1;
+                    base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+                } else {
+                    base.mEUt = (int) xEUt;
+                    if (base.mEUt == 0)
+                        base.mEUt = 1;
+                    if (base.mMaxProgresstime <= 0)
+                        base.mMaxProgresstime = 1;//set time to 1 tick
+                }
             }
         }
-    }
 
     /**
      * === OVERCLOCKED PART 2 ===
@@ -269,24 +270,19 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
 
                 if (tRecipe != null) {
 
-                    if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100) &&
-                            !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
+                    if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100) && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
                         return false;
-                    }
 
                     if (tRecipe.mSpecialValue == -200 && (mCleanroom == null || mCleanroom.mEfficiency == 0))
                         return false;
-
 
                     ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
                     ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
                     boolean found_Recipe = false;
                     int processed = 0;
                     long nominalV = getnominalVoltage(this);
-                    //int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
-                    //long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
                     while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
-                        if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                        if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
                             found_Recipe = true;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                                 outputItems.add(tRecipe.getOutput(i));
@@ -308,9 +304,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                                 actualEUT = actualEUT / 2;
                                 divider++;
                             }
-                            GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
+                            calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, nominalV, this);
                         } else
-                            GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
+                            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
                         //In case recipe is too OP for that machine
                         if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                             return false;
@@ -331,7 +327,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                             case 256:
                                 TimeProgress = this.mMaxProgresstime/4;
                         }
-
                         this.mMaxProgresstime = Math.max(1, TimeProgress);
                         //this.mMaxProgresstime = tRecipe.mDuration / Parallel(); //THIS PARALLEL
                         this.mOutputItems = new ItemStack[outputItems.size()];
