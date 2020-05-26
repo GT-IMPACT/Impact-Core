@@ -202,16 +202,31 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                                     actualEUT = actualEUT / 2;
                                     divider++;
                                 }
-                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
+                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
                             } else
-                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                                GT_MetaTileEntity_MultiParallelBlockBase.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
                             //In case recipe is too OP for that machine
                             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                                 return false;
                             if (this.mEUt > 0) {
                                 this.mEUt = (-this.mEUt);
                             }
-                            this.mMaxProgresstime = tRecipe.mDuration / Parallel(); //THIS PARALLEL
+                            int TimeProgress;
+                            switch (Parallel()) {
+                                default:
+                                    TimeProgress = this.mMaxProgresstime;
+                                    break;
+                                case 16:
+                                    TimeProgress = this.mMaxProgresstime/2;
+                                    break;
+                                case 64:
+                                    TimeProgress = this.mMaxProgresstime/3;
+                                    break;
+                                case 256:
+                                    TimeProgress = this.mMaxProgresstime/4;
+                            }
+
+                            this.mMaxProgresstime = Math.max(1, TimeProgress);
                             this.mOutputItems = new ItemStack[outputItems.size()];
                             this.mOutputItems = outputItems.toArray(this.mOutputItems);
                             this.updateSlots();
