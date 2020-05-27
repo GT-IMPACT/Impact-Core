@@ -25,13 +25,17 @@
  */
 package com.impact.mods.GregTech.tileentities.multi.debug;
 
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
+import com.impact.mods.GregTech.tileentities.multi.gui.GT_Container_MultiParallelMachine;
 import gregtech.GT_Mod;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -66,6 +70,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
      */
     public GT_MetaTileEntity_MultiParallelBlockBase(final String aName) {
         super(aName);
+    }
+
+    /**
+     * === GUI CONTAINER ===
+     */
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity, true, 1);
     }
 
     /**

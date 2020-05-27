@@ -6,7 +6,7 @@ import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
-import gregtech.api.gui.GT_Container_MultiMachine;
+import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -42,7 +42,7 @@ abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList();
 
     public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
-        super(new GT_Container_MultiMachine(aInventoryPlayer, aTileEntity, true),
+        super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity, true, true),
                 RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile ));
         mName = aName;
     }
@@ -52,44 +52,45 @@ abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
 
         if (this.mContainer != null) {
             if (mContainer != null) {
-                if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 64) != 0) {
+                if ((((GT_Container_MultiParallelMachine) mContainer).mDisplayErrorCode & 64) != 0) {
                     fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 30, 0);
                     fontRendererObj.drawString(EnumChatFormatting.RED + "Incomplete Structure", 25, 40, 0);
                     fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 50, 0);
                 } else {
-                    if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 1) != 0) {
+                    if ((((GT_Container_MultiParallelMachine) this.mContainer).mDisplayErrorCode & 1) != 0) {
                         this.fontRendererObj.drawString(this.trans("132", EnumChatFormatting.WHITE +"Need" + EnumChatFormatting.RED +" Wrench"), 10, 20, 0);
                     }
 
-                    if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 2) != 0) {
+                    if ((((GT_Container_MultiParallelMachine) this.mContainer).mDisplayErrorCode & 2) != 0) {
                         this.fontRendererObj.drawString(this.trans("133", EnumChatFormatting.WHITE +"Need"+ EnumChatFormatting.RED +" Screwdriver"), 10, 29, 0);
                     }
 
-                    if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 4) != 0) {
+                    if ((((GT_Container_MultiParallelMachine) this.mContainer).mDisplayErrorCode & 4) != 0) {
                         this.fontRendererObj.drawString(this.trans("134", EnumChatFormatting.WHITE +"Need"+ EnumChatFormatting.RED +" SoftHammer"), 10, 38, 0);
                     }
 
-                    if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 8) != 0) {
+                    if ((((GT_Container_MultiParallelMachine) this.mContainer).mDisplayErrorCode & 8) != 0) {
                         this.fontRendererObj.drawString(this.trans("135", EnumChatFormatting.WHITE +"Need"+ EnumChatFormatting.RED +" Hammer"), 10, 47, 0);
                     }
 
-                    if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 16) != 0) {
+                    if ((((GT_Container_MultiParallelMachine) this.mContainer).mDisplayErrorCode & 16) != 0) {
                         this.fontRendererObj.drawString(this.trans("136", EnumChatFormatting.WHITE +"Need"+ EnumChatFormatting.RED +" Soldering"), 10, 56, 0);
                     }
 
-                    if ((((GT_Container_MultiMachine) this.mContainer).mDisplayErrorCode & 32) != 0) {
+                    if ((((GT_Container_MultiParallelMachine) this.mContainer).mDisplayErrorCode & 32) != 0) {
                         this.fontRendererObj.drawString(this.trans("137", EnumChatFormatting.WHITE +"Need"+ EnumChatFormatting.RED +" Crowbar"), 10, 65, 0);
                     }
                 }
             }
 
-            if (((GT_Container_MultiMachine) mContainer).mDisplayErrorCode == 0) {
+            if (((GT_Container_MultiParallelMachine) mContainer).mDisplayErrorCode == 0) {
+
                 if (getmMode() == null) {
                     fontRendererObj.drawString(EnumChatFormatting.RED + "Select mode", 10, 36, 16448255);
                 } else {
                     fontRendererObj.drawString(EnumChatFormatting.GREEN + getmMode() + "mode", 6, 36, 16448255);
                 }
-                if (((GT_Container_MultiMachine) mContainer).mActive == 0) {
+                if (((GT_Container_MultiParallelMachine) mContainer).mActive == 0) {
                     fontRendererObj.drawString("Progress:"+EnumChatFormatting.RED+" not working", 10, 22, 16448255);
                 } else {
                     double tScale = ( (double) this.mContainer.mProgressTime / (double) this.mContainer.mMaxProgressTime)*100;
@@ -113,15 +114,18 @@ abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
         int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
         if (this.mContainer != null) {
-            if (((GT_Container_MultiMachine) mContainer).mDisplayErrorCode == 0) {
-                if (((GT_Container_MultiMachine) mContainer).mActive == 0) {
+            if (((GT_Container_MultiParallelMachine) mContainer).mDisplayErrorCode == 0) {
+                if (((GT_Container_MultiParallelMachine) mContainer).mActive == 0) {
+                    drawTexturedModalRect(x + 152, y + 61, 236, 24, 16, 16);
                     drawTexturedModalRect(x + 157, y + 16, 238, 0, 9, 9);
-
                 } else
+                    drawTexturedModalRect(x + 152, y + 61, 236, 39, 16, 16);
                     drawTexturedModalRect(x + 157, y + 16, 247, 0, 9, 9);
                 double tScale = (double) this.mContainer.mProgressTime / (double) this.mContainer.mMaxProgressTime;
                 drawTexturedModalRect(x + 22, y + 55, 0, 232, Math.min(113, (int) (tScale * 113)), 9);
                 drawTexturedModalRect(x + 19, y + 52, 0, 241, 119, 15);
+            } else {
+                drawTexturedModalRect(x + 152, y + 61, 236, 9, 16, 16);
             }
         }
     }
