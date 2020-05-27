@@ -15,9 +15,6 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 	
 	private static final Block_LapotronicEnergyUnit instance = new Block_LapotronicEnergyUnit();
 	
-	private IIcon iconBaseSide;
-	private IIcon iconBaseTop;
-	
 	private IIcon iconLapoIVSide;
 	private IIcon iconLapoIVTop;
 	private IIcon iconLapoLuVSide;
@@ -36,19 +33,14 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 	public static Block registerBlock() {
 		final String blockName = "impact_lapotronicenergyunit_block";
 		instance.setBlockName(blockName);
-		instance.setCreativeTab(CreativeTabs.tabMisc);
 		instance.setHardness(5.0f);
 		instance.setResistance(6.0f);
 		GameRegistry.registerBlock(instance, IB_LapotronicEnergyUnit.class, blockName);
-		
 		return instance;
 	}
 	
 	@Override
 	public void registerBlockIcons(IIconRegister ir) {
-		iconBaseSide = ir.registerIcon("impact:LSCBase_side");
-		iconBaseTop = ir.registerIcon("impact:LSCBase_top");
-		
 		iconLapoIVSide = ir.registerIcon("impact:LapotronicEnergyUnit1_side");
 		iconLapoIVTop = ir.registerIcon("impact:LapotronicEnergyUnit1_top");
 		iconLapoLuVSide = ir.registerIcon("impact:LapotronicEnergyUnit2_side");
@@ -65,8 +57,6 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 	@Override
 	@SuppressWarnings({"unchecked" })
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-		// Multi casing
-		par3List.add(new ItemStack(par1, 1, 0));
 		// Lapo units IV - UV
 		par3List.add(new ItemStack(par1, 1, 1));
 		par3List.add(new ItemStack(par1, 1, 2));
@@ -79,7 +69,6 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 	@Override
 	public IIcon getIcon(int side, int meta) {
 		switch(meta) {
-		case 0: return (side < 2) ? iconBaseTop : iconBaseSide;
 		case 1: return (side < 2) ? iconLapoIVTop : iconLapoIVSide;
 		case 2: return (side < 2) ? iconLapoLuVTop : iconLapoLuVSide;
 		case 3: return (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;

@@ -25,14 +25,15 @@ public class GT_Block_Case2
             Textures.BlockIcons.casingTexturePages[3][b+16] /** 32 */ = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring*/
         }
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Nuclear Turbine Casing"        ); //400
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Electromagnetic Casing"        ); //401
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Extradification Casing"        ); //402
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Maceration Casing"             ); //403
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "3D Printed Casing"             ); //404
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Configuration 3x3 Casing"      ); //405
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Configuration 4x4 Casing"      ); //406
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Primitive Pump Deck"   ); //407
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Nuclear Turbine Casing"); //400
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Electromagnetic Casing"); //401
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Extradification Casing"); //402
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Maceration Casing"); //403
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "3D Printed Casing"); //404
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Configuration 3x3 Casing"); //405
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Configuration 4x4 Casing"); //406
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Primitive Pump Deck"); //407
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Lapotronic Super Capacitor Casing"); //408
 
 /*================================================================================================================*/
 /*================================================================================================================*/
@@ -45,11 +46,12 @@ public class GT_Block_Case2
         GT_ItemList.DDDPrinterCasing3x3     .set(new ItemStack(this, 1, 5));
         GT_ItemList.DDDPrinterCasing4x4     .set(new ItemStack(this, 1, 6));
         GT_ItemList.PrimitiveWaterPumpCase  .set(new ItemStack(this, 1, 7));
+        GT_ItemList.LSCC                    .set(new ItemStack(this, 1, 8));
 
     }
 
     private static IIcon ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
-    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, PrimitiveWaterPumpCaseSide1,
+    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, PrimitiveWaterPumpCaseSide1, LSCCside, LSCCtop,
     end;
     private static Textures.BlockIcons.CustomIcon NUKE_TURBINE_ST1, NUKE_TURBINE_ST2, NUKE_TURBINE_ST3, NUKE_TURBINE_ST4,
     NUKE_TURBINE_ST5, NUKE_TURBINE_ST6, NUKE_TURBINE_ST7, NUKE_TURBINE_ST8, NUKE_TURBINE_ST9;
@@ -63,7 +65,9 @@ public class GT_Block_Case2
         DDDPrinterCasing3x3     = aIconRegister.registerIcon(RES_BLOCK +  "3DPrinterCasing3x3"     );
         DDDPrinterCasing4x4     = aIconRegister.registerIcon(RES_BLOCK +  "3DPrinterCasing4x4"     );
         PrimitiveWaterPumpCase  = aIconRegister.registerIcon(RES_BLOCK +  "PrimitiveWaterPumpCase" );
-        PrimitiveWaterPumpCaseSide1  = aIconRegister.registerIcon(RES_BLOCK +  "PrimitiveWaterPumpCaseSide1" );
+        PrimitiveWaterPumpCaseSide1 = aIconRegister.registerIcon(RES_BLOCK +  "PrimitiveWaterPumpCaseSide1" );
+        LSCCside                = aIconRegister.registerIcon(RES_BLOCK +  "LSCBase_side" );
+        LSCCtop                 = aIconRegister.registerIcon(RES_BLOCK +  "LSCBase_top" );
     }
 
     @Override
@@ -78,8 +82,9 @@ public class GT_Block_Case2
            case 5: return DDDPrinterCasing3x3;
            case 6: return DDDPrinterCasing4x4;
            case 7: return aSide == 1 ? PrimitiveWaterPumpCaseSide1 : PrimitiveWaterPumpCase;
+           case 8: return aSide == 1 ? LSCCtop : aSide == 0 ? LSCCtop : LSCCside;
 
-           default: return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+           default: return null;
         }
     }
 

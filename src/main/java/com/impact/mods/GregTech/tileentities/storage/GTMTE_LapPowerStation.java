@@ -4,10 +4,12 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import com.impact.block.Block_LapotronicEnergyUnit;
+import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -20,10 +22,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
@@ -46,9 +48,14 @@ import static com.mojang.realmsclient.gui.ChatFormatting.*;
 
 public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 
+    private static Textures.BlockIcons.CustomIcon ScreenOFF;
+    private static Textures.BlockIcons.CustomIcon ScreenON;
+
     private static final Block LSC_PART = lscLapotronicEnergyUnit;
-    private static final int CASING_META = 0;
-    private static final int CASING_TEXTURE_ID = 62;
+    private static final Block CASING = CORE_API.sCaseCore2;
+    private static final int CASING_META = 8;
+    private static final ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16+CASING_META];
+    private static final int CASING_TEXTURE_ID = CASING_META + 16 + 128*3;
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
     private static final BigDecimal PASSIVE_DISCHARGE_FACTOR_PER_TICK =
@@ -109,15 +116,22 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/LPS");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/LPS_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
                                  boolean aActive, boolean aRedstone) {
-        ITexture[] sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-                Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
-        if (aSide == aFacing && aActive) {
-            sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW,
-                    Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
-        }
-        return sTexture;
+        return aSide == aFacing
+                ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
+                aActive
+                        ? ScreenON
+                        : ScreenOFF)}
+                : new ITexture[]{INDEX_CASE};
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -214,7 +228,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                             && !this.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
                         // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART)
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                             // Seems to be valid casing. Decrement counter.
                             minCasingAmount--;
