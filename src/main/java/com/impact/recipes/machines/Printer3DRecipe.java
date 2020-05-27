@@ -174,6 +174,44 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 8), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Osmiridium, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 64)
         }, GT_ItemList.AdvVacuumFreezer.get(1L), null, 200 * 20, 122880);
 
+        //LapatronicSupercapacitor
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Hull_IV.get(1L), ItemList.Battery_TurboCharger_4by4_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Kovar, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8),
+                ItemList.Circuit_Chip_HPIC.get(16L), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Platinum, 16), ItemList.Reactor_Coolant_He_6.get(1L), ItemList.Reactor_Coolant_He_6.get(1L),
+                ItemList.Electric_Pump_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Inconel690, 8), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Kovar, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 32),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 64)
+        }, GT_ItemList.LapPowerStation.get(1L), null, 200 * 20, 4096);
+
+        //LapatronicCapacitorIV
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_LapotronicOrb.get(1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, 8), ItemList.Circuit_Chip_PIC.get(12L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.TungstenSteel, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HastelloyC276, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 64)
+        }, GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 1), null, 100 * 20, 7680);
+
+        //LapatronicCapacitorLuV
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_LapotronicOrb2.get(1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 8), ItemList.Circuit_Chip_HPIC.get(12L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.YttriumBariumCuprate, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HastelloyN, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 64)
+        }, GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 2), null, 120 * 20, 30720);
+
+        //LapatronicCapacitorZPM
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_Module.get(1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 8), ItemList.Circuit_Chip_UHPIC.get(12L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Lafium, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 64)
+        }, GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 3), null, 140 * 20, 122880);
+
+        //LapatronicCapacitorUV
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_Cluster.get(1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NaquadahAlloy, 8), ItemList.Circuit_Chip_NPIC.get(12L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Duranium, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.CinobiteA243, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tritanium, 64)
+        }, GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 4), null, 160 * 20, 500000);
+
+        //LapatronicCapacitorUHV
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.ZPM2.get(1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 8), ItemList.Circuit_Chip_PPIC.get(12L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Pikyonium64B, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 64)
+        }, GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 5), null, 180 * 20, 2000000);
+
 
         /* ================================= end IMPACT MOD =================================*/
 

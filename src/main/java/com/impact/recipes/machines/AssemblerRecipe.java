@@ -298,6 +298,9 @@ public class AssemblerRecipe implements Runnable {
         //UEV
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Quantum, 1), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 12), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Quantum, 20), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Phoenixite, 20), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Quantum, 10), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 24)}, null, ItemList.Casing_UEV.get(1L), 1000, 2000000);
 
+        //Lapotron Casing
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 12), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Palladium, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HastelloyC276, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)}, null, GT_ItemList.LSCC.get(1L), 600, 7680);
+
         /*====END CASINGS====*/
         /**====START QUANTUM SUITE====*/
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(QuantumPartHelmet.getMetaID(), 1),
