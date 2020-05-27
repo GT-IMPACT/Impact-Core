@@ -2,6 +2,7 @@ package com.impact.recipes.machines;
 
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
+import com.impact.mods.GregTech.GTregister.GT_ItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -877,7 +878,7 @@ public class AssemblyLineRecipe implements Runnable {
                         Materials.Neutronium.getMolten(2304)},
                 GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L, 0), 6000, 1000000);
 
-        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(7, 1), 576000, new Object[]{
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(7, 1), 1152000, new Object[]{
                         CoreItems2.getRecipe(25, 1),
                         CoreItems2.getRecipe(14, 12),
                         CoreItems2.getRecipe(15, 24),
@@ -891,6 +892,69 @@ public class AssemblyLineRecipe implements Runnable {
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
                         Materials.Phoenixite.getMolten(4608)},
                 GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L, 0), 7000, 4000000);
+
+        //UpgradeCasingT2
+        GT_Values.RA.addAssemblylineRecipe(GT_ItemList.UpgradeCasingT1.get(1L), 144000, new Object[]{
+                ItemList.Hull_LuV.get(1L),
+                GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 0),
+                GT_ItemList.UpgradeCasingT1.get(4L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HastelloyN, 16),
+                ItemList.Electric_Motor_LuV.get(4L),
+                ItemList.Electric_Piston_LuV.get(4L),
+                ItemList.Conveyor_Module_LuV.get(4L),
+                ItemList.Robot_Arm_LuV.get(4L),
+                new Object[]{OrePrefixes.circuit.get(Materials.Master), 8},
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate, 16),
+                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Chrome, 16),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 32)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(1152),
+                        Materials.Lubricant.getFluid(1000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)
+                },
+                GT_ItemList.UpgradeCasingT2.get(1L), 120 * 20, 30720);
+
+        //UpgradeCasingT3
+        GT_Values.RA.addAssemblylineRecipe(GT_ItemList.UpgradeCasingT2.get(1L), 288000, new Object[]{
+                ItemList.Hull_ZPM.get(1L),
+                GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 1),
+                GT_ItemList.UpgradeCasingT2.get(4L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lafium, 16),
+                ItemList.Electric_Motor_ZPM.get(4L),
+                ItemList.Electric_Piston_ZPM.get(4L),
+                ItemList.Conveyor_Module_ZPM.get(4L),
+                ItemList.Robot_Arm_ZPM.get(4L),
+                new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 8},
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 16),
+                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iridium, 16),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 48)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(2304),
+                        Materials.Lubricant.getFluid(2000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000)
+                },
+                GT_ItemList.UpgradeCasingT3.get(1L), 160 * 20, 122880);
+
+        //UpgradeCasingT4
+        GT_Values.RA.addAssemblylineRecipe(GT_ItemList.UpgradeCasingT3.get(1L), 576000, new Object[]{
+                ItemList.Hull_UV.get(1L),
+                GT_ModHandler.getModItem("extracells", "craftingstorage", 1, 2),
+                GT_ItemList.UpgradeCasingT3.get(4L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CinobiteA243, 16),
+                ItemList.Electric_Motor_UV.get(4L),
+                ItemList.Electric_Piston_UV.get(4L),
+                ItemList.Conveyor_Module_UV.get(4L),
+                ItemList.Robot_Arm_UV.get(4L),
+                new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 8},
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 16),
+                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Osmium, 16),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 64)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(4608),
+                        Materials.Lubricant.getFluid(4000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000)
+                },
+                GT_ItemList.UpgradeCasingT4.get(1L), 200 * 20, 500000);
 
     }
 }
