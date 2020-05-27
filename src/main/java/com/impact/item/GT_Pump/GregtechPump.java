@@ -654,9 +654,6 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                     }
                 }
             }
-            if (GregTech_API.sThaumcraftCompat != null) {
-                GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
-            }
             return rStack;
         }
         return null;
