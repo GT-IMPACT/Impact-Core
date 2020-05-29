@@ -21,25 +21,7 @@ public class TecTechRecipe implements Runnable {
 
     @Override
     public void run() {
-
-//Dynamo Hatches UEV-UIV
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Dynamo_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 2)}, Materials.Silver.getMolten(4608), CustomItemList.eM_dynamoMulti4_UEV.get(1), 100, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Transformer_UIV_UEV.get(1), CustomItemList.eM_dynamoMulti4_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUEV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 4)}, Materials.Electrum.getMolten(4608), CustomItemList.eM_dynamoMulti16_UEV.get(1), 200, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.WetTransformer_UIV_UEV.get(1), CustomItemList.eM_dynamoMulti16_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUEV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 6)}, Materials.Tungsten.getMolten(4608), CustomItemList.eM_dynamoMulti64_UEV.get(1), 400, 2000000);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Dynamo_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Neutronium, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 2)}, Materials.Silver.getMolten(8000), CustomItemList.eM_dynamoMulti4_UIV.get(1), 100, 8000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Transformer_UMV_UIV.get(1), CustomItemList.eM_dynamoMulti4_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Neutronium, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4)}, Materials.Electrum.getMolten(8000), CustomItemList.eM_dynamoMulti16_UIV.get(1), 200, 8000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.WetTransformer_UMV_UIV.get(1), CustomItemList.eM_dynamoMulti16_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Neutronium, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 6)}, Materials.Tungsten.getMolten(8000), CustomItemList.eM_dynamoMulti64_UIV.get(1), 400, 8000000);
-
-        //Energy Hatches 4A-64A  IV-UHV
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Energy_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 2)}, Materials.Silver.getMolten(4000), CustomItemList.eM_energyMulti4_UEV.get(1), 100, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Transformer_UIV_UEV.get(1), CustomItemList.eM_energyMulti4_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUEV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 2)}, Materials.Electrum.getMolten(4000), CustomItemList.eM_energyMulti16_UEV.get(1), 200, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.WetTransformer_UIV_UEV.get(1), CustomItemList.eM_energyMulti16_UEV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUEV, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 2)}, Materials.Tungsten.getMolten(4000), CustomItemList.eM_energyMulti64_UEV.get(1), 400, 2000000);
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Energy_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 2)}, Materials.Silver.getMolten(8000), CustomItemList.eM_energyMulti4_UIV.get(1), 100, 8000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Transformer_UMV_UIV.get(1), CustomItemList.eM_energyMulti4_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4)}, Materials.Electrum.getMolten(8000), CustomItemList.eM_energyMulti16_UIV.get(1), 200, 8000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.WetTransformer_UMV_UIV.get(1), CustomItemList.eM_energyMulti16_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 6)}, Materials.Tungsten.getMolten(8000), CustomItemList.eM_energyMulti64_UIV.get(1), 400, 8000000);
-
+        
 //####################################################################################################################################################################################################################################################################################################################################################################################################
 
         //Laser Dynamo IV-UEV 256/t
