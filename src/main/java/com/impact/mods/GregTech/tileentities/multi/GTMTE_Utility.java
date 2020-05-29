@@ -296,16 +296,13 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-             if (mMode == -1) { mMode += 1; }
-        else if (mMode ==  0) { mMode += 1; }
-        else if (mMode ==  1) { mMode += 1; }
-        else if (mMode ==  2) { mMode += 1; }
-        else if (mMode ==  3) { mMode += 1; }
-        else if (mMode ==  4) { mMode += 1; }
-                                else { mMode =  0; }
-        mModed = (mMode == 0 ? " Compressor " : mMode == 1 ? " Extractor " : mMode == 2 ? " Canning " : mMode == 3 ? " Packager " : mMode == 4 ? " Recycler " :
-                mMode == 5 ? " Hammer " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mMode++;
+            if (mMode > 5) mMode = 0;
+
+            mModed = (mMode == 0 ? " Compressor " : mMode == 1 ? " Extractor " : mMode == 2 ? " Canning " : mMode == 3 ? " Packager " : mMode == 4 ? " Recycler " : " Hammer ");
+            GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        }
     }
 
     @Override

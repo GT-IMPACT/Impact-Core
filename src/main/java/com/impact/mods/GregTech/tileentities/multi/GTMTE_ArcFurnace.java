@@ -295,25 +295,4 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
 
 
-//    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-//             if (mMode == -1) { mMode += 1; }
-//        else if (mMode ==  0) { mMode += 1; }
-//        else { mMode =  0; }
-//
-//        mModed = (mMode == 0 ? " Arc Furnace " : mMode == 1 ? " Plasma Arc Furnace not worked " : null);
-//        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
-//    }
-//
-//    @Override
-//    public void saveNBTData(NBTTagCompound aNBT) {
-//        aNBT.setByte("mMode", mMode);
-//        super.saveNBTData(aNBT);
-//    }
-//
-//    @Override
-//    public void loadNBTData(NBTTagCompound aNBT) {
-//        this.mMode = aNBT.getByte("mMode");
-//        super.loadNBTData(aNBT);
-//    }
-
 }

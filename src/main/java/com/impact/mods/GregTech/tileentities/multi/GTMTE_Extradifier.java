@@ -304,29 +304,19 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
     /** === POLLUTION === */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-//        if (this.mLevel == 4 ) {
-//            return 4*50;
-//        }
-//        else if (this.mLevel == 16 ) {
-//            return 16*50;
-//        }
-//        else if (this.mLevel == 64 ) {
-//            return 64*50;
-//        }
-//        else if (this.mLevel == 256) {
-//            return 256*50;
-//        } else
             return 0;
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-             if (mMode == -1) { mMode += 1; }
-        else if (mMode ==  0) { mMode += 1; }
-        else { mMode =  0; }
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mMode++;
+            if (mMode > 1) mMode = 0;
 
-        mModed = (mMode == 0 ? " Fluid Extractor " : mMode == 1 ? " Fluid Solidifier " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+
+            mModed = (mMode == 0 ? " Fluid Extractor " : " Fluid Solidifier ");
+            GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        }
     }
 
     @Override

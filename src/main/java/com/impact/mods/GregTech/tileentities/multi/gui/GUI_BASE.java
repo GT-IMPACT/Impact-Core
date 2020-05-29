@@ -84,12 +84,7 @@ abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
             }
 
             if (((GT_Container_MultiParallelMachine) mContainer).mDisplayErrorCode == 0) {
-
-                if (getmMode() == null) {
-                    fontRendererObj.drawString(EnumChatFormatting.RED + "Select mode", 10, 36, 16448255);
-                } else {
-                    fontRendererObj.drawString(EnumChatFormatting.GREEN + getmMode() + "mode", 6, 36, 16448255);
-                }
+                fontRendererObj.drawString(EnumChatFormatting.GREEN + (getmMode() == null? "Select " : getmMode())  + "mode", 6, 36, 16448255);
                 if (((GT_Container_MultiParallelMachine) mContainer).mActive == 0) {
                     fontRendererObj.drawString("Progress:"+EnumChatFormatting.RED+" not working", 10, 22, 16448255);
                 } else {

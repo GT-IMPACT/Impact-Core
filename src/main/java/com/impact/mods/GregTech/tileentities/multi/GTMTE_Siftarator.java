@@ -295,12 +295,13 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-             if (mMode == -1) { mMode += 1; }
-        else if (mMode ==  0) { mMode += 1; }
-        else { mMode =  0; }
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mMode++;
+            if (mMode > 1) mMode = 0;
 
-        mModed = (mMode == 0 ? " Separator " : mMode == 1 ? " Sifter " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+            mModed = (mMode == 0 ? " Separator " : " Sifter ");
+            GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        }
     }
 
     @Override

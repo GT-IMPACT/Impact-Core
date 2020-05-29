@@ -316,12 +316,14 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        checkMachine(getBaseMetaTileEntity(), getStackInSlot(0));
-             if (mMode == -1) { mMode += 1; }
-        else if (mMode ==  0) { mMode += 1; }
-                                else { mMode =  0; }
-        mModed = (mMode == 0 ? " 3D Printer 3x3 " : mMode == 1 ? " 3D Printer 4x4 " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.GREEN + mModed);
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+                mMode++;
+                if (mMode > 1) mMode = 0;
+
+            mModed = (mMode == 0 ? " 3D Printer 3x3 " : mMode == 1 ? " 3D Printer 4x4 " : null);
+            GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.GREEN + mModed);
+            checkMachine(getBaseMetaTileEntity(), getStackInSlot(0));
+        }
     }
 
     @Override

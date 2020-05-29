@@ -304,13 +304,13 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-             if (mMode == -1) { mMode += 1; }
-        else if (mMode ==  0) { mMode += 1; }
-        else if (mMode ==  1) { mMode += 1; }
-        else if (mMode ==  2) { mMode += 1; }
-                                else { mMode =  0; }
-        mModed = (mMode == 0 ? " Autoclave " : mMode == 1 ? " Dust Washer " : mMode == 2 ? " Ore Washer " : mMode == 3 ? " Chemical Bath " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        if (aSide == 1) {
+            mMode++;
+            if (mMode > 3) mMode = 0;
+
+            mModed = (mMode == 0 ? " Autoclave " : mMode == 1 ? " Dust Washer " : mMode == 2 ? " Ore Washer " : " Chemical Bath ");
+            GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        }
     }
 
     @Override

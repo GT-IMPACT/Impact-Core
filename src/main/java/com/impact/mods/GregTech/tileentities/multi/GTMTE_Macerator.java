@@ -91,6 +91,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (max x8)")
                 .addOutputBus("Any casing (max x1)")
+                .addMuffler("Any casing (max x1)")
                 .addCasingInfo("Maceration Casing")
                 .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -245,42 +246,18 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase {
      */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-//        if (this.mLevel == 4 ) {
-//            return 4*50;
-//        }
-//        else if (this.mLevel == 16 ) {
-//            return 16*50;
-//        }
-//        else if (this.mLevel == 64 ) {
-//            return 64*50;
-//        }
-//        else if (this.mLevel == 256) {
-//            return 256*50;
-//        } else
+        if (this.mLevel == 4 ) {
+            return 4*50;
+        }
+        else if (this.mLevel == 16 ) {
+            return 16*50;
+        }
+        else if (this.mLevel == 64 ) {
+            return 64*50;
+        }
+        else if (this.mLevel == 256) {
+            return 256*50;
+        } else
         return 0;
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
-
-
-//    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-//             if (mMode == -1) { mMode += 1; }
-//        else if (mMode ==  0) { mMode += 1; }
-//        else if (mMode ==  1) { mMode += 1; }
-//                                else { mMode =  0; }
-//
-//        String mModed = (mMode == 0 ? " Forming Press " : mMode == 1 ? " Bending " : mMode == 2 ? " Extruder " : null);
-//        GT_Utility.sendChatToPlayer(aPlayer, "Now " + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
-//    }
-//
-//    @Override
-//    public void saveNBTData(NBTTagCompound aNBT) {
-//        aNBT.setByte("mMode", mMode);
-//        super.saveNBTData(aNBT);
-//    }
-//
-//    @Override
-//    public void loadNBTData(NBTTagCompound aNBT) {
-//        this.mMode = aNBT.getByte("mMode");
-//        super.loadNBTData(aNBT);
-//    }
-
 }
