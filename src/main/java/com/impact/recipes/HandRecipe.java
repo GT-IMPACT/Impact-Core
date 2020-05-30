@@ -362,5 +362,9 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("chestup", "OSMIUMNEUTRONIUMUpgrade", 1L, 0), bits, new Object[]{"SPS", "PCP", "dPh", 'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 1), 'P', GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 1), 'C', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 1)});
 
         /* ==== END CHEST ==== */
+        /** ==== START SFM ==== */
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("StevesFactoryManager", "BlockMachineManagerName", 1L, 0), bits, new Object[]{"PTP", "RDR", "PCP", 'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1), 'R', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1), 'T', ItemList.Cover_Screen, 'D', ItemList.Casing_Processor, 'C', GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0)});
+
+        /* ==== END SFM ==== */
     }
 }
