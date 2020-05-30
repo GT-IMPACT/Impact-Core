@@ -5,6 +5,7 @@ import com.impact.block.*;
 import com.impact.item.GT_Pump.GregtechPump;
 import com.impact.util.SendUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -76,6 +77,17 @@ public class ItemRegistery {
         hideItem(new ItemStack(decorateBlock[2], 1, 3));
         hideItem(new ItemStack(decorateBlock[2], 1, 4));
         INFO("[Init] Item Registery Hide Fake BLocks - Loaded");
+        
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeLine", 1L, 0));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeSpeedup", 1L, 0));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeSCurve", 1L, 0));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeGain", 1L, 0));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 0));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 1));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 2));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 3));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 4));
+        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 5));
 
         //OreDictionary
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
