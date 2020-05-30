@@ -72,7 +72,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 .addPollution(200, 12800)
-                .addTypeMachine("Arc Furnace")
+                .addTypeMachine("Arc Furnace, Alloy Smelter")
                 .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
@@ -97,13 +97,13 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " Arc Furnace ");
+        return new GUI_ArcFurnace(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
     }
 
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes;
+        return mMode == 0 ?  GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes : GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
     }
 
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
@@ -295,4 +295,25 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
 
 
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mMode++;
+            if (mMode > 1) mMode = 0;
+
+            mModed = (mMode == 0 ? " Arc Furnace " : " Alloy Smelter ");
+            GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setByte("mMode", mMode);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        this.mMode = aNBT.getByte("mMode");
+        super.loadNBTData(aNBT);
+    }
 }

@@ -1,7 +1,7 @@
 package com.impact.mods.GregTech.tileentities.multi.gui;
 
 import com.impact.mods.GregTech.tileentities.multi.GTMTE_ArcFurnace;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Centrifuge;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_Wire;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 

@@ -72,7 +72,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addInfo("One-block machine analog")
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                .addTypeMachine("Compressor, Extractor, Canning, Packager, Recycler, Hammer")
+                .addTypeMachine("Compressor, Extractor, Canning, Packager, Recycler, Hammer, Lathe")
                 .addScrew()
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3)
@@ -103,7 +103,8 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sCompressorRecipes : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sExtractorRecipes :
                mMode == 2 ? GT_Recipe.GT_Recipe_Map.sCannerRecipes : mMode == 3 ? GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes :
-               mMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes : GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+               mMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes : mMode == 5 ? GT_Recipe.GT_Recipe_Map.sHammerRecipes :
+                            GT_Recipe.GT_Recipe_Map.sLatheRecipes;
     }
     public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
         final Vector3i offset = new Vector3i();
@@ -298,9 +299,9 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
-            if (mMode > 5) mMode = 0;
+            if (mMode > 6) mMode = 0;
 
-            mModed = (mMode == 0 ? " Compressor " : mMode == 1 ? " Extractor " : mMode == 2 ? " Canning " : mMode == 3 ? " Packager " : mMode == 4 ? " Recycler " : " Hammer ");
+            mModed = (mMode == 0 ? " Compressor " : mMode == 1 ? " Extractor " : mMode == 2 ? " Canning " : mMode == 3 ? " Packager " : mMode == 4 ? " Recycler " : mMode == 5 ? " Hammer " : " Lathe ");
             GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
         }
     }
