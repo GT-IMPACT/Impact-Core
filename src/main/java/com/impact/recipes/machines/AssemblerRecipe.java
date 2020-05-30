@@ -513,6 +513,39 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 1), GT_Utility.getIntegratedCircuit(4)}, null, GT_ModHandler.getModItem("chestup", "OSMIUMNEUTRONIUMUpgrade", 1L, 0), 170, 1048576);
 
         /* ==== END CHESTUP ==== */
+        /** ==== START SFM ==== */
+        // --- Inventory Cable
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), GT_ModHandler.getModItem("EnderIO", "itemItemConduit", 2L, 0), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.BlueSteel, 4)}, null, GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), 200, 480);
+        // --- Block Gate
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Robot_Arm_HV.get(1), GT_Utility.getIntegratedCircuit(1)}, Materials.Redstone.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableBreakerName", 1L, 0), 200, 480);
+        // --- Sign Updater
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableBreakerName", 1L, 0), GT_ModHandler.getModItem("IC2", "itemToolPainter", 1L, 0), GT_Utility.getIntegratedCircuit(1)}, Materials.Redstone.getMolten(576), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableSignName", 1L, 0), 300, 480);
+        // --- Cable Cluster
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), GT_Utility.getIntegratedCircuit(1)}, Materials.Redstone.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableClusterName", 1L, 0), 200, 480);
+        // --- Advanced Cable Cluster
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 8L, 0), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableClusterName", 1L, 8), 200, 480);
+        // --- Redstone Emmiter
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Emitter_HV.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Electrum.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableOutputName", 1L, 0), 200, 480);
+        // --- Redstone Reciever
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Sensor_HV.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Electrum.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableInputName", 1L, 0), 200, 480);
+        // --- Inventory Relay
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Cover_ActivityDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableRelayName", 1L, 0), 200, 480);
+        // --- Advanced Inventory Relay
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), GT_ModHandler.getModItem("computronics", "computronics.detector", 1L, 0), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(576), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableRelayName", 1L, 8), 300, 480);
+        // --- Block Detector
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Cover_ItemDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableBUDName", 1L), 200, 480);
+        // --- Cable Camouflage
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Cover_Screen.get(2), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L), 200, 480);
+        // --- Double Sided Cable Camouflage
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2), GT_Utility.getIntegratedCircuit(1)}, Materials.RedAlloy.getMolten(576), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L, 1), 300, 480);
+        // --- Transforming Cable Camouflage
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L, 1), ItemList.Field_Generator_LV.get(1), GT_Utility.getIntegratedCircuit(1)}, Materials.RedAlloy.getMolten(864), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L, 2), 400, 480);
+        // --- Item Valve
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), GT_ModHandler.getModItem("minecraft", "hopper", 2L, 0), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableIntakeName", 1L), 200, 480);
+        // --- Rapid Item Valve
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableIntakeName", 1L, 0), ItemList.Conveyor_Module_HV.get(1), GT_Utility.getIntegratedCircuit(1)}, Materials.RedAlloy.getMolten(576), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableIntakeName", 1L, 8), 300, 480);
+
+        /* ==== END SFM ==== */
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
         ItemStack[] outHatches = {GT_ItemList.Hatch_Output_UEV.get(1), GT_ItemList.Hatch_Output_UIV.get(1), GT_ItemList.Hatch_Output_UMV.get(1), GT_ItemList.Hatch_Output_UXV.get(1), GT_ItemList.Hatch_Output_OPV.get(1), GT_ItemList.Hatch_Output_MAX.get(1)};
