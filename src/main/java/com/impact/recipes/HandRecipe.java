@@ -442,7 +442,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Inventory Panel
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("EnderIO", "blockInventoryPanel", 1L), bits, new Object[]{"PGP", "COR", "PIP", 'O', GT_ModHandler.getModItem("TConstruct", "CraftingSlab", 1L), 'P', OrePrefixes.plate.get(Materials.Steel), 'I', OrePrefixes.circuit.get(Materials.Basic), 'G', GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), 'C', ItemList.Conveyor_Module_LV, 'R', ItemList.Robot_Arm_LV});
         // --- Remote Awareness Upgrade
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("EnderIO", "itemFunctionUpgrade", 1L), bits, new Object[]{"SES", "PDP", "hGs", 'P', OrePrefixes.plate.get(Materials.Silicon), 'S', OrePrefixes.screw.get(Materials.Steel), 'G', OrePrefixes.gear.get(Materials.Steel), 'E', OrePrefixes.gearGtSmall.get(Materials.Steel), 'D', OrePrefixes.gem.get(Materials.Diamond)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("EnderIO", "itemFunctionUpgrade", 1L), bits, new Object[]{"SES", "PDP", "hGd", 'P', OrePrefixes.plate.get(Materials.Silicon), 'S', OrePrefixes.screw.get(Materials.Steel), 'G', OrePrefixes.gear.get(Materials.Steel), 'E', OrePrefixes.gearGtSmall.get(Materials.Steel), 'D', OrePrefixes.gem.get(Materials.Diamond)});
 
         /* ==== END ENDER IO ==== */
     }
