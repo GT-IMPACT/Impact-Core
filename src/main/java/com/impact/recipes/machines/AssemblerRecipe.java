@@ -531,9 +531,9 @@ public class AssemblerRecipe implements Runnable {
         // --- Inventory Relay
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Cover_ActivityDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableRelayName", 1L, 0), 200, 480);
         // --- Advanced Inventory Relay
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), GT_ModHandler.getModItem("computronics", "computronics.detector", 1L, 0), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(576), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableRelayName", 1L, 8), 300, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Cover_ItemDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(576), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableRelayName", 1L, 8), 300, 480);
         // --- Block Detector
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Cover_ItemDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableBUDName", 1L), 200, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), GT_ModHandler.getModItem("ExtraUtilities", "budoff", 1L, 3), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableBUDName", 1L), 200, 480);
         // --- Cable Camouflage
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), ItemList.Cover_Screen.get(2), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L), 200, 480);
         // --- Double Sided Cable Camouflage
