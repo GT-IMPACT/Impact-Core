@@ -14,7 +14,7 @@ public class LoginHandler {
         event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
         event.player.addChatMessage(new ChatComponentText(" "));
         event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BOLD + "Welcome to IMPACT "/* + ModPackVersion*/) );
-        event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This is a conversion patch #1") );
+        event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This is a conversion patch #2") );
         event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "Please bring comments to " + EnumChatFormatting.AQUA + "https://discord.gg/bMf2qvd" ));
         event.player.addChatMessage(new ChatComponentText( " "));
         event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
