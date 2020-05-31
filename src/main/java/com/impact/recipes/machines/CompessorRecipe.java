@@ -27,5 +27,21 @@ public class CompessorRecipe implements Runnable {
 
         GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCsapling", 8L), CoreItems2.getRecipe(151, 1), 200, 2000000);
 
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("blockCokeCoal", 9), GregTech_API.getStackofAmountFromOreDict("CompressedCoalCoke", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("CompressedCoalCoke", 9), GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoalCoke", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoalCoke", 9), GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoalCoke", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoalCoke", 9), GregTech_API.getStackofAmountFromOreDict("QuadrupleCompressedCoalCoke", 1), 200, 8);
+
+        GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 9L), GregTech_API.getStackofAmountFromOreDict("CompressedCharcoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("CompressedCharcoal", 9), GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCharcoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCharcoal", 9), GregTech_API.getStackofAmountFromOreDict("TripleCompressedCharcoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("TripleCompressedCharcoal", 9), GregTech_API.getStackofAmountFromOreDict("QuadrupleCompressedCharcoal", 1), 200, 8);
+
+        GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 9L), GregTech_API.getStackofAmountFromOreDict("CompressedCoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("CompressedCoal", 9), GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoal", 9), GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoal", 9), GregTech_API.getStackofAmountFromOreDict("QuadrupleCompressedCoal", 1), 200, 8);
+
+
     }
 }

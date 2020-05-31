@@ -67,9 +67,21 @@ gui.AdvancedSolarPanel.generating=Generating
 gui.AdvancedSolarPanel.energyPerTick=EU/t
 
 #Decorated Block
-DecorateBlock.0.name= Concrete
-DecorateBlock.1.name= Coke Coal Block
-DecorateBlock.2.name= Piston Block
+DecorateBlock.0.name=Concrete
+DecorateBlock.1.name=Coke Coal Block
+DecorateBlock.2.name=Piston Block
+DecorateBlock.3.name=Compressed Charcoal
+DecorateBlock.4.name=Double Compressed Charcoal
+DecorateBlock.5.name=Triple Compressed Charcoal
+DecorateBlock.6.name=Quadruple Compressed Charcoal
+DecorateBlock.7.name=Compressed Coal
+DecorateBlock.8.name=Double Compressed Coal
+DecorateBlock.9.name=Triple Compressed Coal
+DecorateBlock.10.name=Quadruple Compressed Coal
+DecorateBlock.11.name=Compressed Coal Coke
+DecorateBlock.12.name=Double Compressed Coal Coke
+DecorateBlock.13.name=Triple Compressed Coal Coke
+DecorateBlock.14.name=Quadruple Compressed Coal Coke
 
 #MetaItems.00
 item.impact_item.0.name=BarnardaE Stone Dust

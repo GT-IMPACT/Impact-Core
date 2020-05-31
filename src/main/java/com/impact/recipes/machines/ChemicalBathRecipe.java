@@ -59,7 +59,6 @@ public class ChemicalBathRecipe implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(GregTech_API.getStackofAmountFromOreDict("dustBarnardaF", 64), Materials.RadoxPolymer.getMolten(144L), GT_ItemList.packBarnardaF.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
         GT_Values.RA.addChemicalBathRecipe(GregTech_API.getStackofAmountFromOreDict("dustTCetiE", 64), Materials.RadoxPolymer.getMolten(144L), GT_ItemList.packTCetiE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
 
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("minecraft", "glass", 1L, 0), Materials.BorosilicateGlass.getMolten(144L), GT_ModHandler.getModItem("impact", "GlassBlock", 1L, 0), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 2);
 
         for (byte i = 0; i <= 15; i = (byte) (i + 1)) {
             for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {

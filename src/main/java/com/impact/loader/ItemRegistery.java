@@ -3,7 +3,7 @@ package com.impact.loader;
 import com.impact.System.Refstrings;
 import com.impact.block.*;
 import com.impact.item.GT_Pump.GregtechPump;
-import com.impact.util.SendUtils;
+import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
@@ -12,6 +12,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.System.impactLog.INFO;
+import static com.impact.loader.ItemRegistery.decorateBlock;
 
 
 public class ItemRegistery {
@@ -21,6 +22,18 @@ public class ItemRegistery {
                     Refstrings.MODID + ":Concrete",
                     Refstrings.MODID + ":CokeCoal",
                     Refstrings.MODID + ":PistonBlock",
+                    Refstrings.MODID + ":CompressedCharcoal",
+                    Refstrings.MODID + ":DoubleCompressedCharcoal",
+                    Refstrings.MODID + ":TripleCompressedCharcoal",
+                    Refstrings.MODID + ":QuadrupleCompressedCharcoal",
+                    Refstrings.MODID + ":CompressedCoal",
+                    Refstrings.MODID + ":DoubleCompressedCoal",
+                    Refstrings.MODID + ":TripleCompressedCoal",
+                    Refstrings.MODID + ":QuadrupleCompressedCoal",
+                    Refstrings.MODID + ":CompressedCoalCoke",
+                    Refstrings.MODID + ":DoubleCompressedCoalCoke",
+                    Refstrings.MODID + ":TripleCompressedCoalCoke",
+                    Refstrings.MODID + ":QuadrupleCompressedCoalCoke",
             }, 0),
             new Core_Blocks("BufferCasing", new String[]{
                     Refstrings.MODID + ":bufferULV",
@@ -60,7 +73,8 @@ public class ItemRegistery {
                     Refstrings.MODID + ":glass/blockGB15", // black
             }, false, true)
     };
-
+    public static GregtechPump GTPump;
+    public static Block lscLapotronicEnergyUnit;
 
     public static void run() {
         //Blocks
@@ -77,7 +91,7 @@ public class ItemRegistery {
         hideItem(new ItemStack(decorateBlock[2], 1, 3));
         hideItem(new ItemStack(decorateBlock[2], 1, 4));
         INFO("[Init] Item Registery Hide Fake BLocks - Loaded");
-        
+
         hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeLine", 1L, 0));
         hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeSpeedup", 1L, 0));
         hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeSCurve", 1L, 0));
@@ -92,9 +106,22 @@ public class ItemRegistery {
         //OreDictionary
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
         OreDictionary.registerOre("blockCokeCoal", new ItemStack(decorateBlock[0], 1, 1));
+        OreDictionary.registerOre("CompressedCharcoal", new ItemStack(decorateBlock[0], 1, 3));
+        OreDictionary.registerOre("DoubleCompressedCharcoal", new ItemStack(decorateBlock[0], 1, 4));
+        OreDictionary.registerOre("TripleCompressedCharcoal", new ItemStack(decorateBlock[0], 1, 5));
+        OreDictionary.registerOre("QuadrupleCompressedCharcoal", new ItemStack(decorateBlock[0], 1, 6));
+        OreDictionary.registerOre("CompressedCoal", new ItemStack(decorateBlock[0], 1, 7));
+        OreDictionary.registerOre("DoubleCompressedCoal", new ItemStack(decorateBlock[0], 1, 8));
+        OreDictionary.registerOre("TripleCompressedCoal", new ItemStack(decorateBlock[0], 1, 9));
+        OreDictionary.registerOre("QuadrupleCompressedCoal", new ItemStack(decorateBlock[0], 1, 10));
+        OreDictionary.registerOre("CompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 11));
+        OreDictionary.registerOre("DoubleCompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 12));
+        OreDictionary.registerOre("TripleCompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 13));
+        OreDictionary.registerOre("QuadrupleCompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 14));
+
         INFO("[Init] Item Registery Blocks OreDict - Loaded");
     }
-    public static GregtechPump GTPump;
+
     public static void GregtechPump() {
         GTPump = new GregtechPump();
         GTPump.registerPumpType(0, "LV Hand Pump", 0, 0);
@@ -102,7 +129,7 @@ public class ItemRegistery {
         GTPump.registerPumpType(2, "HV Hand Pump", 400000, 2);
         GTPump.registerPumpType(3, "EV Hand Pump", 1600000, 3);
     }
-    public static Block lscLapotronicEnergyUnit;
+
     public static void registerBlocks_LSC() {
         lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
     }
