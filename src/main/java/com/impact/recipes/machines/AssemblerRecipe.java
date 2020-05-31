@@ -608,6 +608,13 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("LogisticsPipes", "item.itemUpgrade", 1L, 30), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2L), GT_ModHandler.getModItem("LogisticsPipes", "item.itemUpgrade", 1L, 36), 160, 120);
 
         /* ==== END LOGISTIC PIPES ==== */
+        /** ==== START ENDER IO ==== */
+        // --- Item Conduit
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Conveyor_Module_LV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Electrum, 4L), GT_ModHandler.getModItem("EnderIO", "itemMaterial", 4L, 1), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("EnderIO", "itemItemConduit", 4L, 0), 120, 16);
+        // --- Fluid Conduit
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 4L), GT_ModHandler.getModItem("EnderIO", "itemMaterial", 4L, 1), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("EnderIO", "itemLiquidConduit", 4L, 0), 120, 16);
+
+        /* ==== END ENDER IO ==== */
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
         ItemStack[] outHatches = {GT_ItemList.Hatch_Output_UEV.get(1), GT_ItemList.Hatch_Output_UIV.get(1), GT_ItemList.Hatch_Output_UMV.get(1), GT_ItemList.Hatch_Output_UXV.get(1), GT_ItemList.Hatch_Output_OPV.get(1), GT_ItemList.Hatch_Output_MAX.get(1)};
