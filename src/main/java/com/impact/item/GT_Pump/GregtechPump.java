@@ -6,10 +6,8 @@ import com.impact.util.Utilits;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -101,7 +99,9 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         if (aStack == null || aPlayer == null || aWorld == null || aWorld.isRemote) {
             return false;
         }
-        //return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
+        //return super.onItemUse(aStack, aPlayer, aWorld, aX, aYif (GregTech_API.sThaumcraftCompat != null) {
+        //                GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
+        //            }, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
         return !aWorld.isRemote && tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ);
     }
 
@@ -607,7 +607,6 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
             this.mVisibleItems.set(aID);
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".tooltip", aToolTip);
-            final List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (final Object tRandomData : aRandomData) {
                 if (tRandomData instanceof SubTag) {
@@ -634,10 +633,6 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                         tUseOreDict = false;
                     }
                     if (tRandomData instanceof SubTag) {
-                        continue;
-                    }
-                    if (tRandomData instanceof TC_AspectStack) {
-                        ((TC_AspectStack) tRandomData).addToAspectList(tAspects);
                         continue;
                     }
                     if (tRandomData instanceof ItemData) {
