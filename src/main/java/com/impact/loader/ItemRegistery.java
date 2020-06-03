@@ -92,16 +92,11 @@ public class ItemRegistery {
         hideItem(new ItemStack(decorateBlock[2], 1, 4));
         INFO("[Init] Item Registery Hide Fake BLocks - Loaded");
 
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeLine", 1L, 0));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeSpeedup", 1L, 0));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeSCurve", 1L, 0));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.HSTubeGain", 1L, 0));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 0));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 1));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 2));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 3));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 4));
-        hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, 5));
+        for (int i = 0; i <= 5; i++)
+            hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, i));
+
+        for (int i = 0; i <= 15; i++)
+            hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.pipeComponents", 1L, i));
 
         //OreDictionary
         OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
