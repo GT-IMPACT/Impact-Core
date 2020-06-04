@@ -217,9 +217,9 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
         return formationChecklist;
     }
 
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
     }
 
     public int getPollutionPerTick(ItemStack aStack) {

@@ -229,9 +229,9 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
 
 
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
     }
 
     /** === POLLUTION === */

@@ -95,16 +95,12 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                 .addInfo("EXCEPTION: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
                 .addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
                 .addSeparator()
-                .addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
-                .addInfo("UV-Tier glass required for TecTech Laser Hatches")
-                .addInfo("Modular height of 4 to 18 blocks.")
-                .addSeparator()
                 .beginStructureBlock(5, 4, 5)
                 .addController("Front Bottom Center")
                 .addDynamoHatch("Instead of any casing")
                 .addEnergyHatch("Instead of any casing")
                 .addOtherStructurePart("Lapotronic Capacitor Base", "5x2x5 base (at least 17x)")
-                .addOtherStructurePart("Lapotronic Capacitor, (Really) Ultimate Capacitor", "Center 3x(1-15)x3 above base (9-135 blocks)")
+                .addOtherStructurePart("Lapotronic Capacitor, Ultimate Capacitor", "Center 3x(1-15)x3 above base (9-135 blocks)")
                 .addOtherStructurePart("I-Glass", "41-265x, Encase capacitor pillar")
                 .addMaintenanceHatch("Instead of any casing")
                 .signAndFinalize("IMPACT");
@@ -249,7 +245,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
                     final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
-                    if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
+                    if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0) ) {
                         // Add capacity
                         if(meta <= 4){
                             final long c = (long) (100000000L * Math.pow(10, meta - 1));
@@ -307,28 +303,19 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
             formationChecklist = false;
         }
 
-        // Make sure glass tier is T-2 of the highest tier capacitor in the structure
-        // Count down from the highest tier until an entry is found
-        // Borosilicate glass after 5 are just recolours of 0
-        final int colourCorrectedMeta = firstGlassMeta > 5 ? 0 : firstGlassMeta;
         for(int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--){
             if(capacitors[highestCapacitor] > 0){
-                if(colourCorrectedMeta < highestCapacitor){
-                    formationChecklist = false;
-                }
                 break;
             }
         }
 
-        // Glass has to be at least UV-tier to allow TT Laser hatches
-        if(colourCorrectedMeta < 5) {
-            if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) {
-                formationChecklist = false;
-            }
-            mEnergyTunnelsTT.clear();
-            mDynamoTunnelsTT.clear();
+//        if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) {
+//            formationChecklist = false;
+//        }
+        mEnergyTunnelsTT.clear();
+        mDynamoTunnelsTT.clear();
 
-        }
+
 
         // Calculate total capacity
         capacity = BigInteger.ZERO;
@@ -360,6 +347,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                 return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
             } else if(mte instanceof  GT_MetaTileEntity_Hatch_EnergyTunnel) {
                 // Add TT Laser hatches
+                ((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
                 return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
             } else if(mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
                 // Add TT hatches
@@ -383,6 +371,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                 return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
             } else if(mte instanceof  GT_MetaTileEntity_Hatch_DynamoTunnel) {
                 // Add TT Laser hatches
+                ((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
                 return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) mte);
             } else if(mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
                 // Add TT hatches

@@ -270,12 +270,6 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
-
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
-    }
-
     /** === POLLUTION === */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
@@ -294,6 +288,10 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
             return 0;
     } //NOT USE WITHOUT MUFFLER IN STRUCTURE
 
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
+    }
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {

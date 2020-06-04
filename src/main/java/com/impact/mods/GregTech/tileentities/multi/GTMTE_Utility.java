@@ -271,10 +271,9 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
-
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
     }
 
     /** === POLLUTION === */

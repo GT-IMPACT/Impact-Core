@@ -100,6 +100,11 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
         return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " 3D Printer ");
     }
 
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack);
+    }
+
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
@@ -287,12 +292,6 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
             formationChecklist = false;
         }
         return formationChecklist;
-    }
-
-
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
     }
 
     /** === POLLUTION === */

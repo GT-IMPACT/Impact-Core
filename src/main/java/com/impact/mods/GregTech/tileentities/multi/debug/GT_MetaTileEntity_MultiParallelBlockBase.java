@@ -25,41 +25,37 @@
  */
 package com.impact.mods.GregTech.tileentities.multi.debug;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.impact.mods.GregTech.tileentities.multi.gui.GT_Container_MultiParallelMachine;
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnegative;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.impact.util.Utilits.getFluidStack;
+import static com.mojang.realmsclient.gui.ChatFormatting.*;
+import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTileEntity_MultiBlockBase {
 
-    /**
-     * === CHECK RECIPE ===
-     */
-
-    private GT_Recipe.GT_Recipe_Map mRecipeMap;
-
+    public int mParallel = 1;
 
     /**
-     * === NAMED ===
+     * @param aID           - ID Machine
+     * @param aName         - Named Machine
+     * @param aNameRegional - Localized Named Machine
      */
     public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -70,14 +66,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
      */
     public GT_MetaTileEntity_MultiParallelBlockBase(final String aName) {
         super(aName);
-    }
-
-    /**
-     * === GUI CONTAINER ===
-     */
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity, true, 1);
     }
 
     /**
@@ -102,51 +90,51 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
      * === OVERCLOCKED PART 1 ===
      */
     public static void calculateOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
-            byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-            if (mTier == 0) {
-                //Long time calculation
-                long xMaxProgresstime = ((long) aDuration) << 1;
-                if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                    //make impossible if too long
-                    base.mEUt = Integer.MAX_VALUE - 1;
-                    base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-                } else {
-                    base.mEUt = aEUt >> 2;
-                    base.mMaxProgresstime = (int) xMaxProgresstime;
-                }
+        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+        if (mTier == 0) {
+            //Long time calculation
+            long xMaxProgresstime = ((long) aDuration) << 1;
+            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
+                //make impossible if too long
+                base.mEUt = Integer.MAX_VALUE - 1;
+                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                //Long EUt calculation
-                long xEUt = aEUt;
-                //Isnt too low EUt check?
-                long tempEUt = Math.max(xEUt, V[1]);
+                base.mEUt = aEUt >> 2;
+                base.mMaxProgresstime = (int) xMaxProgresstime;
+            }
+        } else {
+            //Long EUt calculation
+            long xEUt = aEUt;
+            //Isnt too low EUt check?
+            long tempEUt = Math.max(xEUt, V[1]);
 
-                base.mMaxProgresstime = aDuration;
+            base.mMaxProgresstime = aDuration;
 
-                while (tempEUt <= V[mTier - 1] * mAmperage) {
-                    tempEUt <<= 2;//this actually controls overclocking
-                    //xEUt *= 4;//this is effect of everclocking
-                    base.mMaxProgresstime >>= 1;//this is effect of overclocking
-                    xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
-                }
+            while (tempEUt <= V[mTier - 1] * mAmperage) {
+                tempEUt <<= 2;//this actually controls overclocking
+                //xEUt *= 4;//this is effect of everclocking
+                base.mMaxProgresstime >>= 1;//this is effect of overclocking
+                xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
+            }
 
-                while (xEUt > maxInputVoltage){
-                    //downclock one notch until we are good again, we have overshot.
-                    xEUt >>=2;
-                    base.mMaxProgresstime <<= 1;
-                }
+            while (xEUt > maxInputVoltage) {
+                //downclock one notch until we are good again, we have overshot.
+                xEUt >>= 2;
+                base.mMaxProgresstime <<= 1;
+            }
 
-                if (xEUt > Integer.MAX_VALUE - 1) {
-                    base.mEUt = Integer.MAX_VALUE - 1;
-                    base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-                } else {
-                    base.mEUt = (int) xEUt;
-                    if (base.mEUt == 0)
-                        base.mEUt = 1;
-                    if (base.mMaxProgresstime <= 0)
-                        base.mMaxProgresstime = 1;//set time to 1 tick
-                }
+            if (xEUt > Integer.MAX_VALUE - 1) {
+                base.mEUt = Integer.MAX_VALUE - 1;
+                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                base.mEUt = (int) xEUt;
+                if (base.mEUt == 0)
+                    base.mEUt = 1;
+                if (base.mMaxProgresstime <= 0)
+                    base.mMaxProgresstime = 1;//set time to 1 tick
             }
         }
+    }
 
     /**
      * === OVERCLOCKED PART 2 ===
@@ -196,9 +184,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     }
 
     /**
-     * === IMPORT CLASS MULTIMACHINE SET PARALLEL ===
+     * === GUI CONTAINER ===
      */
-    public abstract int Parallel();
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity, true, 1);
+    }
 
     /**
      * === BASIC MULTIBLOCKS PROPERTY ===
@@ -260,7 +251,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         return returnset.size() > 0 && !returnset.contains(false);
     }
 
-    public boolean checkRecipe(ItemStack itemStack) {
+
+    public boolean impactRecipe(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
             ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
             tBus.mRecipeMap = getRecipeMap();
@@ -293,7 +285,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                     boolean found_Recipe = false;
                     int processed = 0;
                     long nominalV = getnominalVoltage(this);
-                    while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
+                    while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < 1) {
                         if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
                             found_Recipe = true;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -310,37 +302,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                         this.mEfficiencyIncrease = 10000;
                         long actualEUT = (long) (tRecipe.mEUt) * processed;
-                        if (actualEUT > Integer.MAX_VALUE) {
-                            byte divider = 0;
-                            while (actualEUT > Integer.MAX_VALUE) {
-                                actualEUT = actualEUT / 2;
-                                divider++;
-                            }
-                            calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, nominalV, this);
-                        } else
-                            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
-                        //In case recipe is too OP for that machine
+
+                        calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
+
                         if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                             return false;
                         if (this.mEUt > 0) {
                             this.mEUt = (-this.mEUt);
                         }
-                        int TimeProgress;
-                        switch (Parallel()) {
-                            default:
-                                TimeProgress = this.mMaxProgresstime;
-                                break;
-                            case 16:
-                                TimeProgress = this.mMaxProgresstime/2;
-                                break;
-                            case 64:
-                                TimeProgress = this.mMaxProgresstime/3;
-                                break;
-                            case 256:
-                                TimeProgress = this.mMaxProgresstime/4;
-                        }
-                        this.mMaxProgresstime = Math.max(1, TimeProgress);
-                        //this.mMaxProgresstime = tRecipe.mDuration / Parallel(); //THIS PARALLEL
                         this.mOutputItems = new ItemStack[outputItems.size()];
                         this.mOutputItems = outputItems.toArray(this.mOutputItems);
                         this.mOutputFluids = new FluidStack[outputFluids.size()];
@@ -348,6 +317,118 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                         this.updateSlots();
                         return true;
                     }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean impactRecipe(ItemStack itemStack, int aParallel) {
+        this.mParallel = aParallel;
+        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+            tBus.mRecipeMap = getRecipeMap();
+            if (isValidMetaTileEntity(tBus)) {
+                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                }
+            }
+
+            ArrayList<ItemStack> tInputList = this.getStoredInputs();
+            ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+            ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
+            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+            if (tInputList.size() > 0 || tFluidList.size() > 0) {
+                long tVoltage = this.getMaxInputVoltage();
+                byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+                GT_Recipe tRecipe;
+                tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+                if (tRecipe != null) {
+
+                    if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100) && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
+                        return false;
+
+                    if (tRecipe.mSpecialValue == -200 && (mCleanroom == null || mCleanroom.mEfficiency == 0))
+                        return false;
+
+                    ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+                    ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+                    boolean found_Recipe = false;
+                    int processed = 0;
+                    long nominalV = getnominalVoltage(this);
+
+                    while ((getStoredInputs().size()) > 0 && processed < mParallel) { //THIS PARALLEL
+                        if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                            found_Recipe = true;
+                            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                                outputItems.add(tRecipe.getOutput(i));
+                            }
+
+                            ++processed;
+
+                        } else
+                            break;
+                    }
+
+                    while ((getStoredFluids().size()) > 0 && processed < mParallel) { //THIS PARALLEL
+                        if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                            found_Recipe = true;
+
+                            for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                                outputFluids.add(tRecipe.getFluidOutput(i));
+                            }
+                            ++processed;
+
+                        } else
+                            break;
+                    }
+
+                        if (found_Recipe) {
+                            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                            this.mEfficiencyIncrease = 10000;
+                            long actualEUT = (long) (tRecipe.mEUt) * processed;
+                            if (actualEUT > Integer.MAX_VALUE) {
+                                byte divider = 0;
+                                while (actualEUT > Integer.MAX_VALUE) {
+                                    actualEUT = actualEUT / 2;
+                                    divider++;
+                                }
+                                calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, nominalV, this);
+                            } else
+                                calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                                //In case recipe is too OP for that machine
+                                if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {
+                                    return false;
+                                }
+
+                            if (this.mEUt > 0) {
+                                this.mEUt = (-this.mEUt);
+                            }
+                            int TimeProgress;
+                            switch (mParallel) {
+                                default:
+                                    TimeProgress = this.mMaxProgresstime;
+                                    break;
+                                case 16:
+                                    TimeProgress = this.mMaxProgresstime / 2;
+                                    break;
+                                case 64:
+                                    TimeProgress = this.mMaxProgresstime / 3;
+                                    break;
+                                case 256:
+                                    TimeProgress = this.mMaxProgresstime / 4;
+                                    break;
+                            }
+                            this.mMaxProgresstime = TimeProgress;
+                            if (this.mMaxProgresstime <= 0) this.mMaxProgresstime = 1;
+                            this.mOutputItems = new ItemStack[outputItems.size()];
+                            this.mOutputItems = outputItems.toArray(this.mOutputItems);
+                            this.mOutputFluids = new FluidStack[outputFluids.size()];
+                            this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
+                            this.updateSlots();
+                            return true;
+                        }
                 }
             }
         }
@@ -367,20 +448,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
-        EnumChatFormatting GREEN = EnumChatFormatting.GREEN;
-        EnumChatFormatting RESET = EnumChatFormatting.RESET;
-        EnumChatFormatting YELLOW = EnumChatFormatting.YELLOW;
-        EnumChatFormatting RED = EnumChatFormatting.RED;
         return new String[]{
                 "Progress: " + GREEN + mProgresstime / 20 + RESET + " s / " + mMaxProgresstime / 20 + RESET + " s",
                 "Storage: " + GREEN + storedEnergy + RESET + " / " + RESET + YELLOW + maxEnergy + RESET + " EU",
                 "Usage Energy: " + RED + -mEUt + RESET + " EU/t",
                 "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t " + YELLOW + VN[GT_Utility.getTier(getMaxInputVoltage())] + RESET,
-                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
-                        ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET
-                        : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
-                "Parallel Point: " + YELLOW + Parallel() + " / 256",
-                "Pollution: " + RED + Parallel() * 50 + RESET
+                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
+                "Parallel Point: " + YELLOW + mParallel + " / 256",
+                "Pollution: " + RED + mParallel * 50 + RESET
         };
     }
 }

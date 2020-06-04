@@ -138,7 +138,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         return offset;
     }
 
-    private int mLevel = 0;
+    public int mLevel = 0;
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
         // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
@@ -278,10 +278,9 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
-
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
     }
 
     /** === POLLUTION === */

@@ -77,6 +77,11 @@ public class GTMTE_ParallelBilder extends GT_MetaTileEntity_MultiParallelBlockBa
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), INDEX_GUI);
     }
 
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return false;
+    }
+
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {

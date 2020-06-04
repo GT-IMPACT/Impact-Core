@@ -295,12 +295,10 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
         return formationChecklist;
     }
 
-
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
     }
-
     /** === POLLUTION === */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {

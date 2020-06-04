@@ -279,9 +279,9 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
 
 
-    /** === SET PARALLEL === */
-    public int Parallel() {
-        return this.mLevel;
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
     }
 
     /** === POLLUTION === */
