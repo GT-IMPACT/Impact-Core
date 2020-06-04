@@ -10,8 +10,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.item.ItemStack;
 
 import static com.impact.item.Core_List_Items.CokeOvenBrick;
+import static com.impact.loader.ItemRegistery.decorateBlock;
 
 
 public class CompessorRecipe implements Runnable {
@@ -27,20 +29,20 @@ public class CompessorRecipe implements Runnable {
 
         GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCsapling", 8L), CoreItems2.getRecipe(151, 1), 200, 2000000);
 
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("blockCokeCoal", 9), GregTech_API.getStackofAmountFromOreDict("CompressedCoalCoke", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("CompressedCoalCoke", 9), GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoalCoke", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoalCoke", 9), GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoalCoke", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoalCoke", 9), GregTech_API.getStackofAmountFromOreDict("QuadrupleCompressedCoalCoke", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 1),  new ItemStack(decorateBlock[0], 1, 11), 100, 20);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 11), new ItemStack(decorateBlock[0], 1, 12), 100, 120);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 12), new ItemStack(decorateBlock[0], 1, 13), 100, 480);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 13), new ItemStack(decorateBlock[0], 1, 14), 100, 1920);
 
-        GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 9L), GregTech_API.getStackofAmountFromOreDict("CompressedCharcoal", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("CompressedCharcoal", 9), GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCharcoal", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCharcoal", 9), GregTech_API.getStackofAmountFromOreDict("TripleCompressedCharcoal", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("TripleCompressedCharcoal", 9), GregTech_API.getStackofAmountFromOreDict("QuadrupleCompressedCharcoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 9L), new ItemStack(decorateBlock[0], 1, 3), 120, 20);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 3), new ItemStack(decorateBlock[0], 1, 4), 120, 120);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 4), new ItemStack(decorateBlock[0], 1, 5), 120, 480);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 5), new ItemStack(decorateBlock[0], 1, 6), 120, 1920);
 
-        GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 9L), GregTech_API.getStackofAmountFromOreDict("CompressedCoal", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("CompressedCoal", 9), GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoal", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("DoubleCompressedCoal", 9), GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoal", 1), 200, 8);
-        GT_Values.RA.addCompressorRecipe(GregTech_API.getStackofAmountFromOreDict("TripleCompressedCoal", 9), GregTech_API.getStackofAmountFromOreDict("QuadrupleCompressedCoal", 1), 200, 8);
+        GT_Values.RA.addCompressorRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 9L), new ItemStack(decorateBlock[0], 1, 7), 110, 20);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 7), new ItemStack(decorateBlock[0], 1, 8), 110, 120);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 8), new ItemStack(decorateBlock[0], 1, 9), 110, 480);
+        GT_Values.RA.addCompressorRecipe(new ItemStack(decorateBlock[0], 9, 9), new ItemStack(decorateBlock[0], 1, 10), 110, 1920);
 
 
     }
