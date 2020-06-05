@@ -73,14 +73,10 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
                 .addInfo("One-block machine analog")
-                //.addParallelInfo(1,256)
-                //.addInfo("Parallel Point will upped Upgrade Casing")
                 .addTypeMachine("3x3 Crafting, 4x4 Crafting")
                 .addScrew()
                 .addSeparator()
-                .beginStructureBlock(3, 3, 3)
-                .addController("-")
-                .addParallelCase("-")
+                .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (max x30)")
@@ -111,43 +107,9 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
         return mMode == 0 ?  GT_Recipe.GT_Recipe_Map.sPrimitiveLine : GT_Recipe.GT_Recipe_Map.sBasicline;
     }
 
-    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
-
-        // В любом направлении по оси Z
-        if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-            offset.x = x;
-            offset.y = y;
-            offset.z = z;
-        }
-        if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-            offset.x = -x;
-            offset.y = y;
-            offset.z = -z;
-        }
-        // В любом направлении по оси X
-        if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-            offset.x = z;
-            offset.y = y;
-            offset.z = -x;
-        }
-        if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-            offset.x = -z;
-            offset.y = y;
-            offset.z = x;
-        }
-        // в любом направлении по оси Y
-        if(forgeDirection.y() == -1) {
-            offset.x = x;
-            offset.y = z;
-            offset.z = y;
-        }
-
-        return offset;
-    }
-
     private int mLevel = 0;
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        TThatches();
         // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -269,48 +231,22 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
             formationChecklist = false;
         }
 
+        if(this.mInputBusses.size() > 30)  formationChecklist = false;
+        if(this.mInputHatches.size() != 0)  formationChecklist = false;
+        if(this.mOutputBusses.size() > 1)  formationChecklist = false;
+        if(this.mOutputHatches.size() != 0)  formationChecklist = false;
+        if(this.mMufflerHatches.size() != 0)  formationChecklist = false;
+        if(this.mEnergyHatches.size() > 4)  formationChecklist = false;
+        if(this.mMaintenanceHatches.size() != 1)  formationChecklist = false;
 
-        if(this.mInputBusses.size() > 30) {
-            formationChecklist = false;
-        }
-        if(this.mInputHatches.size() != 0) {
-            formationChecklist = false;
-        }
-        if(this.mOutputBusses.size() > 1) {
-            formationChecklist = false;
-        }
-        if(this.mOutputHatches.size() != 0) {
-            formationChecklist = false;
-        }
-        if(this.mMufflerHatches.size() != 0) {
-            formationChecklist = false;
-        }
-        if(this.mEnergyHatches.size() > 4) {
-            formationChecklist = false;
-        }
-        if(this.mMaintenanceHatches.size() != 1) {
-            formationChecklist = false;
-        }
         return formationChecklist;
     }
 
     /** === POLLUTION === */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-//        if (this.mLevel == 4 ) {
-//            return 4*50;
-//        }
-//        else if (this.mLevel == 16 ) {
-//            return 16*50;
-//        }
-//        else if (this.mLevel == 64 ) {
-//            return 64*50;
-//        }
-//        else if (this.mLevel == 256) {
-//            return 256*50;
-//        } else
             return 0;
-    } //NOT USE WITHOUT MUFFLER IN STRUCTURE
+    }
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {

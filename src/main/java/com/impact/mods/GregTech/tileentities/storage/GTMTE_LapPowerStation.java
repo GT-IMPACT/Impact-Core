@@ -96,7 +96,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                 .addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
                 .addSeparator()
                 .beginStructureBlock(5, 4, 5)
-                .addController("Front Bottom Center")
+                .addController()
                 .addDynamoHatch("Instead of any casing")
                 .addEnergyHatch("Instead of any casing")
                 .addOtherStructurePart("Lapotronic Capacitor Base", "5x2x5 base (at least 17x)")

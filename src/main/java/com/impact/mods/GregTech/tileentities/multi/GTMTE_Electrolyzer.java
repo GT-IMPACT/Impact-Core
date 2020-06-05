@@ -23,8 +23,6 @@ import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    private byte mMode = -1;
-
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore1;
     byte CASING_META = 8;
@@ -72,9 +70,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                 .addTypeMachine("Electrolyzer")
                 .addScrew()
                 .addSeparator()
-                .beginStructureBlock(3, 3, 3)
-                .addController("-")
-                .addParallelCase("-")
+                .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addMuffler("Any casing")
@@ -103,43 +99,9 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
         return GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes;
     }
 
-    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
-
-        // В любом направлении по оси Z
-        if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-            offset.x = x;
-            offset.y = y;
-            offset.z = z;
-        }
-        if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-            offset.x = -x;
-            offset.y = y;
-            offset.z = -z;
-        }
-        // В любом направлении по оси X
-        if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-            offset.x = z;
-            offset.y = y;
-            offset.z = -x;
-        }
-        if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-            offset.x = -z;
-            offset.y = y;
-            offset.z = x;
-        }
-        // в любом направлении по оси Y
-        if(forgeDirection.y() == -1) {
-            offset.x = x;
-            offset.y = z;
-            offset.z = y;
-        }
-
-        return offset;
-    }
-
     private int mLevel = 0;
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        TThatches();
         // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -213,28 +175,13 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
         }
 
 
-
-        if(this.mInputBusses.size() > 6) {
-            formationChecklist = false;
-        }
-        if(this.mInputHatches.size() > 6) {
-            formationChecklist = false;
-        }
-        if(this.mOutputBusses.size() > 3) {
-            formationChecklist = false;
-        }
-        if(this.mOutputHatches.size() > 6) {
-            formationChecklist = false;
-        }
-        if(this.mMufflerHatches.size() != 1) {
-            formationChecklist = false;
-        }
-        if(this.mEnergyHatches.size() > 4) {
-            formationChecklist = false;
-        }
-        if(this.mMaintenanceHatches.size() != 1) {
-            formationChecklist = false;
-        }
+        if(this.mInputBusses.size() > 6) formationChecklist = false;
+        if(this.mInputHatches.size() > 6) formationChecklist = false;
+        if(this.mOutputBusses.size() > 3) formationChecklist = false;
+        if(this.mOutputHatches.size() > 6) formationChecklist = false;
+        if(this.mMufflerHatches.size() != 1) formationChecklist = false;
+        if(this.mEnergyHatches.size() > 4) formationChecklist = false;
+        if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
     }
@@ -248,6 +195,5 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
             return 0;
-    } //NOT USE WITHOUT MUFFLER IN STRUCTURE
-
+    }
 }

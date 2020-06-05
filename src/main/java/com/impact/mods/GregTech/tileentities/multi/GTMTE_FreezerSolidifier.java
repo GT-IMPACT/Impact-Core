@@ -27,8 +27,6 @@ import java.util.ArrayList;
 
 public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-
-
     public GTMTE_FreezerSolidifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -49,13 +47,10 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                 .addInfo("One-block machine analog")
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                //.addPollution(200, 12800)
                 .addTypeMachine("Freezer Solidification")
                 .addScrew()
                 .addSeparator()
-                .beginStructureBlock(3, 3, 3)
-                .addController("-")
-                .addParallelCase("-")
+                .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (max x2)")
@@ -98,42 +93,8 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
     }
 
     private int mLevel = 0;
-    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
-
-        // В любом направлении по оси Z
-        if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-            offset.x = x;
-            offset.y = y;
-            offset.z = z;
-        }
-        if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-            offset.x = -x;
-            offset.y = y;
-            offset.z = -z;
-        }
-        // В любом направлении по оси X
-        if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-            offset.x = z;
-            offset.y = y;
-            offset.z = -x;
-        }
-        if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-            offset.x = -z;
-            offset.y = y;
-            offset.z = x;
-        }
-        // в любом направлении по оси Y
-        if(forgeDirection.y() == -1) {
-            offset.x = x;
-            offset.y = z;
-            offset.z = y;
-        }
-
-        return offset;
-    }
-
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        TThatches();
         // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -175,9 +136,6 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                         continue;
                     }
 
-
-
-
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                     if (!super.addMaintenanceToMachineList(currentTE, 17)
                             && !super.addInputToMachineList(currentTE, 17)
@@ -196,24 +154,13 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
             }
         }
 
-       if(this.mInputBusses.size() > 2) {
-           formationChecklist = false;
-       }
-       if(this.mInputHatches.size() !=2) {
-           formationChecklist = false;
-       }
-       if(this.mOutputBusses.size() !=1) {
-           formationChecklist = false;
-       }
-       if(this.mOutputHatches.size() !=0) {
-           formationChecklist = false;
-       }
-       if(this.mEnergyHatches.size() > 4) {
-           formationChecklist = false;
-       }
-       if(this.mMaintenanceHatches.size() != 1) {
-           formationChecklist = false;
-       }
+       if(this.mInputBusses.size() > 2) formationChecklist = false;
+       if(this.mInputHatches.size() !=2) formationChecklist = false;
+       if(this.mOutputBusses.size() !=1) formationChecklist = false;
+       if(this.mOutputHatches.size() !=0) formationChecklist = false;
+       if(this.mEnergyHatches.size() > 4) formationChecklist = false;
+       if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
+
         return formationChecklist;
     }
 

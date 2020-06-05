@@ -94,12 +94,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 .addInfo("Super Coolant is required for operation: 50 per second")
                 .addInfo("At the output, get Hot Coolant: 25 per second")
-                //.addPollution(200, 12800)
                 .addTypeMachine("Vacuum Freezer")
                 .addSeparator()
-//                .beginStructureBlock(3, 3, 3)
-//                .addController("-")
-//                .addParallelCase("-")
+                .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputHatch("Any casing (max x1)")
@@ -248,42 +245,8 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
         }
     }
 
-    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
-
-        // В любом направлении по оси Z
-        if (forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-            offset.x = x;
-            offset.y = y;
-            offset.z = z;
-        }
-        if (forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-            offset.x = -x;
-            offset.y = y;
-            offset.z = -z;
-        }
-        // В любом направлении по оси X
-        if (forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-            offset.x = z;
-            offset.y = y;
-            offset.z = -x;
-        }
-        if (forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-            offset.x = -z;
-            offset.y = y;
-            offset.z = x;
-        }
-        // в любом направлении по оси Y
-        if (forgeDirection.y() == -1) {
-            offset.x = x;
-            offset.y = z;
-            offset.z = y;
-        }
-
-        return offset;
-    }
-
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        TThatches();
         // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,

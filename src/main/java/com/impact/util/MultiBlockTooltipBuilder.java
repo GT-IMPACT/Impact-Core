@@ -106,8 +106,8 @@ public class MultiBlockTooltipBuilder {
         return this;
     }
 
-    public MultiBlockTooltipBuilder addController(String info) {
-        sLines.add(TAB + EnumChatFormatting.YELLOW + "Controller: " + EnumChatFormatting.GRAY + info);
+    public MultiBlockTooltipBuilder addController() {
+        sLines.add(TAB + EnumChatFormatting.YELLOW + "Use Blueprint TecTech ");
         return this;
     }
 
