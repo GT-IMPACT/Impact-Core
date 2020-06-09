@@ -26,6 +26,7 @@ public class GT_Machines_BasicRegister {
 
 	private void registerMachines() {
 		int ID = 14500;
+		int ID2 = 14534;
 
 		long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
 				| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
@@ -42,62 +43,62 @@ public class GT_Machines_BasicRegister {
 		Portable_Tank_ZPM	.set(new GT_MetaTileEntity_PortableTank(ID++,  "portabletank.tier.07", "ZPM Portable Tank",     7).getStackForm(1L));
 		Portable_Tank_UV	.set(new GT_MetaTileEntity_PortableTank(ID++,  "portabletank.tier.08", "UV Portable Tank",      8).getStackForm(1L));
 
-		Energy_4A_IV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy4A.tier.05",  "IV Energy Hatch 4A",    5, 4).getStackForm(1L));
-		Energy_4A_LuV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy4A.tier.06",  "LuV Energy Hatch 4A",   6, 4).getStackForm(1L));
-		Energy_4A_ZPM		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy4A.tier.07",  "ZPM Energy Hatch 4A",   7, 4).getStackForm(1L));
-		Energy_4A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy4A.tier.08",  "UV Energy Hatch 4A",    8, 4).getStackForm(1L));
-		Energy_16A_LuV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy16A.tier.06", "LuV Energy Hatch 16A",  6, 16).getStackForm(1L));
-		Energy_16A_ZPM		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy16A.tier.07", "ZPM Energy Hatch 16A",  7, 16).getStackForm(1L));
-		Energy_16A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy16A.tier.08", "UV Energy Hatch 16A",   8, 16).getStackForm(1L));
-		Energy_64A_ZPM		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy64A.tier.07", "ZPM Energy Hatch 64A",  7, 64).getStackForm(1L));
-		Energy_64A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy64A.tier.08", "UV Energy Hatch 64A",   8, 64).getStackForm(1L));
-		Energy_256A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(ID++,  "energy256A.tier.08","UV Energy Hatch 256A",  8, 256).getStackForm(1L));
+		/*Energy_4A_IV		.set(new GT_MetaTileEntity_Hatch_Energy(9++,  "energy4A.tier.05",  "IV Energy Hatch 4A",    5, 4).getStackForm(1L));
+		Energy_4A_LuV		.set(new GT_MetaTileEntity_Hatch_Energy(10++,  "energy4A.tier.06",  "LuV Energy Hatch 4A",   6, 4).getStackForm(1L));
+		Energy_4A_ZPM		.set(new GT_MetaTileEntity_Hatch_Energy(11++,  "energy4A.tier.07",  "ZPM Energy Hatch 4A",   7, 4).getStackForm(1L));
+		Energy_4A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(12++,  "energy4A.tier.08",  "UV Energy Hatch 4A",    8, 4).getStackForm(1L));
+		Energy_16A_LuV		.set(new GT_MetaTileEntity_Hatch_Energy(13++,  "energy16A.tier.06", "LuV Energy Hatch 16A",  6, 16).getStackForm(1L));
+		Energy_16A_ZPM		.set(new GT_MetaTileEntity_Hatch_Energy(14++,  "energy16A.tier.07", "ZPM Energy Hatch 16A",  7, 16).getStackForm(1L));
+		Energy_16A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(15++,  "energy16A.tier.08", "UV Energy Hatch 16A",   8, 16).getStackForm(1L));
+		Energy_64A_ZPM		.set(new GT_MetaTileEntity_Hatch_Energy(16++,  "energy64A.tier.07", "ZPM Energy Hatch 64A",  7, 64).getStackForm(1L));
+		Energy_64A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(17++,  "energy64A.tier.08", "UV Energy Hatch 64A",   8, 64).getStackForm(1L));
+		Energy_256A_UV		.set(new GT_MetaTileEntity_Hatch_Energy(18++,  "energy256A.tier.08","UV Energy Hatch 256A",  8, 256).getStackForm(1L));
 
-		Dynamo_2A_EV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.04",  "EV Dynamo Hatch 2A",    4, 2).getStackForm(1L));
-		Dynamo_2A_IV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.05",  "IV Dynamo Hatch 2A",    5, 2).getStackForm(1L));
-		Dynamo_2A_LuV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.06",  "LuV Dynamo Hatch 2A",   6, 2).getStackForm(1L));
-		Dynamo_2A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.07",  "ZPM Dynamo Hatch 2A",   7, 2).getStackForm(1L));
-		Dynamo_2A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo2A.tier.08",  "UV Dynamo Hatch 2A",    8, 2).getStackForm(1L));
-		Dynamo_4A_IV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo4A.tier.05",  "IV Dynamo Hatch 4A",    5, 4).getStackForm(1L));
-		Dynamo_4A_LuV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo4A.tier.06",  "LuV Dynamo Hatch 4A",   6, 4).getStackForm(1L));
-		Dynamo_4A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo4A.tier.07",  "ZPM Dynamo Hatch 4A",   7, 4).getStackForm(1L));
-		Dynamo_4A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo4A.tier.08",  "UV Dynamo Hatch 4A",    8, 4).getStackForm(1L));
-		Dynamo_16A_LuV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo16A.tier.06", "LuV Dynamo Hatch 16A",  6, 16).getStackForm(1L));
-		Dynamo_16A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo16A.tier.07", "ZPM Dynamo Hatch 16A",  7, 16).getStackForm(1L));
-		Dynamo_16A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo16A.tier.08", "UV Dynamo Hatch 16A",   8, 16).getStackForm(1L));
-		Dynamo_64A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo64A.tier.07", "ZPM Dynamo Hatch 64A",  7, 64).getStackForm(1L));
-		Dynamo_64A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo64A.tier.08", "UV Dynamo Hatch 64A",   8, 64).getStackForm(1L));
-		Dynamo_256A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(ID++,  "dynamo256A.tier.08","UV Dynamo Hatch 256A",  8, 256).getStackForm(1L));
+		Dynamo_2A_EV		.set(new GT_MetaTileEntity_Hatch_Dynamo(19,  "dynamo2A.tier.04",  "EV Dynamo Hatch 2A",    4, 2).getStackForm(1L));
+		Dynamo_2A_IV		.set(new GT_MetaTileEntity_Hatch_Dynamo(20++,  "dynamo2A.tier.05",  "IV Dynamo Hatch 2A",    5, 2).getStackForm(1L));
+		Dynamo_2A_LuV		.set(new GT_MetaTileEntity_Hatch_Dynamo(21++,  "dynamo2A.tier.06",  "LuV Dynamo Hatch 2A",   6, 2).getStackForm(1L));
+		Dynamo_2A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(22++,  "dynamo2A.tier.07",  "ZPM Dynamo Hatch 2A",   7, 2).getStackForm(1L));
+		Dynamo_2A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(23++,  "dynamo2A.tier.08",  "UV Dynamo Hatch 2A",    8, 2).getStackForm(1L));
+		Dynamo_4A_IV		.set(new GT_MetaTileEntity_Hatch_Dynamo(24++,  "dynamo4A.tier.05",  "IV Dynamo Hatch 4A",    5, 4).getStackForm(1L));
+		Dynamo_4A_LuV		.set(new GT_MetaTileEntity_Hatch_Dynamo(25++,  "dynamo4A.tier.06",  "LuV Dynamo Hatch 4A",   6, 4).getStackForm(1L));
+		Dynamo_4A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(26++,  "dynamo4A.tier.07",  "ZPM Dynamo Hatch 4A",   7, 4).getStackForm(1L));
+		Dynamo_4A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(27++,  "dynamo4A.tier.08",  "UV Dynamo Hatch 4A",    8, 4).getStackForm(1L));
+		Dynamo_16A_LuV		.set(new GT_MetaTileEntity_Hatch_Dynamo(28++,  "dynamo16A.tier.06", "LuV Dynamo Hatch 16A",  6, 16).getStackForm(1L));
+		Dynamo_16A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(29++,  "dynamo16A.tier.07", "ZPM Dynamo Hatch 16A",  7, 16).getStackForm(1L));
+		Dynamo_16A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(30++,  "dynamo16A.tier.08", "UV Dynamo Hatch 16A",   8, 16).getStackForm(1L));
+		Dynamo_64A_ZPM		.set(new GT_MetaTileEntity_Hatch_Dynamo(31++,  "dynamo64A.tier.07", "ZPM Dynamo Hatch 64A",  7, 64).getStackForm(1L));
+		Dynamo_64A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(32++,  "dynamo64A.tier.08", "UV Dynamo Hatch 64A",   8, 64).getStackForm(1L));
+		Dynamo_256A_UV		.set(new GT_MetaTileEntity_Hatch_Dynamo(33++,  "dynamo256A.tier.08","UV Dynamo Hatch 256A",  8, 256).getStackForm(1L));
+*/
+		Diode_2A_ULV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.00", "Diode Cable 2A ULV", 0, 2).getStackForm(1L));
+		Diode_2A_LV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.01", "Diode Cable 2A LV",  1, 2).getStackForm(1L));
+		Diode_2A_MV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.02", "Diode Cable 2A MV",  2, 2).getStackForm(1L));
+		Diode_2A_HV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.03", "Diode Cable 2A HV",  3, 2).getStackForm(1L));
+		Diode_2A_EV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.04", "Diode Cable 2A EV",  4, 2).getStackForm(1L));
+		Diode_2A_IV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.05", "Diode Cable 2A IV",  5, 2).getStackForm(1L));
+		Diode_2A_LuV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.06", "Diode Cable 2A LuV", 6, 2).getStackForm(1L));
+		Diode_2A_ZPM		.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.07", "Diode Cable 2A ZPM", 7, 2).getStackForm(1L));
+		Diode_2A_UV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode2A.tier.08", "Diode Cable 2A UV",  8, 2).getStackForm(1L));
 
-		Diode_2A_ULV		.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.00", "Diode Cable 2A ULV", 0, 2).getStackForm(1L));
-		Diode_2A_LV			.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.01", "Diode Cable 2A LV",  1, 2).getStackForm(1L));
-		Diode_2A_MV			.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.02", "Diode Cable 2A MV",  2, 2).getStackForm(1L));
-		Diode_2A_HV			.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.03", "Diode Cable 2A HV",  3, 2).getStackForm(1L));
-		Diode_2A_EV			.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.04", "Diode Cable 2A EV",  4, 2).getStackForm(1L));
-		Diode_2A_IV			.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.05", "Diode Cable 2A IV",  5, 2).getStackForm(1L));
-		Diode_2A_LuV		.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.06", "Diode Cable 2A LuV", 6, 2).getStackForm(1L));
-		Diode_2A_ZPM		.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.07", "Diode Cable 2A ZPM", 7, 2).getStackForm(1L));
-		Diode_2A_UV			.set(new GT_MetaTileEntity_Diode(ID++, "diode2A.tier.08", "Diode Cable 2A UV",  8, 2).getStackForm(1L));
+		Diode_4A_ULV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.00", "Diode Cable 4A ULV", 0, 4).getStackForm(1L));
+		Diode_4A_LV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.01", "Diode Cable 4A LV",  1, 4).getStackForm(1L));
+		Diode_4A_MV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.02", "Diode Cable 4A MV",  2, 4).getStackForm(1L));
+		Diode_4A_HV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.03", "Diode Cable 4A HV",  3, 4).getStackForm(1L));
+		Diode_4A_EV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.04", "Diode Cable 4A EV",  4, 4).getStackForm(1L));
+		Diode_4A_IV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.05", "Diode Cable 4A IV",  5, 4).getStackForm(1L));
+		Diode_4A_LuV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.06", "Diode Cable 4A LuV", 6, 4).getStackForm(1L));
+		Diode_4A_ZPM		.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.07", "Diode Cable 4A ZPM", 7, 4).getStackForm(1L));
+		Diode_4A_UV			.set(new GT_MetaTileEntity_Diode(ID2++, "diode4A.tier.08", "Diode Cable 4A UV",  8, 4).getStackForm(1L));
 
-		Diode_4A_ULV		.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.00", "Diode Cable 4A ULV", 0, 4).getStackForm(1L));
-		Diode_4A_LV			.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.01", "Diode Cable 4A LV",  1, 4).getStackForm(1L));
-		Diode_4A_MV			.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.02", "Diode Cable 4A MV",  2, 4).getStackForm(1L));
-		Diode_4A_HV			.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.03", "Diode Cable 4A HV",  3, 4).getStackForm(1L));
-		Diode_4A_EV			.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.04", "Diode Cable 4A EV",  4, 4).getStackForm(1L));
-		Diode_4A_IV			.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.05", "Diode Cable 4A IV",  5, 4).getStackForm(1L));
-		Diode_4A_LuV		.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.06", "Diode Cable 4A LuV", 6, 4).getStackForm(1L));
-		Diode_4A_ZPM		.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.07", "Diode Cable 4A ZPM", 7, 4).getStackForm(1L));
-		Diode_4A_UV			.set(new GT_MetaTileEntity_Diode(ID++, "diode4A.tier.08", "Diode Cable 4A UV",  8, 4).getStackForm(1L));
-
-		Diode_16A_ULV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.00", "Diode Cable 16A ULV", 0, 16).getStackForm(1L));
-		Diode_16A_LV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.01", "Diode Cable 16A LV",  1, 16).getStackForm(1L));
-		Diode_16A_MV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.02", "Diode Cable 16A MV",  2, 16).getStackForm(1L));
-		Diode_16A_HV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.03", "Diode Cable 16A HV",  3, 16).getStackForm(1L));
-		Diode_16A_EV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.04", "Diode Cable 16A EV",  4, 16).getStackForm(1L));
-		Diode_16A_IV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.05", "Diode Cable 16A IV",  5, 16).getStackForm(1L));
-		Diode_16A_LuV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.06", "Diode Cable 16A LuV", 6, 16).getStackForm(1L));
-		Diode_16A_ZPM		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.07", "Diode Cable 16A ZPM", 7, 16).getStackForm(1L));
-		Diode_16A_UV		.set(new GT_MetaTileEntity_Diode(ID++, "diode16A.tier.08", "Diode Cable 16A UV",  8, 16).getStackForm(1L));
+		Diode_16A_ULV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.00", "Diode Cable 16A ULV", 0, 16).getStackForm(1L));
+		Diode_16A_LV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.01", "Diode Cable 16A LV",  1, 16).getStackForm(1L));
+		Diode_16A_MV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.02", "Diode Cable 16A MV",  2, 16).getStackForm(1L));
+		Diode_16A_HV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.03", "Diode Cable 16A HV",  3, 16).getStackForm(1L));
+		Diode_16A_EV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.04", "Diode Cable 16A EV",  4, 16).getStackForm(1L));
+		Diode_16A_IV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.05", "Diode Cable 16A IV",  5, 16).getStackForm(1L));
+		Diode_16A_LuV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.06", "Diode Cable 16A LuV", 6, 16).getStackForm(1L));
+		Diode_16A_ZPM		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.07", "Diode Cable 16A ZPM", 7, 16).getStackForm(1L));
+		Diode_16A_UV		.set(new GT_MetaTileEntity_Diode(ID2++, "diode16A.tier.08", "Diode Cable 16A UV",  8, 16).getStackForm(1L));
 
 
 		DustWasherULV		.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035, "basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts",  GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000,   0, 1, "Autoclave.png", "", false, false, 0, "DUSTWASHER", new Object[]{"IPI", "IMI", "ICI", 'I', OrePrefixes.plate.get(Materials.WroughtIron), 'P', GT_ItemList.ULVPump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
