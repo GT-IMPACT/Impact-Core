@@ -472,5 +472,21 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("StorageDrawers", "controller", 1L), bits, new Object[]{"PCP", "ODR", "PAP", 'P', OrePrefixes.plate.get(Materials.Birmabright), 'A', OrePrefixes.plate.get(Materials.Diamond), 'C', OrePrefixes.circuit.get(Materials.Good), 'O', ItemList.Conveyor_Module_MV, 'R', ItemList.Robot_Arm_MV, 'D', "drawerBasic"});
 
         /* ==== END STORAGE DRAWERS ==== */
+        /** ==== START AE2/EC2 ==== */
+        // --- ME Storage Housing
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 39), bits, new Object[]{"hQS", "TGT", "SVd", 'Q', OrePrefixes.plate.get(Materials.CertusQuartz), 'T', OrePrefixes.plate.get(Materials.StainlessSteel), 'V', OrePrefixes.plate.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.Quartzite), 'G', "paneGlass"});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 39), bits, new Object[]{"hQS", "TGT", "SVd", 'Q', OrePrefixes.plate.get(Materials.CertusQuartz), 'T', OrePrefixes.plate.get(Materials.StainlessSteel), 'V', OrePrefixes.plate.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.Quartzite), 'G', GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L)});
+
+        // --- Advanced Storage Housing
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("extracells", "storage.casing", 1L), bits, new Object[]{"hGS", "TOT", "SVd", 'O', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 39), 'T', OrePrefixes.plate.get(Materials.Iridium), 'V', OrePrefixes.plate.get(Materials.HastelloyC276), 'S', OrePrefixes.screw.get(Materials.CertusQuartz), 'G', OrePrefixes.plate.get(Materials.ReinforcedGlass)});
+
+        // --- Fluid Storage Housing
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("extracells", "storage.casing", 1L, 1), bits, new Object[]{"hQS", "TGT", "SVd", 'Q', OrePrefixes.plate.get(Materials.CertusQuartz), 'T', OrePrefixes.plate.get(Materials.Birmabright), 'V', OrePrefixes.plate.get(Materials.StainlessSteel), 'S', OrePrefixes.screw.get(Materials.NetherQuartz), 'G', "paneGlass"});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("extracells", "storage.casing", 1L, 1), bits, new Object[]{"hQS", "TGT", "SVd", 'Q', OrePrefixes.plate.get(Materials.CertusQuartz), 'T', OrePrefixes.plate.get(Materials.Birmabright), 'V', OrePrefixes.plate.get(Materials.StainlessSteel), 'S', OrePrefixes.screw.get(Materials.NetherQuartz), 'G', GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L)});
+
+        // --- Illuminated Panel
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), bits, new Object[]{"hVd", "SGS", "DPD", 'P', OrePrefixes.plate.get(Materials.Glowstone), 'V', OrePrefixes.plate.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.CertusQuartz), 'G', GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzGlass", 1L), 'D', "dustFluix"});
+
+        /* ==== END AE2/EC2 ==== */
     }
 }
