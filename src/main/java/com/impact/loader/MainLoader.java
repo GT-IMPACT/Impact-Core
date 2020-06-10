@@ -1,7 +1,5 @@
 package com.impact.loader;
 
-import codechicken.nei.api.ItemInfo;
-import com.impact.block.Block_LapotronicEnergyUnit;
 import com.impact.impact;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
@@ -23,14 +21,16 @@ import com.impact.recipes.machines.*;
 import com.impact.util.OreDictRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.System.impactLog.INFO;
 import static com.impact.System.impactLog.WARNING;
 import static com.impact.item.Core_List_Items.registerOreDictNames;
-import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class MainLoader {
 
@@ -67,7 +67,8 @@ public class MainLoader {
         INFO("[preInit] Meta Items OreDict List - Loaded");
 
         ItemRegistery.registerBlocks_LSC();
-        INFO("[preInit] Lapotronic Energy Unit - Loaded");
+        ItemRegistery.registerBlocks_Sawmill();
+        INFO("[preInit] Meta Blocks - Loaded");
 
         for (byte i = 0; i <= 7; i++)
             hideItem(new ItemStack(FakeCircuits.getInstance(), 1, i));

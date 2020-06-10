@@ -51,7 +51,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
      */
     public GTMTE_AdvancedVacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        setRecipe();
     }
 
     /**
@@ -128,18 +127,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
         return GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
     }
 
-    public void setRecipe() {
-        setRecipe(true, "supercoolant", 50, "ic2hotcoolant", 25);
-    }
-
-    public void setRecipe(boolean aFluidConsume, String aFluidInput, int aAmountInput, String aFluidOutput, int aAmountOutput) {
-        mFluidConsume = aFluidConsume;
-        bFluidInput = depleteInput(getFluidStack(aFluidInput, aAmountInput));
-        FluidInput = aFluidInput;
-        FluidOutput = aFluidOutput;
-        FluidOutputAmount = aAmountOutput;
-    }
-
     public boolean checkRecipe(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
             ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
@@ -150,8 +137,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                         tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
                 }
             }
-            for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
-                tHatch.isIgnoreMap(true, getFluidStack(FluidInput, 1).getFluid());
                 ArrayList<FluidStack> tFluidList = this.getStoredFluids();
                 FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
                 ArrayList<ItemStack> tInputList = this.getStoredInputs();
@@ -230,19 +215,16 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                     }
                 }
             }
-        }
         return false;
     }
 
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aTick % 20 == 0) {
-            if (mEfficiency > 0 && depleteInput(getFluidStack("supercoolant", 50))) {
-                addOutput(getFluidStack("ic2hotcoolant", 25));
-            } else stopMachine();
-        }
+    public boolean onRunningTick(ItemStack aStack) {
+        if (this.mEfficiency > 0 && depleteInput(getFluidStack("supercoolant", 50))) {
+            addOutput(getFluidStack("ic2hotcoolant", 25));
+        } else stopMachine();
+        return super.onRunningTick(aStack);
     }
 
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {

@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.impact.api.enums.Textures.Icons.*;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 import static com.impact.loader.ItemRegistery.lscLapotronicEnergyUnit;
 import static com.mojang.realmsclient.gui.ChatFormatting.*;
@@ -47,9 +48,6 @@ import static com.mojang.realmsclient.gui.ChatFormatting.*;
  */
 
 public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
-
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
 
     private static final Block LSC_PART = lscLapotronicEnergyUnit;
     private static final Block CASING = CORE_API.sCaseCore2;
@@ -112,21 +110,13 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/LPS");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/LPS_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
                                  boolean aActive, boolean aRedstone) {
         return aSide == aFacing
                 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
                 aActive
-                        ? ScreenON
-                        : ScreenOFF)}
+                        ? LPS_ACTIVE
+                        : LPS)}
                 : new ITexture[]{INDEX_CASE};
     }
 
@@ -312,8 +302,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 //        if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) {
 //            formationChecklist = false;
 //        }
-        mEnergyTunnelsTT.clear();
-        mDynamoTunnelsTT.clear();
+
 
 
 
@@ -322,11 +311,9 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
         for(int i = 0; i < capacitors.length; i++){
             if(i <= 3){
                 final long c = (long) (100000000L * Math.pow(10, i));
-                capacity = capacity.add(
-                        BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+                capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
             } else {
-                capacity = capacity.add(
-                        MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
+                capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
             }
         }
         // Calculate how much energy to void each tick

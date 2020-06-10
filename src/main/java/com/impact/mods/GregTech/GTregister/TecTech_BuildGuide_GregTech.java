@@ -1333,7 +1333,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                     StructureDefinition.<GT_MetaTileEntity_IndustrialPulverizer>builder()
                             .addShapeOldApi("main", new String[][]{
                                     {"000", "0.0", "000",},
-                                    {"020", "010", "000",},
+                                    {"010", "020", "000",},
                                     {"000", "000", "000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings2, 0))

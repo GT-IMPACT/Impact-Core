@@ -1,9 +1,12 @@
 package com.impact.loader;
 
 import com.impact.System.Refstrings;
-import com.impact.block.*;
+import com.impact.block.blocks.*;
+import com.impact.block.itemblock.BufferItem;
+import com.impact.block.itemblock.DecorateBlocksItem;
+import com.impact.block.itemblock.FakeBlocksItem;
+import com.impact.block.itemblock.GlassBlocksItem;
 import com.impact.item.GT_Pump.GregtechPump;
-import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
@@ -12,7 +15,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.System.impactLog.INFO;
-import static com.impact.loader.ItemRegistery.decorateBlock;
 
 
 public class ItemRegistery {
@@ -75,6 +77,7 @@ public class ItemRegistery {
     };
     public static GregtechPump GTPump;
     public static Block lscLapotronicEnergyUnit;
+    public static Block SawMillBlock;
 
     public static void run() {
         //Blocks
@@ -127,5 +130,10 @@ public class ItemRegistery {
 
     public static void registerBlocks_LSC() {
         lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
+    }
+    public static void registerBlocks_Sawmill() {
+        SawMillBlock = Block_Sawmill.registerBlock("SawMill", new String[]{
+                Refstrings.MODID + ":sawmill/conveyor",
+        });
     }
 }

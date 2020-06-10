@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.itemblock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,12 +10,18 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class DecorateBlocksItem extends ItemBlock {
+public class GlassBlocksItem extends ItemBlock {
 
-    public DecorateBlocksItem(Block block) {
+    public GlassBlocksItem(Block block) {
         super(block);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
+    }
+
+    @Override
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+        aList.add( "Use as a decorative");//Glassy & Classy
+        aList.add( "Use as GT Casing");//Glassy & Classy
     }
 
     @Override
@@ -45,6 +51,4 @@ public class DecorateBlocksItem extends ItemBlock {
     public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
         return this.field_150939_a.getIcon(0, par2);
     }
-
 }
-

@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

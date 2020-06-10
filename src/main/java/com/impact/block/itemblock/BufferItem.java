@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.itemblock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,13 +10,12 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class Core_ItemBlocks extends ItemBlock {
+public class BufferItem extends ItemBlock {
 
-    public Core_ItemBlocks(Block par1) {
-        super(par1);
+    public BufferItem(Block block) {
+        super(block);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-
     }
 
     @Override
@@ -30,9 +29,9 @@ public class Core_ItemBlocks extends ItemBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack par1, EntityPlayer par2, List list, boolean b) {
+        super.addInformation(par1, par2, list, b);
+        list.add("Crafting block for tank/chest");
     }
 
     @Override
@@ -49,8 +48,9 @@ public class Core_ItemBlocks extends ItemBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int p_77618_1_, int p_77618_2_) {
-        return this.field_150939_a.getIcon(0, p_77618_2_);
+    public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
+        return this.field_150939_a.getIcon(0, par2);
     }
 
 }
+

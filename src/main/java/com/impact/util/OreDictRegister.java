@@ -8,6 +8,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class OreDictRegister {
 
+    public enum OreDictTypes {
+        dust, rock, Space, BarnardaE, BarnardaF, Callisto, CentauriA, Ceres, Deimos, Enceladus,
+        Europa, Ganymede, Haumea, Io, MakeMake, PlanetMercury, Miranda, Oberon, Phobos, Pluto,
+        Proteus, TcetiE, Titan, Triton, VegaB, Venus,
+    }
+
     public static void register_space_dust() {
 
         if (Loader.isModLoaded("GalaxySpace")) {
@@ -101,10 +107,4 @@ public class OreDictRegister {
 
     }
 
-}
-
-enum OreDictTypes {
-    dust, rock, Space, BarnardaE, BarnardaF, Callisto, CentauriA, Ceres, Deimos, Enceladus,
-    Europa, Ganymede, Haumea, Io, MakeMake, PlanetMercury, Miranda, Oberon, Phobos, Pluto,
-    Proteus, TcetiE, Titan, Triton, VegaB, Venus,
 }

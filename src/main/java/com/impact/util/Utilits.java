@@ -7,6 +7,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -146,5 +148,38 @@ public class Utilits {
         }
         return ret;
     }
+
+    public static ItemStack BlockstackMeta(Block aBlock, int aMeta) {
+        return new ItemStack(aBlock, 1, aMeta);
+    }
+
+    public static ItemStack Blockstack(Block aBlock, int aAmount, int aMeta) {
+        return new ItemStack(aBlock, aAmount, aMeta);
+    }
+
+    public static ItemStack Blockstack(Block aBlock, int aAmount) {
+        return new ItemStack(aBlock, aAmount, 0);
+    }
+
+    public static ItemStack ItemstackMeta(Item aItem, int aMeta) {
+        return new ItemStack(aItem,1, aMeta);
+    }
+
+    public static ItemStack Itemstack(Item aItem, int aAmount, int aMeta) {
+        return new ItemStack(aItem, aAmount, aMeta);
+    }
+
+    public static ItemStack Itemstack(Item aItem, int aAmount) {
+        return new ItemStack(aItem, aAmount, 0);
+    }
+
+    public static boolean isB(int A, int B) {
+        return (A == B);
+    }
+
+    public static boolean isB(int A, int B, int C) {
+        return (A >= B && A <= C);
+    }
+
 
 }

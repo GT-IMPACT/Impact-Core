@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.itemblock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,9 +10,9 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class BufferItem extends ItemBlock {
+public class FakeBlocksItem extends ItemBlock {
 
-    public BufferItem(Block block) {
+    public FakeBlocksItem(Block block) {
         super(block);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -29,9 +29,10 @@ public class BufferItem extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack par1, EntityPlayer par2, List list, boolean b) {
-        super.addInformation(par1, par2, list, b);
-        list.add("Crafting block for tank/chest");
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+        aList.add("Its Fake block for Holography");
     }
 
     @Override

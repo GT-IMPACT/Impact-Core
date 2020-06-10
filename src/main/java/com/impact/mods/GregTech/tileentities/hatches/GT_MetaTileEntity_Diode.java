@@ -11,29 +11,25 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
-    private long maxAmps;
-    private long aAmps;
-    private int mAmperSet;
+    private long maxAmps=1;
+    private long aAmps=1;
 
 
-    public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier, int aAmper) {
+    public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier, long aAmper) {
         super(aID, aName, aNameRegional, aTier, "A Simple diode that will allow Energy Flow in only one direction");
-        this.mAmperSet = aAmper;
         this.maxAmps = aAmper;
-        this.aAmps = this.maxAmps;
+        this.aAmps = aAmper;
     }
 
-    public GT_MetaTileEntity_Diode(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Diode(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, long aAmper) {
         super(aName, aTier, 0, aDescription, aTextures);
+        this.maxAmps = aAmper;
+        this.aAmps = aAmper;
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        if (this.maxAmps == 0 && !this.getBaseMetaTileEntity().getWorld().isRemote) {
-            this.maxAmps = mAmperSet;
-            this.aAmps = this.maxAmps;
-        }
     }
 
     @Override
@@ -81,15 +77,13 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.maxAmps);
     }
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
         return new String[]{this.mDescription,
-            "Voltage: " + EnumChatFormatting.YELLOW + GT_Values.V[this.mTier],
-            "Amperage IN: " + EnumChatFormatting.YELLOW + this.maxAmperesIn(),
-            "Amperage OUT: " + EnumChatFormatting.YELLOW + this.maxAmperesOut(),
+            "Use a Screwdriver to configuration the Amperes",
         };
     }
 

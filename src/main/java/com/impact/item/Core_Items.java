@@ -13,13 +13,13 @@ import java.util.List;
 
 public class Core_Items extends Item {
 
-    public static int x = 38;  //количество предметов
+    public static int x = 39;  //количество предметов
 
-    private static Core_Items Core_Items = new Core_Items();
+    public static Core_Items Core_Items = new Core_Items();
+    public static Core_Items Core_Items1 = new Core_Items();
     private final IIcon[] icons = new IIcon[x+1];
 
-    private Core_Items() {
-    }
+    private Core_Items() {}
 
     public static Core_Items getInstance() {
         return Core_Items;

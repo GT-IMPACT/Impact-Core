@@ -47,6 +47,7 @@ public enum Core_List_Items {
     StargateCrystalDust(36, 1),
     ConcreteDust(37, 1),
     ChargedQuartzDust(38, 1),
+    SawDust(39, 1),
 
     //MetaItems1
     SchematicsTier1(0, 1),

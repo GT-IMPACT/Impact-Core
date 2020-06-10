@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.itemblock;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;

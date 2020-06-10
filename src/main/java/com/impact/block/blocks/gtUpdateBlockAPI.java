@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.blocks;
 
 
 import gregtech.api.GregTech_API;

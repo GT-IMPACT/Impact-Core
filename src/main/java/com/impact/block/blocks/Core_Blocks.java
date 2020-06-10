@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,14 +15,14 @@ import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
-abstract class Core_GTBlocks extends gtUpdateBlockAPI {
+public class Core_Blocks extends Block {
 
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
     String[] textureNames;
     protected String name;
 
-    public Core_GTBlocks(String name, String[] texture) {
+    public Core_Blocks(String name, String[] texture) {
         super(Material.anvil);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
@@ -30,7 +30,7 @@ abstract class Core_GTBlocks extends gtUpdateBlockAPI {
         this.textureNames = texture;
     }
 
-    public Core_GTBlocks(String name, String[] texture, CreativeTabs tabs) {
+    public Core_Blocks(String name, String[] texture, CreativeTabs tabs) {
         super(Material.anvil);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
@@ -39,7 +39,7 @@ abstract class Core_GTBlocks extends gtUpdateBlockAPI {
         this.setCreativeTab(tabs);
     }
 
-    public Core_GTBlocks(String name, String[] texture, CreativeTabs tabs, Material material) {
+    public Core_Blocks(String name, String[] texture, CreativeTabs tabs, Material material) {
         super(material);
         this.setHardness(15.0F);
         this.setResistance(30.0F);
@@ -48,7 +48,7 @@ abstract class Core_GTBlocks extends gtUpdateBlockAPI {
         this.setCreativeTab(tabs);
     }
 
-    public Core_GTBlocks(String name, String[] texture, int MassiveForReg) {
+    public Core_Blocks(String name, String[] texture, int MassiveForReg) {
         super(Material.anvil);
         setHarvestLevel("pickaxe", 1);
         setHardness(1);

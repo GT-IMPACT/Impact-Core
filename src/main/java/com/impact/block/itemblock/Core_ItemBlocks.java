@@ -1,4 +1,4 @@
-package com.impact.block;
+package com.impact.block.itemblock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,18 +10,13 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class GlassBlocksItem extends ItemBlock {
+public class Core_ItemBlocks extends ItemBlock {
 
-    public GlassBlocksItem(Block block) {
-        super(block);
+    public Core_ItemBlocks(Block par1) {
+        super(par1);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-    }
 
-    @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        aList.add( "Use as a decorative");//Glassy & Classy
-        aList.add( "Use as GT Casing");//Glassy & Classy
     }
 
     @Override
@@ -32,6 +27,12 @@ public class GlassBlocksItem extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
     }
 
     @Override
@@ -48,7 +49,8 @@ public class GlassBlocksItem extends ItemBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamageForRenderPass(int par1, int par2) {
-        return this.field_150939_a.getIcon(0, par2);
+    public IIcon getIconFromDamageForRenderPass(int p_77618_1_, int p_77618_2_) {
+        return this.field_150939_a.getIcon(0, p_77618_2_);
     }
+
 }

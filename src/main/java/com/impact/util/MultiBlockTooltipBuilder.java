@@ -38,6 +38,7 @@ public class MultiBlockTooltipBuilder {
         return this;
     }
 
+
     /**
      * Add a separator line like this:<br>
      * -------------------------------
@@ -169,7 +170,7 @@ public class MultiBlockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiBlockTooltipBuilder addOtherStructurePart(String name, String info) {
-        sLines.add(TAB + name + ": " + info);
+        sLines.add(TAB + EnumChatFormatting.GREEN + name + ": "  + EnumChatFormatting.GRAY + info);
         return this;
     }
 
