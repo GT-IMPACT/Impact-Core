@@ -55,6 +55,16 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 32), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 33), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 34), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 39), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemBasicStorageCell.1k", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemBasicStorageCell.4k", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemBasicStorageCell.16k", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemBasicStorageCell.64k", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemSpatialStorageCell.2Cubed", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemSpatialStorageCell.16Cubed", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemSpatialStorageCell.128Cubed", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemViewCell", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 1), true, false, false);
@@ -70,6 +80,19 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 8), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 9), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.component", 1L, 10), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.casing", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.casing", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.fluid", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.fluid", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.fluid", 1L, 2), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.fluid", 1L, 3), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.fluid", 1L, 4), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.fluid", 1L, 5), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.fluid", 1L, 6), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.physical", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.physical", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.physical", 1L, 2), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "storage.physical", 1L, 3), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarry", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "endMarker", 1L, 0), true, false, false);
