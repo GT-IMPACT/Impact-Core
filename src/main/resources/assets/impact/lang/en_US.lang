@@ -123,6 +123,7 @@ item.impact_item.35.name=Barnarda C Biomass
 item.impact_item.36.name=Stargate Crystal Dust
 item.impact_item.37.name=Wet Concrete Dust
 item.impact_item.38.name=Charged Quartz Dust
+item.impact_item.39.name=Sawdust
 
 #MetaItems.01
 item.impact_item2.0.name=Schematics Rocket Tier 1 Chip
@@ -297,3 +298,4 @@ tile.impact_lapotronicenergyunit_block.2.name=Lapotronic Capacitor (LuV)
 tile.impact_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
 tile.impact_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
 tile.impact_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
+tile.impact_sawmill_block.name=Saw Mill Conveyor

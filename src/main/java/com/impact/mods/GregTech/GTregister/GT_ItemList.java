@@ -78,7 +78,7 @@ public enum GT_ItemList implements IItemContainer {
     Machine_Utility, Machine_Brewmenter, Machine_ArcFurnace, Machine_Cutting, Machine_Extradifier, Machine_Macerator, Machine_Mixer,
     Machine_Siftarator, Machine_DDDPrinter,
     PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
-    AdvVacuumFreezer, LapPowerStation,
+    AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse,
 
     Naquadah_multi,
 
@@ -89,7 +89,7 @@ public enum GT_ItemList implements IItemContainer {
     CuttingCasing, MixingCasing,
     //Page3 16-31
     NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
-    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC,
+    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase,
     //Page3 16-31
     Casing_Farm,
 

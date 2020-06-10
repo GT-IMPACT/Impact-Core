@@ -2,6 +2,7 @@ package com.impact;
 
 import com.impact.System.Config;
 import com.impact.System.Refstrings;
+import com.impact.api.enums.Textures;
 import com.impact.loader.MainLoader;
 import com.impact.System.CommonProxy;
 import com.impact.util.SendUtils;
@@ -32,7 +33,13 @@ public class impact {
     public static SendUtils SendUtils_instance = new SendUtils();
     public static String ModPackVersion = "1.0 RELEASE";
     public static Config mConfig;
-	@Mod.EventHandler
+
+
+    public impact(){
+        Textures.Icons.VOID.name();
+    }
+
+    @Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         FMLCommonHandler.instance().bus().register(new LoginHandler());
         INFO("LoginHandler Loaded");

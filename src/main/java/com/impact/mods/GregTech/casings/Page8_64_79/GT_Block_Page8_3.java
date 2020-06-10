@@ -9,8 +9,9 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import static com.impact.util.Utilits.BlockstackMeta;
 
 public class GT_Block_Page8_3 extends GT_Block_Casings_Abstract {
 
@@ -20,29 +21,19 @@ public class GT_Block_Page8_3 extends GT_Block_Casings_Abstract {
         GT_Utility.addTexturePage((byte) 8);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[8][b + 64] = new GT_CopiedBlockTexture(this, 6, b);
-            Textures.BlockIcons.casingTexturePages[8][b + 64] = new GT_CopiedBlockTexture(this, 6, b);
         }
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Farm Casing");
 
-
-        GT_ItemList.Casing_Farm.set(new ItemStack(this, 1, 3));
+        GT_ItemList.Casing_Farm.set(BlockstackMeta(this, 3));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
-            case 3:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL.getIcon();
-            default:
-                if (aSide == 0) {
-                    return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
-                }
-                if (aSide == 1) {
-                    return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
-                }
-                return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
+            case 3: return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL.getIcon();
+            default: return null;
         }
     }
 
