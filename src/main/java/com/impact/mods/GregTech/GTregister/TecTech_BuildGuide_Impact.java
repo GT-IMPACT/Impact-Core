@@ -14,6 +14,7 @@ import net.minecraft.util.IIcon;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
+import static com.impact.loader.ItemRegistery.SawMillBlock;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore1;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
@@ -848,5 +849,83 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             }
         });
 
+        //SawMill
+        registerMetaClass(GTMTE_SawMill.class, new IMultiblockInfoContainer<GTMTE_SawMill>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_SawMill> definition =
+                    StructureDefinition.<GTMTE_SawMill>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"0.0", "..0", "010",},
+                                    {"000", "...", ".1.",},
+                                    {"0.0", "...", ".1.",},
+                                    {"000", "...", ".1.",},
+                                    {"0.0", "0.0", "010",},
+                            })
+                            .addElement('1', ofBlock(SawMillBlock, 0))
+                            .addElement('0', ofBlock(sCaseCore2, 9))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Wooden Casing",
+                    "- Saw Mill Conveyor",
+                    "- Hatches (any Wooden Casing)",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SawMill tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        0, 1, 0, hintsOnly);
+            }
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+        //SawMill
+        registerMetaClass(GTMTE_Pyrolyse.class, new IMultiblockInfoContainer<GTMTE_Pyrolyse>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_Pyrolyse> definition =
+                    StructureDefinition.<GTMTE_Pyrolyse>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"000.00000",".00.00000","1.1.1...1",},
+                                    {"000.00000","02222...0","....00000",},
+                                    {"000.00000","000.00000","1.1.1...1",},
+                            })
+                            .addElement('0', ofBlock(sBlockCasings2, 0))
+                            .addElement('1', ofHintDeferred(() -> new IIcon[]{
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                            }, Materials.Steel.mRGBa))
+                            .addElement('2', ofBlock(sBlockCasings2, 13))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Solid Steel Casing",
+                    "- Steel Pipe Casing",
+                    "- Steel Frame Box",
+                    "- Hatches (any Solid Steel Casing)",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Pyrolyse tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        0, 1, 0, hintsOnly);
+            }
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
     }
 }

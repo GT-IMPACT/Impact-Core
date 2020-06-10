@@ -41,6 +41,8 @@ public class GT_Machines_MultiRegister {
 			GT_ItemList.BasicWaterPump			.set(new GTMTE_BasicWaterPump(ID++, "multimachine.basicwaterpump", 		"Primitive Water Pump").getStackForm(1L));
 			GT_ItemList.AdvVacuumFreezer		.set(new GTMTE_AdvancedVacuumFreezer(ID++, "multimachine.advvf", 		"Advanced Vacuum Freezer").getStackForm(1L));
 			GT_ItemList.LapPowerStation			.set(new GTMTE_LapPowerStation(ID++, "multimachine.supercapacitor", 	"Lapotronic Supercapacitor").getStackForm(1L));
+			GT_ItemList.SawMill					.set(new GTMTE_SawMill(ID++, "multimachine.sawmill", 					"Saw Mill").getStackForm(1L));
+			GT_ItemList.Pyrolyse				.set(new GTMTE_Pyrolyse(ID++, "multimachine.pyrolyse", 					"Pyrolyse Oven").getStackForm(1L));
 
 			GT_ItemList.Machine_CokeOven.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
 			GT_ItemList.Machine_Multi_Farm.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));
