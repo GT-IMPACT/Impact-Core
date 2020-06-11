@@ -4,27 +4,31 @@ import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_Multi
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Machine {
     public final boolean allowedToWorkButton;
 
     public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean enablePowerButton, int itsEnabledButtonNonCheck) {
         super(aInventoryPlayer, aTileEntity);
-        allowedToWorkButton=enablePowerButton;
+        allowedToWorkButton = enablePowerButton;
     }
 
     public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
-        allowedToWorkButton=true;
+        allowedToWorkButton = true;
     }
 
     public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory, boolean enablePowerButton) {
         super(aInventoryPlayer, aTileEntity, bindInventory);
-        allowedToWorkButton=enablePowerButton;
+        allowedToWorkButton = enablePowerButton;
     }
 
     @Override
@@ -53,4 +57,5 @@ public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Mach
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
+
 }

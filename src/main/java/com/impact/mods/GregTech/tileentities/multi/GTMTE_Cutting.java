@@ -2,7 +2,7 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_NotMultiMachine;
+import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -22,8 +22,6 @@ import org.lwjgl.input.Keyboard;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
-
-    private byte mMode = -1;
 
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore1;
@@ -88,8 +86,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     /** === GUI === */
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "MultiParallelBlockGUI.png"," Cutting ");
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " Cutting ");
     }
 
     /** === RECIPE MAP === */

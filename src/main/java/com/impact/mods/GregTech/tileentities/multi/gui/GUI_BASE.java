@@ -26,25 +26,25 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
 
-abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
+public class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
 
     static {
         GuiContainerManager.addInputHandler(new GUI_BASE.GT_RectHandler());
         GuiContainerManager.addTooltipHandler(new GUI_BASE.GT_RectHandler());
     }
-
-    abstract String getmMode();
-
+    
     String mName = "";
     public String mNEI;
+    public String mMode;
     private boolean  mWorkUpdate = false, mWorks = true;
     public int mEUt = 0;
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList();
 
-    public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
+    public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aModeString) {
         super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity, true, true),
                 RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile ));
         mName = aName;
+        mMode = aModeString;
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
@@ -84,7 +84,7 @@ abstract class GUI_BASE extends GT_GUIContainerMetaTile_Machine {
             }
 
             if (((GT_Container_MultiParallelMachine) mContainer).mDisplayErrorCode == 0) {
-                fontRendererObj.drawString(EnumChatFormatting.GREEN + (getmMode() == null? "Select " : getmMode())  + "mode", 6, 36, 16448255);
+                fontRendererObj.drawString(EnumChatFormatting.GREEN + (mMode == null? "Select " : mMode)  + "mode", 6, 36, 16448255);
                 if (((GT_Container_MultiParallelMachine) mContainer).mActive == 0) {
                     fontRendererObj.drawString("Progress:"+EnumChatFormatting.RED+" not working", 10, 22, 16448255);
                 } else {

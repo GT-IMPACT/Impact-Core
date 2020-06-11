@@ -2,7 +2,7 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_PressBendExtrud;
+import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -24,7 +24,6 @@ import org.lwjgl.input.Keyboard;
 
 public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    private byte mMode = -1;
     public static String mModed;
 
     /** === SET BLOCKS STRUCTURE === */
@@ -92,7 +91,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_PressBendExtrud(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", mModed);
     }
 
     /** === RECIPE MAP === */
@@ -189,7 +188,6 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         }
     }
 
-
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
@@ -200,6 +198,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         }
     }
 
+    public byte mMode = -1;
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("mMode", mMode);
@@ -211,5 +210,4 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         this.mMode = aNBT.getByte("mMode");
         super.loadNBTData(aNBT);
     }
-
 }

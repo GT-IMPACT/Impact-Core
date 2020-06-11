@@ -2,8 +2,7 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_Assembler;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_Extradifier;
+import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -18,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
@@ -26,8 +24,6 @@ import org.lwjgl.input.Keyboard;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase {
-
-    private byte mMode = -1;
 
     /** === SET BLOCKS STRUCTURE === */
     Block CASING = CORE_API.sCaseCore2;
@@ -94,7 +90,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_Extradifier(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", mModed);
     }
 
     /** === RECIPE MAP === */
@@ -261,22 +257,8 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
             mMode++;
             if (mMode > 1) mMode = 0;
 
-
             mModed = (mMode == 0 ? " Fluid Extractor " : " Fluid Solidifier ");
             GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
         }
     }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mMode", mMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        this.mMode = aNBT.getByte("mMode");
-        super.loadNBTData(aNBT);
-    }
-
 }

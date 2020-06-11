@@ -37,8 +37,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -822,5 +824,18 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     @SuppressWarnings({"rawtypes", "unchecked"})
     public List getTecTechEnergyMultis() {
         return TTMultiAmp;
+    }
+
+    public byte mMode = -1;
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setByte("mMode", mMode);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        this.mMode = aNBT.getByte("mMode");
+        super.loadNBTData(aNBT);
     }
 }
