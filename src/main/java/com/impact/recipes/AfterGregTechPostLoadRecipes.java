@@ -155,6 +155,8 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
 
         removeRecipeByOutput(GT_ModHandler.getModItem("StorageDrawers", "controller", 1L, 0), true, false, false);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "crafting_table", 1L, 0), true, false, false);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }

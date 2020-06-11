@@ -112,6 +112,9 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_MV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1), ItemList.Large_Fluid_Cell_Aluminium.get(1L), ItemList.Battery_RE_MV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Copper, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, simpleMetaStack(ItemRegistery.GTPump, 1002, 1), 140, 48);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_HV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1), ItemList.Large_Fluid_Cell_StainlessSteel.get(1L), ItemList.Battery_RE_HV_Lithium.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Electrum, 1), ItemList.Circuit_Integrated.getWithDamage(0L, 1L)}, GT_Values.NF, simpleMetaStack(ItemRegistery.GTPump, 1003, 1), 160, 96);
 
+        //Sawmill
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 6L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1L), GT_ItemList.SawCase.get(2L), 50, 16);
+
         /* ================================= end IMPACT MOD =================================*/
 
 /** ================================= start GT MOD =================================*/
