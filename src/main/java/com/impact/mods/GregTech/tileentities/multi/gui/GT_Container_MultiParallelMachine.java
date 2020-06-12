@@ -47,9 +47,11 @@ public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Mach
             if (aSlotIndex == 0) {
                 if (allowedToWorkButton) {
                     if (mte.getBaseMetaTileEntity().isAllowedToWork()) {
+                        GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Disabled");
                         mte.getBaseMetaTileEntity().disableWorking();
 
                     } else {
+                        GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Enabled");
                         mte.getBaseMetaTileEntity().enableWorking();
                     }
                 }

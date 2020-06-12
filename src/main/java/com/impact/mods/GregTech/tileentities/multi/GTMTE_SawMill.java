@@ -19,10 +19,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
+
+import java.util.ArrayList;
 
 import static com.impact.api.enums.Textures.Icons.*;
 import static com.impact.loader.ItemRegistery.SawMillBlock;
+import static gregtech.api.enums.GT_Values.V;
 
 public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -60,9 +64,9 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
                                  final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return aSide == aBaseMetaTileEntity.getBackFacing()
                 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? SAW_ACTIVE : SAW)}
-             : aSide == aFacing
+                : aSide == aFacing
                 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? SAW_FRONT_ACTIVE : SAW_FRONT)}
-             : new ITexture[]{INDEX_CASE};
+                : new ITexture[]{INDEX_CASE};
     }
 
     /**
@@ -90,7 +94,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addOutputBus("Any casing (max x1)")
                 .addInputHatch("Any casing (max x1)")
                 .addCasingInfo("Wooden Casing")
-                .addOtherStructurePart("Saw Mill Conveyor", "Bottom middle" )
+                .addOtherStructurePart("Saw Mill Conveyor", "Bottom middle")
                 .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -110,7 +114,79 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        return impactRecipe();
+        ArrayList<ItemStack> tInputList = getStoredInputs();
+        int tInputList_sS = tInputList.size();
+        for (int i = 0; i < tInputList_sS - 1; i++) {
+            for (int j = i + 1; j < tInputList_sS; j++) {
+                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
+                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
+                        tInputList.remove(j--);
+                        tInputList_sS = tInputList.size();
+                    } else {
+                        tInputList.remove(i--);
+                        tInputList_sS = tInputList.size();
+                        break;
+                    }
+                }
+            }
+        }
+        tInputList.add(mInventory[1]);
+        ItemStack[] inputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+
+        ArrayList<FluidStack> tFluidList = getStoredFluids();
+        int tFluidList_sS = tFluidList.size();
+        for (int i = 0; i < tFluidList_sS - 1; i++) {
+            for (int j = i + 1; j < tFluidList_sS; j++) {
+                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
+                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
+                        tFluidList.remove(j--);
+                        tFluidList_sS = tFluidList.size();
+                    } else {
+                        tFluidList.remove(i--);
+                        tFluidList_sS = tFluidList.size();
+                        break;
+                    }
+                }
+            }
+        }
+        FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+
+        if (inputs.length > 0 || fluids.length > 0) {
+            long tVoltage = getMaxInputVoltage();
+            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+            GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
+                    false, V[tTier], fluids, inputs);
+            if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+                this.mEfficiencyIncrease = 10000;
+
+                int EUt = recipe.mEUt;
+                int maxProgresstime = recipe.mDuration;
+
+                if (tTier > 0) {
+                    EUt = recipe.mEUt * (1 << tTier - 1);
+                    maxProgresstime = (recipe.mDuration / (1 << tTier - 1));
+                }
+
+                if (maxProgresstime < 1) {
+                    maxProgresstime = 1;
+                    EUt = recipe.mEUt * recipe.mDuration / 2;
+                }
+
+                this.mEUt = -EUt;
+                this.mMaxProgresstime = maxProgresstime;
+                mOutputItems = new ItemStack[recipe.mOutputs.length];
+                for (int i = 0; i < recipe.mOutputs.length; i++) {
+                    if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
+                        this.mOutputItems[i] = recipe.getOutput(i);
+                    }
+                }
+                this.mOutputFluids = recipe.mFluidOutputs;
+                this.updateSlots();
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -128,7 +204,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
             for (byte Y = -1; Y <= 1; Y++) {
                 for (byte Z = 0; Z >= -4; Z--) {
 
-                    if (X == 0 && Z==0 && Y==0) continue;
+                    if (X == 0 && Z == 0 && Y == 0) continue;
 
                     if (X == 1 && Y == 0) continue;
                     if (X == 0 && Y == 0 && !(Z == -4)) continue;
@@ -138,7 +214,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
 
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-                    if (X == 1 && Y == -1){
+                    if (X == 1 && Y == -1) {
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == SawMillBlock)) {
                         } else {
                             formationChecklist = false;
@@ -160,10 +236,10 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
-        if(this.mInputBusses.size() != 1)  formationChecklist = false;
-        if(this.mInputHatches.size() > 1)  formationChecklist = false;
-        if(this.mOutputBusses.size() > 1)  formationChecklist = false;
-        if(this.mEnergyHatches.size() != 1)  formationChecklist = false;
+        if (this.mInputBusses.size() != 1) formationChecklist = false;
+        if (this.mInputHatches.size() > 1) formationChecklist = false;
+        if (this.mOutputBusses.size() > 1) formationChecklist = false;
+        if (this.mEnergyHatches.size() != 1) formationChecklist = false;
         mWrench = true;
         mScrewdriver = true;
         mSoftHammer = true;

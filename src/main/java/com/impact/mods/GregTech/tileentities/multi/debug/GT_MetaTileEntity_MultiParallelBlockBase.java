@@ -313,7 +313,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 if (getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill0 || getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill1 || getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill2) {
                     if (tier > 1) {
                         while (EUt <= V[tier] && maxProgresstime > 2) {
-                            EUt *= 3;
+                            EUt *= 2;
                             maxProgresstime /= 2;
                         }
                     }
