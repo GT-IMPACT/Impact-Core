@@ -454,7 +454,7 @@ public class Printer3DRecipe implements Runnable {
 
 
 /** ================================= start EC2 =================================*/
-//ME Fluid Export Bus
+        //ME Fluid Export Bus
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Electric_Pump_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Steel, 4), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 2, 43),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Vanadium, 2)
@@ -781,13 +781,6 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 2), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 4), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 4),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 8)
         }, ItemList.Machine_Multi_HeatExchanger.get(1L), null, 40 * 20, 480);
-
-        //OilDrill1
-        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                ItemList.Hull_MV.get(1L), ItemList.Electric_Motor_MV.get(2L), ItemList.Electric_Pump_MV.get(2L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 2), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 2), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 4),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 8)
-        }, ItemList.OilDrill1.get(1L), null, 20 * 20, 120);
 
         //OilDrill2
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{

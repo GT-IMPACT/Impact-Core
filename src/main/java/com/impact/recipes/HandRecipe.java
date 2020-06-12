@@ -299,6 +299,14 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.string, 2), bits, new Object[]{new ItemStack(Blocks.wool, 1, 32767), ToolDictNames.craftingToolKnife});
 
+        //Sawmill
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("impact", "impact_sawmill_block", 5L), bits, new Object[]{"SCS", "BLB", "BdB", 'S', OrePrefixes.screw.get(Materials.WroughtIron), 'B', OrePrefixes.frameGt.get(Materials.Wood), 'L', OrePrefixes.slab.get(Materials.Wood), 'C', GT_ItemList.ULVConveyorModule});
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.SawCase.get(2L), bits, new Object[]{"SrS", "SBS", "SsS", 'S', OrePrefixes.slab.get(Materials.Wood), 'B', OrePrefixes.frameGt.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.SawMill.get(1L), bits, new Object[]{"SBd", "MCM", "LWL", 'S', OrePrefixes.screw.get(Materials.WroughtIron), 'B', OrePrefixes.toolHeadBuzzSaw.get(Materials.Iron), 'L', OrePrefixes.circuit.get(Materials.Primitive), 'W', OrePrefixes.wireGt01.get(Materials.Lead), 'M', GT_ItemList.ULVMotor, 'C', GT_ItemList.SawCase});
+
+        //Pyrolyse Oven
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.Pyrolyse.get(1L), bits, new Object[]{"PQP", "CHC", "POP", 'Q', OrePrefixes.pipeNonuple.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Basic), 'O', OrePrefixes.spring.get(Materials.Copper), 'P', ItemList.Electric_Pump_LV, 'H', ItemList.Hull_LV});
+
         //WaterPump
         GT_ModHandler.addCraftingRecipe(GT_ItemList.PrimitiveWaterPumpCase.get(1L), bits, new Object[]{"SWS", "dCr", 'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'W', OrePrefixes.plank.get(Materials.Wood), 'C', OrePrefixes.slab.get(Materials.Cobblestone)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.BasicWaterPump.get(1L), bits, new Object[]{"RPS", "OWd", "CHC", 'O', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Iron, 1), 'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'R', GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1), 'P', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Wood, 1), 'H', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1), 'W', OrePrefixes.plank.get(Materials.Wood), 'C', OrePrefixes.slab.get(Materials.Cobblestone)});
@@ -488,5 +496,9 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), bits, new Object[]{"hVd", "SGS", "DPD", 'P', OrePrefixes.plate.get(Materials.Glowstone), 'V', OrePrefixes.plate.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.CertusQuartz), 'G', GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzGlass", 1L), 'D', "dustFluix"});
 
         /* ==== END AE2/EC2 ==== */
+        /** ==== START VANILLA ==== */
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "crafting_table", 1L), bits, new Object[]{"WW", "WW", 'W', "logWood"});
+
+        /* ==== END VANILLA ==== */
     }
 }
