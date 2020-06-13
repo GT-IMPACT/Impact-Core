@@ -305,7 +305,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ItemList.SawMill.get(1L), bits, new Object[]{"SBd", "MCM", "LWL", 'S', OrePrefixes.screw.get(Materials.WroughtIron), 'B', OrePrefixes.toolHeadBuzzSaw.get(Materials.Iron), 'L', OrePrefixes.circuit.get(Materials.Primitive), 'W', OrePrefixes.wireGt01.get(Materials.Lead), 'M', GT_ItemList.ULVMotor, 'C', GT_ItemList.SawCase});
 
         //Pyrolyse Oven
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.Pyrolyse.get(1L), bits, new Object[]{"PQP", "CHC", "POP", 'Q', OrePrefixes.pipeNonuple.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Basic), 'O', OrePrefixes.spring.get(Materials.Copper), 'P', ItemList.Electric_Pump_LV, 'H', ItemList.Hull_LV});
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.Pyrolyse.get(1L), bits, new Object[]{"PQW", "CHC", "ICW", 'Q', OrePrefixes.pipeNonuple.get(Materials.Bronze), 'C', OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.wireGt08.get(Materials.Cupronickel), 'P', ItemList.Electric_Pump_LV, 'I', ItemList.Electric_Piston_LV, 'H', ItemList.Hull_LV});
 
         //WaterPump
         GT_ModHandler.addCraftingRecipe(GT_ItemList.PrimitiveWaterPumpCase.get(1L), bits, new Object[]{"SWS", "dCr", 'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'W', OrePrefixes.plank.get(Materials.Wood), 'C', OrePrefixes.slab.get(Materials.Cobblestone)});

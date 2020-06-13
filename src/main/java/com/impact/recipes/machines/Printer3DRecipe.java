@@ -17,7 +17,7 @@ public class Printer3DRecipe implements Runnable {
     @Override
     public void run() {
 /** ================================= start IMPACT MOD =================================*/
-        //Controlers
+        //Controllers
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.GumMetal, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), ItemList.Cover_Screen.get(1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.GumMetal, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
@@ -190,6 +190,13 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.ZPM2.get(1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 8), ItemList.Circuit_Chip_PPIC.get(12L),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Pikyonium64B, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 64)
         }, GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 5), null, 180 * 20, 2000000);
+
+        //AdvancedPyrolyseOven
+        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+                GT_ItemList.Pyrolyse.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSLA, 2), ItemList.Electric_Pump_EV.get(2L),
+                ItemList.Electric_Piston_EV.get(2L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4), GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.StainlessSteel, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Kanthal, 6), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Titanium, 16)
+        }, GT_ItemList.AdvPyrolyse.get(1L), null, 60 * 20, 1920);
 
 
         /* ================================= end IMPACT MOD =================================*/
