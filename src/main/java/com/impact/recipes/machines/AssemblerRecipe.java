@@ -202,6 +202,9 @@ public class AssemblerRecipe implements Runnable {
 
         }
 
+        //Empty Shape Plate
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, ItemList.Shape_Empty.get(1L), 2 * 20, 8);
+
         //OilDrill1
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MV.get(1L), ItemList.Electric_Motor_MV.get(2L), ItemList.Electric_Pump_MV.get(2L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 2), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 2), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 8)}, GT_Values.NF, ItemList.OilDrill1.get(1L), 20 * 20, 120);
 
