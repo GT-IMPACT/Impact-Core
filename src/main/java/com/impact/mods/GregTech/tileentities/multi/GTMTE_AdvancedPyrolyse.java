@@ -6,7 +6,6 @@ import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -15,16 +14,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,10 +30,8 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.impact.item.Core_Items.Core_Items1;
 import static com.impact.util.Utilits.isB;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -50,7 +44,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
      * === SET TEXTURES HATCHES AND CONTROLLER ===
      */
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[1][48 + CASING_META];
-    int CASING_TEXTURE_ID = CASING_META + 48 + 128 * 3;
+    int CASING_TEXTURE_ID = CASING_META + 48 + 128;
 
     int frameId = 4096 + Materials.HSLA.mMetaItemSubID;
     int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
@@ -130,118 +124,121 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " Pyrolyse ");
     }
 
+    public int mParallelPoint = 1;
+
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
         int xPar = tierHatch();
 
-            ArrayList<ItemStack> tInputList = getStoredInputs();
-            ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-            ItemStack[] tInputs = tInputList.toArray(new ItemStack[]{});
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        ArrayList<ItemStack> tInputList = getStoredInputs();
+        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+        ItemStack[] tInputs = tInputList.toArray(new ItemStack[]{});
+        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 
-            if (tInputList.size() > 0 || tFluidList.size() > 0) {
+        if (tInputList.size() > 0 || tFluidList.size() > 0) {
 
-                GT_Recipe tRecipe;
+            GT_Recipe tRecipe;
 
-                long nominalV = TecTechUtils.getnominalVoltageTT(this);
-                byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
+            long nominalV = TecTechUtils.getnominalVoltageTT(this);
+            byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 
-                tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+            tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
 
-                if (tRecipe != null) {
-                    ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
-                    ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+            if (tRecipe != null) {
+                ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+                ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
 
-                    boolean found_Recipe = false;
-                    int processed = 0;
+                boolean found_Recipe = false;
+                int processed = 0;
 
-                    ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length*8];
+                ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
 
-                    while ((tFluidList.size() > 0 || tInputList.size()> 0) && processed < xPar) {
-                        if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-                            found_Recipe = true;
-                            for (int h = 0; h < tRecipe.mOutputs.length*8; h++) {
-                                if (tRecipe.getOutput(h) != null) {
-                                    tOut[h] = tRecipe.getOutput(h).copy();
-                                    tOut[h].stackSize = 0;
-                                }
+                while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < xPar) {
+                    if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+                        found_Recipe = true;
+                        for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+                            if (tRecipe.getOutput(h) != null) {
+                                tOut[h] = tRecipe.getOutput(h).copy();
+                                tOut[h].stackSize = 0;
                             }
+                        }
 
-                            for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) outputFluids.add(tRecipe.getFluidOutput(i));
+                        for (int i = 0; i < tRecipe.mFluidOutputs.length; i++)
+                            outputFluids.add(tRecipe.getFluidOutput(i));
 
 
-                            ++processed;
+                        ++processed;
 
-                        } else break;
-                    }
-
+                    } else break;
+                }
+                mParallelPoint = processed;
 //                    for (int f = 0; f < tOut.length; f++) {
 //                        if (tRecipe.mOutputs[f] != null && tOut[f] != null)
 //                            for (int g = 0; g < processed; g++)
 //                                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(f)) tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
 //                    }
 
-                    tOut = clean(tOut);
+                tOut = clean(tOut);
 
-                    List<ItemStack> overStacks = new ArrayList<ItemStack>();
+                List<ItemStack> overStacks = new ArrayList<ItemStack>();
 
-                    for (int f = 0; f < tOut.length; f++) {
-                        while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-                            if (tOut[f] != null) {
-                                ItemStack tmp = tOut[f].copy();
-                                tmp.stackSize = tmp.getMaxStackSize();
-                                tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-                                overStacks.add(tmp);
-                            }
+                for (int f = 0; f < tOut.length; f++) {
+                    while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
+                        if (tOut[f] != null) {
+                            ItemStack tmp = tOut[f].copy();
+                            tmp.stackSize = tmp.getMaxStackSize();
+                            tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
+                            overStacks.add(tmp);
                         }
                     }
+                }
 
-                    if (overStacks.size() > 0) {
-                        ItemStack[] tmp = new ItemStack[overStacks.size()];
-                        tmp = overStacks.toArray(tmp);
-                        tOut = ArrayUtils.addAll(tOut, tmp);
-                    }
+                if (overStacks.size() > 0) {
+                    ItemStack[] tmp = new ItemStack[overStacks.size()];
+                    tmp = overStacks.toArray(tmp);
+                    tOut = ArrayUtils.addAll(tOut, tmp);
+                }
 
-                    List<ItemStack> tSList = new ArrayList<ItemStack>();
+                List<ItemStack> tSList = new ArrayList<ItemStack>();
 
-                    for (ItemStack tS : tOut) {
-                        if (tS.stackSize > 0) tSList.add(tS);
-                    }
+                for (ItemStack tS : tOut) {
+                    if (tS.stackSize > 0) tSList.add(tS);
+                }
 
-                    tOut = tSList.toArray(new ItemStack[tSList.size()]);
+                tOut = tSList.toArray(new ItemStack[tSList.size()]);
 
-                    if (found_Recipe) {
+                if (found_Recipe) {
 
-                        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-                        this.mEfficiencyIncrease = 10000;
-                        long actualEUT = (long) (tRecipe.mEUt) * processed;
+                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                    this.mEfficiencyIncrease = 10000;
+                    long actualEUT = (long) (tRecipe.mEUt) * processed;
 
-                        if (actualEUT > Integer.MAX_VALUE) {
-                            byte divider = 0;
-                            while (actualEUT > Integer.MAX_VALUE) {
-                                actualEUT = actualEUT / 2;
-                                divider++;
-                            }
-                            calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
-                        } else
-                            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                    if (actualEUT > Integer.MAX_VALUE) {
+                        byte divider = 0;
+                        while (actualEUT > Integer.MAX_VALUE) {
+                            actualEUT = actualEUT / 2;
+                            divider++;
+                        }
+                        calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
+                    } else
+                        calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 
 
-                        if (this.mEUt == Integer.MAX_VALUE - 1) return false;
+                    if (this.mEUt == Integer.MAX_VALUE - 1) return false;
 
-                        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+                    if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-                        this.mMaxProgresstime = 60*20;
+                    this.mMaxProgresstime = tRecipe.mDuration;
 
-                        this.mOutputItems = tOut;
-                        this.mOutputFluids = new FluidStack[outputFluids.size()];
-                        this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
+                    this.mOutputItems = tOut;
+                    this.mOutputFluids = new FluidStack[outputFluids.size()];
+                    this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
 
-                        this.updateSlots();
-                        return true;
-                    }
+                    this.updateSlots();
+                    return true;
                 }
             }
+        }
         return false;
     }
 
@@ -259,24 +256,28 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-
-        if (this.mProgresstime == 6 * 20)
-            addOutput(Materials.CarbonMonoxide.getGas(72L * tierHatch()));
-
-        if (this.mProgresstime == 15 * 20)
-            addOutput(Materials.Hydrogen.getGas(288L * tierHatch()));
-
-        if (this.mProgresstime == 30 * 20)
-            addOutput(Materials.Methane.getGas(144L * tierHatch()));
-
-        if (this.mProgresstime == 45 * 20)
-            addOutput(Materials.CarbonDioxide.getGas(216L * tierHatch()));
-
-        if (this.mProgresstime == 55 * 20) {
-            addOutput(Materials.WoodTar.getFluid(1440L * tierHatch()));
-            addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5 * tierHatch()));
+        switch (this.mProgresstime) {
+            case 6 * 20:
+                addOutput(Materials.CarbonMonoxide.getGas(72L * mParallelPoint));
+                break;
+            case 15 * 20:
+                addOutput(Materials.Hydrogen.getGas(288L * mParallelPoint));
+                break;
+            case 30 * 20:
+                addOutput(Materials.Methane.getGas(144L * mParallelPoint));
+                break;
+            case 45 * 20:
+                addOutput(Materials.CarbonDioxide.getGas(216L * mParallelPoint));
+                break;
+            case 50 * 20:
+                if (this.mMaxProgresstime == 55 * 20)
+                    addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5 * mParallelPoint));
+                break;
+            case 55 * 20:
+                if (this.mMaxProgresstime == 60 * 20)
+                    addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5 * mParallelPoint));
+                break;
         }
-
         return super.onRunningTick(aStack);
     }
 
