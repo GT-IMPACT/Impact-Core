@@ -297,7 +297,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(WoodBrickFormTool.WoodBrickFormTool, 1), bits, new Object[]{GT_ModHandler.getModItem("TConstruct", "blankPattern", 1L), ToolDictNames.craftingToolKnife});
 
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.string, 2), bits, new Object[]{new ItemStack(Blocks.wool, 1, 32767), ToolDictNames.craftingToolKnife});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "string", 2L), new Object[]{"Wk", 'W', "blockWool"});
 
         //Sawmill
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("impact", "impact_sawmill_block", 5L), bits, new Object[]{"SCS", "BLB", "BdB", 'S', OrePrefixes.screw.get(Materials.WroughtIron), 'B', OrePrefixes.frameGt.get(Materials.Wood), 'L', OrePrefixes.slab.get(Materials.Wood), 'C', GT_ItemList.ULVConveyorModule});
