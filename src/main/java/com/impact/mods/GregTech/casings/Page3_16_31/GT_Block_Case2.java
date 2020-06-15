@@ -58,7 +58,7 @@ public class GT_Block_Case2
            case 4: return CASING_PRINTER.getIcon();
            case 5: return CASING_PRINTER3X3.getIcon();
            case 6: return CASING_PRINTER4X4.getIcon();
-           case 7: return aSide == 1 ? CASING_PUMP_TOP.getIcon() : CASING_PUMP.getIcon();
+           case 7: return aSide <= 1 ? CASING_PUMP_TOP.getIcon() : CASING_PUMP.getIcon();
            case 8: return aSide <= 1 ? CASING_LSC_TOP.getIcon() : CASING_LSC.getIcon();
            case 9: return CASING_SAW.getIcon();
 

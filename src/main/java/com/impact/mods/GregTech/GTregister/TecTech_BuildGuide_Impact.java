@@ -4,7 +4,9 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.*;
+import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,8 +16,7 @@ import net.minecraft.util.IIcon;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
-import static com.impact.loader.ItemRegistery.SawMillBlock;
-import static com.impact.loader.ItemRegistery.decorateBlock;
+import static com.impact.loader.ItemRegistery.*;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore1;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
 import static gregtech.api.GregTech_API.*;
@@ -885,7 +886,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             }
         });
 
-        //SawMill
+        //Pyrolyse
         registerMetaClass(GTMTE_Pyrolyse.class, new IMultiblockInfoContainer<GTMTE_Pyrolyse>() {
             //region Structure
             private final IStructureDefinition<GTMTE_Pyrolyse> definition =
@@ -927,5 +928,90 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                 return desc;
             }
         });
+
+        //advPyrolyse
+        registerMetaClass(GTMTE_Pyrolyse.class, new IMultiblockInfoContainer<GTMTE_Pyrolyse>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_Pyrolyse> definition =
+                    StructureDefinition.<GTMTE_Pyrolyse>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"000.00000",".00.00000","1.1.1...1",},
+                                    {"000.00000","02222...0","....00000",},
+                                    {"000.00000","000.00000","1.1.1...1",},
+                            })
+                            .addElement('0', ofBlock(sBlockCasings8, 3))
+                            .addElement('1', ofHintDeferred(() -> new IIcon[]{
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                                    Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                            }, Materials.HSLA.mRGBa))
+                            .addElement('2', ofBlock(sBlockCasings2, 13))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- HSLA Casing",
+                    "- Steel Pipe Casing",
+                    "- HSLA Frame Box",
+                    "- Hatches (any HSLA Casing)",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Pyrolyse tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        0, 1, 0, hintsOnly);
+            }
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+        //LapStation
+        registerMetaClass(GTMTE_LapPowerStation.class, new IMultiblockInfoContainer<GTMTE_LapPowerStation>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_LapPowerStation> definition =
+                    StructureDefinition.<GTMTE_LapPowerStation>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"11111","11111","00000","00.00",},
+                                    {"11111","12221","00000","00000",},
+                                    {"11111","12221","00000","00000",},
+                                    {"11111","12221","00000","00000",},
+                                    {"11111","11111","00000","00000",},
+                            })
+                            .addElement('0', ofBlock(CORE_API.sCaseCore2, 8))
+                            .addElement('1', ofBlock(decorateBlock[3], 0))
+                            .addElement('2', ofBlock(lscLapotronicEnergyUnit, 5))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Warning! It is minimal structure",
+                    "- Lapotronic Super Capacitor Casing",
+                    "- I-Glass (any glass)",
+                    "- Lapotronic Capacitor (IV-UHV)",
+                    "- Hatches (any Lapotronic Super Capacitor Casing)",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_LapPowerStation tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        2, 3, 0, hintsOnly);
+            }
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+
+
     }
 }
