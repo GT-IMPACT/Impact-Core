@@ -497,8 +497,229 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
         /* ==== END AE2/EC2 ==== */
         /** ==== START VANILLA ==== */
+        // --- Crafting Table
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "crafting_table", 1L), bits, new Object[]{"WW", "WW", 'W', "logWood"});
+        // --- Chest
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "chest", 1L), bits, new Object[]{"WWW", "W W", "WWW", 'W', "plankWood"});
+        // --- Trapper Chest
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "trapped_chest", 1L), bits, new Object[]{" T ", "SCS", " d ", 'C', GT_ModHandler.getModItem("minecraft", "chest", 1L), 'S', OrePrefixes.screw.get(Materials.Iron), 'T', GT_ModHandler.getModItem("minecraft", "tripwire_hook", 1L)});
+        // --- Dispenser
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "dispenser", 1L), bits, new Object[]{"CRC", "SMS", "GWG", 'C', "cobblestone", 'S', OrePrefixes.spring.get(Materials.Iron), 'G', OrePrefixes.gearGtSmall.get(Materials.Iron), 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'R', OrePrefixes.ring.get(Materials.Iron), 'M', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Dropper
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "dropper", 1L), bits, new Object[]{"CRC", "SMS", "GWG", 'C', "cobblestone", 'S', OrePrefixes.springSmall.get(Materials.Iron), 'G', OrePrefixes.gearGtSmall.get(Materials.Iron), 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'R', OrePrefixes.ring.get(Materials.Iron), 'M', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Sticky Piston
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "sticky_piston", 1L), bits, new Object[]{"r", "S", "P", 'S', "slimeball", 'P', GT_ModHandler.getModItem("minecraft", "piston", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "sticky_piston", 1L), bits, new Object[]{"r", "S", "P", 'S', GT_ModHandler.getModItem("IC2", "itemHarz", 1L), 'P', GT_ModHandler.getModItem("minecraft", "piston", 1L)});
+        // --- Rail
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "rail", 8L), bits, new Object[]{"S S", "RWR", "d h", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.stick.get(Materials.Iron), 'W', OrePrefixes.stick.get(Materials.Wood)});
+        // --- Detector Rail
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "detector_rail", 1L), bits, new Object[]{"SDS", "RWR", "dAh", 'D', GT_ModHandler.getModItem("minecraft", "stone_pressure_plate", 1L), 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.stick.get(Materials.Iron), 'W', OrePrefixes.stick.get(Materials.Wood), 'A', OrePrefixes.wireGt01.get(Materials.RedAlloy)});
+        // --- Activator Rail
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "activator_rail", 2L), bits, new Object[]{"SDS", "RWR", "dAh", 'D', GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.stick.get(Materials.Iron), 'W', OrePrefixes.stick.get(Materials.Wood), 'A', OrePrefixes.wireGt01.get(Materials.RedAlloy)});
+        // --- Noteblock
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "noteblock", 1L), bits, new Object[]{"PPP", "BGB", "PWP", 'P', "plankWood", 'B', GT_ModHandler.getModItem("minecraft", "iron_bars", 1L), 'G', OrePrefixes.gear.get(Materials.Wood), 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy)});
+        // --- Jukebox
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "jukebox", 1L), bits, new Object[]{"LBL", "NRN", "LGL", 'L', "plankWood", 'N', GT_ModHandler.getModItem("minecraft", "noteblock", 1L), 'G', OrePrefixes.gear.get(Materials.Iron), 'B', OrePrefixes.bolt.get(Materials.Diamond), 'R', "record"});
+        // --- Trapdoor Oak
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "trapdoor", 1L), bits, new Object[]{"PSP", "SSS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "trapdoor", 2L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "trapdoor", 3L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Steel), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L)});
+        // --- Pressure Plate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "stone_pressure_plate", 2L), bits, new Object[]{"ShS", "BPB", "SdS", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.spring.get(Materials.Iron), 'B', GT_ModHandler.getModItem("minecraft", "stone_slab", 1L)});
+        // --- Wooden Pressure Plate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "wooden_pressure_plate", 2L), bits, new Object[]{"ShS", "BPB", "SdS", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.spring.get(Materials.Iron), 'B', "slabWood"});
+        // --- Glass Pane
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("minecraft", "glass_pane", 2L), bits, new Object[]{ToolDictNames.craftingToolSaw, GT_ModHandler.getModItem("minecraft", "glass", 1L)});
+        // --- Torch
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "torch", 3L), bits, new Object[]{"C", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.gem.get(Materials.Coal)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "torch", 2L), bits, new Object[]{"C", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.gem.get(Materials.Charcoal)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "torch", 1L), bits, new Object[]{"C", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.gem.get(Materials.Lignite)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "torch", 5L), bits, new Object[]{"C", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.gem.get(Materials.CokeCoal)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "torch", 3L), bits, new Object[]{"C", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.dust.get(Materials.Sulfur)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "torch", 6L), bits, new Object[]{"C", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.dust.get(Materials.Phosphorus)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "torch", 2L), bits, new Object[]{"C", "S", 'S', OrePrefixes.stick.get(Materials.Wood), 'C', GT_ModHandler.getModItem("IC2", "itemHarz", 1L)});
+        // --- Ladder
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "ladder", 1L), bits, new Object[]{"SIS", "SSS", "SrS", 'S', OrePrefixes.stick.get(Materials.Wood), 'I', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "ladder", 2L), bits, new Object[]{"SdS", "SWS", "SrS", 'S', OrePrefixes.stick.get(Materials.Wood), 'W', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "ladder", 4L), bits, new Object[]{"SdS", "SWS", "SrS", 'S', OrePrefixes.stick.get(Materials.Wood), 'W', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "ladder", 6L), bits, new Object[]{"SdS", "SWS", "SrS", 'S', OrePrefixes.stick.get(Materials.Wood), 'W', OrePrefixes.screw.get(Materials.Steel)});
+        // --- Fence
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence", 1L), bits, new Object[]{"SPS", "SPS", "SPS", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', "plankWood"});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence", 1L), bits, new Object[]{"WdW", "SPS", "SPS", 'W', OrePrefixes.screw.get(Materials.Wood), 'S', OrePrefixes.stick.get(Materials.Wood), 'P', "plankWood"});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence", 2L), bits, new Object[]{"WdW", "SPS", "SPS", 'W', OrePrefixes.screw.get(Materials.Iron), 'S', OrePrefixes.stick.get(Materials.Wood), 'P', "plankWood"});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence", 4L), bits, new Object[]{"WdW", "SPS", "SPS", 'W', OrePrefixes.screw.get(Materials.Steel), 'S', OrePrefixes.stick.get(Materials.Wood), 'P', "plankWood"});
+        // --- Oak Fence Gate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence_gate", 1L), bits, new Object[]{"PSP", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L), 'S', OrePrefixes.stick.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence_gate", 1L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence_gate", 2L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence_gate", 4L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
+        // --- Tripwire Hook
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "tripwire_hook", 1L), bits, new Object[]{"RSR", "ISI", " I ", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.ring.get(Materials.Iron), 'I', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Anvil
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "anvil", 1L), bits, new Object[]{"BBB", "SBS", "PBP", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.block.get(Materials.Iron)});
+        // --- Oak Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L)});
+        // --- Iron Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "iron_door", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Steel), 'R', OrePrefixes.ring.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Iron)});
+        // --- Diamond Suit
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "diamond_helmet", 1L), bits, new Object[]{"DDD", "DfD", 'D', OrePrefixes.gem.get(Materials.Diamond)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "diamond_chestplate", 1L), bits, new Object[]{"DfD", "DDD", "DDD", 'D', OrePrefixes.gem.get(Materials.Diamond)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "diamond_leggings", 1L), bits, new Object[]{"DDD", "DfD", "D D", 'D', OrePrefixes.gem.get(Materials.Diamond)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "diamond_boots", 1L), bits, new Object[]{"D D", "DfD", 'D', OrePrefixes.gem.get(Materials.Diamond)});
+        // --- Iron Horse Armor
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "iron_horse_armor", 1L), bits, new Object[]{"hdH", "PCP", "LSL", 'P', OrePrefixes.plate.get(Materials.Iron), 'S', OrePrefixes.screw.get(Materials.Iron), 'H', GT_ModHandler.getModItem("minecraft", "iron_helmet", 1L), 'C', GT_ModHandler.getModItem("minecraft", "iron_chestplate", 1L), 'L', GT_ModHandler.getModItem("minecraft", "iron_leggings", 1L)});
+        // --- Gold Horse Armor
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "golden_horse_armor", 1L), bits, new Object[]{"hdH", "PCP", "LSL", 'P', OrePrefixes.plate.get(Materials.Gold), 'S', OrePrefixes.screw.get(Materials.Gold), 'H', GT_ModHandler.getModItem("minecraft", "golden_helmet", 1L), 'C', GT_ModHandler.getModItem("minecraft", "golden_chestplate", 1L), 'L', GT_ModHandler.getModItem("minecraft", "golden_leggings", 1L)});
+        // --- Diamond Horse Armor
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "diamond_horse_armor", 1L), bits, new Object[]{"hdH", "PCP", "LSL", 'P', OrePrefixes.plate.get(Materials.Diamond), 'S', OrePrefixes.screw.get(Materials.Diamond), 'H', GT_ModHandler.getModItem("minecraft", "diamond_helmet", 1L), 'C', GT_ModHandler.getModItem("minecraft", "diamond_chestplate", 1L), 'L', GT_ModHandler.getModItem("minecraft", "diamond_leggings", 1L)});
+        // --- Saddle
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "saddle", 1L), bits, new Object[]{"LBL", "LCL", "RSR", 'C', "blockWool", 'L', GT_ModHandler.getModItem("minecraft", "leather", 1L), 'B', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L), 'R', OrePrefixes.ring.get(Materials.Iron)});
+        // --- Item Frame
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "item_frame", 1L), bits, new Object[]{"IRI", "SLS", "SSS", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.ring.get(Materials.Iron), 'I', GT_ModHandler.getModItem("minecraft", "string", 1L), 'L', GT_ModHandler.getModItem("minecraft", "leather", 1L)});
+        // --- Bed
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "bed", 1L), bits, new Object[]{"WWW", "FPF", 'P', OrePrefixes.plank.get(Materials.Wood), 'F', GT_ModHandler.getModItem("minecraft", "fence", 1L), 'W', "blockWool"});
+        // --- Fishing Rod
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fishing_rod", 1L), bits, new Object[]{"  S", " SI", "SxR", 'S', OrePrefixes.stickLong.get(Materials.Wood), 'R', OrePrefixes.ring.get(Materials.Iron), 'I', GT_ModHandler.getModItem("minecraft", "string", 1L)});
 
         /* ==== END VANILLA ==== */
+        /** ==== START MALISIS DOORS ==== */
+        // --- Iron Trap Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), bits, new Object[]{"SPS", "PTP", "sPd", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.Iron), 'T', GT_ModHandler.getModItem("minecraft", "trapdoor", 1L)});
+        // --- Sliding Trap Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "sliding_trapdoor", 1L), bits, new Object[]{"S S", "PTP", "s d", 'S', OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Steel), 'T', GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L)});
+        // --- Player Sensor
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "player_sensor", 1L), bits, new Object[]{"BRB", "hPs", 'R', OrePrefixes.plate.get(Materials.RedAlloy), 'B', GT_ModHandler.getModItem("minecraft", "stone_button", 1L), 'P', GT_ModHandler.getModItem("minecraft", "heavy_weighted_pressure_plate", 1L)});
+        // --- Wooden Vanishing Frame
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "vanishing_block", 1L), bits, new Object[]{"SIS", "IPI", "sId", 'S', OrePrefixes.screw.get(Materials.RedAlloy), 'I', OrePrefixes.stick.get(Materials.Wood), 'P', OrePrefixes.plate.get(Materials.EnderPearl)});
+        // --- Iron Vanishing Frame
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "vanishing_block", 1L, 1), bits, new Object[]{"SIS", "IPI", "sId", 'S', OrePrefixes.screw.get(Materials.RedAlloy), 'I', OrePrefixes.stick.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.EnderPearl)});
+        // --- Gold Vanishing Frame
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "vanishing_block", 1L, 2), bits, new Object[]{"SIS", "IPI", "sId", 'S', OrePrefixes.screw.get(Materials.RedAlloy), 'I', OrePrefixes.stick.get(Materials.Gold), 'P', OrePrefixes.plate.get(Materials.EnderPearl)});
+        // --- Diamond Vanishing Frame
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "vanishing_block", 1L, 3), bits, new Object[]{"SIS", "IPI", "sId", 'S', OrePrefixes.screw.get(Materials.RedAlloy), 'I', OrePrefixes.stick.get(Materials.Diamond), 'P', OrePrefixes.plate.get(Materials.EnderPearl)});
+        // --- Block Mixer
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "block_mixer", 1L), bits, new Object[]{"CMC", "SOS", "GPG", 'S', OrePrefixes.springSmall.get(Materials.Iron), 'G', OrePrefixes.gearGtSmall.get(Materials.Iron), 'O', ItemList.Casing_SolidSteel, 'C', ItemList.Conveyor_Module_LV, 'M', ItemList.Electric_Motor_LV, 'P', GT_ModHandler.getModItem("minecraft", "sticky_piston", 1L)});
+        // --- Door Factory
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "door_factory", 1L), bits, new Object[]{"CMC", "SOS", "GPG", 'S', OrePrefixes.springSmall.get(Materials.Steel), 'G', OrePrefixes.gearGtSmall.get(Materials.Steel), 'O', ItemList.Casing_SolidSteel, 'C', ItemList.Conveyor_Module_LV, 'M', ItemList.Electric_Motor_LV, 'P', GT_ModHandler.getModItem("minecraft", "sticky_piston", 1L)});
+        // --- Rusty Hatch
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "rustyHatch", 1L), bits, new Object[]{"PPP", "hHw", "PPP", 'P', OrePrefixes.plate.get(Materials.Iron), 'H', GT_ModHandler.getModItem("malisisdoors", "item.rustyHandle", 1L)});
+        // --- Garage Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "garage_door", 5L), bits, new Object[]{"PRP", "RPR", "PRP", 'P', OrePrefixes.plate.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Steel)});
+        // --- Rusty Handle
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.rustyHandle", 1L), bits, new Object[]{"SRS", "RwR", "SRS", 'S', OrePrefixes.stick.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron)});
+        // --- Rusty Ladder
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "rustyLadder", 1L), bits, new Object[]{"RRR", "SwS", "RRR", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.stick.get(Materials.Iron)});
+        // --- Acacia Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_acacia", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 4)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_acacia", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 4)});
+        // --- Birch Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_birch", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 2)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_birch", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 2)});
+        // --- Dark Oak Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_dark_oak", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 5)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_dark_oak", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 5)});
+        // --- Jungle Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_jungle", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 3)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_jungle", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 3)});
+        // --- Spruce Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_spruce", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 1)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_spruce", 1L), bits, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 1)});
+        // --- Trapdoor Acacia
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_acacia", 1L), bits, new Object[]{"PSP", "SSS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 4)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_acacia", 2L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 4)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_acacia", 3L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Steel), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 4)});
+        // --- Trapdoor Spruce
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_spruce", 1L), bits, new Object[]{"PSP", "SSS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 1)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_spruce", 2L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 1)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_spruce", 3L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Steel), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 1)});
+        // --- Trapdoor Birch
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_birch", 1L), bits, new Object[]{"PSP", "SSS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 2)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_birch", 2L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 2)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_birch", 3L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Steel), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 2)});
+        // --- Trapdoor Jungle
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_jungle", 1L), bits, new Object[]{"PSP", "SSS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 3)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_jungle", 2L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 3)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_jungle", 3L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Steel), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 3)});
+        // --- Trapdoor Dark Oak
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_dark_oak", 1L), bits, new Object[]{"PSP", "SSS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 5)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_dark_oak", 2L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 5)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_dark_oak", 3L), bits, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Steel), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, 5)});
+        // --- Wooden Glass Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), bits, new Object[]{" P ", "PDP", " s ", 'P', "paneGlassColorless", 'D', GT_ModHandler.getModItem("minecraft", "wooden_door", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), bits, new Object[]{" P ", "PDP", " s ", 'P', GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), 'D', GT_ModHandler.getModItem("minecraft", "wooden_door", 1L)});
+        // --- Iron Glass Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.iron_sliding_door", 1L), bits, new Object[]{" P ", "PDP", " s ", 'P', "paneGlassColorless", 'D', GT_ModHandler.getModItem("minecraft", "iron_door", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.iron_sliding_door", 1L), bits, new Object[]{" P ", "PDP", " s ", 'P', GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), 'D', GT_ModHandler.getModItem("minecraft", "iron_door", 1L)});
+        // --- Jail Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.jail_door", 1L), bits, new Object[]{" P ", "PDP", " s ", 'P', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'D', GT_ModHandler.getModItem("minecraft", "iron_door", 1L)});
+        // --- Laboratory Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.laboratory_door", 1L), bits, new Object[]{" P ", "SDS", " h ", 'P', OrePrefixes.plate.get(Materials.Iron), 'S', OrePrefixes.plate.get(Materials.Steel), 'D', GT_ModHandler.getModItem("minecraft", "iron_door", 1L)});
+        // --- Factory Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.factory_door", 1L), bits, new Object[]{" P ", "SDS", " h ", 'P', OrePrefixes.plate.get(Materials.Steel), 'S', OrePrefixes.plate.get(Materials.Iron), 'D', GT_ModHandler.getModItem("minecraft", "iron_door", 1L)});
+        // --- Shoji Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.shoji_door", 1L), bits, new Object[]{"PTS", "PTR", "PTd", 'P', GT_ModHandler.getModItem("minecraft", "paper", 1L), 'T', OrePrefixes.stick.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.shoji_door", 1L), bits, new Object[]{"PTS", "PTR", "PTd", 'P', GT_ModHandler.getModItem("minecraft", "paper", 1L), 'T', OrePrefixes.stick.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper)});
+        // --- Curtain Purple
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_purple", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 10), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Yellow
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_yellow", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 4), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Magenta
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_magenta", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 2), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Pink
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_pink", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 6), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain White
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_white", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Blue
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_blue", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 11), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Gray
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_gray", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 7), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Cyan
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_cyan", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 9), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Red
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_red", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 14), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Brown
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_brown", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 12), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Lime
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_lime", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 5), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Orange
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_orange", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 1), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Light Gray
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_silver", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 8), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Green
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_green", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 13), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Light Blue
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_light_blue", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 3), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Curtain Black
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.curtain_black", 1L), bits, new Object[]{"C C", "CSC", "C C", 'C', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 15), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L)});
+        // --- Saloon Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "item.saloon", 1L), bits, new Object[]{" SW", "hPW", " SW", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', OrePrefixes.springSmall.get(Materials.Iron), 'W', OrePrefixes.plank.get(Materials.Wood)});
+        // --- Arcania Fence Gate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "acaciaFenceGate", 1L), bits, new Object[]{"PSP", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 4), 'S', OrePrefixes.stick.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "acaciaFenceGate", 1L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 4), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "acaciaFenceGate", 2L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 4), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "acaciaFenceGate", 4L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 4), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
+        // --- Birch Fence Gate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "birchFenceGate", 1L), bits, new Object[]{"PSP", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 2), 'S', OrePrefixes.stick.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "birchFenceGate", 1L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 2), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "birchFenceGate", 2L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 2), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "birchFenceGate", 4L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 2), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
+        // --- Dark Oak Fence Gate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "darkOakFenceGate", 1L), bits, new Object[]{"PSP", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 5), 'S', OrePrefixes.stick.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "darkOakFenceGate", 1L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 5), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "darkOakFenceGate", 2L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 5), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "darkOakFenceGate", 4L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 5), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
+        // --- Jungle Fence Gate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "jungleFenceGate", 1L), bits, new Object[]{"PSP", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 3), 'S', OrePrefixes.stick.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "jungleFenceGate", 1L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 3), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "jungleFenceGate", 2L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 3), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "jungleFenceGate", 4L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 3), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
+        // --- Spruce Fence Gate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "spruceFenceGate", 1L), bits, new Object[]{"PSP", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 1), 'S', OrePrefixes.stick.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "spruceFenceGate", 1L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 1), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "spruceFenceGate", 2L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 1), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "spruceFenceGate", 4L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 1), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
+
+        /* ==== END MALISIS DOORS ==== */
     }
 }
