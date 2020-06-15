@@ -175,7 +175,7 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
+        return 50;
     }
 
     public int getDamageToComponent(ItemStack aStack) {

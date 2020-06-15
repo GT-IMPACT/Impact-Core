@@ -930,10 +930,10 @@ public class TecTech_BuildGuide_Impact implements Runnable {
         });
 
         //advPyrolyse
-        registerMetaClass(GTMTE_Pyrolyse.class, new IMultiblockInfoContainer<GTMTE_Pyrolyse>() {
+        registerMetaClass(GTMTE_AdvancedPyrolyse.class, new IMultiblockInfoContainer<GTMTE_AdvancedPyrolyse>() {
             //region Structure
-            private final IStructureDefinition<GTMTE_Pyrolyse> definition =
-                    StructureDefinition.<GTMTE_Pyrolyse>builder()
+            private final IStructureDefinition<GTMTE_AdvancedPyrolyse> definition =
+                    StructureDefinition.<GTMTE_AdvancedPyrolyse>builder()
                             .addShapeOldApi("main", new String[][]{
                                     {"000.00000",".00.00000","1.1.1...1",},
                                     {"000.00000","02222...0","....00000",},
@@ -960,7 +960,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             //endregion
 
             @Override
-            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Pyrolyse tileEntity, ExtendedFacing aSide) {
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_AdvancedPyrolyse tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                 definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                         base.getXCoord(), base.getYCoord(), base.getZCoord(),
