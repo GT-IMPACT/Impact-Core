@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
 
@@ -53,7 +54,7 @@ public class RenderGlassBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
-        renderer.renderStandardBlock(decorateBlock[3], x, y, z);
+        renderer.renderStandardBlock(IGlassBlock, x, y, z);
 
         return true;
     }

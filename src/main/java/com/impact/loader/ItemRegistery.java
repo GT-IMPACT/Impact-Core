@@ -15,39 +15,17 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.System.impactLog.INFO;
+import static com.impact.util.Utilits.BlockstackMeta;
 
 
 public class ItemRegistery {
 
     public static final Block[] decorateBlock = {
             new Core_Blocks("DecorateBlock", new String[]{
-                    Refstrings.MODID + ":Concrete",
-                    Refstrings.MODID + ":CokeCoal",
-                    Refstrings.MODID + ":PistonBlock",
-                    Refstrings.MODID + ":CompressedCharcoal",
-                    Refstrings.MODID + ":DoubleCompressedCharcoal",
-                    Refstrings.MODID + ":TripleCompressedCharcoal",
-                    Refstrings.MODID + ":QuadrupleCompressedCharcoal",
-                    Refstrings.MODID + ":CompressedCoal",
-                    Refstrings.MODID + ":DoubleCompressedCoal",
-                    Refstrings.MODID + ":TripleCompressedCoal",
-                    Refstrings.MODID + ":QuadrupleCompressedCoal",
-                    Refstrings.MODID + ":CompressedCoalCoke",
-                    Refstrings.MODID + ":DoubleCompressedCoalCoke",
-                    Refstrings.MODID + ":TripleCompressedCoalCoke",
-                    Refstrings.MODID + ":QuadrupleCompressedCoalCoke",
+                    null,
             }, 0),
             new Core_Blocks("BufferCasing", new String[]{
-                    Refstrings.MODID + ":bufferULV",
-                    Refstrings.MODID + ":bufferLV",
-                    Refstrings.MODID + ":bufferMV",
-                    Refstrings.MODID + ":bufferHV",
-                    Refstrings.MODID + ":bufferEV",
-                    Refstrings.MODID + ":bufferIV",
-                    Refstrings.MODID + ":bufferLuV",
-                    Refstrings.MODID + ":bufferZPM",
-                    Refstrings.MODID + ":bufferUV",
-                    Refstrings.MODID + ":bufferUHV"
+                    null
             }, 1),
             new Core_FakeBlock("FakeBlock", new String[]{
                     Refstrings.MODID + ":glass/blockGB0",
@@ -55,36 +33,19 @@ public class ItemRegistery {
                     Refstrings.MODID + ":glass/blockGB13",
                     Refstrings.MODID + ":glass/blockGB11",
                     Refstrings.MODID + ":glass/frameGt",
-            }, 2),
-            new Core_GlassBlocks("GlassBlock", new String[]{
-                    Refstrings.MODID + ":glass/blockGB0", // white
-                    Refstrings.MODID + ":glass/blockGB1", // orange
-                    Refstrings.MODID + ":glass/blockGB2", // magenta
-                    Refstrings.MODID + ":glass/blockGB3", // light blue
-                    Refstrings.MODID + ":glass/blockGB4", // yellow
-                    Refstrings.MODID + ":glass/blockGB5", // lime
-                    Refstrings.MODID + ":glass/blockGB6", // pink
-                    Refstrings.MODID + ":glass/blockGB7", // gray
-                    Refstrings.MODID + ":glass/blockGB8", // light gray
-                    Refstrings.MODID + ":glass/blockGB9", // cyan
-                    Refstrings.MODID + ":glass/blockGB10", // purple
-                    Refstrings.MODID + ":glass/blockGB11", // blue
-                    Refstrings.MODID + ":glass/blockGB12", // brown
-                    Refstrings.MODID + ":glass/blockGB13", // green
-                    Refstrings.MODID + ":glass/blockGB14", // red
-                    Refstrings.MODID + ":glass/blockGB15", // black
-            }, false, true)
+            }, 2)
     };
+
     public static GregtechPump GTPump;
     public static Block lscLapotronicEnergyUnit;
     public static Block SawMillBlock;
+    public static Block IGlassBlock;
+    public static Block CoalBlock;
+    public static Block UtilBlock;
 
     public static void run() {
         //Blocks
-        GameRegistry.registerBlock(decorateBlock[0], DecorateBlocksItem.class, "DecorateBlock");
-        GameRegistry.registerBlock(decorateBlock[1], BufferItem.class, "BufferCasing");
         GameRegistry.registerBlock(decorateBlock[2], FakeBlocksItem.class, "FakeBlock");
-        GameRegistry.registerBlock(decorateBlock[3], GlassBlocksItem.class, "GlassBlock");
         INFO("[Init] Item Registery Blocks - Loaded");
 
         //NEI hide
@@ -102,21 +63,23 @@ public class ItemRegistery {
             hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.pipeComponents", 1L, i));
 
         //OreDictionary
-        OreDictionary.registerOre("concrete", new ItemStack(decorateBlock[0], 1, 0));
-        OreDictionary.registerOre("blockCokeCoal", new ItemStack(decorateBlock[0], 1, 1));
-        OreDictionary.registerOre("CompressedCharcoal", new ItemStack(decorateBlock[0], 1, 3));
-        OreDictionary.registerOre("DoubleCompressedCharcoal", new ItemStack(decorateBlock[0], 1, 4));
-        OreDictionary.registerOre("TripleCompressedCharcoal", new ItemStack(decorateBlock[0], 1, 5));
-        OreDictionary.registerOre("QuadrupleCompressedCharcoal", new ItemStack(decorateBlock[0], 1, 6));
-        OreDictionary.registerOre("CompressedCoal", new ItemStack(decorateBlock[0], 1, 7));
-        OreDictionary.registerOre("DoubleCompressedCoal", new ItemStack(decorateBlock[0], 1, 8));
-        OreDictionary.registerOre("TripleCompressedCoal", new ItemStack(decorateBlock[0], 1, 9));
-        OreDictionary.registerOre("QuadrupleCompressedCoal", new ItemStack(decorateBlock[0], 1, 10));
-        OreDictionary.registerOre("CompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 11));
-        OreDictionary.registerOre("DoubleCompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 12));
-        OreDictionary.registerOre("TripleCompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 13));
-        OreDictionary.registerOre("QuadrupleCompressedCoalCoke", new ItemStack(decorateBlock[0], 1, 14));
+        OreDictionary.registerOre("concrete", BlockstackMeta(UtilBlock, 0));
 
+        OreDictionary.registerOre("blockCokeCoal",              BlockstackMeta(CoalBlock, 0));
+        OreDictionary.registerOre("CompressedCoalCoke",         BlockstackMeta(CoalBlock, 1));
+        OreDictionary.registerOre("DoubleCompressedCoalCoke",   BlockstackMeta(CoalBlock, 2));
+        OreDictionary.registerOre("TripleCompressedCoalCoke",   BlockstackMeta(CoalBlock, 3));
+        OreDictionary.registerOre("QuadrupleCompressedCoalCoke",BlockstackMeta(CoalBlock, 4));
+
+        OreDictionary.registerOre("CompressedCharcoal",         BlockstackMeta(CoalBlock, 5));
+        OreDictionary.registerOre("DoubleCompressedCharcoal",   BlockstackMeta(CoalBlock, 6));
+        OreDictionary.registerOre("TripleCompressedCharcoal",   BlockstackMeta(CoalBlock, 7));
+        OreDictionary.registerOre("QuadrupleCompressedCharcoal",BlockstackMeta(CoalBlock, 8));
+
+        OreDictionary.registerOre("CompressedCoal",             BlockstackMeta(CoalBlock, 9));
+        OreDictionary.registerOre("DoubleCompressedCoal",       BlockstackMeta(CoalBlock, 10));
+        OreDictionary.registerOre("TripleCompressedCoal",       BlockstackMeta(CoalBlock, 11));
+        OreDictionary.registerOre("QuadrupleCompressedCoal",    BlockstackMeta(CoalBlock, 12));
         INFO("[Init] Item Registery Blocks OreDict - Loaded");
     }
 
@@ -130,6 +93,15 @@ public class ItemRegistery {
 
     public static void registerBlocks_LSC() {
         lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
+    }
+    public static void registerBlock_IGlass() {
+        IGlassBlock = Block_IGlass.registerBlock();
+    }
+    public static void registerBlock_Coal() {
+        CoalBlock = Block_Coal.registerBlock();
+    }
+    public static void registerBlock_UtilBlock() {
+        UtilBlock = Block_UtilBlock.registerBlock();
     }
     public static void registerBlocks_Sawmill() {
         SawMillBlock = Block_Sawmill.registerBlock("SawMill", new String[]{

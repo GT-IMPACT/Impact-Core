@@ -19,6 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase {
@@ -121,7 +122,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
                     if ( X!=0 && Y==1 && (Z==-1 || Z==-2 || Z==-3) ) {
-                        if ( thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3] ){} else  {
+                        if ( thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){} else  {
                             formationChecklist = false;
                         }
                         continue;
@@ -149,7 +150,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                     }
 
                     if ( X==0 && Y==2 && (Z==-1 || Z==-2 || Z==-3) ) {
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3]){} else  {
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){} else  {
                             formationChecklist = false;
                         }
                         continue;

@@ -68,6 +68,9 @@ public class MainLoader {
 
         ItemRegistery.registerBlocks_LSC();
         ItemRegistery.registerBlocks_Sawmill();
+        ItemRegistery.registerBlock_IGlass();
+        ItemRegistery.registerBlock_Coal();
+        ItemRegistery.registerBlock_UtilBlock();
         INFO("[preInit] Meta Blocks - Loaded");
 
         for (byte i = 0; i <= 7; i++)
@@ -99,12 +102,13 @@ public class MainLoader {
 //            new BacteriaRegistry();
 //            INFO("[onPreLoad] Bacteria Register - Loaded");
 //        }
+
+
+
+
     }
 
     public static void postLoad() {
-        GregTechRunner();
-        INFO("[postLoad] GregTech Runner - Loaded");
-
         addAfterGregTechPostLoadRunner();
         INFO("[postLoad] After GregTech PostLoad Runner - Loaded");
     }
@@ -123,53 +127,5 @@ public class MainLoader {
 
     public static void addAfterGregTechPostLoadRunner() {
         GregTech_API.sAfterGTPostload.add(() -> new AfterGregTechPostLoadRecipes().run());
-    }
-
-    public static void GregTechRunner() {
-            new GT_ItemRegister().run();
-            new GT_Loader_Casings().run();
-            new GT_Machines_MultiRegister().run();
-            new GT_Machines_BasicRegister().run();
-            new HandRecipe().run();
-            new GT_WorldGenRegister().run();
-            new ModLoader().run();
-            new DEBUG_Recipe().run();
-            new CentrifugeRecipe().run();
-            new PulveriserRecipe().run();
-            new LaserEngraverRecipe();
-            new FormingPressRecipe().run();
-            new ChemicalBathRecipe().run();
-            new AssemblerRecipe().run();
-            new FreezSolidifierRecipe().run();
-            new Printer3DRecipe().run();
-            new BlastSmelterRecipe().run();
-            new ComponentAssemblerRecipe().run();
-            new CompessorRecipe().run();
-            new AlloySmelterRecipe().run();
-            new MixerRecipe().run();
-            new EBFRecipe().run();
-            new FluidCannerRecipe().run();
-            new CircuitAssemblerRecipe().run();
-            new FarmRecipe().run();
-            new CuttingRecipe().run();
-            new VacuumFreezerRecipe().run();
-            new AssemblyLineRecipe().run();
-            new OpenComputersRecipe().run();
-            new ForgeHammerRecipe().run();
-            new FluidExtractorRecipe().run();
-            new ExtruderRecipe().run();
-            new ImplosionCompressorRecipe().run();
-            new FluidSolidifierRecipe().run();
-            new AutoclaveRecipe().run();
-            new BreweryRecipe().run();
-            new ExtractorRecipe().run();
-            new ChemicalReactorRecipe().run();
-            new SifterRecipe().run();
-            new LatheRecipe().run();
-            new WiremillRecipe().run();
-            new ElectrolyzerRecipe().run();
-            new WireassemblerRecipe().run();
-            new FusionRecipe().run();
-            new ArcFurnaceRecipe().run();
     }
 }

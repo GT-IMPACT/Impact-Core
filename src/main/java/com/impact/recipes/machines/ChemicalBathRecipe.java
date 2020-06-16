@@ -12,6 +12,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
 import static com.impact.item.Core_List_Items.*;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.util.Utilits.Blockstack;
 
 public class ChemicalBathRecipe implements Runnable {
 
@@ -63,14 +65,14 @@ public class ChemicalBathRecipe implements Runnable {
         for (byte i = 0; i <= 15; i = (byte) (i + 1)) {
             for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
                 if (i != 15) {
-                    GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("impact", "GlassBlock", 1L, 0), Dyes.VALUES[i].getFluidDye(j, 18L), GT_ModHandler.getModItem("impact", "GlassBlock", 1L, (15 - i)), GT_Values.NI, GT_Values.NI, null, 200, 2);
+                    GT_Values.RA.addChemicalBathRecipe(Blockstack(IGlassBlock, 1, 0), Dyes.VALUES[i].getFluidDye(j, 18L), Blockstack(IGlassBlock, 1, (15 - i)), GT_Values.NI, GT_Values.NI, null, 200, 2);
                 }
             }
         }
 
         for (byte i = 1; i <= 15; i++) {
             if (i != 0) {
-                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("impact", "GlassBlock", 1L, i), Materials.Chlorine.getMolten(50L), GT_ModHandler.getModItem("impact", "GlassBlock", 1L, 0), GT_Values.NI, GT_Values.NI, null, 200, 2);
+                GT_Values.RA.addChemicalBathRecipe(Blockstack(IGlassBlock, 1, i), Materials.Chlorine.getMolten(50L), Blockstack(IGlassBlock, 0, 0), GT_Values.NI, GT_Values.NI, null, 200, 2);
             }
         }
 

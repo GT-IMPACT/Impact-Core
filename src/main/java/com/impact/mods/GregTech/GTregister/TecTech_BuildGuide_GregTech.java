@@ -1094,7 +1094,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                                     {"000", "010", "000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings4, 9))
-                            .addElement('1', ofBlockHint(decorateBlock[3], 14))
+                            .addElement('1', ofBlockHint(decorateBlock[2], 1))
                             .build();
             private final String[] desc = new String[]{
                     EnumChatFormatting.RED + "Impact Details:",
@@ -1129,7 +1129,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                                     {"000", "010", "000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings4, 10))
-                            .addElement('1', ofBlockHint(decorateBlock[3], 14))
+                            .addElement('1', ofBlockHint(decorateBlock[2], 1))
                             .build();
             private final String[] desc = new String[]{
                     EnumChatFormatting.RED + "Impact Details:",
@@ -1164,7 +1164,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                                     {"000", "010", "000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings4, 11))
-                            .addElement('1', ofBlockHint(decorateBlock[3], 14))
+                            .addElement('1', ofBlockHint(decorateBlock[2], 1))
                             .build();
             private final String[] desc = new String[]{
                     EnumChatFormatting.RED + "Impact Details:",
@@ -1199,7 +1199,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
                                     {"000", "010", "000",},
                             })
                             .addElement('0', ofBlock(sBlockCasings4, 12))
-                            .addElement('1', ofBlockHint(decorateBlock[3], 14))
+                            .addElement('1', ofBlockHint(decorateBlock[2], 1))
                             .build();
             private final String[] desc = new String[]{
                     EnumChatFormatting.RED + "Impact Details:",

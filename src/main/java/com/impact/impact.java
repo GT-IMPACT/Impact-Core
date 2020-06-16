@@ -5,6 +5,16 @@ import com.impact.System.Refstrings;
 import com.impact.api.enums.Textures;
 import com.impact.loader.MainLoader;
 import com.impact.System.CommonProxy;
+import com.impact.loader.ModLoader;
+import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
+import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
+import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
+import com.impact.mods.GregTech.GTregister.GT_WorldGenRegister;
+import com.impact.mods.GregTech.casings.GT_Loader_Casings;
+import com.impact.recipes.HandRecipe;
+import com.impact.recipes.OpenComputersRecipe;
+import com.impact.recipes.debug.DEBUG_Recipe;
+import com.impact.recipes.machines.*;
 import com.impact.util.SendUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -64,6 +74,51 @@ public class impact {
 
 	@Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
+        new GT_ItemRegister().run();
+        new GT_Loader_Casings().run();
+        new GT_Machines_MultiRegister().run();
+        new GT_Machines_BasicRegister().run();
+        new GT_WorldGenRegister().run();
+        new ModLoader().run();
+        new HandRecipe().run();
+        new DEBUG_Recipe().run();
+        new CentrifugeRecipe().run();
+        new PulveriserRecipe().run();
+        new LaserEngraverRecipe();
+        new FormingPressRecipe().run();
+        new ChemicalBathRecipe().run();
+        new AssemblerRecipe().run();
+        new FreezSolidifierRecipe().run();
+        new Printer3DRecipe().run();
+        new BlastSmelterRecipe().run();
+        new ComponentAssemblerRecipe().run();
+        new CompessorRecipe().run();
+        new AlloySmelterRecipe().run();
+        new MixerRecipe().run();
+        new EBFRecipe().run();
+        new FluidCannerRecipe().run();
+        new CircuitAssemblerRecipe().run();
+        new FarmRecipe().run();
+        new CuttingRecipe().run();
+        new VacuumFreezerRecipe().run();
+        new AssemblyLineRecipe().run();
+        new OpenComputersRecipe().run();
+        new ForgeHammerRecipe().run();
+        new FluidExtractorRecipe().run();
+        new ExtruderRecipe().run();
+        new ImplosionCompressorRecipe().run();
+        new FluidSolidifierRecipe().run();
+        new AutoclaveRecipe().run();
+        new BreweryRecipe().run();
+        new ExtractorRecipe().run();
+        new ChemicalReactorRecipe().run();
+        new SifterRecipe().run();
+        new LatheRecipe().run();
+        new WiremillRecipe().run();
+        new ElectrolyzerRecipe().run();
+        new WireassemblerRecipe().run();
+        new FusionRecipe().run();
+        new ArcFurnaceRecipe().run();
         MainLoader.postLoad();
     }
 

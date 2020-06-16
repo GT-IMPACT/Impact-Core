@@ -21,6 +21,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
@@ -145,7 +146,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
                         continue;
                     }
                     if ( (Y==3) && (((X==-1||X==1) && Z==-2) || (X==0 && (Z==-1||Z==-3))) ) {
-                        if ( thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3]){
+                        if ( thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){
                         } else  {
                             formationChecklist = false;
                         }

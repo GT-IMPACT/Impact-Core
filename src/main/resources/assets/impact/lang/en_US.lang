@@ -13,22 +13,22 @@ tile.OsmiumChest.name= Osmium Chest
 tile.NeutroniumChest.name= Neutronium Chest
 
 #Glass
-GlassBlock.0.name= White I-Glass
-GlassBlock.1.name= Orange I-Glass
-GlassBlock.2.name= Magenta I-Glass
-GlassBlock.3.name= Light Blue I-Glass
-GlassBlock.4.name= Yellow I-Glass
-GlassBlock.5.name= Lime I-Glass
-GlassBlock.6.name= Pink I-Glass
-GlassBlock.7.name= Gray I-Glass
-GlassBlock.8.name= Light Gray I-Glass
-GlassBlock.9.name= Cyan I-Glass
-GlassBlock.10.name= Purple I-Glass
-GlassBlock.11.name= Blue I-Glass
-GlassBlock.12.name= Brown I-Glass
-GlassBlock.13.name= Green I-Glass
-GlassBlock.14.name= Red I-Glass
-GlassBlock.15.name= Black I-Glass
+tile.impact_glass.0.name= White I-Glass
+tile.impact_glass.1.name= Orange I-Glass
+tile.impact_glass.2.name= Magenta I-Glass
+tile.impact_glass.3.name= Light Blue I-Glass
+tile.impact_glass.4.name= Yellow I-Glass
+tile.impact_glass.5.name= Lime I-Glass
+tile.impact_glass.6.name= Pink I-Glass
+tile.impact_glass.7.name= Gray I-Glass
+tile.impact_glass.8.name= Light Gray I-Glass
+tile.impact_glass.9.name= Cyan I-Glass
+tile.impact_glass.10.name= Purple I-Glass
+tile.impact_glass.11.name= Blue I-Glass
+tile.impact_glass.12.name= Brown I-Glass
+tile.impact_glass.13.name= Green I-Glass
+tile.impact_glass.14.name= Red I-Glass
+tile.impact_glass.15.name= Black I-Glass
 
 #FakeBlock
 FakeBlock.0.name= White Hologram Element
@@ -67,21 +67,22 @@ gui.AdvancedSolarPanel.generating=Generating
 gui.AdvancedSolarPanel.energyPerTick=EU/t
 
 #Decorated Block
-DecorateBlock.0.name=Concrete
-DecorateBlock.1.name=Coke Coal Block
-DecorateBlock.2.name=Piston Block
-DecorateBlock.3.name=Compressed Charcoal
-DecorateBlock.4.name=Double Compressed Charcoal
-DecorateBlock.5.name=Triple Compressed Charcoal
-DecorateBlock.6.name=Quadruple Compressed Charcoal
-DecorateBlock.7.name=Compressed Coal
-DecorateBlock.8.name=Double Compressed Coal
-DecorateBlock.9.name=Triple Compressed Coal
-DecorateBlock.10.name=Quadruple Compressed Coal
-DecorateBlock.11.name=Compressed Coal Coke
-DecorateBlock.12.name=Double Compressed Coal Coke
-DecorateBlock.13.name=Triple Compressed Coal Coke
-DecorateBlock.14.name=Quadruple Compressed Coal Coke
+tile.impact_util.0.name=Concrete
+tile.impact_util.1.name=Piston Block
+
+tile.impact_coal.0.name=Coke Coal Block
+tile.impact_coal.1.name=Compressed Coal Coke
+tile.impact_coal.2.name=Double Compressed Coal Coke
+tile.impact_coal.3.name=Triple Compressed Coal Coke
+tile.impact_coal.4.name=Quadruple Compressed Coal Coke
+tile.impact_coal.5.name=Compressed Charcoal
+tile.impact_coal.6.name=Double Compressed Charcoal
+tile.impact_coal.7.name=Triple Compressed Charcoal
+tile.impact_coal.8.name=Quadruple Compressed Charcoal
+tile.impact_coal.9.name=Compressed Coal
+tile.impact_coal.10.name=Double Compressed Coal
+tile.impact_coal.11.name=Triple Compressed Coal
+tile.impact_coal.12.name=Quadruple Compressed Coal
 
 #MetaItems.00
 item.impact_item.0.name=BarnardaE Stone Dust

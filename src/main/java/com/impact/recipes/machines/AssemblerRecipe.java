@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.impact.item.Core_List_Items.*;
-import static com.impact.loader.ItemRegistery.decorateBlock;
+import static com.impact.loader.ItemRegistery.*;
 import static com.impact.mods.GregTech.GTregister.GT_ItemList.Casing_Farm;
 import static com.impact.util.SendUtils.simpleMetaStack;
 import static com.impact.util.Utilits.Blockstack;
@@ -222,8 +222,8 @@ public class AssemblerRecipe implements Runnable {
         //Casings
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), CoreItems2.getRecipe(SteelBars.getMetaID(), 6), Casing_Farm.get(1L), 50, 16);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L)}, Materials.Redstone.getMolten(72L), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), 100, 30, false);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Bronze, 1L)}, Materials.Redstone.getMolten(72L), GT_ModHandler.getModItem("impact", "DecorateBlock", 1, 2), 100, 30, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L)}, Materials.Redstone.getMolten(72L), Blockstack(UtilBlock, 1, 1), 100, 30, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Bronze, 1L)}, Materials.Redstone.getMolten(72L), Blockstack(UtilBlock, 1, 1), 100, 30, false);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
 
         if (Loader.isModLoaded("Natura"))
@@ -234,7 +234,7 @@ public class AssemblerRecipe implements Runnable {
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Forestry", "fencesFireproof", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
         }
 
-        GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(53, 1), Blockstack(decorateBlock[0], 1, 2), null, Blockstack(Blocks.piston, 1), 100, 8);
+        GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(53, 1), Blockstack(UtilBlock, 1, 1), null, Blockstack(Blocks.piston, 1), 100, 8);
 
         //Quantum Armor Parts
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W), CoreItems2.getRecipe(52, 4), CoreItems2.getRecipe(41, 1), 1200, 1920);

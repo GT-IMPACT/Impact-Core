@@ -38,8 +38,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.impact.api.enums.Textures.Icons.*;
-import static com.impact.loader.ItemRegistery.decorateBlock;
-import static com.impact.loader.ItemRegistery.lscLapotronicEnergyUnit;
+import static com.impact.loader.ItemRegistery.*;
 import static com.mojang.realmsclient.gui.ChatFormatting.*;
 
 /**
@@ -246,7 +245,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                             capacity = capacity.add(MAX_LONG);
                         }
                         capacitors[meta - 1]++;
-                    } else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3]){
+                    } else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){
                         firstGlassHeight = Y;
                         break;
                     } else {
@@ -261,12 +260,11 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
             for(int X = -2; X <= 2; X++) {
                 for(int Z = 0; Z >= -4; Z--) {
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-                    final String blockNameAt = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
                     final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
                     // Check only outer ring, except when on roof height
                     if((Y < firstGlassHeight)){
                         if(X == -2 || X == 2 || Z == 0 || Z == 4){
-                            if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3]) {
+                            if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock) {
                                 if(firstGlassMeta == -1) {
                                     firstGlassMeta = meta;
                                 } else if(meta != firstGlassMeta) {
@@ -277,7 +275,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                             }
                         }
                     } else {
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3]) {
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock) {
                             if(meta != firstGlassMeta) {
                                 formationChecklist = false;
                             }
