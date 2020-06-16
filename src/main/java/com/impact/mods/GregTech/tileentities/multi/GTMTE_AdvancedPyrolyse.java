@@ -97,6 +97,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                 .addInfo("and 55s - solid fuels and wood tar")
                 .addInfo("Input/output of products depends of energy hatch, time does not change")
                 .addInfo("LV - 1x, MV - 2x, HV - 3x and etc")
+                .addPollution(100, "x tier energy hatch")
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any HSLA casing")
@@ -375,6 +376,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
         if (this.mInputBusses.size() != 1) formationChecklist = false;
         if (this.mInputHatches.size() > 1) formationChecklist = false;
+        if (this.mOutputHatches.size() > 1)  formationChecklist = false;
         if (this.mOutputBusses.size() > 1) formationChecklist = false;
         if (this.mEnergyHatches.size() != 1) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
@@ -387,6 +389,6 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
      */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 50 * tierHatch();
+        return 100 * tierHatch();
     }
 }

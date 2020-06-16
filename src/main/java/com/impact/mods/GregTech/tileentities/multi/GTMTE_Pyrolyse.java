@@ -86,6 +86,7 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addInfo("The process emits gases throughout the entire time (60s):")
                 .addInfo("for 6s - CO, for 15s - H\u2082, for 30s - CH\u2084, for 45s - CO\u2082 ")
                 .addInfo("and 55s - solid fuels and wood tar")
+                .addPollution(100)
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any Solid Steel casing")
@@ -246,12 +247,13 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
-        if(this.mInputBusses.size() != 1)  formationChecklist = false;
-        if(this.mInputHatches.size() > 1)  formationChecklist = false;
-        if(this.mOutputBusses.size() > 1)  formationChecklist = false;
-        if(this.mEnergyHatches.size() != 1)  formationChecklist = false;
-        if(this.mMaintenanceHatches.size() != 1)  formationChecklist = false;
-        if(this.mMufflerHatches.size() != 1)  formationChecklist = false;
+        if (this.mInputBusses.size() != 1)  formationChecklist = false;
+        if (this.mInputHatches.size() > 1)  formationChecklist = false;
+        if (this.mOutputHatches.size() > 1)  formationChecklist = false;
+        if (this.mOutputBusses.size() > 1)  formationChecklist = false;
+        if (this.mEnergyHatches.size() != 1)  formationChecklist = false;
+        if (this.mMaintenanceHatches.size() != 1)  formationChecklist = false;
+        if (this.mMufflerHatches.size() != 1)  formationChecklist = false;
         return formationChecklist;
     }
 

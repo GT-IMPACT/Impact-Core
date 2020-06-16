@@ -10,6 +10,8 @@ import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;

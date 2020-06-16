@@ -61,6 +61,16 @@ public class MultiBlockTooltipBuilder {
         return this;
     }
 
+    public MultiBlockTooltipBuilder addPollution(int aPollut) {
+        iLines.add("Pollution per second: " + aPollut);
+        return this;
+    }
+
+    public MultiBlockTooltipBuilder addPollution(int aPollut, String info) {
+        iLines.add("Pollution per second: " + aPollut + " " + info);
+        return this;
+    }
+
     public MultiBlockTooltipBuilder addTypeMachine(String info) {
         iLines.add(EnumChatFormatting.YELLOW + info);
         return this;

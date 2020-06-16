@@ -11,8 +11,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Pollution;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,6 +34,8 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
         return new GTMTE_CokeOven(this.mName);
     }
 
+
+
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Coke Oven",
@@ -39,7 +43,8 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
                 "1x Primitive Input Bus (Any casing)",
                 "1x Primitive Output Bus (Any casing)",
                 "1x Primitive Output Hatch (Any casing)",
-                "Coke Oven Bricks for the rest"
+                "Coke Oven Bricks for the rest",
+                "Pollution per second: 25"
         };
     }
 
@@ -72,8 +77,8 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
         int tInputList_sS = tInputList.size();
         for (int i = 0; i < tInputList_sS - 1; i++) {
             for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
+                if (GT_Utility.areStacksEqual(tInputList.get(i),tInputList.get(j))) {
+                    if ((tInputList.get(i)).stackSize >= (tInputList.get(j)).stackSize) {
                         tInputList.remove(j--);
                         tInputList_sS = tInputList.size();
                     } else {
@@ -107,14 +112,12 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
 
         if (inputs.length > 0 || fluids.length > 0) {
             long voltage = getMaxInputVoltage();
-            byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
             GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sCokeOvenRecipes.findRecipe(getBaseMetaTileEntity(), false,
                     false, 0, fluids, inputs);
             if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
                 this.mEfficiency = 10000;
                 this.mEfficiencyIncrease = 10000;
 
-                int EUt = 0;
                 int maxProgresstime = recipe.mDuration;
                 this.mEUt = 0;
                 this.mMaxProgresstime = maxProgresstime;
@@ -130,6 +133,17 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
             }
         }
         return false;
+    }
+
+    @SuppressWarnings({"deprecation"})
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (this.mMaxProgresstime > 0 && (getBaseMetaTileEntity().getTimer() % 20L == 0L)) {
+            GT_Pollution.addPollution(this.getBaseMetaTileEntity().getWorld(),
+                    new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()),
+                    25);
+        }
+        return super.onRunningTick(aStack);
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -175,7 +189,7 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 50;
+        return 0;
     }
 
     public int getDamageToComponent(ItemStack aStack) {
