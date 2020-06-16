@@ -2,6 +2,7 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.GregTech.tileentities.multi.debug.TecTechUtils;
 import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
@@ -140,8 +141,8 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 ArrayList<ItemStack> tInputList = this.getStoredInputs();
                 ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
                 if (tInputList.size() > 0) {
-                    long tVoltage = this.getMaxInputVoltage();
-                    byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+                    long nominalV = TecTechUtils.getnominalVoltageTT(this);
+                    byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
                     GT_Recipe tRecipe;
                     tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
 
@@ -159,7 +160,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                         ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
                         boolean found_Recipe = false;
                         int processed = 0;
-                        long nominalV = getnominalVoltage(this);
                         while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < Parallel()) { //THIS PARALLEL
                             if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
                                 found_Recipe = true;
