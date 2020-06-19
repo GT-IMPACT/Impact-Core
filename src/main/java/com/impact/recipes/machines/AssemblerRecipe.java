@@ -801,6 +801,10 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Iron, 1L), GT_ModHandler.getModItem("minecraft", "wooden_pressure_plate", 2L), 100, 8);
         // --- Pressure Plate
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone_slab", 2L), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Iron, 1L), GT_ModHandler.getModItem("minecraft", "stone_pressure_plate", 2L), 100, 8);
+        // --- Ladder
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 3L), GT_Utility.getIntegratedCircuit(6)}, null, GT_ModHandler.getModItem("minecraft", "ladder", 2L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 3L), GT_Utility.getIntegratedCircuit(6)}, Materials.Iron.getMolten(16), GT_ModHandler.getModItem("minecraft", "ladder", 4L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 3L), GT_Utility.getIntegratedCircuit(6)}, Materials.Steel.getMolten(16), GT_ModHandler.getModItem("minecraft", "ladder", 6L), 400, 4);
 
         /* ==== END VANILLA ==== */
 
