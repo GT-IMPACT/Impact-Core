@@ -29,8 +29,27 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1, GT_Values.W));
         removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumLeggings", 1, GT_Values.W));
         removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1, GT_Values.W));
+
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "advJetpack", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "relocator", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "vajra", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "graviTool", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "advChainsaw", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "advDDrill", GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 4), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 5), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 7), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 2), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 6), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 3), true, false, false);
+
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTelePad", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTransceiver", 1L, 0), true, false, false);
+
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockController", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockChest", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockDrive", 1L, 0), true, false, false);
