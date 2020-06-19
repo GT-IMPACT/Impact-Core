@@ -51,6 +51,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
     @Override
     public void run() {
+
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVConveyorModule.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "MWM", "PPP", 'P', OrePrefixes.plate.get(Materials.Rubber), 'M', GT_ItemList.ULVMotor, 'W', OrePrefixes.cableGt01.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVPump.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SXO", "dPw", "OMW", 'M', GT_ItemList.ULVMotor, 'O', OrePrefixes.ring.get(Materials.Paper), 'X', OrePrefixes.rotor.get(Materials.Lead), 'S', OrePrefixes.screw.get(Materials.Lead), 'W', OrePrefixes.cableGt01.get(Materials.Lead), 'P', OrePrefixes.pipeMedium.get(Materials.Copper)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVPump.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SXO", "dPw", "OMW", 'M', GT_ItemList.ULVMotor, 'O', OrePrefixes.ring.get(Materials.Rubber), 'X', OrePrefixes.rotor.get(Materials.Lead), 'S', OrePrefixes.screw.get(Materials.Lead), 'W', OrePrefixes.cableGt01.get(Materials.Lead), 'P', OrePrefixes.pipeMedium.get(Materials.Copper)});
@@ -720,7 +721,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("malisisdoors", "spruceFenceGate", 4L), bits, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L, 1), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
 
         /* ==== END MALISIS DOORS ==== */
-		/** ==== START GRAVISUITE ==== */
+        /** ==== START GRAVISUITE ==== */
         // --- Super Conductor
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 1), bits, new Object[]{"GGG", "SPS", "GGG", 'G', GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L), 'S', OrePrefixes.wireGt02.get(Materials.SuperconductorLuV), 'P', OrePrefixes.plateTriple.get(Materials.Platinum)});
         // --- Super Conductor Cover
@@ -756,5 +757,55 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1L, 27), bits, new Object[]{"PIP", "LAL", "CSC", 'P', OrePrefixes.itemCasing.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'I', GT_ModHandler.getModItem("IC2", "itemPartIridium", 1L), 'L', GT_ModHandler.getModItem("IC2", "itemBatLamaCrystal", 1L, GT_Values.W), 'A', GT_ModHandler.getModItem("GraviSuite", "advLappack", 1L, GT_Values.W), 'S', GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 1)});
 
         /* ==== END GRAVISUITE ==== */
+        /** ==== START CARPENTERS BLOCKS ==== */
+        // --- Carpenter's Block
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 2L), bits, new Object[] {"FSF", "SdS", "FSF", 'F', OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 8L), bits, new Object[] {"FSF", "FdF", "FSF", 'F', OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 12L), bits, new Object[] {"FSF", "FdF", "FSF", 'F', OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Steel)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 16L), bits, new Object[] {"FSF", "FdF", "FSF", 'F', OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Aluminium)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 20L), bits, new Object[] {"FSF", "FdF", "FSF", 'F', OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.StainlessSteel)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 24L), bits, new Object[] {"FSF", "FdF", "FSF", 'F', OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Titanium)});
+        // --- Carpenter's Collapsible Block
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L), bits, new Object[] {"SdS", "WWW", "SBS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'W', ItemList.Plank_Oak, 'S', OrePrefixes.screw.get(Materials.Wood)});
+        // --- Carpenter's Chisel
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersChisel", 1L, 0), bits, new Object[] {"dTs", "SIS", "BIB", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'T', GT_ModHandler.getModItem("TConstruct", "chiselHead", 1L, 2), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', OrePrefixes.stick.get(Materials.Iron)});
+        // --- Carpenter's Hammer
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersHammer", 1L, 0), bits, new Object[] {"dTs", "SIS", "BIB", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'T', OrePrefixes.toolHeadHammer.get(Materials.Iron), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', OrePrefixes.stick.get(Materials.Iron)});
+        // --- Carpenter's Safe
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersSafe", 1L, 0), bits, new Object[] {"SBS", "BIB", "SdS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', GT_ModHandler.getModItem("IC2", "blockPersonal", 1L, 0)});
+        // --- Carpenter's Daylight Sensor
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersDaylightSensor", 1L, 0), bits, new Object[] {"SdS", "BMB", "BRB", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Iron), 'M', GT_ModHandler.getModItem("minecraft", "daylight_detector", 1L, 0), 'R', OrePrefixes.dust.get(Materials.Redstone)});
+        // --- Carpenter's Bed
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersBed", 1L, 0), bits, new Object[] {"MMM", "BBB", "BrB", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'M', GT_ModHandler.getModItem("minecraft", "carpet", 1L, 0)});
+        // --- Carpenter's Torch
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersTorch", 2L, 0), bits, new Object[] {"TBT", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'T', GT_ModHandler.getModItem("minecraft", "torch", 1L, 0)});
+        // --- Carpenter's Garage Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGarageDoor", 5L, 0), bits, new Object[] {"BRB", "RBR", "BRB", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'R', OrePrefixes.ring.get(Materials.Iron)});
+        // --- Carpenter's Ladder
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersLadder", 1L, 0), bits, new Object[] {"BLB", "SdS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'L', GT_ModHandler.getModItem("minecraft", "ladder", 1L, 0)});
+        // --- Carpenter's Barrier
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBarrier", 1L, 0), bits, new Object[] {"BLB", "SdS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'L', GT_ModHandler.getModItem("minecraft", "fence", 1L, 0)});
+        // --- Carpenter's Pressure Plate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersPressurePlate", 2L, 0), bits, new Object[] {"SrS", "BRB", "SdS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'R', OrePrefixes.spring.get(Materials.Iron)});
+        // --- Carpenter's Flower Pot
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersFlowerPot", 1L, 0), bits, new Object[] {"BMB", " B ", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'M', GT_ModHandler.getModItem("minecraft", "flower_pot", 1L, 0)});
+        // --- Carpenter's Gate
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGate", 1L, 0), bits, new Object[] {"BLB", "SdS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'L', GT_ModHandler.getModItem("minecraft", "fence_gate", 1L, 0)});
+        // --- Carpenter's Hatch
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersHatch", 1L, 0), bits, new Object[] {"BLB", "SdS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'L', GT_ModHandler.getModItem("minecraft", "trapdoor", 1L, 0)});
+        // --- Carpenter's Lever
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersLever", 1L, 0), bits, new Object[] {"BLS", " d ", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'L', GT_ModHandler.getModItem("minecraft", "lever", 1L, 0)});
+        // --- Carpenter's Door
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersDoor", 1L, 0), bits, new Object[] {"BLB", "SdS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'L', GT_ModHandler.getModItem("minecraft", "wooden_door", 1L, 0)});
+        // --- Carpenter's Button
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersButton", 1L, 0), bits, new Object[]{"sC", 'C', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersPressurePlate", 1L, 0)});
+        // --- Carpenter's Slope
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersSlope", 2L, 0), bits, new Object[]{"Cs", 'C', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0)});
+        // --- Carpenter's Stairs
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersStairs", 1L, 0), bits, new Object[]{"sC", 'C', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersSlope", 1L, 0)});
+        // --- Carpenter's Tile
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersTile", 1L, 0), bits, new Object[]{GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersPressurePlate", 1L, 0), ToolDictNames.craftingToolRollingPin, "itemClay"});
+
+        /* ==== END CARPENTERS BLOCKS ==== */
     }
 }
