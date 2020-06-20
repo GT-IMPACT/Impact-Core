@@ -326,6 +326,35 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "hammer", 1, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "chisel", 1, 0), true, false, true);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "Printing Press", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioChase", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "Typesetting Machine", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "tile.BiblioframeGtdChest", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioPaintPress", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioLantern", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioIronLantern", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioLamp", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioIronLamp", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "Armor Stand", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioBell", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioStuffs", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioStuffs", 1L, 2), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSaw", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.FramingBoard", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioMapTool", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioWayPointCompass", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioGlasses", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioGlasses", 1L, 2), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.PlumbLine", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.HandDrill", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioDrill", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.tape", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.tapeMeasure", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioClipboard", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.SlottedBook", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.AtlasBook", 1L, 0), true, false, true);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }
