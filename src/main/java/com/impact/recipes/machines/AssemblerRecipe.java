@@ -807,7 +807,7 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 3L), GT_Utility.getIntegratedCircuit(6)}, Materials.Steel.getMolten(16), GT_ModHandler.getModItem("minecraft", "ladder", 6L), 400, 4);
 
         /* ==== END VANILLA ==== */
-		/** ==== START CARPENTERS BLOCKS ==== */
+        /** ==== START CARPENTERS BLOCKS ==== */
         // --- Carpenter's Block
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Wood, 2L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 4L, 0), 100, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 3L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 8L, 0), 100, 30);
@@ -848,6 +848,78 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 2L, 0), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Iron, 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersPressurePlate", 2L, 0), 100, 8);
 
         /* ==== END CARPENTERS BLOCKS ==== */
+        /** ==== START EXTRA UTILITIES ==== */
+        // --- Quarry Upgrade
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Gearbox_TungstenSteel2.get(1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Talonite, 4L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Stellite, 4L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Talonite, 8L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Stellite, 32L)}, null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), 600, 1920);
+        // --- Hole Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Titanium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 1), 800, 7680);
+        // --- Silk Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Enderium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 2), 800, 30720);
+        // --- Fortune 1 Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Iridium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 3), 800, 7680);
+        // --- Fortune 2 Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 3), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Osmiridium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 4), 1000, 30720);
+        // --- Fortune 3 Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 4), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Naquadah, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 5), 1200, 122880);
+        // --- Speed 1 Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSG, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 6), 800, 7680);
+        // --- Speed 2 Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 6), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSE, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 7), 1000, 30720);
+        // --- Speed 3 Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 7), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSS, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 8), 1200, 122880);
+        // --- Pump Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), ItemList.Electric_Pump_IV.get(1L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 9), 1000, 30720);
+        // --- Thermionic Pump
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Pump_IV.get(1), GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Talonite, 4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.TNT, 2L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Inconel690, 8L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BT6, 32L)}, null, GT_ModHandler.getModItem("ExtraUtilities", "enderThermicPump", 1L, 0), 1000, 7680);
+        // --- Slightly Larger Chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "chest", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 1L, 0), 100, 30);
+        // --- Trash Can
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2", "itemHarz", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 10L), null, GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L, 0), 400, 30);
+        // --- Block Update Detector
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32731), GT_ModHandler.getModItem("minecraft", "sticky_piston", 1L, 0), null, GT_ModHandler.getModItem("ExtraUtilities", "budoff", 1L, 0), 200, 30);
+        // --- Block Update Detector (Advanced)
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "budoff", 1L, 0), GT_ModHandler.getModItem("minecraft", "redstone_block", 4L, 0), null, GT_ModHandler.getModItem("ExtraUtilities", "budoff", 1L, 3), 200, 120);
+        // --- Etched Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_Utility.getIntegratedCircuit(1), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 1), 100, 8);
+        // --- Glass Bricks
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_Utility.getIntegratedCircuit(4), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 2), 100, 8);
+        // --- Swirling Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_Utility.getIntegratedCircuit(5), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 6), 100, 8);
+        // --- Squared Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_Utility.getIntegratedCircuit(2), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 9), 100, 8);
+        // --- Dark Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 10), 100, 8);
+        // --- Reinforced Dark Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 10), GT_ModHandler.getModItem("gregtech", "gt.metaitem.01", 4L, 2804), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 11), 400, 30);
+        // --- Sandy Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "sand", 1L, 0), GT_ModHandler.getModItem("minecraft", "glass", 1L, 0), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 2L, 9), 40, 4);
+        // --- Edged Stone Bricks
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone", 4L, 0), GT_ModHandler.getModItem("minecraft", "stonebrick", 5L, 0), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 9L, 0), 180, 4);
+        // --- Border Stone
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1L, 0), GT_Utility.getIntegratedCircuit(4), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1L, 4), 20, 4);
+        // --- Border Stone (Alternate)
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1L, 4), GT_Utility.getIntegratedCircuit(4), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1L, 7), 20, 4);
+        // --- Gravel Bricks
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "gravel", 1L, 0), GT_Utility.getIntegratedCircuit(2), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1L, 6), 20, 4);
+        // --- Frosted Stone
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone", 1L, 0), GT_ModHandler.getModItem("minecraft", "ice", 4L, 0), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 4L, 3), 80, 4);
+        // --- Gravel Road
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 5L, 6), GT_ModHandler.getModItem("minecraft", "stone_slab", 5L, 5), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 5L, 10), 100, 4);
+        // --- Ender-Sand Alloy
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "sandstone", 1L, 0), GT_ModHandler.getModItem("minecraft", "end_stone", 1L, 1), null, GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 2L, 13), 40, 4);
+        // --- Ineffable Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 0), GT_Utility.getIntegratedCircuit(2), null, GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 1), 100, 8);
+        // --- Ethereal Glass (Inverted)
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 0), GT_Utility.getIntegratedCircuit(1), null, GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 3), 100, 8);
+        // --- Ineffable Glass (Inverted)
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 1), GT_Utility.getIntegratedCircuit(1), null, GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 4), 100, 8);
+        // --- Dark Ethereal Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 2), 200, 16);
+        // --- Dark Ethereal Glass (Inverted)
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 2), GT_Utility.getIntegratedCircuit(1), null, GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 5), 100, 8);
+
+        /* ==== END EXTRA UTILITIES ==== */
+
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
         ItemStack[] outHatches = {GT_ItemList.Hatch_Output_UEV.get(1), GT_ItemList.Hatch_Output_UIV.get(1), GT_ItemList.Hatch_Output_UMV.get(1), GT_ItemList.Hatch_Output_UXV.get(1), GT_ItemList.Hatch_Output_OPV.get(1), GT_ItemList.Hatch_Output_MAX.get(1)};

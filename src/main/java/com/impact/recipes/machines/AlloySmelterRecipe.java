@@ -5,7 +5,10 @@ import com.impact.item.Core_Items2;
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,5 +26,18 @@ public class AlloySmelterRecipe implements Runnable {
         GT_Values.RA.addAlloySmelterRecipe(new ItemStack(Items.clay_ball, 1, 0), ItemList.Shape_Mold_Ingot.get(0), new ItemStack(Items.brick, 1, 0), 130, 3);
         GT_Values.RA.addAlloySmelterRecipe(CoreItems.getRecipe(33, 1), ItemList.Shape_Mold_Ball.get(0), ItemList.Circuit_Parts_Glass_Tube.get(1), 120, 16);
 
+        /** ==== START EXTRA UTILITIES ==== */
+        // --- Obsidain Glass
+        GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 4L), GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 5), 200, 8);
+        // --- Golden Edge Glass
+        GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 4), 200, 8);
+        // --- Carved Glass
+        GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_ModHandler.getModItem("minecraft", "gunpowder", 1L, 0), GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 3), 200, 8);
+        // --- Glowstone Glass
+        GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_ModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 17811), GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 7), 400, 16);
+        // --- Heart Glass
+        GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_ModHandler.getModItem("minecraft", "dye", 1L, 9), GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 8), 200, 8);
+
+        /* ==== END EXTRA UTILITIES ==== */
     }
 }
