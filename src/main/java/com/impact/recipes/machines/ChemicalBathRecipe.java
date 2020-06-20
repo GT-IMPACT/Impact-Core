@@ -89,7 +89,7 @@ public class ChemicalBathRecipe implements Runnable {
 
 		/** ==== START EXTRA UTILITIES ==== */
         // --- Ethereal Glass
-        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), Materials.EnderPearl.getFluid(500), GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 0), null, null, new int[]{10000, 0, 0}, 100, 8);
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), Materials.EnderPearl.getMolten(500L), GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 0), null, null, new int[]{10000, 0, 0}, 100, 8);
 
         /* ==== END EXTRA UTILITIES ==== */
 

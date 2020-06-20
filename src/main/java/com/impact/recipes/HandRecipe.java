@@ -811,7 +811,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Mini Chest
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "chestMini", 1L), new Object[]{"hPs", "P P", " P ", 'P', OrePrefixes.plate.get(Materials.Wood)});
         // --- Slightly larger Chest
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 1L), new Object[]{"hPs", "PСP", " P ", 'P', OrePrefixes.plate.get(Materials.Wood), 'C', GT_ModHandler.getModItem("minecraft", "chest", 1L, 0)});
+        //GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 1L), new Object[]{"hPs", "PСP", " P ", 'P', OrePrefixes.plate.get(Materials.Wood), 'C', GT_ModHandler.getModItem("minecraft", "chest", 1L)});
         // --- Filing Cabinet
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "filing", 1L), bits, new Object[]{"PUP", "SCS", "PUP", 'P', OrePrefixes.plate.get(Materials.Steel), 'S', OrePrefixes.screw.get(Materials.Steel), 'U', GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 1L, 0), 'C', GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 1)});
         // --- Advanced Filing Cabinet
@@ -820,11 +820,11 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L), bits, new Object[]{"PhP", "PBP", "PSP", 'S', "slimeball", 'P', OrePrefixes.plate.get(Materials.Iron), 'B', GT_ModHandler.getModItem("minecraft", "bucket", 1L, 0)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L), bits, new Object[]{"PhP", "PBP", "PSP", 'S', GT_ModHandler.getModItem("IC2", "itemHarz", 1L), 'P', OrePrefixes.plate.get(Materials.Iron), 'B', GT_ModHandler.getModItem("minecraft", "bucket", 1L, 0)});
         // --- Watering Can
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "watering_can", 1L, 1), bits, new Object[]{"hRd", "PPI", "PPS", 'I', OrePrefixes.stick.get(Materials.Steel), 'S', OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "watering_can", 1L, 1), bits, new Object[]{"hRd", "PPI", "PPS", 'I', OrePrefixes.stick.get(Materials.Steel), 'S', OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron)});
         // --- Redstone Clock
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "timer", 1L), bits, new Object[]{"PGP", "GCG", "RGR", 'G', OrePrefixes.gear.get(Materials.Wood), 'C', GT_ModHandler.getModItem("minecraft", "clock", 1L), 'P', OrePrefixes.plate.get(Materials.RedAlloy)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "timer", 1L), bits, new Object[]{"PGP", "GCG", "PGP", 'G', OrePrefixes.gear.get(Materials.Wood), 'C', GT_ModHandler.getModItem("minecraft", "clock", 1L), 'P', OrePrefixes.plate.get(Materials.RedAlloy)});
         // --- Angel Block
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "angelBlock", 1L), bits, new Object[]{"FPF", "FOF", "FPF", 'O', OrePrefixes.block.get(Materials.Obsidian), 'F', GT_ModHandler.getModItem("minecraft", "feather", 1L), 'P', OrePrefixes.plate.get(Materials.Gold)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "angelBlock", 1L), bits, new Object[]{"FPF", "FOF", "FPF", 'O', OrePrefixes.stone.get(Materials.Obsidian), 'F', GT_ModHandler.getModItem("minecraft", "feather", 1L), 'P', OrePrefixes.plate.get(Materials.Gold)});
         // --- Golden Bag
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "golden_bag", 1L), bits, new Object[]{"FDF", "PBP", "hPf", 'F', OrePrefixes.foil.get(Materials.Gold), 'D', OrePrefixes.gemExquisite.get(Materials.Diamond), 'B', GT_ModHandler.getModItem("Backpack", "backpack", 1L), 'P', OrePrefixes.plate.get(Materials.Gold)});
         // --- Thickened Glass

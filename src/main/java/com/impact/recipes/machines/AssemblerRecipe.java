@@ -858,9 +858,9 @@ public class AssemblerRecipe implements Runnable {
         // --- Fortune 1 Upgrade
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Iridium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 3), 800, 7680);
         // --- Fortune 2 Upgrade
-        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 3), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Osmiridium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 4), 1000, 30720);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 3), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Trinium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 4), 1000, 30720);
         // --- Fortune 3 Upgrade
-        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 4), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Naquadah, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 5), 1200, 122880);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 4), GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Tritanium, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 5), 1200, 122880);
         // --- Speed 1 Upgrade
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HSSG, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 6), 800, 7680);
         // --- Speed 2 Upgrade
@@ -870,7 +870,7 @@ public class AssemblerRecipe implements Runnable {
         // --- Pump Upgrade
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 0), ItemList.Electric_Pump_IV.get(1L), null, GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 1L, 9), 1000, 30720);
         // --- Thermionic Pump
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Pump_IV.get(1), GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Talonite, 4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.TNT, 2L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Inconel690, 8L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BT6, 32L)}, null, GT_ModHandler.getModItem("ExtraUtilities", "enderThermicPump", 1L, 0), 1000, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Pump_IV.get(1), GT_ModHandler.getModItem("ExtraUtilities", "enderQuarryUpgrade", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Talonite, 4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4L), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.GumMetal, 2L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Inconel690, 8L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BT6, 32L)}, null, GT_ModHandler.getModItem("ExtraUtilities", "enderThermicPump", 1L, 0), 1000, 7680);
         // --- Slightly Larger Chest
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "chest", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 1L, 0), 100, 30);
         // --- Trash Can

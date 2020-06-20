@@ -24,7 +24,7 @@ public class CuttingRecipe implements Runnable {
         // --- Carpenter's Button
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersPressurePlate", 1L, 0), GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersButton", 4L, 0), GT_Values.NI, 100, 30);
         // --- Carpenter's Stairs
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersSlope", 1L, 0), GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersStairs", 4L, 0), GT_Values.NI, 100, 30);
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersSlope", 1L, 0), GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersStairs", 1L, 0), GT_Values.NI, 100, 30);
         // --- Carpenter's Slope
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersSlope", 4L, 0), GT_Values.NI, 100, 30);
 
