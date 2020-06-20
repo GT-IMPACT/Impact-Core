@@ -831,5 +831,19 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), bits, new Object[]{GT_ModHandler.getModItem("TConstruct", "GlassBlock", 1L, 0)});
 
         /* ==== END EXTRA UTILITIES ==== */
+        /** ==== START ARCHITECTURE CRAFT ==== */
+        // --- Architecs Saw Bench
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ArchitectureCraft", "sawbench", 1L), bits, new Object[]{"SPS", "BAB", "sLh", 'S', OrePrefixes.screw.get(Materials.Steel), 'P', GT_ModHandler.getModItem("minecraft", "heavy_weighted_pressure_plate", 1L), 'B', GT_ModHandler.getModItem("TConstruct", "trap.barricade.oak", 1L), 'A', GT_ModHandler.getModItem("ArchitectureCraft", "sawblade", 1L), 'L', GT_ModHandler.getModItem("ArchitectureCraft", "largePulley", 1L)});
+        // --- Large Pulley
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ArchitectureCraft", "largePulley", 1L), bits, new Object[]{"SdS", "GWG", "ShS", 'S', OrePrefixes.screw.get(Materials.Steel), 'G', OrePrefixes.gearGtSmall.get(Materials.Iron), 'W', OrePrefixes.gear.get(Materials.Wood)});
+        // --- Architecs Hammer
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ArchitectureCraft", "hammer", 1L), bits, new Object[]{"PPI", "fSI", " Sh", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', OrePrefixes.plate.get(Materials.Steel), 'I', OrePrefixes.ingot.get(Materials.Iron)});
+        // --- Architecs Chisel
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ArchitectureCraft", "chisel", 1L), bits, new Object[]{"hIP", "SKI", "WSd", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.Steel), 'I', OrePrefixes.plate.get(Materials.Iron), 'K', OrePrefixes.stick.get(Materials.Iron), 'W', OrePrefixes.stick.get(Materials.Wood)});
+        // --- Circular Saw
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("ArchitectureCraft", "sawblade", 1L, 0), new Object[]{OrePrefixes.toolHeadBuzzSaw.get(Materials.Iron)});
+
+        /* ==== END ARCHITECTURE CRAFT ==== */
+
     }
 }

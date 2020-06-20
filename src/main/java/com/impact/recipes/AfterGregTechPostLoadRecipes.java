@@ -320,6 +320,12 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1, 10), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1, 13), true, false, true);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "sawbench", 1, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "sawblade", 1, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "largePulley", 1, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "hammer", 1, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "chisel", 1, 0), true, false, true);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }
