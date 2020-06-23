@@ -8,9 +8,6 @@ import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -22,7 +19,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,10 +33,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.impact.api.enums.Textures.Icons.*;
-import static com.impact.loader.ItemRegistery.*;
-import static com.mojang.realmsclient.gui.ChatFormatting.*;
-
+import static com.impact.api.enums.Textures.Icons.LPS;
+import static com.impact.api.enums.Textures.Icons.LPS_ACTIVE;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.loader.ItemRegistery.lscLapotronicEnergyUnit;
+import static net.minecraft.util.EnumChatFormatting.*;
 /**
  * Made by Kekzdealer
  * Edit by 4gname

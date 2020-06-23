@@ -1438,7 +1438,7 @@ public class TecTech_BuildGuide_GregTech implements Runnable {
             private final IStructureDefinition<GT_MetaTileEntity_MultiblockCentrifuge> definition =
                     StructureDefinition.<GT_MetaTileEntity_MultiblockCentrifuge>builder()
                             .addShapeOldApi("main", new String[][]{
-                                    {"000", "000", "0.0",},
+                                    {"000", "0.0", "000",},
                                     {"000", "010", "000",},
                                     {"000", "000", "000",},
                             })
