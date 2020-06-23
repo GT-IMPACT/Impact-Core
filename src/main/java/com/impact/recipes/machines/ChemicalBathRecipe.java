@@ -87,6 +87,11 @@ public class ChemicalBathRecipe implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Mithril, 2), Materials.SulfuricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Mytryl, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SluiceSand, 1), new int[]{10000, 8000, 7500}, 400, 1920);
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Forcicium, 2), Materials.SulfuricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1), new int[]{10000, 8000, 7500}, 600, 30720);
 
+		/** ==== START EXTRA UTILITIES ==== */
+        // --- Ethereal Glass
+        GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), Materials.EnderPearl.getMolten(500L), GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 0), null, null, new int[]{10000, 0, 0}, 100, 8);
+
+        /* ==== END EXTRA UTILITIES ==== */
 
     }
 }
