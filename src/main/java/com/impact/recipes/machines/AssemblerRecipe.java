@@ -210,6 +210,11 @@ public class AssemblerRecipe implements Runnable {
         //OilDrill1
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MV.get(1L), ItemList.Electric_Motor_MV.get(2L), ItemList.Electric_Pump_MV.get(2L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 2), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 2), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 8)}, GT_Values.NF, ItemList.OilDrill1.get(1L), 20 * 20, 120);
 
+        //Maintenance Hatch
+        GT_Values.RA.addAssemblerRecipe(ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(8), GT_Values.NF, ItemList.Hatch_Maintenance.get(1L), 40 * 20, 30);
+
+        /* ================================= end GT MOD =================================*/
+
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(54, 1), 100, 120);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(54, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 3L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, CoreItems2.getRecipe(55, 1), 200, 256);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(54, 3), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, CoreItems2.getRecipe(56, 1), 300, 480);
@@ -275,6 +280,7 @@ public class AssemblerRecipe implements Runnable {
 
         /*====END SOLAR PARTS====*/
         /**====START SPACE ADDITION====*/
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Steel, 1), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualBronze", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualAluminium", 1L, 0)}, Materials.StainlessSteel.getMolten(64), CoreItems2.getRecipe(97, 1), 200, 256);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Bronze, 1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Aluminium, 1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Steel, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSLA, 8)}, Materials.StainlessSteel.getMolten(288), ItemList.Ingot_Heavy1.get(1L, new Object[0]), 200, 256);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 1L), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L), CoreItems2.getRecipe(93, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 8)}, Materials.Titanium.getMolten(288), ItemList.Ingot_Heavy2.get(1L, new Object[0]), 300, 1024);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 3), CoreItems2.getRecipe(90, 1), CoreItems2.getRecipe(96, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Inconel690, 8)}, Materials.TungstenSteel.getMolten(288), ItemList.Ingot_Heavy3.get(1L, new Object[0]), 400, 4096);
