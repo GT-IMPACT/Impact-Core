@@ -300,3 +300,48 @@ tile.impact_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
 tile.impact_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
 tile.impact_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
 tile.impact_sawmill_block.name=Saw Mill Conveyor
+
+#Gui names
+gtnop.gui.veinStat.name=Vein Stats
+gtnop.gui.asteroidStat.name=Asteroid Stats
+gtnop.gui.smallOreStat.name=Small Ore Stats
+gtnop.gui.ieVeinStat.name=IE Vein Stats
+gtnop.gui.bedrockOreStat.name=Bedrock Ore Stats
+gtnop.gui.nei.veinName=Vein name
+gtnop.gui.nei.primaryOre=Primary
+gtnop.gui.nei.secondaryOre=Secondary
+gtnop.gui.nei.betweenOre=Between
+gtnop.gui.nei.sporadicOre=Sporadic
+gtnop.gui.nei.genHeight=Height
+gtnop.gui.nei.weightedChance=Weight
+gtnop.gui.nei.worldNames=Generated world
+gtnop.gui.nei.restrictBiome=Restricted biome
+gtnop.gui.nei.asteroidPrimary=Main-Gen1
+gtnop.gui.nei.asteroidSecondary=Main-Gen2
+gtnop.gui.nei.asteroidBetween=Minor-Gen1
+gtnop.gui.nei.asteroidSporadic=Minor-Gen2
+gtnop.gui.nei.oreName=Ore name
+gtnop.gui.nei.amount=Amount per chunk
+gtnop.gui.nei.chanceDrops=Drops
+gtnop.gui.nei.ieVeinComponent=Vein components
+gtnop.gui.nei.fromMod=From mod
+gtnop.gui.nei.seeAll=See All
+gtnop.gui.nei.vein=Vein
+gtnop.gui.nei.oreOthers=Other ore
+gtnop.nei.genPosition=Position
+gtnop.nei.genPositionInfo=In the center of each chunk
+#World names
+gtnop.world.overworld.name=Overworld
+gtnop.world.nether.name=Nether
+gtnop.world.end.name=End
+gtnop.world.moon.name=Moon
+gtnop.world.mars.name=Mars
+gtnop.world.asteroid.name=GalactiCraft Asteroid
+#Biome names
+gtnop.biome.none.name=None
+#Ore names extra
+gtnop.ore.null.name=None
+#Vein types
+gtnop.ore.vein.name=Vein
+gtnop.ore.asteroid.name=Asteriod
+gtnop.ore.custom.name=Custom

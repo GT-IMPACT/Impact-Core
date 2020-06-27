@@ -16,18 +16,24 @@ import com.impact.recipes.OpenComputersRecipe;
 import com.impact.recipes.debug.DEBUG_Recipe;
 import com.impact.recipes.machines.*;
 import com.impact.util.SendUtils;
+import com.impact.util.oreplugin.CSVMaker;
+import com.impact.util.oreplugin.GT5OreLayerHelper;
+import com.impact.util.oreplugin.GT5OreSmallHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import com.impact.System.LoginHandler;
+import cpw.mods.fml.relauncher.Side;
 
 import java.io.File;
 
+import static com.impact.System.Config.csv;
+import static com.impact.System.Refstrings.MODID;
 import static com.impact.System.impactLog.INFO;
 
 @Mod (
-		modid = Refstrings.MODID,
+		modid = MODID,
         name = Refstrings.NAME,
         version = Refstrings.VERSION,
         dependencies = 
@@ -38,7 +44,7 @@ public class impact {
 	@SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
     public static CommonProxy proxy;
 	
-	@Mod.Instance(Refstrings.MODID)
+	@Mod.Instance(MODID)
     public static impact instance;
     public static SendUtils SendUtils_instance = new SendUtils();
     public static String ModPackVersion = "1.0 RELEASE";
@@ -70,6 +76,15 @@ public class impact {
         MainLoader.preInit();
         INFO("MainLoader PREINIT Loaded ");
         //MainLoader.preInitClient();
+    }
+
+    @Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        if (event.getSide() == Side.CLIENT) {
+            new GT5OreLayerHelper();
+            new GT5OreSmallHelper();
+            if (csv) new CSVMaker().run();
+        }
     }
 
 	@Mod.EventHandler
