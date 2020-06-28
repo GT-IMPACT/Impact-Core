@@ -993,8 +993,8 @@ public class Printer3DRecipe implements Runnable {
         /** ================================= START AE2STUFF =================================*/
         // --- Wireless Connector
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Vanadium, 1), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyCell", 1L, 0), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 56),
-                GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockWireless", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.VanadiumSteel, 4)
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Vanadium, 1), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 56), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockWireless", 1L, 0),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.VanadiumSteel, 4)
         }, GT_ModHandler.getModItem("ae2stuff", "Wireless", 1L, 0), null, 40 * 20, 480);
 
         /* ================================= END GALACTICRAFT =================================*/
