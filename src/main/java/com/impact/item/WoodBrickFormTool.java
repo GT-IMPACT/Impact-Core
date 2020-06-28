@@ -2,6 +2,7 @@ package com.impact.item;
 
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
+import ic2.core.IC2;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,11 +28,24 @@ public class WoodBrickFormTool extends Item {
         super.setHasSubtypes(true);
         final String unlocalizedName = "impact_WoodBrickFormTool";
         super.setUnlocalizedName(unlocalizedName);
-        super.setContainerItem(this);
         super.setMaxStackSize(1);
-        super.setMaxDamage(1000);
+        super.setMaxDamage(99);
         super.setNoRepair();
         GameRegistry.registerItem(getInstance(), unlocalizedName);
+    }
+
+    public boolean hasContainerItem(ItemStack stack) {
+        return true;
+    }
+
+    public ItemStack getContainerItem(ItemStack stack) {
+        ItemStack ret = stack.copy();
+        ret.attemptDamageItem(1, IC2.random);
+        return ret;
+    }
+
+    public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -60,7 +74,7 @@ public class WoodBrickFormTool extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
-        list.add("Reusable: "+ (stack.getMaxDamage()-stack.getItemDamage()));
+        list.add("Reusable: "+ (stack.getMaxDamage() - stack.getItemDamage() + 1));
     }
 
     @Override
@@ -68,13 +82,5 @@ public class WoodBrickFormTool extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) { return false; }
-
-    public ItemStack getContainerItem(ItemStack stack) {
-        if (stack.getItemDamage() >= 0) {
-            stack.setItemDamage(stack.getItemDamage() + 1);
-            return stack;
-        }
-        return super.getContainerItem(stack);
-    }
 
 }
