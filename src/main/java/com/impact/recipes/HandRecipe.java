@@ -918,6 +918,13 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2stuff", "Visualiser", 1L, 0), tBitMask, new Object[]{"E S", "PMP", "PCP", 'P', OrePrefixes.plate.get(Materials.Birmabright), 'C', OrePrefixes.circuit.get(Materials.Data), 'E', ItemList.Emitter_EV, 'S', ItemList.Sensor_EV, 'M', GT_ModHandler.getModItem("OpenComputers", "hologram2", 1L)});
 
         /* ==== END AE2STUFF ==== */
+        /** ==== START Compact Generators ==== */
+        // --- Kinetic Gearbox Rotor (Iridium)
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("compactkineticgenerators", "IridiumRotor", 1L, 0), tBitMask, new Object[]{"dBS", "BAB", "SBw", 'S', OrePrefixes.screw.get(Materials.Lafium), 'B', GT_ModHandler.getModItem("compactkineticgenerators", "IridiumBlade", 1L, 0), 'A', GT_ModHandler.getModItem("IC2", "itemRecipePart", 1L, 12)});
+        // --- Iridium Rotor Blade
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("compactkineticgenerators", "IridiumBlade", 1L, 0), tBitMask, new Object[]{"PPP", "PRP", "PPP", 'R', OrePrefixes.ring.get(Materials.Lafium), 'P', GT_ModHandler.getModItem("IC2", "itemPartIridium", 1L, 0)});
+
+        /* ==== END Compact Generators ==== */
 
     }
 }

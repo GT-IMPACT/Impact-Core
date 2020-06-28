@@ -360,6 +360,9 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "WirelessKit", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "Visualiser", 1L, 0), true, false, true);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("compactkineticgenerators", "IridiumRotor", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("compactkineticgenerators", "IridiumBlade", 1L, 0), true, false, true);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }
