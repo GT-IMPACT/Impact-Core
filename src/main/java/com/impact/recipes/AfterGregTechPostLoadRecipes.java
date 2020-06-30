@@ -514,6 +514,27 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("opensecurity", "opensecurity.energyUpgrade", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("opensecurity", "opensecurity.movementUpgrade", 1L, 0), true, false, true);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.cipher", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.speechBox", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ironNoteBlock", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.radar", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.gt_parts", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 1), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 2), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 3), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 4), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 5), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 6), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 7), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 8), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 9), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 10), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 11), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 12), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 13), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 14), true, false, true);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }

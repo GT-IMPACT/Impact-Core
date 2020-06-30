@@ -1,5 +1,6 @@
 package com.impact.recipes;
 
+import com.impact.item.Core_Items2;
 import com.impact.mods.GregTech.GTregister.GT_ItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class OpenComputersRecipe implements Runnable {
     private static final long tBitMask = GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE/* | GT_ModHandler.RecipeBits.REVERSIBLE*/;
 
+    final Core_Items2 CoreItems2 = Core_Items2.getInstance();
     @Override
     public void run() {
 
@@ -85,6 +87,16 @@ public class OpenComputersRecipe implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("OpenPeripheral", "pim", 1L, 0), tBitMask, new Object[] {"PRP", "CHw", 'C', GT_ModHandler.getModItem("OpenComputers", "item", 1L, 66), 'R', GT_ModHandler.getModItem("minecraft", "heavy_weighted_pressure_plate", 1L, 0), 'H', ItemList.Casing_MV, 'P', OrePrefixes.plate.get(Materials.Aluminium)});
         // --- Item Selector
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("OpenPeripheral", "selector", 1L, 0), tBitMask, new Object[] {"PRP", "CHw", 'C', GT_ModHandler.getModItem("OpenComputers", "item", 1L, 66), 'R', ItemList.Cover_ItemDetector, 'H', ItemList.Casing_MV, 'P', OrePrefixes.plate.get(Materials.Aluminium)});
+
+        // --- Computronics
+        // --- Cipher Block
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("computronics", "computronics.cipher", 1L, 0), tBitMask, new Object[] {"SRS", "WHW", "CPC", 'C', GT_ModHandler.getModItem("OpenComputers", "item", 1L, 25), 'R', ItemList.Robot_Arm_MV, 'H', ItemList.Casing_MV, 'P', OrePrefixes.plate.get(Materials.Silicon), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'W', OrePrefixes.cableGt01.get(Materials.Copper)});
+        // --- Speech Box
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("computronics", "computronics.speechBox", 1L, 0), tBitMask, new Object[] {"SCS", "PHP", "WRW", 'C', GT_ModHandler.getModItem("OpenComputers", "item", 1L, 25), 'R', GT_ModHandler.getModItem("computronics", "computronics.speaker", 1L, 0), 'H', ItemList.Casing_MV, 'P', OrePrefixes.plate.get(Materials.Silicon), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'W', OrePrefixes.wireGt02.get(Materials.Gold)});
+        // --- Iron Note Block
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("computronics", "computronics.ironNoteBlock", 1L, 0), tBitMask, new Object[] {"PPP", "BNB", "PPP", 'N', GT_ModHandler.getModItem("minecraft", "noteblock", 1L, 0), 'P', OrePrefixes.plate.get(Materials.Iron), 'B', CoreItems2.getRecipe(51, 1)});
+        // --- Radar
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("computronics", "computronics.radar", 1L, 0), tBitMask, new Object[] {"CSC", "BEB", "WHW", 'C', GT_ModHandler.getModItem("OpenComputers", "item", 1L, 25), 'B', OrePrefixes.circuit.get(Materials.Advanced), 'H', ItemList.Casing_HV, 'S', ItemList.Sensor_HV, 'E', ItemList.Emitter_HV, 'W', OrePrefixes.cableGt02.get(Materials.Gold)});
 
 
         for (Materials tMat : Materials.values()) {//TODO dream things using soldering go in here!
@@ -311,7 +323,42 @@ public class OpenComputersRecipe implements Runnable {
                 // --- Wireless Keyboard
                 GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("OpenComputers", "item", 1L, 13), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 26), GT_ModHandler.getModItem("OpenComputers", "keyboard", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.StainlessSteel, 1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Plastic.getMolten(144L), GT_ModHandler.getModItem("OpenPeripheral", "keyboard", 1L, 0), 400, 120);
 
-                //Open Security
+                // --- Computronics
+                // --- Tape Reel
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NiobiumTitanium, 1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.ChromiumDioxide, 4L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.StainlessSteel, 8L)}, Materials.Argon.getGas(1000L), GT_ModHandler.getModItem("computronics", "computronics.gt_parts", 1L, 0), 400, 256);
+                // --- Camera Upgrade
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L), GT_ModHandler.getModItem("computronics", "computronics.camera", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 25), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 4L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 0), 250, 120);
+                // --- Chat Upgrade
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L), GT_ModHandler.getModItem("computronics", "computronics.chatBox", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 25), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Silver, 4L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 1), 250, 120);
+                // --- Radar Upgrade
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Epoxy_Advanced.get(1L), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.StainlessSteel, 2L), GT_ModHandler.getModItem("computronics", "computronics.radar", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 26), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Electrum, 8L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 2), 300, 256);
+                // --- Particle Effect Card
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("OpenComputers", "item", 1L, 33), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 25), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 27), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.StainlessSteel, 1L), GT_ItemList.RedstonePulsatingChipset.get(1L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 3), 200, 120);
+                // --- Spoofing Card
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("OpenComputers", "item", 1L, 11), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 27), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 28), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 25), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 50), GT_Utility.getIntegratedCircuit(2)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 4), 200, 120);
+                // --- Beep Card
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("OpenComputers", "item", 1L, 33), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 27), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 28), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 24), GT_ModHandler.getModItem("computronics", "computronics.speaker", 1L, 0), GT_Utility.getIntegratedCircuit(2)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 5), 200, 120);
+                // --- Self-Destructing Card
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("OpenComputers", "item", 1L, 66), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 28), GT_ModHandler.getModItem("IC2", "blockITNT", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Electrum, 8L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 6), 200, 120);
+                // --- Colorful Upgrade
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L), GT_ModHandler.getModItem("computronics", "computronics.colorfulLamp", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 25), GT_ModHandler.getModItem("OpenComputers", "item", 4L, 96), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 4L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 7), 250, 120);
+                // --- Noise Card
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 5), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 27), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 28), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 25), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 1), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(288L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 8), 400, 120);
+                // --- Sound Card
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 8), GT_ModHandler.getModItem("OpenComputers", "item", 1L, 25), GT_ModHandler.getModItem("OpenComputers", "item", 1, 29), GT_ModHandler.getModItem("OpenComputers", "item", 1, 38), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Diamond, 16L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 9), 400, 256);
+                // --- Light Board
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_ModHandler.getModItem("computronics", "computronics.colorfulLamp", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 24), GT_Utility.getIntegratedCircuit(1)}, Materials.Plastic.getMolten(144L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 10), 400, 480);
+                // --- Server Self-Destructor
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 2L, 6), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 24), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.StainlessSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Electrum, 8L), GT_Utility.getIntegratedCircuit(1)}, Materials.Plastic.getMolten(144L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 11), 300, 120);
+                // --- Rack Capacitor
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L), GT_ModHandler.getModItem("OpenComputers", "capacitor", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 25), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 8L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 12), 250, 256);
+                // --- Switch Board
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_ModHandler.getModItem("opensecurity", "opensecurity.SwitchableHub", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 24), GT_Utility.getIntegratedCircuit(1)}, Materials.Plastic.getMolten(144L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 13), 200, 120);
+                // --- Speech Upgrade
+                GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L), GT_ModHandler.getModItem("computronics", "computronics.speechBox", 1L, 0), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 25), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 4L), GT_Utility.getIntegratedCircuit(1)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("computronics", "computronics.ocParts", 1L, 14), 250, 120);
+
+
+                // --- Open Security
                 //Magnetic Card Reader
                 GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 25), GT_ModHandler.getModItem("OpenComputers", "cable", 2L, 0), ItemList.Circuit_Parts_Transistor.get(2L), GT_Utility.getIntegratedCircuit(2)}, Materials.Plastic.getMolten(72L), GT_ModHandler.getModItem("opensecurity", "magreader", 1L, 0), 300, 256);
                 GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1L), GT_ModHandler.getModItem("OpenComputers", "item", 2L, 25), GT_ModHandler.getModItem("OpenComputers", "cable", 2L, 0), ItemList.Circuit_Parts_TransistorSMD.get(1L), GT_Utility.getIntegratedCircuit(2)}, Materials.Plastic.getMolten(72L), GT_ModHandler.getModItem("opensecurity", "magreader", 1L, 0), 300, 256);
