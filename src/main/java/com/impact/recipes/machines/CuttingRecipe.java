@@ -1,12 +1,13 @@
 package com.impact.recipes.machines;
 
+import com.impact.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
 
 
 public class CuttingRecipe implements Runnable {
-
+    final Core_Items2 CoreItems2 = Core_Items2.getInstance();
     @Override
     public void run() {
 
@@ -32,6 +33,9 @@ public class CuttingRecipe implements Runnable {
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("gregtech", "gt.metaitem.02", 1L, 32470), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
         // --- Frame Board
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 1L, 0), GT_ModHandler.getModItem("BiblioCraft", "item.FramingBoard", 4L, 0), GT_Values.NI,  50, 4);
+
+        GT_Values.RA.addCutterRecipe(CoreItems2.getRecipe(158, 1), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 28), null, 400, 16);
+        GT_Values.RA.addCutterRecipe(CoreItems2.getRecipe(157, 1), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 27), null, 400, 16);
 
     }
 }

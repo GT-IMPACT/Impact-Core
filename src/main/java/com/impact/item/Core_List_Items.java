@@ -204,6 +204,11 @@ public enum Core_List_Items {
     BarnardaCBall(151, 1),
     BarnardaCBiochaff(152, 1),
     ChargedQuartzRod(153, 1),
+    MicrochipBoard1(154, 1),
+    MicrochipBoard2(155, 1),
+    MicrochipBoard3(156, 1),
+    ALUBoard(157, 1),
+    CUBoard(158, 1),
 
     WoodenBrickForm1(0, 2),
 
