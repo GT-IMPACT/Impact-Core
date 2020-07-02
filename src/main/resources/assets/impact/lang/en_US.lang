@@ -281,6 +281,11 @@ item.impact_item2.150.name=BarnardaC Wood Schematics
 item.impact_item2.151.name=BarnardaC Plantball
 item.impact_item2.152.name=BarnardaC Bio Chaff
 item.impact_item2.153.name=Charged Quartz Rod
+item.impact_item2.154.name=Microchip Board (Tier 1)
+item.impact_item2.155.name=Microchip Board (Tier 2)
+item.impact_item2.156.name=Microchip Board (Tier 3)
+item.impact_item2.157.name=Arithmetic Logic Unit Board
+item.impact_item2.158.name=Control Unit Board
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 
