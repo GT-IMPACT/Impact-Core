@@ -73,6 +73,7 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 .addTypeMachine("Autoclave, Dust Washer, Ore Washer, Chemical Bath")
                 .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -230,6 +231,11 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
+    @Override
+    public int getParallel() {
+        return this.mLevel;
+    }
+
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
@@ -244,7 +250,9 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == 1) {
+        if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
+        else
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
             if (mMode > 3) mMode = 0;
 

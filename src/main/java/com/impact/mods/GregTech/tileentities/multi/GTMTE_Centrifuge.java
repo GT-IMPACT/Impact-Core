@@ -74,6 +74,7 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addPollution(200, 12800)
                 .addTypeMachine("Centrifuge, Thermal Centrifuge")
                 .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -229,6 +230,11 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
 
     @Override
+    public int getParallel() {
+        return this.mLevel;
+    }
+
+    @Override
     public boolean checkRecipe(ItemStack itemStack) {
         return impactRecipe(itemStack, mLevel, true);
     }
@@ -246,6 +252,9 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+
+        if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
+        else
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
             if (mMode > 1) mMode = 0;

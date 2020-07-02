@@ -71,6 +71,7 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addInfo("One-block machine analog")
                 .addTypeMachine("3x3 Crafting, 4x4 Crafting")
                 .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -247,6 +248,9 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+
+        if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
+        else
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
                 mMode++;
                 if (mMode > 1) mMode = 0;
@@ -255,5 +259,9 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
             GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.GREEN + mModed);
             checkMachine(getBaseMetaTileEntity(), getStackInSlot(0));
         }
+    }
+    @Override
+    public int getParallel() {
+        return 1;
     }
 }

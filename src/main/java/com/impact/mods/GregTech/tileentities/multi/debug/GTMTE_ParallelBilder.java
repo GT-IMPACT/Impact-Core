@@ -46,6 +46,11 @@ public class GTMTE_ParallelBilder extends GT_MetaTileEntity_MultiParallelBlockBa
         super(aName);
     }
 
+    @Override
+    public int getParallel() {
+        return 0;
+    }
+
     /** === META ENTITY === */
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {

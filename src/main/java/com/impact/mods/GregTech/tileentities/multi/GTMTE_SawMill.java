@@ -86,7 +86,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
         b
                 .addInfo("Nooo! Do not saw me..")
                 .addTypeMachine("Saw Mill")
-                .addInfo("Left click + shift for change mode machine")
+                .addScrew()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -249,6 +249,11 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
+    @Override
+    public int getParallel() {
+        return 1;
+    }
+
     /**
      * === POLLUTION ===
      */
@@ -266,16 +271,14 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
 
     @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
-        if (!aPlayer.isSneaking()) {
-            GT_Utility.sendChatToPlayer(aPlayer, "ha-ha.. NOOB! Use SHIFT");
-        } else {
-            mMode++;
-            if (mMode > 2) mMode = 0;
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 
-            mModed = (mMode == 0 ? " Planks & Sawdust " : mMode == 1 ? " Wood Pulp & Sawdust " : " Only Sawdust ");
-            GT_Utility.sendChatToPlayer(aPlayer, "Mode:" + EnumChatFormatting.GREEN + mModed);
-        }
+        mMode++;
+        if (mMode > 2) mMode = 0;
+
+        mModed = (mMode == 0 ? " Planks & Sawdust " : mMode == 1 ? " Wood Pulp & Sawdust " : " Only Sawdust ");
+        GT_Utility.sendChatToPlayer(aPlayer, "Mode:" + EnumChatFormatting.GREEN + mModed);
+
     }
 }

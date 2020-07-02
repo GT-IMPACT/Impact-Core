@@ -20,6 +20,7 @@ import gregtech.api.util.GT_Utility;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -94,6 +95,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 .addInfo("Super Coolant is required for operation: 50 per second")
                 .addInfo("At the output, get Hot Coolant: 25 per second")
                 .addTypeMachine("Vacuum Freezer")
+                .addSeparatedBus()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -353,6 +355,24 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
      */
     public int Parallel() {
         return this.mLevel;
+    }
+
+    @Override
+    public int getParallel() {
+        return this.mLevel;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+        if (aPlayer.isSneaking()) {
+            if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+                modeBuses++;
+                if (modeBuses > 1) modeBuses = 0;
+
+                GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
+            }
+        }
     }
 
     /**

@@ -12,7 +12,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -69,7 +71,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 //.addPollution(200, 12800)
                 .addTypeMachine("Electrolyzer")
-                .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -184,6 +186,24 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
         if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
+    }
+
+    @Override
+    public int getParallel() {
+        return this.mLevel;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+        if (aPlayer.isSneaking()) {
+            if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+                modeBuses++;
+                if (modeBuses > 1) modeBuses = 0;
+
+                GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
+            }
+        }
     }
 
     @Override

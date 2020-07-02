@@ -257,6 +257,11 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
+    @Override
+    public int getParallel() {
+        return 1;
+    }
+
     /**
      * === POLLUTION ===
      */

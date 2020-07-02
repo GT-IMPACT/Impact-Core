@@ -69,6 +69,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addPollution(200, 12800)
                 .addTypeMachine("Arc Furnace, Alloy Smelter")
                 .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -229,6 +230,11 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
+    @Override
+    public int getParallel() {
+        return this.mLevel;
+    }
+
     /** === POLLUTION === */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
@@ -247,6 +253,9 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+
+        if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
+        else
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
             if (mMode > 1) mMode = 0;

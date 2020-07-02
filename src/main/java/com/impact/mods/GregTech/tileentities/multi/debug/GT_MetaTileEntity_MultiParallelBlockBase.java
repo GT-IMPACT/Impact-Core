@@ -41,6 +41,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -53,7 +54,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTileEntity_MultiBlockBase implements ITecTechEnabledMulti {
 
-    public int mParallel = 1;
+    public int mParallel = getParallel();
     @SuppressWarnings("rawtypes")
     public ArrayList TTTunnels = new ArrayList<>();
     @SuppressWarnings("rawtypes")
@@ -211,6 +212,17 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         }
     }
 
+    public void ScrewClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+                modeBuses++;
+                if (modeBuses > 1) modeBuses = 0;
+
+                GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
+            }
+        }
+    }
+
     /**
      * === GUI CONTAINER ===
      */
@@ -259,6 +271,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         list.removeAll(Collections.singleton(null));
         return list.toArray(new ItemStack[list.size()]);
     }
+
+    public int modeBuses = 0;
 
     public boolean impactRecipe() {
         ArrayList<ItemStack> tInputList = getStoredInputs();
@@ -341,19 +355,30 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     }
 
     public boolean impactRecipe(ItemStack itemStack) {
+        ArrayList<ItemStack> tInputList = null;
+        ArrayList<FluidStack> tFluidList = null;
+        ItemStack[] tInputs = null;
+        FluidStack[] tFluids = null;
         for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-            tBus.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tBus)) {
-                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+            if (modeBuses == 0) {
+                ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+                tBus.mRecipeMap = getRecipeMap();
+                if (isValidMetaTileEntity(tBus)) {
+                    for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                        if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                            tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                    }
                 }
+                tInputList = this.getStoredInputs();
+                tFluidList = this.getStoredFluids();
+                tInputs = tBusItems.toArray(new ItemStack[]{});
+                tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+            } else {
+                tInputList = this.getStoredInputs();
+                tFluidList = this.getStoredFluids();
+                tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+                tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
             }
-            ArrayList<ItemStack> tInputList = this.getStoredInputs();
-            ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-            ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
             if (tInputList.size() > 0 || tFluidList.size() > 0) {
                 long tVoltage = this.getMaxInputVoltage();
                 byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -412,28 +437,32 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     }
 
     public boolean impactRecipe(ItemStack itemStack, int aParallel, boolean aChance) {
-        if (getTierEnergyHatch() >= 7 && aParallel >= 64) {
-            this.mParallel = 16;
-        } else {
-            this.mParallel = aParallel;
-        }
+        this.mParallel = getParallel();
 
+        ArrayList<ItemStack> tInputList = null;
+        ArrayList<FluidStack> tFluidList = null;
+        ItemStack[] tInputs = null;
+        FluidStack[] tFluids = null;
         for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-            tBus.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tBus)) {
-                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+            if (modeBuses == 0) {
+                ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+                tBus.mRecipeMap = getRecipeMap();
+                if (isValidMetaTileEntity(tBus)) {
+                    for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                        if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                            tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                    }
                 }
+                tInputList = this.getStoredInputs();
+                tFluidList = this.getStoredFluids();
+                tInputs = tBusItems.toArray(new ItemStack[]{});
+                tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+            } else {
+                tInputList = this.getStoredInputs();
+                tFluidList = this.getStoredFluids();
+                tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+                tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
             }
-
-            ArrayList<ItemStack> tInputList = this.getStoredInputs();
-            ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-
-            ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-
             if (tInputList.size() > 0 || tFluidList.size() > 0) {
 
                 GT_Recipe tRecipe;
@@ -567,27 +596,31 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     }
 
     public boolean impactRecipe(ItemStack itemStack, int aParallel) {
-        if (getTierEnergyHatch() >= 7 && aParallel >= 64) {
-            this.mParallel = 16;
-        } else {
-            this.mParallel = aParallel;
-        }
+        this.mParallel = getParallel();
+        ArrayList<ItemStack> tInputList = null;
+        ArrayList<FluidStack> tFluidList = null;
+        ItemStack[] tInputs = null;
+        FluidStack[] tFluids = null;
         for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-            tBus.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tBus)) {
-                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+            if (modeBuses == 0) {
+                ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+                tBus.mRecipeMap = getRecipeMap();
+                if (isValidMetaTileEntity(tBus)) {
+                    for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                        if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+                            tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                    }
                 }
+                tInputList = this.getStoredInputs();
+                tFluidList = this.getStoredFluids();
+                tInputs = tBusItems.toArray(new ItemStack[]{});
+                tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+            } else {
+                tInputList = this.getStoredInputs();
+                tFluidList = this.getStoredFluids();
+                tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+                tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
             }
-
-            ArrayList<ItemStack> tInputList = this.getStoredInputs();
-            ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-
-            ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-
             if (tInputList.size() > 0 || tFluidList.size() > 0) {
 
                 GT_Recipe tRecipe;
@@ -686,7 +719,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
                         int TimeProgress;
-                        switch (aParallel) {
+                        switch (getParallel()) {
                             default:
                                 TimeProgress = this.mMaxProgresstime;
                                 break;
@@ -716,6 +749,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         }
         return false;
     }
+
+    public abstract int getParallel();
 
     /**
      * === INFO DATA ===
@@ -751,7 +786,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ",
                 "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
                 "Pollution: " + RED + getPollutionPerTick(null) + RESET,
-                (getPollutionPerTick(null)/50) > 3 ? "Parallel Point: " + YELLOW + (getPollutionPerTick(null)/50) + "" : "",
+                "Parallel Point: " + YELLOW + getParallel(),
         };
     }
 

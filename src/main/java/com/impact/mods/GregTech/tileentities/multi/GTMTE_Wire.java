@@ -73,6 +73,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addInfo("Parallel Point will upped Upgrade Casing")
                 .addTypeMachine("WireMill, Wire Assembler")
                 .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
@@ -183,6 +184,11 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
         return formationChecklist;
     }
 
+    @Override
+    public int getParallel() {
+        return this.mLevel;
+    }
+
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
@@ -197,6 +203,9 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+
+        if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
+        else
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
             if (mMode > 1) mMode = 0;
