@@ -7,15 +7,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
 import static com.impact.System.Refstrings.MODID;
 import static com.impact.util.Utilits.ItemstackMeta;
 
-public class Block_UtilBlock extends gtUpdateBlockAPI {
+public class Block_UtilBlock extends Block {
 
     public static final Block_UtilBlock UtilBlock = new Block_UtilBlock();
 
@@ -59,6 +62,26 @@ public class Block_UtilBlock extends gtUpdateBlockAPI {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public int damageDropped(int meta){
+        return meta;
+    }
+
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
+
+    @Override
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+        return false;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
     }
 
 }
