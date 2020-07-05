@@ -16,7 +16,7 @@ public class BreweryRecipe implements Runnable {
     final Core_Items2 CoreItems2 = Core_Items2.getInstance();
 
     public void run() {
-        GT_Values.RA.addBrewingRecipeCustom(CoreItems2.getRecipe(152, 1), Materials.GrowthMediumRaw.getFluid(2000), Materials.Bacteria.getFluid(2000), 600, 500000, false);
+        GT_Values.RA.addBrewingRecipeCustom(CoreItems2.getRecipe(152, 1), Materials.GrowthMediumRaw.getFluid(2000), Materials.Bacteria.getFluid(2000), 600, 1920, false);
 
     }
 }

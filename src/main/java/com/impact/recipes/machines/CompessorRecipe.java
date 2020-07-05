@@ -29,7 +29,7 @@ public class CompessorRecipe implements Runnable {
         GT_Values.RA.addCompressorRecipe(CoreItems.getRecipe(33, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 1L), 200, 2);
         GT_Values.RA.addCompressorRecipe(CoreItems2.getRecipe(125, 9), CoreItems2.getRecipe(126, 1), 400, 1920);
 
-        GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCsapling", 8L), CoreItems2.getRecipe(151, 1), 200, 2000000);
+        GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCsapling", 8L), CoreItems2.getRecipe(151, 1), 200, 8);
 
         GT_Values.RA.addCompressorRecipe(Blockstack(CoalBlock, 9, 0),  Blockstack(CoalBlock, 1, 1), 100, 20);
         GT_Values.RA.addCompressorRecipe(Blockstack(CoalBlock, 9, 1), Blockstack(CoalBlock, 1, 2), 100, 120);

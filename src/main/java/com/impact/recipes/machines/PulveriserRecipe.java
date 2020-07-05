@@ -88,9 +88,9 @@ public class PulveriserRecipe implements Runnable {
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("TConstruct", "materials", 1L, 2),   new ItemStack[]{CoreItems.getRecipe(32, 1)}, new int[]{10000}, 300, 2);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock", 1L, 0),   new ItemStack[]{CoreItems.getRecipe(33, 1)}, new int[]{10000}, 300, 2);
 
-        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaClog", 1L),   new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), CoreItems2.getRecipe(151, 1)}, new int[]{10000, 3300}, 600, 2000000);
-        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCleaves", 8L),   new ItemStack[]{CoreItems2.getRecipe(152, 1), GT_ModHandler.getModItem("GalaxySpace", "barnardaCdandelion3", 1L)}, new int[]{10000, 5000}, 200, 2000000);
-        GT_Values.RA.addPulveriserRecipe(CoreItems2.getRecipe(152, 1),   new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "barnardaCdirt", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L)}, new int[]{10000, 2000}, 100, 2000000);
+        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaClog", 1L),   new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), CoreItems2.getRecipe(151, 1)}, new int[]{10000, 3300}, 600, 8);
+        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "barnardaCleaves", 8L),   new ItemStack[]{CoreItems2.getRecipe(152, 1), GT_ModHandler.getModItem("GalaxySpace", "barnardaCdandelion3", 1L)}, new int[]{10000, 5000}, 200, 2);
+        GT_Values.RA.addPulveriserRecipe(CoreItems2.getRecipe(152, 1),   new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "barnardaCdirt", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L)}, new int[]{10000, 2000}, 100, 40);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1),   new ItemStack[]{CoreItems.getRecipe(38, 1)}, new int[]{10000}, 300, 2);
 
