@@ -106,6 +106,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
                 .addinfoBTab("Plans, Forest - 250 L/s")
                 .addinfoBTab("Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
                 .addSeparator()
+                .addController()
                 .addCasingInfo("Primitive Pump Deck and Wood Frame Box")
                 .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT", true);
         if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))

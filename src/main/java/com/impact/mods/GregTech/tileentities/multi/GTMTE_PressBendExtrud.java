@@ -231,16 +231,4 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
             GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
         }
     }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mMode", mMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        this.mMode = aNBT.getByte("mMode");
-        super.loadNBTData(aNBT);
-    }
 }

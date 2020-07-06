@@ -228,7 +228,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
      */
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity, true, 1);
+        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     /**
@@ -862,6 +862,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     }
 
     public byte mMode = -1;
+
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("mMode", mMode);

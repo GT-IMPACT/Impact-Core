@@ -12,6 +12,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
@@ -43,7 +44,7 @@ import static net.minecraft.util.EnumChatFormatting.*;
  * Edit by 4gname
  */
 
-public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
+public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
 
     private static final Block LSC_PART = lscLapotronicEnergyUnit;
     private static final Block CASING = CORE_API.sCaseCore2;
@@ -61,8 +62,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
     private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
     // Count the amount of capacitors of each tier in each slot (translate with meta - 1)
     private final int[] capacitors = new int[5];
-    private BigInteger capacity = BigInteger.ZERO;
-    private BigInteger stored = BigInteger.ZERO;
+    public BigInteger capacity = BigInteger.ZERO;
+    public BigInteger stored = BigInteger.ZERO;
     private BigInteger passiveDischargeAmount = BigInteger.ZERO;
     private BigInteger intputLastTick = BigInteger.ZERO;
     private BigInteger outputLastTick = BigInteger.ZERO;
@@ -549,5 +550,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean explodesOnComponentBreak(ItemStack stack) { return false; }
+
+
 
 }
