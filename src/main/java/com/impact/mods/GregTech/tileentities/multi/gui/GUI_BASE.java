@@ -83,7 +83,6 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
 
 
             if (((GT_Container_MultiParallelMachine) mContainer).mDisplayErrorCode == 0) {
-                fontRendererObj.drawString(EnumChatFormatting.GREEN + (mMode == null ? " Select " : mMode) + "mode", 6, 36, 16448255);
                 if (((GT_Container_MultiParallelMachine) mContainer).mActive == 0) {
                     fontRendererObj.drawString("Progress:" + EnumChatFormatting.RED + " not working", 10, 22, 16448255);
                 } else {

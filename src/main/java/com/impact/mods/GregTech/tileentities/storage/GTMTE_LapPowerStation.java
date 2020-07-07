@@ -64,9 +64,9 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
     private final int[] capacitors = new int[5];
     public BigInteger capacity = BigInteger.ZERO;
     public BigInteger stored = BigInteger.ZERO;
-    private BigInteger passiveDischargeAmount = BigInteger.ZERO;
-    private BigInteger intputLastTick = BigInteger.ZERO;
-    private BigInteger outputLastTick = BigInteger.ZERO;
+    public BigInteger passiveDischargeAmount = BigInteger.ZERO;
+    public BigInteger intputLastTick = BigInteger.ZERO;
+    public BigInteger outputLastTick = BigInteger.ZERO;
     private int repairStatusCache = 0;
 
     public GTMTE_LapPowerStation(int aID, String aName, String aNameRegional) {
