@@ -350,3 +350,6 @@ gtnop.ore.null.name=None
 gtnop.ore.vein.name=Vein
 gtnop.ore.asteroid.name=Asteriod
 gtnop.ore.custom.name=Custom
+
+#P2P GT5 Power
+item.ae2gt5p2p_part.name=P2P Tunnel - GregTech Energy

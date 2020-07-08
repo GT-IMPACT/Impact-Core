@@ -1,11 +1,14 @@
 package com.impact.loader;
 
+import appeng.api.AEApi;
+import com.google.common.base.Optional;
 import com.impact.impact;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.item.FakeCircuits;
 import com.impact.item.WoodBrickFormTool;
 //import com.impact.mods.BartWorks.BacteriaRegistry;
+import com.impact.mods.AE2.ItemP2PGT5;
 import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
@@ -21,6 +24,7 @@ import com.impact.recipes.machines.*;
 import com.impact.util.OreDictRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -41,6 +45,17 @@ public class MainLoader {
         new ItemRegistery();
         ItemRegistery.run();
         INFO("[Init] Item Registery - Loaded");
+
+        AEApi.instance().partHelper().registerNewLayer("com.impact.mods.AE2.LayerIEnergyConnected", "gregtech.api.interfaces.tileentity.IEnergyConnected");
+        ItemP2PGT5 part = new ItemP2PGT5();
+        GameRegistry.registerItem(part, "part");
+        AEApi.instance().partHelper().setItemBusRenderer(part);
+        Optional<ItemStack> p2pME = AEApi.instance().definitions().parts().p2PTunnelME().maybeStack(1);
+        if (p2pME.isPresent()) {
+            GameRegistry.addShapelessRecipe(new ItemStack(part), p2pME.get());
+            GameRegistry.addShapelessRecipe(p2pME.get(), new ItemStack(part));
+        }
+        INFO("[Init] AE2-GT p2p loader");
     }
 
     public static void preInit() {
