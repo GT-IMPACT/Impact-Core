@@ -757,6 +757,18 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 20), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Adamantium, 64)
         }, ItemList.Casing_Fusion3.get(60L), null, 200 * 20, 8000000);
 
+		//Fusion Casing MK4
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Field_Generator_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Pikyonium64B, 4), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 4, 1),
+                ItemList.Neutron_Reflector.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Quantium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 8), ItemList.Casing_Fusion3.get(8L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Phoenixite, 12), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.DraconiumAwakened, 16)
+        }, ItemList.Casing_Fusion4.get(8L), null, 50 * 20, 2000000);
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Field_Generator_UEV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Quantum, 6), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
+                ItemList.Neutron_Reflector.get(10L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackPlutonium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 8), ItemList.Casing_Fusion3.get(20L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.DraconiumAwakened, 32)
+        }, ItemList.Casing_Fusion4.get(20L), null, 100 * 20, 8000000);
+        
         //Steam Turbine
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Hull_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 2), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 2),
