@@ -544,6 +544,17 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("Forestry", "adventurerBag", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("Forestry", "builderBag", 1L, 0), true, false, true);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "sgChevronUpgrade", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L, 1), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "stargateBase", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "stargateController", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "ic2PowerUnit", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "sgIrisUpgrade", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "sgIrisBlade", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "ocInterface", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "ic2Capacitor", 1L, 0), true, false, true);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }

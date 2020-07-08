@@ -875,34 +875,13 @@ public class TecTechRecipe implements Runnable {
         //Stargate Stuff
         //if (Loader.isModLoaded("SGCraft")) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.CosmicNeutronium, 1L),
-                    192000, 512, 2000000, 32, new ItemStack[]{
+                    96000, 256, 2000000, 8, new ItemStack[]{
                             ItemList.Sensor_UV.get(16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Adamantium, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Osmiridium, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
-                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 16L)
-                    },
-                    new FluidStack[]{
-                            Materials.Neutronium.getMolten(36864L),
-                            Materials.Tritanium.getMolten(36864L),
-                            Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(36864L),
-                            Materials.Silver.getPlasma(36864L)
-                    },
-                    CoreItems2.getRecipe(147, 1), 72000, 2000000);
-
-            TT_recipeAdder.addResearchableAssemblylineRecipe(CoreItems2.getRecipe(147, 1),
-                    192000, 512, 2000000, 32, new ItemStack[]{
-                            ItemList.Electric_Piston_UV.get(16L),
-                            ItemList.Electric_Motor_UV.get(64L),
-                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Adamantium, 16L),
-                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
-                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8L),
-                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 16L),
-                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.GarnetRed, 16L),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 32L)
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L)
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(9216L),
@@ -910,10 +889,30 @@ public class TecTechRecipe implements Runnable {
                             Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(9216L),
                             Materials.Silver.getPlasma(9216L)
                     },
-                    CoreItems2.getRecipe(149, 1), 72000, 2000000);
+                    CoreItems2.getRecipe(147, 1), 1200, 2000000);
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(CoreItems2.getRecipe(147, 1),
+                    96000, 256, 2000000, 8, new ItemStack[]{
+                            ItemList.Electric_Piston_UV.get(4L),
+                            ItemList.Electric_Motor_UV.get(16L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Adamantium, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.GarnetRed, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 1L)
+                    },
+                    new FluidStack[]{
+                            Materials.Neutronium.getMolten(9216L),
+                            Materials.Tritanium.getMolten(9216L),
+                            Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(9216L),
+                            Materials.Silver.getPlasma(9216L)
+                    },
+                    CoreItems2.getRecipe(149, 1), 1200, 2000000);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
-                    192000, 512, 2000000, 32, new ItemStack[]{
+                    96000, 256, 2000000, 8, new ItemStack[]{
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Adamantium, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.CosmicNeutronium, 64L),
@@ -921,11 +920,31 @@ public class TecTechRecipe implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmiridium, 64L)
                     },
                     new FluidStack[]{
-                            Materials.Neutronium.getMolten(73728L),
-                            Materials.Tritanium.getMolten(73728L),
-                            Materials.Concrete.getMolten(73728L)
+                            Materials.Neutronium.getMolten(9216L),
+                            Materials.Tritanium.getMolten(9216L),
+                            Materials.Concrete.getMolten(9216L)
                     },
-                    CoreItems2.getRecipe(148, 1), 72000, 2000000);
+                    CoreItems2.getRecipe(148, 1), 1200, 2000000);
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("SGCraft", "sgIrisUpgrade", 1L),
+                192000, 512, 2000000, 16, new ItemStack[]{
+                        GT_ModHandler.getModItem("SGCraft", "stargateController", 1L),
+                        GT_ModHandler.getModItem("SGCraft", "stargateBase", 1L),
+                        ItemList.Field_Generator_UEV.get(4L),
+                        ItemList.Sensor_UEV.get(16L),
+                        ItemList.Emitter_UEV.get(16L),
+                        GT_ModHandler.getModItem("SGCraft", "stargateRing", 7L, 1),
+                        GT_ModHandler.getModItem("SGCraft", "stargateRing", 15L),
+                        GT_ModHandler.getModItem("SGCraft", "ic2PowerUnit", 3L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 1L)
+                },
+                new FluidStack[]{
+                        Materials.InfinityCatalyst.getMolten(2304L),
+                        Materials.PerroxPolymer.getMolten(9216L),
+                        Materials.Phoenixite.getMolten(9216L),
+                        Materials.Americium.getPlasma(9216L)
+                },
+                GT_ModHandler.getModItem("ExtraUtilities", "dark_portal", 1L), 6000, 32000000);
         //}
     }
 }

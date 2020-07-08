@@ -934,6 +934,19 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 2), GT_Utility.getIntegratedCircuit(1), null, GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 5), 100, 8);
 
         /* ==== END EXTRA UTILITIES ==== */
+        /** ==== START GREG'S SG CRAFT ==== */
+        // --- Stargate Controller
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 24L), ItemList.Sensor_UV.get(4L), GT_ModHandler.getModItem("EnderIO", "blockDarkSteelPressurePlate", 12L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Piko, 1), GT_ModHandler.getModItem("SGCraft", "sgControllerCrystal", 1L, 0)}, null, GT_ModHandler.getModItem("SGCraft", "stargateController", 1L, 0), 1000, 500000);
+        // --- Stargate Shevron Upgrade
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(147, 8), CoreItems2.getRecipe(149, 3), ItemList.Electric_Piston_UV.get(6L), ItemList.Field_Generator_UV.get(4L), ItemList.Sensor_UV.get(1L)}, null, GT_ModHandler.getModItem("SGCraft", "sgChevronUpgrade", 1L, 0), 1000, 500000);
+        // --- Stargate Iris Upgrade
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("SGCraft", "sgIrisBlade", 20L, 0), ItemList.Casing_Coil_Superconductor.get(4L), GT_ModHandler.getModItem("SGCraft", "sgIrisUpgrade", 1L, 0), 1000, 500000);
+        // --- Stargate Iris Blade
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Titanium, 32L), ItemList.Electric_Piston_UV.get(1L), ItemList.Casing_Coil_Superconductor.get(1L)}, null, GT_ModHandler.getModItem("SGCraft", "sgIrisBlade", 1L, 0), 1000, 500000);
+        // --- Ridiculously Large Capacitor
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(148, 12), ItemList.Field_Generator_UV.get(5L), ItemList.ZPM2.get(1L)}, null, GT_ModHandler.getModItem("SGCraft", "ic2Capacitor", 1L, 0), 1000, 500000);
+
+        /* ==== END GREG'S SG CRAFT ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};

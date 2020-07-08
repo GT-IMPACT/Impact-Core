@@ -760,12 +760,12 @@ public class Printer3DRecipe implements Runnable {
 		//Fusion Casing MK4
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Field_Generator_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Pikyonium64B, 4), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 4, 1),
-                ItemList.Neutron_Reflector.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Quantium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 8), ItemList.Casing_Fusion3.get(8L),
+                ItemList.neutroniumHeatCapacitor.get(8L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Quantium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 8), ItemList.Casing_Fusion3.get(8L),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Phoenixite, 12), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.DraconiumAwakened, 16)
         }, ItemList.Casing_Fusion4.get(8L), null, 50 * 20, 2000000);
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Field_Generator_UEV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Quantum, 6), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
-                ItemList.Neutron_Reflector.get(10L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackPlutonium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 8), ItemList.Casing_Fusion3.get(20L),
+                ItemList.neutroniumHeatCapacitor.get(10L), GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.BlackPlutonium, 8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 8), ItemList.Casing_Fusion3.get(20L),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.DraconiumAwakened, 32)
         }, ItemList.Casing_Fusion4.get(20L), null, 100 * 20, 8000000);
         
@@ -1009,7 +1009,39 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.VanadiumSteel, 4)
         }, GT_ModHandler.getModItem("ae2stuff", "Wireless", 1L, 0), null, 40 * 20, 480);
 
-        /* ================================= END GALACTICRAFT =================================*/
+        /* ================================= END AE2STUFF =================================*/
+        /** ================================= START GREG'S SG CRAFT =================================*/
+        //Stargate Base
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 6), GT_ModHandler.getModItem("SGCraft", "stargateRing", 4L, 0), GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L, 1), ItemList.Emitter_UV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Piko, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Quantum, 32)
+        }, GT_ModHandler.getModItem("SGCraft", "stargateBase", 1L, 0), null, 100 * 20, 500000);
+
+        //Stargate Ring Block
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 8), CoreItems2.getRecipe(147, 8), CoreItems2.getRecipe(148, 6), CoreItems2.getRecipe(149, 3),
+                ItemList.Field_Generator_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Quantum, 16)
+        }, GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L, 0), null, 50 * 20, 500000);
+
+        //Stargate Chevron Block
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 8), ItemList.Sensor_UV.get(4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 4), GT_ModHandler.getModItem("SGCraft", "sgChevronUpgrade", 1L),
+                GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Quantum, 16)
+        }, GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L, 1), null, 50 * 20, 500000);
+
+        //IC2 Stargate Power Unit
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 12), ItemList.Casing_Coil_Superconductor.get(10L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 4), GT_ModHandler.getModItem("SGCraft", "ic2Capacitor", 4L),
+                GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Quantum, 32)
+        }, GT_ModHandler.getModItem("SGCraft", "ic2PowerUnit", 1L, 0), null, 100 * 20, 500000);
+
+        //OC Stargate Interface
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 12), ItemList.Casing_Coil_Superconductor.get(10L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 4), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 102),
+                GT_ModHandler.getModItem("OpenComputers", "case3", 1L), GT_ModHandler.getModItem("SGCraft", "stargateRing", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Quantum, 32)
+        }, GT_ModHandler.getModItem("SGCraft", "ocInterface", 1L, 0), null, 100 * 20, 500000);
+
+        /* ================================= END GREG'S SG CRAFT =================================*/
 
     }
 }
