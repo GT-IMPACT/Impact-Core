@@ -144,6 +144,8 @@ public class EBFRecipe implements Runnable {
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BT6, 1L), 	GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.BT6, 1L), GT_Values.NI, 1700, 480, 3200);
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BT6, 1L), 	GT_Utility.getIntegratedCircuit(11), Materials.Nitrogen.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.BT6, 1L), GT_Values.NI, 1200, 480, 3200);
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Birmabright, 1L), GT_Utility.getIntegratedCircuit(11), Materials.Nitrogen.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Birmabright, 1L), GT_Values.NI, 930, 120, 1476);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 1L), GT_Utility.getIntegratedCircuit(12), Materials.PerroxGas.getGas(100L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.InfinityCatalyst, 1L), GT_Values.NI, 2000, 2000000, 12600);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1L), GT_Utility.getIntegratedCircuit(12), Materials.PerroxGas.getGas(500L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Infinity, 1L), GT_Values.NI, 2000, 2000000, 12600);
 
         /* ================================= end GT =================================*/
 

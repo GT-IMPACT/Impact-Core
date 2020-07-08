@@ -51,6 +51,8 @@ public class MixerRecipe implements Runnable {
 
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmiridium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1L), GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(2), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.getDust(Materials.NaquadahAlloy, 4L * OrePrefixes.dust.mMaterialAmount), (int) (400L * OrePrefixes.dust.mMaterialAmount / 3628800L), 8000);
 
+        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CosmicNeutronium, 64L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 48L), CoreItems.getRecipe(36, 32), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 16L), GT_Utility.getIntegratedCircuit(1), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Infinity, 1L), 1000, 2000000);
+
         /* ================================= end GT =================================*/
         /** ================================= start AE =================================*/
         GT_Values.RA.addMixerRecipe(CoreItems.getRecipe(38,1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L), GT_Values.NI, Materials.Water.getFluid(500L), GT_Values.NF, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 2L, 8), 20, 16);
