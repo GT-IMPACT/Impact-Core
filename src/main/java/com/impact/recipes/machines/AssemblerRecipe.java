@@ -211,7 +211,7 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MV.get(1L), ItemList.Electric_Motor_MV.get(2L), ItemList.Electric_Pump_MV.get(2L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 2), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 2), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 8)}, GT_Values.NF, ItemList.OilDrill1.get(1L), 20 * 20, 120);
 
         //Maintenance Hatch
-        GT_Values.RA.addAssemblerRecipe(ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(8), GT_Values.NF, ItemList.Hatch_Maintenance.get(1L), 40 * 20, 30);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(4), GT_Values.NF, ItemList.Hatch_Maintenance.get(1L), 40 * 20, 30);
 
         /* ================================= end GT MOD =================================*/
 
