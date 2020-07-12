@@ -1,34 +1,17 @@
 package com.impact.loader;
 
-import appeng.api.AEApi;
-import com.google.common.base.Optional;
 import com.impact.impact;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.item.FakeCircuits;
 import com.impact.item.WoodBrickFormTool;
-//import com.impact.mods.BartWorks.BacteriaRegistry;
-import com.impact.mods.AE2.ItemP2PGT5;
 import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
-import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
-import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
-import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
-import com.impact.mods.GregTech.GTregister.GT_WorldGenRegister;
-import com.impact.mods.GregTech.casings.GT_Loader_Casings;
 import com.impact.mods.modSolar.ASP;
 import com.impact.recipes.AfterGregTechPostLoadRecipes;
-import com.impact.recipes.HandRecipe;
-import com.impact.recipes.OpenComputersRecipe;
-import com.impact.recipes.debug.DEBUG_Recipe;
-import com.impact.recipes.machines.*;
 import com.impact.util.OreDictRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 
 import static codechicken.nei.api.API.hideItem;
@@ -102,14 +85,6 @@ public class MainLoader {
     }
 
     public static void onPreLoad() {
-//        if (Loader.isModLoaded("bartworks")) {
-//            new BacteriaRegistry();
-//            INFO("[onPreLoad] Bacteria Register - Loaded");
-//        }
-
-
-
-
     }
 
     public static void postLoad() {

@@ -1,14 +1,11 @@
 package com.impact;
 
-import appeng.api.AEApi;
-import com.google.common.base.Optional;
 import com.impact.System.Config;
 import com.impact.System.Refstrings;
 import com.impact.api.enums.Textures;
 import com.impact.loader.MainLoader;
 import com.impact.System.CommonProxy;
 import com.impact.loader.ModLoader;
-import com.impact.mods.AE2.ItemP2PGT5;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
