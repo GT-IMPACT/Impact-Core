@@ -45,17 +45,6 @@ public class MainLoader {
         new ItemRegistery();
         ItemRegistery.run();
         INFO("[Init] Item Registery - Loaded");
-
-        AEApi.instance().partHelper().registerNewLayer("com.impact.mods.AE2.LayerIEnergyConnected", "gregtech.api.interfaces.tileentity.IEnergyConnected");
-        ItemP2PGT5 part = new ItemP2PGT5();
-        GameRegistry.registerItem(part, "part");
-        AEApi.instance().partHelper().setItemBusRenderer(part);
-        Optional<ItemStack> p2pME = AEApi.instance().definitions().parts().p2PTunnelME().maybeStack(1);
-        if (p2pME.isPresent()) {
-            GameRegistry.addShapelessRecipe(new ItemStack(part), p2pME.get());
-            GameRegistry.addShapelessRecipe(p2pME.get(), new ItemStack(part));
-        }
-        INFO("[Init] AE2-GT p2p loader");
     }
 
     public static void preInit() {
