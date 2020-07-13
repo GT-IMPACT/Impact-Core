@@ -19,7 +19,7 @@ public class MixerRecipe implements Runnable {
 
 /** ================================= start CORE MOD =================================*/
         //HastelloyC276
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 32L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 8L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 7L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 1L), GT_Utility.getIntegratedCircuit(6), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HastelloyC276, 28L), 150 * 20, 1920);
+        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 32L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 8L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 7L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 1L), GT_Utility.getIntegratedCircuit(6), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HastelloyC276, 49L), 150 * 20, 1920);
         //Potin
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 6L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L), GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(3), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potin, 9L), 20 * 20, 8);
         //EglinSteel
