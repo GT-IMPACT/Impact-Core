@@ -89,7 +89,7 @@ public enum GT_ItemList implements IItemContainer {
     CuttingCasing, MixingCasing,
     //Page3 16-31
     NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
-    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase,
+    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, HyperGenCase1,
     //Page3 16-31
     Casing_Farm,
 

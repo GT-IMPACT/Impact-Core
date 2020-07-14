@@ -1,16 +1,17 @@
 package com.impact.System;
 
+import com.impact.block.QuantumStuffRender;
+import com.impact.block.blocks.Block_QuantumStuff;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
 	@Override
     public void registerRenderInfo() {
+        Block_QuantumStuff.renderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
     }
 
 	@Override

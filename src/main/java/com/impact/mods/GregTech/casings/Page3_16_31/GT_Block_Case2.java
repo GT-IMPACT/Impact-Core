@@ -33,6 +33,7 @@ public class GT_Block_Case2
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Primitive Pump Deck"); //407
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Lapotronic Super Capacitor Casing"); //408
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Wooden Casing"); //409
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Hyper Generator Side Casing"); //410
 
         GT_ItemList.NukeTurbineCasing       .set(BlockstackMeta(this, 0));
         GT_ItemList.ElectromagneticCasing   .set(BlockstackMeta(this, 1));
@@ -44,6 +45,7 @@ public class GT_Block_Case2
         GT_ItemList.PrimitiveWaterPumpCase  .set(BlockstackMeta(this, 7));
         GT_ItemList.LSCC                    .set(BlockstackMeta(this, 8));
         GT_ItemList.SawCase                 .set(BlockstackMeta(this, 9));
+        GT_ItemList.HyperGenCase1           .set(BlockstackMeta(this, 10));
 
     }
 
@@ -61,6 +63,7 @@ public class GT_Block_Case2
            case 7: return aSide <= 1 ? CASING_PUMP_TOP.getIcon() : CASING_PUMP.getIcon();
            case 8: return aSide <= 1 ? CASING_LSC_TOP.getIcon() : CASING_LSC.getIcon();
            case 9: return CASING_SAW.getIcon();
+           case 10: return aSide <= 1 ? CASING_HYPER_TOP.getIcon() : CASING_HYPER_SIDE.getIcon();
 
            default: return null;
         }

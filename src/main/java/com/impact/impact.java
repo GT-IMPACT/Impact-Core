@@ -1,10 +1,10 @@
 package com.impact;
 
+import com.impact.System.CommonProxy;
 import com.impact.System.Config;
 import com.impact.System.Refstrings;
 import com.impact.api.enums.Textures;
 import com.impact.loader.MainLoader;
-import com.impact.System.CommonProxy;
 import com.impact.loader.ModLoader;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
@@ -42,10 +42,10 @@ import static com.impact.System.impactLog.INFO;
         	"required-after:Forge@[10.13.2.1291,);")
 
 public class impact {
-	
-	@SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
+
+    @SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
     public static CommonProxy proxy;
-	
+
 	@Mod.Instance(MODID)
     public static impact instance;
     public static SendUtils SendUtils_instance = new SendUtils();

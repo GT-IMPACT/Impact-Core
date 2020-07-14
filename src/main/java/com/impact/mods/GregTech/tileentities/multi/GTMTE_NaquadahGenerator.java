@@ -5,6 +5,7 @@ import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.impact.block.blocks.Block_QuantumStuff;
 import com.impact.mods.GregTech.tileentities.multi.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore1;
+import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 import static gregtech.api.enums.GT_Values.V;
 
@@ -49,8 +51,8 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
                     })
                     .addElement('B', ofBlock(sBlockCasings4, 7))
                     .addElement('C', ofChain(
-                            ofHatchAdder(GTMTE_NaquadahGenerator::addClassicToMachineList, 56, sBlockCasings4, 8),
-                            onElementPass(t -> t.casingCount++, ofBlock(sBlockCasings4, 8))
+                            ofHatchAdder(GTMTE_NaquadahGenerator::addClassicToMachineList, 410, sCaseCore2, 10),
+                            onElementPass(t -> t.casingCount++, ofBlock(sCaseCore2, 10))
                     ))
                     .build();
 
@@ -181,12 +183,21 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
 
                 this.mOutputFluids = recipe.mFluidOutputs;
                 this.updateSlots();
-                quantumStuff(true);
+
                 return true;
             }
         }
-        quantumStuff(false);
         return false;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if(aBaseMetaTileEntity.isActive()) {
+            quantumStuff(true);
+        } else {
+            quantumStuff(false);
+        }
     }
 
     private void quantumStuff(boolean shouldExist) {
@@ -198,10 +209,10 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
             Block block = base.getWorld().getBlock(xDir, yDir, zDir);
             if (shouldExist) {
                 if (block != null) {
-                    base.getWorld().setBlock(xDir, yDir+6, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
+                    base.getWorld().setBlock(xDir, yDir+6, zDir, Block_QuantumStuff.INSTANCE, 0, 2);
                 }
             } else {
-                    base.getWorld().setBlock(xDir, yDir+6, zDir, sBlockCasings4, 6, 2);
+                    base.getWorld().setBlock(xDir, yDir+6, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.impact.loader;
 
+import com.impact.block.blocks.Block_QuantumStuff;
 import com.impact.impact;
+import com.impact.impact.*;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.item.FakeCircuits;
@@ -82,6 +84,11 @@ public class MainLoader {
 
         ASP.load();
         INFO("[load] Solar Panel 2 - Loaded");
+
+        Block_QuantumStuff.run();
+        INFO("[load] Quantum Stuff registered");
+
+        impact.proxy.registerRenderInfo();
     }
 
     public static void onPreLoad() {
