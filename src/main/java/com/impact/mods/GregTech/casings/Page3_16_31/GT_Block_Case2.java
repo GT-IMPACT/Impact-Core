@@ -65,7 +65,7 @@ public class GT_Block_Case2
            case 7: return aSide <= 1 ? CASING_PUMP_TOP.getIcon() : CASING_PUMP.getIcon();
            case 8: return aSide <= 1 ? CASING_LSC_TOP.getIcon() : CASING_LSC.getIcon();
            case 9: return CASING_SAW.getIcon();
-           case 10: return aSide <= 1 ? CASING_HYPER_TOP.getIcon() : CASING_HYPER_SIDE1.getIcon();
+           case 10: return CASING_HYPER_SIDE1.getIcon();
 
            default: return null;
         }

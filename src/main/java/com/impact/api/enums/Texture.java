@@ -29,16 +29,16 @@ public class Texture {
                 CONNECTED_FUSHULLS = new IIconContainer[]{
                 CASING_HYPER_SIDE1,
                 CASING_HYPER_SIDE2,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP,
-                CASING_HYPER_TOP
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE1
         },
                 Test = new IIconContainer[]{
 
