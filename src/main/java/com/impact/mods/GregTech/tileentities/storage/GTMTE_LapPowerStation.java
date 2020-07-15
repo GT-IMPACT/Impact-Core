@@ -12,7 +12,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
@@ -34,8 +33,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.impact.api.enums.Textures.Icons.LPS;
-import static com.impact.api.enums.Textures.Icons.LPS_ACTIVE;
+import static com.impact.api.enums.Texture.Icons.LPS;
+import static com.impact.api.enums.Texture.Icons.LPS_ACTIVE;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.lscLapotronicEnergyUnit;
 import static net.minecraft.util.EnumChatFormatting.*;

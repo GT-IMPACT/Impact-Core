@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
-public class Textures {
+public class Texture {
     public enum Icons implements IIconContainer, Runnable {
 
         /*OVERLAYS*/
@@ -19,13 +19,30 @@ public class Textures {
         CASING_CENTRIFUGE, CASING_ELECTROLYZER, CASING_WIRE, CASING_SUPPLY, CASING_UTILITY, CASING_BREWMENTER, CASING_ARC, CASING_CUTTER,
 
         CASING_PRINTER, CASING_PRINTER3X3, CASING_PRINTER4X4, CASING_MACERATOR, CASING_EXTRADIFICATOR, CASING_ELECTROMAGNETIC,
-        CASING_PUMP_TOP, CASING_PUMP, CASING_LSC_TOP, CASING_LSC, CASING_SAW, CASING_HYPER_SIDE, CASING_HYPER_TOP,
+        CASING_PUMP_TOP, CASING_PUMP, CASING_LSC_TOP, CASING_LSC, CASING_SAW,
 
+        CASING_HYPER_TOP, CASING_HYPER_SIDE1, CASING_HYPER_SIDE2,
 
         VOID;
 
         public static final IIconContainer[]
-                EXAMPLE = new IIconContainer[]{}, EXAMPLE2 = new IIconContainer[]{};
+                CONNECTED_FUSHULLS = new IIconContainer[]{
+                CASING_HYPER_SIDE1,
+                CASING_HYPER_SIDE2,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP,
+                CASING_HYPER_TOP
+        },
+                Test = new IIconContainer[]{
+
+        };
 
 
         protected IIcon mIcon;

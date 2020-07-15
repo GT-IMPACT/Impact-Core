@@ -2,6 +2,7 @@ package com.impact.mods.GregTech.GTregister;
 
 
 import com.impact.mods.GregTech.tileentities.multi.*;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_3DPrinter;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 
 import static com.impact.mods.GregTech.GTregister.GT_ItemList.*;

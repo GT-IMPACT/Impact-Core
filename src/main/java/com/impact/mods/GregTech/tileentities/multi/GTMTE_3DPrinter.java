@@ -22,7 +22,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 

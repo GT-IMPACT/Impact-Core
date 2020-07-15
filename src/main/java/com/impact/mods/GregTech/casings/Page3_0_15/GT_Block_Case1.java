@@ -10,7 +10,7 @@ import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 import net.minecraft.util.IIcon;
 
-import static com.impact.api.enums.Textures.Icons.*;
+import static com.impact.api.enums.Texture.Icons.*;
 import static com.impact.util.Utilits.BlockstackMeta;
 
 

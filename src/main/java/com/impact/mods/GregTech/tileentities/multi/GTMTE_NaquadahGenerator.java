@@ -46,9 +46,10 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
             StructureDefinition.<GTMTE_NaquadahGenerator>builder()
                     .addShape("main", new String[][]{
                             {"               ", "      CCC      ", "    CC   CC    ", "   C       C   ", "  C         C  ", "  C         C  ", " C           C ", " C           C ", " C           C ", "  C         C  ", "  C         C  ", "   C       C   ", "    CC   CC    ", "      C~C      ", "               "},
-                            {"      CCC      ", "    CCBBBCC    ", "   CBBCCCBBC   ", "  CBCC   CCBC  ", " CBC       CBC ", " CBC       CBC ", "CBC         CBC", "CBC         CBC", "CBC         CBC", " CBC       CBC ", " CBC       CBC ", "  CBCC   CCBC  ", "   CBBCCCBBC   ", "    CCBBBCC    ", "      CCC      "},
+                            {"      CCC      ", "    CCBBBCC    ", "   CBBAAABBC   ", "  CBAA   AABC  ", " CBA       ABC ", " CBA       ABC ", "CBA         ABC", "CBA         ABC", "CBA         ABC", " CBA       ABC ", " CBA       ABC ", "  CBAA   AABC  ", "   CBBAAABBC   ", "    CCBBBCC    ", "      CCC      "},
                             {"               ", "      CCC      ", "    CC   CC    ", "   C       C   ", "  C         C  ", "  C         C  ", " C           C ", " C           C ", " C           C ", "  C         C  ", "  C         C  ", "   C       C   ", "    CC   CC    ", "      CCC      ", "               "}
                     })
+                    .addElement('A', ofBlock(sBlockCasings4, 6))
                     .addElement('B', ofBlock(sBlockCasings4, 7))
                     .addElement('C', ofChain(
                             ofHatchAdder(GTMTE_NaquadahGenerator::addClassicToMachineList, 410, sCaseCore2, 10),
@@ -183,21 +184,17 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
 
                 this.mOutputFluids = recipe.mFluidOutputs;
                 this.updateSlots();
-
+                quantumStuff(true);
                 return true;
             }
         }
+        quantumStuff(false);
         return false;
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if(aBaseMetaTileEntity.isActive()) {
-            quantumStuff(true);
-        } else {
-            quantumStuff(false);
-        }
     }
 
     private void quantumStuff(boolean shouldExist) {

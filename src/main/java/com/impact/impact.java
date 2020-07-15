@@ -3,7 +3,7 @@ package com.impact;
 import com.impact.System.CommonProxy;
 import com.impact.System.Config;
 import com.impact.System.Refstrings;
-import com.impact.api.enums.Textures;
+import com.impact.api.enums.Texture;
 import com.impact.loader.MainLoader;
 import com.impact.loader.ModLoader;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
@@ -24,9 +24,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import com.impact.System.LoginHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.item.ItemStack;
 
 import java.io.File;
 
@@ -54,7 +52,7 @@ public class impact {
 
 
     public impact(){
-        Textures.Icons.VOID.name();
+        Texture.Icons.VOID.name();
     }
 
     @Mod.EventHandler

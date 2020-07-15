@@ -24,7 +24,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
-import static com.impact.api.enums.Textures.Icons.*;
+import static com.impact.api.enums.Texture.Icons.*;
 import static com.impact.loader.ItemRegistery.SawMillBlock;
 import static gregtech.api.enums.GT_Values.V;
 
