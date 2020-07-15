@@ -25,7 +25,6 @@ import org.lwjgl.input.Keyboard;
 public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     public static String mModed;
-    public byte mMode = -1;
     /**
      * === SET BLOCKS STRUCTURE ===
      */
