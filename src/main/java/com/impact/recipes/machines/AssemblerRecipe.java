@@ -279,6 +279,16 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(130, 1), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Naquadria, 8)}, null, CoreItems2.getRecipe(131, 1), 1800, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(131, 1), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 8)}, Materials.ElectrumFlux.getMolten(1152), CoreItems2.getRecipe(132, 1), 2000, 2000000);
 
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_8V.get(1L), 100, 6);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_8V.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_LV.get(1L), 120, 12);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_LV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_MV.get(1L), 140, 24);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_MV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_HV.get(1L), 160, 48);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_HV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_EV.get(1L), 180, 96);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_EV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_IV.get(1L), 200, 192);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_IV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_LuV.get(1L), 220, 384);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_LuV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_ZPM.get(1L), 240, 768);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_ZPM.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_UV.get(1L), 260, 1536);
+
         /*====END SOLAR PARTS====*/
         /**====START SPACE ADDITION====*/
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Steel, 1), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualBronze", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualAluminium", 1L, 0)}, Materials.StainlessSteel.getMolten(64), CoreItems2.getRecipe(97, 1), 200, 256);
