@@ -60,11 +60,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     @SuppressWarnings("rawtypes")
     public ArrayList TTMultiAmp = new ArrayList<>();
 
-    private final Set<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new HashSet<>();
-    private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
-    private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
-    private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
-
     @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         return TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex);
@@ -786,7 +781,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ",
                 "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
                 "Pollution: " + RED + getPollutionPerTick(null) + RESET,
-                "Parallel Point: " + YELLOW + getParallel(),
+                getParallel()==-1? "" : "Parallel Point: " + YELLOW + getParallel(),
         };
     }
 

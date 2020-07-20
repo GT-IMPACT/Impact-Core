@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.tileentities.multi;
+package com.impact.mods.GregTech.tileentities.multi.generators;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
