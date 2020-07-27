@@ -958,6 +958,13 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(148, 12), ItemList.Field_Generator_UV.get(5L), ItemList.ZPM2.get(1L)}, null, GT_ModHandler.getModItem("SGCraft", "ic2Capacitor", 1L, 0), 1000, 500000);
 
         /* ==== END GREG'S SG CRAFT ==== */
+        /** ==== START WIRELESS TERMINAL ==== */
+        // --- Magnet
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.NeodymiumMagnetic, 2L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 28), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 24), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HastelloyN, 8), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Inconel792, 24)}, null, GT_ModHandler.getModItem("ae2wct", "magnetCard", 1L, 0), 1000, 1920);
+        // --- Booster
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 64L, 42), ItemList.Field_Generator_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Quantium, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 64)}, null, GT_ModHandler.getModItem("ae2wct", "infinityBoosterCard", 1L, 0), 4000, 122880);
+
+        /* ==== END WIRELESS TERMINAL ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};

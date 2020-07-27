@@ -964,6 +964,12 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.arclamp", 1L, 0), tBitMask, new Object[]{"PRP", "CEL", "PRP", 'P', OrePrefixes.plate.get(Materials.BlackSteel), 'R', OrePrefixes.ring.get(Materials.BlackSteel), 'C', OrePrefixes.circuit.get(Materials.Good), 'L', OrePrefixes.lens.get(Materials.Glass), 'E', ItemList.Emitter_MV});
 
         /* ==== END GALACTICRAFT ==== */
+        /** ==== START WIRELESS TERMINAL ==== */
+        // --- Terminal
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2wct", "wirelessCraftingTerminal", 1L, 0), tBitMask, new Object[]{"SAE", "PTP", "PBP", 'P', OrePrefixes.plate.get(Materials.HastelloyN), 'E', ItemList.Emitter_IV, 'B', ItemList.BatteryHull_IV_Full, 'S', ItemList.Sensor_IV, 'T', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 360), 'A', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 41)});
+
+        /* ==== END WIRELESS TERMINAL ==== */
+
 
     }
 }

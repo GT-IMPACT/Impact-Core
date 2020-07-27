@@ -558,6 +558,9 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
 
         removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftCore", "tile.arclamp", 1L, 0), true, false, true);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("ae2wct", "wirelessCraftingTerminal", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ae2wct", "magnetCard", 1L, 0), true, false, true);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }
