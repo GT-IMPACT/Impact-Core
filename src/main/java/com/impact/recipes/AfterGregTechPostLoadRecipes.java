@@ -85,6 +85,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemSpatialStorageCell.128Cubed", 1L), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemViewCell", 1L), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 52), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 1), true, false, false);
