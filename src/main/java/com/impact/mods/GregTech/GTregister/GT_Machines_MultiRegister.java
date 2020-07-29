@@ -45,8 +45,10 @@ public class GT_Machines_MultiRegister {
 			AdvPyrolyse				.set(new GTMTE_AdvancedPyrolyse(ID++, "multimachine.advpyrolyse", 		"Advanced Pyrolyse Oven").getStackForm(1L));
 			//Naquadah_multi			.set(new GTMTE_NaquadahGenerator(ID++, "multimachine.naqgen", 			"Naquadah Genrator").getStackForm(1L));
 
-			Machine_CokeOven.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
-			Machine_Multi_Farm.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));
+			Machine_CokeOven		.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
+			Machine_Multi_Farm		.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));
+			Multi_Tank				.set(new GTMTE_MultiTank(13104, "multimachine.multifluidtank", "Multi-Tank").getStackForm(1L));
+
 
 			//GT_ItemList.PowerStation			.set(new GTMTE_PowerStation(ID++, "multimachine.powerstation",  		"Power Station").getStackForm(1L));
 			//GT_ItemList.PowerReactor			.set(new GTMTE_REACTOR(ID++, "multimachine.powerreactor",  				"Power Reactor").getStackForm(1L));

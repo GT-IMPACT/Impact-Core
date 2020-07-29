@@ -69,10 +69,12 @@ public enum GT_ItemList implements IItemContainer {
     Diode_4A_ULV, Diode_4A_LV, Diode_4A_MV, Diode_4A_HV, Diode_4A_EV, Diode_4A_IV, Diode_4A_LuV, Diode_4A_ZPM, Diode_4A_UV,
     Diode_16A_ULV, Diode_16A_LV, Diode_16A_MV, Diode_16A_HV, Diode_16A_EV, Diode_16A_IV, Diode_16A_LuV, Diode_16A_ZPM, Diode_16A_UV,
 
+    TankOutput_HV, TankOutput_EV, TankOutput_IV,
+
     Nuclear_Resistant_OH,
 
     //MULTI
-    Machine_CokeOven, Machine_Multi_Farm,
+    Machine_CokeOven, Machine_Multi_Farm, Multi_Tank,
 
     Machine_PBE, Machine_LaserEngraver, Machine_Assembler, Machine_Centrifuge, Machine_Electrolyzer, Machine_Wire, Machine_Supply,
     Machine_Utility, Machine_Brewmenter, Machine_ArcFurnace, Machine_Cutting, Machine_Extradifier, Machine_Macerator, Machine_Mixer,

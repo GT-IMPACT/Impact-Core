@@ -53,8 +53,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
     private static final int CASING_TEXTURE_ID = CASING_META + 16 + 128*3;
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
-    private static final BigDecimal PASSIVE_DISCHARGE_FACTOR_PER_TICK =
-            BigDecimal.valueOf(0.01D / 1728000.0D); // The magic number is ticks per 24 hours
+    private static final BigDecimal PASSIVE_DISCHARGE_FACTOR_PER_TICK = BigDecimal.ZERO;
+            //BigDecimal.valueOf(0.01D / 1728000.0D); // The magic number is ticks per 24 hours
 
     private final Set<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new HashSet<>();
     private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
