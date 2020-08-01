@@ -974,7 +974,23 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2wct", "wirelessCraftingTerminal", 1L, 0), tBitMask, new Object[]{"SAE", "PTP", "PBP", 'P', OrePrefixes.plate.get(Materials.HastelloyN), 'E', ItemList.Emitter_IV, 'B', ItemList.BatteryHull_IV_Full, 'S', ItemList.Sensor_IV, 'T', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 360), 'A', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 41)});
 
         /* ==== END WIRELESS TERMINAL ==== */
+        /** ==== START WR-CBE ==== */
+        // --- Stone Bowl
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "stoneBowl", 1L, 0), tBitMask, new Object[]{"P P", "PhP", "PPP", 'P', "stone"});
+        // --- Remote
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "remote", 1L, 0), tBitMask, new Object[]{"dTf", "CMC", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.TungstenSteel), 'S', OrePrefixes.screw.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 'M', ItemList.Cover_Screen});
+        // --- Wireless Sniffer
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "sniffer", 1L, 0), tBitMask, new Object[]{"DTD", "PSP", "RRR", 'P', OrePrefixes.itemCasing.get(Materials.TungstenSteel), 'S', OrePrefixes.stick.get(Materials.TungstenSteel), 'D', GT_ModHandler.getModItem("WR-CBE|Core", "recieverDish", 1L, 0), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
+        // --- Private Sniffer
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "psniffer", 1L, 0), tBitMask, new Object[]{"DTD", "PSP", "RRR", 'P', OrePrefixes.itemCasing.get(Materials.TungstenSteel), 'S', OrePrefixes.stick.get(Materials.TungstenSteel), 'D', GT_ModHandler.getModItem("WR-CBE|Core", "blazeRecieverDish", 1L, 0), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
+        // --- Wireless Transmitter
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 0), tBitMask, new Object[]{"dTS", "WWI", "RRR", 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'I', OrePrefixes.stick.get(Materials.Birmabright), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
+        // --- Wireless Receiver
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 1), tBitMask, new Object[]{"dTS", "WWI", "RRR", 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'I', OrePrefixes.stick.get(Materials.Birmabright), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "recieverDish", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
+        // --- Wireless Jammer
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 2), tBitMask, new Object[]{"dTS", "WWI", "RRR", 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'I', OrePrefixes.stick.get(Materials.Birmabright), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
 
+        /* ==== END WR-CBE ==== */
 
     }
 }
