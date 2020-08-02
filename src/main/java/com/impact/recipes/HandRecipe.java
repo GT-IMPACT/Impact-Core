@@ -531,6 +531,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "noteblock", 1L), tBitMask, new Object[]{"PPP", "BGB", "PWP", 'P', "plankWood", 'B', GT_ModHandler.getModItem("minecraft", "iron_bars", 1L), 'G', OrePrefixes.gear.get(Materials.Wood), 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy)});
         // --- Jukebox
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "jukebox", 1L), tBitMask, new Object[]{"LBL", "NRN", "LGL", 'L', "plankWood", 'N', GT_ModHandler.getModItem("minecraft", "noteblock", 1L), 'G', OrePrefixes.gear.get(Materials.Iron), 'B', OrePrefixes.bolt.get(Materials.Diamond), 'R', "record"});
+        // --- Jack O' Lantern
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("minecraft", "lit_pumpkin", 1L), tBitMask, new Object[]{GT_ModHandler.getModItem("minecraft", "pumpkin", 1L), GT_ModHandler.getModItem("minecraft", "torch", 1L), ToolDictNames.craftingToolKnife});
         // --- Trapdoor Oak
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "trapdoor", 1L), tBitMask, new Object[]{"PSP", "SSS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "trapdoor", 2L), tBitMask, new Object[]{"PSP", "SRS", "PSP", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.screw.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L)});
@@ -564,10 +566,14 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence_gate", 1L), tBitMask, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Wood)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence_gate", 2L), tBitMask, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Iron)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fence_gate", 4L), tBitMask, new Object[]{"CdC", "PSP", "PSP", 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L), 'S', OrePrefixes.stick.get(Materials.Wood), 'C', OrePrefixes.screw.get(Materials.Steel)});
+        // --- Redstone Lamp
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "redstone_lamp", 1L), tBitMask, new Object[]{"GGG", "GBG", "GRG", 'R', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'B', GT_ModHandler.getModItem("minecraft", "glowstone", 1L), 'G', GT_ModHandler.getModItem("minecraft", "glass_pane", 1L)});
         // --- Tripwire Hook
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "tripwire_hook", 1L), tBitMask, new Object[]{"RSR", "ISI", " I ", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.ring.get(Materials.Iron), 'I', GT_ModHandler.getModItem("minecraft", "string", 1L)});
         // --- Anvil
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "anvil", 1L), tBitMask, new Object[]{"BBB", "SBS", "PBP", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.block.get(Materials.Iron)});
+        // --- Daylight Sensor
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "daylight_detector", 1L), tBitMask, new Object[]{"GGG", "QQQ", "SRS", 'R', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'Q', OrePrefixes.plate.get(Materials.NetherQuartz), 'S', "slabWood", 'G', GT_ModHandler.getModItem("minecraft", "glass_pane", 1L)});
         // --- Oak Door
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), tBitMask, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), tBitMask, new Object[]{"SPP", "RPP", "dPP", 'S', OrePrefixes.screw.get(Materials.Copper), 'R', OrePrefixes.ring.get(Materials.Copper), 'P', GT_ModHandler.getModItem("minecraft", "planks", 1L)});
@@ -588,6 +594,12 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "saddle", 1L), tBitMask, new Object[]{"LBL", "LCL", "RSR", 'C', "blockWool", 'L', GT_ModHandler.getModItem("minecraft", "leather", 1L), 'B', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L), 'S', GT_ModHandler.getModItem("minecraft", "string", 1L), 'R', OrePrefixes.ring.get(Materials.Iron)});
         // --- Item Frame
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "item_frame", 1L), tBitMask, new Object[]{"IRI", "SLS", "SSS", 'S', OrePrefixes.stick.get(Materials.Wood), 'R', OrePrefixes.ring.get(Materials.Iron), 'I', GT_ModHandler.getModItem("minecraft", "string", 1L), 'L', GT_ModHandler.getModItem("minecraft", "leather", 1L)});
+        // --- Comparator
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "comparator", 1L), tBitMask, new Object[]{"STS", "TPT", "LdL", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.NetherQuartz), 'T', GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), 'L', GT_ModHandler.getModItem("minecraft", "stone_slab", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "comparator", 1L), tBitMask, new Object[]{"STS", "TPT", "LdL", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.Quartzite), 'T', GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), 'L', GT_ModHandler.getModItem("minecraft", "stone_slab", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "comparator", 1L), tBitMask, new Object[]{"STS", "TPT", "LdL", 'S', OrePrefixes.screw.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.CertusQuartz), 'T', GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), 'L', GT_ModHandler.getModItem("minecraft", "stone_slab", 1L)});
+        // --- Redstone Repeater
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "repeater", 1L), tBitMask, new Object[]{"S S", "TdT", "LIL", 'S', OrePrefixes.screw.get(Materials.Iron), 'I', OrePrefixes.stick.get(Materials.RedAlloy), 'T', GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), 'L', GT_ModHandler.getModItem("minecraft", "stone_slab", 1L)});
         // --- Bed
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "bed", 1L), tBitMask, new Object[]{"WWW", "FPF", 'P', OrePrefixes.plank.get(Materials.Wood), 'F', GT_ModHandler.getModItem("minecraft", "fence", 1L), 'W', "blockWool"});
         // --- Fishing Rod
