@@ -37,5 +37,14 @@ public class CuttingRecipe implements Runnable {
         GT_Values.RA.addCutterRecipe(CoreItems2.getRecipe(158, 1), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 28), null, 400, 16);
         GT_Values.RA.addCutterRecipe(CoreItems2.getRecipe(157, 1), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 27), null, 400, 16);
 
+        /** ==== START ZTONES ==== */
+        // --- Flat Lamp light
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 1L, 16), GT_ModHandler.getModItem("Ztones", "lampf", 4L, 0), GT_Values.NI,  200, 4);
+        // --- Flat Lamp white
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 1L, 24), GT_ModHandler.getModItem("Ztones", "lampt", 4L, 0), GT_Values.NI,  200, 4);
+        // --- Flat Lamp black
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 1L, 23), GT_ModHandler.getModItem("Ztones", "lampb", 4L, 0), GT_Values.NI,  200, 4);
+
+        /* ==== END ZTONES ==== */
     }
 }

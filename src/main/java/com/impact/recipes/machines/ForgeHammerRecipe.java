@@ -16,5 +16,10 @@ public class ForgeHammerRecipe implements Runnable{
 
         GT_Values.RA.addForgeHammerRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock", 1L, 0), CoreItems.getRecipe(33, 1), 40, 16);
 
+        // --- Mine Charcoal
+        GT_Values.RA.addForgeHammerRecipe(GT_ModHandler.getModItem("minecraft", "coal", 1L, 1), GT_ModHandler.getModItem("Ztones", "minicharcoal", 9L, 0), 50, 8);
+        // --- Mine Charcoal
+        GT_Values.RA.addForgeHammerRecipe(GT_ModHandler.getModItem("minecraft", "coal", 1L, 0), GT_ModHandler.getModItem("Ztones", "minicoal", 9L, 0), 50, 8);
+
     }
 }
