@@ -965,6 +965,25 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 64L, 42), ItemList.Field_Generator_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Quantium, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 64)}, null, GT_ModHandler.getModItem("ae2wct", "infinityBoosterCard", 1L, 0), 4000, 122880);
 
         /* ==== END WIRELESS TERMINAL ==== */
+        /** ==== START WR-CBE ==== */
+        // --- Wireless Transceiver
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 1L), GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 600, 120);
+        // --- Blaze Transceiver
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Electrum, 1L), GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), 600, 120);
+        // --- Receiver Dish
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "stoneBowl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "recieverDish", 1L, 0), 600, 256);
+        // --- Blaze Receiver Dish
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "stoneBowl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "blazeRecieverDish", 1L, 0), 600, 256);
+        // --- Triangulatior
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "compass", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), Materials.Redstone.getMolten(144), GT_ModHandler.getModItem("WR-CBE|Addons", "triangulator", 1L, 0), 600, 120);
+        // --- Wireless Map
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "triangulator", 1L, 0), GT_ModHandler.getModItem("minecraft", "paper", 8L, 0), Materials.Redstone.getMolten(144), GT_ModHandler.getModItem("WR-CBE|Addons", "map", 1L, 0), 300, 64);
+        // --- Tracker
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 3L), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), Materials.Redstone.getMolten(144), GT_ModHandler.getModItem("WR-CBE|Addons", "tracker", 1L, 0), 600, 120);
+        // --- REP
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 2L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 2L, 0), Materials.Obsidian.getMolten(1296), GT_ModHandler.getModItem("WR-CBE|Addons", "rep", 1L, 0), 600, 120);
+
+        /* ==== END WR-CBE ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};

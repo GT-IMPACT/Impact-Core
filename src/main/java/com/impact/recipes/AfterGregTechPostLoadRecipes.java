@@ -562,6 +562,24 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2wct", "wirelessCraftingTerminal", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2wct", "magnetCard", 1L, 0), true, false, true);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Core", "obsidianStick", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Core", "stoneBowl", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Core", "recieverDish", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Core", "blazeRecieverDish", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 1), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 2), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Addons", "triangulator", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Addons", "remote", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Addons", "sniffer", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Addons", "map", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Addons", "tracker", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Addons", "rep", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("WR-CBE|Addons", "psniffer", 1L, 0), true, false, true);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }
 }
