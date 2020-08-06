@@ -115,40 +115,9 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
         ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        tInputList.add(mInventory[1]);
         ItemStack[] inputs = tInputList.toArray(new ItemStack[tInputList.size()]);
 
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
-                    }
-                }
-            }
-        }
+        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
         FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 
         if (inputs.length > 0 || fluids.length > 0) {

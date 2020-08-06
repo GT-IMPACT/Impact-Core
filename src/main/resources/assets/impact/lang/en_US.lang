@@ -126,6 +126,15 @@ item.impact_item.37.name=Wet Concrete Dust
 item.impact_item.38.name=Charged Quartz Dust
 item.impact_item.39.name=Sawdust
 
+item.impact_item.40.name=Yttrium Oxide
+item.impact_item.41.name=[WIP] Empty
+item.impact_item.42.name=YSZ Ceramic Dust
+item.impact_item.43.name=GDC Ceramic Dust
+item.impact_item.44.name=LSCF Ceramic Dust
+item.impact_item.45.name=YSZ Ceramic
+item.impact_item.46.name=GDC Ceramic
+item.impact_item.47.name=LSCF Ceramic
+
 #MetaItems.01
 item.impact_item2.0.name=Schematics Rocket Tier 1 Chip
 item.impact_item2.1.name=Schematics Rocket Tier 2 Chip
@@ -286,6 +295,9 @@ item.impact_item2.155.name=Microchip Board (Tier 2)
 item.impact_item2.156.name=Microchip Board (Tier 3)
 item.impact_item2.157.name=Arithmetic Logic Unit Board
 item.impact_item2.158.name=Control Unit Board
+item.impact_item2.159.name=YSZ Ceramic Plate
+item.impact_item2.160.name=GDC Ceramic Plate
+item.impact_item2.161.name=LSCF Ceramic Plate
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 
@@ -305,6 +317,21 @@ tile.impact_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
 tile.impact_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
 tile.impact_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
 tile.impact_sawmill_block.name=Saw Mill Conveyor
+
+tile.impact_fluidtankblock_block.0.name=Tank Storage Block (Tier 1)
+tile.impact_fluidtankblock_block.1.name=Tank Storage Block (Tier 2)
+tile.impact_fluidtankblock_block.2.name=Tank Storage Block (Tier 3)
+tile.impact_fluidtankblock_block.3.name=Tank Storage Block (Tier 4)
+tile.impact_fluidtankblock_block.4.name=Tank Storage Block (Tier 5)
+tile.impact_fluidtankblock_block.5.name=Tank Storage Block (Tier 6)
+tile.impact_fluidtankblock_block.6.name=Tank Storage Block (Tier 7)
+tile.impact_fluidtankblock_block.7.name=Tank Storage Block (Tier 8)
+
+tile.impact_ceramic_block.0.name=YSZ Ceramic Electrolyte Unit
+tile.impact_ceramic_block.1.name=GDC Ceramic Electrolyte Unit
+tile.impact_ceramic_block.2.name=LSCF Ceramic Electrolyte Unit
+
+#tile.blockMachine3.0.name=Advanced Crop Harvester
 
 #Gui names
 gtnop.gui.veinStat.name=Vein Stats

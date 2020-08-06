@@ -48,6 +48,16 @@ public enum Core_List_Items {
     ConcreteDust(37, 1),
     ChargedQuartzDust(38, 1),
     SawDust(39, 1),
+    DioxideYttrium(40, 1),
+
+                            EMPTY(41,1), // пустой
+
+    YSZdust(42, 1),
+    GDCdust(43, 1),
+    LSCFdust(44, 1),
+    YSZCeramic(45, 1),
+    GDCCeramic(46, 1),
+    LSFCCeramic(47, 1),
 
     //MetaItems1
     SchematicsTier1(0, 1),
@@ -209,6 +219,9 @@ public enum Core_List_Items {
     MicrochipBoard3(156, 1),
     ALUBoard(157, 1),
     CUBoard(158, 1),
+    YSZCeramicPlate(159, 1),
+    GDCCeramicPlate(160, 1),
+    LSFCCeramicPlate(161, 1),
 
     WoodenBrickForm1(0, 2),
 
@@ -271,6 +284,9 @@ public enum Core_List_Items {
         FakeUVCircuit.setOreDictName("circuitSuperconductor");
         FakeUHVCircuit.setOreDictName("circuitInfinite");
         FakeUEVCircuit.setOreDictName("circuitBio");
+        YSZCeramicPlate.setOreDictName("plateYSZ");
+        GDCCeramicPlate.setOreDictName("plateGDC");
+        LSFCCeramicPlate.setOreDictName("plateLSCF");
     }
 
     private final int metaID;

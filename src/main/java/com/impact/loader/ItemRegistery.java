@@ -42,6 +42,8 @@ public class ItemRegistery {
     public static Block IGlassBlock;
     public static Block CoalBlock;
     public static Block UtilBlock;
+    public static Block FluidTankBlock;
+    public static Block CeramicBlock;
 
     public static void run() {
         //Blocks
@@ -107,5 +109,11 @@ public class ItemRegistery {
         SawMillBlock = Block_Sawmill.registerBlock("SawMill", new String[]{
                 Refstrings.MODID + ":sawmill/conveyor",
         });
+    }
+    public static void registerBlocks_FluidTank(){
+        FluidTankBlock = Block_FluidTank.registerBlock();
+    }
+    public static void registerBlocks_BlockCeramic(){
+        CeramicBlock = Block_Ceramic.registerBlock();
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Core_Items extends Item {
 
-    public static int x = 39;  //количество предметов
+    public static int x = 47;  //количество предметов
 
     public static Core_Items Core_Items = new Core_Items();
     public static Core_Items Core_Items1 = new Core_Items();
@@ -60,6 +60,14 @@ public class Core_Items extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+        int meta = stack.getItemDamage();
+        switch (meta) {
+            case 40:
+                list.add("Y\u2082O\u2083");
+                break;
+            case 41:
+                break;
+        }
     }
 
     @Override
