@@ -34,7 +34,7 @@ public class GT_Machines_MultiRegister {
 			Machine_Macerator		.set(new GTMTE_Macerator(ID++, "multimachine.macerator",  				"Multi Maceration Stack").getStackForm(1L));
 			Machine_Mixer			.set(new GTMTE_Mixer(ID++, "multimachine.mixer",  						"Multi Mixing Machine").getStackForm(1L));
 			Machine_Siftarator		.set(new GTMTE_Siftarator(ID++, "multimachine.siftarator",  			"Multi Siftaration Unit").getStackForm(1L));
-			Machine_DDDPrinter		.set(new GTMTE_3DPrinter(ID++, "multimachine.dddprinter",  				"3D Printer").getStackForm(1L));
+			Machine_DDDPrinter		.set(new GTMTE_DDDPrinter(ID++, "multimachine.dddprinter",  				"3D Printer").getStackForm(1L));
 			Machine_FreezSolidifier	.set(new GTMTE_FreezerSolidifier(ID++, "multimachine.freezsolidifier", 	"Freezer Solidifier").getStackForm(1L));
 			Machine_BlastSmelter	.set(new GTMTE_BlastSmelter(ID++, "multimachine.blastsmelter", 			"Blast Smelter").getStackForm(1L));
 			WaterDrill				.set(new GTMTE_DrillerWater(ID++, "multimachine.waterdrill", 			"Electric Water Drilling Rig").getStackForm(1L));

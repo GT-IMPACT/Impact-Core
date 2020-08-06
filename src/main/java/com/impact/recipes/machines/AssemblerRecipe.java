@@ -38,23 +38,23 @@ public class AssemblerRecipe implements Runnable {
 
 /** ================================= start IMPACT MOD =================================*/
         //Casings
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.GumMetal, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titaniolum, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.PBECasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Zamak, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Duraluminium, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.EngraverCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel690, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Nitinol, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.AssemblerCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TiBetaC, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.CentrifugeCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Zamak, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ElectrolyzerCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Inconel690, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.WireFactoryCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel250, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Inconel792, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.SupplyProductionCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HastelloyC276, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.UtilityMachineCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Talonite, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Grisium, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.BrewmenterCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Inconel690, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ElectromagneticCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol60, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Kovar, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ArcCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TiBetaC, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Talonite, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ExtradificationCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MaragingSteel250, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.MixingCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Mangalloy, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.MacerationCasing.get(1), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel300, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Stellite, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.CuttingCasing.get(1), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.GumMetal, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titaniolum, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.PBECasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Zamak, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Duraluminium, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.EngraverCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel690, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Nitinol, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.AssemblerCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TiBetaC, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.CentrifugeCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Zamak, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ElectrolyzerCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Inconel690, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.WireFactoryCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel250, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Inconel792, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.SupplyProductionCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HastelloyC276, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.UtilityMachineCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Talonite, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Grisium, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.BrewmenterCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Inconel690, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ElectromagneticCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol60, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Kovar, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ArcCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TiBetaC, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Talonite, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.ExtradificationCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MaragingSteel250, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.MixingCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Mangalloy, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.MacerationCasing.get(2), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel300, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Stellite, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288L), GT_ItemList.CuttingCasing.get(2), 200, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Machine_HV_Printer.get(1L),/*GT_ModHandler.getModItem("OpenComputers", "printer", 1L, 0), */ItemList.Cover_Crafting.get(1L), ItemList.Conveyor_Module_HV.get(2L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.BlackSteel, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.StainlessSteel, 16)}, Materials.SolderingAlloy.getMolten(288L), GT_ItemList.Machine_DDDPrinter.get(1), 200, 480);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumSteel, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8)}, null, GT_ItemList.DDDPrinterCasing.get(1), 100, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumSteel, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8)}, null, GT_ItemList.DDDPrinterCasing.get(2), 100, 120);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 340), ItemList.Cover_ItemDetector.get(4L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 4), ItemList.Robot_Arm_HV.get(4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 8), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.BlackSteel, 16), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel, 32)}, null, GT_ItemList.DDDPrinterCasing3x3.get(9), 800, 120);
 
         //MultiAmp Hatches
@@ -965,6 +965,105 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 64L, 42), ItemList.Field_Generator_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CinobiteA243, 16), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Quantium, 24), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 64)}, null, GT_ModHandler.getModItem("ae2wct", "infinityBoosterCard", 1L, 0), 4000, 122880);
 
         /* ==== END WIRELESS TERMINAL ==== */
+        /** ==== START WR-CBE ==== */
+        // --- Wireless Transceiver
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 1L), GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 600, 120);
+        // --- Blaze Transceiver
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Electrum, 1L), GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), 600, 120);
+        // --- Receiver Dish
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "stoneBowl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "recieverDish", 1L, 0), 600, 256);
+        // --- Blaze Receiver Dish
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "stoneBowl", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "blazeRecieverDish", 1L, 0), 600, 256);
+        // --- Triangulatior
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "compass", 1L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), Materials.Redstone.getMolten(144), GT_ModHandler.getModItem("WR-CBE|Addons", "triangulator", 1L, 0), 600, 120);
+        // --- Wireless Map
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "triangulator", 1L, 0), GT_ModHandler.getModItem("minecraft", "paper", 8L, 0), Materials.Redstone.getMolten(144), GT_ModHandler.getModItem("WR-CBE|Addons", "map", 1L, 0), 300, 64);
+        // --- Tracker
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 3L), GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), Materials.Redstone.getMolten(144), GT_ModHandler.getModItem("WR-CBE|Addons", "tracker", 1L, 0), 600, 120);
+        // --- REP
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 2L, 0), GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 2L, 0), Materials.Obsidian.getMolten(1296), GT_ModHandler.getModItem("WR-CBE|Addons", "rep", 1L, 0), 600, 120);
+
+        /* ==== END WR-CBE ==== */
+        /** ==== START ZTONES ==== */
+        // --- Ztones Tile
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone_slab", 8L, 0), GT_ModHandler.getModItem("minecraft", "stone", 1L, 0), GT_ModHandler.getModItem("Ztones", "stoneTile", 8L, 0), 160, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone_slab", 8L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1L), GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), 140, 6);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone_slab", 8L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), GT_ModHandler.getModItem("Ztones", "stoneTile", 32L, 0), 120, 8);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone_slab", 8L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1L), GT_ModHandler.getModItem("Ztones", "stoneTile", 64L, 0), 100, 12);
+        // --- Garden Soil
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "sand", 4L, 0), GT_ModHandler.getModItem("minecraft", "dirt", 4L, 0), Materials.SeedOil.getFluid(5), GT_ModHandler.getModItem("Ztones", "cleanDirt", 8L, 0), 160, 4);
+        // --- Booster
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "stone_pressure_plate", 1L, 0), GT_Utility.getIntegratedCircuit(1), Materials.Blaze.getMolten(8), GT_ModHandler.getModItem("Ztones", "booster", 1L, 0), 100, 30);
+        // --- Aurora Block
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "glass", 4L, 0), GT_ModHandler.getModItem("minecraft", "dye", 1L, 32767), GT_ModHandler.getModItem("Ztones", "auroraBlock", 8L, 0), 160, 4);
+        // --- Korp
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Obsidian, 1L), GT_ModHandler.getModItem("Ztones", "tile.korpBlock", 16L, 0), 100, 8);
+        // --- Zech
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 4), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zechBlock", 16L, 0), 100, 8);
+        // --- Tank
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1L), GT_ModHandler.getModItem("Ztones", "tile.tankBlock", 16L, 0), 100, 8);
+        // --- Sync
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), GT_ModHandler.getModItem("Ztones", "tile.syncBlock", 16L, 0), 100, 8);
+        // --- Zkul
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 10), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zkulBlock", 16L, 0), 100, 8);
+        // --- Mint
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Rubber, 1L), GT_ModHandler.getModItem("Ztones", "tile.mintBlock", 16L, 0), 100, 8);
+        // --- Lair
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_ModHandler.getModItem("minecraft", "netherrack", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.lairBlock", 16L, 0), 100, 8);
+        // --- Sols
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1L), GT_ModHandler.getModItem("Ztones", "tile.solsBlock", 16L, 0), 100, 8);
+        // --- Reds
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), GT_ModHandler.getModItem("Ztones", "tile.redsBlock", 16L, 0), 100, 8);
+        // --- Ztyl
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 0), 100, 8);
+        // --- Iszm
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 8), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.iszmBlock", 16L, 0), 100, 8);
+        // --- Roen
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_ModHandler.getModItem("minecraft", "sandstone", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.roenBlock", 16L, 0), 100, 8);
+        // --- Vect
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Carbon, 1L), GT_ModHandler.getModItem("Ztones", "tile.vectBlock", 16L, 0), 100, 8);
+        // --- Lave
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_ModHandler.getModItem("minecraft", "ice", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.laveBlock", 16L, 0), 100, 8);
+        // --- Zest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 11), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zestBlock", 16L, 0), 100, 8);
+        // --- Zyth
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 15), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zythBlock", 16L, 0), 100, 8);
+        // --- Bitt
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_ModHandler.getModItem("minecraft", "wool", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.bittBlock", 16L, 0), 100, 8);
+        // --- Tinted Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "glass", 16L, 0), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.glaxx", 16L, 0), 100, 8);
+        // --- Agon
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.agonBlock", 16L, 0), 100, 8);
+        // --- Zone
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 3), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zoneBlock", 16L, 0), 100, 8);
+        // --- Zoea
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 14), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zoeaBlock", 16L, 0), 100, 8);
+        // --- Jelt
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Gold, 1L), GT_ModHandler.getModItem("Ztones", "tile.jeltBlock", 16L, 0), 100, 8);
+        // --- Zeta
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 13), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zetaBlock", 16L, 0), 100, 8);
+        // --- Reed
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1L), GT_ModHandler.getModItem("Ztones", "tile.reedBlock", 16L, 0), 100, 8);
+        // --- Cray
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "hardened_clay", 16L, 0), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.crayBlock", 16L, 0), 100, 8);
+        // --- Fort
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 9), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.fortBlock", 16L, 0), 100, 8);
+        // --- Vena
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Cobalt, 1L), GT_ModHandler.getModItem("Ztones", "tile.venaBlock", 16L, 0), 100, 8);
+        // --- Kryp
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_ModHandler.getModItem("chisel", "concrete", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.krypBlock", 16L, 0), 100, 8);
+        // --- Zion
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 7), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zionBlock", 16L, 0), 100, 8);
+        // --- Zome
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 6), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zomeBlock", 16L, 0), 100, 8);
+        // --- Zane
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 12), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zaneBlock", 16L, 0), 100, 8);
+        // --- Azur
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L), GT_ModHandler.getModItem("Ztones", "tile.azurBlock", 16L, 0), 100, 8);
+        // --- Zorg
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("Ztones", "tile.ztylBlock", 16L, 5), GT_ModHandler.getModItem("Ztones", "auroraBlock", 1L, 0), GT_ModHandler.getModItem("Ztones", "tile.zorgBlock", 16L, 0), 100, 8);
+
+        /* ==== END ZTONES ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
