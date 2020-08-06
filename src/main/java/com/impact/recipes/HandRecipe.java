@@ -55,9 +55,181 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     final Core_Items CoreItems = Core_Items.getInstance(); //пыльки
     final Core_Items2 CoreItems2 = Core_Items2.getInstance(); //компоненты
 
-    @Override
-    public void run() {
+    public void run1() {
+        final Object[] mk1_recipe = {
+                "CCC", "PHP", "FBL",
+                'C', OrePrefixes.circuit.get(Materials.Data),
+                'P', ItemList.Electric_Pump_HV.get(1L),
+                'H', ItemList.Hull_HV.get(1L),
+                'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Titanium, 1),
+                'B', GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1),
+                'L', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1)};
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.SOFC_Low.get(1), mk1_recipe);
 
+        final Object[] mk2_recipe = {
+                "CCC", "PHP", "FBL",
+                'C', OrePrefixes.circuit.get(Materials.Elite),
+                'P', ItemList.Electric_Pump_EV.get(1L),
+                'H', ItemList.Hull_EV.get(1L),
+                'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1),
+                'B', GregTech_API.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1),
+                'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1)};
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.SOFC_Medium.get(1), mk2_recipe);
+
+        final Object[] mk3_recipe = {
+                "CCC", "PHP", "FBL",
+                'C', OrePrefixes.circuit.get(Materials.Master),
+                'P', ItemList.Electric_Pump_IV.get(1L),
+                'H', ItemList.Hull_IV.get(1L),
+                'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1),
+                'B', GregTech_API.getStackofAmountFromOreDict("wireGt04SuperconductorIV", 1),
+                'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1)};
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.SOFC_Huge.get(1), mk3_recipe);
+
+        final Object[] tfft_recipe = {
+                "HFH", "PVP", "CFC",
+                'H', OrePrefixes.pipeMedium.get(Materials.Titanium),
+                'F', ItemList.Field_Generator_MV.get(1L),
+                'P', ItemList.Electric_Pump_HV.get(1L),
+                'V', ItemList.Hull_HV.get(1L),
+                'C', OrePrefixes.circuit.get(Materials.Data)};
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.Multi_Tank.get(1), tfft_recipe);
+        //SingleTank
+        final Object[] singletank_recipe = {
+                "HFH", "PVP", "CFC",
+                'H', OrePrefixes.pipeMedium.get(Materials.StainlessSteel),
+                'F', ItemList.Field_Generator_LV.get(1L),
+                'P', ItemList.Electric_Pump_MV.get(1L),
+                'V', ItemList.Hull_MV.get(1L),
+                'C', OrePrefixes.circuit.get(Materials.Data)};
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.Single_Tank.get(1), singletank_recipe);
+
+        final ItemStack[] yszUnit = {
+                GT_Utility.getIntegratedCircuit(6),
+                GregTech_API.getStackofAmountFromOreDict("plateYSZ", 6),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
+                ItemList.Electric_Motor_EV.get(1L)};
+        GT_Values.RA.addAssemblerRecipe(
+                yszUnit,
+                Materials.Hydrogen.getGas(4000),
+                Blockstack(CeramicBlock, 1, 0),
+                20*60, 480);
+
+        //GDC Unit
+        final ItemStack[] gdcUnit = {
+                GT_Utility.getIntegratedCircuit(6),
+                GregTech_API.getStackofAmountFromOreDict("plateGDC", 6),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium,1),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium,1),
+                ItemList.Electric_Motor_IV.get(1L)};
+        GT_Values.RA.addAssemblerRecipe(
+                gdcUnit,
+                Materials.Hydrogen.getGas(8000),
+                Blockstack(CeramicBlock, 1, 1),
+                20*60, 1920);
+        //LSCF Unit
+        final ItemStack[] lscfUnit = {
+                GT_Utility.getIntegratedCircuit(6),
+                GregTech_API.getStackofAmountFromOreDict("plateLSCF", 6),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1),
+                ItemList.Electric_Motor_LuV.get(1L)};
+        GT_Values.RA.addAssemblerRecipe(
+                lscfUnit, Materials.Hydrogen.getGas(16000),
+                Blockstack(CeramicBlock, 1, 2),
+                20*60, 7680);
+
+        //Field Tier 1
+        final ItemStack[] tfftstoragefield1 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Electric_Pump_MV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield1, FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 36),
+                Blockstack(FluidTankBlock, 1, 0),
+                200, 480);
+        //Field Tier 2
+        final ItemStack[] tfftstoragefield2 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Field_Generator_LV.get(1L),
+                ItemList.Electric_Pump_HV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield2, FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
+                Blockstack(FluidTankBlock, 1, 1),
+                200, 1920);
+        //Field Tier 3
+        final ItemStack[] tfftstoragefield3 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Field_Generator_MV.get(1L),
+                ItemList.Electric_Pump_EV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield3, FluidRegistry.getFluidStack("molten.epoxid", 144),
+                Blockstack(FluidTankBlock, 1, 2),
+                200, 7680);
+        //Field Tier 4
+        final ItemStack[] tfftstoragefield4 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Field_Generator_HV.get(1L),
+                ItemList.Electric_Pump_IV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield4, FluidRegistry.getFluidStack("molten.epoxid", 144),
+                Blockstack(FluidTankBlock, 1, 3),
+                200, 30720);
+        //Field Tier 5
+        final ItemStack[] tfftstoragefield5 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Field_Generator_EV.get(1L),
+                ItemList.Electric_Pump_LuV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield5,  FluidRegistry.getFluidStack("molten.epoxid", 144),
+                Blockstack(FluidTankBlock, 1, 4),
+                200, 122880);
+
+        //Field Tier 6
+        final ItemStack[] tfftstoragefield6 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Field_Generator_IV.get(1L),
+                ItemList.Electric_Pump_ZPM.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield6, FluidRegistry.getFluidStack("molten.epoxid", 144),
+                Blockstack(FluidTankBlock, 1, 5),
+                200, 491520);
+        //Field Tier 7
+        final ItemStack[] tfftstoragefield7 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Field_Generator_LuV.get(1L),
+                ItemList.Electric_Pump_UV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield7, FluidRegistry.getFluidStack("molten.epoxid", 144),
+                Blockstack(FluidTankBlock, 1, 6),
+                200, 1966080);
+        //Field Tier 8
+        final ItemStack[] tfftstoragefield8 = {
+                GT_Utility.getIntegratedCircuit(6),
+                ItemList.Field_Generator_ZPM.get(1L),
+                ItemList.Electric_Pump_UHV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4)};
+        GT_Values.RA.addAssemblerRecipe(
+                tfftstoragefield8, FluidRegistry.getFluidStack("molten.epoxid", 144),
+                Blockstack(FluidTankBlock, 1, 7),
+                200, 7864320);
+
+        final Object[] tank_hatch = {
+                "PRP", "UFU", "PRP",
+                'P', GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Titanium, 1),
+                'R', ItemList.Hatch_Output_EV.get(1L),
+                'U', ItemList.Hatch_Input_EV.get(1L),
+                'F', ItemList.Electric_Pump_HV.get(1L)};
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.Tank_Hatch.get(1), tank_hatch);
+    }
+    public void run2() {
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVConveyorModule.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "MWM", "PPP", 'P', GT_ModHandler.getModItem("minecraft", "leather", 1L, 0), 'M', GT_ItemList.ULVMotor, 'W', OrePrefixes.cableGt01.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVConveyorModule.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "MWM", "PPP", 'P', OrePrefixes.plate.get(Materials.Rubber), 'M', GT_ItemList.ULVMotor, 'W', OrePrefixes.cableGt01.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVPump.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SXO", "dPw", "OMW", 'M', GT_ItemList.ULVMotor, 'O', OrePrefixes.ring.get(Materials.Paper), 'X', OrePrefixes.rotor.get(Materials.Lead), 'S', OrePrefixes.screw.get(Materials.Lead), 'W', OrePrefixes.cableGt01.get(Materials.Lead), 'P', OrePrefixes.pipeMedium.get(Materials.Copper)});
@@ -75,7 +247,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.addCraftingRecipe(GT_ItemList.Machine_HV_ComponentAssembler.get(1L), bitsd, new Object[]{"PCP", "RHR", "WCW", 'P', ItemList.Electric_Piston_MV, 'R', ItemList.Robot_Arm_MV, 'H', ItemList.Hull_HV, 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt02.get(Materials.Gold)});
             GT_ModHandler.addCraftingRecipe(GT_ItemList.Machine_EV_ComponentAssembler.get(1L), bitsd, new Object[]{"PCP", "RHR", "WCW", 'P', ItemList.Electric_Piston_HV, 'R', ItemList.Robot_Arm_HV, 'H', ItemList.Hull_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'W', OrePrefixes.cableGt02.get(Materials.Aluminium)});
             GT_ModHandler.addCraftingRecipe(GT_ItemList.Machine_IV_ComponentAssembler.get(1L), bitsd, new Object[]{"PCP", "RHR", "WCW", 'P', ItemList.Electric_Piston_EV, 'R', ItemList.Robot_Arm_EV, 'H', ItemList.Hull_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt04.get(Materials.TungstenSteel)});
-            } else {
+        } else {
             //===Motors===\\
             GT_ModHandler.addCraftingRecipe(ItemList.Electric_Motor_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.IronMagnetic), 'R', OrePrefixes.stick.get(Materials.Iron), 'W', OrePrefixes.wireGt01.get(Materials.Copper), 'C', OrePrefixes.cableGt01.get(Materials.Tin)});
             GT_ModHandler.addCraftingRecipe(ItemList.Electric_Motor_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R', OrePrefixes.stick.get(Materials.Steel), 'W', OrePrefixes.wireGt01.get(Materials.Copper), 'C', OrePrefixes.cableGt01.get(Materials.Tin)});
@@ -356,180 +528,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Diode_16A_LuV.get(1L), 0, new Object[]{"PSP", "WCW", 'P', OrePrefixes.plate.get(Materials.HastelloyN), 'W', OrePrefixes.cableGt16.get(Materials.YttriumBariumCuprate), 'S', OrePrefixes.spring.get(Materials.YttriumBariumCuprate), 'C', ItemList.Casing_LuV});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Diode_16A_ZPM.get(1L), 0, new Object[]{"PSP", "WCW", 'P', OrePrefixes.plate.get(Materials.Lafium), 'W', OrePrefixes.cableGt16.get(Materials.Naquadah), 'S', OrePrefixes.spring.get(Materials.Naquadah), 'C', ItemList.Casing_ZPM});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Diode_16A_UV.get(1L), 0, new Object[]{"PSP", "WCW", 'P', OrePrefixes.plate.get(Materials.CinobiteA243), 'W', OrePrefixes.cableGt16.get(Materials.ElectrumFlux), 'S', OrePrefixes.spring.get(Materials.ElectrumFlux), 'C', ItemList.Casing_UV});
-
-        final Object[] mk1_recipe = {
-                "CCC", "PHP", "FBL",
-                'C', OrePrefixes.circuit.get(Materials.Data),
-                'P', ItemList.Electric_Pump_HV.get(1L),
-                'H', ItemList.Hull_HV.get(1L),
-                'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Titanium, 1),
-                'B', GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1),
-                'L', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1)};
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.SOFC_Low.get(1), mk1_recipe);
-
-        final Object[] mk2_recipe = {
-                "CCC", "PHP", "FBL",
-                'C', OrePrefixes.circuit.get(Materials.Elite),
-                'P', ItemList.Electric_Pump_EV.get(1L),
-                'H', ItemList.Hull_EV.get(1L),
-                'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1),
-                'B', GregTech_API.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1),
-                'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1)};
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.SOFC_Medium.get(1), mk2_recipe);
-
-        final Object[] mk3_recipe = {
-                "CCC", "PHP", "FBL",
-                'C', OrePrefixes.circuit.get(Materials.Master),
-                'P', ItemList.Electric_Pump_IV.get(1L),
-                'H', ItemList.Hull_IV.get(1L),
-                'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1),
-                'B', GregTech_API.getStackofAmountFromOreDict("wireGt04SuperconductorIV", 1),
-                'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1)};
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.SOFC_Huge.get(1), mk3_recipe);
-
-        final Object[] tfft_recipe = {
-                "HFH", "PVP", "CFC",
-                'H', OrePrefixes.pipeMedium.get(Materials.Titanium),
-                'F', ItemList.Field_Generator_MV.get(1L),
-                'P', ItemList.Electric_Pump_HV.get(1L),
-                'V', ItemList.Hull_HV.get(1L),
-                'C', OrePrefixes.circuit.get(Materials.Data)};
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.Multi_Tank.get(1), tfft_recipe);
-        //SingleTank
-        final Object[] singletank_recipe = {
-                "HFH", "PVP", "CFC",
-                'H', OrePrefixes.pipeMedium.get(Materials.StainlessSteel),
-                'F', ItemList.Field_Generator_LV.get(1L),
-                'P', ItemList.Electric_Pump_MV.get(1L),
-                'V', ItemList.Hull_MV.get(1L),
-                'C', OrePrefixes.circuit.get(Materials.Data)};
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.Single_Tank.get(1), singletank_recipe);
-
-        final ItemStack[] yszUnit = {
-                GT_Utility.getIntegratedCircuit(6),
-                GregTech_API.getStackofAmountFromOreDict("plateYSZ", 6),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
-                ItemList.Electric_Motor_EV.get(1L)};
-        GT_Values.RA.addAssemblerRecipe(
-                yszUnit,
-                Materials.Hydrogen.getGas(4000),
-                Blockstack(CeramicBlock, 1, 0),
-                20*60, 480);
-
-        //GDC Unit
-        final ItemStack[] gdcUnit = {
-                GT_Utility.getIntegratedCircuit(6),
-                GregTech_API.getStackofAmountFromOreDict("plateGDC", 6),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium,1),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium,1),
-                ItemList.Electric_Motor_IV.get(1L)};
-        GT_Values.RA.addAssemblerRecipe(
-                gdcUnit,
-                Materials.Hydrogen.getGas(8000),
-                Blockstack(CeramicBlock, 1, 1),
-                20*60, 1920);
-        //LSCF Unit
-        final ItemStack[] lscfUnit = {
-                GT_Utility.getIntegratedCircuit(6),
-                GregTech_API.getStackofAmountFromOreDict("plateLSCF", 6),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1),
-                ItemList.Electric_Motor_LuV.get(1L)};
-        GT_Values.RA.addAssemblerRecipe(
-                lscfUnit, Materials.Hydrogen.getGas(16000),
-                Blockstack(CeramicBlock, 1, 2),
-                20*60, 7680);
-
-        //Field Tier 1
-        final ItemStack[] tfftstoragefield1 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Electric_Pump_MV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield1, FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 36),
-                Blockstack(FluidTankBlock, 1, 0),
-                200, 480);
-        //Field Tier 2
-        final ItemStack[] tfftstoragefield2 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Field_Generator_LV.get(1L),
-                ItemList.Electric_Pump_HV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield2, FluidRegistry.getFluidStack("molten.polytetrafluoroethylene", 144),
-                Blockstack(FluidTankBlock, 1, 1),
-                200, 1920);
-        //Field Tier 3
-        final ItemStack[] tfftstoragefield3 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Field_Generator_MV.get(1L),
-                ItemList.Electric_Pump_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield3, FluidRegistry.getFluidStack("molten.epoxid", 144),
-                Blockstack(FluidTankBlock, 1, 2),
-                200, 7680);
-        //Field Tier 4
-        final ItemStack[] tfftstoragefield4 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Field_Generator_HV.get(1L),
-                ItemList.Electric_Pump_IV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield4, FluidRegistry.getFluidStack("molten.epoxid", 144),
-                Blockstack(FluidTankBlock, 1, 3),
-                200, 30720);
-        //Field Tier 5
-        final ItemStack[] tfftstoragefield5 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Field_Generator_EV.get(1L),
-                ItemList.Electric_Pump_LuV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield5,  FluidRegistry.getFluidStack("molten.epoxid", 144),
-                Blockstack(FluidTankBlock, 1, 4),
-                200, 122880);
-
-        //Field Tier 6
-        final ItemStack[] tfftstoragefield6 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Field_Generator_IV.get(1L),
-                ItemList.Electric_Pump_ZPM.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield6, FluidRegistry.getFluidStack("molten.epoxid", 144),
-                Blockstack(FluidTankBlock, 1, 5),
-                200, 491520);
-        //Field Tier 7
-        final ItemStack[] tfftstoragefield7 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Field_Generator_LuV.get(1L),
-                ItemList.Electric_Pump_UV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield7, FluidRegistry.getFluidStack("molten.epoxid", 144),
-                Blockstack(FluidTankBlock, 1, 6),
-                200, 1966080);
-        //Field Tier 8
-        final ItemStack[] tfftstoragefield8 = {
-                GT_Utility.getIntegratedCircuit(6),
-                ItemList.Field_Generator_ZPM.get(1L),
-                ItemList.Electric_Pump_UHV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4)};
-        GT_Values.RA.addAssemblerRecipe(
-                tfftstoragefield8, FluidRegistry.getFluidStack("molten.epoxid", 144),
-                Blockstack(FluidTankBlock, 1, 7),
-                200, 7864320);
-
-        final Object[] tank_hatch = {
-                "PRP", "UFU", "PRP",
-                'P', GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Titanium, 1),
-                'R', ItemList.Hatch_Output_EV.get(1L),
-                'U', ItemList.Hatch_Input_EV.get(1L),
-                'F', ItemList.Electric_Pump_HV.get(1L)};
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.Tank_Hatch.get(1), tank_hatch);
-
 
         /** ==== START CHEST ==== */
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 0), tBitMask, new Object[]{"SPS", "PCP", "dPh", 'S', OrePrefixes.screw.get(Materials.WroughtIron), 'P', OrePrefixes.plateDouble.get(Materials.WroughtIron), 'C', GT_ModHandler.getModItem("minecraft", "chest", 1L, 0)});
@@ -1214,6 +1212,12 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 0), tBitMask, new Object[]{" h ", "BPB", "PFP", 'B', OrePrefixes.bolt.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.Gold), 'F', OrePrefixes.frameGt.get(Materials.Iron)});
 
         /* ==== END CHICKENCHUNKS ==== */
+    }
 
+
+    @Override
+    public void run() {
+        run1();
+        run2();
     }
 }
