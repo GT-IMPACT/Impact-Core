@@ -1,9 +1,13 @@
 package com.impact.recipes.machines;
 
+import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
+import net.minecraft.item.ItemStack;
+
+import static com.impact.util.Utilits.Itemstack;
 
 
 public class CuttingRecipe implements Runnable {
@@ -37,5 +41,8 @@ public class CuttingRecipe implements Runnable {
         GT_Values.RA.addCutterRecipe(CoreItems2.getRecipe(158, 1), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 28), null, 400, 16);
         GT_Values.RA.addCutterRecipe(CoreItems2.getRecipe(157, 1), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 27), null, 400, 16);
 
+        GT_Values.RA.addCutterRecipe(Itemstack(Core_Items.getInstance(), 1, 45), Itemstack(Core_Items2.getInstance(), 4, 159),null, 20*40, 480, true);
+        GT_Values.RA.addCutterRecipe(Itemstack(Core_Items.getInstance(), 1, 46), Itemstack(Core_Items2.getInstance(), 4, 160),null, 20*40, 1920, true);
+        GT_Values.RA.addCutterRecipe(Itemstack(Core_Items.getInstance(), 1, 47), Itemstack(Core_Items2.getInstance(), 4, 161),null, 20*40, 7680, true);
     }
 }

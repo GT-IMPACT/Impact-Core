@@ -59,6 +59,7 @@ public class MainLoader {
         ItemRegistery.registerBlock_Coal();
         ItemRegistery.registerBlock_UtilBlock();
         ItemRegistery.registerBlocks_FluidTank();
+        ItemRegistery.registerBlocks_BlockCeramic();
         INFO("[preInit] Meta Blocks - Loaded");
 
         for (byte i = 0; i <= 7; i++)

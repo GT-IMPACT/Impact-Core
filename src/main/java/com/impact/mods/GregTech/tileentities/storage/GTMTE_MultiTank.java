@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.tileentities.multi;
+package com.impact.mods.GregTech.tileentities.storage;
 
 import com.impact.mods.GregTech.tileentities.hatches.GTMTE_TankHatch;
 import com.impact.util.MultiBlockTooltipBuilder;
@@ -24,63 +24,85 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import org.lwjgl.input.Keyboard;
 
-import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import static com.impact.loader.ItemRegistery.FluidTankBlock;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 
-public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
+public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements IFluidHandler {
 
     private final HashSet<GTMTE_TankHatch> sMultiHatches = new HashSet<>();
-    private final String glassIC2 = "blockAlloyGlass";
+    private final Block glassIC2 = IGlassBlock;
     private final Block CASING = GregTech_API.sBlockCasings8;
     private final Block CASING_TANK = FluidTankBlock;
     private final int CASING_TEXTURE_ID = 176;
     public MultiFluidHandler mfh;
     private int runningCost = 0;
+    private int mAmountFluids;
     private boolean doVoidExcess = false;
     private byte fluidSelector = 0;
 
 
-    public GTMTE_MultiTank(int aID, String aName, String aNameRegional) {
+    public GTMTE_MultiTank(int aID, String aName, String aNameRegional, int aAmountFluids) {
         super(aID, aName, aNameRegional);
+        this.mAmountFluids = aAmountFluids;
     }
 
-    public GTMTE_MultiTank(String aName) {
+    public GTMTE_MultiTank(String aName, int aAmountFluids) {
         super(aName);
+        this.mAmountFluids = aAmountFluids;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
-        return new GTMTE_MultiTank(super.mName);
+        return new GTMTE_MultiTank(super.mName, this.mAmountFluids);
     }
 
     @Override
     public String[] getDescription() {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-        b.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-                .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-                .addInfo("Rightclicking the controller with a screwdriver will turn on excess voiding.")
-                .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
-                .addSeparator()
-                .addInfo("Note on hatch locking:")
-                .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
-                .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
-                .addSeparator()
-                .beginStructureBlock(5, 9, 5)
-                .addController()
-                .addEnergyHatch("Any top or bottom casing")
-                .addOtherStructurePart("Inner 3x7x3 tube", "Storage Field Blocks")
-                .addOtherStructurePart("Outer 5x1&9x5 Casing", "Chemical Casing")
-                .addOtherStructurePart("Outer 5x7x5 glass shell", "Reinforced Glass of BartWorks Glass")
-                .addIOHatches("Instead of any casing or glass, have to touch storage field")
-                .addInfo("M-T Multi-Fluid I/O Hatch for information and used EC2, OC systems")
-                .signAndFinalize(": " + EnumChatFormatting.YELLOW + "Kekzdealer");
+        if (mAmountFluids == 1) {
+            b.addInfo("High-Tech fluid tank!")
+                    .addInfo("Right-Click the controller with a screwdriver will turn on excess voiding.")
+                    .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+                    .addSeparator()
+                    .addInfo("Note on hatch locking:")
+                    .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
+                    .addSeparator()
+                    .beginStructureBlock(3, 7, 3)
+                    .addController()
+                    .addEnergyHatch("Any top or bottom casing")
+                    .addOtherStructurePart("Inner 1x5x1 tube", "Tank Storage Block")
+                    .addOtherStructurePart("Outer 3x1&7x3 Casing", "Chemical Casing")
+                    .addOtherStructurePart("Outer 3x5x3 glass shell", "I-Glass")
+                    .addInfo("I/O Tank Hatch Instead of any casing or glass, have to touch Tank Storage Block")
+                    .addInfo("I/O Tank Hatch for information and used EC2, OC systems")
+                    .signAndFinalize(": " + EnumChatFormatting.YELLOW + "Kekzdealer and 4gname");
+        } else {
+            b.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
+                    .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
+                    .addInfo("Right-Click to the controller with a screwdriver will turn on excess voiding.")
+                    .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+                    .addSeparator()
+                    .addInfo("Note on hatch locking:")
+                    .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
+                    .addSeparator()
+                    .beginStructureBlock(5, 9, 5)
+                    .addController()
+                    .addEnergyHatch("Any top or bottom casing")
+                    .addOtherStructurePart("Inner 3x7x3 tube", "Tank Storage Block")
+                    .addOtherStructurePart("Outer 5x1&9x5 Casing", "Chemical Casing")
+                    .addOtherStructurePart("Outer 5x7x5 glass shell", "I-Glass")
+                    .addInfo("I/O Tank Hatch Instead of any casing or glass, have to touch Tank Storage Block")
+                    .addInfo("I/O Tank Hatch for information and used EC2, OC systems")
+                    .signAndFinalize(EnumChatFormatting.YELLOW + "Kekzdealer");
+        }
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
         } else {
@@ -230,6 +252,15 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        sMultiHatches.clear();
+        System.out.println(this.mAmountFluids);
+        if (this.mAmountFluids == 1) {
+            return singletank(thisController);
+        } else
+            return miltitank(thisController);
+    }
+
+    private boolean miltitank(IGregTechTileEntity thisController) {
         // Figure out the vector for the direction the back face of the controller is facing
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -240,8 +271,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
         boolean formationChecklist = true; // If this is still true at the end, machine is good to go :)
         float runningCostAcc = 0;
         double fluidCapacityAcc = 0;
-
-        sMultiHatches.clear();
 
         // Front segment
         for (int X = -2; X <= 2; X++) {
@@ -344,7 +373,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 
                     // Corner allows only glass
                     if (X == -2 && Y == -2 || X == 2 && Y == 2 || X == -2 && Y == 2 || X == 2 && Y == -2) {
-                        if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassIC2))) {
+                        if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == glassIC2)) {
                             formationChecklist = false;
                         }
                     } else {
@@ -359,7 +388,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
                             if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
                                 // Seems to be valid casing. Decrement counter.
                                 minCasingAmount--;
-                            } else if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals(glassIC2)) {
+                            } else if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == glassIC2)) {
                                 formationChecklist = false;
                             }
                         }
@@ -417,6 +446,14 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
             formationChecklist = false;
         }
 
+        if (this.mInputHatches.size() != 0) {
+            formationChecklist = false;
+        }
+
+        if (this.mOutputHatches.size() != 0) {
+            formationChecklist = false;
+        }
+
         if (minCasingAmount > 0) {
             formationChecklist = false;
         }
@@ -424,9 +461,9 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
         if (formationChecklist) {
             runningCost = Math.round(-runningCostAcc);
             // Update MultiFluidHandler in case storage cells have been changed
-            final int capacityPerFluid = (int) Math.round(fluidCapacityAcc / 25.0f);
+            final int capacityPerFluid = (int) Math.round(fluidCapacityAcc / (float) mAmountFluids);
             if (mfh == null) {
-                mfh = MultiFluidHandler.newInstance(25, capacityPerFluid);
+                mfh = MultiFluidHandler.newInstance(mAmountFluids, capacityPerFluid);
             } else {
                 if (mfh.getCapacity() != capacityPerFluid) {
                     mfh = MultiFluidHandler.newAdjustedInstance(mfh, capacityPerFluid);
@@ -440,13 +477,218 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
         return formationChecklist;
     }
 
+    private boolean singletank(IGregTechTileEntity thisController) {
+        // Figure out the vector for the direction the back face of the controller is facing
+        final Vector3ic forgeDirection = new Vector3i(
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
+                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
+        );
+        int minCasingAmount = 20;
+        boolean formationChecklist = true; // If this is still true at the end, machine is good to go :)
+        float runningCostAcc = 0;
+        double fluidCapacityAcc = 0;
+
+
+        // Front segment
+        for (int X = -1; X <= 1; X++) {
+            for (int Y = -1; Y <= 1; Y++) {
+                if (X == 0 && Y == 0) {
+                    continue; // Skip controller
+                }
+
+                // Get next TE
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
+                final IGregTechTileEntity currentTE =
+                        thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+                // Fluid hatches should touch the storage field.
+                // Maintenance/Energy hatch can go anywhere
+                if (X >= -1 && X <= 1 && Y >= -1 && Y <= 1) {
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+
+                        // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+                        // Also check for multi hatch
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+                            // Seems to be valid casing. Decrement counter.
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
+                        }
+                    }
+                } else {
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+
+                        // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+                            // Seems to be valid casing. Decrement counter.
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Middle seven long segment
+        for (int X = -1; X <= 1; X++) {
+            for (int Y = -1; Y <= 1; Y++) {
+                for (int Z = -1; Z >= -5; Z--) {
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+                    if (X == 0 && Y == 0) {
+                        final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
+
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING_TANK) {
+                            switch (meta) {
+                                case 0:
+                                    runningCostAcc += 1.0f;
+                                    fluidCapacityAcc += 16000000f; //80kk L
+                                    break;
+                                case 1:
+                                    runningCostAcc += 2.0f;
+                                    fluidCapacityAcc += 32000000f; //160kk L
+                                    break;
+                                case 2:
+                                    runningCostAcc += 4.0f;
+                                    fluidCapacityAcc += 64000000f; //320kk L
+                                    break;
+                                case 3:
+                                    runningCostAcc += 8.0f;
+                                    fluidCapacityAcc += 128000000f; //640kk L
+                                    break;
+                                case 4:
+                                    runningCostAcc += 16.0f;
+                                    fluidCapacityAcc += 256000000f; //1.28kkk L
+                                    break;
+                                case 5:
+                                    runningCostAcc += 32.0f;
+                                    fluidCapacityAcc += 400000000f; //2kkk L
+                                    break;
+                            }
+                        } else {
+
+                            formationChecklist = false;
+                        }
+                        continue;
+                    }
+
+                    // Get next TE
+                    final IGregTechTileEntity currentTE =
+                            thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+                    // Corner allows only glass
+                    if (X == -1 && Y == -1 || X == 1 && Y == 1 || X == -1 && Y == 1 || X == 1 && Y == -1) {
+                        if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == glassIC2)) {
+                            formationChecklist = false;
+                        }
+                    } else {
+                        // Tries to add TE as either of those kinds of hatches.
+                        // The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
+                        if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+
+                            // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+                            // Also check for multi hatch
+                            if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == glassIC2)) {
+                                formationChecklist = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (this.mEnergyHatches.size() < 1) {
+            formationChecklist = false;
+        }
+
+        if (this.mMaintenanceHatches.size() != 1) {
+            formationChecklist = false;
+        }
+
+        if (this.mInputHatches.size() != 0) {
+            formationChecklist = false;
+        }
+
+        if (this.mOutputHatches.size() != 0) {
+            formationChecklist = false;
+        }
+
+        // Back segment
+        for (int X = -1; X <= 1; X++) {
+            for (int Y = -1; Y <= 1; Y++) {
+                // Get next TE
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -6);
+                final IGregTechTileEntity currentTE =
+                        thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+                // Fluid hatches should touch the storage field.
+                // Maintenance/Energy hatch can go anywhere
+                if (X == -1 && X == 1 && Y == -1 && Y == 1) {
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+
+                        // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+                            // Seems to be valid casing. Decrement counter.
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
+                        }
+                    }
+                } else {
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+
+                        // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
+                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+                            // Seems to be valid casing. Decrement counter.
+                            minCasingAmount--;
+                        } else {
+                            formationChecklist = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (formationChecklist) {
+            runningCost = Math.round(-runningCostAcc);
+            // Update MultiFluidHandler in case storage cells have been changed
+            final int capacityPerFluid = (int) Math.round(fluidCapacityAcc);
+            if (mfh == null) {
+                mfh = MultiFluidHandler.newInstance(1, capacityPerFluid);
+            } else {
+                if (mfh.getCapacity() != capacityPerFluid) {
+                    mfh = MultiFluidHandler.newAdjustedInstance(mfh, capacityPerFluid);
+                }
+            }
+            for (GTMTE_TankHatch mh : sMultiHatches) {
+                mh.setMultiFluidHandler(mfh);
+            }
+        }
+
+        return formationChecklist;
+    }
+
+
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        if(mfh == null) return null;
+        if (mfh == null) return null;
 
         final List<FluidStack> fluids = mfh.getFluids();
         final FluidTankInfo[] tankInfo = new FluidTankInfo[fluids.size()];
-        for(int i = 0; i < tankInfo.length; i++)
+        for (int i = 0; i < tankInfo.length; i++)
             tankInfo[i] = new FluidTankInfo(fluids.get(i), mfh.getCapacity());
 
         return tankInfo;
@@ -479,15 +721,20 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
         final ArrayList<String> ll = new ArrayList<>();
 
         long capacity = 0;
-
-        ll.add(EnumChatFormatting.YELLOW + "Stored Fluids:" + EnumChatFormatting.RESET);
-        for (int i = 0; i < mfh.fluids.size(); i++) {
-            capacity = mfh.fluids.get(i).amount;
-            ll.add(i + " - " + mfh.fluids.get(i).getLocalizedName() + ": " + NumberFormat.getNumberInstance().format(capacity) + "L (" + Long.toString(Math.round(100.0f * mfh.fluids.get(i).amount / mfh.getCapacity())) + "%)");
+        if (mfh != null) {
+            ll.add(EnumChatFormatting.YELLOW + "Stored Fluids:" + EnumChatFormatting.RESET);
+            if (mfh.fluids != null) {
+                for (int i = 0; i < mfh.fluids.size(); i++) {
+                    capacity = mfh.fluids.get(i).amount;
+                    ll.add(i + " - " + mfh.fluids.get(i).getLocalizedName() + ": " + NumberFormat.getNumberInstance().format(capacity) + "L (" + Long.toString(Math.round(100.0f * mfh.fluids.get(i).amount / mfh.getCapacity())) + "%)");
+                }
+            }
         }
+
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
         ll.add("Auto-voiding: " + doVoidExcess);
-        ll.add("Per-Fluid Capacity: " + NumberFormat.getNumberInstance().format(mfh.getCapacity()) + "L");
+        if (mfh != null && mfh.fluids != null)
+            ll.add("Per-Fluid Capacity: " + NumberFormat.getNumberInstance().format(mfh.getCapacity()) + "L");
         ll.add("Running Cost: " + ((-super.mEUt) * 10000 / Math.max(1000, super.mEfficiency)) + "EU/t");
         ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
                 ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET

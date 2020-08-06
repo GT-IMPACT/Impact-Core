@@ -2,12 +2,16 @@ package com.impact.recipes.machines;
 
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.item.ItemStack;
+
+import static com.impact.util.Utilits.Itemstack;
 
 public class EBFRecipe implements Runnable {
 
@@ -18,6 +22,9 @@ public class EBFRecipe implements Runnable {
 
 /** ================================= start CORE MOD =================================*/
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HastelloyC276, 1L), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.HastelloyC276, 1L), null, 60 * 20, 1920, 3601);
+        GT_Values.RA.addBlastRecipe(Itemstack(Core_Items.getInstance(), 16, 42), GT_Utility.getIntegratedCircuit(1), null, null, Itemstack(Core_Items.getInstance(), 1, 45),null, 20*300, 480, 3200);
+        GT_Values.RA.addBlastRecipe(Itemstack(Core_Items.getInstance(), 16, 43), GT_Utility.getIntegratedCircuit(1), null, null, Itemstack(Core_Items.getInstance(), 1, 46),null, 20*300, 1920, 4200);
+        GT_Values.RA.addBlastRecipe(Itemstack(Core_Items.getInstance(), 16, 44), GT_Utility.getIntegratedCircuit(1), null, null, Itemstack(Core_Items.getInstance(), 1, 47),null, 20*300, 7680, 4200);
         /* ================================= end CORE MOD =================================*/
 
 /** ================================= start GT =================================*/

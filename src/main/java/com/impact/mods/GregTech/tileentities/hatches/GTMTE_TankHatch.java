@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -20,6 +21,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.impact.api.enums.Textures.Icons.OVERLAY_MULTIHATCH;
 import static com.impact.util.Utilits.invertBoolean;
 
 public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
@@ -27,8 +29,6 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
     private static final HashMap<Integer, Integer> vals = new HashMap<>();
 
     static {
-        vals.put(3, 200000);
-        vals.put(4, 20000);
         vals.put(5, 200000);
     }
 
@@ -40,8 +40,7 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
     public GTMTE_TankHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, INV_SLOT_COUNT, new String[] {
                 "All-in-one access for the T.F.F.T",
-                "Right-click with a screwdriver to toggle auto-output",
-                "Throughput: " + vals.get(aTier) + "L/s per fluid"}
+                "Right-click with a screwdriver to toggle auto-output"}
         );
     }
 
@@ -71,12 +70,12 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(OVERLAY_MULTIHATCH)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(OVERLAY_MULTIHATCH)};
     }
 
     @Override
@@ -217,11 +216,21 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
                 // If there's no integrated circuit in the T.F.F.T. controller, output slot 0
                 final byte selectedSlot = (mfh.getSelectedFluid() == -1) ? 0 : mfh.getSelectedFluid();
 
-                return new FluidStack(drain.getFluid(), mfh.pullFluid(new FluidStack(drain.getFluid(), maxDrain), selectedSlot, doDrain)
+                return new FluidStack(drain.getFluid(), mfh.pullFluid(new FluidStack(drain.getFluid(), maxDrain), 0, doDrain)
                 );
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return (mfh != null) && mfh.couldPush(new FluidStack(fluid, 1));
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return (mfh != null) && mfh.contains(new FluidStack(fluid, 1));
     }
 
     @Override
