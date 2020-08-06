@@ -11,6 +11,7 @@ import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
 import com.impact.mods.GregTech.GTregister.GT_WorldGenRegister;
 import com.impact.mods.GregTech.casings.GT_Loader_Casings;
+import com.impact.mods.IC2.block.machine.blockID;
 import com.impact.recipes.HandRecipe;
 import com.impact.recipes.OpenComputersRecipe;
 import com.impact.recipes.debug.DEBUG_Recipe;
@@ -24,15 +25,16 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import com.impact.System.LoginHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.item.ItemStack;
+import ic2.core.init.InternalName;
+
 
 import java.io.File;
 
 import static com.impact.System.Config.csv;
 import static com.impact.System.Refstrings.MODID;
 import static com.impact.System.impactLog.INFO;
+import static ic2.core.init.InternalName.blockMachine3;
 
 @Mod (
 		modid = MODID,
@@ -67,6 +69,8 @@ public class impact {
     public void load(FMLInitializationEvent event) {
         MainLoader.load();
         INFO("MainLoader LOAD Loaded");
+
+        //new blockID(blockMachine3);
     }
 
 
