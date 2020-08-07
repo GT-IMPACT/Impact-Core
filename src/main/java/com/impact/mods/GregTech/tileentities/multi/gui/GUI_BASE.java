@@ -47,6 +47,13 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
         mMode = aModeString;
     }
 
+    public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
+        super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity),
+                RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
+        mName = aName;
+        mMode = "";
+    }
+
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         fontRendererObj.drawString(mName, 10, 8, 16448255);
 
