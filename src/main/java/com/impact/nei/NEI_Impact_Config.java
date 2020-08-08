@@ -3,6 +3,7 @@ package com.impact.nei;
 import codechicken.nei.api.IConfigureNEI;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.util.GT_Recipe;
+import gregtech.nei.GT_NEI_DefaultHandler;
 
 public class NEI_Impact_Config implements IConfigureNEI {
 
@@ -14,6 +15,8 @@ public class NEI_Impact_Config implements IConfigureNEI {
 
         if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             new GT_NEI_NaquadahGen(GT_Recipe.GT_Recipe_Map.sLiquidNqGenerator);
+            new GT_NEI_Fuel();
+            new GT_NEI_HeavyMetalCyclone(GT_Recipe.GT_Recipe_Map.sCyclonRecipes);
         }
 
         sIsAdded = true;

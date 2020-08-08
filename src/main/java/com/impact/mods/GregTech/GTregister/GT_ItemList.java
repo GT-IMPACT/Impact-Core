@@ -80,7 +80,7 @@ public enum GT_ItemList implements IItemContainer {
     PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
     AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse,
 
-    Naquadah_multi, Naquadah_Liquid_multi,
+    Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone,
 
     //Cases
     //Page3 1-15

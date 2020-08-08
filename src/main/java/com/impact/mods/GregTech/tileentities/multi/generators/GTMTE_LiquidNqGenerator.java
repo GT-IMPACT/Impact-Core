@@ -45,8 +45,6 @@ import static gregtech.api.enums.GT_Values.RA;
 public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
-    public static String mModed;
-    public byte mMode = -1;
     public int EU_PER_TICK = 524288;
     /**
      * === SET BLOCKS STRUCTURE ===
@@ -58,7 +56,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
      */
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META+16];
     int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
-    private int mLevel = 0;
 
     /**
      * === NAMED ===
@@ -73,6 +70,10 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
      */
     public GTMTE_LiquidNqGenerator(String aName) {
         super(aName);
+    }
+
+    public boolean isFacingValid(byte aFacing) {
+        return true;
     }
 
     /**
@@ -198,7 +199,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                             && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                         minCasingAmount--;
                     } else {
-                        System.out.println("Ошибка Z = 1");
                         formationChecklist = false;
                     }
                 }
@@ -225,7 +225,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                             && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                         minCasingAmount--;
                     } else {
-                        System.out.println("Ошибка Z = 0");
                         formationChecklist = false;
                     }
                 }
@@ -246,7 +245,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                         if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock) {
                             minCasingAmount--;
                         } else {
-                            System.out.println("Ошибка Z = -1 до -5 в стекле X ");
                             formationChecklist = false;
                         }
                         continue;
@@ -258,7 +256,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                                     && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 10)) {
 
                             } else {
-                                System.out.println("Ошибка Z = -1 до -5 держатели ядра");
                                 formationChecklist = false;
                             }
                             continue;
@@ -277,7 +274,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                             minCasingAmount--;
                         } else {
-                            System.out.println("Ошибка Z = -1 до -5 " + X + " " + Y);
                             formationChecklist = false;
                         }
                     }
@@ -304,7 +300,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                             && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                         minCasingAmount--;
                     } else {
-                        System.out.println("Ошибка Z = -6");
                         formationChecklist = false;
                     }
                 }
@@ -329,7 +324,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                             && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                         minCasingAmount--;
                     } else {
-                        System.out.println("Ошибка Z = -7");
                         formationChecklist = false;
                     }
                 }
@@ -339,14 +333,14 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//        if (this.mInputBusses.size() > 15) formationChecklist = false;
-//        if (this.mInputHatches.size() > 0) formationChecklist = false;
-//        if (this.mOutputBusses.size() > 3) formationChecklist = false;
-//        if (this.mOutputHatches.size() != 0) formationChecklist = false;
-//        if (this.mMufflerHatches.size() > 0) formationChecklist = false;
-//        if (this.mEnergyHatches.size() > 4) formationChecklist = false;
-//        if (this.mDynamoHatches.size() > 1) formationChecklist = false;
-//        if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
+        if (this.mInputBusses.size() != 0) formationChecklist = false;
+        if (this.mInputHatches.size() > 3) formationChecklist = false;
+        if (this.mOutputBusses.size() != 0) formationChecklist = false;
+        if (this.mOutputHatches.size() != 0) formationChecklist = false;
+        if (this.mMufflerHatches.size() != 0) formationChecklist = false;
+        if (this.mEnergyHatches.size() != 0) formationChecklist = false;
+        if (this.mDynamoHatches.size() > 1) formationChecklist = false;
+        if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
     }

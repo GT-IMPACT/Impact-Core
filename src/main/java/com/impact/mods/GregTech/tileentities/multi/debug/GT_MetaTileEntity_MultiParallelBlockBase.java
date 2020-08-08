@@ -308,8 +308,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 
         if (inputs.length > 0 || fluids.length > 0) {
-            long voltage = getMaxInputVoltage();
-            byte tier = (byte) Math.max(0, GT_Utility.getTier(voltage));
+            long nominalV = TecTechUtils.getnominalVoltageTT(this);
+            byte tier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
             GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
                     false, V[tier], fluids, inputs);
             if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
@@ -375,8 +375,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
             }
             if (tInputList.size() > 0 || tFluidList.size() > 0) {
-                long tVoltage = this.getMaxInputVoltage();
-                byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+                long nominalV = TecTechUtils.getnominalVoltageTT(this);
+                byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
                 GT_Recipe tRecipe;
                 tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
 
@@ -392,7 +392,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                     ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
                     boolean found_Recipe = false;
                     int processed = 0;
-                    long nominalV = getnominalVoltage(this);
                     while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < 1) {
                         if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
                             found_Recipe = true;
