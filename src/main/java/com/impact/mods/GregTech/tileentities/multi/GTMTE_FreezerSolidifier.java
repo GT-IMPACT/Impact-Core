@@ -2,32 +2,26 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_NotMultiMachine;
+import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
-import java.util.ArrayList;
-
 public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBlockBase {
-
-
 
     public GTMTE_FreezerSolidifier(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -49,19 +43,15 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                 .addInfo("One-block machine analog")
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                //.addPollution(200, 12800)
                 .addTypeMachine("Freezer Solidification")
-                .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
-                .beginStructureBlock(3, 3, 3)
-                .addController("-")
-                .addParallelCase("-")
+                .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (max x2)")
                 .addInputHatch("Any casing (max x2)")
                 .addOutputBus("Any casing (max x1)")
-                .addMuffler("Any casing (max x1)")
                 .addCasingInfo("Frost Proof Machine Casing")
                 .signAndFinalize(": "+ EnumChatFormatting.RED+"IMPACT");
         if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -82,8 +72,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
 
     /** === GUI === */
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_NotMultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "MultiParallelBlockGUI.png"," Freezification ");
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " Freezification ");
     }
 
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
@@ -99,42 +88,8 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
     }
 
     private int mLevel = 0;
-    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
-
-        // В любом направлении по оси Z
-        if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-            offset.x = x;
-            offset.y = y;
-            offset.z = z;
-        }
-        if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-            offset.x = -x;
-            offset.y = y;
-            offset.z = -z;
-        }
-        // В любом направлении по оси X
-        if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-            offset.x = z;
-            offset.y = y;
-            offset.z = -x;
-        }
-        if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-            offset.x = -z;
-            offset.y = y;
-            offset.z = x;
-        }
-        // в любом направлении по оси Y
-        if(forgeDirection.y() == -1) {
-            offset.x = x;
-            offset.y = z;
-            offset.z = y;
-        }
-
-        return offset;
-    }
-
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        TThatches();
         // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -176,9 +131,6 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                         continue;
                     }
 
-
-
-
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                     if (!super.addMaintenanceToMachineList(currentTE, 17)
                             && !super.addInputToMachineList(currentTE, 17)
@@ -197,30 +149,37 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
             }
         }
 
-       if(this.mInputBusses.size() > 2) {
-           formationChecklist = false;
-       }
-       if(this.mInputHatches.size() !=2) {
-           formationChecklist = false;
-       }
-       if(this.mOutputBusses.size() !=1) {
-           formationChecklist = false;
-       }
-       if(this.mOutputHatches.size() !=0) {
-           formationChecklist = false;
-       }
-       if(this.mEnergyHatches.size() > 2) {
-           formationChecklist = false;
-       }
-       if(this.mMaintenanceHatches.size() != 1) {
-           formationChecklist = false;
-       }
+       if(this.mInputBusses.size() > 2) formationChecklist = false;
+       if(this.mInputHatches.size() !=2) formationChecklist = false;
+       if(this.mOutputBusses.size() !=1) formationChecklist = false;
+       if(this.mOutputHatches.size() !=0) formationChecklist = false;
+       if(this.mEnergyHatches.size() > 4) formationChecklist = false;
+       if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
+
         return formationChecklist;
     }
 
-    /** === SET PARALLEL === */
-    public int Parallel() {
+    @Override
+    public int getParallel() {
         return this.mLevel;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+        if (aPlayer.isSneaking()) {
+            if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+                modeBuses++;
+                if (modeBuses > 1) modeBuses = 0;
+
+                GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
+            }
+        }
+    }
+
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel);
     }
 
     public int getPollutionPerTick(ItemStack aStack) {

@@ -2,7 +2,7 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_Centrifuge;
+import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -17,16 +17,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    private byte mMode = -1;
     public static String mModed;
 
     /** === SET BLOCKS STRUCTURE === */
@@ -75,10 +74,9 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addPollution(200, 12800)
                 .addTypeMachine("Centrifuge, Thermal Centrifuge")
                 .addScrew()
+                .addSeparatedBus()
                 .addSeparator()
-                .beginStructureBlock(3, 3, 3)
-                .addController("-")
-                .addParallelCase("-")
+                .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addMuffler("Any casing")
@@ -98,7 +96,7 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
     /** === GUI === */
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_Centrifuge(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", mModed);
     }
 
     /** === RECIPE MAP === */
@@ -107,43 +105,9 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
         return mMode == 0 ?  GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes : GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
     }
 
-    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
-
-        // В любом направлении по оси Z
-        if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-            offset.x = x;
-            offset.y = y;
-            offset.z = z;
-        }
-        if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-            offset.x = -x;
-            offset.y = y;
-            offset.z = -z;
-        }
-        // В любом направлении по оси X
-        if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-            offset.x = z;
-            offset.y = y;
-            offset.z = -x;
-        }
-        if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-            offset.x = -z;
-            offset.y = y;
-            offset.z = x;
-        }
-        // в любом направлении по оси Y
-        if(forgeDirection.y() == -1) {
-            offset.x = x;
-            offset.y = z;
-            offset.z = y;
-        }
-
-        return offset;
-    }
-
     private int mLevel = 0;
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        TThatches();
         // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -187,7 +151,7 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
                     String glass = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
                     if ( ( (X==-1 || X==1) && (Z==0 || Z==-4) ) || ( (X==-2 || X==2) && (Z==-1 || Z==-3) ) ) {
-                        if ( thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == decorateBlock[3]){
+                        if ( thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){
                         } else  {
                             formationChecklist = false;
                         }
@@ -254,76 +218,50 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
-
-        if(this.mInputBusses.size() > 6) {
-            formationChecklist = false;
-        }
-        if(this.mInputHatches.size() > 6) {
-            formationChecklist = false;
-        }
-        if(this.mOutputBusses.size() > 3) {
-            formationChecklist = false;
-        }
-        if(this.mOutputHatches.size() > 6) {
-            formationChecklist = false;
-        }
-        if(this.mMufflerHatches.size() != 1) {
-            formationChecklist = false;
-        }
-        if(this.mEnergyHatches.size() != 1) {
-            formationChecklist = false;
-        }
-        if(this.mMaintenanceHatches.size() != 1) {
-            formationChecklist = false;
-        }
+        if(this.mInputBusses.size() > 6) formationChecklist = false;
+        if(this.mInputHatches.size() > 6) formationChecklist = false;
+        if(this.mOutputBusses.size() > 3) formationChecklist = false;
+        if(this.mOutputHatches.size() > 6) formationChecklist = false;
+        if(this.mMufflerHatches.size() != 1) formationChecklist = false;
+        if(this.mEnergyHatches.size() > 4) formationChecklist = false;
+        if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
     }
 
-
-    /** === SET PARALLEL === */
-    public int Parallel() {
+    @Override
+    public int getParallel() {
         return this.mLevel;
     }
 
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return impactRecipe(itemStack, mLevel, true);
+    }
     /** === POLLUTION === */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        if (this.mLevel == 4 ) {
-            return 4*50;
+        switch (this.mLevel) {
+            case 4: return 4 * 50;
+            case 16: return 16 * 50;
+            case 64: return 64 * 50;
+            case 256: return 256 * 50;
+            default: return 0;
         }
-        else if (this.mLevel == 16 ) {
-            return 16*50;
-        }
-        else if (this.mLevel == 64 ) {
-            return 64*50;
-        }
-        else if (this.mLevel == 256) {
-            return 256*50;
-        } else
-            return 0;
-    } //NOT USE WITHOUT MUFFLER IN STRUCTURE
+    }
 
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-             if (mMode == -1) { mMode += 1; }
-        else if (mMode ==  0) { mMode += 1; }
-                                else { mMode =  0; }
 
-        mModed = (mMode == 0 ? " Centrifuge " : mMode == 1 ? " Thermal Centrifuge " : null);
-        GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
-    }
+        if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
+        else
+        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mMode++;
+            if (mMode > 1) mMode = 0;
 
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mMode", mMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        this.mMode = aNBT.getByte("mMode");
-        super.loadNBTData(aNBT);
+            mModed = (mMode == 0 ? " Centrifuge " : " Thermal Centrifuge ");
+            GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
+        }
     }
 
 }

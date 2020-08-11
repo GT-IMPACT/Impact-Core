@@ -48,16 +48,13 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
         return new String[]{
                 "Controller Block for the Blast Smelter",
                 "Size(WxHxD): 5x4x5 (Hollow), Controller (Front middle bottom)",
-                "24x Heating Coils (Two middle Layers, hollow)",
-                "1x Input Hatch/Bus (Any bottom layer casing)",
-                "1x Output Hatch/Bus (Any bottom layer casing)",
-                "1x Energy Hatch (Any bottom layer casing)",
-                "1x Maintenance Hatch (Any bottom layer casing)",
-                "1x Muffler Hatch (Top middle)",
-                "Heat Proof Machine Casings for the rest",
-                "Each 900K over the min. Heat Capacity multiplies eu/t by 0.95",
-                "Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-                "Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
+                "Heating Coils (Two middle Layers, hollow)",
+                "1x Input Hatch/Bus (Any layer casing)",
+                "1x Output Hatch/Bus (Any layer casing)",
+                "1x Energy Hatch (Any layer casing)",
+                "1x Maintenance Hatch (Any layer casing)",
+                "1x Muffler Hatch (Any layer casing)",
+                "HSLA Casings for the rest",
                 "Causes " + 20 * getPollutionPerTick(null) + " Pollution per second"};
     }
 
@@ -292,6 +289,9 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
                         } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 8)) {
                             this.mHeatingCapacity = 12601;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 12)) {
+                            this.mHeatingCapacity = 19801;
                         } else {
                             formationChecklist = false;
                         }
@@ -316,24 +316,13 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
 
-        if(this.mInputBusses.size() > 5) {
-            formationChecklist = false;
-        }
-        if(this.mInputHatches.size() !=0) {
-            formationChecklist = false;
-        }
-        if(this.mOutputBusses.size() !=0) {
-            formationChecklist = false;
-        }
-        if(this.mOutputHatches.size() > 5) {
-            formationChecklist = false;
-        }
-        if(this.mEnergyHatches.size() >= 2) {
-            formationChecklist = false;
-        }
-        if(this.mMaintenanceHatches.size() != 1) {
-            formationChecklist = false;
-        }
+        if(this.mInputBusses.size() > 5) formationChecklist = false;
+        if(this.mInputHatches.size() !=0) formationChecklist = false;
+        if(this.mOutputBusses.size() !=0) formationChecklist = false;
+        if(this.mOutputHatches.size() > 5) formationChecklist = false;
+        if(this.mEnergyHatches.size() > 4) formationChecklist = false;
+        if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
+
         this.mHeatingCapacity += 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
         return formationChecklist;
     }

@@ -19,53 +19,43 @@ public class GT_ItemRegister {
 	private GT_MetaGenerated_Item_04 GT;
 	
 	private void registerItems() {
-		GT_ItemList.CokeOvenBrick.set(GT.addItem(1,"Coke Oven Brick",""));
-
 		GT_ItemList.ULVPump.set(GT.addItem(395,"Electric Pump (ULV)","640 L/sec (as Cover"));
 		GregTech_API.registerCover(GT_ItemList.ULVPump.get(1L), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[0][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)), new GT_Cover_Pump(32));
 		GT_ItemList.ULVMotor.set(GT.addItem(396,"Electric Motor (ULV)",""));
 		GT_ItemList.ULVPiston.set(GT.addItem(397,"Electric Piston (ULV)",""));
 		GT_ItemList.ULVRobotArm.set(GT.addItem(398,"Robot Arm (ULV)",""));
 		GT_ItemList.ULVConveyorModule.set(GT.addItem(399,"Conveyor Module (ULV)",""));
-		GT_ItemList.WoodenBrickForm.set(GT.addItem( 402,"Wooden Brick Form",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.UnfiredSearedBrick.set(GT.addItem(403,"Unfired Seared Brick",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.UnfiredCokeOvenBrick.set(GT.addItem(404,"Unfired Coke Oven Brick",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.UnfiredClayBrick.set(GT.addItem(405,"Unfired Clay Brick",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RefinedReinforcedGlassLense.set(GT.addItem(406,"Refined Reinforced Glass Lens",""));
-		GT_ItemList.ChargedGlassLense.set(GT.addItem(407,"Charged Reinforced Glass Lens",""));
-		GT_ItemList.HugeRefinedReinforcedGlassLense.set(GT.addItem(408,"Huge Refined Reinforced Glass Lens",""));
-		GT_ItemList.HugeChargedGlassLense.set(GT.addItem(409,"Huge Charged Reinforced Glass Lens",""));
 
 		/* === CHIPSETS === */
-		GT_ItemList.EngineeringProcessorFluidDiamondCore.set(GT.addItem(471,"Engineering Processor Fluid Diamond Core", EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngineeringProcessorFluidEmeraldCore.set(GT.addItem(472,"Engineering Processor Fluid Emerald Core",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngineeringProcessorFluidGoldCore.set(GT.addItem(473,"Engineering Processor Fluid Gold Core",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngineeringProcessorItemAdvEmeraldCore.set(GT.addItem(474,"Engineering Processor Item Adv Emerald Core",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngineeringProcessorItemDiamondCore.set(GT.addItem(475,"Engineering Processor Item Diamond Core",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngineeringProcessorItemEmeraldCore.set(GT.addItem(476,"Engineering Processor Item Emerald Core",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngineeringProcessorSpatialPulsatingCore.set(GT.addItem(477,"Engineering Processor Spatial Pulsating Core",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.LogicProcessorItemGoldCore.set(GT.addItem(478,"Logic Processor Item Gold Core",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngravedDiamondCrystalChip.set(GT.addItem(479,"Engraved Diamond Crystal Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngravedEnergyChip.set(GT.addItem(480,"Engraved Energy Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngravedGoldChip.set(GT.addItem(481,"Engraved Gold Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EngravedQuantumChip.set(GT.addItem(482,"Engraved Quantum Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.GeneticCircuit.set(GT.addItem(483,"Genetic Circuit",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EnvironmentalCircuit.set(GT.addItem(484,"Environmental Circuit",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.PulsatingSpatialCoreChip.set(GT.addItem(485,"Pulsating Spatial Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.GoldFluidCoreChip.set(GT.addItem(486,"Gold Fluid Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.GoldCoreChip.set(GT.addItem(487,"Gold Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.DiamondCoreChip.set(GT.addItem(488,"Diamond Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.DiamondFluidCoreChip.set(GT.addItem( 489,"Diamond Fluid Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EmeraldAdvancedCoreChip.set(GT.addItem(490,"Emerald Advanced Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EmeraldAdvancedFluidCoreChip.set(GT.addItem(491,"Emerald Advanced Fluid Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.EmeraldHighAdvancedCoreChip.set(GT.addItem(492,"Emerald High Advanced Core Chip",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RedstoneRedChipset.set(GT.addItem(493,"Redstone Red Chipset",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RedstoneQuartzChipset.set(GT.addItem(494,"Redstone Quartz Chipset",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RedstonePulsatingChipset.set(GT.addItem(495,"Redstone Pulsating Chipset",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RedstoneIronChipset.set(GT.addItem(496,"Redstone Iron Chipset",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RedstoneGoldChipset.set(GT.addItem(497,"Redstone Gold Chipset",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RedstoneEmeraldChipset.set(GT.addItem(498,"Redstone Emerald Chipset",EnumChatFormatting.RED+"WIP"));
-		GT_ItemList.RedstoneDiamondChipset.set(GT.addItem(499,"Redstone Diamond Chipset",EnumChatFormatting.RED+"WIP"));
+		GT_ItemList.EngineeringProcessorFluidDiamondCore.set(GT.addItem(471,"Engineering Processor Fluid Diamond Core", ""));
+		GT_ItemList.EngineeringProcessorFluidEmeraldCore.set(GT.addItem(472,"Engineering Processor Fluid Emerald Core",""));
+		GT_ItemList.EngineeringProcessorFluidGoldCore.set(GT.addItem(473,"Engineering Processor Fluid Gold Core",""));
+		GT_ItemList.EngineeringProcessorItemAdvEmeraldCore.set(GT.addItem(474,"Engineering Processor Item Adv Emerald Core",""));
+		GT_ItemList.EngineeringProcessorItemDiamondCore.set(GT.addItem(475,"Engineering Processor Item Diamond Core",""));
+		GT_ItemList.EngineeringProcessorItemEmeraldCore.set(GT.addItem(476,"Engineering Processor Item Emerald Core",""));
+		GT_ItemList.EngineeringProcessorSpatialPulsatingCore.set(GT.addItem(477,"Engineering Processor Spatial Pulsating Core",""));
+		GT_ItemList.LogicProcessorItemGoldCore.set(GT.addItem(478,"Logic Processor Item Gold Core",""));
+		GT_ItemList.EngravedDiamondCrystalChip.set(GT.addItem(479,"Engraved Diamond Crystal Chip",""));
+		GT_ItemList.EngravedEnergyChip.set(GT.addItem(480,"Engraved Energy Chip",""));
+		GT_ItemList.EngravedGoldChip.set(GT.addItem(481,"Engraved Gold Chip",""));
+		GT_ItemList.EngravedQuantumChip.set(GT.addItem(482,"Engraved Quantum Chip",""));
+		GT_ItemList.GeneticCircuit.set(GT.addItem(483,"Genetic Circuit",""));
+		GT_ItemList.EnvironmentalCircuit.set(GT.addItem(484,"Environmental Circuit",""));
+		GT_ItemList.PulsatingSpatialCoreChip.set(GT.addItem(485,"Pulsating Spatial Core Chip",""));
+		GT_ItemList.GoldFluidCoreChip.set(GT.addItem(486,"Gold Fluid Core Chip",""));
+		GT_ItemList.GoldCoreChip.set(GT.addItem(487,"Gold Core Chip",""));
+		GT_ItemList.DiamondCoreChip.set(GT.addItem(488,"Diamond Core Chip",""));
+		GT_ItemList.DiamondFluidCoreChip.set(GT.addItem( 489,"Diamond Fluid Core Chip",""));
+		GT_ItemList.EmeraldAdvancedCoreChip.set(GT.addItem(490,"Emerald Advanced Core Chip",""));
+		GT_ItemList.EmeraldAdvancedFluidCoreChip.set(GT.addItem(491,"Emerald Advanced Fluid Core Chip",""));
+		GT_ItemList.EmeraldHighAdvancedCoreChip.set(GT.addItem(492,"Emerald High Advanced Core Chip",""));
+		GT_ItemList.RedstoneRedChipset.set(GT.addItem(493,"Redstone Red Chipset",""));
+		GT_ItemList.RedstoneQuartzChipset.set(GT.addItem(494,"Redstone Quartz Chipset",""));
+		GT_ItemList.RedstonePulsatingChipset.set(GT.addItem(495,"Redstone Pulsating Chipset",""));
+		GT_ItemList.RedstoneIronChipset.set(GT.addItem(496,"Redstone Iron Chipset",""));
+		GT_ItemList.RedstoneGoldChipset.set(GT.addItem(497,"Redstone Gold Chipset",""));
+		GT_ItemList.RedstoneEmeraldChipset.set(GT.addItem(498,"Redstone Emerald Chipset",""));
+		GT_ItemList.RedstoneDiamondChipset.set(GT.addItem(499,"Redstone Diamond Chipset",""));
 
 		/* === SPACE === */
 		GT_ItemList.packEuropa.set(GT.addItem(500,"Pack Europa Stone Dust",""));
@@ -95,13 +85,13 @@ public class GT_ItemRegister {
 		GT_ItemList.packMoon.set(GT.addItem(524,"Pack Moon Stone Dust",""));
 		GT_ItemList.packMars.set(GT.addItem(525,"Pack Mars Stone Dust",""));
 		GT_ItemList.packAsteroids.set(GT.addItem(526,"Pack Asteroids Stone Dust",""));
-		GT_ItemList.spacebox1.set(GT.addItem(527,"Space Box Tier 1", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-1"*/));
-		GT_ItemList.spacebox2.set(GT.addItem(528,"Space Box Tier 2", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-2"*/));
-		GT_ItemList.spacebox3.set(GT.addItem(529,"Space Box Tier 3", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-3"*/));
-		GT_ItemList.spacebox4.set(GT.addItem(530,"Space Box Tier 4", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-4"*/));
-		GT_ItemList.spacebox5.set(GT.addItem(531,"Space Box Tier 5", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-5"*/));
-		GT_ItemList.spacebox6.set(GT.addItem(532,"Space Box Tier 6", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-6"*/));
-		GT_ItemList.spacebox7.set(GT.addItem(533,"Space Box Tier 7", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-7"*/));
-		GT_ItemList.spacebox8.set(GT.addItem(534,"Space Box Tier 8", EnumChatFormatting.RED+"WIP" /*"Use for crafting Rocket Tier-8"*/));
+		GT_ItemList.spacebox1.set(GT.addItem(527,"Space Box Tier 1", "" /*"Use for crafting Rocket Tier-1"*/));
+		GT_ItemList.spacebox2.set(GT.addItem(528,"Space Box Tier 2", "" /*"Use for crafting Rocket Tier-2"*/));
+		GT_ItemList.spacebox3.set(GT.addItem(529,"Space Box Tier 3", "" /*"Use for crafting Rocket Tier-3"*/));
+		GT_ItemList.spacebox4.set(GT.addItem(530,"Space Box Tier 4", "" /*"Use for crafting Rocket Tier-4"*/));
+		GT_ItemList.spacebox5.set(GT.addItem(531,"Space Box Tier 5", "" /*"Use for crafting Rocket Tier-5"*/));
+		GT_ItemList.spacebox6.set(GT.addItem(532,"Space Box Tier 6", "" /*"Use for crafting Rocket Tier-6"*/));
+		GT_ItemList.spacebox7.set(GT.addItem(533,"Space Box Tier 7", "" /*"Use for crafting Rocket Tier-7"*/));
+		GT_ItemList.spacebox8.set(GT.addItem(534,"Space Box Tier 8", "" /*"Use for crafting Rocket Tier-8"*/));
 	}
 }

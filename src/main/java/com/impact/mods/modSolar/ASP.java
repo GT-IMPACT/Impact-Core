@@ -19,7 +19,7 @@ public class ASP {
         GameRegistry.registerTileEntity(TileEntity128SolarPanel.class, "MV Solar Panel");
         GameRegistry.registerTileEntity(TileEntity512SolarPanel.class, "HV Solar Panel");
         GameRegistry.registerTileEntity(TileEntity2048SolarPanel.class, "EV Solar Panel");
-        GameRegistry.registerTileEntity(TileEntity2048SolarPanel.class, "IV Solar Panel");
+        GameRegistry.registerTileEntity(TileEntity8192SolarPanel.class, "IV Solar Panel");
         GameRegistry.registerTileEntity(TileEntity32768SolarPanel.class, "LuV Solar Panel");
         GameRegistry.registerTileEntity(TileEntity131072SolarPanel.class, "ZPM Solar Panel");
         GameRegistry.registerTileEntity(TileEntity524288SolarPanel.class, "UV Solar Panel");

@@ -46,6 +46,11 @@ public class GTMTE_ParallelBilder extends GT_MetaTileEntity_MultiParallelBlockBa
         super(aName);
     }
 
+    @Override
+    public int getParallel() {
+        return 0;
+    }
+
     /** === META ENTITY === */
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -75,6 +80,11 @@ public class GTMTE_ParallelBilder extends GT_MetaTileEntity_MultiParallelBlockBa
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), INDEX_GUI);
+    }
+
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        return false;
     }
 
     /** === RECIPE MAP === */
