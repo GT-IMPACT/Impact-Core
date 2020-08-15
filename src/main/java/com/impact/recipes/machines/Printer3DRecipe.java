@@ -610,21 +610,21 @@ public class Printer3DRecipe implements Runnable {
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Hatch_Dynamo_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tungsten, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), ItemList.Electric_Motor_HV.get(2L), ItemList.Casing_Motor.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 6)
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 6)
         }, GT_ModHandler.getModItem("IC2", "blockGenerator", 1L, 9), null, 10 * 20, 480);
 
         //Kinetic Wind Generator
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Casing_Gearbox_Steel.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Aluminium, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Titanium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), ItemList.Electric_Motor_HV.get(2L), GT_ModHandler.getModItem("IC2", "itemRecipePart", 4, 12),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 6)
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 6)
         }, GT_ModHandler.getModItem("IC2", "blockKineticGenerator", 1L, 0), null, 10 * 20, 480);
 
         //Kinetic Water Generator
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 ItemList.Casing_Gearbox_Steel.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Aluminium, 2), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Titanium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), ItemList.Electric_Pump_HV.get(2L), GT_ModHandler.getModItem("IC2", "itemRecipePart", 4, 12),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 6)
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 6)
         }, GT_ModHandler.getModItem("IC2", "blockKineticGenerator", 1L, 4), null, 10 * 20, 480);
 
         /* ================================= end  IC2 =================================*/
@@ -839,7 +839,7 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 12), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 16), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmiridium, 24)
         }, ItemList.OreDrill4.get(1L), null, 100 * 20, 30720);
 
-        //OreDrill4
+        //OreDrill5
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Hull_UV.get(1L), ItemList.Electric_Motor_UV.get(6L), ItemList.Conveyor_Module_UV.get(6L), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Adamantium, 16),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 16), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 20), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Tritanium, 26)
