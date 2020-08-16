@@ -25,6 +25,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import com.impact.System.LoginHandler;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.entity.EntityList;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 
@@ -58,6 +60,7 @@ public class impact {
     @Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         FMLCommonHandler.instance().bus().register(new LoginHandler());
+
         INFO("LoginHandler Loaded");
     }
 	
@@ -76,6 +79,8 @@ public class impact {
         MainLoader.preInit();
         INFO("MainLoader PREINIT Loaded ");
         //MainLoader.preInitClient();
+
+        MinecraftForge.EVENT_BUS.register(new EntitySpawningHandler());
     }
 
     @Mod.EventHandler
