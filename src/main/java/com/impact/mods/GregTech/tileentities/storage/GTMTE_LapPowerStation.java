@@ -312,8 +312,9 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
             }
         }
         // Calculate how much energy to void each tick
-        passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
-        passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
+        //passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
+        //passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
+        passiveDischargeAmount = BigInteger.ZERO;
         return formationChecklist;
     }
 
