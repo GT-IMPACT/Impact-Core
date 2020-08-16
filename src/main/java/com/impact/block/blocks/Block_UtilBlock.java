@@ -24,6 +24,7 @@ public class Block_UtilBlock extends Block {
 
     private IIcon iconConcrete;
     private IIcon iconPiston;
+    private IIcon iconFullWhite;
 
 
     private Block_UtilBlock() {
@@ -43,6 +44,7 @@ public class Block_UtilBlock extends Block {
     public void registerBlockIcons(IIconRegister ir) {
         iconConcrete = ir.registerIcon(MODID + ":" + "Concrete");
         iconPiston = ir.registerIcon(MODID + ":" + "PistonBlock");
+        iconFullWhite = ir.registerIcon(MODID + ":" + "FullWhite");
     }
 
     @Override
@@ -50,6 +52,7 @@ public class Block_UtilBlock extends Block {
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(ItemstackMeta(par1, 0));
         par3List.add(ItemstackMeta(par1, 1));
+        par3List.add(ItemstackMeta(par1, 2));
     }
 
     @Override
@@ -59,6 +62,8 @@ public class Block_UtilBlock extends Block {
                 return iconConcrete;
             case 1:
                 return iconPiston;
+            case 2:
+                return iconFullWhite;
             default:
                 return null;
         }
