@@ -1,6 +1,5 @@
 package com.impact.block.blocks;
 
-import com.impact.block.itemblock.GlassBlocksItem;
 import com.impact.block.itemblock.IB_Coal;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;

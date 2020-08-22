@@ -1,6 +1,8 @@
 package com.impact.loader;
 
+import com.impact.block.blocks.Block_QuantumStuff;
 import com.impact.impact;
+import com.impact.impact.*;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.item.FakeCircuits;
@@ -53,13 +55,7 @@ public class MainLoader {
         registerOreDictNames();
         INFO("[preInit] Meta Items OreDict List - Loaded");
 
-        ItemRegistery.registerBlocks_LSC();
-        ItemRegistery.registerBlocks_Sawmill();
-        ItemRegistery.registerBlock_IGlass();
-        ItemRegistery.registerBlock_Coal();
-        ItemRegistery.registerBlock_UtilBlock();
-        ItemRegistery.registerBlocks_FluidTank();
-        ItemRegistery.registerBlocks_BlockCeramic();
+        ItemRegistery.registerBlocks();
         INFO("[preInit] Meta Blocks - Loaded");
 
         for (byte i = 0; i <= 7; i++)
@@ -84,6 +80,11 @@ public class MainLoader {
 
         ASP.load();
         INFO("[load] Solar Panel 2 - Loaded");
+
+        Block_QuantumStuff.run();
+        INFO("[load] Quantum Stuff registered");
+
+        impact.proxy.registerRenderInfo();
     }
 
     public static void onPreLoad() {

@@ -31,7 +31,7 @@ public class IB_IGlass extends ItemBlock {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-		aList.add( "Use as a decorative");//Glassy & Classy
-		aList.add( "Use as GT Casing");//Glassy & Classy
+		aList.add( "Use as GT Casing");
+		aList.add("Alt/Ctrl+Scroll to Cycle Between Blocks");
 	}
 }

@@ -317,6 +317,8 @@ tile.impact_lapotronicenergyunit_block.3.name=Lapotronic Capacitor (ZPM)
 tile.impact_lapotronicenergyunit_block.4.name=Lapotronic Capacitor (UV)
 tile.impact_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
 tile.impact_sawmill_block.name=Saw Mill Conveyor
+tile.impact_inside_block.0.name=Naquadah Chamber Casing
+tile.impact_nqtether_block.name=Tether Core
 
 tile.impact_fluidtankblock_block.0.name=Tank Storage Block (Tier 1)
 tile.impact_fluidtankblock_block.1.name=Tank Storage Block (Tier 2)

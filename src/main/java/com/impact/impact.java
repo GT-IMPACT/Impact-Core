@@ -1,10 +1,10 @@
 package com.impact;
 
-import com.impact.System.Config;
-import com.impact.System.Refstrings;
-import com.impact.api.enums.Textures;
+import com.impact.System.*;
+import com.impact.api.enums.Texture;
+import com.impact.client.render.TESR_SETether;
+import com.impact.common.tileentities.TE_NqTether;
 import com.impact.loader.MainLoader;
-import com.impact.System.CommonProxy;
 import com.impact.loader.ModLoader;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
@@ -20,14 +20,18 @@ import com.impact.util.SendUtils;
 import com.impact.util.oreplugin.CSVMaker;
 import com.impact.util.oreplugin.GT5OreLayerHelper;
 import com.impact.util.oreplugin.GT5OreSmallHelper;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.common.MinecraftForge;
 import com.impact.System.LoginHandler;
 import cpw.mods.fml.relauncher.Side;
 import ic2.core.init.InternalName;
-
 
 import java.io.File;
 
@@ -44,24 +48,26 @@ import static ic2.core.init.InternalName.blockMachine3;
         	"required-after:Forge@[10.13.2.1291,);")
 
 public class impact {
-	
-	@SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
+
+    @SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
     public static CommonProxy proxy;
-	
+
 	@Mod.Instance(MODID)
     public static impact instance;
     public static SendUtils SendUtils_instance = new SendUtils();
     public static String ModPackVersion = "1.0 RELEASE";
     public static Config mConfig;
+    public static FMLEventChannel channel;
 
 
     public impact(){
-        Textures.Icons.VOID.name();
+        Texture.Icons.VOID.name();
     }
 
     @Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         FMLCommonHandler.instance().bus().register(new LoginHandler());
+
         INFO("LoginHandler Loaded");
     }
 	
@@ -82,6 +88,14 @@ public class impact {
         MainLoader.preInit();
         INFO("MainLoader PREINIT Loaded ");
         //MainLoader.preInitClient();
+
+        MinecraftForge.EVENT_BUS.register(new EntitySpawningHandler());
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
+        channel.register(new PacketHandler());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
+
     }
 
     @Mod.EventHandler

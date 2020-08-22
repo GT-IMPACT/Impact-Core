@@ -14,12 +14,8 @@ public class Config {
     public static boolean loadConfig;
     public static Configuration config;
 
-    public static FMLPreInitializationEvent event;
-
     public static boolean disableLogger;
     public static boolean csv;
-    public static String CSVname;
-    public static String CSVnameSmall;
     public static boolean hideBackground = true;
     public static boolean toolTips = true;
 
@@ -44,16 +40,6 @@ public class Config {
             cfg = config.get("GENERAL", "Print csv", false);
             cfg.comment = "Princsv, you need apache commons collections to be injected in the minecraft jar. [Default: false]";
             csv = cfg.getBoolean(false);
-            General.add(cfg.getName());
-
-            cfg = config.get("GENERAL", "CSV_name",event.getModConfigurationDirectory() + "/Oresheet.csv");
-            cfg.comment = "Rename the oresheet here, it will appear in /config.";
-            CSVname = cfg.getString();
-            General.add(cfg.getName());
-
-            cfg = config.get("GENERAL", "CSV_name_for_Small_Ore_Sheet",event.getModConfigurationDirectory() + "/Small-Ores-Sheet.csv");
-            cfg.comment = "Rename the oresheet here, it will appear in /config.";
-            CSVnameSmall = cfg.getString();
             General.add(cfg.getName());
 
             cfg = config.get("GENERAL", "Hide Background", true);
