@@ -2,6 +2,7 @@ package com.impact.item;
 
 import com.impact.System.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import ic2.core.IC2;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -83,4 +84,11 @@ public class WoodBrickFormTool extends Item {
     @Override
     public boolean showDurabilityBar(ItemStack stack) { return false; }
 
+    public ItemStack getRecipe(int amount) {
+        return new ItemStack(getInstance(), amount, 0);
+    }
+
+    public ItemStack get() {
+        return new ItemStack(getInstance(), 1, GT_Values.W);
+    }
 }

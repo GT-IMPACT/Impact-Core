@@ -54,6 +54,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
     final Core_Items CoreItems = Core_Items.getInstance(); //пыльки
     final Core_Items2 CoreItems2 = Core_Items2.getInstance(); //компоненты
+    final WoodBrickFormTool WoodForm = WoodBrickFormTool.getInstance(); //вуд форма
 
     public void run1() {
         final Object[] mk1_recipe = {
@@ -400,22 +401,22 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potin, 9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Tin), OrePrefixes.dust.get(Materials.Tin), OrePrefixes.dust.get(Materials.Lead)});
 
 		    //Wooden Brick Form
-		    GT_ModHandler.addShapelessCraftingRecipe(GT_ItemList.WoodenBrickForm.get(1L), bits, new Object[]{ToolDictNames.craftingToolKnife, GT_ModHandler.getModItem("TConstruct", "blankPattern", 1L, 0)});
+		    GT_ModHandler.addShapelessCraftingRecipe(WoodForm.getRecipe(1), bits, new Object[]{ToolDictNames.craftingToolKnife, GT_ModHandler.getModItem("TConstruct", "blankPattern", 1L, 0)});
 
 		    //Bricks
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.UnfiredClayBrick.get(8L), bits, new Object[]{"CCC", "CFC", "CCC", 'C', new ItemStack(Items.clay_ball, 1, 0), 'F', GT_ItemList.WoodenBrickForm});
-        GT_ModHandler.addShapelessCraftingRecipe(GT_ItemList.UnfiredClayBrick.get(1L), bits, new Object[]{new ItemStack(Items.clay_ball, 1, 0), GT_ItemList.WoodenBrickForm});
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.UnfiredSearedBrick.get(8L), bits, new Object[]{"GGG", "GFG", "GGG", 'G', GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), 'F', GT_ItemList.WoodenBrickForm});
-        GT_ModHandler.addShapelessCraftingRecipe(GT_ItemList.UnfiredSearedBrick.get(1L), bits, new Object[]{GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), GT_ItemList.WoodenBrickForm.get(0L)});
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.UnfiredCokeOvenBrick.get(3L), bits, new Object[]{"CCC", "SFS", "SSS", 'C', new ItemStack(Items.clay_ball, 1, 0), 'S', new ItemStack(Blocks.sand, 1, 0), 'F', GT_ItemList.WoodenBrickForm.get(0L)});
-        GT_ModHandler.addShapelessCraftingRecipe(GT_ItemList.UnfiredCokeOvenBrick.get(1L), bits, new Object[]{new ItemStack(Items.clay_ball, 1, 0), new ItemStack(Blocks.sand, 1, 0), OrePrefixes.block.get(Materials.Sand), GT_ItemList.WoodenBrickForm.get(0L)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredClayBrick.getMetaID(), 8), bits, new Object[]{"CCC", "CFC", "CCC", 'C', new ItemStack(Items.clay_ball, 1, 0), 'F', WoodForm.get()});
+        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredClayBrick.getMetaID(), 1), bits, new Object[]{new ItemStack(Items.clay_ball, 1, 0), WoodForm.get()});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredSearedBrick.getMetaID(), 8), bits, new Object[]{"GGG", "GFG", "GGG", 'G', GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), 'F', WoodForm.get()});
+        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredSearedBrick.getMetaID(), 1), bits, new Object[]{GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), WoodForm.get()});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 3), bits, new Object[]{"CCC", "SFS", "SSS", 'C', new ItemStack(Items.clay_ball, 1, 0), 'S', new ItemStack(Blocks.sand, 1, 0), 'F', WoodForm.get()});
+        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 1), bits, new Object[]{new ItemStack(Items.clay_ball, 1, 0), new ItemStack(Blocks.sand, 1, 0), OrePrefixes.block.get(Materials.Sand), WoodForm.get()});
 
         GT_ModHandler.removeFurnaceSmelting(GT_ModHandler.getModItem("minecraft", "clay_ball", 1L, 0));
         GT_ModHandler.removeFurnaceSmelting(GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1));
 
-        GT_ModHandler.addSmeltingRecipe(GT_ItemList.UnfiredClayBrick.get(1L), GT_ModHandler.getModItem("minecraft", "brick", 1L, 0));
-        GT_ModHandler.addSmeltingRecipe(GT_ItemList.UnfiredSearedBrick.get(1L), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 2));
-        GT_ModHandler.addSmeltingRecipe(GT_ItemList.UnfiredCokeOvenBrick.get(1L), GT_ItemList.CokeOvenBrick.get(1L));
+        GT_ModHandler.addSmeltingRecipe(CoreItems2.getRecipe(UnfiredClayBrick.getMetaID(), 1), GT_ModHandler.getModItem("minecraft", "brick", 1L, 0));
+        GT_ModHandler.addSmeltingRecipe(CoreItems2.getRecipe(UnfiredSearedBrick.getMetaID(), 1), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 2));
+        GT_ModHandler.addSmeltingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 1), CoreItems2.getRecipe(CokeOvenBrick.getMetaID(), 1));
 
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(SteelBars.getMetaID(), 3), tBitMask, new Object[]{" h ", "SSS", "SSS", 'S', OrePrefixes.stick.get(Materials.Steel)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Casing_Farm.get(1L), bits, new Object[]{"ThT", "TFT", "TwT", 'T', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'F', OrePrefixes.frameGt.get(Materials.Steel)});

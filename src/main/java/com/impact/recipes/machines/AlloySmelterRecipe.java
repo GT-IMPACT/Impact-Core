@@ -21,7 +21,7 @@ public class AlloySmelterRecipe implements Runnable {
     final Core_Items2 CoreItems2 = Core_Items2.getInstance();
 
     public void run() {
-        GT_Values.RA.addAlloySmelterRecipe(new ItemStack(Items.clay_ball, 3, 0), new ItemStack(Blocks.sand, 5, 0), GT_ItemList.CokeOvenBrick.get(3L), 130, 3);
+        GT_Values.RA.addAlloySmelterRecipe(new ItemStack(Items.clay_ball, 3, 0), new ItemStack(Blocks.sand, 5, 0), CoreItems2.getRecipe(CokeOvenBrick.getMetaID(),3), 130, 3);
 
         GT_Values.RA.addAlloySmelterRecipe(new ItemStack(Items.clay_ball, 1, 0), ItemList.Shape_Mold_Ingot.get(0), GT_ModHandler.getModItem("minecraft", "brick", 1L, 0), 130, 3);
 
