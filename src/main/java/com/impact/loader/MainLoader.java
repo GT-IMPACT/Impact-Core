@@ -55,11 +55,7 @@ public class MainLoader {
         registerOreDictNames();
         INFO("[preInit] Meta Items OreDict List - Loaded");
 
-        ItemRegistery.registerBlocks_LSC();
-        ItemRegistery.registerBlocks_Sawmill();
-        ItemRegistery.registerBlock_IGlass();
-        ItemRegistery.registerBlock_Coal();
-        ItemRegistery.registerBlock_UtilBlock();
+        ItemRegistery.registerBlocks();
         INFO("[preInit] Meta Blocks - Loaded");
 
         for (byte i = 0; i <= 7; i++)

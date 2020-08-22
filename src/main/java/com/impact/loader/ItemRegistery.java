@@ -2,10 +2,7 @@ package com.impact.loader;
 
 import com.impact.System.Refstrings;
 import com.impact.block.blocks.*;
-import com.impact.block.itemblock.BufferItem;
-import com.impact.block.itemblock.DecorateBlocksItem;
 import com.impact.block.itemblock.FakeBlocksItem;
-import com.impact.block.itemblock.GlassBlocksItem;
 import com.impact.item.GT_Pump.GregtechPump;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_ModHandler;
@@ -42,6 +39,8 @@ public class ItemRegistery {
     public static Block IGlassBlock;
     public static Block CoalBlock;
     public static Block UtilBlock;
+    public static Block NqTetherBlock;
+    public static Block InsideBlock;
 
     public static void run() {
         //Blocks
@@ -65,21 +64,21 @@ public class ItemRegistery {
         //OreDictionary
         OreDictionary.registerOre("concrete", BlockstackMeta(UtilBlock, 0));
 
-        OreDictionary.registerOre("blockCokeCoal",              BlockstackMeta(CoalBlock, 0));
-        OreDictionary.registerOre("CompressedCoalCoke",         BlockstackMeta(CoalBlock, 1));
-        OreDictionary.registerOre("DoubleCompressedCoalCoke",   BlockstackMeta(CoalBlock, 2));
-        OreDictionary.registerOre("TripleCompressedCoalCoke",   BlockstackMeta(CoalBlock, 3));
-        OreDictionary.registerOre("QuadrupleCompressedCoalCoke",BlockstackMeta(CoalBlock, 4));
+        OreDictionary.registerOre("blockCokeCoal", BlockstackMeta(CoalBlock, 0));
+        OreDictionary.registerOre("CompressedCoalCoke", BlockstackMeta(CoalBlock, 1));
+        OreDictionary.registerOre("DoubleCompressedCoalCoke", BlockstackMeta(CoalBlock, 2));
+        OreDictionary.registerOre("TripleCompressedCoalCoke", BlockstackMeta(CoalBlock, 3));
+        OreDictionary.registerOre("QuadrupleCompressedCoalCoke", BlockstackMeta(CoalBlock, 4));
 
-        OreDictionary.registerOre("CompressedCharcoal",         BlockstackMeta(CoalBlock, 5));
-        OreDictionary.registerOre("DoubleCompressedCharcoal",   BlockstackMeta(CoalBlock, 6));
-        OreDictionary.registerOre("TripleCompressedCharcoal",   BlockstackMeta(CoalBlock, 7));
-        OreDictionary.registerOre("QuadrupleCompressedCharcoal",BlockstackMeta(CoalBlock, 8));
+        OreDictionary.registerOre("CompressedCharcoal", BlockstackMeta(CoalBlock, 5));
+        OreDictionary.registerOre("DoubleCompressedCharcoal", BlockstackMeta(CoalBlock, 6));
+        OreDictionary.registerOre("TripleCompressedCharcoal", BlockstackMeta(CoalBlock, 7));
+        OreDictionary.registerOre("QuadrupleCompressedCharcoal", BlockstackMeta(CoalBlock, 8));
 
-        OreDictionary.registerOre("CompressedCoal",             BlockstackMeta(CoalBlock, 9));
-        OreDictionary.registerOre("DoubleCompressedCoal",       BlockstackMeta(CoalBlock, 10));
-        OreDictionary.registerOre("TripleCompressedCoal",       BlockstackMeta(CoalBlock, 11));
-        OreDictionary.registerOre("QuadrupleCompressedCoal",    BlockstackMeta(CoalBlock, 12));
+        OreDictionary.registerOre("CompressedCoal", BlockstackMeta(CoalBlock, 9));
+        OreDictionary.registerOre("DoubleCompressedCoal", BlockstackMeta(CoalBlock, 10));
+        OreDictionary.registerOre("TripleCompressedCoal", BlockstackMeta(CoalBlock, 11));
+        OreDictionary.registerOre("QuadrupleCompressedCoal", BlockstackMeta(CoalBlock, 12));
         INFO("[Init] Item Registery Blocks OreDict - Loaded");
     }
 
@@ -91,21 +90,13 @@ public class ItemRegistery {
         GTPump.registerPumpType(3, "EV Hand Pump", 1600000, 3);
     }
 
-    public static void registerBlocks_LSC() {
+    public static void registerBlocks() {
         lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
-    }
-    public static void registerBlock_IGlass() {
         IGlassBlock = Block_IGlass.registerBlock();
-    }
-    public static void registerBlock_Coal() {
         CoalBlock = Block_Coal.registerBlock();
-    }
-    public static void registerBlock_UtilBlock() {
         UtilBlock = Block_UtilBlock.registerBlock();
-    }
-    public static void registerBlocks_Sawmill() {
-        SawMillBlock = Block_Sawmill.registerBlock("SawMill", new String[]{
-                Refstrings.MODID + ":sawmill/conveyor",
-        });
+        SawMillBlock = Block_Sawmill.registerBlock();
+        NqTetherBlock = Block_NqTether.registerBlock();
+        InsideBlock = Block_InsideBlocks.registerBlock();
     }
 }

@@ -1,9 +1,9 @@
 package com.impact;
 
-import com.impact.System.CommonProxy;
-import com.impact.System.Config;
-import com.impact.System.Refstrings;
+import com.impact.System.*;
 import com.impact.api.enums.Texture;
+import com.impact.client.render.TESR_SETether;
+import com.impact.common.tileentities.TE_NqTether;
 import com.impact.loader.MainLoader;
 import com.impact.loader.ModLoader;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
@@ -19,13 +19,14 @@ import com.impact.util.SendUtils;
 import com.impact.util.oreplugin.CSVMaker;
 import com.impact.util.oreplugin.GT5OreLayerHelper;
 import com.impact.util.oreplugin.GT5OreSmallHelper;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
-import com.impact.System.LoginHandler;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.entity.EntityList;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
@@ -51,6 +52,7 @@ public class impact {
     public static SendUtils SendUtils_instance = new SendUtils();
     public static String ModPackVersion = "1.0 RELEASE";
     public static Config mConfig;
+    public static FMLEventChannel channel;
 
 
     public impact(){
@@ -81,6 +83,12 @@ public class impact {
         //MainLoader.preInitClient();
 
         MinecraftForge.EVENT_BUS.register(new EntitySpawningHandler());
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
+        channel.register(new PacketHandler());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
+
     }
 
     @Mod.EventHandler

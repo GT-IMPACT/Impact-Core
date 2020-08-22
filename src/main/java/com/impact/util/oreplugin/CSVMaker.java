@@ -8,6 +8,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.BufferedWriter;
 import java.nio.file.Files;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CSVMaker implements Runnable {
+
+    public static FMLPreInitializationEvent event;
 
     public CSVMaker() {
 
@@ -106,7 +109,7 @@ public class CSVMaker implements Runnable {
                 System.out.println(pair.getKey() + " = " + pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
-            BufferedWriter one = Files.newBufferedWriter(Paths.get(Config.CSVnameSmall));
+            BufferedWriter one = Files.newBufferedWriter(Paths.get(event.getModConfigurationDirectory() + "/Small-Ores-Sheet.csv"));
             ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,mix,DENSITY,overworld,nether,end,ea,aroma,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie".split("\\,");
@@ -193,7 +196,7 @@ public class CSVMaker implements Runnable {
                 System.out.println(pair.getKey() + " = " + pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
-            BufferedWriter one = Files.newBufferedWriter(Paths.get(Config.CSVname));
+            BufferedWriter one = Files.newBufferedWriter(Paths.get(event.getModConfigurationDirectory() + "/Oresheet.csv"));
             ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,PRIMARY,SECONDARY,INBETWEEN,AROUND,mix,TIER,HEIGHT,DENSITY,SIZE,WEIGHT,overworld,nether,end,aroma,ea,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie".split("\\,");

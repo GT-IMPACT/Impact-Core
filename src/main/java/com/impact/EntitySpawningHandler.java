@@ -1,6 +1,7 @@
 package com.impact;
 
 
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -43,6 +44,7 @@ public class EntitySpawningHandler {
     public void onEntityJoinWorld(final EntityJoinWorldEvent event) {
         if (event.entity != null && !bannedEntities.isEmpty() && bannedEntities.contains(EntityList.getEntityString(event.entity))) {
             event.world.removeEntity(event.entity);
+            event.setCanceled(true);
         }
     }
 }

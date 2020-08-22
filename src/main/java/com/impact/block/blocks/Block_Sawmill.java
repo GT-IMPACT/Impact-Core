@@ -30,12 +30,12 @@ public class Block_Sawmill extends gtUpdateBlockAPI {
         super(Material.iron);
     }
 
-    public static Block registerBlock(String name, String[] texture) {
+    public static Block registerBlock() {
         final String blockName = "impact_sawmill_block";
         instance.setBlockName(blockName);
         instance.setHardness(5.0f);
         instance.setResistance(6.0f);
-        instance.textureNames = texture;
+        instance.textureNames = new String[]{Refstrings.MODID + ":sawmill/conveyor"};
         GameRegistry.registerBlock(instance, IB_SawMill.class, blockName);
         return instance;
     }

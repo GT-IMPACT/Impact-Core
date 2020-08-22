@@ -5,15 +5,19 @@ import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.impact.block.blocks.Block_NqTether;
 import com.impact.block.blocks.Block_QuantumStuff;
 import com.impact.mods.GregTech.tileentities.multi.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -25,61 +29,69 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore1;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
-import static gregtech.api.GregTech_API.sBlockCasings4;
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.V;
 
-public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
 
     private static final String[] description = new String[]{
             EnumChatFormatting.RED + "Impact Details:",
-            "- Test Casing",
-            "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
-            "- Hatches (any PBE Casing)",
+            "- Naquadah Base Casing",
+            "- I-Glass (any glass)",
+            "- Tether Core",
+            "- Hatches (any Casing)",
+            "- Dynamo (any Casing)",
     };
 
-    private static final IStructureDefinition<GTMTE_NaquadahGenerator> STRUCTURE_DEFINITION =
-            StructureDefinition.<GTMTE_NaquadahGenerator>builder()
+    private static final IStructureDefinition<GTMTE_HyperNaquadahGenerator> STRUCTURE_DEFINITION =
+            StructureDefinition.<GTMTE_HyperNaquadahGenerator>builder()
                     .addShape("main", new String[][]{
                             {"               ", "      CCC      ", "    CC   CC    ", "   C       C   ", "  C         C  ", "  C         C  ", " C           C ", " C           C ", " C           C ", "  C         C  ", "  C         C  ", "   C       C   ", "    CC   CC    ", "      C~C      ", "               "},
                             {"      CCC      ", "    CCBBBCC    ", "   CBBAAABBC   ", "  CBAA   AABC  ", " CBA       ABC ", " CBA       ABC ", "CBA         ABC", "CBA         ABC", "CBA         ABC", " CBA       ABC ", " CBA       ABC ", "  CBAA   AABC  ", "   CBBAAABBC   ", "    CCBBBCC    ", "      CCC      "},
                             {"               ", "      CCC      ", "    CC   CC    ", "   C       C   ", "  C         C  ", "  C         C  ", " C           C ", " C           C ", " C           C ", "  C         C  ", "  C         C  ", "   C       C   ", "    CC   CC    ", "      CCC      ", "               "}
                     })
-                    .addElement('A', ofBlock(sBlockCasings4, 6))
-                    .addElement('B', ofBlock(sBlockCasings4, 7))
+                    .addElement('A', ofBlock(sCaseCore2, 10))
+                    .addElement('B', ofBlock(Block_NqTether.INSTANCE, 0))
                     .addElement('C', ofChain(
-                            ofHatchAdder(GTMTE_NaquadahGenerator::addClassicToMachineList, 410, sCaseCore2, 10),
+                            ofHatchAdder(GTMTE_HyperNaquadahGenerator::addClassicToMachineList, 410, sCaseCore2, 10),
                             onElementPass(t -> t.casingCount++, ofBlock(sCaseCore2, 10))
                     ))
                     .build();
 
 
-    private static Block CASING = sCaseCore1;
-    private static byte CASING_META = 4;
-    private static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
+    private static Block CASING = sCaseCore2;
+    private static byte CASING_META = 10;
+    private static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
     private static int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+    public boolean Stuff;
     private int casingCount = 0;
+    public int EU_PER_TICK = 134217728;
+    protected int fuelConsumption = 0;
 
-    public GTMTE_NaquadahGenerator(int aID, String aName, String aNameRegional) {
+    public GTMTE_HyperNaquadahGenerator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        new Runner().run();
     }
 
-    public GTMTE_NaquadahGenerator(String aName) {
+    public GTMTE_HyperNaquadahGenerator(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<GTMTE_NaquadahGenerator> getStructure_EM() {
+    public IStructureDefinition<GTMTE_HyperNaquadahGenerator> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GTMTE_NaquadahGenerator(mName);
+        return new GTMTE_HyperNaquadahGenerator(mName);
     }
 
     @Override
@@ -100,7 +112,7 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", "mModed");
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Hyper Generator", "MultiParallelBlockGUI.png");
     }
 
     @Override
@@ -111,126 +123,72 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        tInputList.add(mInventory[1]);
-        ItemStack[] inputs = tInputList.toArray(new ItemStack[tInputList.size()]);
 
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
 
-        if (inputs.length > 0 || fluids.length > 0) {
-            long voltage = getMaxInputVoltage();
-            byte tier = (byte) Math.max(0, GT_Utility.getTier(voltage));
-            GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sWiremillRecipes.findRecipe(getBaseMetaTileEntity(), false,
-                    false, V[tier], fluids, inputs);
-            if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
+        Collection<GT_Recipe> recipeList = GT_Recipe.GT_Recipe_Map.sHyperGenerator.mRecipeList;
 
-                int EUt = recipe.mEUt;
-                int maxProgresstime = recipe.mDuration;
+        if ((storedFluids.size() > 0 && recipeList != null)) {
 
-                if (getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill0 || getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill1 || getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill2) {
-                    if (tier > 1) {
-                        while (EUt <= V[tier] && maxProgresstime > 2) {
-                            EUt *= 2;
-                            maxProgresstime /= 2;
+            for (FluidStack hatchFluid : storedFluids) {
+
+                for (GT_Recipe aFuel : recipeList) {
+
+                    FluidStack liquid; // Register FluidStack (name fluid from oredict cell materials, amount)
+
+                    if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
+                            && hatchFluid.isFluidEqual(liquid)) { // check: fluid cell and fluid without cell
+
+                        fuelConsumption = liquid.amount = aFuel.mSpecialValue; // set Amount: FUEL_PER_SECOND
+
+                        if (super.depleteInput(liquid)) {
+
+
+                            super.mMaxProgresstime = 20; // 1 Second
+                            super.mEfficiencyIncrease = 50; // 50 - 0.5% per cycle
+                            if (mEfficiency > 9000) {
+                                super.eAmpereFlow = 256;
+                                super.mEUt = EU_PER_TICK/256;
+                            } else {
+                                super.mEUt = 0;
+                                super.eAmpereFlow = 0;
+                            }// UV * 256A
+                            quantumStuff(true);
+                            return true;
                         }
                     }
-                    if (maxProgresstime < 1) {
-                        maxProgresstime = 1;
-                        EUt = recipe.mEUt * recipe.mDuration / 2;
-                    }
                 }
-
-                this.mEUt = -EUt;
-                this.mMaxProgresstime = maxProgresstime;
-                mOutputItems = new ItemStack[recipe.mOutputs.length];
-                for (int i = 0; i < recipe.mOutputs.length; i++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
-                        this.mOutputItems[i] = recipe.getOutput(i);
-                    }
-                }
-
-                this.mOutputFluids = recipe.mFluidOutputs;
-                this.updateSlots();
-                quantumStuff(true);
-                return true;
             }
         }
+        super.mEUt = 0;
+        super.eAmpereFlow = 0;
+        super.mEfficiency = 0;
         quantumStuff(false);
         return false;
     }
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
+//    @Override
+//    public boolean onRunningTick(ItemStack aStack) {
+//       // if (mEfficiency > 9000)
+//            addEnergyOutput_EM(EU_PER_TICK/256, 256);
+//        return true;
+//    }
 
     private void quantumStuff(boolean shouldExist) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base != null && base.getWorld() != null) {
             int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX + base.getXCoord();
-            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY*6 + base.getYCoord();
+            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 6 + base.getYCoord();
             int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ + base.getZCoord();
             Block block = base.getWorld().getBlock(xDir, yDir, zDir);
             if (shouldExist) {
                 if (block != null) {
-                    base.getWorld().setBlock(xDir, yDir+6, zDir, Block_QuantumStuff.INSTANCE, 0, 2);
+                    base.getWorld().setBlock(xDir, yDir + 6, zDir, Block_QuantumStuff.INSTANCE, 0, 2);
                 }
             } else {
-                    base.getWorld().setBlock(xDir, yDir+6, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
+                base.getWorld().setBlock(xDir, yDir + 6, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
             }
         }
-    }
-
-    public boolean Stuff;
-
-    @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        if (aPlayer.isSneaking())
-        {
-            quantumStuff(true);
-            GT_Utility.sendChatToPlayer(aPlayer, "Enabled");
-
-        }
-        else {
-            quantumStuff(false);
-            GT_Utility.sendChatToPlayer(aPlayer, "Disabled");
-
-        }
-
     }
 
     @Override
@@ -238,14 +196,15 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
                 .addInfo("Multi-Amperes generator")
+                .addInfo("Outputs " + NumberFormat.getNumberInstance().format(EU_PER_TICK) + "EU/t including 256A")
                 .addSeparator()
                 .addController()
-                .addEnergyHatch("Any casing")
+                .addDynamoHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
-                .addInputBus("Any casing (max x15)")
-                .addOutputBus("Any casing (max x3)")
-                .addMuffler("Any casing")
-                .addCasingInfo("Test Casing")
+                .addInputHatch("Any casing (max x3)")
+                .addCasingInfo("Naquadah Base Casing")
+                .addOtherStructurePart("Naquadah Chamber Casing", "inside structure")
+                .addOtherStructurePart("Tether Core", "for contain core naqahdah")
                 .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -256,8 +215,15 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
 
     @Override
     public String[] getInfoData() {
+
         return new String[]{
-                "5454",
+                "Total Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt*256) + EnumChatFormatting.RESET + " EU/t",
+                "Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt) + EnumChatFormatting.RESET + " EU/t | Amperes: " + EnumChatFormatting.GREEN + "256" + EnumChatFormatting.RESET + " A",
+                "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F + EnumChatFormatting.YELLOW + " %",
+                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
+                        ? EnumChatFormatting.GREEN + "No Problems" + EnumChatFormatting.RESET
+                        : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET),
+                "Fuel supply: " + EnumChatFormatting.RED + "" + fuelConsumption + EnumChatFormatting.RESET + " L/s"
         };
     }
 
@@ -270,4 +236,27 @@ public class GTMTE_NaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
+
+    public static class Runner implements Runnable {
+        public int[] FUEL_PER_SECOND = new int[]{ //for 1A
+                20,
+                10,
+                5,
+        };
+
+        public ItemStack[] FUEL_NAME = new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HyperFuelI, 1),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HyperFuelII, 1),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HyperFuelIII, 1),
+        };
+
+        @Override
+        public void run() {
+
+            for (int i = 0; i < FUEL_NAME.length; i++)
+                RA.addFuel(FUEL_NAME[i], GT_Utility.getFluidForFilledItem(FUEL_NAME[i], true) == null ? GT_Utility.getContainerItem(FUEL_NAME[i], true) : null, FUEL_PER_SECOND[i] * 256, 10);
+
+        }
+    }
+
 }

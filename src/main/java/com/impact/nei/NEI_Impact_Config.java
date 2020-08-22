@@ -15,6 +15,8 @@ public class NEI_Impact_Config implements IConfigureNEI {
 
         if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             new GT_NEI_NaquadahGen(GT_Recipe.GT_Recipe_Map.sLiquidNqGenerator);
+            new GT_NEI_EnrichedNaquadahGen(GT_Recipe.GT_Recipe_Map.sLiquidENqGenerator);
+            new GT_NEI_HyperGen(GT_Recipe.GT_Recipe_Map.sHyperGenerator);
             new GT_NEI_Fuel();
             new GT_NEI_HeavyMetalCyclone(GT_Recipe.GT_Recipe_Map.sCyclonRecipes);
         }

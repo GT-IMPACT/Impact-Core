@@ -80,7 +80,7 @@ public enum GT_ItemList implements IItemContainer {
     PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
     AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse,
 
-    Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone,
+    Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched,
 
     //Cases
     //Page3 1-15
@@ -89,7 +89,7 @@ public enum GT_ItemList implements IItemContainer {
     CuttingCasing, MixingCasing,
     //Page3 16-31
     NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
-    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, HyperGenCase1,
+    DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, NqCasing,
     //Page3 16-31
     Casing_Farm,
 

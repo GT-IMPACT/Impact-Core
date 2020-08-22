@@ -4,6 +4,7 @@ import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_Multi
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,8 +13,16 @@ import net.minecraft.item.ItemStack;
 
 public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Machine {
 
+    GT_MetaTileEntity_MultiBlockBase mte;
+
     public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
+        mte = (GT_MetaTileEntity_MultiBlockBase) mTileEntity.getMetaTileEntity();
+    }
+
+    public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, GT_MetaTileEntity_MultiBlockBase base) {
+        super(aInventoryPlayer, aTileEntity);
+        mte = base;
     }
 
     @Override
@@ -28,7 +37,6 @@ public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Mach
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
-            GT_MetaTileEntity_MultiParallelBlockBase mte = (GT_MetaTileEntity_MultiParallelBlockBase) mTileEntity.getMetaTileEntity();
             if (aSlotIndex == 0) {
                 if (mte.getBaseMetaTileEntity().isAllowedToWork()) {
                     GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Disabled");

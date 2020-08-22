@@ -1,6 +1,5 @@
 package com.impact.mods.GregTech.gui;
 
-import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -9,7 +8,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -49,12 +47,10 @@ public class GT_GUIContainerMT_Machine extends GT_GUIContainer {
         mouseX -= (width - xSize) / 2;
         mouseY -= (height - ySize) / 2;
         if (mContainer.mTileEntity != null) {
-            IMetaTileEntity mte = mContainer.mTileEntity.getMetaTileEntity();
-            if (mte instanceof GT_MetaTileEntity_MultiParallelBlockBase) {
-                if (mouseX < startX || mouseY < startY) return;
-                startY += weight;
-                if (mouseX < (startX += hight)) if (mouseY < startY) renderText(getTooltipText(strings), renderPosX, renderPosY, fontRendererObj);
-            }
+            if (mouseX < startX || mouseY < startY) return;
+            startY += weight;
+            if (mouseX < (startX += hight))
+                if (mouseY < startY) renderText(getTooltipText(strings), renderPosX, renderPosY, fontRendererObj);
         }
     }
 

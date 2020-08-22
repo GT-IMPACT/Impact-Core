@@ -7,12 +7,12 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class IB_IGlass extends ItemBlock {
+public class IB_InsideBlocks extends ItemBlock {
 
-	public IB_IGlass(Block block) {
+	public IB_InsideBlocks(Block block) {
 		super(block);
 	}
-	
+
 	@Override
 	public int getMetadata(int meta) {
 		return meta;
@@ -30,8 +30,7 @@ public class IB_IGlass extends ItemBlock {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-		aList.add( "Use as GT Casing");
-		aList.add("Alt/Ctrl+Scroll to Cycle Between Blocks");
+	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
+		lines.add("Use as GT Casing");
 	}
 }
