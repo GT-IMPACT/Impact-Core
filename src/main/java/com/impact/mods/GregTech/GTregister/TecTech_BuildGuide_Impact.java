@@ -677,10 +677,10 @@ public class TecTech_BuildGuide_Impact implements Runnable {
         });
 
         //3D Printer
-        registerMetaClass(GTMTE_3DPrinter.class, new IMultiblockInfoContainer<GTMTE_3DPrinter>() {
+        registerMetaClass(GTMTE_DDDPrinter.class, new IMultiblockInfoContainer<GTMTE_DDDPrinter>() {
             //region Structure
-            private final IStructureDefinition<GTMTE_3DPrinter> definition =
-                    StructureDefinition.<GTMTE_3DPrinter>builder()
+            private final IStructureDefinition<GTMTE_DDDPrinter> definition =
+                    StructureDefinition.<GTMTE_DDDPrinter>builder()
                             .addShapeOldApi("main", new String[][]{
 
                                     {"033330...03330", "533330...43330", "000000...00000",},
@@ -708,7 +708,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
             //endregion
 
             @Override
-            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_3DPrinter tileEntity, ExtendedFacing aSide) {
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_DDDPrinter tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                 definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                         base.getXCoord(), base.getYCoord(), base.getZCoord(),

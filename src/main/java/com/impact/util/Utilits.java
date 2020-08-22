@@ -22,7 +22,7 @@ import java.util.List;
 public class Utilits {
 
     public static boolean invertBoolean(final boolean booleans) {
-        if (booleans == true) {
+        if (booleans) {
             return false;
         }
         return true;

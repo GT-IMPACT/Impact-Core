@@ -1,14 +1,18 @@
 package com.impact.recipes.machines;
 
 import com.impact.item.Core_Items;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.impact.util.Utilits.Itemstack;
 
 public class MixerRecipe implements Runnable {
 
@@ -37,6 +41,10 @@ public class MixerRecipe implements Runnable {
 
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gypsum, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L), GT_Utility.getIntegratedCircuit(1), GT_Values.NF,  GT_Values.NF, CoreItems.getRecipe(37,4), 200, 8);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 2L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gypsum, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Marble, 1L), GT_Utility.getIntegratedCircuit(1), GT_Values.NF,  GT_Values.NF, CoreItems.getRecipe(37,4), 200, 8);
+
+        GT_Values.RA.addMixerRecipe(GregTech_API.getStackofAmountFromOreDict("dustZirconium", 1), Itemstack(Core_Items.getInstance(), 1, 40), null,null,null, GT_Utility.getIntegratedCircuit(2),null, null, Itemstack(Core_Items.getInstance(), 2, 42), 400, 96);
+        GT_Values.RA.addMixerRecipe(GregTech_API.getStackofAmountFromOreDict("dustCerium", 9), GregTech_API.getStackofAmountFromOreDict("dustGadolinium", 1), null,null,null, GT_Utility.getIntegratedCircuit(2), null, null, Itemstack(Core_Items.getInstance(), 10, 43), 400, 96);
+        GT_Values.RA.addMixerRecipe(GregTech_API.getStackofAmountFromOreDict("dustLanthanum", 15), GregTech_API.getStackofAmountFromOreDict("dustStrontium", 13), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 8), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 2), null, GT_Utility.getIntegratedCircuit(2),null, null, Itemstack(Core_Items.getInstance(), 38, 44), 400, 96);
 
         /* ================================= end CORE MOD =================================*/
 /** ================================= start GT =================================*/

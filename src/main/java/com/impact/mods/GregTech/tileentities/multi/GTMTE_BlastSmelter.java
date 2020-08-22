@@ -289,6 +289,9 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
                         } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 8)) {
                             this.mHeatingCapacity = 12601;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 12)) {
+                            this.mHeatingCapacity = 19801;
                         } else {
                             formationChecklist = false;
                         }

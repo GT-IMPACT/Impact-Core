@@ -23,7 +23,7 @@ import org.lwjgl.input.Keyboard;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 
-public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     public static String mModed;
 
@@ -48,18 +48,18 @@ public class GTMTE_3DPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
 
     /** === NAMED === */
-    public GTMTE_3DPrinter(int aID, String aName, String aNameRegional) {
+    public GTMTE_DDDPrinter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
     /** === NAMED === */
-    public GTMTE_3DPrinter(String aName) {
+    public GTMTE_DDDPrinter(String aName) {
         super(aName);
     }
 
     /** === META ENTITY === */
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GTMTE_3DPrinter(this.mName);
+        return new GTMTE_DDDPrinter(this.mName);
     }
 
     /** === DESCRIPTION === */

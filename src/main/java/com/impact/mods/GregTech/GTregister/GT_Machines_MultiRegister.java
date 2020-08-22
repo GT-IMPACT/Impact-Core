@@ -6,6 +6,7 @@ import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_LiquidEnrich
 import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_LiquidNqGenerator;
 import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
+import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
 
 import static com.impact.mods.GregTech.GTregister.GT_ItemList.*;
 
@@ -36,7 +37,7 @@ public class GT_Machines_MultiRegister {
 			Machine_Macerator		.set(new GTMTE_Macerator(ID++, "multimachine.macerator",  				"Multi Maceration Stack").getStackForm(1L));
 			Machine_Mixer			.set(new GTMTE_Mixer(ID++, "multimachine.mixer",  						"Multi Mixing Machine").getStackForm(1L));
 			Machine_Siftarator		.set(new GTMTE_Siftarator(ID++, "multimachine.siftarator",  			"Multi Siftaration Unit").getStackForm(1L));
-			Machine_DDDPrinter		.set(new GTMTE_3DPrinter(ID++, "multimachine.dddprinter",  				"3D Printer").getStackForm(1L));
+			Machine_DDDPrinter		.set(new GTMTE_DDDPrinter(ID++, "multimachine.dddprinter",  				"3D Printer").getStackForm(1L));
 			Machine_FreezSolidifier	.set(new GTMTE_FreezerSolidifier(ID++, "multimachine.freezsolidifier", 	"Freezer Solidifier").getStackForm(1L));
 			Machine_BlastSmelter	.set(new GTMTE_BlastSmelter(ID++, "multimachine.blastsmelter", 			"Blast Smelter").getStackForm(1L));
 			WaterDrill				.set(new GTMTE_DrillerWater(ID++, "multimachine.waterdrill", 			"Electric Water Drilling Rig").getStackForm(1L));
@@ -51,8 +52,14 @@ public class GT_Machines_MultiRegister {
 			Heavy_Metal_Cyclone		.set(new GTMTE_HeavyMetalCyclone(ID++, "multimachine.heavymetalcyclone","Heavy Metal Cyclone").getStackForm(1L));
 			Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID++, "multimachine.liquidenrichednqgenerator","Liquid Enriched Naquadah Generator").getStackForm(1L));
 
-			Machine_CokeOven.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
-			Machine_Multi_Farm.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));
+			Machine_CokeOven		.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
+			Machine_Multi_Farm		.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));
+
+			SOFC_Low				.set(new GTMTE_SOFC(13101, "multimachine.fuelcellmk1", "Solid-Oxide Generator Tier 1", 0).getStackForm(1L));
+			SOFC_Medium				.set(new GTMTE_SOFC(13102, "multimachine.fuelcellmk2", "Solid-Oxide Generator Tier 2", 1).getStackForm(1L));
+			SOFC_Huge				.set(new GTMTE_SOFC(13103, "multimachine.fuelcellmk3", "Solid-Oxide Generator Tier 3", 2).getStackForm(1L));
+			Multi_Tank				.set(new GTMTE_MultiTank(13104, "multimachine.multifluidtank", "Multi-Tank", 25).getStackForm(1L));
+			Single_Tank				.set(new GTMTE_MultiTank(13105, "multimachine.singlefluidtank", "Single-Tank", 1).getStackForm(1L));
 
 			//GT_ItemList.PowerStation			.set(new GTMTE_PowerStation(ID++, "multimachine.powerstation",  		"Power Station").getStackForm(1L));
 			//GT_ItemList.PowerReactor			.set(new GTMTE_REACTOR(ID++, "multimachine.powerreactor",  				"Power Reactor").getStackForm(1L));
