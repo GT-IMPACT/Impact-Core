@@ -6,7 +6,6 @@ import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.GregTech.casings.CORE_API;
 import com.impact.mods.GregTech.tileentities.multi.*;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_3DPrinter;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;

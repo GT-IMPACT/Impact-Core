@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.impact.api.enums.Textures.Icons.OVERLAY_MULTIHATCH;
+import static com.impact.api.enums.Texture.Icons.OVERLAY_MULTIHATCH;
 import static com.impact.util.Utilits.invertBoolean;
 
 public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
