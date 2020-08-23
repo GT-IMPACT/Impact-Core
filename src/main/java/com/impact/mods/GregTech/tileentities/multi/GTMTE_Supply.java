@@ -252,12 +252,9 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
         else
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
             if (mMode > 3) mMode = 0;
-
             mModed = (mMode == 0 ? " Autoclave " : mMode == 1 ? " Dust Washer " : mMode == 2 ? " Ore Washer " : " Chemical Bath ");
             GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
-        }
     }
 }

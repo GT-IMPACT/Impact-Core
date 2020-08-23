@@ -168,12 +168,10 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
-            if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
                 modeBuses++;
                 if (modeBuses > 1) modeBuses = 0;
 
                 GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
-            }
         }
     }
 
