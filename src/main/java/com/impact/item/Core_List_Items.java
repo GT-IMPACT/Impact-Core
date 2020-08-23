@@ -222,6 +222,8 @@ public enum Core_List_Items {
     YSZCeramicPlate(159, 1),
     GDCCeramicPlate(160, 1),
     LSFCCeramicPlate(161, 1),
+    TachyonTube(162, 1),
+    NaqChamberPart(163, 1),
 
     WoodenBrickForm1(0, 2),
 

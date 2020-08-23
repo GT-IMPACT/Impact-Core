@@ -3,6 +3,7 @@ package com.impact.recipes;
 import com.impact.item.Core_Items2;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
+import com.impact.mods.GregTech.GTregister.GT_ItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -946,5 +947,26 @@ public class TecTechRecipe implements Runnable {
                 },
                 GT_ModHandler.getModItem("ExtraUtilities", "dark_portal", 1L), 6000, 32000000);
         //}
+
+        //Hyper Engine
+        TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 1),
+                24000, 64, 500000, 4, new Object[]{
+                        GT_ItemList.Naquadah_Liquid_Enriched.get(1L),
+                        ItemList.Casing_Fusion_Coil.get(8L),
+                        ItemList.Electric_Pump_UV.get(12L),
+                        ItemList.Field_Generator_UV.get(16L),
+                        ItemList.Sensor_UV.get(16L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 32),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUV, 32),
+                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.MysteriousCrystal, 64)
+                },
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(4608),
+                        Materials.Lubricant.getFluid(4000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
+                        Materials.Quantium.getMolten(4608)
+                },
+                GT_ItemList.Naquadah_multi.get(1L), 320 * 20, 500000);
+
     }
 }

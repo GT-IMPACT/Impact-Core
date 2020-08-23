@@ -198,6 +198,24 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Kanthal, 6), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 6), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Titanium, 16)
         }, GT_ItemList.AdvPyrolyse.get(1L), null, 60 * 20, 1920);
 
+        //Naquadah Chamber Part
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.GumMetal, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Desh, 8),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenCarbide, 16), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Talonite, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 32)
+        }, CoreItems2.getRecipe(163, 1), null, 30 * 20, 7680);
+
+        //Tachyon Tube
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                CoreItems2.getRecipe(163, 3), CoreItems2.getRecipe(161, 4), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 32), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 32),
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Trinium, 32), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Iridium, 32), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 32)
+        }, CoreItems2.getRecipe(162, 1), null, 40 * 20, 7680);
+
+        //Cyclone Chamber Casing
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                GT_ItemList.CycloneCasing.get(1), ItemList.Electric_Motor_LuV.get(1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.MaragingSteel250, 2), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.MaragingSteel300, 2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Inconel792, 4), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TiBetaC, 6), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Inconel690, 12),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 16)
+        }, GT_ModHandler.getModItem("impact", "impact_inside_block", 1, 1), null, 60 * 20, 30720);
 
         /* ================================= end IMPACT MOD =================================*/
 

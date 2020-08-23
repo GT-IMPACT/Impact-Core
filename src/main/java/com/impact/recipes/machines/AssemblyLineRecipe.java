@@ -956,5 +956,105 @@ public class AssemblyLineRecipe implements Runnable {
                 },
                 GT_ItemList.UpgradeCasingT4.get(1L), 200 * 20, 500000);
 
+        //Naquadah Chamber Casing
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(163, 1), 144000, new Object[]{
+                        GT_ItemList.NqCasing.get(1),
+                        CoreItems2.getRecipe(163, 6),
+                        ItemList.Electric_Pump_LuV.get(4L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Plutonium, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 10),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Desh, 16)},
+                new FluidStack[]{
+                        Materials.Trinium.getMolten(1296),
+                        Materials.Osmium.getMolten(1296),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                        Materials.Argon.getGas(1000)
+                },
+                GT_ModHandler.getModItem("impact", "impact_inside_block", 1), 120 * 20, 10000);
+
+        //Tether Core
+        GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(162, 1), 156000, new Object[]{
+                        CoreItems2.getRecipe(162, 6),
+                        ItemList.Electric_Piston_LuV.get(8L),
+                        ItemList.Emitter_LuV.get(8L),
+                        ItemList.Sensor_LuV.get(8L),
+                        CoreItems2.getRecipe(50, 10),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 16)},
+                new FluidStack[]{
+                        Materials.Duranium.getMolten(1296),
+                        Materials.Osmiridium.getMolten(1296),
+                        Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid.getMolten(1296),
+                        Materials.NiobiumTitanium.getMolten(1296)
+                },
+                GT_ModHandler.getModItem("impact", "impact_nqtether_block", 1), 160 * 20, 14576);
+
+        //Heavy Metal Cyclon
+        GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Inconel792, 1), 156000, new Object[]{
+                        ItemList.Hull_LuV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
+                        ItemList.Cover_Screen.get(1L),
+                        ItemList.Electric_Motor_LuV.get(4L),
+                        ItemList.Electric_Pump_LuV.get(4L),
+                        ItemList.Conveyor_Module_LuV.get(4L),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Inconel792, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.gear, Materials.TiBetaC, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TiBetaC, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSS, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 16)},
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(1152),
+                        Materials.Lubricant.getFluid(1000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000),
+                        Materials.Osmiridium.getMolten(1152)
+                },
+                GT_ItemList.Heavy_Metal_Cyclone.get(1L), 160 * 20, 30720);
+
+        //Naquadah Generator
+        GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.MaragingSteel300, 1), 172000, new Object[]{
+                        GT_ModHandler.getModItem("impact", "impact_inside_block", 1),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.MaragingSteel300, 4),
+                        ItemList.Electric_Pump_LuV.get(4L),
+                        ItemList.Field_Generator_LuV.get(4L),
+                        ItemList.Sensor_LuV.get(4L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Ruby, 8)
+                },
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(1152),
+                        Materials.Lubricant.getFluid(1000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000),
+                        Materials.Trinium.getMolten(1152)
+                },
+                GT_ItemList.Naquadah_Liquid_multi.get(1L), 240 * 20, 26780);
+
+        //Naquadah Enriched Generator
+        GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Inconel690, 1), 256000, new Object[]{
+                        GT_ModHandler.getModItem("impact", "impact_nqtether_block", 1),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Inconel690, 6),
+                        ItemList.Electric_Pump_ZPM.get(6L),
+                        ItemList.Field_Generator_ZPM.get(8L),
+                        ItemList.Sensor_ZPM.get(8L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Sapphire, 16)
+                },
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(2304),
+                        Materials.Lubricant.getFluid(2000),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                        Materials.Oriharukon.getMolten(2304)
+                },
+                GT_ItemList.Naquadah_Liquid_Enriched.get(1L), 320 * 20, 118236);
+
     }
 }

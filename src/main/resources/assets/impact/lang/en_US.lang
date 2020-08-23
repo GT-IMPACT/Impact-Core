@@ -298,6 +298,8 @@ item.impact_item2.158.name=Control Unit Board
 item.impact_item2.159.name=YSZ Ceramic Plate
 item.impact_item2.160.name=GDC Ceramic Plate
 item.impact_item2.161.name=LSCF Ceramic Plate
+item.impact_item2.162.name=Tachyon Tube
+item.impact_item2.163.name=Naquadah Chamber Part
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 
@@ -380,6 +382,14 @@ gtnop.ore.null.name=None
 gtnop.ore.vein.name=Vein
 gtnop.ore.asteroid.name=Asteriod
 gtnop.ore.custom.name=Custom
+
+#Ass Line
+achievement.tile.impact_inside_block.0=Naquadah Chamber Casing
+achievement.tile.impact_nqtether_block=Tether Block
+achievement.gt.blockmachines.multimachine.heavymetalcyclone=Heavy Metal Cyclone
+achievement.gt.blockmachines.multimachine.naqgen=Hyper Engine
+achievement.gt.blockmachines.multimachine.liquidnaqgen=Liquid Naquadah Generator
+achievement.gt.blockmachines.multimachine.liquidenrichednqgen=Liquid Enriched Naquadah Generator
 
 #P2P GT5 Power
 item.ae2gt5p2p_part.name=P2P Tunnel - GregTech Energy
