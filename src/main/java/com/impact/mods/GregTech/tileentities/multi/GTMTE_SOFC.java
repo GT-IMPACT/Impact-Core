@@ -1,5 +1,9 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -15,6 +19,8 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import ic2.core.Ic2Items;
+import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,6 +35,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
 import static com.impact.loader.ItemRegistery.CeramicBlock;
 
 public class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
@@ -40,27 +49,151 @@ public class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
     private final int[] CASING_TEXTURE_ID = new int[]{49, 50, 48};
 
     private final int[] OXYGEN_PER_SEC = new int[]{400, 1200, 2000};
-    private final int[] EU_PER_TICK  = new int[]{2048, 8192, 32768};
+    private final int[] EU_PER_TICK = new int[]{2048, 8192, 32768};
     private final int[] STEAM_PER_SEC = new int[]{18000, 36000, 72000};
 
     private final String[] CASING_STRING = new String[]{"Clean Stainless Steel Casing", "Stable Titanium Machine Casing", "Robust Tungstensteel Machine Casing"};
     private final String[] CERAMIC_STRING = new String[]{"YSZ Ceramic Unit", "GDC Ceramic Unit", "LSCF Ceramic Unit"};
     protected int fuelConsumption = 0;
-    private int TIER;
+    public int TIER;
 
     public GTMTE_SOFC(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional);
         this.TIER = aTier;
+        run();
     }
 
     public GTMTE_SOFC(String aName, int aTier) {
         super(aName);
         this.TIER = aTier;
+        run();
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
+        run();
         return new GTMTE_SOFC(super.mName, this.TIER);
+    }
+
+    public void run() {
+        if (this.TIER == 0) {
+            registerMetaClass(GTMTE_SOFC.class, new IMultiblockInfoContainer<GTMTE_SOFC>() {
+                //region Structure
+                private final IStructureDefinition<GTMTE_SOFC> definition =
+                        StructureDefinition.<GTMTE_SOFC>builder()
+                                .addShape("main", new String[][]{
+                                        {"AAA","A~A","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","AAA","AAA"}
+                                })
+                                .addElement('A', ofBlock(CASING, 1))
+                                .addElement('B', ofBlock(CERAMIC, 0))
+                                .addElement('C', ofBlock(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
+                                .build();
+                private final String[] desc = new String[]{
+                        EnumChatFormatting.RED + "Impact Details:",
+                        "- Clean Stainless Steel Casing",
+                        "- YSZ Ceramic Unit",
+                        "- Reinforced Glass",
+                        "- Hatches (any Casing)",
+                        "- Dynamo (backside any Casing)",
+                };
+                //endregion
+
+                @Override
+                public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SOFC tileEntity, ExtendedFacing aSide) {
+                    IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                    definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                            base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                            1, 1, 0, hintsOnly);
+                }
+
+                @Override
+                public String[] getDescription(ItemStack stackSize) {
+                    return desc;
+                }
+            });
+        } else if (this.TIER == 1) {
+            registerMetaClass(GTMTE_SOFC.class, new IMultiblockInfoContainer<GTMTE_SOFC>() {
+                //region Structure
+                private final IStructureDefinition<GTMTE_SOFC> definition =
+                        StructureDefinition.<GTMTE_SOFC>builder()
+                                .addShape("main", new String[][]{
+                                        {"AAA","A~A","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","AAA","AAA"}
+                                })
+                                .addElement('A', ofBlock(CASING, 2))
+                                .addElement('B', ofBlock(CERAMIC, 1))
+                                .addElement('C', ofBlock(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
+                                .build();
+                private final String[] desc = new String[]{
+                        EnumChatFormatting.RED + "Impact Details:",
+                        "- Stable Titanium Machine Casing",
+                        "- GDC Ceramic Unit",
+                        "- Reinforced Glass",
+                        "- Hatches (any Casing)",
+                        "- Dynamo (backside any Casing)",
+                };
+                //endregion
+
+                @Override
+                public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SOFC tileEntity, ExtendedFacing aSide) {
+                    IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                    definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                            base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                            1, 1, 0, hintsOnly);
+                }
+
+                @Override
+                public String[] getDescription(ItemStack stackSize) {
+                    return desc;
+                }
+            });
+        } else {
+            registerMetaClass(GTMTE_SOFC.class, new IMultiblockInfoContainer<GTMTE_SOFC>() {
+                //region Structure
+                private final IStructureDefinition<GTMTE_SOFC> definition =
+                        StructureDefinition.<GTMTE_SOFC>builder()
+                                .addShape("main", new String[][]{
+                                        {"AAA","A~A","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","CBC","AAA"},
+                                        {"AAA","AAA","AAA"}
+                                })
+                                .addElement('A', ofBlock(CASING, 0))
+                                .addElement('B', ofBlock(CERAMIC, 2))
+                                .addElement('C', ofBlock(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
+                                .build();
+                private final String[] desc = new String[]{
+                        EnumChatFormatting.RED + "Impact Details:",
+                        "- Robust Tungstensteel Machine Casing",
+                        "- LSCF Ceramic Unit",
+                        "- Reinforced Glass",
+                        "- Hatches (any Casing)",
+                        "- Dynamo (backside any Casing)",
+                };
+                //endregion
+
+                @Override
+                public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SOFC tileEntity, ExtendedFacing aSide) {
+                    IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                    definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                            base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                            1, 1, 0, hintsOnly);
+                }
+
+                @Override
+                public String[] getDescription(ItemStack stackSize) {
+                    return desc;
+                }
+            });
+        }
     }
 
     @Override
@@ -127,7 +260,7 @@ public class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
                     if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
                             && hatchFluid.isFluidEqual(liquid)) {
 
-                        fuelConsumption = liquid.amount = (EU_PER_TICK[this.TIER] * 20)/ aFuel.mSpecialValue;
+                        fuelConsumption = liquid.amount = (EU_PER_TICK[this.TIER] * 20) / aFuel.mSpecialValue;
 
                         if (super.depleteInput(liquid)) {
 
@@ -141,7 +274,7 @@ public class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
                             super.mMaxProgresstime = 20;
                             super.mEfficiencyIncrease = 40;
                             if (super.mEfficiency == getMaxEfficiency(null)) {
-                                if(this.TIER == 0)
+                                if (this.TIER == 0)
                                     super.addOutput(GT_ModHandler.getSteam(STEAM_PER_SEC[this.TIER]));
                                 else
                                     super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC[this.TIER]));
@@ -242,7 +375,7 @@ public class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
                     if (X == 0 && Y == 0) {
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) != CERAMIC)
-                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != CERAMIC_META[this.TIER])) {
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != CERAMIC_META[this.TIER])) {
                             formationChecklist = false;
                         }
                         continue;
@@ -305,7 +438,7 @@ public class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
         }
 
         if (minCasingAmount > 0) formationChecklist = false;
-        if (this.mDynamoHatches.size() != 1) formationChecklist = false;
+        if (this.mDynamoHatches.size() < 1) formationChecklist = false;
         if (this.mInputHatches.size() < 2) formationChecklist = false;
         if (this.mMaintenanceHatches.size() < 1) formationChecklist = false;
 
@@ -355,5 +488,4 @@ public class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
     public boolean explodesOnComponentBreak(ItemStack stack) {
         return false;
     }
-
 }

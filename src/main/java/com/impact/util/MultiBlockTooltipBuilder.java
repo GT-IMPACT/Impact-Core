@@ -138,7 +138,7 @@ public class MultiBlockTooltipBuilder {
     }
 
     public MultiBlockTooltipBuilder addDynamoHatch(String info) {
-        sLines.add(TAB + "Dynamo Hatch: " + info);
+        sLines.add(TAB + EnumChatFormatting.GREEN  + "Dynamo Hatch: " + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -153,7 +153,7 @@ public class MultiBlockTooltipBuilder {
     }
 
     public MultiBlockTooltipBuilder addIOHatches(String info) {
-        sLines.add(TAB + "I/O Hatches: " + info);
+        sLines.add(TAB + EnumChatFormatting.GREEN + "I/O Hatches: " + EnumChatFormatting.GRAY + info);
         return this;
     }
 
