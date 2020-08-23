@@ -26,8 +26,8 @@ import org.lwjgl.input.Keyboard;
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.loader.ItemRegistery.InsideBlock;
 import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCyclonRecipes;
 
 public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -36,7 +36,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
      * === SET BLOCKS STRUCTURE ===
      */
     Block CASING = CORE_API.sCaseCore2;
-    byte CASING_META = 3;
+    byte CASING_META = 11;
     /**
      * === SET TEXTURES HATCHES AND CONTROLLER ===
      */
@@ -88,15 +88,18 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
                 .addTypeMachine("Heavy Metal Cyclone")
+                .addInfo("Centrifuge for heavy materials")
                 .addSeparator()
                 .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
                 .addInputBus("Any casing (max x3)")
                 .addInputHatch("Any casing (max x6)")
-                .addOutputBus("Any casing (max x6)")
+                .addOutputBus("Any casing (max x1)")
                 .addOutputHatch("Any casing (max x1)")
-                .addCasingInfo("x Casing")
+                .addCasingInfo("Cyclone Casing")
+                .addOtherStructurePart("Cyclone Chamber Casing", "inside structure")
+                .addOtherStructurePart("I-Glass", "glass for structure")
                 .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
@@ -115,7 +118,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return  GT_Recipe.GT_Recipe_Map.sCyclonRecipes;
+        return GT_Recipe.GT_Recipe_Map.sCyclonRecipes;
     }
 
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
@@ -160,8 +163,8 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
                 if (X >= -1 && X <= 1 && Z >= -3 && Z <= -1) {
                     if (X == 0 && Z == -1 || X == -1 && Z == -2 || X == 1 && Z == -2 || X == 0 && Z == -3) {
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == sCaseCore2)
-                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 10)) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == InsideBlock)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
                         } else {
                             formationChecklist = false;
                         }
@@ -199,8 +202,8 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
                     if (X >= -1 && X <= 1 && Z >= -3 && Z <= -1) {
                         if (X == 0 && Z == -1 || X == -1 && Z == -2 || X == 1 && Z == -2 || X == 0 && Z == -3) {
-                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == sCaseCore2)
-                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 10)) {
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == InsideBlock)
+                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
                             } else {
                                 formationChecklist = false;
                             }
@@ -250,8 +253,8 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
                 if (X >= -1 && X <= 1 && Z >= -3 && Z <= -1) {
                     if (X == 0 && Z == -1 || X == -1 && Z == -2 || X == 1 && Z == -2 || X == 0 && Z == -3) {
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == sCaseCore2)
-                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 10)) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == InsideBlock)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
                         } else {
                             formationChecklist = false;
                         }
@@ -306,11 +309,11 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
         if (this.mInputBusses.size() > 3) formationChecklist = false;
         if (this.mInputHatches.size() > 6) formationChecklist = false;
-        if (this.mOutputBusses.size() > 6) formationChecklist = false;
+        if (this.mOutputBusses.size() > 1) formationChecklist = false;
         if (this.mOutputHatches.size() > 1) formationChecklist = false;
         if (this.mMufflerHatches.size() != 0) formationChecklist = false;
         if (this.mEnergyHatches.size() > 3) formationChecklist = false;
-        if (this.mDynamoHatches.size() > 1) formationChecklist = false;
+        if (this.mDynamoHatches.size() != 0) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
@@ -349,15 +352,15 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
                                         {"  AAA  ", " AACAA ", "  ACA  ", "  ACA  ", "  ACA  ", " AAAAA ", "AAAAAAA"},
                                         {"       ", "       ", "       ", "       ", "       ", "       ", " AAAAA "}
                                 })
-                                .addElement('A', ofBlock(CORE_API.sCaseCore2, 3))
-                                .addElement('B', ofBlock(CORE_API.sCaseCore2, 10))
+                                .addElement('A', ofBlock(sCaseCore2, 11))
+                                .addElement('B', ofBlock(InsideBlock, 1))
                                 .addElement('C', ofBlock(IGlassBlock, 0))
                                 .build();
-                private final String[] desc = new String[] {
+                private final String[] desc = new String[]{
                         EnumChatFormatting.RED + "Impact Details:",
-                        "- Empty Casing",
+                        "- Cyclone Casing",
+                        "- Cyclone Chamber Casing",
                         "- I-Glass (any glass)",
-                        "- Держатели ядра",
                         "- Hatches (any Casing)",
                 };
                 //endregion

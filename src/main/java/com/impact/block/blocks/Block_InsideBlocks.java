@@ -18,6 +18,7 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
 	private static final Block_InsideBlocks instance = new Block_InsideBlocks();
 
 	private IIcon Chamber;
+	private IIcon CycloneSide, CycloneTop;
 
 
 	private Block_InsideBlocks() {
@@ -36,12 +37,14 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
 	@Override
 	public void registerBlockIcons(IIconRegister ir) {
 		Chamber = ir.registerIcon("impact:ChamberInside");
+		CycloneTop = ir.registerIcon("impact:CycloneTop");
+		CycloneSide = ir.registerIcon("impact:CycloneActive");
 	}
 	
 	@Override
 	@SuppressWarnings({"unchecked" })
 	public void getSubBlocks(Item item, CreativeTabs tab, List l) {
-		for(byte i = 0; i < 1; i++)
+		for(byte i = 0; i < 2; i++)
 			l.add(new ItemStack(item, 1, i));
 	}
 	
@@ -49,6 +52,7 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
 	public IIcon getIcon(int side, int meta) {
 		switch(meta) {
 		case 0: return Chamber;
+		case 1: return (side < 2) ? CycloneTop: CycloneSide;
 		default: return null;
 		}
 	}
