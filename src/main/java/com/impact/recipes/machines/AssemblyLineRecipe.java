@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.impact.item.Core_List_Items.*;
+import static com.impact.loader.ItemRegistery.*;
 
 public class AssemblyLineRecipe implements Runnable {
 
@@ -972,7 +973,7 @@ public class AssemblyLineRecipe implements Runnable {
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                         Materials.Argon.getGas(1000)
                 },
-                GT_ModHandler.getModItem("impact", "impact_inside_block", 1), 120 * 20, 10000);
+                new ItemStack(InsideBlock, 1, 0), 120 * 20, 10000);
 
         //Tether Core
         GT_Values.RA.addAssemblylineRecipe(CoreItems2.getRecipe(162, 1), 156000, new Object[]{
@@ -992,7 +993,7 @@ public class AssemblyLineRecipe implements Runnable {
                         Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid.getMolten(1296),
                         Materials.NiobiumTitanium.getMolten(1296)
                 },
-                GT_ModHandler.getModItem("impact", "impact_nqtether_block", 1), 160 * 20, 14576);
+                new ItemStack(NqTetherBlock, 1, 0), 160 * 20, 14576);
 
         //Heavy Metal Cyclon
         GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Inconel792, 1), 156000, new Object[]{
