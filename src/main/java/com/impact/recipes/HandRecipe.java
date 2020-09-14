@@ -229,8 +229,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
                 'U', ItemList.Hatch_Input_EV.get(1L),
                 'F', ItemList.Electric_Pump_HV.get(1L)};
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Tank_Hatch.get(1), tank_hatch);
-    }
-    public void run2() {
+
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVConveyorModule.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "MWM", "PPP", 'P', GT_ModHandler.getModItem("minecraft", "leather", 1L, 0), 'M', GT_ItemList.ULVMotor, 'W', OrePrefixes.cableGt01.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVConveyorModule.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "MWM", "PPP", 'P', OrePrefixes.plate.get(Materials.Rubber), 'M', GT_ItemList.ULVMotor, 'W', OrePrefixes.cableGt01.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.ULVPump.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SXO", "dPw", "OMW", 'M', GT_ItemList.ULVMotor, 'O', OrePrefixes.ring.get(Materials.Paper), 'X', OrePrefixes.rotor.get(Materials.Lead), 'S', OrePrefixes.screw.get(Materials.Lead), 'W', OrePrefixes.cableGt01.get(Materials.Lead), 'P', OrePrefixes.pipeMedium.get(Materials.Copper)});
@@ -382,6 +381,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Chest_EV.get(1L), bitsd, new Object[]{"DMD", "PCP", "DGD", 'C', ItemList.Hull_MAX, 'M', ItemList.Conveyor_Module_ZPM, 'G', ItemList.Field_Generator_ZPM, 'D', OrePrefixes.circuit.get(Materials.Infinite), 'P', OrePrefixes.plateDouble.get(Materials.Europium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Chest_IV.get(1L), bitsd, new Object[]{"DMD", "PCP", "DGD", 'C', ItemList.Hull_UEV, 'M', ItemList.Conveyor_Module_UV, 'G', ItemList.Field_Generator_UV, 'D', OrePrefixes.circuit.get(Materials.Bio), 'P', OrePrefixes.plate.get(Materials.Americium)});
 
+    }
+    public void run2() {
 //        //Chests - отключены из-за бага
 //        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("impact", "WroughtIronChest", 1L, 0), bits, new Object[]{"PPP", "RCR", "PPP", 'P', OrePrefixes.plate.get(Materials.WroughtIron), 'R', OrePrefixes.ring.get(Materials.WroughtIron), 'C', ItemList.Casing_Tank_0});
 //        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("impact", "SteelChest", 1L, 0), bits, new Object[]{"PPP", "RCR", "PPP", 'P', OrePrefixes.plate.get(Materials.Steel), 'R', OrePrefixes.ring.get(Materials.Steel), 'C', ItemList.Casing_Tank_1});
