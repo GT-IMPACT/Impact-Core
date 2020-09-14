@@ -281,7 +281,7 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(130, 1), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Naquadria, 8)}, null, CoreItems2.getRecipe(131, 1), 1800, 500000);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(131, 1), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 8)}, Materials.ElectrumFlux.getMolten(1152), CoreItems2.getRecipe(132, 1), 2000, 2000000);
 
-        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_8V.get(1L), 100, 6);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel.get(8L), GT_Utility.getIntegratedCircuit(8), ItemList.Cover_SolarPanel_8V.get(1L), 100, 6);
         GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_8V.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_LV.get(1L), 120, 12);
         GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_LV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_MV.get(1L), 140, 24);
         GT_Values.RA.addAssemblerRecipe(ItemList.Cover_SolarPanel_MV.get(6L), GT_Utility.getIntegratedCircuit(6), ItemList.Cover_SolarPanel_HV.get(1L), 160, 48);
