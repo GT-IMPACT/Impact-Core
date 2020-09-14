@@ -36,7 +36,7 @@ public class Printer3DRecipe implements Runnable {
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel690, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
-                ItemList.Electric_Piston_IV.get(4L), ItemList.Robot_Arm_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Inconel690, 8),
+                ItemList.Electric_Piston_IV.get(4L), ItemList.Robot_Arm_IV.get(4L), ItemList.Emitter_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Inconel690, 8),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Nitinol, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Nitinol, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Assembler.get(1L), null, 40 * 20, 7680);
