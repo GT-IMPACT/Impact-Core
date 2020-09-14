@@ -154,6 +154,7 @@ public class impact {
         new WireassemblerRecipe().run();
         new FusionRecipe().run();
         new ArcFurnaceRecipe().run();
+		new UnboxingRecipe().run();
         MainLoader.postLoad();
     }
 
