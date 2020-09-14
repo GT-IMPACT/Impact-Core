@@ -1,10 +1,8 @@
 package com.impact;
 
 
-import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.entity.*;
-import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.EntityList;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import java.util.Arrays;
@@ -38,7 +36,7 @@ public class EntitySpawningHandler {
             "EvolvedSkeletonBoss",
             "AlienVillager",
             "CaveSpider"
-            );
+    );
 
     @SubscribeEvent
     public void onEntityJoinWorld(final EntityJoinWorldEvent event) {
