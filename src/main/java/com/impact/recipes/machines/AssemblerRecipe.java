@@ -673,6 +673,11 @@ public class AssemblerRecipe implements Runnable {
         /** ==== START MALISIS DOORS ==== */
         // --- Iron Trap Door
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "trapdoor", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_acacia", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_spruce", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_birch", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_jungle", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "trapdoor_dark_oak", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), 100, 16);
         // --- Sliding Trap Door
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L), GT_ModHandler.getModItem("malisisdoors", "sliding_trapdoor", 1L), 150, 16);
         // --- Wooden Vanishing Frame
@@ -715,6 +720,16 @@ public class AssemblerRecipe implements Runnable {
         // --- Wooden Glass Door
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_acacia", 1L), GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_acacia", 1L), GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_birch", 1L), GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_birch", 1L), GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_dark_oak", 1L), GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_dark_oak", 1L), GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_jungle", 1L), GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_jungle", 1L), GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_spruce", 1L), GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_spruce", 1L), GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.wood_sliding_door", 1L), 400, 4);
         // --- Iron Glass Door
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "iron_door", 1L), GT_ModHandler.getModItem("minecraft", "glass_pane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.iron_sliding_door", 1L), 400, 4);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "iron_door", 1L), GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), GT_ModHandler.getModItem("malisisdoors", "item.iron_sliding_door", 1L), 400, 4);
@@ -722,8 +737,13 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "iron_door", 1L), CoreItems2.getRecipe(51, 2), GT_ModHandler.getModItem("malisisdoors", "item.jail_door", 1L), 400, 4);
         // --- Laboratory Door
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L), GT_ModHandler.getModItem("malisisdoors", "item.laboratory_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_acacia", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L), GT_ModHandler.getModItem("malisisdoors", "item.laboratory_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_birch", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L), GT_ModHandler.getModItem("malisisdoors", "item.laboratory_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_dark_oak", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L), GT_ModHandler.getModItem("malisisdoors", "item.laboratory_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_jungle", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L), GT_ModHandler.getModItem("malisisdoors", "item.laboratory_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("malisisdoors", "item.door_spruce", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L), GT_ModHandler.getModItem("malisisdoors", "item.laboratory_door", 1L), 400, 4);
         // --- Factory Door
-        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "wooden_door", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), GT_ModHandler.getModItem("malisisdoors", "item.factory_door", 1L), 400, 4);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "iron_door", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2L), GT_ModHandler.getModItem("malisisdoors", "item.factory_door", 1L), 400, 4);
         // --- Shoji Door
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "paper", 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_ModHandler.getModItem("malisisdoors", "item.shoji_door", 1L), 400, 4);
         // --- Purple Curtain
@@ -852,7 +872,6 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), ItemList.Plank_Jungle.get(1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L, 0), 100, 16);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), ItemList.Plank_Acacia.get(1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L, 0), 100, 16);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), ItemList.Plank_DarkOak.get(1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L, 0), 100, 16);
-
         // --- Carpenter's Flower Pot
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("minecraft", "flower_pot", 1L, 0), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersFlowerPot", 1L, 0), 100, 16);
         // --- Carpenter's Garage Door
@@ -860,8 +879,18 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGarageDoor", 4L, 0), 300, 16);
         // --- Carpenter's Gate
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("minecraft", "fence_gate", 1L, 0), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGate", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "acaciaFenceGate", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGate", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "birchFenceGate", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGate", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "darkOakFenceGate", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGate", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "jungleFenceGate", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGate", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "spruceFenceGate", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersGate", 1L, 0), 100, 16);
         // --- Carpenter's Hatch
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("minecraft", "trapdoor", 1L, 0), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersHatch", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "trapdoor_acacia", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersHatch", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "trapdoor_spruce", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersHatch", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "trapdoor_birch", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersHatch", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "trapdoor_jungle", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersHatch", 1L, 0), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "trapdoor_dark_oak", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersHatch", 1L, 0), 100, 16);
         // --- Carpenter's Ladder
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("minecraft", "ladder", 1L, 0), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersLadder", 1L, 0), 100, 16);
         // --- Carpenter's Lever
@@ -878,6 +907,11 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersPressurePlate", 1L, 0), GT_ModHandler.getModItem("minecraft", "clay_ball", 1L, 0), null, GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersTile", 2L, 0), 50, 16);
         // --- Carpenter's Door
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("minecraft", "wooden_door", 1L, 0), null, GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersDoor", 1L, 0), 150, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "item.door_acacia", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersDoor", 1L, 0), 150, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "item.door_birch", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersDoor", 1L, 0), 150, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "item.door_dark_oak", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersDoor", 1L, 0), 150, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "item.door_jungle", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersDoor", 1L, 0), 150, 16);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("malisisdoors", "item.door_spruce", 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersDoor", 1L, 0), 150, 16);
         // --- Carpenter's Pressure Plate
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 2L, 0), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Iron, 1L), null, GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersPressurePlate", 2L, 0), 100, 8);
 
