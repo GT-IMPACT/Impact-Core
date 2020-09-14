@@ -122,6 +122,12 @@ public class MultiBlockTooltipBuilder {
         return this;
     }
 
+    public MultiBlockTooltipBuilder beginStructureBlock(int w, int h, int l, boolean structure) {
+        sLines.add("Dimensions: " + w + "x" + h + "x" + l + " (WxHxL)");
+        sLines.add("Structure:");
+        return this;
+    }
+
     public MultiBlockTooltipBuilder addController() {
         sLines.add(TAB + EnumChatFormatting.YELLOW + "Use Blueprint TecTech ");
         return this;

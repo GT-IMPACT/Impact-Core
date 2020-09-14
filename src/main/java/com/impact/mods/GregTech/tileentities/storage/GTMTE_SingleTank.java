@@ -9,7 +9,6 @@ import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.MultiFluidHandler;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -38,11 +37,11 @@ import java.util.List;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.impact.loader.ItemRegistery.*;
-import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
+import static com.impact.loader.ItemRegistery.FluidTankBlock;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static gregtech.api.GregTech_API.sBlockCasings8;
 
-public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements IFluidHandler {
+public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implements IFluidHandler {
 
     private final HashSet<GTMTE_TankHatch> sMultiHatches = new HashSet<>();
     private final Block glassIC2 = IGlassBlock;
@@ -55,12 +54,12 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
     private byte fluidSelector = 0;
 
 
-    public GTMTE_MultiTank(int aID, String aName, String aNameRegional) {
+    public GTMTE_SingleTank(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         run();
     }
 
-    public GTMTE_MultiTank(String aName) {
+    public GTMTE_SingleTank(String aName) {
         super(aName);
         run();
     }
@@ -68,28 +67,27 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
         run();
-        return new GTMTE_MultiTank(super.mName);
+        return new GTMTE_SingleTank(super.mName);
     }
 
     @Override
     public String[] getDescription() {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-        b.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-            .addInfo("Right-Click to the controller with a screwdriver will turn on excess voiding.")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
-            .addSeparator()
-            .addInfo("Note on hatch locking:")
-            .addSeparator()
-            .beginStructureBlock(5, 9, 5, true)
-            .addController()
-            .addEnergyHatch("Any top or bottom casing")
-            .addOtherStructurePart("Inner 3x7x3 tube", "Tank Storage Block")
-            .addOtherStructurePart("Outer 5x1&9x5 Casing", "Chemical Casing")
-            .addOtherStructurePart("Outer 5x7x5 glass shell", "I-Glass")
-            .addOtherStructurePart("I/O Tank Hatch", "Instead of any casing or glass (not angle)")
-            .addInfo("I/O Tank Hatch for information and used EC2, OC systems")
-            .signAndFinalize(EnumChatFormatting.RED + "Impact");
+        b.addInfo("High-Tech fluid tank!")
+                .addInfo("Right-Click the controller with a screwdriver will turn on excess voiding.")
+                .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+                .addSeparator()
+                .addInfo("Note on hatch locking:")
+                .addSeparator()
+                .beginStructureBlock(3, 7, 3, true)
+                .addController()
+                .addEnergyHatch("Any top or bottom casing")
+                .addOtherStructurePart("Inner 1x5x1 tube", "Tank Storage Block")
+                .addOtherStructurePart("Outer 3x1&7x3 Casing", "Chemical Casing")
+                .addOtherStructurePart("Outer 3x5x3 glass shell", "I-Glass")
+                .addOtherStructurePart("I/O Tank Hatch", "Instead of any casing or glass")
+                .addInfo("I/O Tank Hatch for information and used EC2, OC systems")
+                .signAndFinalize(": " + EnumChatFormatting.RED + "Impact");
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();
         } else {
@@ -251,9 +249,10 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         float runningCostAcc = 0;
         double fluidCapacityAcc = 0;
 
+
         // Front segment
-        for (int X = -2; X <= 2; X++) {
-            for (int Y = -2; Y <= 2; Y++) {
+        for (int X = -1; X <= 1; X++) {
+            for (int Y = -1; Y <= 1; Y++) {
                 if (X == 0 && Y == 0) {
                     continue; // Skip controller
                 }
@@ -265,7 +264,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 
                 // Fluid hatches should touch the storage field.
                 // Maintenance/Energy hatch can go anywhere
-                if (X > -2 && X < 2 && Y > -2 && Y < 2) {
+                if (X >= -1 && X <= 1 && Y >= -1 && Y <= 1) {
                     if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -298,49 +297,42 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         }
 
         // Middle seven long segment
-        for (int X = -2; X <= 2; X++) {
-            for (int Y = -2; Y <= 2; Y++) {
-                for (int Z = -1; Z >= -7; Z--) {
+        for (int X = -1; X <= 1; X++) {
+            for (int Y = -1; Y <= 1; Y++) {
+                for (int Z = -1; Z >= -5; Z--) {
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-                    if (X > -2 && X < 2 && Y > -2 && Y < 2) {
+                    if (X == 0 && Y == 0) {
                         final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 
                         if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING_TANK) {
                             switch (meta) {
                                 case 0:
-                                    runningCostAcc += 0.5f;
-                                    fluidCapacityAcc += 6349206.3f;
+                                    runningCostAcc += 1.0f;
+                                    fluidCapacityAcc += 16000000f; //80kk L
                                     break;
                                 case 1:
-                                    runningCostAcc += 1.0f;
-                                    fluidCapacityAcc += 12698412.6f;
+                                    runningCostAcc += 2.0f;
+                                    fluidCapacityAcc += 32000000f; //160kk L
                                     break;
                                 case 2:
-                                    runningCostAcc += 2.0f;
-                                    fluidCapacityAcc += 25396825.3f;
+                                    runningCostAcc += 4.0f;
+                                    fluidCapacityAcc += 64000000f; //320kk L
                                     break;
                                 case 3:
-                                    runningCostAcc += 4.0f;
-                                    fluidCapacityAcc += 50793650.7f;
+                                    runningCostAcc += 8.0f;
+                                    fluidCapacityAcc += 128000000f; //640kk L
                                     break;
                                 case 4:
-                                    runningCostAcc += 8.0f;
-                                    fluidCapacityAcc += 101587301.5f;
+                                    runningCostAcc += 16.0f;
+                                    fluidCapacityAcc += 256000000f; //1.28kkk L
                                     break;
                                 case 5:
-                                    runningCostAcc += 8.0f;
-                                    fluidCapacityAcc += 203174603.1f;
-                                    break;
-                                case 6:
-                                    runningCostAcc += 8.0f;
-                                    fluidCapacityAcc += 406349206.3f;
-                                    break;
-                                case 7:
-                                    runningCostAcc += 8.0f;
-                                    fluidCapacityAcc += 812698412.65479f;
+                                    runningCostAcc += 32.0f;
+                                    fluidCapacityAcc += 400000000f; //2kkk L
                                     break;
                             }
                         } else {
+
                             formationChecklist = false;
                         }
                         continue;
@@ -351,7 +343,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
                             thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
                     // Corner allows only glass
-                    if (X == -2 && Y == -2 || X == 2 && Y == 2 || X == -2 && Y == 2 || X == 2 && Y == -2) {
+                    if (X == -1 && Y == -1 || X == 1 && Y == 1 || X == -1 && Y == 1 || X == 1 && Y == -1) {
                         if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == glassIC2)) {
                             formationChecklist = false;
                         }
@@ -364,10 +356,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 
                             // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
                             // Also check for multi hatch
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-                                // Seems to be valid casing. Decrement counter.
-                                minCasingAmount--;
-                            } else if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == glassIC2)) {
+                            if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == glassIC2)) {
                                 formationChecklist = false;
                             }
                         }
@@ -377,16 +366,16 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         }
 
         // Back segment
-        for (int X = -2; X <= 2; X++) {
-            for (int Y = -2; Y <= 2; Y++) {
+        for (int X = -1; X <= 1; X++) {
+            for (int Y = -1; Y <= 1; Y++) {
                 // Get next TE
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -8);
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -6);
                 final IGregTechTileEntity currentTE =
                         thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
                 // Fluid hatches should touch the storage field.
                 // Maintenance/Energy hatch can go anywhere
-                if (X > -2 && X < 2 && Y > -2 && Y < 2) {
+                if (X == -1 && X == 1 && Y == -1 && Y == 1) {
                     if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -433,16 +422,12 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
             formationChecklist = false;
         }
 
-        if (minCasingAmount > 0) {
-            formationChecklist = false;
-        }
-
         if (formationChecklist) {
             runningCost = Math.round(-runningCostAcc);
             // Update MultiFluidHandler in case storage cells have been changed
-            final int capacityPerFluid = (int) Math.round(fluidCapacityAcc / (float) 25);
+            final int capacityPerFluid = (int) Math.round(fluidCapacityAcc);
             if (mfh == null) {
-                mfh = MultiFluidHandler.newInstance(25, capacityPerFluid);
+                mfh = MultiFluidHandler.newInstance(1, capacityPerFluid);
             } else {
                 if (mfh.getCapacity() != capacityPerFluid) {
                     mfh = MultiFluidHandler.newAdjustedInstance(mfh, capacityPerFluid);
@@ -462,20 +447,18 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
     }
 
     public void run() {
-        registerMetaClass(GTMTE_MultiTank.class, new IMultiblockInfoContainer<GTMTE_MultiTank>() {
+        registerMetaClass(GTMTE_SingleTank.class, new IMultiblockInfoContainer<GTMTE_SingleTank>() {
             //region Structure
-            private final IStructureDefinition<GTMTE_MultiTank> definition =
-                    StructureDefinition.<GTMTE_MultiTank>builder()
+            private final IStructureDefinition<GTMTE_SingleTank> definition =
+                    StructureDefinition.<GTMTE_SingleTank>builder()
                             .addShape("main", new String[][]{
-                                    {"AAAAA","AAAAA","AA~AA","AAAAA","AAAAA"},
-                                    {"CCCCC","CBBBC","CBBBC","CBBBC","CCCCC"},
-                                    {"CCCCC","CBBBC","CBBBC","CBBBC","CCCCC"},
-                                    {"CCCCC","CBBBC","CBBBC","CBBBC","CCCCC"},
-                                    {"CCCCC","CBBBC","CBBBC","CBBBC","CCCCC"},
-                                    {"CCCCC","CBBBC","CBBBC","CBBBC","CCCCC"},
-                                    {"CCCCC","CBBBC","CBBBC","CBBBC","CCCCC"},
-                                    {"CCCCC","CBBBC","CBBBC","CBBBC","CCCCC"},
-                                    {"AAAAA","AAAAA","AAAAA","AAAAA","AAAAA"}
+                                    {"AAA","A~A","AAA"},
+                                    {"CCC","CBC","CCC"},
+                                    {"CCC","CBC","CCC"},
+                                    {"CCC","CBC","CCC"},
+                                    {"CCC","CBC","CCC"},
+                                    {"CCC","CBC","CCC"},
+                                    {"AAA","AAA","AAA"}
                             })
                             .addElement('A', ofBlock(sBlockCasings8, 0))
                             .addElement('B', ofBlock(FluidTankBlock))
@@ -484,25 +467,24 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
             private final String[] desc = new String[]{
                     EnumChatFormatting.RED + "Impact Details:",
                     "- Chemical Casing",
-                    "- Tank Storage Block (Tier 1-8)",
+                    "- Tank Storage Block (Tier 1-6)",
                     "- I-Glass",
                     "- Hatches (any Chemical Casing)",
                     "- I/O Tank Hatch (any Chemical Casing or I-Glass (not angle))",
             };
             //endregion
             @Override
-            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MultiTank tileEntity, ExtendedFacing aSide) {
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SingleTank tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                 definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                         base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                        2, 2, 0, hintsOnly);
+                        1, 1, 0, hintsOnly);
             }
             @Override
             public String[] getDescription(ItemStack stackSize) {
                 return desc;
             }
         });
-
     }
 
     @Override
