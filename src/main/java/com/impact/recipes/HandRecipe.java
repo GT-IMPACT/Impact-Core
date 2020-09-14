@@ -989,6 +989,11 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 24L), tBitMask, new Object[]{"FSF", "FdF", "FSF", 'F', OrePrefixes.frameGt.get(Materials.Wood), 'S', OrePrefixes.screw.get(Materials.Titanium)});
         // --- Carpenter's Collapsible Block
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L), tBitMask, new Object[]{"SdS", "WWW", "SBS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'W', ItemList.Plank_Oak, 'S', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L), tBitMask, new Object[]{"SdS", "WWW", "SBS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'W', ItemList.Plank_Spruce, 'S', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L), tBitMask, new Object[]{"SdS", "WWW", "SBS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'W', ItemList.Plank_Birch, 'S', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L), tBitMask, new Object[]{"SdS", "WWW", "SBS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'W', ItemList.Plank_Jungle, 'S', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L), tBitMask, new Object[]{"SdS", "WWW", "SBS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'W', ItemList.Plank_Acacia, 'S', OrePrefixes.screw.get(Materials.Wood)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersCollapsibleBlock", 1L), tBitMask, new Object[]{"SdS", "WWW", "SBS", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'W', ItemList.Plank_DarkOak, 'S', OrePrefixes.screw.get(Materials.Wood)});
         // --- Carpenter's Chisel
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "itemCarpentersChisel", 1L, 0), tBitMask, new Object[]{"dTs", "SIS", "BIB", 'B', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), 'T', GT_ModHandler.getModItem("TConstruct", "chiselHead", 1L, 2), 'S', OrePrefixes.screw.get(Materials.Iron), 'I', OrePrefixes.stick.get(Materials.Iron)});
         // --- Carpenter's Hammer
@@ -1108,7 +1113,12 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Diner Plate
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioStuffs", 1L, 2), tBitMask, new Object[]{"P P", " P ", 'P', OrePrefixes.plate.get(Materials.NetherQuartz)});
         // --- Frame Sheet
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', GT_ModHandler.getModItem("gregtech", "gt.metaitem.02", 1L, 32470)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Oak});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Spruce});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Birch});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Jungle});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Acacia});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_DarkOak});
         // --- Frame Board
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingBoard", 2L, 0), tBitMask, new Object[]{"Gs", 'G', GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 1L, 0)});
         // --- Drafting Compass
@@ -1236,6 +1246,13 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "itemFreq", 1L, 0), tBitMask, new Object[]{" S ", "PBP", " C ", 'L', OrePrefixes.circuit.get(Materials.Basic), 'P', OrePrefixes.itemCasing.get(Materials.Iron), 'B', GT_ModHandler.getModItem("minecraft", "stone_button", 1L, 0), 'S', ItemList.Sensor_LV});
 
         /* ==== END IC2 ==== */
+        /** ==== START PROJECTRED ==== */
+        // --- Workbench
+        //GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L), tBitMask, new Object[]{"PCP", "WFW", "WWW", 'P', OrePrefixes.plate.get(Materials.Iron), 'W', OrePrefixes.plate.get(Materials.Wood), 'F', GT_ModHandler.getModItem("Forestry", "factory2", 1L, 2), 'C', ItemList.Cover_Crafting});
+        // --- Printer
+        //GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 1), tBitMask, new Object[]{"EME", "LAL", "PFP", 'P', OrePrefixes.plate.get(Materials.Steel), 'L', "craftingLensRed", 'F', GT_ModHandler.getModItem("Forestry", "factory2", 1L, 2), 'M', ItemList.Cover_Screen, 'E', ItemList.Emitter_LV, 'A', ItemList.Machine_LV_Assembler});
+
+        /* ==== END PROJECTRED ==== */
     }
 
 

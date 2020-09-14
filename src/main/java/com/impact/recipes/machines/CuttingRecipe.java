@@ -34,7 +34,12 @@ public class CuttingRecipe implements Runnable {
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1L, 0), GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersSlope", 4L, 0), GT_Values.NI, 100, 30);
 
         // --- Frame Sheet
-        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("gregtech", "gt.metaitem.02", 1L, 32470), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
+        GT_Values.RA.addCutterRecipe(ItemList.Plank_Oak.get(1L), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
+        GT_Values.RA.addCutterRecipe(ItemList.Plank_Spruce.get(1L), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
+        GT_Values.RA.addCutterRecipe(ItemList.Plank_Birch.get(1L), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
+        GT_Values.RA.addCutterRecipe(ItemList.Plank_Jungle.get(1L), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
+        GT_Values.RA.addCutterRecipe(ItemList.Plank_Acacia.get(1L), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
+        GT_Values.RA.addCutterRecipe(ItemList.Plank_DarkOak.get(1L), GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 4L, 0), GT_Values.NI, 50, 4);
         // --- Frame Board
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 1L, 0), GT_ModHandler.getModItem("BiblioCraft", "item.FramingBoard", 4L, 0), GT_Values.NI,  50, 4);
 
