@@ -1000,7 +1000,7 @@ public class AssemblyLineRecipe implements Runnable {
                         ItemList.Hull_LuV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 4),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
-                        ItemList.Cover_Screen.get(1L),
+                        GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                         ItemList.Electric_Motor_LuV.get(4L),
                         ItemList.Electric_Pump_LuV.get(4L),
                         ItemList.Conveyor_Module_LuV.get(4L),

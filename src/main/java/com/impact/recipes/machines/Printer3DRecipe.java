@@ -21,103 +21,103 @@ public class Printer3DRecipe implements Runnable {
 /** ================================= start IMPACT MOD =================================*/
         //Controllers
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.GumMetal, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.GumMetal, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.GumMetal, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Titaniolum, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Titaniolum, 16), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_PBE.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Zamak, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Zamak, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Robot_Arm_IV.get(4L), ItemList.Emitter_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Zamak, 8),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Duraluminium, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Duraluminium, 16), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 16),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_LaserEngraver.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel690, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
-                ItemList.Electric_Piston_IV.get(4L), ItemList.Robot_Arm_IV.get(4L), ItemList.Emitter_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Inconel690, 8),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel690, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
+                ItemList.Electric_Piston_IV.get(4L), ItemList.Robot_Arm_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Inconel690, 8),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Nitinol, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Nitinol, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Assembler.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Motor_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Inconel792, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.TiBetaC, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TiBetaC, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Centrifuge.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HastelloyC276, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Zamak, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Zamak, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Electrolyzer.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Conveyor_Module_IV.get(4L), ItemList.Electric_Piston_IV.get(4L), ItemList.Robot_Arm_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titaniolum, 8),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Inconel690, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Inconel690, 16), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 16),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Wire.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel250, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel250, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Motor_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel250, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Inconel792, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Inconel792, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Supply.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Electric_Pump_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Nitinol, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.HastelloyC276, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HastelloyC276, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Utility.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Talonite, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Talonite, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Electric_Pump_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Talonite, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Grisium, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Grisium, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Brewmenter.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Nitinol, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Inconel690, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Inconel690, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Siftarator.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol60, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Nitinol60, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Nitinol60, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Kovar, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Kovar, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_ArcFurnace.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TiBetaC, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TiBetaC, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Electric_Pump_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TiBetaC, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Talonite, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Talonite, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Extradifier.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Titaniolum, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Motor_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titaniolum, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.MaragingSteel250, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MaragingSteel250, 16), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Mixer.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HastelloyC276, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Piston_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HastelloyC276, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Mangalloy, 8), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Mangalloy, 16), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
         }, GT_ItemList.Machine_Macerator.get(1L), null, 40 * 20, 7680);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel300, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), ItemList.Cover_Screen.get(1L),
+                ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.MaragingSteel300, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 8), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                 ItemList.Electric_Motor_IV.get(4L), ItemList.Conveyor_Module_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 8), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSG, 4),
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Stellite, 4), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Stellite, 16), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 16),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
