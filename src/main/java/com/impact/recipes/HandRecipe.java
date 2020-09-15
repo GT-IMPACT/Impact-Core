@@ -1297,6 +1297,35 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         //GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 1), tBitMask, new Object[]{"EME", "LAL", "PFP", 'P', OrePrefixes.plate.get(Materials.Steel), 'L', "craftingLensRed", 'F', GT_ModHandler.getModItem("Forestry", "factory2", 1L, 2), 'M', ItemList.Cover_Screen, 'E', ItemList.Emitter_LV, 'A', ItemList.Machine_LV_Assembler});
 
         /* ==== END PROJECTRED ==== */
+        /** ==== START PRACTICAL LOGISTICS ==== */
+        // --- Energy Reader
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "EnergyReader", 1L, 0), tBitMask, new Object[]{"SES", "TBT", "hRd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_EnergyDetector, 'E', OrePrefixes.circuit.get(Materials.Basic), 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Fluid Reader
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "FluidReader", 1L, 0), tBitMask, new Object[]{"SES", "TBT", "hRd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_FluidDetector, 'E', OrePrefixes.circuit.get(Materials.Basic), 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Item Reader
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "InventoryReader", 1L, 0), tBitMask, new Object[]{"SES", "TBT", "hRd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_ItemDetector, 'E', OrePrefixes.circuit.get(Materials.Basic), 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Info Reader
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "InfoReader", 1L, 0), tBitMask, new Object[]{"SES", "TBT", "hRd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_Screen, 'E', OrePrefixes.circuit.get(Materials.Basic), 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Data Modifier
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "DataModifier", 1L, 0), tBitMask, new Object[]{"SRS", "hBd", "STS", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_Screen, 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Info Creator
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "InfoCreator", 1L, 0), tBitMask, new Object[]{"SRS", " T ", "hBd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_Screen, 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Channel Selector
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "ChannelSelector", 1L, 0), tBitMask, new Object[]{"SRS", "hBd", "STS", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_Screen, 'T', GT_ModHandler.getModItem("PracticalLogistics", "MultiCable", 1L)});
+        // --- Holographic Display
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "HolographicDisplay", 1L, 0), tBitMask, new Object[]{" G ", "WCW", " T ", 'W', OrePrefixes.wireFine.get(Materials.Cobalt), 'C', OrePrefixes.circuit.get(Materials.Basic), 'G', "paneGlass", 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "HolographicDisplay", 1L, 0), tBitMask, new Object[]{" G ", "WCW", " T ", 'W', OrePrefixes.wireFine.get(Materials.Cobalt), 'C', OrePrefixes.circuit.get(Materials.Basic), 'G', GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L), 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Item Router
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "ItemRouter", 1L, 0), tBitMask, new Object[]{"SES", "TBT", "hRd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', "craftingFilter", 'E', OrePrefixes.circuit.get(Materials.Basic), 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Entity Node
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "EntityNode", 1L, 0), tBitMask, new Object[]{"SRS", " T ", "hBd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Sensor_LV, 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Node
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "Node", 1L, 0), tBitMask, new Object[]{"SRS", " T ", "hBd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Conveyor_Module_LV, 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+        // --- Transceiver Array
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "TransceiverArray", 1L, 0), tBitMask, new Object[]{"SRS", " T ", "hBd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Robot_Arm_LV, 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});
+
+        /* ==== END PRACTICAL LOGISTICS ==== */
+
     }
 
 
