@@ -1,6 +1,11 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -11,21 +16,70 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import ic2.core.Ic2Items;
+import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.impact.loader.ItemRegistery.FluidTankBlock;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static gregtech.api.GregTech_API.sBlockCasings8;
+
 public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 
     public GTMTE_Farm(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        run();
     }
 
     public GTMTE_Farm(String aName) {
         super(aName);
+        run();
+    }
+
+    public void run() {
+        registerMetaClass(GTMTE_Farm.class, new IMultiblockInfoContainer<GTMTE_Farm>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_Farm> definition =
+                    StructureDefinition.<GTMTE_Farm>builder()
+                            .addShape("main", new String[][]{
+                                    {"AAAAA","AAAAA","AAAAA","AAAAA","AA~AA"},
+                                    {"ABBBA","A   A","A   A","A   A","ACCCA"},
+                                    {"ABBBA","A   A","A   A","A   A","ACCCA"},
+                                    {"ABBBA","A   A","A   A","A   A","ACCCA"},
+                                    {"AAAAA","AAAAA","AAAAA","AAAAA","AAAAA"},
+                            })
+                            .addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))
+                            .addElement('B', ofBlock(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
+                            .addElement('C', ofBlock(CORE_API.sCasePage8_3, 3))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Solid Steel Casing",
+                    "- Farm Casing",
+                    "- Reinfirced Glass",
+                    "- Hatches (any Solid Steel Casing)",
+            };
+            //endregion
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Farm tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        2, 4, 0, hintsOnly);
+            }
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
     }
 
     @Override
