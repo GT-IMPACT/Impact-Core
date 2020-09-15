@@ -574,10 +574,10 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 
         nbt.setInteger("runningCost", runningCost);
         nbt.setBoolean("doVoidExcess", doVoidExcess);
-
-        nbt.setLong("capacityPerFluid", mfh.getCapacity());
-        nbt.setTag("fluids", mfh.saveNBTData(new NBTTagCompound()));
-
+        if (mfh != null) {
+            nbt.setLong("capacityPerFluid", mfh.getCapacity());
+            nbt.setTag("fluids", mfh.saveNBTData(new NBTTagCompound()));
+        }
         super.saveNBTData(nbt);
     }
 
@@ -587,10 +587,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 
         runningCost = nbt.getInteger("runningCost");
         doVoidExcess = nbt.getBoolean("doVoidExcess");
-
-        mfh = mfh.loadNBTData(nbt);
-        for (GTMTE_TankHatch mh : sMultiHatches) {
-            mh.setMultiFluidHandler(mfh);
+        if (mfh != null) {
+            mfh = mfh.loadNBTData(nbt);
+            for (GTMTE_TankHatch mh : sMultiHatches) {
+                mh.setMultiFluidHandler(mfh);
+            }
         }
         super.loadNBTData(nbt);
     }
