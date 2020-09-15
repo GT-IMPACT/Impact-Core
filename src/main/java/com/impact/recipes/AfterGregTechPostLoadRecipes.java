@@ -86,6 +86,17 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemViewCell", 1L), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 52), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyCell", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockDenseEnergyCell", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 44), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 43), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 2), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 3), true, false, false);
+
 
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 1), true, false, false);
@@ -608,6 +619,10 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("Ztones", "tile.venaBlock", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 0), true, false, false);
+
+        removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icblock", 1L, 1), true, false, false);
 
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
     }

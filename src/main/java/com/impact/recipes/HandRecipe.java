@@ -702,6 +702,19 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 4L, 52), tBitMask, new Object[]{"WWW", "PCP", "PQP", 'P', OrePrefixes.plate.get(Materials.Plastic), 'W', OrePrefixes.wireFine.get(Materials.Electrum), 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'C', OrePrefixes.circuit.get(Materials.Good)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 16L, 52), tBitMask, new Object[]{"WWW", "PCP", "PQP", 'P', OrePrefixes.plate.get(Materials.Plastic), 'W', OrePrefixes.wireFine.get(Materials.Platinum), 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'C', OrePrefixes.circuit.get(Materials.Advanced)});
 
+        // --- Energy Cell
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyCell", 1L, 0), tBitMask, new Object[]{"BPB", "PLP", "BPB", 'P', OrePrefixes.plate.get(Materials.VanadiumSteel), 'B', GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockFluix", 1L, 0), 'L', ItemList.Circuit_Parts_Crystal_Chip_Master});
+
+        // --- Dense Energy Cell
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockDenseEnergyCell", 1L, 0), tBitMask, new Object[]{"BPB", "PLP", "BPB", 'P', OrePrefixes.plate.get(Materials.VanadiumGallium), 'B', GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockEnergyCell", 1L, 0), 'L', OrePrefixes.circuit.get(Materials.Elite)});
+
+        // --- Annihilation Core
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 44), tBitMask, new Object[]{"SFh", "PCG", "SFd", 'P', OrePrefixes.plate.get(Materials.NetherQuartz), 'F', OrePrefixes.foil.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.Quartzite), 'C', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 7), 'G', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 22)});
+
+        // --- Formation Core
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 43), tBitMask, new Object[]{"SFh", "PCG", "SFd", 'P', OrePrefixes.plate.get(Materials.CertusQuartz), 'F', OrePrefixes.foil.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.Quartzite), 'C', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 7), 'G', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 22)});
+
+
         /* ==== END AE2/EC2 ==== */
         /** ==== START VANILLA ==== */
         // --- Crafting Table
