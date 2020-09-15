@@ -228,10 +228,7 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
         }
 
         if(this.mInputBusses.size() > 30)  formationChecklist = false;
-        if(this.mInputHatches.size() != 0)  formationChecklist = false;
         if(this.mOutputBusses.size() > 1)  formationChecklist = false;
-        if(this.mOutputHatches.size() != 0)  formationChecklist = false;
-        if(this.mMufflerHatches.size() != 0)  formationChecklist = false;
         if(this.mEnergyHatches.size() > 4)  formationChecklist = false;
         if(this.mMaintenanceHatches.size() != 1)  formationChecklist = false;
 

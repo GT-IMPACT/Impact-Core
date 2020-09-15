@@ -43,9 +43,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     byte CASING_META = 1;
     byte CASING_TEXTURE_ID = 17;
     private int mLevel = 0;
-    public static boolean mFluidConsume = false, bFluidInput = false;
-    public static int FluidOutputAmount;
-    public static String FluidOutput, FluidInput;
 
     /**
      * === NAMED ===
@@ -341,9 +338,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
         }
 
         if (this.mInputBusses.size() > 8) formationChecklist = false;
-        if (this.mInputHatches.size() != 1) formationChecklist = false;
+        if (this.mInputHatches.size() > 1) formationChecklist = false;
         if (this.mOutputBusses.size() > 1) formationChecklist = false;
-        if (this.mOutputHatches.size() != 1) formationChecklist = false;
+        if (this.mOutputHatches.size() > 1) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
         return formationChecklist;

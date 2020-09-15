@@ -406,21 +406,10 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
             }
         }
 
-        if (this.mEnergyHatches.size() < 1) {
-            formationChecklist = false;
-        }
-
-        if (this.mMaintenanceHatches.size() != 0) {
-            formationChecklist = false;
-        }
-
-        if (this.mInputHatches.size() != 0) {
-            formationChecklist = false;
-        }
-
-        if (this.mOutputHatches.size() != 0) {
-            formationChecklist = false;
-        }
+        if (this.mEnergyHatches.size() > 1) formationChecklist = false;
+        if (this.mMaintenanceHatches.size() != 0) formationChecklist = false;
+        if (this.mInputHatches.size() != 0) formationChecklist = false;
+        if (this.mOutputHatches.size() != 0) formationChecklist = false;
 
         if (formationChecklist) {
             runningCost = Math.round(-runningCostAcc);

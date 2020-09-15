@@ -417,25 +417,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
             }
         }
 
-        if (this.mEnergyHatches.size() < 1) {
-            formationChecklist = false;
-        }
+        if (this.mEnergyHatches.size() > 1) formationChecklist = false;
+        if (this.mInputHatches.size() != 0) formationChecklist = false;
+        if (this.mOutputHatches.size() != 0) formationChecklist = false;
 
-        if (this.mMaintenanceHatches.size() != 0) {
-            formationChecklist = false;
-        }
-
-        if (this.mInputHatches.size() != 0) {
-            formationChecklist = false;
-        }
-
-        if (this.mOutputHatches.size() != 0) {
-            formationChecklist = false;
-        }
-
-        if (minCasingAmount > 0) {
-            formationChecklist = false;
-        }
+        if (minCasingAmount > 0) formationChecklist = false;
 
         if (formationChecklist) {
             runningCost = Math.round(-runningCostAcc);

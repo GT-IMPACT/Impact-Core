@@ -472,9 +472,7 @@ public abstract class GTMTE_DrillerBase extends GT_MetaTileEntity_MultiBlockBase
         if (getTierEnergyHatch() != getTierFluidHatch()) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
-        if (this.mOutputHatches.size() != 1) formationChecklist = false;
-        if (this.mInputHatches.size() != 0) formationChecklist = false;
-        if (this.mOutputBusses.size() != 0) formationChecklist = false;
+        if (this.mOutputHatches.size() > 1) formationChecklist = false;
         if (this.mInputBusses.size() > 1) formationChecklist = false;
 
         return formationChecklist;

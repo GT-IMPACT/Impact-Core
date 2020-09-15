@@ -311,9 +311,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
         if (this.mInputHatches.size() > 6) formationChecklist = false;
         if (this.mOutputBusses.size() > 1) formationChecklist = false;
         if (this.mOutputHatches.size() > 1) formationChecklist = false;
-        if (this.mMufflerHatches.size() != 0) formationChecklist = false;
         if (this.mEnergyHatches.size() > 3) formationChecklist = false;
-        if (this.mDynamoHatches.size() != 0) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;

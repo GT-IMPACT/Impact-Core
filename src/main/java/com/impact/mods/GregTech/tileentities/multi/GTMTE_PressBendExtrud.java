@@ -179,9 +179,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         }
 
         if (this.mInputBusses.size() > 15) formationChecklist = false;
-        if (this.mInputHatches.size() != 0) formationChecklist = false;
         if (this.mOutputBusses.size() > 3) formationChecklist = false;
-        if (this.mOutputHatches.size() != 0) formationChecklist = false;
         if (this.mMufflerHatches.size() != 1) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;

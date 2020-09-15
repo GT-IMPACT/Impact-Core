@@ -247,11 +247,11 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
-        if (this.mInputBusses.size() != 1)  formationChecklist = false;
+        if (this.mInputBusses.size() > 1)  formationChecklist = false;
         if (this.mInputHatches.size() > 1)  formationChecklist = false;
         if (this.mOutputHatches.size() > 1)  formationChecklist = false;
         if (this.mOutputBusses.size() > 1)  formationChecklist = false;
-        if (this.mEnergyHatches.size() != 1)  formationChecklist = false;
+        if (this.mEnergyHatches.size() > 1)  formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1)  formationChecklist = false;
         if (this.mMufflerHatches.size() != 1)  formationChecklist = false;
         return formationChecklist;
