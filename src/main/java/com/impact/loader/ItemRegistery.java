@@ -5,6 +5,7 @@ import com.impact.block.blocks.*;
 import com.impact.block.itemblock.FakeBlocksItem;
 import com.impact.item.GT_Pump.GregtechPump;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.System.impactLog.INFO;
 import static com.impact.util.Utilits.BlockstackMeta;
+import static gregtech.api.enums.GT_Values.W;
 
 
 public class ItemRegistery {
@@ -82,6 +84,14 @@ public class ItemRegistery {
         OreDictionary.registerOre("TripleCompressedCoal", BlockstackMeta(CoalBlock, 11));
         OreDictionary.registerOre("QuadrupleCompressedCoal", BlockstackMeta(CoalBlock, 12));
         INFO("[Init] Item Registery Blocks OreDict - Loaded");
+
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
+        INFO("[Init] Hazmat Additions - Loaded");
     }
 
     public static void GregtechPump() {
