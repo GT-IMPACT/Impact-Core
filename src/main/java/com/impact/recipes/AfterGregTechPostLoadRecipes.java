@@ -184,6 +184,10 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemItemConduit", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemLiquidConduit", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemYetaWrench", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemBigFilterUpgrade", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemBigFilterUpgrade", 1L, 1), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemPowerItemFilter", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemOCConduit", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("StorageDrawers", "controller", 1L, 0), true, false, false);
 
