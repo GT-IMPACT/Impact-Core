@@ -235,6 +235,9 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polybenzimidazole, 1), ItemList.Electric_Pump_IV.get(1L), ItemList.Sensor_IV.get(1L), ItemList.Circuit_Crystalprocessor.get(2L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Orichalcum, 8)}, Materials.Ledox.getMolten(288L), ItemList.Circuit_Board_Crystal.get(1L), 1400, 122880, true);
                 GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polybenzimidazole, 1), ItemList.Electric_Pump_IV.get(1L), ItemList.Sensor_IV.get(1L), ItemList.Circuit_Elite.get(2L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Orichalcum, 8)}, Materials.Ledox.getMolten(288L), ItemList.Circuit_Board_Crystal.get(1L), 1400, 122880, true);
 
+                //ICChip
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Coated.get(1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 6)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 1L, 0), 200, 16);
+
 
             }
         }
