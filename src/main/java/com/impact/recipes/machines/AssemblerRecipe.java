@@ -690,6 +690,14 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Conveyor_Module_LV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Electrum, 4L), GT_ModHandler.getModItem("EnderIO", "itemMaterial", 4L, 1), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("EnderIO", "itemItemConduit", 4L, 0), 120, 16);
         // --- Fluid Conduit
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LV.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 4L), GT_ModHandler.getModItem("EnderIO", "itemMaterial", 4L, 1), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("EnderIO", "itemLiquidConduit", 4L, 0), 120, 16);
+        // --- Big Item Filter
+        GT_Values.RA.addAssemblerRecipe(ItemList.Conveyor_Module_HV.get(1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DarkSteel, 1L), GT_ModHandler.getModItem("EnderIO", "itemBigFilterUpgrade", 1L), 200, 256);
+        // --- Big Advanced Item Filter
+        GT_Values.RA.addAssemblerRecipe(ItemList.Conveyor_Module_EV.get(1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSLA, 1L), GT_ModHandler.getModItem("EnderIO", "itemBigFilterUpgrade", 1L, 1), 300, 480);
+        // --- Chargeable Item Filter
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("EnderIO", "itemConduitProbe", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ElectricalSteel, 1L), GT_ModHandler.getModItem("EnderIO", "itemPowerItemFilter", 1L), 200, 64);
+        // --- Network Conduit (OC)
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("OpenComputers", "cable", 1L), GT_ModHandler.getModItem("EnderIO", "itemMaterial", 4L, 1), GT_ModHandler.getModItem("EnderIO", "itemOCConduit", 1L, 0), 120, 16);
 
         /* ==== END ENDER IO ==== */
         /** ==== START MALISIS DOORS ==== */
