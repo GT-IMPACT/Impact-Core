@@ -265,8 +265,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
                 // Fluid hatches should touch the storage field.
                 // Maintenance/Energy hatch can go anywhere
                 if (X >= -1 && X <= 1 && Y >= -1 && Y <= 1) {
-                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                    if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
@@ -281,8 +280,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
                         }
                     }
                 } else {
-                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if (!super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
                         // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
                         if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
@@ -376,8 +374,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
                 // Fluid hatches should touch the storage field.
                 // Maintenance/Energy hatch can go anywhere
                 if (X == -1 && X == 1 && Y == -1 && Y == 1) {
-                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                    if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !addMultiHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
@@ -391,8 +388,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
                         }
                     }
                 } else {
-                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if (!super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
                         // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
                         if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
@@ -407,7 +403,6 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
         }
 
         if (this.mEnergyHatches.size() > 1) formationChecklist = false;
-        if (this.mMaintenanceHatches.size() != 0) formationChecklist = false;
         if (this.mInputHatches.size() != 0) formationChecklist = false;
         if (this.mOutputHatches.size() != 0) formationChecklist = false;
 
