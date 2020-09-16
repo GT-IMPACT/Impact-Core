@@ -20,12 +20,8 @@ import static gregtech.api.enums.GT_Values.W;
 public class ItemRegistery {
 
     public static final Block[] decorateBlock = {
-            new Core_Blocks("DecorateBlock", new String[]{
-                    null,
-            }, 0),
-            new Core_Blocks("BufferCasing", new String[]{
-                    null
-            }, 1),
+            null,
+            null,
             new Core_FakeBlock("FakeBlock", new String[]{
                     Refstrings.MODID + ":glass/blockGB0",
                     Refstrings.MODID + ":glass/blockGB14",

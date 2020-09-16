@@ -2,7 +2,10 @@ package com.impact.System;
 
 import com.impact.block.QuantumStuffRender;
 import com.impact.block.blocks.Block_QuantumStuff;
+import com.impact.client.render.TESR_SETether;
+import com.impact.common.tileentities.TE_NqTether;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -12,6 +15,7 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderInfo() {
         Block_QuantumStuff.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
     }
 
 	@Override

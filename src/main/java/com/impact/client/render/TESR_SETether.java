@@ -2,6 +2,8 @@ package com.impact.client.render;
 
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.impact.block.blocks.Block_QuantumStuff;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityBeaconRenderer;
@@ -13,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import static com.impact.System.Refstrings.MODID;
 
+@SideOnly(Side.CLIENT)
 public class TESR_SETether extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation tetherBeamTexture = new ResourceLocation(MODID, "textures/blocks/FullWhite.png");

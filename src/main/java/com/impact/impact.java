@@ -11,7 +11,6 @@ import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
 import com.impact.mods.GregTech.GTregister.GT_WorldGenRegister;
 import com.impact.mods.GregTech.casings.GT_Loader_Casings;
-import com.impact.mods.IC2.block.machine.blockID;
 import com.impact.recipes.HandRecipe;
 import com.impact.recipes.OpenComputersRecipe;
 import com.impact.recipes.debug.DEBUG_Recipe;
@@ -75,8 +74,6 @@ public class impact {
     public void load(FMLInitializationEvent event) {
         MainLoader.load();
         INFO("MainLoader LOAD Loaded");
-
-        //new blockID(blockMachine3);
     }
 
 
@@ -93,8 +90,6 @@ public class impact {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
         channel.register(new PacketHandler());
-
-        ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
 
     }
 
