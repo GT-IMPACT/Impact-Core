@@ -46,7 +46,7 @@ file "build.properties" withReader {
 
 version = "${config.coremod.version}"
 group= "Impact" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Impact"
+archivesBaseName = "Impact-core"
 
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}"
