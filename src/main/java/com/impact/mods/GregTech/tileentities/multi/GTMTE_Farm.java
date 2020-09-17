@@ -64,7 +64,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
                     EnumChatFormatting.RED + "Impact Details:",
                     "- Solid Steel Casing",
                     "- Farm Casing",
-                    "- Reinfirced Glass",
+                    "- Reinforced Glass",
                     "- Hatches (any Solid Steel Casing)",
             };
             //endregion
