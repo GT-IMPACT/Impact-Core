@@ -129,7 +129,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
         }
 
         // If there are no basic I/O hatches, let multi hatches handle it and skip a lot of code!
-        if (sMultiHatches.size() > 0 && super.mInputHatches.size() == 0 && super.mOutputHatches.size() == 0) {
+        if (sMultiHatches.size() > 0) {
             return true;
         }
 
