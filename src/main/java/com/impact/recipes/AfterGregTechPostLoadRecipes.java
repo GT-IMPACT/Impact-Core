@@ -382,6 +382,9 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "Wireless", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "WirelessKit", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "Visualiser", 1L, 0), true, false, true);
+		removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "Encoder", 1L, 0), true, false, true);
+		removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "Grower", 1L, 0), true, false, true);
+		removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "Inscriber", 1L, 0), true, false, true);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("compactkineticgenerators", "IridiumRotor", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("compactkineticgenerators", "IridiumBlade", 1L, 0), true, false, true);
