@@ -30,7 +30,7 @@ public class FormingPressRecipe implements Runnable {
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(GT_ItemList.EngravedEnergyChip.get(1L)), GT_ItemList.RedstoneEmeraldChipset.get(1L), GT_ItemList.EmeraldAdvancedCoreChip.get(1L), 300, 4096);
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(GT_ItemList.EngravedQuantumChip.get(1L)), GT_ItemList.RedstoneEmeraldChipset.get(1L), GT_ItemList.EmeraldHighAdvancedCoreChip.get(1L), 300, 7680);
         //Gendustry Chips
-        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L)), GT_ItemList.RedstonePulsatingChipset.get(1L), GT_ItemList.EmeraldAdvancedFluidCoreChip.get(1L), 300, 7680);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L)), GT_ItemList.RedstonePulsatingChipset.get(1L), GT_ItemList.GeneticCircuit.get(1L), 300, 7680);
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L)), GT_ItemList.RedstoneDiamondChipset.get(1L), GT_ItemList.EnvironmentalCircuit.get(1L), 300, 7680);
         //Redstone Chips
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.EnderPearl, 1L), GT_ItemList.RedstoneRedChipset.get(1L), GT_ItemList.RedstonePulsatingChipset.get(2L), 200, 120);
