@@ -34,7 +34,21 @@ public class EntitySpawningHandler {
             "GalacticraftCore.EvolvedCreeper",
             "GalacticraftCore.EvolvedSkeleton",
             "GalacticraftCore.EvolvedSkeletonBoss",
+            "GalacticraftCore.EvolvedBossBlaze",
+            "GalacticraftCore.EvolvedBossGhast",
+            "GalacticraftCore.EvolvedCrystalBoss",
+            "GalacticraftCore.EvolvedBossSlime",
+            "GalacticraftCore.EvolvedBossWolf",
+            "GalacticraftCore.EvolvedFireCreeper",
+            "GalacticraftCore.EvolvedFireSkeleton",
+            "GalacticraftCore.EvolvedFireSpider",
+            "GalacticraftCore.EvolvedEnderman",
+            "GalacticraftCore.Tentacles",
+            "GalacticraftCore.EvolvedColdBlaze",
+            "GalacticraftCore.Crawler",
+            "GalacticraftCore.EvolvedBlaze",
             "GalacticraftCore.AlienVillager",
+            "GalacticraftMars.CreeperBoss",
             "CaveSpider"
     );
 
