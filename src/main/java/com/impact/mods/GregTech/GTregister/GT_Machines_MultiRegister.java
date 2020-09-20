@@ -47,8 +47,8 @@ public class GT_Machines_MultiRegister {
 			Pyrolyse				.set(new GTMTE_Pyrolyse(ID++, "multimachine.pyrolyse", 					"Pyrolyse Oven").getStackForm(1L));
 			AdvPyrolyse				.set(new GTMTE_AdvancedPyrolyse(ID++, "multimachine.advpyrolyse", 		"Advanced Pyrolyse Oven").getStackForm(1L));
 
-			Naquadah_multi			.set(new GTMTE_HyperNaquadahGenerator(ID++, "multimachine.naqgen", 			"Hyper Genrator").getStackForm(1L));
-			Naquadah_Liquid_multi	.set(new GTMTE_LiquidNqGenerator(ID++, "multimachine.liquidnaqgen", 	"Liquid Naquadah Genrator").getStackForm(1L));
+			Naquadah_multi			.set(new GTMTE_HyperNaquadahGenerator(ID++, "multimachine.naqgen", 			"Hyper Generator").getStackForm(1L));
+			Naquadah_Liquid_multi	.set(new GTMTE_LiquidNqGenerator(ID++, "multimachine.liquidnaqgen", 	"Liquid Naquadah Generator").getStackForm(1L));
 			Heavy_Metal_Cyclone		.set(new GTMTE_HeavyMetalCyclone(ID++, "multimachine.heavymetalcyclone","Heavy Metal Cyclone").getStackForm(1L));
 			Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID, "multimachine.liquidenrichednqgenerator","Liquid Enriched Naquadah Generator").getStackForm(1L));
 
