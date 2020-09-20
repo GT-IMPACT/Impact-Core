@@ -29,12 +29,12 @@ public class EntitySpawningHandler {
             "MushroomCow",
             "SnowMan",
             "Ozelot",
-            "EvolvedSpider",
-            "EvolvedZombie",
-            "EvolvedCreeper",
-            "EvolvedSkeleton",
-            "EvolvedSkeletonBoss",
-            "AlienVillager",
+            "GalacticraftCore.EvolvedSpider",
+            "GalacticraftCore.EvolvedZombie",
+            "GalacticraftCore.EvolvedCreeper",
+            "GalacticraftCore.EvolvedSkeleton",
+            "GalacticraftCore.EvolvedSkeletonBoss",
+            "GalacticraftCore.AlienVillager",
             "CaveSpider"
     );
 
