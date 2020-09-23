@@ -647,7 +647,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Provider Module
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L, 500), tBitMask, new Object[]{" C ", "BMB", "FIF", 'C', GT_ItemList.RedstoneGoldChipset, 'B', OrePrefixes.bolt.get(Materials.RedAlloy), 'F', OrePrefixes.foil.get(Materials.Silver), 'I', OrePrefixes.circuit.get(Materials.Basic), 'M', GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L)});
         // --- Provider Module MK2
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L, 501), tBitMask, new Object[]{" C ", "BMB", "FIF", 'C', GT_ItemList.RedstoneGoldChipset, 'B', OrePrefixes.bolt.get(Materials.RedAlloy), 'F', OrePrefixes.foil.get(Materials.Silver), 'I', OrePrefixes.circuit.get(Materials.Good), 'M', GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L, 501)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L, 501), tBitMask, new Object[]{" C ", "BMB", "FIF", 'C', GT_ItemList.RedstoneGoldChipset, 'B', OrePrefixes.bolt.get(Materials.RedAlloy), 'F', OrePrefixes.foil.get(Materials.Silver), 'I', OrePrefixes.circuit.get(Materials.Good), 'M', GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L, 500)});
         // --- Electric Manager Module
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L, 300), tBitMask, new Object[]{"WCA", "BMB", "FIF", 'C', GT_ItemList.RedstoneIronChipset, 'B', OrePrefixes.bolt.get(Materials.Electrum), 'F', OrePrefixes.foil.get(Materials.Silver), 'I', OrePrefixes.circuit.get(Materials.Good), 'M', GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L), 'W', OrePrefixes.wireGt02.get(Materials.Copper), 'A', ItemList.Battery_RE_LV_Lithium});
         // --- Electric Buffer Module
@@ -714,6 +714,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Formation Core
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 43), tBitMask, new Object[]{"SFh", "PCG", "SFd", 'P', OrePrefixes.plate.get(Materials.CertusQuartz), 'F', OrePrefixes.foil.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.Quartzite), 'C', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 7), 'G', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 22)});
 
+        // --- Wireless Access Point
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockWireless", 1L, 0), tBitMask, new Object[]{"SIS", "PCP", "dAw", 'P', OrePrefixes.plate.get(Materials.Vanadium), 'S', OrePrefixes.screw.get(Materials.Titanium), 'I', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 41), 'C', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 23), 'A', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 16)});
 
         /* ==== END AE2/EC2 ==== */
         /** ==== START VANILLA ==== */
