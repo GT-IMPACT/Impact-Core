@@ -628,7 +628,7 @@ public class Printer3DRecipe implements Runnable {
 
         //Kinetic Generator
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                ItemList.Hatch_Dynamo_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Tungsten, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium, 2),
+                ItemList.Hatch_Dynamo_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Aluminium, 2), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium, 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), ItemList.Electric_Motor_HV.get(2L), ItemList.Casing_Motor.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 6)
         }, GT_ModHandler.getModItem("IC2", "blockGenerator", 1L, 9), null, 10 * 20, 480);

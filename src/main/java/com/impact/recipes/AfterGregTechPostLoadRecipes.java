@@ -96,7 +96,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 1), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 2), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 3), true, false, false);
-
+        removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockWireless", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("extracells", "part.base", 1L, 1), true, false, false);
