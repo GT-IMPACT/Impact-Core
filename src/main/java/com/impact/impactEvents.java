@@ -1,14 +1,18 @@
 package com.impact;
 
 
+import com.impact.System.ImpactGuiMainMenu;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityList;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class EntitySpawningHandler {
+public class impactEvents {
 
     public static List<String> bannedEntities = Arrays.asList(
             "Creeper",
@@ -28,7 +32,6 @@ public class EntitySpawningHandler {
             "Witch",
             "MushroomCow",
             "SnowMan",
-            "Ozelot",
             "GalacticraftCore.EvolvedSpider",
             "GalacticraftCore.EvolvedZombie",
             "GalacticraftCore.EvolvedCreeper",
@@ -57,6 +60,14 @@ public class EntitySpawningHandler {
         if (event.entity != null && !bannedEntities.isEmpty() && bannedEntities.contains(EntityList.getEntityString(event.entity))) {
             event.world.removeEntity(event.entity);
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onGuiOpenEvent(GuiOpenEvent event) {
+        if (event.gui instanceof net.minecraft.client.gui.GuiMainMenu) {
+            event.gui = new ImpactGuiMainMenu();
         }
     }
 }

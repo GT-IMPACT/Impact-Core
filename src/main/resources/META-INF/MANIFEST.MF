@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+FMLCorePlugin: com.impact.loader.HooksLoader
+FMLCorePluginContainsFMLMod: true
+

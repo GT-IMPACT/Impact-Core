@@ -103,6 +103,14 @@ processResources
     exclude '**/Thumbs.db'
 }
 
+jar {
+		manifest {
+		attributes 'FMLCorePlugin': 'com.impact.loader.HooksLoader'
+		attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
+
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'

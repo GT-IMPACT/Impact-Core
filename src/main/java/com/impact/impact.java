@@ -2,8 +2,6 @@ package com.impact;
 
 import com.impact.System.*;
 import com.impact.api.enums.Texture;
-import com.impact.client.render.TESR_SETether;
-import com.impact.common.tileentities.TE_NqTether;
 import com.impact.loader.MainLoader;
 import com.impact.loader.ModLoader;
 import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
@@ -11,55 +9,52 @@ import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
 import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
 import com.impact.mods.GregTech.GTregister.GT_WorldGenRegister;
 import com.impact.mods.GregTech.casings.GT_Loader_Casings;
-import com.impact.recipes.HandRecipe;
-import com.impact.recipes.OpenComputersRecipe;
+import com.impact.recipes.*;
 import com.impact.recipes.debug.DEBUG_Recipe;
 import com.impact.recipes.machines.*;
 import com.impact.util.SendUtils;
 import com.impact.util.oreplugin.CSVMaker;
 import com.impact.util.oreplugin.GT5OreLayerHelper;
 import com.impact.util.oreplugin.GT5OreSmallHelper;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
-import com.impact.System.LoginHandler;
-import cpw.mods.fml.relauncher.Side;
-import ic2.core.init.InternalName;
 
 import java.io.File;
 
 import static com.impact.System.Config.csv;
 import static com.impact.System.Refstrings.MODID;
 import static com.impact.System.impactLog.INFO;
-import static ic2.core.init.InternalName.blockMachine3;
 
-@Mod (
-		modid = MODID,
+@Mod(
+        modid = MODID,
         name = Refstrings.NAME,
         version = Refstrings.VERSION,
-        dependencies = 
-        	"required-after:Forge@[10.13.2.1291,);")
+        dependencies =
+                "required-after:Forge@[10.13.2.1291,);")
 
 public class impact {
 
     @SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
     public static CommonProxy proxy;
 
-	@Mod.Instance(MODID)
+    @Mod.Instance(MODID)
     public static impact instance;
     public static SendUtils SendUtils_instance = new SendUtils();
-    public static String ModPackVersion = "1.0 RELEASE";
+    public static String ModPackVersion = "1.0 Release [DEV]";
     public static Config mConfig;
     public static FMLEventChannel channel;
 
 
-    public impact(){
+    public impact() {
         Texture.Icons.VOID.name();
     }
 
@@ -69,8 +64,8 @@ public class impact {
 
         INFO("LoginHandler Loaded");
     }
-	
-	@Mod.EventHandler
+
+    @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
         MainLoader.load();
         INFO("MainLoader LOAD Loaded");
@@ -86,7 +81,7 @@ public class impact {
         INFO("MainLoader PREINIT Loaded ");
         //MainLoader.preInitClient();
 
-        MinecraftForge.EVENT_BUS.register(new EntitySpawningHandler());
+        MinecraftForge.EVENT_BUS.register(new impactEvents());
         MinecraftForge.EVENT_BUS.register(new EventHandler());
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
         channel.register(new PacketHandler());
@@ -102,7 +97,7 @@ public class impact {
         }
     }
 
-	@Mod.EventHandler
+    @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         new GT_ItemRegister().run();
         new GT_Loader_Casings().run();
@@ -149,7 +144,7 @@ public class impact {
         new WireassemblerRecipe().run();
         new FusionRecipe().run();
         new ArcFurnaceRecipe().run();
-		new UnboxingRecipe().run();
+        new UnboxingRecipe().run();
         MainLoader.postLoad();
     }
 
