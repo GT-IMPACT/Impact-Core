@@ -2,15 +2,9 @@ package com.impact.System;
 
 
 import gloomyfolken.hooklib.asm.Hook;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,12 +15,7 @@ import java.nio.ByteBuffer;
 public class Hooks {
 
     @Hook
-    public static void loadScreen(Minecraft mc) throws LWJGLException {
-        mc.renderEngine.bindTexture(new ResourceLocation("impact", "textures/gui/title/title.png"));
-    }
-
-    @Hook
-    public static void createDisplay(ForgeHooksClient clazz) {
+    public static void createDisplay(ForgeHooksClient mc) {
         Display.setTitle("Impact");
         ResourceLocation icon = new ResourceLocation("impact", "textures/gui/title/fav.png");
 
