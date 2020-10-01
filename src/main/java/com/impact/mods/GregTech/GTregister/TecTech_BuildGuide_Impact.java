@@ -24,7 +24,7 @@ import static gregtech.api.GregTech_API.*;
 
 public class TecTech_BuildGuide_Impact implements Runnable {
 
-    @SuppressWarnings({"Deprecated"})
+    @SuppressWarnings({"deprecation"})
     @Override
     public void run() {
         //PBE

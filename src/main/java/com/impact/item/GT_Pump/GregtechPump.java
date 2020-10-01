@@ -158,7 +158,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         return EnumRarity.common;
     }
 
-    @SuppressWarnings({"Deprecated"})
+    @SuppressWarnings({"deprecation"})
     @Override
     public boolean hasEffect(final ItemStack par1ItemStack) {
         int h = getCorrectMetaForItemstack(par1ItemStack);

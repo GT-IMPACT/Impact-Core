@@ -24,6 +24,7 @@ public class GTMTE_WaterTank extends GT_MetaTileEntity_BasicTank {
         super(mName, mTier, 2, aDescription, mTextures);
     }
 
+    @SuppressWarnings("deprecation")
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GTMTE_WaterTank(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
@@ -35,9 +36,6 @@ public class GTMTE_WaterTank extends GT_MetaTileEntity_BasicTank {
                         : new ITexture[]{new GT_RenderedTexture(BlockIcons.WATER_CAULDRON)};
     }
 
-    public ITexture[] getSides(byte aColor) {
-        return null;
-    }
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_Container_BasicTank(aPlayerInventory, aBaseMetaTileEntity);
@@ -57,7 +55,7 @@ public class GTMTE_WaterTank extends GT_MetaTileEntity_BasicTank {
                         this.mFluid = null;
                     }
 
-                    this.fill(Materials.Water.getFluid((long)this.generateWaterAmount()), true);
+                    this.fill(Materials.Water.getFluid(this.generateWaterAmount()), true);
                 }
 
                 this.getBaseMetaTileEntity().setActive(true);

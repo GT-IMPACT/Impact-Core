@@ -20,9 +20,7 @@ import static gregtech.api.GregTech_API.*;
 
 public class TecTech_BuildGuide_GregTech implements Runnable {
 
-    private IIcon texture;
-
-    @SuppressWarnings({"Deprecated"})
+    @SuppressWarnings({"deprecation"})
     @Override
     public void run() {
         //FusionComputer1
