@@ -77,7 +77,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         if (b.id == 6) this.mc.displayGuiScreen(new GuiModList(this));
         if (b.id == 20) urlopen("https://gt-impact.github.io/");
         if (b.id == 21) urlopen("https://discord.gg/bMf2qvd");
-        if (b.id == 22) urlopen("https://github.com/GT-IMPACT");
+        if (b.id == 22) urlopen("https://github.com/GT-IMPACT/IMPACT-MODPACK/issues/new/choose");
     }
 
     private void urlopen(String url) {
