@@ -1157,6 +1157,66 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("PracticalLogistics", "DisplayScreenItem", 2L, 0), GT_Utility.getIntegratedCircuit(1), GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L, 0), 100, 8);
 
         /* ==== END PRACTICAL LOGISTICS ==== */
+        /** ==== START GALACTICRAFT & GALAXYSPACE ==== */
+        // ---  T1 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.spaceship", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalacticraftCore", "item.spaceship", 1L, 3), 200, 64);
+        // ---  T2 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.spaceshipTier2", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalacticraftMars", "item.spaceshipTier2", 1L, 3), 200, 64);
+        // ---  T3 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemTier3Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalacticraftMars", "item.itemTier3Rocket", 1L, 3), 200, 64);
+        // ---  T4 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier4Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier4Rocket", 1L, 3), 200, 64);
+        // ---  T5 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier5Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier5Rocket", 1L, 3), 200, 64);
+        // ---  T6 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier6Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier6Rocket", 1L, 3), 200, 64);
+        // ---  T7 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L, 3), 200, 64);
+        // ---  T8 Rocket + chest
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L, 3), 200, 64);
+
+        // --- Oxygen Mask
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2", "itemArmorHazmatHelmet", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 16), Materials.Rubber.getMolten(144), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenMask", 1L), 400, 120);
+        // --- Thermal Cloth
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polycaprolactam, 1), Materials.Polytetrafluoroethylene.getMolten(576), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L, 7), 100, 1920);
+        // --- Glowstone Torch
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1), GT_ModHandler.getModItem("GalacticraftCore", "tile.glowstoneTorch", 1L), 200, 16);
+        // --- Canister
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 8L, 9), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, 4), GT_ModHandler.getModItem("GalacticraftCore", "item.oilCanisterPartial", 1L, 1001), 200, 64);
+        // --- Hydrogen Pipe
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.oxygenPipe", 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Copper, 4), GT_ModHandler.getModItem("GalacticraftMars", "tile.hydrogenPipe", 1L), 400, 16);
+        // --- Thermal Padding Helm
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 5L, 7), GT_Utility.getIntegratedCircuit(5), GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L), 750, 1024);
+        // --- Thermal Padding Chestpiece
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 8L, 7), GT_Utility.getIntegratedCircuit(8), GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 1), 1200, 1024);
+        // --- Thermal Padding Leggings
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 7L, 7), GT_Utility.getIntegratedCircuit(7), GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 2), 1050, 1024);
+        // --- Thermal Padding Boots
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 4L, 7), GT_Utility.getIntegratedCircuit(4), GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 3), 600, 1024);
+
+        // --- Thermal Cloth Tier 2
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.MeteoricSteel, 4), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tungsten, 4), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L, 7)}, Materials.Polycaprolactam.getMolten(576), GT_ModHandler.getModItem("GalaxySpace", "item.ThermalClothT2", 1L), 200, 7680);
+        // --- Lead Battery
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.battery", 1L, GT_Values.W), GT_Utility.getIntegratedCircuit(1), Materials.Lead.getMolten(4608), GT_ModHandler.getModItem("GalaxySpace", "item.LeadBattery", 1L, 100), 100, 120);
+        // --- Thermal Padding Helmet Tier 2
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalClothT2", 5L), GT_Utility.getIntegratedCircuit(5), GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L), 1500, 7680);
+        // --- Thermal Padding Chestpiece Tier 2
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalClothT2", 8L), GT_Utility.getIntegratedCircuit(8), GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L, 1), 2400, 7680);
+        // --- Thermal Padding Leggings Tier 2
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalClothT2", 7L), GT_Utility.getIntegratedCircuit(7), GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L, 2), 2100, 7680);
+        // --- Thermal Padding Boots Tier 2
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalClothT2", 4L), GT_Utility.getIntegratedCircuit(4), GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L, 3), 1200, 7680);
+        // --- Space Suit Jetpack
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_plate", 1L), GT_ModHandler.getModItem("IC2", "itemArmorJetpackElectric", 1L, GT_Values.W), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 4L, 2)}, Materials.Platinum.getMolten(1440), GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_jetplate", 1L), 600, 1920);
+        // --- Space Suit Gravity Boots
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_boots", 1L), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 2L, 4), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 4L, 2)}, Materials.Platinum.getMolten(1440), GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_gravityboots", 1L), 600, 1920);
+        // --- Space Suit Sensor Glasses
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_helmet", 1L), GT_ModHandler.getModItem("GalacticraftCore", "item.sensorGlasses", 1L), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 4L, 2)}, Materials.Platinum.getMolten(1440), GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_helmetglasses", 1L), 600, 1920);
+        // --- Future Glass
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "glass", 1L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Desh, 8), GT_ModHandler.getModItem("GalaxySpace", "futureglass", 1L), 200, 480);
+
+
+        /* ==== END GALACTICRAFT & GALAXYSPACE ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};

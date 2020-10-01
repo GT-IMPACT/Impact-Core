@@ -582,6 +582,26 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("SGCraft", "ic2Capacitor", 1L, 0), true, false, true);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftCore", "tile.arclamp", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenMask", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L, 7), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftCore", "tile.glowstoneTorch", 1L), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftCore", "item.oilCanisterPartial", 1L, 1001), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftMars", "tile.hydrogenPipe", 1L), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 1), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 2), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 3), true, false, true);
+
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalClothT2", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.LeadBattery", 1L, GT_Values.W), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L, 1), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L, 2), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.ThermalPaddingT2", 1L, 3), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_jetplate", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_gravityboots", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_helmetglasses", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "futureglass", 1L, 0), true, false, true);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2wct", "wirelessCraftingTerminal", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2wct", "magnetCard", 1L, 0), true, false, true);
