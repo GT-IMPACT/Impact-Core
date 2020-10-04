@@ -1,5 +1,6 @@
 package com.impact.recipes;
 
+import com.impact.recipes.debug.DEBUG_Recipe;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -13,7 +14,7 @@ import static gregtech.api.util.GT_ModHandler.*;
 public class AfterGregTechPostLoadRecipes implements Runnable {
     @Override
     public void run() {
-
+        new DEBUG_Recipe().run();
         //removeRecipe(ItemStack aInput);
 
         //removeFurnaceSmelting(ItemStack aInput)

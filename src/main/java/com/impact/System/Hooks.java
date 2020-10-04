@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public class Hooks {
-
+    //-Dfml.coreMods.load=com.impact.loader.HooksLoader
     @Hook
     public static void createDisplay(ForgeHooksClient mc) {
         Display.setTitle("Impact");
