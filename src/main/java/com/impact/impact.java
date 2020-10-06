@@ -27,6 +27,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
+import galaxyspace.core.config.GSConfigDimensions;
 import galaxyspace.core.register.GSItems;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -36,6 +37,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -163,6 +165,10 @@ public class impact {
         inputMap.put(new ItemStack(IGlassBlock, 20), 20);
         inputMap.put(new ItemStack(GCItems.rocketEngine, 4), 4);
         GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
+        if (GSConfigDimensions.enableVenusSS)
+            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GSConfigDimensions.dimensionIDVenusOrbit, GSConfigDimensions.dimensionIDVenus, new SpaceStationRecipe(inputMap)));
+        if (GSConfigDimensions.enableMarsSS)
+            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GSConfigDimensions.dimensionIDMarsOrbit, ConfigManagerMars.dimensionIDMars, new SpaceStationRecipe(inputMap)));
         MainLoader.postLoad();
     }
 
