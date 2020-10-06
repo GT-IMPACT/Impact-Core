@@ -14,6 +14,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -120,14 +121,10 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
     @Override
     public boolean checkRecipe(ItemStack guiSlotItem) {
 
-        super.mEfficiency = 10000 - (super.getIdealStatus() - super.getRepairStatus()) * 1000;
-        super.mEfficiencyIncrease = 10000;
-        super.mEUt = runningCost;
+        this.mEfficiency = 10000 - (super.getIdealStatus() - super.getRepairStatus()) * 1000;
+        this.mEfficiencyIncrease = 10000;
+        this.mEUt = runningCost;
         super.mMaxProgresstime = 10;
-
-        if (guiSlotItem != null && guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
-            this.fluidSelector = (byte) guiSlotItem.getItemDamage();
-        }
 
         // If there are no basic I/O hatches, let multi hatches handle it and skip a lot of code!
         if(sMultiHatches.size() > 0 && super.mInputHatches.size() == 0 && super.mOutputHatches.size() == 0) {
@@ -145,9 +142,14 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
                 toDeplete.amount = pushed;
                 super.depleteInput(toDeplete);
             }
+                // Void excess if that is turned on
+            if(doVoidExcess) {
+                for(GT_MetaTileEntity_Hatch_Input inputHatch : super.mInputHatches) {
+                    inputHatch.setDrainableStack(null);
+                }
+            }
         }
 
-        // Push out fluids
         // Push out fluids
         if(guiSlotItem != null && guiSlotItem.getUnlocalizedName().equals("gt.integrated_circuit")) {
             final int config = guiSlotItem.getItemDamage();
