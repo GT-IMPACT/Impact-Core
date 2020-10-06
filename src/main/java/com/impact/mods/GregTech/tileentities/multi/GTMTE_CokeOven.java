@@ -2,7 +2,7 @@ package com.impact.mods.GregTech.tileentities.multi;
 
 
 import com.impact.mods.GregTech.tileentities.multi.debug.GTMTE_MBBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_CokeOven;
+import com.impact.mods.GregTech.gui.GUI_CokeOven;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

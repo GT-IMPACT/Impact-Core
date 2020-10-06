@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.tileentities.basic;
 
-import com.impact.mods.GregTech.tileentities.basic.gui.GUI_WaterTank;
+import com.impact.mods.GregTech.gui.GUI_WaterTank;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_Container_BasicTank;

@@ -25,11 +25,11 @@
  */
 package com.impact.mods.GregTech.tileentities.multi.debug;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import com.impact.mods.GregTech.tileentities.multi.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.GregTech.TecTech.ITecTechEnabledMulti;
+import com.impact.mods.GregTech.TecTech.TecTechUtils;
+import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
 import gregtech.GT_Mod;
@@ -41,7 +41,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 

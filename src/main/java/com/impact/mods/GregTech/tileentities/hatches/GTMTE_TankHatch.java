@@ -4,7 +4,6 @@ import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_SingleTank;
 import com.impact.util.MultiFluidHandler;
 import com.impact.util.SingleFluidHandler;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,17 +13,15 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.HashMap;
 import java.util.List;
 
-import static com.impact.api.enums.Texture.Icons.OVERLAY_MULTIHATCH;
+import static com.impact.mods.GregTech.enums.Texture.Icons.OVERLAY_MULTIHATCH;
 import static com.impact.util.Utilits.invertBoolean;
 
 public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
