@@ -1,4 +1,4 @@
-package com.impact.mods.modSolar.client;
+package com.impact.mods.ASP.client;
 
 
 import codechicken.nei.api.IConfigureNEI;

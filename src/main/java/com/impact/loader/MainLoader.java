@@ -1,23 +1,17 @@
 package com.impact.loader;
 
 import com.impact.block.blocks.Block_QuantumStuff;
-import com.impact.client.render.TESR_SETether;
-import com.impact.common.tileentities.TE_NqTether;
 import com.impact.impact;
-import com.impact.impact.*;
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.item.FakeCircuits;
 import com.impact.item.WoodBrickFormTool;
 import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
-import com.impact.mods.modSolar.ASP;
+import com.impact.mods.ASP.ASP;
 import com.impact.recipes.AfterGregTechPostLoadRecipes;
 import com.impact.util.OreDictRegister;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import net.minecraft.item.ItemStack;
 

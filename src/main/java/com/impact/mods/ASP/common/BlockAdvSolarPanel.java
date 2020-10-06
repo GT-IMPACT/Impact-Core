@@ -1,8 +1,8 @@
-package com.impact.mods.modSolar.common;
+package com.impact.mods.ASP.common;
 
 import com.impact.impact;
-import com.impact.mods.modSolar.ASP;
-import com.impact.mods.modSolar.common.TE.*;
+import com.impact.mods.ASP.ASP;
+import com.impact.mods.ASP.common.TE.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -37,6 +37,10 @@ public class BlockAdvSolarPanel extends BlockContainer {
         this.qgActive = false;
     }
 
+    public static boolean isActive(IBlockAccess var0, int var1, int var2, int var3) {
+        return ((TileEntityBase) var0.getTileEntity(var1, var2, var3)).getActive();
+    }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
         this.iconBuffer = new IIcon[9][12];
         for (byte Num = 0; Num <= 8; Num++) {
@@ -53,7 +57,7 @@ public class BlockAdvSolarPanel extends BlockContainer {
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
         int blockMeta = world.getBlockMetadata(x, y, z);
         TileEntity te = world.getTileEntity(x, y, z);
-        int facing = te instanceof TileEntityBase ? ((TileEntityBase)te).getFacing() : 0;
+        int facing = te instanceof TileEntityBase ? ((TileEntityBase) te).getFacing() : 0;
         return isActive(world, x, y, z)
                 ? this.iconBuffer[blockMeta][ASP.sideAndFacingToSpriteOffset[blockSide][facing] + 6]
                 : this.iconBuffer[blockMeta][ASP.sideAndFacingToSpriteOffset[blockSide][facing]];
@@ -63,14 +67,10 @@ public class BlockAdvSolarPanel extends BlockContainer {
         return this.iconBuffer[blockMeta][ASP.sideAndFacingToSpriteOffset[blockSide][3]];
     }
 
-    public static boolean isActive(IBlockAccess var0, int var1, int var2, int var3) {
-        return ((TileEntityBase)var0.getTileEntity(var1, var2, var3)).getActive();
-    }
-
     public void breakBlock(World world, int i, int j, int k, Block par5, int par6) {
         TileEntity tileentity = world.getTileEntity(i, j, k);
         if (tileentity != null) {
-            this.dropItems((TileEntitySolarPanel)tileentity, world);
+            this.dropItems((TileEntitySolarPanel) tileentity, world);
         }
 
         world.removeTileEntity(i, j, k);
@@ -86,7 +86,7 @@ public class BlockAdvSolarPanel extends BlockContainer {
     }
 
     public TileEntity getBlockEntity(int i) {
-        switch(i) {
+        switch (i) {
             case 0:
                 return new TileEntity8SolarPanel();
             case 1:
@@ -130,21 +130,21 @@ public class BlockAdvSolarPanel extends BlockContainer {
         if (tileentity instanceof IInventory) {
             IInventory inventory = tileentity;
 
-            for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+            for (int i = 0; i < inventory.getSizeInventory(); ++i) {
                 ItemStack item = inventory.getStackInSlot(i);
                 if (item != null && item.stackSize > 0) {
                     float rx = rand.nextFloat() * 0.8F + 0.1F;
                     float ry = rand.nextFloat() * 0.8F + 0.1F;
                     float rz = rand.nextFloat() * 0.8F + 0.1F;
-                    EntityItem entityItem = new EntityItem(world, (double)((float)tileentity.xCoord + rx), (double)((float)tileentity.yCoord + ry), (double)((float)tileentity.zCoord + rz), new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
+                    EntityItem entityItem = new EntityItem(world, (float) tileentity.xCoord + rx, (float) tileentity.yCoord + ry, (float) tileentity.zCoord + rz, new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
                     if (item.hasTagCompound()) {
-                        entityItem.getEntityItem().setTagCompound((NBTTagCompound)item.getTagCompound().copy());
+                        entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
                     }
 
                     float factor = 0.05F;
-                    entityItem.motionX = rand.nextGaussian() * (double)factor;
-                    entityItem.motionY = rand.nextGaussian() * (double)factor + 0.20000000298023224D;
-                    entityItem.motionZ = rand.nextGaussian() * (double)factor;
+                    entityItem.motionX = rand.nextGaussian() * (double) factor;
+                    entityItem.motionY = rand.nextGaussian() * (double) factor + 0.20000000298023224D;
+                    entityItem.motionZ = rand.nextGaussian() * (double) factor;
                     world.spawnEntityInWorld(entityItem);
                     item.stackSize = 0;
                 }
@@ -157,9 +157,10 @@ public class BlockAdvSolarPanel extends BlockContainer {
         return this.getBlockEntity(var2);
     }
 
+    @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
-        for(int ix = 0; ix < this.iconBuffer.length; ++ix) {
+        for (int ix = 0; ix < this.iconBuffer.length; ++ix) {
             subItems.add(new ItemStack(this, 1, ix));
         }
 

@@ -1,7 +1,7 @@
 package com.impact.loader;
 
-import com.impact.mods.modSolar.client.GuiAdvSolarPanel;
-import com.impact.mods.modSolar.common.TE.TileEntitySolarPanel;
+import com.impact.mods.ASP.client.GuiAdvSolarPanel;
+import com.impact.mods.ASP.common.TE.TileEntitySolarPanel;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

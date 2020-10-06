@@ -1,4 +1,4 @@
-package com.impact.mods.modSolar.common;
+package com.impact.mods.ASP.common;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ItemAdvSolarPanel extends ItemBlock {
     }
 
     public String getUnlocalizedName(ItemStack itemstack) {
-        return (String)this.itemNames.get(itemstack.getItemDamage());
+        return this.itemNames.get(itemstack.getItemDamage());
     }
 
     public void addItemsNames() {
@@ -43,6 +44,7 @@ public class ItemAdvSolarPanel extends ItemBlock {
         this.itemNames.add("blockUEVSolarPanel");
     }
 
+    @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
@@ -51,11 +53,7 @@ public class ItemAdvSolarPanel extends ItemBlock {
 
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack itemstack) {
-        int i = itemstack.getItemDamage();
-        switch(i) {
-            default:
-                return EnumRarity.common;
-        }
+        return EnumRarity.common;
     }
 }
 

@@ -1,7 +1,7 @@
-package com.impact.mods.modSolar.common;
+package com.impact.mods.ASP.common;
 
 
-import com.impact.mods.modSolar.common.TE.TileEntitySolarPanel;
+import com.impact.mods.ASP.common.TE.TileEntitySolarPanel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -21,17 +21,17 @@ public class ContainerAdvSolarPanel extends Container {
         this.tileentity = tileentitysolarpanel;
 
         int j;
-        for(j = 0; j < 4; ++j) {
+        for (j = 0; j < 4; ++j) {
             this.addSlotToContainer(new Slot(this.tileentity, j, 107 + j * 18, 59));
         }
 
-        for(j = 0; j < 3; ++j) {
-            for(int k = 0; k < 9; ++k) {
+        for (j = 0; j < 3; ++j) {
+            for (int k = 0; k < 9; ++k) {
                 this.addSlotToContainer(new Slot(inventoryplayer, k + j * 9 + 9, 17 + k * 18, 86 + j * 18));
             }
         }
 
-        for(j = 0; j < 9; ++j) {
+        for (j = 0; j < 9; ++j) {
             this.addSlotToContainer(new Slot(inventoryplayer, j, 17 + j * 18, 144));
         }
 
@@ -49,8 +49,8 @@ public class ContainerAdvSolarPanel extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for(int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = (ICrafting)this.crafters.get(i);
+        for (int i = 0; i < this.crafters.size(); ++i) {
+            ICrafting icrafting = (ICrafting) this.crafters.get(i);
             icrafting.sendProgressBarUpdate(this, 0, this.tileentity.sunIsUp ? 1 : 0);
             icrafting.sendProgressBarUpdate(this, 1, this.tileentity.skyIsVisible ? 1 : 0);
             icrafting.sendProgressBarUpdate(this, 2, this.tileentity.generating);
@@ -89,7 +89,7 @@ public class ContainerAdvSolarPanel extends Container {
 
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
         ItemStack stack = null;
-        Slot slotObject = (Slot)this.inventorySlots.get(par2);
+        Slot slotObject = (Slot) this.inventorySlots.get(par2);
         if (slotObject != null && slotObject.getHasStack()) {
             ItemStack stackInSlot = slotObject.getStack();
             stack = stackInSlot.copy();
@@ -110,7 +110,7 @@ public class ContainerAdvSolarPanel extends Container {
             }
 
             if (stackInSlot.stackSize == 0) {
-                slotObject.putStack((ItemStack)null);
+                slotObject.putStack(null);
             } else {
                 slotObject.onSlotChanged();
             }

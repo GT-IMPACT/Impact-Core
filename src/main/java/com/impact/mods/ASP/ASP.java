@@ -1,7 +1,8 @@
-package com.impact.mods.modSolar;
+package com.impact.mods.ASP;
 
-import com.impact.mods.modSolar.common.*;
-import com.impact.mods.modSolar.common.TE.*;
+import com.impact.mods.ASP.common.BlockAdvSolarPanel;
+import com.impact.mods.ASP.common.ItemAdvSolarPanel;
+import com.impact.mods.ASP.common.TE.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 
@@ -27,7 +28,7 @@ public class ASP {
 
     public static void load() {
         try {
-            sideAndFacingToSpriteOffset = (int[][])((int[][])Class.forName("ic2.core.block.BlockMultiID").getField("sideAndFacingToSpriteOffset").get((Object)null));
+            sideAndFacingToSpriteOffset = ((int[][]) Class.forName("ic2.core.block.BlockMultiID").getField("sideAndFacingToSpriteOffset").get(null));
         } catch (Exception var2) {
             sideAndFacingToSpriteOffset = new int[][]{{3, 2, 0, 0, 0, 0}, {2, 3, 1, 1, 1, 1}, {1, 1, 3, 2, 5, 4}, {0, 0, 2, 3, 4, 5}, {4, 5, 4, 5, 3, 2}, {5, 4, 5, 4, 2, 3}};
         }

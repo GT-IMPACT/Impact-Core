@@ -1,4 +1,4 @@
-package com.impact.mods.modSolar.common.TE;
+package com.impact.mods.ASP.common.TE;
 
 
 import ic2.api.network.INetworkDataProvider;
@@ -14,7 +14,6 @@ import java.util.List;
 public class TileEntityBase extends TileEntity implements IWrenchable, INetworkDataProvider, INetworkTileEntityEventListener {
     public boolean active = false;
     public short facing = 5;
-    public boolean prevActive = false;
     public short prevFacing = 0;
 
     public TileEntityBase() {
