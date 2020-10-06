@@ -1,7 +1,7 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items;
+import com.impact.common.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
@@ -12,7 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import static com.impact.item.Core_List_Items.*;
+import static com.impact.common.item.Core_List_Items.*;
 
 public class AlloySmelterRecipe implements Runnable {
     final Core_Items CoreItems = Core_Items.getInstance();

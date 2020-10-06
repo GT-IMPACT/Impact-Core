@@ -1,7 +1,7 @@
 package com.impact.client.render;
 
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
-import com.impact.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.OpenGlHelper;

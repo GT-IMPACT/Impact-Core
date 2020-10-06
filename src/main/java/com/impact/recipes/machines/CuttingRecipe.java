@@ -1,11 +1,10 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items;
+import com.impact.common.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
-import net.minecraft.item.ItemStack;
 
 import static com.impact.util.Utilits.Itemstack;
 

@@ -1,6 +1,6 @@
 package com.impact.util;
 
-import com.impact.block.itemblock.IB_IGlass;
+import com.impact.common.block.itemblock.IB_IGlass;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;

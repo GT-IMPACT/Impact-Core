@@ -1,6 +1,6 @@
 package com.impact.recipes;
 
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items2;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.impact.mods.GregTech.GT_ItemList;

@@ -1,7 +1,7 @@
 package com.impact.events;
 
 
-import com.impact.block.itemblock.IB_IGlass;
+import com.impact.common.block.itemblock.IB_IGlass;
 import com.impact.client.gui.ImpactGuiMainMenu;
 import com.impact.util.ToggleMetaData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

@@ -1,11 +1,12 @@
 package com.impact.loader;
 
-import com.impact.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.client.gui.GUIHandler;
 import com.impact.impact;
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
-import com.impact.item.FakeCircuits;
-import com.impact.item.WoodBrickFormTool;
+import com.impact.common.item.Core_Items;
+import com.impact.common.item.Core_Items2;
+import com.impact.common.item.FakeCircuits;
+import com.impact.common.item.WoodBrickFormTool;
 import com.impact.mods.GalactiCraft.GG.SpaceDimRegisterer;
 import com.impact.mods.ASP.ASP;
 import com.impact.recipes.AfterGregTechPostLoadRecipes;
@@ -18,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.core.impactLog.WARNING;
-import static com.impact.item.Core_List_Items.registerOreDictNames;
+import static com.impact.common.item.Core_List_Items.registerOreDictNames;
 
 public class MainLoader {
 
@@ -99,13 +100,6 @@ public class MainLoader {
         NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, new GUIHandler());
         INFO("[postInit] GUI Handler - Loaded");
     }
-
-//    private static void registerSingleIC2StorageBlocks() {
-//        GameRegistry.registerTileEntity(TileEntityGTSU.class, "GTSU_TE");
-//        for (int i = 0; i < TierHelper.V.length; i++) {
-//            GameRegistry.registerBlock(new GTSUBlock(i), ItemBlockGTSU.class, String.format("GTSU_Tier_%d", i));
-//        }
-//    }
 
     public static void addAfterGregTechPostLoadRunner() {
         GregTech_API.sAfterGTPostload.add(() -> new AfterGregTechPostLoadRecipes().run());

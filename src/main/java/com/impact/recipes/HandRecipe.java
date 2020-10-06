@@ -1,8 +1,8 @@
 package com.impact.recipes;
 
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
-import com.impact.item.WoodBrickFormTool;
+import com.impact.common.item.Core_Items;
+import com.impact.common.item.Core_Items2;
+import com.impact.common.item.WoodBrickFormTool;
 import com.impact.mods.GregTech.GT_ItemList;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import static com.impact.item.Core_List_Items.*;
+import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.loader.ItemRegistery.CeramicBlock;
 import static com.impact.loader.ItemRegistery.FluidTankBlock;
 import static com.impact.util.Utilits.Blockstack;

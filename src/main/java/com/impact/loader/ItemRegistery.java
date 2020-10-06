@@ -1,9 +1,7 @@
 package com.impact.loader;
 
 import com.impact.core.Refstrings;
-import com.impact.block.blocks.*;
-import com.impact.block.itemblock.FakeBlocksItem;
-import com.impact.item.GT_Pump.GregtechPump;
+import com.impact.common.block.blocks.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;

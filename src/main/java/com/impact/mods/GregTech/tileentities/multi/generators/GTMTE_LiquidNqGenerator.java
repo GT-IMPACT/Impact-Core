@@ -5,8 +5,8 @@ import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContain
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
-import com.impact.block.blocks.Block_NqTether;
-import com.impact.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.blocks.Block_NqTether;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.GregTech.gui.GUI_BASE;

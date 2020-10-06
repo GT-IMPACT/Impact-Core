@@ -1,6 +1,6 @@
 package com.impact.recipes;
 
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items2;
 import com.impact.mods.GregTech.GT_ItemList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;

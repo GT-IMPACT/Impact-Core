@@ -1,9 +1,9 @@
 package com.impact.core;
 
-import com.impact.block.QuantumStuffRender;
-import com.impact.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.QuantumStuffRender;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.client.render.TESR_SETether;
-import com.impact.common.tileentities.TE_NqTether;
+import com.impact.common.te.TE_NqTether;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;

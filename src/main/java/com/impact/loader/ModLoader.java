@@ -1,6 +1,6 @@
 package com.impact.loader;
 
-import com.impact.item.Core_Items;
+import com.impact.common.item.Core_Items;
 import com.impact.mods.GregTech.TecTech.Holo_Vanila_GregTech;
 import com.impact.mods.GregTech.TecTech.Holo_Impact;
 import com.impact.recipes.TecTechRecipe;

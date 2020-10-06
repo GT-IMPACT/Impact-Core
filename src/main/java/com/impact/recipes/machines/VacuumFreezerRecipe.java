@@ -1,12 +1,10 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class VacuumFreezerRecipe implements Runnable {
 

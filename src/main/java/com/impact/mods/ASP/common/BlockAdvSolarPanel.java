@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-import static com.impact.loader.GUIHandler.GUI_ID_Solar;
+import static com.impact.client.gui.GUIHandler.GUI_ID_Solar;
 
 public class BlockAdvSolarPanel extends BlockContainer {
     public boolean qgActive;

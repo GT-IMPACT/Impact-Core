@@ -1,6 +1,6 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items2;
 import com.impact.mods.GregTech.GT_ItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;

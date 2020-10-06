@@ -1,6 +1,6 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items2;
 import com.impact.mods.GregTech.GT_ItemList;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
@@ -10,7 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 
-import static com.impact.item.Core_List_Items.*;
+import static com.impact.common.item.Core_List_Items.*;
 
 public class ComponentAssemblerRecipe implements Runnable {
 

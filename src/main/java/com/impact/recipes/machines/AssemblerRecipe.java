@@ -1,7 +1,7 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items;
+import com.impact.common.item.Core_Items2;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.GregTech.GT_ItemList;
 import cpw.mods.fml.common.Loader;
@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.impact.item.Core_List_Items.*;
+import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.loader.ItemRegistery.*;
 import static com.impact.mods.GregTech.GT_ItemList.Casing_Farm;
 import static com.impact.util.SendUtils.simpleMetaStack;

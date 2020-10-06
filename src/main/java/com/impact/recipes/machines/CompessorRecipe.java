@@ -1,7 +1,7 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items;
+import com.impact.common.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -9,7 +9,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
-import static com.impact.item.Core_List_Items.CokeOvenBrick;
+import static com.impact.common.item.Core_List_Items.CokeOvenBrick;
 import static com.impact.loader.ItemRegistery.CoalBlock;
 import static com.impact.util.Utilits.Blockstack;
 

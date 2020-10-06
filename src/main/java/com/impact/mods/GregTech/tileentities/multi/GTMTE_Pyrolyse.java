@@ -21,7 +21,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-import static com.impact.item.Core_Items.Core_Items1;
+import static com.impact.common.item.Core_Items.Core_Items1;
 import static com.impact.util.Utilits.isB;
 
 public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {

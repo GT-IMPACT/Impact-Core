@@ -1,15 +1,12 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
-import gregtech.api.GregTech_API;
+import com.impact.common.item.Core_Items;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.ItemStack;
 
 import static com.impact.util.Utilits.Itemstack;
 

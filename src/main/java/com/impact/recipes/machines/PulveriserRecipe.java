@@ -1,7 +1,7 @@
 package com.impact.recipes.machines;
 
-import com.impact.item.Core_Items;
-import com.impact.item.Core_Items2;
+import com.impact.common.item.Core_Items;
+import com.impact.common.item.Core_Items2;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -9,8 +9,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
-
-import static com.impact.item.Core_List_Items.CokeOvenBrick;
 
 public class PulveriserRecipe implements Runnable {
     final Core_Items CoreItems = Core_Items.getInstance();
