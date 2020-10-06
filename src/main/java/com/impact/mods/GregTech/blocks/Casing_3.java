@@ -1,6 +1,6 @@
-package com.impact.mods.GregTech.casings.Page8_64_79;
+package com.impact.mods.GregTech.blocks;
 
-import com.impact.mods.GregTech.GTregister.GT_ItemList;
+import com.impact.mods.GregTech.GT_ItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -13,11 +13,11 @@ import net.minecraft.util.IIcon;
 
 import static com.impact.util.Utilits.BlockstackMeta;
 
-public class GT_Block_Page8_3 extends GT_Block_Casings_Abstract {
+public class Casing_3 extends GT_Block_Casings_Abstract {
 
 
-    public GT_Block_Page8_3() {
-        super(GT_Item_Case_Page8_3.class, "gt.blockcasingsSC", GT_Material_Casings.INSTANCE);
+    public Casing_3() {
+        super(IB_Casing_3.class, "gt.blockcasingsSC", GT_Material_Casings.INSTANCE);
         GT_Utility.addTexturePage((byte) 8);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
             Textures.BlockIcons.casingTexturePages[8][b + 64] = new GT_CopiedBlockTexture(this, 6, b);

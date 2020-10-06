@@ -1,15 +1,13 @@
 package com.impact.recipes.machines;
 
 import com.impact.item.Core_Items2;
-import com.impact.mods.GregTech.GTregister.GT_ItemList;
-import gregtech.GT_Mod;
+import com.impact.mods.GregTech.GT_ItemList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import static com.impact.item.Core_List_Items.*;
 

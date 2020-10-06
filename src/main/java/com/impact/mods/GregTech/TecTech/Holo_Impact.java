@@ -1,10 +1,10 @@
-package com.impact.mods.GregTech.GTregister;
+package com.impact.mods.GregTech.TecTech;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.*;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import gregtech.api.enums.Materials;
@@ -17,12 +17,12 @@ import net.minecraft.util.IIcon;
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.impact.loader.ItemRegistery.*;
-import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore1;
-import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
+import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore1;
+import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore2;
 import static gregtech.api.GregTech_API.*;
 
 
-public class TecTech_BuildGuide_Impact implements Runnable {
+public class Holo_Impact implements Runnable {
 
     @SuppressWarnings({"deprecation"})
     @Override
@@ -984,7 +984,7 @@ public class TecTech_BuildGuide_Impact implements Runnable {
                                     {"11111","12221","00000","00000",},
                                     {"11111","11111","00000","00000",},
                             })
-                            .addElement('0', ofBlock(CORE_API.sCaseCore2, 8))
+                            .addElement('0', ofBlock(Casing_Helper.sCaseCore2, 8))
                             .addElement('1', ofBlock(IGlassBlock, 0))
                             .addElement('2', ofBlock(lscLapotronicEnergyUnit, 5))
                             .build();

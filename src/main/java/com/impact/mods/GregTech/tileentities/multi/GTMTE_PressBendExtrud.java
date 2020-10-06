@@ -1,8 +1,8 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -17,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
@@ -28,7 +27,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
     /**
      * === SET BLOCKS STRUCTURE ===
      */
-    Block CASING = CORE_API.sCaseCore1;
+    Block CASING = Casing_Helper.sCaseCore1;
     byte CASING_META = 4;
     /**
      * === SET TEXTURES HATCHES AND CONTROLLER ===

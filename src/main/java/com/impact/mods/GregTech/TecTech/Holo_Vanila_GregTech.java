@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.GTregister;
+package com.impact.mods.GregTech.TecTech;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
@@ -18,7 +18,7 @@ import static com.impact.loader.ItemRegistery.decorateBlock;
 import static gregtech.api.GregTech_API.*;
 
 
-public class TecTech_BuildGuide_GregTech implements Runnable {
+public class Holo_Vanila_GregTech implements Runnable {
 
     @SuppressWarnings({"deprecation"})
     @Override

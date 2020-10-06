@@ -1,8 +1,7 @@
-package com.impact.mods.GregTech.GTregister;
+package com.impact.mods.GregTech;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -13,12 +12,10 @@ import gregtech.common.tileentities.generators.*;
 import gregtech.common.tileentities.storage.*;
 import com.impact.mods.GregTech.tileentities.basic.*;
 import com.impact.mods.GregTech.tileentities.hatches.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
-import static com.impact.mods.GregTech.GTregister.GT_ItemList.*;
+import static com.impact.mods.GregTech.GT_ItemList.*;
 
-public class GT_Machines_BasicRegister {
+public class Basic_Register {
 	public void run()
 	{
 		registerMachines();

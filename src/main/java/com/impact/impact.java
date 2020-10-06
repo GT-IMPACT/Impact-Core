@@ -1,15 +1,14 @@
 package com.impact;
 
 import com.impact.System.*;
-import com.impact.api.enums.Texture;
-import com.impact.block.blocks.Block_IGlass;
+import com.impact.mods.GregTech.enums.Texture;
 import com.impact.loader.MainLoader;
 import com.impact.loader.ModLoader;
-import com.impact.mods.GregTech.GTregister.GT_ItemRegister;
-import com.impact.mods.GregTech.GTregister.GT_Machines_BasicRegister;
-import com.impact.mods.GregTech.GTregister.GT_Machines_MultiRegister;
-import com.impact.mods.GregTech.GTregister.GT_WorldGenRegister;
-import com.impact.mods.GregTech.casings.GT_Loader_Casings;
+import com.impact.mods.GregTech.GT_ItemRegister;
+import com.impact.mods.GregTech.Basic_Register;
+import com.impact.mods.GregTech.Multi_Register;
+import com.impact.mods.GregTech.GT_WorldGenRegister;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.recipes.HandRecipe;
 import com.impact.recipes.OpenComputersRecipe;
 import com.impact.recipes.machines.*;
@@ -28,7 +27,6 @@ import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import galaxyspace.core.config.GSConfigDimensions;
-import galaxyspace.core.register.GSItems;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -38,7 +36,6 @@ import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -115,9 +112,9 @@ public class impact {
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         new GT_ItemRegister().run();
-        new GT_Loader_Casings().run();
-        new GT_Machines_MultiRegister().run();
-        new GT_Machines_BasicRegister().run();
+        new Casing_Helper().run();
+        new Multi_Register().run();
+        new Basic_Register().run();
         new GT_WorldGenRegister().run();
         new ModLoader().run();
         new HandRecipe().run();

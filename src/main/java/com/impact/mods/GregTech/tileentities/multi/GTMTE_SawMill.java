@@ -1,8 +1,8 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -24,7 +24,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
-import static com.impact.api.enums.Texture.Icons.*;
+import static com.impact.mods.GregTech.enums.Texture.Icons.*;
 import static com.impact.loader.ItemRegistery.SawMillBlock;
 import static gregtech.api.enums.GT_Values.V;
 
@@ -34,7 +34,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
     /**
      * === SET BLOCKS STRUCTURE ===
      */
-    Block CASING = CORE_API.sCaseCore2;
+    Block CASING = Casing_Helper.sCaseCore2;
     byte CASING_META = 9;
     /**
      * === SET TEXTURES HATCHES AND CONTROLLER ===

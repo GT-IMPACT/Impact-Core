@@ -1,8 +1,8 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -22,14 +22,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     public static String mModed;
 
     /** === SET BLOCKS STRUCTURE === */
-    Block CASING = CORE_API.sCaseCore1;
+    Block CASING = Casing_Helper.sCaseCore1;
     byte CASING_META = 9;
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */

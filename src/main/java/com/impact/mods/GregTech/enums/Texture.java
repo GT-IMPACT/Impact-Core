@@ -1,4 +1,4 @@
-package com.impact.api.enums;
+package com.impact.mods.GregTech.enums;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;

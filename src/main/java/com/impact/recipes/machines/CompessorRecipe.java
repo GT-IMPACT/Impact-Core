@@ -2,19 +2,15 @@ package com.impact.recipes.machines;
 
 import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
-import com.impact.mods.GregTech.GTregister.GT_ItemList;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
 
 import static com.impact.item.Core_List_Items.CokeOvenBrick;
 import static com.impact.loader.ItemRegistery.CoalBlock;
-import static com.impact.loader.ItemRegistery.decorateBlock;
 import static com.impact.util.Utilits.Blockstack;
 
 

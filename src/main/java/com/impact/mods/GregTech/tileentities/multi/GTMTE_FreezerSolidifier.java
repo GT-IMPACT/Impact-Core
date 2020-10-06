@@ -1,8 +1,8 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -111,16 +111,16 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
 
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Z, Y);
                     if ( (Z==-1||Z==-2) && Y==0 && X==0 ) {
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore1)
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == Casing_Helper.sCaseCore1)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                             this.mLevel = 4;
-                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  CORE_API.sCaseCore1)
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  Casing_Helper.sCaseCore1)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
                             this.mLevel = 16;
-                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  CORE_API.sCaseCore1)
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  Casing_Helper.sCaseCore1)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
                             this.mLevel = 64;
-                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  CORE_API.sCaseCore1)
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) ==  Casing_Helper.sCaseCore1)
                                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
                             this.mLevel = 256;
                         } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {

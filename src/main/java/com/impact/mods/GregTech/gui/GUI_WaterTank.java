@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.tileentities.basic.gui;
+package com.impact.mods.GregTech.gui;
 
 import gregtech.api.gui.GT_Container_BasicTank;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;

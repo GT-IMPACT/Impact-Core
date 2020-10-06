@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.MultiBlockTooltipBuilder;
@@ -38,7 +38,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     /**
      * === SET BLOCKS STRUCTURE ===
      */
-    Block CASING = CORE_API.sCaseCore2;
+    Block CASING = Casing_Helper.sCaseCore2;
     byte CASING_META = 7;
 
     /**

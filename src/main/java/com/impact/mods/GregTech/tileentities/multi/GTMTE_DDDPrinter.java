@@ -1,8 +1,8 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -28,7 +28,7 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
     public static String mModed;
 
     /** === SET BLOCKS STRUCTURE === */
-    Block CASING = CORE_API.sCaseCore2;
+    Block CASING = Casing_Helper.sCaseCore2;
     byte CASING_META = 4;
 
     /** === SET TEXTURES HATCHES AND CONTROLLER === */
@@ -126,7 +126,7 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
                         if ( (X==1||X==2||X==3) && (Z==-1||Z==-2||Z==-3) && Y==0) {
-                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore2)
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == Casing_Helper.sCaseCore2)
                                     && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 5)) {
                                 this.mLevel = 1;
                             } else {
@@ -180,7 +180,7 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
 
                         if ( (X==1||X==2||X==3||X==4) && (Z==-1||Z==-2||Z==-3||Z==-4) && Y==0) {
-                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CORE_API.sCaseCore2)
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == Casing_Helper.sCaseCore2)
                                     && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 6)) {
                                 this.mLevel = 1;
                             } else {

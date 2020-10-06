@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.GTregister;
+package com.impact.mods.GregTech;
 
 
 import com.impact.mods.GregTech.tileentities.multi.*;
@@ -7,9 +7,9 @@ import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_SingleTank;
 
-import static com.impact.mods.GregTech.GTregister.GT_ItemList.*;
+import static com.impact.mods.GregTech.GT_ItemList.*;
 
-public class GT_Machines_MultiRegister {
+public class Multi_Register {
 	public void run()
 	{
 		registerMachines();

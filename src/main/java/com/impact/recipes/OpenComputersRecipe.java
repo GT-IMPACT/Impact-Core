@@ -1,9 +1,7 @@
 package com.impact.recipes;
 
-import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
-import com.impact.mods.GregTech.GTregister.GT_ItemList;
-import cpw.mods.fml.common.Loader;
+import com.impact.mods.GregTech.GT_ItemList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;

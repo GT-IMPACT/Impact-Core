@@ -1,6 +1,6 @@
 package com.impact.recipes.machines;
 
-import com.impact.mods.GregTech.GTregister.GT_ItemList;
+import com.impact.mods.GregTech.GT_ItemList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;

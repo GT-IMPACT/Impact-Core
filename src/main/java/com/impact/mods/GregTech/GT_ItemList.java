@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.GTregister;
+package com.impact.mods.GregTech;
 
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;

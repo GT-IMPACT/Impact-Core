@@ -9,7 +9,6 @@ import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.MultiFluidHandler;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -41,7 +40,6 @@ import java.util.List;
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.*;
-import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
 import static gregtech.api.GregTech_API.sBlockCasings8;
 
 public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements IFluidHandler {

@@ -4,9 +4,9 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -27,7 +27,7 @@ import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfo
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
-import static com.impact.mods.GregTech.casings.CORE_API.sCaseCore2;
+import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore2;
 
 public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -35,7 +35,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
     /**
      * === SET BLOCKS STRUCTURE ===
      */
-    Block CASING = CORE_API.sCaseCore2;
+    Block CASING = Casing_Helper.sCaseCore2;
     byte CASING_META = 11;
     /**
      * === SET TEXTURES HATCHES AND CONTROLLER ===

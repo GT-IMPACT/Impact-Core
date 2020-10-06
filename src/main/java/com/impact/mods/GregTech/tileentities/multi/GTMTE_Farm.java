@@ -4,8 +4,7 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.impact.mods.GregTech.casings.CORE_API;
-import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -28,9 +27,6 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.impact.loader.ItemRegistery.FluidTankBlock;
-import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static gregtech.api.GregTech_API.sBlockCasings8;
 
 public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -58,7 +54,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
                             })
                             .addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))
                             .addElement('B', ofBlock(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
-                            .addElement('C', ofBlock(CORE_API.sCasePage8_3, 3))
+                            .addElement('C', ofBlock(Casing_Helper.sCasePage8_3, 3))
                             .build();
             private final String[] desc = new String[]{
                     EnumChatFormatting.RED + "Impact Details:",
@@ -207,7 +203,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
                     if ((i != -2 && i != 2) && (j != -2 && j != 2)) {
                         if (h == 0) {
-                            if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != CORE_API.sCasePage8_3) {
+                            if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != Casing_Helper.sCasePage8_3) {
                                 return false;
                             }
                             if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 3) {

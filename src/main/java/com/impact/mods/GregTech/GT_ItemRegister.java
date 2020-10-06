@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.GTregister;
+package com.impact.mods.GregTech;
 
 
 import gregtech.api.GregTech_API;
@@ -7,7 +7,6 @@ import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.covers.GT_Cover_Pump;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
-import net.minecraft.util.EnumChatFormatting;
 
 public class GT_ItemRegister {
 

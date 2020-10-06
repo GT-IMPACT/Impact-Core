@@ -4,7 +4,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -33,8 +33,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.impact.api.enums.Texture.Icons.LPS;
-import static com.impact.api.enums.Texture.Icons.LPS_ACTIVE;
+import static com.impact.mods.GregTech.enums.Texture.Icons.LPS;
+import static com.impact.mods.GregTech.enums.Texture.Icons.LPS_ACTIVE;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.lscLapotronicEnergyUnit;
 import static net.minecraft.util.EnumChatFormatting.*;
@@ -46,7 +46,7 @@ import static net.minecraft.util.EnumChatFormatting.*;
 public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
 
     private static final Block LSC_PART = lscLapotronicEnergyUnit;
-    private static final Block CASING = CORE_API.sCaseCore2;
+    private static final Block CASING = Casing_Helper.sCaseCore2;
     private static final int CASING_META = 8;
     private static final ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16+CASING_META];
     private static final int CASING_TEXTURE_ID = CASING_META + 16 + 128*3;

@@ -7,9 +7,9 @@ import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.impact.block.blocks.Block_NqTether;
 import com.impact.block.blocks.Block_QuantumStuff;
-import com.impact.mods.GregTech.casings.CORE_API;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.multi.gui.GUI_BASE;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -49,7 +49,7 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
     /**
      * === SET BLOCKS STRUCTURE ===
      */
-    Block CASING = CORE_API.sCaseCore2;
+    Block CASING = Casing_Helper.sCaseCore2;
     byte CASING_META = 10;
     /**
      * === SET TEXTURES HATCHES AND CONTROLLER ===
@@ -461,7 +461,7 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
                                         {"  000  ", " 00000 ", "0000000", "0000000", "0000000", " 00000 ", "  000  "},
                                         {"       ", " 00 00 ", " 00000 ", "  000  ", " 00000 ", " 00 00 ", "       "}
                                 })
-                                .addElement('0', ofBlock(CORE_API.sCaseCore2, 10))
+                                .addElement('0', ofBlock(Casing_Helper.sCaseCore2, 10))
                                 .addElement('1', ofBlock(InsideBlock, 0))
                                 .addElement('2', ofBlock(IGlassBlock))
                                 .addElement('3', ofBlock(Block_NqTether.INSTANCE, 0))

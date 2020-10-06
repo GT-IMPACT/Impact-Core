@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.casings;
+package com.impact.mods.GregTech.blocks;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_LanguageManager;
@@ -10,8 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-public abstract class GT_Item_Casings_Abstract
-        extends ItemBlock {
+public abstract class IB_Base extends ItemBlock {
     protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
     protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
     protected final String mUpgrade1Tooltip = GT_LanguageManager.addStringLocalization("gt.upgradeparallel1", "Upgrade to" + EnumChatFormatting.AQUA + " 4"+ EnumChatFormatting.GRAY +" Parallel Point");
@@ -21,8 +20,7 @@ public abstract class GT_Item_Casings_Abstract
     protected final String mConfiguration3Dprinter3x3 = GT_LanguageManager.addStringLocalization("gt.3Dprinter33", "Configuration Casing for 3D Printer: " + EnumChatFormatting.GREEN + "3x3");
     protected final String mConfiguration3Dprinter4x4 = GT_LanguageManager.addStringLocalization("gt.3Dprinter44", "Configuration Casing for 3D Printer: " + EnumChatFormatting.GREEN + "4x4");
 
-
-    public GT_Item_Casings_Abstract(Block par1) {
+    public IB_Base(Block par1) {
         super(par1);
         setMaxDamage(0);
         setHasSubtypes(true);

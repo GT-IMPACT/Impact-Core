@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.tileentities.multi.debug;
+package com.impact.mods.GregTech.TecTech;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;

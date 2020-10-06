@@ -1,15 +1,15 @@
-package com.impact.mods.GregTech.casings.Page3_16_31;
+package com.impact.mods.GregTech.blocks;
 
-import com.impact.mods.GregTech.casings.GT_Item_Casings_Abstract;
+import com.impact.mods.GregTech.blocks.IB_Base;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class GT_Item_Case2
-        extends GT_Item_Casings_Abstract {
-    public GT_Item_Case2(Block par1) {
+public class IB_Casing_2
+        extends IB_Base {
+    public IB_Casing_2(Block par1) {
         super(par1);
     }
 
