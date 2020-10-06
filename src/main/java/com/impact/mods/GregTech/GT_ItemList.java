@@ -14,21 +14,18 @@ public enum GT_ItemList implements IItemContainer {
 
     //items
     Coin, RedstoneRedChipset, RedstoneQuartzChipset, RedstonePulsatingChipset, RedstoneIronChipset, RedstoneGoldChipset,
-    RedstoneEmeraldChipset, RedstoneDiamondChipset,
-    EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore, EngineeringProcessorFluidGoldCore,
-    EngineeringProcessorItemAdvEmeraldCore, EngineeringProcessorItemDiamondCore, EngineeringProcessorItemEmeraldCore,
-    EngineeringProcessorSpatialPulsatingCore, LogicProcessorItemGoldCore, EngravedDiamondCrystalChip, EngravedEnergyChip,
-    EngravedGoldChip, EngravedQuantumChip, GeneticCircuit, EnvironmentalCircuit, PulsatingSpatialCoreChip,
-    GoldFluidCoreChip, GoldCoreChip, DiamondCoreChip, DiamondFluidCoreChip, EmeraldAdvancedCoreChip, EmeraldAdvancedFluidCoreChip,
-    EmeraldHighAdvancedCoreChip,
+    RedstoneEmeraldChipset, RedstoneDiamondChipset, EngineeringProcessorFluidDiamondCore, EngineeringProcessorFluidEmeraldCore,
+    EngineeringProcessorFluidGoldCore, EngineeringProcessorItemAdvEmeraldCore, EngineeringProcessorItemDiamondCore,
+    EngineeringProcessorItemEmeraldCore, EngineeringProcessorSpatialPulsatingCore, LogicProcessorItemGoldCore,
+    EngravedDiamondCrystalChip, EngravedEnergyChip, EngravedGoldChip, EngravedQuantumChip, GeneticCircuit, EnvironmentalCircuit,
+    PulsatingSpatialCoreChip, GoldFluidCoreChip, GoldCoreChip, DiamondCoreChip, DiamondFluidCoreChip, EmeraldAdvancedCoreChip,
+    EmeraldAdvancedFluidCoreChip, EmeraldHighAdvancedCoreChip,
 
     packEuropa, packBarnardaE, packBarnardaF, packCallisto, packCentauriA, packCeres, packDeimos, packEarth,
     packEris, packGanymed, packHaumea, packIapetus, packIo, packMakeMake, packMercury, packMoon,
     packOberon, packPhobos, packPluto, packTCetiE, packTitan, packTriton, packVegaB, packVenus, packMars,
     packProteus, packAsteroids, spacebox1, spacebox2, spacebox3, spacebox4, spacebox5, spacebox6, spacebox7,
     spacebox8,
-
-    Machine_FreezerSolidifier,
 
     ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump,
 
@@ -70,7 +67,6 @@ public enum GT_ItemList implements IItemContainer {
     Diode_16A_ULV, Diode_16A_LV, Diode_16A_MV, Diode_16A_HV, Diode_16A_EV, Diode_16A_IV, Diode_16A_LuV, Diode_16A_ZPM, Diode_16A_UV,
 
     Tank_Hatch,
-
     Nuclear_Resistant_OH,
 
     //MULTI
@@ -80,19 +76,18 @@ public enum GT_ItemList implements IItemContainer {
     Machine_Utility, Machine_Brewmenter, Machine_ArcFurnace, Machine_Cutting, Machine_Extradifier, Machine_Macerator, Machine_Mixer,
     Machine_Siftarator, Machine_DDDPrinter,
     PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
-    AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse,
+    AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
 
     Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched,
 
     //Cases
-    //Page3 1-15
     UpgradeCasingT1, UpgradeCasingT2, UpgradeCasingT3, UpgradeCasingT4, PBECasing, EngraverCasing, AssemblerCasing,
     CentrifugeCasing, ElectrolyzerCasing, WireFactoryCasing, SupplyProductionCasing, UtilityMachineCasing, BrewmenterCasing, ArcCasing,
     CuttingCasing, MixingCasing,
-    //Page3 16-31
+
     NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
     DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, NqCasing, CycloneCasing,
-    //Page3 16-31
+
     Casing_Farm,
 
 
