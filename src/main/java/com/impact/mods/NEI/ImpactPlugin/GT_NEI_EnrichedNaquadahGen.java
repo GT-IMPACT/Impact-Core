@@ -1,4 +1,4 @@
-package com.impact.nei;
+package com.impact.mods.NEI.ImpactPlugin;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class GT_NEI_HyperGen extends TemplateRecipeHandler {
+public class GT_NEI_EnrichedNaquadahGen extends TemplateRecipeHandler {
 
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
@@ -43,9 +43,9 @@ public class GT_NEI_HyperGen extends TemplateRecipeHandler {
 
     protected final GT_Recipe.GT_Recipe_Map mRecipeMap;
 
-    public GT_NEI_HyperGen(GT_Recipe.GT_Recipe_Map aRecipeMap) {//this is called when recipes should be shown
+    public GT_NEI_EnrichedNaquadahGen(GT_Recipe.GT_Recipe_Map aRecipeMap) {//this is called when recipes should be shown
         this.mRecipeMap = aRecipeMap;
-        this.transferRects.add(new RecipeTransferRect(new Rectangle(75, 32, 18, 18), getOverlayIdentifier(), new Object[0]));
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(75, 32, 18, 18), getOverlayIdentifier()));
         if (!NEI_Impact_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + getRecipeName() + "@" + getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
@@ -58,7 +58,7 @@ public class GT_NEI_HyperGen extends TemplateRecipeHandler {
     }
 
     public TemplateRecipeHandler newInstance() {
-        return new GT_NEI_HyperGen(mRecipeMap);
+        return new GT_NEI_EnrichedNaquadahGen(mRecipeMap);
     }
 
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -155,7 +155,7 @@ public class GT_NEI_HyperGen extends TemplateRecipeHandler {
     }
 
     public String getRecipeName() {
-        return "Hyper Generator";
+        return "Liquid Nq+ Generator";
     }
 
     public String getGuiTexture() {
@@ -169,16 +169,16 @@ public class GT_NEI_HyperGen extends TemplateRecipeHandler {
     public void drawExtras(int aRecipeIndex) {
         String[] recipeDesc = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
         if (recipeDesc == null) {
-            int tSpecial = ((GT_NEI_HyperGen.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
-            long mEUTotal = (20L * 1000L / (long)tSpecial) * (524288L * 256L);
+            int tSpecial = ((GT_NEI_EnrichedNaquadahGen.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
+            long mEUTotal = (20L * 1000L / (long) tSpecial) * (131072L * 64L);
             int mTime = (20 * 1000 / tSpecial) / 20;
             if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
                 drawText(10, 55, "Total EU for 1000L: ", -16777216);
-                drawText(10, 65,NumberFormat.getNumberInstance().format(mEUTotal) + " EU", -16777216);
+                drawText(10, 65, NumberFormat.getNumberInstance().format(mEUTotal) + " EU", -16777216);
                 drawText(10, 80, "Fuel consume: ", -16777216);
-                drawText(10, 90,tSpecial + " L/s", -16777216);
-                drawText(10, 105,"Generation: ", -16777216);
-                drawText(10, 115,"524,288 EU/t * 256 Amp", -16777216);
+                drawText(10, 90, tSpecial + " L/s", -16777216);
+                drawText(10, 105, "Generation: ", -16777216);
+                drawText(10, 115, "131,072 EU/t * 64 Amp", -16777216);
             }
 
         } else {
@@ -274,7 +274,7 @@ public class GT_NEI_HyperGen extends TemplateRecipeHandler {
                     }
                 }
             }
-            this.items = ((ItemStack[]) tDisplayStacks.toArray(new ItemStack[0]));
+            this.items = tDisplayStacks.toArray(new ItemStack[0]);
             if (this.items.length == 0) {
                 this.items = new ItemStack[]{new ItemStack(Blocks.fire)};
             }
@@ -309,7 +309,7 @@ public class GT_NEI_HyperGen extends TemplateRecipeHandler {
         }
 
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(GT_NEI_HyperGen.this.cycleticks / 10, this.mInputs);
+            return getCycledIngredients(GT_NEI_EnrichedNaquadahGen.this.cycleticks / 10, this.mInputs);
         }
 
         public PositionedStack getResult() {

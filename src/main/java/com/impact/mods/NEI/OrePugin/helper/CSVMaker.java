@@ -1,8 +1,6 @@
-package com.impact.util.oreplugin;
+package com.impact.mods.NEI.OrePugin.helper;
 
-import com.impact.System.Config;
-import com.impact.api.nei.PluginGT5VeinStat;
-import com.impact.impact;
+import com.impact.mods.NEI.OrePugin.PluginGT5VeinStat;
 
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
@@ -18,13 +16,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("ALL")
 public class CSVMaker implements Runnable {
 
     public static FMLPreInitializationEvent event;
 
-    public CSVMaker() {
-
-    }
+    public CSVMaker() {}
 
     public static List<Oremix> Combsort(List<Oremix> liste) {
         try {
@@ -105,8 +102,6 @@ public class CSVMaker implements Runnable {
                 oremix.setNether(Dims.contains("Ne"));
                 oremix.setEnd(Dims.contains("EN"));
                 OreVeins.add(oremix);
-
-                System.out.println(pair.getKey() + " = " + pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
             BufferedWriter one = Files.newBufferedWriter(Paths.get(event.getModConfigurationDirectory() + "/Small-Ores-Sheet.csv"));
@@ -191,9 +186,6 @@ public class CSVMaker implements Runnable {
                 oremix.setNether(Dims.contains("Ne"));
                 oremix.setEnd(Dims.contains("EN"));
                 OreVeins.add(oremix);
-
-
-                System.out.println(pair.getKey() + " = " + pair.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
             BufferedWriter one = Files.newBufferedWriter(Paths.get(event.getModConfigurationDirectory() + "/Oresheet.csv"));

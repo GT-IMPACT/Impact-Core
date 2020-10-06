@@ -1,8 +1,9 @@
-package com.impact.util.oreplugin;
+package com.impact.mods.NEI.OrePugin.helper;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvCustomBindByName;
 
+@SuppressWarnings("ALL")
 public class Oremix {
 
     @CsvCustomBindByName(column = "Moon", required = false, converter = XtoBool.class)
@@ -479,6 +480,7 @@ public class Oremix {
     public void setEnd(boolean s) {
         this.end = s;
     }
+
     public boolean getAroma() {
         return this.aroma;
     }

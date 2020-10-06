@@ -1,4 +1,4 @@
-package com.impact.nei;
+package com.impact.mods.NEI.ImpactPlugin;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
@@ -10,14 +10,13 @@ import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_WithAlt;
 import gregtech.api.util.GT_Utility;
-import gregtech.nei.GT_NEI_DefaultHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -32,9 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static gregtech.api.util.GT_Utility.trans;
-
-public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
+public class GT_NEI_NaquadahGen extends TemplateRecipeHandler {
 
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
@@ -46,9 +43,9 @@ public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
 
     protected final GT_Recipe.GT_Recipe_Map mRecipeMap;
 
-    public GT_NEI_HeavyMetalCyclone(GT_Recipe.GT_Recipe_Map aRecipeMap) {//this is called when recipes should be shown
+    public GT_NEI_NaquadahGen(GT_Recipe.GT_Recipe_Map aRecipeMap) {//this is called when recipes should be shown
         this.mRecipeMap = aRecipeMap;
-        this.transferRects.add(new RecipeTransferRect(new Rectangle(75, 6, 36, 18), getOverlayIdentifier()));
+        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(75, 32, 18, 18), getOverlayIdentifier(), new Object[0]));
         if (!NEI_Impact_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + getRecipeName() + "@" + getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
@@ -61,7 +58,7 @@ public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
     }
 
     public TemplateRecipeHandler newInstance() {
-        return new GT_NEI_HeavyMetalCyclone(mRecipeMap);
+        return new GT_NEI_NaquadahGen(mRecipeMap);
     }
 
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -158,11 +155,11 @@ public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
     }
 
     public String getRecipeName() {
-        return "Heavy Metal Cyclone";
+        return "Liquid Nq Generator";
     }
 
     public String getGuiTexture() {
-        return "gregtech:textures/gui/basic/HeavyMetalCyclone.png";
+        return this.mRecipeMap.mNEIGUIPath;
     }
 
     public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
@@ -170,52 +167,20 @@ public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
     }
 
     public void drawExtras(int aRecipeIndex) {
-        int tEUt = ((GT_NEI_HeavyMetalCyclone.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
-        int tDuration = ((GT_NEI_HeavyMetalCyclone.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
-        String[] recipeDesc = ((GT_NEI_HeavyMetalCyclone.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
+        String[] recipeDesc = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
         if (recipeDesc == null) {
-            if (tEUt != 0) {
-                drawText(10, 73, trans("152", "Total: ") + NumberFormat.getNumberInstance().format(((long) tDuration * tEUt)) + " EU", -16777216);
-                drawText(10, 83, trans("153", "Usage: ") + NumberFormat.getNumberInstance().format(tEUt) + " EU/t", -16777216);
-                if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-                    drawText(10, 93, trans("154", "Voltage: ") + NumberFormat.getNumberInstance().format(tEUt / this.mRecipeMap.mAmperage) + " EU (" + GT_Values.VN[GT_Utility.getTier(tEUt / this.mRecipeMap.mAmperage)] + ")", -16777216);
-                    drawText(10, 103, trans("155", "Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
-                } else {
-                    drawText(10, 93, trans("156", "Voltage: unspecified"), -16777216);
-                    drawText(10, 103, trans("157", "Amperage: unspecified"), -16777216);
-                }
+            int tSpecial = ((GT_NEI_NaquadahGen.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
+            long mEUTotal = (20L * 1000L / (long) tSpecial) * (32768L * 16L);
+            int mTime = (20 * 1000 / tSpecial) / 20;
+            if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
+                drawText(10, 55, "Total EU for 1000L: ", -16777216);
+                drawText(10, 65, NumberFormat.getNumberInstance().format(mEUTotal) + " EU", -16777216);
+                drawText(10, 80, "Fuel consume: ", -16777216);
+                drawText(10, 90, tSpecial + " L/s", -16777216);
+                drawText(10, 105, "Generation: ", -16777216);
+                drawText(10, 115, "32,768 EU/t * 16 Amp", -16777216);
             }
-            if (tDuration > 0) {
-                drawText(10, 113, trans("158", "Time: ") + String.format("%.2f " + trans("161", " secs"), 0.05F * tDuration), -16777216);
-            }
-            int tSpecial = ((GT_NEI_HeavyMetalCyclone.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
-            if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
-                drawText(10, 123, trans("159", "Needs Low Gravity"), -16777216);
-            } else if (tSpecial == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160", "Needs Cleanroom"), 0x602487);
-            } else if (tSpecial == -201) {
-                drawText(10, 123, trans("206", "Scan for Assembly Line"), 0x602487);
-            } else if (tSpecial == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160", "Needs Cleanroom & LowGrav"), 0x602487);
-            } else if (tSpecial == -400) {
-                drawText(10, 123, trans("216", "Deprecated Recipe"), 0x602487);
-            } else if (tSpecial == -500 && GT_Mod.gregtechproxy.mPlanetTier1) {
-                drawText(10, 123, trans("219", "Needs planets and SRS: Tier 1"), 0x602487);
-            } else if (tSpecial == -600 && GT_Mod.gregtechproxy.mPlanetTier2) {
-                drawText(10, 123, trans("220", "Needs planets and SRS: Tier 2"), 0x602487);
-            } else if (tSpecial == -700 && GT_Mod.gregtechproxy.mPlanetTier3) {
-                drawText(10, 123, trans("221", "Needs planets and SRS: Tier 3"), 0x602487);
-            } else if (tSpecial == -800 && GT_Mod.gregtechproxy.mPlanetTier4) {
-                drawText(10, 123, trans("222", "Needs planets and SRS: Tier 4"), 0x602487);
-            } else if (tSpecial == -900 && GT_Mod.gregtechproxy.mPlanetTier5) {
-                drawText(10, 123, trans("223", "Needs planets and SRS: Tier 5"), 0x602487);
-            } else if (tSpecial == -1000 && GT_Mod.gregtechproxy.mPlanetTier6) {
-                drawText(10, 123, trans("224", "Needs planets and SRS: Tier 6"), 0x602487);
-            } else if (tSpecial == -1100 && GT_Mod.gregtechproxy.mPlanetTier7) {
-                drawText(10, 123, trans("225", "Needs planets and SRS: Tier 7"), 0x602487);
-            } else if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + NumberFormat.getNumberInstance().format(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
-            }
+
         } else {
             int i = 0;
             for (String descLine : recipeDesc) {
@@ -309,7 +274,7 @@ public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
                     }
                 }
             }
-            this.items = tDisplayStacks.toArray(new ItemStack[0]);
+            this.items = ((ItemStack[]) tDisplayStacks.toArray(new ItemStack[0]));
             if (this.items.length == 0) {
                 this.items = new ItemStack[]{new ItemStack(Blocks.fire)};
             }
@@ -328,32 +293,39 @@ public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
             super();
             this.mRecipe = aRecipe;
 
-            int xPos = 5;
-            int yPos = 11;
+            Object obj = aRecipe instanceof GT_Recipe_WithAlt ? ((GT_Recipe_WithAlt) aRecipe).getAltRepresentativeInput(0) : aRecipe.getRepresentativeInput(0);
+            if (obj != null) {
+                this.mInputs.add(new FixedPositionedStack(obj, 75, 14));
+            }
 
-            for (int i = 0; i < GT_NEI_HeavyMetalCyclone.this.mRecipeMap.mUsualInputCount; i++)
-                if (aRecipe.getRepresentativeInput(i) != null)
-                    this.mInputs.add(new GT_NEI_DefaultHandler.FixedPositionedStack(aRecipe.getRepresentativeInput(i), (26 + i * 18) - xPos, 17 - yPos));
+            if (aRecipe.mSpecialItems != null) {
+                this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 12, 27));
+            }
 
-            int[] x = new int[]{116, 134, 134, 98, 98, 116};
-            int[] y = new int[]{17, 17, 35, 35, 53, 53};
-            for (int i = 0; i < aRecipe.mOutputs.length; i++)
-                if (aRecipe.getOutput(i) != null) {
-                    this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(i), x[i] - xPos, y[i] - yPos, aRecipe.getOutputChance(i)));
-                }
+            if (aRecipe.getOutput(0) != null) {
+                this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(0), 84, 27, aRecipe.getOutputChance(0)));
+            }
 
-            if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[aRecipe.mFluidOutputs.length - 1] != null) && (aRecipe.mFluidOutputs[aRecipe.mFluidOutputs.length - 1].getFluid() != null))
-                for (int i = 0; i < aRecipe.mFluidOutputs.length; i++)
-                    this.mOutputs.add(new GT_NEI_HeavyMetalCyclone.FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[i], true), 116 - xPos, 35 - yPos));
+//            if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+//                this.mOutputs.add(new GT_NEI_Pyro.FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 104, 27));
+//                if ((aRecipe.mFluidOutputs.length > 1) && (aRecipe.mFluidOutputs[1] != null) && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
+//                    this.mOutputs.add(new GT_NEI_Pyro.FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 127, 0));
+//                    if ((aRecipe.mFluidOutputs.length > 2) && (aRecipe.mFluidOutputs[2] != null) && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
+//                        this.mOutputs.add(new GT_NEI_Pyro.FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 127, 18));
+//                        if ((aRecipe.mFluidOutputs.length > 3) && (aRecipe.mFluidOutputs[3] != null) && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
+//                            this.mOutputs.add(new GT_NEI_Pyro.FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 127, 36));
+//                            if ((aRecipe.mFluidOutputs.length > 4) && (aRecipe.mFluidOutputs[4] != null) && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
+//                                this.mOutputs.add(new GT_NEI_Pyro.FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 127, 54));
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
-            int[] x2 = new int[]{26, 44, 62, 26, 44, 62};
-            if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[aRecipe.mFluidInputs.length - 1] != null) && (aRecipe.mFluidInputs[aRecipe.mFluidInputs.length - 1].getFluid() != null))
-                for (int i = 0; i < aRecipe.mFluidInputs.length; i++)
-                    this.mInputs.add(new GT_NEI_HeavyMetalCyclone.FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[i], true), x2[i] - xPos, (i > 2 ? 53 : 35) - yPos));
         }
 
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(GT_NEI_HeavyMetalCyclone.this.cycleticks / 10, this.mInputs);
+            return getCycledIngredients(GT_NEI_NaquadahGen.this.cycleticks / 10, this.mInputs);
         }
 
         public PositionedStack getResult() {

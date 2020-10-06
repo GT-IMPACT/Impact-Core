@@ -1,31 +1,29 @@
-package com.impact.nei;
+package com.impact.mods.NEI.ImpactPlugin;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Utility;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
-public class NEI_RocketFuelSingle extends NEI_Impact_SingleTemplate {
+public class NEI_OxygenSuppSingle extends NEI_Impact_SingleTemplate {
 
-    public NEI_RocketFuelSingle() {
+    public NEI_OxygenSuppSingle() {
         super(
                 new int[]{0, 0, 0, 0},
-                new ItemStack[] {
-                        new ItemStack(GCItems.rocketTier1),
-                        GT_Utility.getFluidDisplayStack(new FluidStack(ItemList.sRocketFuel, 1000), true),
+                new ItemStack[]{
+                        GT_Utility.getFluidDisplayStack(Materials.Oxygen.getGas(1000), true),
                 },
-                new int[]{25, 125}, new int[]{22, 22},
-                new ItemStack[] {
-                        new ItemStack(GCItems.fuelCanister)
+                new int[]{25}, new int[]{22},
+                new ItemStack[]{
+                        new ItemStack(GCItems.oxTankLight)
                 },
                 new int[]{75}, new int[]{22},
-                false
+                true
         );
         if (!NEI_Impact_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "impact@" + getRecipeName() + "@" + getOverlayIdentifier());
@@ -35,18 +33,18 @@ public class NEI_RocketFuelSingle extends NEI_Impact_SingleTemplate {
     }
 
     public void drawExtras(int aRecipeIndex) {
-            drawText(4, 85, "For any Rockets", -16777216);
-            drawText(4, 95, "Need to make the rocket fuel", -16777216);
-            drawText(4, 105, "Need to fill the canister", -16777216);
-            drawText(4, 115, "Need to fuel the rocket", -16777216);
+        drawText(4, 85, "For any Rockets", -16777216);
+        drawText(4, 95, "Need to make the rocket fuel", -16777216);
+        drawText(4, 105, "Need to fill the canister", -16777216);
+        drawText(4, 115, "Need to fuel the rocket", -16777216);
     }
 
     public String getRecipeName() {
-        return "Rocket Fuel Production";
+        return "Oxygen Space Supply";
     }
 
     public String getGuiTexture() {
-        return "gregtech:textures/gui/basic/RocketFuel.png";
+        return "gregtech:textures/gui/basic/Default.png";
     }
 
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -58,6 +56,7 @@ public class NEI_RocketFuelSingle extends NEI_Impact_SingleTemplate {
     }
 
     public TemplateRecipeHandler newInstance() {
-        return new NEI_RocketFuelSingle();
+        return new NEI_OxygenSuppSingle();
     }
+
 }

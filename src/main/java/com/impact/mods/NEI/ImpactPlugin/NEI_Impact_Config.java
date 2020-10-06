@@ -1,4 +1,4 @@
-package com.impact.nei;
+package com.impact.mods.NEI.ImpactPlugin;
 
 import codechicken.nei.api.IConfigureNEI;
 import cpw.mods.fml.common.FMLCommonHandler;

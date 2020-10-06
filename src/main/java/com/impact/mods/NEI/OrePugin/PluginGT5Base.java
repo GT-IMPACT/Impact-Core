@@ -1,8 +1,8 @@
-package com.impact.api.nei;
+package com.impact.mods.NEI.OrePugin;
 
 
 import codechicken.lib.gui.GuiDraw;
-import com.impact.util.oreplugin.DimensionHelper;
+import com.impact.mods.NEI.OrePugin.helper.DimensionHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
@@ -35,9 +35,7 @@ public class PluginGT5Base extends PluginBase {
     protected static String getLocalizedNameForItem(String aFormat, int aMaterialID) {
         if (aMaterialID >= 0 && aMaterialID < 1000) {
             Materials aMaterial = GregTech_API.sGeneratedMaterials[aMaterialID];
-            if (aMaterial != null) {
-                return getLocalizedNameForItem(aMaterial, aFormat);
-            }
+            if (aMaterial != null) return getLocalizedNameForItem(aMaterial, aFormat);
         }
         return aFormat;
     }
@@ -46,8 +44,7 @@ public class PluginGT5Base extends PluginBase {
 
         if (!getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000).contains("Awakened"))
             return getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index % 1000);
-        else
-            return "Aw. Draconium Ore";
+        else return "Aw. Draconium Ore";
     }
 
     protected static String getGTOreUnlocalizedName(short index) {
@@ -69,7 +66,6 @@ public class PluginGT5Base extends PluginBase {
                     GuiDraw.drawMultilineTip(x == 0 ? 16 + w : x - (w2 + 8), 108 - (dims.size() * 8), dims2);
                 }
                 GuiDraw.drawMultilineTip(x, 108 - (dims.size() * 8), dims);
-
                 ttDisplayed = hideBackground;
             }
         }
@@ -77,13 +73,8 @@ public class PluginGT5Base extends PluginBase {
 
     protected int getMaximumMaterialIndex(short meta, boolean smallOre) {
         int offset = smallOre ? 16000 : 0;
-        if (!getGTOreLocalizedName((short) (meta + offset + 5000)).equals(getGTOreUnlocalizedName((short) (meta + offset + 5000))))
-            return 7;
-        else if (!getGTOreLocalizedName((short) (meta + offset + 5000)).equals(getGTOreUnlocalizedName((short) (meta + offset + 5000))))
-            return 6;
-        else
-            return 5;
+        if (!getGTOreLocalizedName((short) (meta + offset + 5000)).equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 7;
+        else if (!getGTOreLocalizedName((short) (meta + offset + 5000)).equals(getGTOreUnlocalizedName((short) (meta + offset + 5000)))) return 6;
+        else return 5;
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.impact.util.oreplugin;
+package com.impact.mods.NEI.OrePugin.helper;
 
 import cpw.mods.fml.common.FMLLog;
 import gregtech.api.GregTech_API;
@@ -14,13 +14,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class GT5CFGHelper {
 
     private static File F = GregTech_API.sWorldgenFile.mConfig.getConfigFile();
 
     public static String GT5CFGSmallOres(String Veinname) {
-        List<String> raw = new ArrayList<String>();
-        List<String> rawbools = new ArrayList<String>();
+        List<String> raw = new ArrayList<>();
+        List<String> rawbools = new ArrayList<>();
         String st = null;
         Configuration c = new Configuration(F);
         ConfigCategory configCategory = c.getCategory("worldgen." + Veinname);
@@ -61,7 +62,6 @@ public class GT5CFGHelper {
     }
 
     public static String GT5CFG(String Veinname) {
-        //FMLLog.info(Veinname);
         if (F == null) {
             FMLLog.bigWarning("GT_CFG_NOT_found[0]");
             return "Error while Loading CFG";
@@ -71,11 +71,8 @@ public class GT5CFGHelper {
                 if (buffer > F.length())
                     buffer = (int) F.length();
                 //allocate 10% of free memory for read-in-buffer, if there is less than filesize memory aviable
-                //FMLLog.info("GT_CFG_found[0]");
                 FileReader in = new FileReader(F);
-                //FMLLog.info("FileReader created");
                 BufferedReader reader = new BufferedReader(in, buffer);
-                //FMLLog.info("BufferedReader" +Integer.toString(buffer)+"created");
                 String st = null;
                 List<String> raw = new ArrayList<String>();
                 List<String> rawbools = new ArrayList<String>();
@@ -84,23 +81,17 @@ public class GT5CFGHelper {
                 found[1] = false;
 
                 do {
-                    //FMLLog.info("erste");
                     //read until reached eof or mix {
                     st = reader.readLine();
-                    //FMLLog.info("st: "+st);
                     if (st != null && st.trim().equals("mix {")) {
                         while (!((st == null) || ((st != null) && found[0]))) {
-                            //FMLLog.info("zweite");
                             st = reader.readLine();
                             //read until reached eof or Veinname {
-                            //FMLLog.info("MIXst: "+st);
                             if (st != null && st.trim().equals(Veinname + " {")) {
-                                //FMLLog.info("VEINNAMEst: "+st);
                                 while (!((st == null) || ((st != null) && found[0]))) {
                                     st = reader.readLine();
                                     if ((!(st == null)) && st.trim().equals("}"))
                                         found[0] = true;
-                                    //FMLLog.info("dritte");
                                     //add everything below Veinname { undtil } to raw
                                     raw.add(st);
                                 }
@@ -110,21 +101,16 @@ public class GT5CFGHelper {
 
                     if (st != null && st.trim().equals("dimensions {")) {
                         while (!((st == null) || ((st != null) && found[1]))) {
-                            //FMLLog.info("zweite");
                             st = reader.readLine();
                             if (st != null && (st.trim().equals("mix {"))) {
                                 while (!((st == null) || ((st != null) && found[1]))) {
-                                    //FMLLog.info("dritte");
                                     st = reader.readLine();
                                     //read until reached eof or Veinname {
-                                    //FMLLog.info("MIXst: "+st);
                                     if (st != null && st.trim().equals(Veinname + " {")) {
-                                        //FMLLog.info("VEINNAMEst: "+st);
                                         while (!((st == null) || ((st != null) && found[1]))) {
                                             st = reader.readLine();
                                             if ((!(st == null)) && st.trim().equals("}"))
                                                 found[1] = true;
-                                            //FMLLog.info("vierte");
                                             //add everything below Veinname { undtil } to raw
                                             raw.add(st);
                                         }
@@ -139,11 +125,9 @@ public class GT5CFGHelper {
                 if (!raw.isEmpty())
                     for (int i = 0; i < raw.size(); i++) {
                         //filter needed booleans from raw
-                        ///FMLLog.info("raw contains"+raw.get(i));
                         for (int j = 0; j < DimensionHelper.DimName.length; j++)
                             if (raw.get(i).contains(DimensionHelper.DimName[j]))
                                 rawbools.add(raw.get(i));
-                        //FMLLog.info("rawbools: "+rawbools.get(i));
                     }
 
                 String ret = " ";
@@ -159,7 +143,6 @@ public class GT5CFGHelper {
                     //filter for dims set to true
                     for (int i = 0; i < rawbools.size(); i++) {
                         st = rawbools.get(i);
-                        //FMLLog.info("RawBools:"+st);
                         for (int j = 0; j < DimensionHelper.DimName.length; j++) {
                             if (st.contains(DimensionHelper.DimName[j]))
                                 if (st.contains("=true"))
@@ -168,7 +151,6 @@ public class GT5CFGHelper {
                     }
                 }
                 ret = ret.trim();
-                //FMLLog.info("ret:"+ret);
                 if (ret.equals("") || ret.equals(" "))
                     ret = "Not aviable in any Galactic Dim!";
                 return ret;

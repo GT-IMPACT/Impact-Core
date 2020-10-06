@@ -1,4 +1,4 @@
-package com.impact.api.nei;
+package com.impact.mods.NEI.OrePugin;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.TemplateRecipeHandler;

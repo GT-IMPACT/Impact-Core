@@ -1,9 +1,10 @@
-package com.impact.util.oreplugin;
+package com.impact.mods.NEI.OrePugin.helper;
 
 import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.exceptions.CsvConstraintViolationException;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 
+@SuppressWarnings("ALL")
 public class Veinrenamer<T> extends AbstractBeanField<T> {
 
     @Override
@@ -23,5 +24,4 @@ public class Veinrenamer<T> extends AbstractBeanField<T> {
         ret = ret.toLowerCase();
         return ret;
     }
-
 }

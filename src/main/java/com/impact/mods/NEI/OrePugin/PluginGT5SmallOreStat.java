@@ -1,15 +1,14 @@
-package com.impact.api.nei;
+package com.impact.mods.NEI.OrePugin;
 
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import com.impact.util.oreplugin.GT5OreSmallHelper;
+import com.impact.mods.NEI.OrePugin.helper.GT5OreSmallHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,6 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         if (!ttDisplayed) {
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreSmall.worldGenHeightRange, 2, 31, 0x404040, false);
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.amount") + ": " + oreSmall.amountPerChunk, 2, 44, 0x404040, false);
-            // GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreSmall.genOverworld, oreSmall.genNether, oreSmall.genEnd, oreSmall.genMoon, oreSmall.genMars), 2, 57, 0x404040, false);
-            // if (GT5OreSmallHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreSmall.restrictBiome), 2, 70, 0x404040, false);
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.chanceDrops") + ": ", 2, 83 + getRestrictBiomeOffset(), 0x404040, false);
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, 110, 0x404040, false);
             if (sDimNames.length() > 36) {
@@ -128,7 +125,6 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
             positionedDropStackList.add(positionedStackOreSmall);
             positionedDropStackList.add(positionedStackMaterialDust);
             return positionedDropStackList;
-
         }
 
         @Override

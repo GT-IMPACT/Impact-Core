@@ -1,4 +1,4 @@
-package com.impact.api.nei;
+package com.impact.mods.NEI.OrePugin;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;

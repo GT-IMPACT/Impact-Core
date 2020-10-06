@@ -1,12 +1,11 @@
-package com.impact.api.nei;
+package com.impact.mods.NEI.OrePugin;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import com.impact.util.oreplugin.GT5OreLayerHelper;
+import com.impact.mods.NEI.OrePugin.helper.GT5OreLayerHelper;
 import gregtech.api.GregTech_API;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,19 +38,11 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     public static String[] get_Cnames(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
 
         String[] splt = coustomVeinRenamer(oreLayer).split("\\s");
-    	/*HashSet<String> h = new HashSet<String>();
-    	for (int i=0; i < splt.length;i++) {
-    		h.add(splt[i]);
-    	}
-    	h.toArray(splt);*/
-
         String[] ret = {oreLayer.veinName.replace("ore.mix.custom.", "") + " ", " ", " "};
         for (int i = 0; i < ret.length; i++) {
             ret[i] = ret[i].trim();
         }
         for (int i = 0; i < splt.length; i++) {
-            //FMLLog.info("Split:"+splt[i]);
-            //FMLLog.info("I:"+Integer.toString(i));
             if (ret[0].length() + splt[i].length() <= 20)
                 ret[0] = ret[0] + splt[i] + " ";
             if ((ret[0].length() + splt[i].length() > 20) && ret[1].length() + splt[i].length() <= 70 && !ret[0].contains(splt[i]))
@@ -142,19 +133,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     public void drawExtras(int recipe) {
         PluginGT5VeinStat.CachedVeinStatRecipe crecipe = (PluginGT5VeinStat.CachedVeinStatRecipe) this.arecipes.get(recipe);
         GT5OreLayerHelper.OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
-
         String sDimNames = GT5OreLayerHelper.bufferedDims.get(oreLayer);
-
-        /*if (getLocalizedVeinName(oreLayer).length>1) {
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[0], 2, 20, 0x404040, false);
-        if (getLocalizedVeinName(oreLayer).length>2) {
-        	GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
-        	GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[2]), 2, 40, 0x404040, false);
-        }
-        else
-        GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
-        }
-        else*/
         if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Ore"))
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Ore")[0] + "" + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
         else if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Sand"))
@@ -164,17 +143,11 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         drawToolTip(sDimNames);
         if (!ttDisplayed) {
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]), 2, 35, 0x404040, false);
-
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.secondaryOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[1]), 2, 45, 0x404040, false);
-
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.betweenOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[2]), 2, 55, 0x404040, false);
-
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.sporadicOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[3]), 2, 65, 0x404040, false);
-
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreLayer.worldGenHeightRange, 2, 80, 0x404040, false);
-
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.weightedChance") + ": " + Integer.toString(oreLayer.randomWeight), 100, 80, 0x404040, false);
-
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, 100, 0x404040, false);
             if (sDimNames.length() > 36) {
                 GuiDraw.drawString(I18n.format("") + sDimNames.substring(0, 36), 2, 110, 0x404040, false);
@@ -186,7 +159,6 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             } else
                 GuiDraw.drawString(I18n.format("") + sDimNames.substring(0, sDimNames.length() - 1), 2, 110, 0x404040, false);
         }
-        //if (GT5OreLayerHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
         GuiDraw.drawStringR("Show All", getGuiWidth() - 3, 5, 0x404040, false);
     }
 
@@ -220,13 +192,9 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         public List<PositionedStack> getIngredients() {
             List<PositionedStack> ingredientsList = new ArrayList<PositionedStack>();
             positionedStackPrimary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            ;
             positionedStackSecondary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            ;
             positionedStackBetween.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            ;
             positionedStackSporadic.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            ;
             ingredientsList.add(positionedStackPrimary);
             ingredientsList.add(positionedStackSecondary);
             ingredientsList.add(positionedStackBetween);

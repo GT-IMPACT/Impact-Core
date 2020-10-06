@@ -1,4 +1,4 @@
-package com.impact.nei;
+package com.impact.mods.NEI.ImpactPlugin;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
@@ -88,7 +88,7 @@ public abstract class NEI_Impact_SingleTemplate extends TemplateRecipeHandler {
     public void drawBackground(int recipe) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(getGuiTexture());
-        if(!amOverGUI)
+        if (!amOverGUI)
             GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 79);
     }
 

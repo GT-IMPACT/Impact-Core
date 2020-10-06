@@ -1,4 +1,4 @@
-package com.impact.util.oreplugin;
+package com.impact.mods.NEI.OrePugin.helper;
 
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class GT5OreLayerHelper {
 
     public static Integer weightPerWorld[] = new Integer[34];
