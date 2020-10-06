@@ -6,7 +6,7 @@ import com.impact.item.Core_Items;
 import com.impact.item.Core_Items2;
 import com.impact.item.FakeCircuits;
 import com.impact.item.WoodBrickFormTool;
-import com.impact.mods.GalacticGreg.SpaceDimRegisterer;
+import com.impact.mods.GalactiCraft.GG.SpaceDimRegisterer;
 import com.impact.mods.ASP.ASP;
 import com.impact.recipes.AfterGregTechPostLoadRecipes;
 import com.impact.util.OreDictRegister;

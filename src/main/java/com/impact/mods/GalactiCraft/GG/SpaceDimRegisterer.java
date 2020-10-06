@@ -1,4 +1,4 @@
-package com.impact.mods.GalacticGreg;
+package com.impact.mods.GalactiCraft.GG;
 
 import bloodasp.galacticgreg.api.*;
 import net.minecraft.init.Blocks;
@@ -13,28 +13,14 @@ import java.util.List;
  * Everything is done in here. If you're trying to use anything else, you're probably doing something wrong
  * (Or I forgot to add it. In that case, find me on github and create an issue please)
  */
-public class SpaceDimRegisterer
-{
-    /**
-     * Just a helper to convert a single element to a list
-     * @param pDef
-     * @return
-     */
-	private List<ModDBMDef> singleToList(ModDBMDef pDef)
-    {
-        List<ModDBMDef> tLst = new ArrayList<>();
-        tLst.add(pDef);
-        return tLst;
-    }
-
+public class SpaceDimRegisterer {
     private static Method registerModContainer;
+
     /**
-     * Use loose binding of the register-method. Should be enough to 
+     * Use loose binding of the register-method. Should be enough to
      * provide support for GGreg without the requirement to have it in a modpack at all
-     * @param pModContainer
      */
-    public static void registerModContainer(ModContainer pModContainer)
-    {
+    public static void registerModContainer(ModContainer pModContainer) {
         try {
             registerModContainer.invoke(null, pModContainer);
         } catch (Exception e) {
@@ -43,27 +29,30 @@ public class SpaceDimRegisterer
     }
 
     /**
-     * Try to get the instance of GalacticGregs registry in order to register stuff
-     * @return
+     * Just a helper to convert a single element to a list
      */
-    public boolean Init()
-    {
-        try
-        {
+    private List<ModDBMDef> singleToList(ModDBMDef pDef) {
+        List<ModDBMDef> tLst = new ArrayList<>();
+        tLst.add(pDef);
+        return tLst;
+    }
+
+    /**
+     * Try to get the instance of GalacticGregs registry in order to register stuff
+     */
+    public boolean Init() {
+        try {
             Class<?> gGregRegistry = Class.forName("bloodasp.galacticgreg.registry.GalacticGregRegistry");
             registerModContainer = gGregRegistry.getMethod("registerModContainer", ModContainer.class);
 
             return true;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // GalacticGreg is not installed or something is wrong
             return false;
         }
     }
 
-    public void Register()
-    {
+    public void Register() {
         registerModContainer(Setup_Vanilla());
         registerModContainer(Setup_GalactiCraftCore());
         registerModContainer(Setup_GalactiCraftPlanets());
@@ -73,8 +62,7 @@ public class SpaceDimRegisterer
     /**
      * Vanilla MC (End Asteroids)
      */
-    private ModContainer Setup_Vanilla()
-    {
+    private ModContainer Setup_Vanilla() {
         // --- Mod Vanilla (Heh, "mod")
         ModContainer modMCVanilla = new ModContainer("Vanilla");
 
@@ -99,8 +87,7 @@ public class SpaceDimRegisterer
     /**
      * Mod GalactiCraft
      */
-    private ModContainer Setup_GalactiCraftCore()
-    {
+    private ModContainer Setup_GalactiCraftCore() {
         ModContainer modGCraftCore = new ModContainer("GalacticraftCore");
         ModDBMDef DBMMoon = new ModDBMDef("tile.moonBlock", 4);
 
@@ -113,10 +100,8 @@ public class SpaceDimRegisterer
 
     /**
      * As GalactiCraftPlanets is an optional mod, don't hardlink it here
-     * @return
      */
-    private ModContainer Setup_GalactiCraftPlanets()
-    {
+    private ModContainer Setup_GalactiCraftPlanets() {
         ModContainer modGCraftPlanets = new ModContainer("GalacticraftMars");
         ModDBMDef DBMMars = new ModDBMDef("tile.mars", 9);
         ModDimensionDef dimMars = new ModDimensionDef("Mars", "micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars", Enums.DimensionType.Planet, singleToList(DBMMars));
@@ -137,8 +122,7 @@ public class SpaceDimRegisterer
     /**
      * Mod GalaxySpace by BlesseNtumble
      */
-    private ModContainer Setup_GalaxySpace()
-    {
+    private ModContainer Setup_GalaxySpace() {
         // First, we create a mod-container that will be populated with dimensions later.
         // The Name must match your modID, as it is checked if this mod is loaded, in order
         // to enable/disable the parsing/registering of dimensions
@@ -164,23 +148,23 @@ public class SpaceDimRegisterer
         final ModDBMDef DBMHaumea = new ModDBMDef("haumeablocks");
         final ModDBMDef DBMCentauriA = new ModDBMDef("acentauribbsubgrunt");
         final ModDBMDef DBMVegaB = new ModDBMDef("vegabsubgrunt");
-        
-        List<ModDBMDef> DBMbarnardaC = new ArrayList<ModDBMDef>();
+
+        List<ModDBMDef> DBMbarnardaC = new ArrayList<>();
         DBMbarnardaC.add(new ModDBMDef("barnardaCdirt"));
         DBMbarnardaC.add(new ModDBMDef(Blocks.stone));
-        
+
         final ModDBMDef DBMbarnardaE = new ModDBMDef("barnardaEsubgrunt");
         final ModDBMDef DBMbarnardaF = new ModDBMDef("barnardaFsubgrunt");
         final ModDBMDef DBMTcetiE = new ModDBMDef("tcetieblocks", 2);
         final ModDBMDef DBMMiranda = new ModDBMDef("mirandablocks", 2);
 
-        List<ModDBMDef> DBMEuropa = new ArrayList<ModDBMDef>();
+        List<ModDBMDef> DBMEuropa = new ArrayList<>();
         //DBMEuropa.add(new ModDBMDef("europagrunt")); 			//Europa top layer turned off bc ores are too easy to spot
-        DBMEuropa.add(new ModDBMDef("europagrunt",1)); 			//Europa Ice Layer ~55-65 without top layer
+        DBMEuropa.add(new ModDBMDef("europagrunt", 1));            //Europa Ice Layer ~55-65 without top layer
         DBMEuropa.add(new ModDBMDef(Blocks.water));
         DBMEuropa.add(new ModDBMDef(Blocks.flowing_water));
-        DBMEuropa.add(new ModDBMDef(Blocks.ice)); 				//Generates directly over bedrock
-        DBMEuropa.add(new ModDBMDef(Blocks.packed_ice)); 		//Generates directly over bedrock
+        DBMEuropa.add(new ModDBMDef(Blocks.ice));                //Generates directly over bedrock
+        DBMEuropa.add(new ModDBMDef(Blocks.packed_ice));        //Generates directly over bedrock
         DBMEuropa.add(new ModDBMDef("europaunderwatergeyser")); //Generates directly over bedrock
 
 
@@ -216,8 +200,7 @@ public class SpaceDimRegisterer
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("TcetiE", "galaxyspace.TCetiSystem.planets.tcetiE.dimension.ChunkProviderTCetiE", Enums.DimensionType.Planet, singleToList(DBMTcetiE)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Miranda", "galaxyspace.SolarSystem.moons.miranda.dimension.ChunkProviderMiranda", Enums.DimensionType.Planet, singleToList(DBMMiranda)));
 
-        
-        
+
         ModDimensionDef dimKupierBelt = new ModDimensionDef("Kuiperbelt", "galaxyspace.SolarSystem.planets.kuiperbelt.dimension.ChunkProviderKuiper", Enums.DimensionType.Asteroid);
 
         dimKupierBelt.setDimensionType(Enums.DimensionType.Asteroid);
