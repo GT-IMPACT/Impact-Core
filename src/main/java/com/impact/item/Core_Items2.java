@@ -1,14 +1,12 @@
 package com.impact.item;
 
-import com.impact.System.Refstrings;
+import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
-import eu.usrv.yamcore.auxiliary.enums.ItemRecipeBehaviorEnum;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
 import java.util.List;

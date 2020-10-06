@@ -15,6 +15,6 @@ public class HooksLoader extends HookLoader {
 
     @Override
     public void registerHooks() {
-        registerHookContainer("com.impact.System.Hooks");
+        registerHookContainer("com.impact.events.Hooks");
     }
 }

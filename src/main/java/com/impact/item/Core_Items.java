@@ -1,6 +1,6 @@
 package com.impact.item;
 
-import com.impact.System.Refstrings;
+import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;

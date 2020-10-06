@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
-import static com.impact.System.Refstrings.MODID;
+import static com.impact.core.Refstrings.MODID;
 import static com.impact.util.Utilits.ItemstackMeta;
 
 public class Block_IGlass extends gtUpdateBlockAPI {

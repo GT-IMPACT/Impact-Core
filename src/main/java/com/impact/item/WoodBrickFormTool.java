@@ -1,6 +1,6 @@
 package com.impact.item;
 
-import com.impact.System.Refstrings;
+import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import ic2.core.IC2;

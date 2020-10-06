@@ -1,18 +1,11 @@
 package com.impact.util;
 
-import com.impact.item.Core_Items2;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class OreDictRegister {
-
-    public enum OreDictTypes {
-        dust, rock, Space, BarnardaE, BarnardaF, Callisto, CentauriA, Ceres, Deimos, Enceladus,
-        Europa, Ganymede, Haumea, Io, MakeMake, PlanetMercury, Miranda, Oberon, Phobos, Pluto,
-        Proteus, TcetiE, Titan, Triton, VegaB, Venus,
-    }
 
     public static void register_space_dust() {
 
@@ -105,6 +98,12 @@ public class OreDictRegister {
             OreDictionary.registerOre(OreDictTypes.rock.name() + OreDictTypes.Space.name(), I);
         }
 
+    }
+
+    public enum OreDictTypes {
+        dust, rock, Space, BarnardaE, BarnardaF, Callisto, CentauriA, Ceres, Deimos, Enceladus,
+        Europa, Ganymede, Haumea, Io, MakeMake, PlanetMercury, Miranda, Oberon, Phobos, Pluto,
+        Proteus, TcetiE, Titan, Triton, VegaB, Venus,
     }
 
 }

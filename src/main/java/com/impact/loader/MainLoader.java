@@ -16,8 +16,8 @@ import gregtech.api.GregTech_API;
 import net.minecraft.item.ItemStack;
 
 import static codechicken.nei.api.API.hideItem;
-import static com.impact.System.impactLog.INFO;
-import static com.impact.System.impactLog.WARNING;
+import static com.impact.core.impactLog.INFO;
+import static com.impact.core.impactLog.WARNING;
 import static com.impact.item.Core_List_Items.registerOreDictNames;
 
 public class MainLoader {

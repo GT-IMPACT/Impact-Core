@@ -1,4 +1,4 @@
-package com.impact.System;
+package com.impact.client.gui;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;

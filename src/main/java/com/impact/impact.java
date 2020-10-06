@@ -1,6 +1,8 @@
 package com.impact;
 
-import com.impact.System.*;
+import com.impact.core.*;
+import com.impact.events.PacketHandler;
+import com.impact.events.impactEvents;
 import com.impact.mods.GregTech.enums.Texture;
 import com.impact.loader.MainLoader;
 import com.impact.loader.ModLoader;
@@ -16,7 +18,6 @@ import com.impact.util.SendUtils;
 import com.impact.mods.NEI.OrePugin.helper.CSVMaker;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreLayerHelper;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreSmallHelper;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -42,9 +43,9 @@ import net.minecraftforge.common.MinecraftForge;
 import java.io.File;
 import java.util.HashMap;
 
-import static com.impact.System.Config.csv;
-import static com.impact.System.Refstrings.MODID;
-import static com.impact.System.impactLog.INFO;
+import static com.impact.core.Config.csv;
+import static com.impact.core.Refstrings.MODID;
+import static com.impact.core.impactLog.INFO;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 
 @Mod(
@@ -72,18 +73,10 @@ public class impact {
     }
 
     @Mod.EventHandler
-    public void PreLoad(FMLPreInitializationEvent PreEvent) {
-        FMLCommonHandler.instance().bus().register(new LoginHandler());
-
-        INFO("LoginHandler Loaded");
-    }
-
-    @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
         MainLoader.load();
         INFO("MainLoader LOAD Loaded");
     }
-
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -95,7 +88,6 @@ public class impact {
         //MainLoader.preInitClient();
 
         MinecraftForge.EVENT_BUS.register(new impactEvents());
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
         channel.register(new PacketHandler());
     }

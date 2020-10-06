@@ -1,6 +1,6 @@
 package com.impact.loader;
 
-import com.impact.System.Refstrings;
+import com.impact.core.Refstrings;
 import com.impact.block.blocks.*;
 import com.impact.block.itemblock.FakeBlocksItem;
 import com.impact.item.GT_Pump.GregtechPump;
@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static codechicken.nei.api.API.hideItem;
-import static com.impact.System.impactLog.INFO;
+import static com.impact.core.impactLog.INFO;
 import static com.impact.util.Utilits.BlockstackMeta;
 import static gregtech.api.enums.GT_Values.W;
 

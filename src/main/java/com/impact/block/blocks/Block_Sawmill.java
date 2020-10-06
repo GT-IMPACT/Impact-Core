@@ -1,6 +1,6 @@
 package com.impact.block.blocks;
 
-import com.impact.System.Refstrings;
+import com.impact.core.Refstrings;
 import com.impact.block.itemblock.IB_SawMill;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;

@@ -1,6 +1,7 @@
-package com.impact.System;
+package com.impact.events;
 
 
+import com.impact.core.Config;
 import gloomyfolken.hooklib.asm.Hook;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;

@@ -1,6 +1,6 @@
 package com.impact.item.GT_Pump;
 
-import com.impact.System.Refstrings;
+import com.impact.core.Refstrings;
 import com.impact.item.GT_Pump.api.AutoMap;
 import com.impact.util.Utilits;
 import cpw.mods.fml.common.registry.GameRegistry;

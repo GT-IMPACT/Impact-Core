@@ -7,8 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import static com.impact.System.impactLog.INFO;
-import static com.impact.System.impactLog.WARNING;
+import static com.impact.core.impactLog.INFO;
+import static com.impact.core.impactLog.WARNING;
 
 public class GUIHandler implements IGuiHandler {
 

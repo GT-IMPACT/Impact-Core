@@ -11,8 +11,8 @@ import net.minecraft.client.gui.FontRenderer;
 
 import java.util.List;
 
-import static com.impact.System.Config.hideBackground;
-import static com.impact.System.Config.toolTips;
+import static com.impact.core.Config.hideBackground;
+import static com.impact.core.Config.toolTips;
 
 public class PluginGT5Base extends PluginBase {
 

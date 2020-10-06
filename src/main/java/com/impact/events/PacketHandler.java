@@ -1,4 +1,4 @@
-package com.impact.System;
+package com.impact.events;
 
 import com.impact.impact;
 import com.impact.util.IZTPacket;
