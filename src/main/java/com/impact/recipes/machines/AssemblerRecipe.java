@@ -1182,6 +1182,10 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1), GT_ModHandler.getModItem("GalacticraftCore", "tile.glowstoneTorch", 1L), 200, 16);
         // --- Canister
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 8L, 9), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, 4), GT_ModHandler.getModItem("GalacticraftCore", "item.oilCanisterPartial", 1L, 1001), 200, 64);
+        // --- Canister T2
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 8L, 6), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 4), GT_ModHandler.getModItem("GalacticraftMars", "item.LOX2", 1L, 8001), 300, 256);
+        // --- Canister T3
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.TungstenSteel, 8), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 4), GT_ModHandler.getModItem("GalacticraftMars", "item.LOX3", 1L, 32001), 400, 1024);
         // --- Hydrogen Pipe
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.oxygenPipe", 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Copper, 4), GT_ModHandler.getModItem("GalacticraftMars", "tile.hydrogenPipe", 1L), 400, 16);
         // --- Thermal Padding Helm

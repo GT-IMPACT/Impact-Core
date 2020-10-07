@@ -21,5 +21,10 @@ public class ExtruderRecipe implements Runnable{
         GT_Values.RA.addExtruderRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1), ItemList.Shape_Extruder_Shaft.get(0L), GT_ModHandler.getModItem("IC2", "itemRecipePart", 1L, 11), 2000, 120);
         GT_Values.RA.addExtruderRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Steel, 1), ItemList.Shape_Extruder_Shaft.get(0L), GT_ModHandler.getModItem("IC2", "itemRecipePart", 1L, 12), 2000, 480);
 
+        GT_Values.RA.addExtruderRecipe(GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0), ItemList.Shape_Extruder_Pipe_Small.get(0L), GT_ModHandler.getModItem("GalacticraftCore", "tile.oxygenPipe", 2L, 0), 200, 120);
+        GT_Values.RA.addExtruderRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 2L, 7), ItemList.Shape_Extruder_Cell.get(0L), GT_ModHandler.getModItem("GalacticraftCore", "item.canister", 1L, 0), 600, 30);
+        GT_Values.RA.addExtruderRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 2L, 6), ItemList.Shape_Extruder_Cell.get(0L), GT_ModHandler.getModItem("GalacticraftCore", "item.canister", 1L, 1), 600, 30);
+        GT_Values.RA.addExtruderRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 2L, 9), ItemList.Shape_Extruder_Bolt.get(0L), GT_ModHandler.getModItem("GalacticraftCore", "item.steelPole", 1L, 0), 600, 30);
+
     }
 }

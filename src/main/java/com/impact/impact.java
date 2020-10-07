@@ -148,6 +148,7 @@ public class impact {
         new FusionRecipe().run();
         new ArcFurnaceRecipe().run();
         new UnboxingRecipe().run();
+		new CannerRecipe().run();
         final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
         inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel,40), 40);
         inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel,20), 20);

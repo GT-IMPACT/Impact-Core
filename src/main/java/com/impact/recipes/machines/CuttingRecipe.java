@@ -57,5 +57,15 @@ public class CuttingRecipe implements Runnable {
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 1L, 23), GT_ModHandler.getModItem("Ztones", "lampb", 4L, 0), GT_Values.NI,  200, 4);
 
         /* ==== END ZTONES ==== */
+        /** ==== START GALACTICRAFT ==== */
+        // --- Slabs
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.gcBlockCore", 1L, 4), GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 0), GT_Values.NI,  50, 8);
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.gcBlockCore", 1L, 3), GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 1), GT_Values.NI,  50, 8);
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.moonBlock", 1L, 4), GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 2), GT_Values.NI,  50, 8);
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.moonBlock", 1L, 14), GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 3), GT_Values.NI,  50, 8);
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 4), GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 4), GT_Values.NI,  50, 8);
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 7), GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 5), GT_Values.NI,  50, 8);
+
+        /* ==== END GALACTICRAFT ==== */
     }
 }

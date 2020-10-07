@@ -4,6 +4,7 @@ import com.impact.common.item.Core_Items;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 
+
 public class ForgeHammerRecipe implements Runnable{
     @Override
     public void run(){

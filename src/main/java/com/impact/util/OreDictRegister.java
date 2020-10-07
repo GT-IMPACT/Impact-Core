@@ -75,6 +75,15 @@ public class OreDictRegister {
                 OreDictionary.registerOre("cropTcetiESeaweed", GT_ModHandler.getModItem("GalaxySpace", "tcetiedandelions", 1L, i));
             }
         OreDictionary.registerOre("dustFertilizer", GT_ModHandler.getModItem("IC2", "itemFertilizer", 1L, 0));
+		
+		OreDictionary.registerOre("stickDesh", GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 1));
+        OreDictionary.registerOre("ingotDesh", GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 2));
+        OreDictionary.registerOre("oreIlmenite", GT_ModHandler.getModItem("GalacticraftMars", "tile.asteroidsBlock", 1L, 4));
+        OreDictionary.registerOre("oreDesh", GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 2));
+        OreDictionary.registerOre("dustSilicon", GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 1L, 2));
+        OreDictionary.registerOre("blockDesh", GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 8));
+        OreDictionary.registerOre("blockMeteoricIron", GT_ModHandler.getModItem("GalacticraftCore", "tile.gcBlockCore", 1L, 12));
+
     }
 
     public static void register_all() {

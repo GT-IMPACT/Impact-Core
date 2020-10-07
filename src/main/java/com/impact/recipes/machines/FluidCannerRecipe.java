@@ -4,6 +4,8 @@ import com.impact.common.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_ModHandler;
+import net.minecraftforge.fluids.FluidStack;
 
 import static com.impact.common.item.Core_List_Items.*;
 
@@ -30,6 +32,15 @@ public class FluidCannerRecipe implements Runnable{
 
 
         /* ================================= end GT =================================*/
+
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankLightFull", 1L, 1800), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankLightFull", 1L, 0), Materials.Oxygen.getGas(1800L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankMedFull", 1L, 3600), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankMedFull", 1L, 0), Materials.Oxygen.getGas(3600L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankHeavyFull", 1L, 5400), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankHeavyFull", 1L, 0), Materials.Oxygen.getGas(5400L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt4", 1L, 7200), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt4", 1L, 0), Materials.Oxygen.getGas(7200L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt5", 1L, 9000), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt5", 1L, 0), Materials.Oxygen.getGas(9000L), GT_Values.NF);
+
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.fuelCanisterPartial", 1L, 1001), GT_ModHandler.getModItem("GalacticraftCore", "item.fuelCanisterPartial", 1L, 1), new FluidStack(ItemList.sRocketFuel,1000), GT_Values.NF);
+
 
     }
 }

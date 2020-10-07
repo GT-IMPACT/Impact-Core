@@ -5,6 +5,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
@@ -152,6 +153,9 @@ public class EBFRecipe implements Runnable {
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1L), GT_Utility.getIntegratedCircuit(12), Materials.PerroxGas.getGas(500L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Infinity, 1L), GT_Values.NI, 2000, 2000000, 12600);
 
         /* ================================= end GT =================================*/
+
+        GT_Values.RA.addBlastRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 2L, 4), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L), GT_Values.NI, 1500, 120, 1500);
+
 
     }
 }
