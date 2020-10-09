@@ -41,6 +41,7 @@ public class ItemRegistery {
     public static Block InsideBlock;
     public static Block FluidTankBlock;
     public static Block CeramicBlock;
+    public static Block CollisionBlock;
 
     public static void run() {
         //Blocks
@@ -106,6 +107,7 @@ public class ItemRegistery {
         SawMillBlock = Block_Sawmill.registerBlock();
         NqTetherBlock = Block_NqTether.registerBlock();
         InsideBlock = Block_InsideBlocks.registerBlock();
+        CollisionBlock = Block_CollisionBlocks.registerBlock();
         FluidTankBlock = Block_FluidTank.registerBlock();
         CeramicBlock = Block_Ceramic.registerBlock();
     }

@@ -9,6 +9,7 @@ import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.nei.GT_NEI_DefaultHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;

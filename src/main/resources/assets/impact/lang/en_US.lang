@@ -322,6 +322,7 @@ tile.impact_sawmill_block.name=Saw Mill Conveyor
 tile.impact_inside_block.0.name=Naquadah Chamber Casing
 tile.impact_inside_block.1.name=Cyclone Chamber Casing
 tile.impact_nqtether_block.name=Tether Core
+tile.impact_collision_block.0.name=Block of Digger
 
 tile.impact_fluidtankblock_block.0.name=Tank Storage Block (Tier 1)
 tile.impact_fluidtankblock_block.1.name=Tank Storage Block (Tier 2)
@@ -390,6 +391,3 @@ achievement.gt.blockmachines.multimachine.heavymetalcyclone=Heavy Metal Cyclone
 achievement.gt.blockmachines.multimachine.naqgen=Hyper Engine
 achievement.gt.blockmachines.multimachine.liquidnaqgen=Liquid Naquadah Generator
 achievement.gt.blockmachines.multimachine.liquidenrichednqgen=Liquid Enriched Naquadah Generator
-
-#P2P GT5 Power
-item.ae2gt5p2p_part.name=P2P Tunnel - GregTech Energy

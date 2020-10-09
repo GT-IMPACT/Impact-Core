@@ -41,6 +41,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -780,6 +781,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
                 "Pollution: " + RED + getPollutionPerTick(null) + RESET,
                 getParallel()==-1? "" : "Parallel Point: " + YELLOW + getParallel(),
+                "ID Dimension: " + RED + DimensionManager.getProvider(getBaseMetaTileEntity().getWorld().provider.dimensionId).getDimensionName() + RESET,
+                "Height: " + RED + getBaseMetaTileEntity().getYCoord() + RESET
         };
     }
 

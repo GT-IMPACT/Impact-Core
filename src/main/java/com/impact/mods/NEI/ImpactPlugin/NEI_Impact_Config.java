@@ -29,7 +29,8 @@ public class NEI_Impact_Config implements IConfigureNEI {
             new GT_NEI_EnrichedNaquadahGen(GT_Recipe.GT_Recipe_Map.sLiquidENqGenerator);
             new GT_NEI_HyperGen(GT_Recipe.GT_Recipe_Map.sHyperGenerator);
             new GT_NEI_HeavyMetalCyclone(GT_Recipe.GT_Recipe_Map.sCyclonRecipes);
-            //new NEI_RocketFuelSingle();
+            new NEI_MoonMiner();
+            new NEI_RocketFuelSingle();
             //new NEI_OxygenSuppSingle();
 
         }
