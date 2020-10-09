@@ -130,7 +130,6 @@ public class impact {
         new CuttingRecipe().run();
         new VacuumFreezerRecipe().run();
         new AssemblyLineRecipe().run();
-        new OpenComputersRecipe().run();
         new ForgeHammerRecipe().run();
         new FluidExtractorRecipe().run();
         new ExtruderRecipe().run();
