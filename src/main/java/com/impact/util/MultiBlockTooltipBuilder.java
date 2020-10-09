@@ -144,7 +144,7 @@ public class MultiBlockTooltipBuilder {
     }
 
     public MultiBlockTooltipBuilder addDynamoHatch(String info) {
-        sLines.add(TAB + EnumChatFormatting.GREEN  + "Dynamo Hatch: " + EnumChatFormatting.GRAY + info);
+        sLines.add(TAB + EnumChatFormatting.GREEN + "Dynamo Hatch: " + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -191,7 +191,7 @@ public class MultiBlockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiBlockTooltipBuilder addOtherStructurePart(String name, String info) {
-        sLines.add(TAB + EnumChatFormatting.GREEN + name + ": "  + EnumChatFormatting.GRAY + info);
+        sLines.add(TAB + EnumChatFormatting.GREEN + name + ": " + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -204,15 +204,15 @@ public class MultiBlockTooltipBuilder {
      * @return The result of all build calls.
      */
 
-	public void signAndFinalize(String author) {
-		iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
-		iLines.add("Added by " + author);
-		iArray = new String[iLines.size()];
-		sArray = new String[sLines.size()];
-		iLines.toArray(iArray);
-		sLines.toArray(sArray);
+    public void signAndFinalize(String author) {
+        iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
+        iLines.add("Added by " + author);
+        iArray = new String[iLines.size()];
+        sArray = new String[sLines.size()];
+        iLines.toArray(iArray);
+        sLines.toArray(sArray);
 
-	}
+    }
 
     public void signAndFinalize(String author, boolean ctrl) {
         iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");

@@ -20,8 +20,6 @@ public class Block_CollisionBlocks extends gtUpdateBlockAPI {
     private static final Block_CollisionBlocks instance = new Block_CollisionBlocks();
 
     private IIcon MoonDigSide, MoonDigTop;
-    private int Meta;
-
 
     private Block_CollisionBlocks() {
         super(Material.iron);
@@ -46,14 +44,14 @@ public class Block_CollisionBlocks extends gtUpdateBlockAPI {
     @SuppressWarnings({"unchecked"})
     public void getSubBlocks(Item item, CreativeTabs tab, List l) {
         //for (byte i = 0; i < 1; i++)
-            l.add(new ItemStack(item, 1, 0));
+        l.add(new ItemStack(item, 1, 0));
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
         switch (meta) {
-			case 0:
-				return (side < 2) ? MoonDigTop : MoonDigSide;
+            case 0:
+                return (side < 2) ? MoonDigTop : MoonDigSide;
             default:
                 return null;
         }
@@ -92,7 +90,7 @@ public class Block_CollisionBlocks extends gtUpdateBlockAPI {
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         if (world.getBlockMetadata(x, y, z) == 0) {
-			/* Устанавливаем границы блока.  minX, minY, minZ, maxX, maxY, maxZ */
+            /* Устанавливаем границы блока.  minX, minY, minZ, maxX, maxY, maxZ */
             this.setBlockBounds(0.200F, 0.0F, 0.200F, 0.800F, 1.0F, 0.800F);
         } else {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
