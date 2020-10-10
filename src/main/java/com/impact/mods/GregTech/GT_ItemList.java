@@ -43,7 +43,8 @@ public enum GT_ItemList implements IItemContainer {
     Machine_ULV_Assembler, CircuitProgrammer,
 
     Generator_Steam_Turbine_ULV, Generator_Diesel_ULV, Generator_Gas_Turbine_ULV, Generator_Semi_Turbine_ULV, Generator_Semi_Turbine_LV,
-    Generator_Semi_Turbine_MV, Generator_Semi_Turbine_HV,
+    Generator_Semi_Turbine_MV, Generator_Semi_Turbine_HV, Generator_Steam_Turbine_EV, Generator_Diesel_EV, Generator_Gas_Turbine_EV,
+    Generator_Semi_Turbine_EV, Generator_Steam_Turbine_IV, Generator_Diesel_IV, Generator_Gas_Turbine_IV, Generator_Semi_Turbine_IV,
 
     Water_Tank,
 
