@@ -2,7 +2,9 @@ package com.impact;
 
 import com.impact.core.*;
 import com.impact.events.PacketHandler;
+import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
+import com.impact.mods.GalactiCraft.GC_Register;
 import com.impact.mods.GregTech.enums.Texture;
 import com.impact.loader.MainLoader;
 import com.impact.loader.ModLoader;
@@ -18,6 +20,7 @@ import com.impact.util.SendUtils;
 import com.impact.mods.NEI.OrePugin.helper.CSVMaker;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreLayerHelper;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreSmallHelper;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -90,6 +93,10 @@ public class impact {
         MinecraftForge.EVENT_BUS.register(new impactEvents());
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
         channel.register(new PacketHandler());
+
+        TickHandler tickHandler = new TickHandler();
+        FMLCommonHandler.instance().bus().register(tickHandler);
+        MinecraftForge.EVENT_BUS.register(tickHandler);
     }
 
     @Mod.EventHandler
@@ -103,6 +110,7 @@ public class impact {
 
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
+        GC_Register.init();
         new GT_ItemRegister().run();
         new Casing_Helper().run();
         new Multi_Register().run();

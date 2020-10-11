@@ -2,6 +2,8 @@ package com.impact.loader;
 
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.client.gui.GUIHandler;
+import com.impact.common.block.netherportal.BlockHandler;
+import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.impact;
 import com.impact.common.item.Core_Items;
 import com.impact.common.item.Core_Items2;
@@ -14,6 +16,9 @@ import com.impact.util.OreDictRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import static codechicken.nei.api.API.hideItem;
@@ -61,6 +66,9 @@ public class MainLoader {
         for (byte i = 0; i <= 7; i++)
             hideItem(new ItemStack(FakeCircuits.getInstance(), 1, i));
         INFO("[preInit] Hide NEI Items - Loaded");
+
+        BlockHandler.replaceBlock(Blocks.portal, BlockNullPortal.class, ItemBlock.class);
+        INFO("[preInit] Disabled Nether Portal - Loaded");
     }
 
     public static void load() {
