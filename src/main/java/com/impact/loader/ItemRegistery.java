@@ -6,8 +6,11 @@ import com.impact.common.item.GT_Pump.GregtechPump;
 import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -42,6 +45,8 @@ public class ItemRegistery {
     public static Block FluidTankBlock;
     public static Block CeramicBlock;
     public static Block CollisionBlock;
+    public static Block HCloud, HMetal;
+    public static Block HFluid;
 
     public static void run() {
         //Blocks
@@ -110,5 +115,11 @@ public class ItemRegistery {
         CollisionBlock = Block_CollisionBlocks.registerBlock();
         FluidTankBlock = Block_FluidTank.registerBlock();
         CeramicBlock = Block_Ceramic.registerBlock();
+        HCloud = Block_HCloud.registerBlock();
+        HMetal = Block_Pattern.registerBlock(Material.rock, "HMetal", 16.0F, "pickaxe", 3, 6000.0F, Block.soundTypeStone, true);
+    }
+
+    public static void registerFluidBlocks() {
+        HFluid = new Block_Liquid(Materials.Hydrogen, true);
     }
 }

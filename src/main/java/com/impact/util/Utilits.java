@@ -1,6 +1,7 @@
 package com.impact.util;
 
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -8,6 +9,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -181,5 +183,13 @@ public class Utilits {
         return (A >= B && A <= C);
     }
 
+    public static float calculateGravity(float Si) {
+        return (9.81F - Si) * 0.008664628F;
+    }
 
+    public static void registerEntity(Class<? extends Entity> entityClass, String name, Object instance) {
+        int ID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(entityClass, name, ID);
+        EntityRegistry.registerModEntity(entityClass, name, ID, instance, 128, 1, true);
+    }
 }

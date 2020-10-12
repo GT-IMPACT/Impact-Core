@@ -3,18 +3,24 @@ package com.impact.events;
 
 import com.impact.common.block.itemblock.IB_IGlass;
 import com.impact.client.gui.ImpactGuiMainMenu;
+import com.impact.mods.GalactiCraft.planets.jupiter.CloudRendererJupiter;
+import com.impact.mods.GalactiCraft.planets.jupiter.SkyProviderJupiter;
+import com.impact.mods.GalactiCraft.planets.jupiter.WorldProviderJupiter;
 import com.impact.util.ToggleMetaData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.MouseEvent;
@@ -84,8 +90,24 @@ public class impactEvents {
             Minecraft.getMinecraft().crashed(new CrashReport("", e));
             return;
         } catch (Exception E) {}
-
     }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        Minecraft minecraft = Minecraft.getMinecraft();
+        WorldClient world = minecraft.theWorld;
+        if (world != null) {
 
+            if (world.provider instanceof WorldProviderJupiter) {
+                if (world.provider.getSkyRenderer() == null) {
+                    world.provider.setSkyRenderer((IRenderHandler) new SkyProviderJupiter());
+                }
+
+                if (world.provider.getCloudRenderer() == null) {
+                    world.provider.setCloudRenderer((IRenderHandler) new CloudRendererJupiter());
+                }
+            }
+        }
+    }
 }

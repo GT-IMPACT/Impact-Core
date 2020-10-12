@@ -1,5 +1,7 @@
 package com.impact.recipes;
 
+import com.impact.common.block.blocks.Block_Liquid;
+import com.impact.loader.ItemRegistery;
 import com.impact.recipes.debug.DEBUG_Recipe;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -9,11 +11,14 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import static com.impact.loader.ItemRegistery.registerFluidBlocks;
 import static gregtech.api.util.GT_ModHandler.*;
 
 public class AfterGregTechPostLoadRecipes implements Runnable {
+
     @Override
     public void run() {
+        registerFluidBlocks();
         new DEBUG_Recipe().run();
         //removeRecipe(ItemStack aInput);
 

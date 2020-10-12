@@ -339,6 +339,11 @@ tile.impact_ceramic_block.2.name=LSCF Ceramic Electrolyte Unit
 
 #tile.blockMachine3.0.name=Advanced Crop Harvester
 
+#Planets Lang
+tile.Hydrogen.name=Hydrogen
+tile.HMetal.name=Metallic Hydrogen
+tile.HCloud.name=Hydrogen Clouds
+
 #Gui names
 gtnop.gui.veinStat.name=Vein Stats
 gtnop.gui.asteroidStat.name=Asteroid Stats
