@@ -97,4 +97,13 @@ public class Block_CollisionBlocks extends gtUpdateBlockAPI {
         }
     }
 
+    /**
+     * Sets the block's bounds for rendering it as an item
+     */
+    public void setBlockBoundsForItemRender() {
+        this.setBlockBounds(0.200F, 0.0F, 0.200F, 0.800F, 1.0F, 0.800F);
+    }
+
+
+
 }
