@@ -1,25 +1,25 @@
 package com.impact;
 
-import com.impact.core.*;
+import com.impact.core.CommonProxy;
+import com.impact.core.Config;
+import com.impact.core.Refstrings;
 import com.impact.events.PacketHandler;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
-import com.impact.mods.GalactiCraft.GC_Register;
-import com.impact.mods.GregTech.enums.Texture;
 import com.impact.loader.MainLoader;
 import com.impact.loader.ModLoader;
-import com.impact.mods.GregTech.GT_ItemRegister;
 import com.impact.mods.GregTech.Basic_Register;
-import com.impact.mods.GregTech.Multi_Register;
+import com.impact.mods.GregTech.GT_ItemRegister;
 import com.impact.mods.GregTech.GT_WorldGenRegister;
+import com.impact.mods.GregTech.Multi_Register;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
-import com.impact.recipes.HandRecipe;
-import com.impact.recipes.OpenComputersRecipe;
-import com.impact.recipes.machines.*;
-import com.impact.util.SendUtils;
+import com.impact.mods.GregTech.enums.Texture;
 import com.impact.mods.NEI.OrePugin.helper.CSVMaker;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreLayerHelper;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreSmallHelper;
+import com.impact.recipes.HandRecipe;
+import com.impact.recipes.machines.*;
+import com.impact.util.SendUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -30,26 +30,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
-import galaxyspace.core.config.GSConfigDimensions;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
-import java.util.HashMap;
 
 import static com.impact.core.Config.csv;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
-import static com.impact.loader.ItemRegistery.IGlassBlock;
 
 @Mod(
         modid = MODID,
@@ -69,7 +56,6 @@ public class impact {
     public static String ModPackVersion = "1.0 Release [DEV]";
     public static Config mConfig;
     public static FMLEventChannel channel;
-
 
     public impact() {
         Texture.Icons.VOID.name();
@@ -97,6 +83,8 @@ public class impact {
         TickHandler tickHandler = new TickHandler();
         FMLCommonHandler.instance().bus().register(tickHandler);
         MinecraftForge.EVENT_BUS.register(tickHandler);
+
+        proxy.preload();
     }
 
     @Mod.EventHandler
@@ -109,8 +97,7 @@ public class impact {
     }
 
     @Mod.EventHandler
-    public void PostLoad(FMLPostInitializationEvent PostEvent) {
-        GC_Register.init();
+    public void PostLoad(FMLPostInitializationEvent event) {
         new GT_ItemRegister().run();
         new Casing_Helper().run();
         new Multi_Register().run();
@@ -155,17 +142,7 @@ public class impact {
         new FusionRecipe().run();
         new ArcFurnaceRecipe().run();
         new UnboxingRecipe().run();
-		new CannerRecipe().run();
-        final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel,40), 40);
-        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel,20), 20);
-        inputMap.put(new ItemStack(IGlassBlock, 20), 20);
-        inputMap.put(new ItemStack(GCItems.rocketEngine, 4), 4);
-        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
-        if (GSConfigDimensions.enableVenusSS)
-            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GSConfigDimensions.dimensionIDVenusOrbit, GSConfigDimensions.dimensionIDVenus, new SpaceStationRecipe(inputMap)));
-        if (GSConfigDimensions.enableMarsSS)
-            GalacticraftRegistry.registerSpaceStation(new SpaceStationType(GSConfigDimensions.dimensionIDMarsOrbit, ConfigManagerMars.dimensionIDMars, new SpaceStationRecipe(inputMap)));
+        new CannerRecipe().run();
         MainLoader.postLoad();
     }
 

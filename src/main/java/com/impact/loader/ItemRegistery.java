@@ -10,7 +10,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -47,6 +46,7 @@ public class ItemRegistery {
     public static Block CollisionBlock;
     public static Block HCloud, HMetal;
     public static Block HFluid;
+    public static Block MarsStone;
 
     public static void run() {
         //Blocks
@@ -116,7 +116,8 @@ public class ItemRegistery {
         FluidTankBlock = Block_FluidTank.registerBlock();
         CeramicBlock = Block_Ceramic.registerBlock();
         HCloud = Block_HCloud.registerBlock();
-        HMetal = Block_Pattern.registerBlock(Material.rock, "HMetal", 16.0F, "pickaxe", 3, 6000.0F, Block.soundTypeStone, true);
+        HMetal = new Block_Pattern_Space(Material.rock, "HMetal");
+        MarsStone = new Block_Pattern_Space(Material.rock, "MarsStone");
     }
 
     public static void registerFluidBlocks() {

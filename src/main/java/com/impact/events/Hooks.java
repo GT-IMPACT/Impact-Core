@@ -29,7 +29,7 @@ public class Hooks {
 
     private static ByteBuffer call(InputStream is) throws IOException {
         BufferedImage bufferedimage = ImageIO.read(is);
-        int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), (int[]) null, 0, bufferedimage.getWidth());
+        int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), null, 0, bufferedimage.getWidth());
         ByteBuffer bytebuffer = ByteBuffer.allocate(4 * aint.length);
         int[] aint1 = aint;
         int i = aint.length;
@@ -42,6 +42,4 @@ public class Hooks {
         bytebuffer.flip();
         return bytebuffer;
     }
-
-
 }
