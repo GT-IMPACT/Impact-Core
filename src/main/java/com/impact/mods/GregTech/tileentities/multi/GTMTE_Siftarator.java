@@ -74,6 +74,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
+                .addMuffler("Any casing")
                 .addInputBus("Any casing (max x8)")
                 .addOutputBus("Any casing (max x1)")
                 .addCasingInfo("Electromagnetic Casing")

@@ -516,7 +516,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
         if (mfh != null) {
             ll.add(EnumChatFormatting.YELLOW + "Stored Fluids:" + EnumChatFormatting.RESET);
             for(int i = 0; i < mfh.fluids.size(); i++)
-                ll.add(i + " - " + mfh.fluids.get(i).getLocalizedName() + ": " + mfh.fluids.get(i).amount + "L (" + (Math.round(100.0f * mfh.fluids.get(i).amount / getCapacity())) + "%)");
+                ll.add(i + " - " + mfh.fluids.get(i).getLocalizedName() + ": " + mfh.fluids.get(i).amount + "L (" + (Math.round(100.0f * mfh.fluids.get(i).amount / mfh.getCapacity())) + "%)");
         }
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
         ll.add("Auto-voiding: " + doVoidExcess);
@@ -537,9 +537,13 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
         nbt.setInteger("runningCost", runningCost);
         nbt.setBoolean("doVoidExcess", doVoidExcess);
 
-        nbt.setInteger("capacityPerFluid", mfh.getCapacity());
-        nbt.setTag("fluids", mfh.saveNBTData(new NBTTagCompound()));
-
+        if (mfh != null) {
+            nbt.setInteger("capacityPerFluid", mfh.getCapacity());
+            nbt.setTag("fluids", mfh.saveNBTData(new NBTTagCompound()));
+        } else {
+            nbt.setInteger("capacityPerFluid", 1000);
+            nbt.setTag("fluids", new NBTTagCompound());
+        }
         super.saveNBTData(nbt);
     }
 
