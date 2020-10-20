@@ -52,14 +52,7 @@ public class ItemRegistery {
         //Blocks
         GameRegistry.registerBlock(decorateBlock[2], FakeBlocksItem.class, "FakeBlock");
         INFO("[Init] Item Registery Blocks - Loaded");
-
-        //NEI hide
-        hideItem(new ItemStack(decorateBlock[2], 1, 0));
-        hideItem(new ItemStack(decorateBlock[2], 1, 1));
-        hideItem(new ItemStack(decorateBlock[2], 1, 2));
-        hideItem(new ItemStack(decorateBlock[2], 1, 3));
-        hideItem(new ItemStack(decorateBlock[2], 1, 4));
-        INFO("[Init] Item Registery Hide Fake BLocks - Loaded");
+        NEIHide();
 
         for (int i = 0; i <= 5; i++)
             hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsChips", 1L, i));
@@ -122,5 +115,16 @@ public class ItemRegistery {
 
     public static void registerFluidBlocks() {
         HFluid = new Block_Liquid(Materials.Hydrogen, true);
+    }
+
+    public static void NEIHide(){
+        hideItem(new ItemStack(decorateBlock[2], 1, 0));
+        hideItem(new ItemStack(decorateBlock[2], 1, 1));
+        hideItem(new ItemStack(decorateBlock[2], 1, 2));
+        hideItem(new ItemStack(decorateBlock[2], 1, 3));
+        hideItem(new ItemStack(decorateBlock[2], 1, 4));
+        for (int i = 0; i <= 11; i++)
+            hideItem(GT_ModHandler.getModItem("Railcraft", "cube", 1, i));
+
     }
 }
