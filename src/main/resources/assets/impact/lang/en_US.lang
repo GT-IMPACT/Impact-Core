@@ -396,3 +396,11 @@ achievement.gt.blockmachines.multimachine.heavymetalcyclone=Heavy Metal Cyclone
 achievement.gt.blockmachines.multimachine.naqgen=Hyper Engine
 achievement.gt.blockmachines.multimachine.liquidnaqgen=Liquid Naquadah Generator
 achievement.gt.blockmachines.multimachine.liquidenrichednqgen=Liquid Enriched Naquadah Generator
+
+item.ChestCart.0.name=Minecart with Wr. Iron Chest
+item.ChestCart.1.name=Minecart with Steel Chest
+item.ChestCart.2.name=Minecart with Aluminium Chest
+
+entity.impact.EntityCopperChestCart.name=Minecart with Wr. Iron Chest
+entity.impact.EntityIronChestCart.name=Minecart with Steel Chest
+entity.impact.EntityGoldChestCart.name=Minecart with Aluminium Chest

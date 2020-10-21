@@ -1,5 +1,6 @@
 package com.impact;
 
+import com.impact.client.gui.GUIHandler;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.Refstrings;
@@ -7,18 +8,12 @@ import com.impact.events.PacketHandler;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
-import com.impact.loader.ModLoader;
-import com.impact.mods.GregTech.Basic_Register;
-import com.impact.mods.GregTech.GT_ItemRegister;
-import com.impact.mods.GregTech.GT_WorldGenRegister;
-import com.impact.mods.GregTech.Multi_Register;
-import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.enums.Texture;
 import com.impact.mods.NEI.OrePugin.helper.CSVMaker;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreLayerHelper;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreSmallHelper;
-import com.impact.recipes.HandRecipe;
-import com.impact.recipes.machines.*;
+import com.impact.mods.RailCraft.carts.item.ChestCartModule;
+import com.impact.mods.RailCraft.carts.item.events.Module;
 import com.impact.util.SendUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -33,6 +28,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import static com.impact.core.Config.csv;
 import static com.impact.core.Refstrings.MODID;
@@ -56,14 +52,23 @@ public class impact {
     public static String ModPackVersion = "1.0 Release [DEV]";
     public static Config mConfig;
     public static FMLEventChannel channel;
+    private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
 
     public impact() {
         Texture.Icons.VOID.name();
     }
 
+    public static ArrayList<Module> getModules() {
+        if (MODULES_ENABLED.isEmpty()) {
+            MODULES_ENABLED.add(new ChestCartModule());
+        }
+        return MODULES_ENABLED;
+    }
+
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-        MainLoader.load();
+        MainLoader.load(event);
+        new GUIHandler();
         INFO("MainLoader LOAD Loaded");
     }
 
@@ -72,7 +77,7 @@ public class impact {
         mConfig = new Config(new File("config/IMPACT/impact.cfg"));
         INFO("Config Loaded");
 
-        MainLoader.preInit();
+        MainLoader.preInit(event);
         INFO("MainLoader PREINIT Loaded ");
         //MainLoader.preInitClient();
 
@@ -98,52 +103,7 @@ public class impact {
 
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent event) {
-        new GT_ItemRegister().run();
-        new Casing_Helper().run();
-        new Multi_Register().run();
-        new Basic_Register().run();
-        new GT_WorldGenRegister().run();
-        new ModLoader().run();
-        new HandRecipe().run();
-        new CentrifugeRecipe().run();
-        new PulveriserRecipe().run();
-        new LaserEngraverRecipe();
-        new FormingPressRecipe().run();
-        new ChemicalBathRecipe().run();
-        new AssemblerRecipe().run();
-        new FreezSolidifierRecipe().run();
-        new Printer3DRecipe().run();
-        new BlastSmelterRecipe().run();
-        new ComponentAssemblerRecipe().run();
-        new CompessorRecipe().run();
-        new AlloySmelterRecipe().run();
-        new MixerRecipe().run();
-        new EBFRecipe().run();
-        new FluidCannerRecipe().run();
-        new CircuitAssemblerRecipe().run();
-        new FarmRecipe().run();
-        new CuttingRecipe().run();
-        new VacuumFreezerRecipe().run();
-        new AssemblyLineRecipe().run();
-        new ForgeHammerRecipe().run();
-        new FluidExtractorRecipe().run();
-        new ExtruderRecipe().run();
-        new ImplosionCompressorRecipe().run();
-        new FluidSolidifierRecipe().run();
-        new AutoclaveRecipe().run();
-        new BreweryRecipe().run();
-        new ExtractorRecipe().run();
-        new ChemicalReactorRecipe().run();
-        new SifterRecipe().run();
-        new LatheRecipe().run();
-        new WiremillRecipe().run();
-        new ElectrolyzerRecipe().run();
-        new WireassemblerRecipe().run();
-        new FusionRecipe().run();
-        new ArcFurnaceRecipe().run();
-        new UnboxingRecipe().run();
-        new CannerRecipe().run();
-        MainLoader.postLoad();
+        MainLoader.postLoad(event);
     }
 
     @Mod.EventHandler
