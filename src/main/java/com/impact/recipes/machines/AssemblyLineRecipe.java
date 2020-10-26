@@ -993,10 +993,13 @@ public class AssemblyLineRecipe implements Runnable {
                 new ItemStack(NqTetherBlock, 1, 0), 160 * 20, 14576);
 
         //Heavy Metal Cyclon
-        GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Inconel792, 1), 156000, new Object[]{
+        GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Inconel792, 1), 156000,
+                new Object[] {
                         ItemList.Hull_LuV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
+                        new Object[] {
+                                OrePrefixes.circuit.get(Materials.Master), 4
+                        },
                         GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                         ItemList.Electric_Motor_LuV.get(4L),
                         ItemList.Electric_Pump_LuV.get(4L),
@@ -1007,7 +1010,8 @@ public class AssemblyLineRecipe implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TiBetaC, 8),
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HSSS, 8),
                         GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 16)},
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSG, 16)
+                },
                 new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(1152),
                         Materials.Lubricant.getFluid(1000),
