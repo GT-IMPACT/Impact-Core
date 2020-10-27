@@ -93,8 +93,8 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                 .addTypeMachine("Pyrolyse oven")
                 .addInfo("Converts hydrocarbons into gases, wood tar and solid fuels")
                 .addInfo("The process emits gases throughout the entire time (60s):")
-                .addInfo("for 6s - CO, for 15s - H\u2082, for 30s - CH\u2084, for 45s - CO\u2082 ")
-                .addInfo("and 55s - solid fuels and wood tar")
+                .addInfo("for 7s - CO, for 14s - H\u2082, for 21s - CH\u2084, for 28s - CO\u2082 ")
+                .addInfo("and 35s - solid fuels and wood tar")
                 .addInfo("Input/output of products depends of energy hatch, time does not change")
                 .addInfo("LV - 1x, MV - 2x, HV - 3x and etc")
                 .addPollution(100, "x tier energy hatch")
@@ -258,24 +258,20 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         switch (this.mProgresstime) {
-            case 6 * 20:
+            case 7 * 20:
                 addOutput(Materials.CarbonMonoxide.getGas(72L * mParallelPoint));
                 break;
-            case 15 * 20:
+            case 14 * 20:
                 addOutput(Materials.Hydrogen.getGas(288L * mParallelPoint));
                 break;
-            case 30 * 20:
+            case 21 * 20:
                 addOutput(Materials.Methane.getGas(144L * mParallelPoint));
                 break;
-            case 45 * 20:
+            case 28 * 20:
                 addOutput(Materials.CarbonDioxide.getGas(216L * mParallelPoint));
                 break;
-            case 50 * 20:
-                if (this.mMaxProgresstime == 55 * 20)
-                    addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5 * mParallelPoint));
-                break;
-            case 55 * 20:
-                if (this.mMaxProgresstime == 60 * 20)
+            case 35 * 20:
+                if (this.mMaxProgresstime == 40 * 20)
                     addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5 * mParallelPoint));
                 break;
         }

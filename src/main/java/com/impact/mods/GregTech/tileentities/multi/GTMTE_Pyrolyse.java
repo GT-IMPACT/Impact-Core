@@ -84,8 +84,8 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addTypeMachine("Pyrolyse oven")
                 .addInfo("Converts hydrocarbons into gases, wood tar and solid fuels")
                 .addInfo("The process emits gases throughout the entire time (60s):")
-                .addInfo("for 6s - CO, for 15s - H\u2082, for 30s - CH\u2084, for 45s - CO\u2082 ")
-                .addInfo("and 55s - solid fuels and wood tar")
+                .addInfo("for 7s - CO, for 14s - H\u2082, for 21s - CH\u2084, for 28s - CO\u2082 ")
+                .addInfo("and 35s - solid fuels and wood tar")
                 .addPollution(100)
                 .addSeparator()
                 .addController()
@@ -120,8 +120,8 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
             this.mEfficiency = 10000;
             this.mEfficiencyIncrease = 10000;
 
-            int EUt = 24;
-            int maxProgresstime = 60 * 20;
+            int EUt = 20;
+            int maxProgresstime = 40 * 20;
 
             this.mEUt = -EUt;
             this.mMaxProgresstime = maxProgresstime;
@@ -135,19 +135,19 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
     @Override
     public boolean onRunningTick(ItemStack aStack) {
 
-        if (this.mProgresstime == 6 * 20)
+        if (this.mProgresstime == 7 * 20)
             addOutput(Materials.CarbonMonoxide.getGas(72L));
 
-        if (this.mProgresstime == 15 * 20)
+        if (this.mProgresstime == 14 * 20)
             addOutput(Materials.Hydrogen.getGas(288L));
 
-        if (this.mProgresstime == 30 * 20)
+        if (this.mProgresstime == 21 * 20)
             addOutput(Materials.Methane.getGas(144L));
 
-        if (this.mProgresstime == 45 * 20)
+        if (this.mProgresstime == 28 * 20)
             addOutput(Materials.CarbonDioxide.getGas(216L));
 
-        if (this.mProgresstime == 55 * 20) {
+        if (this.mProgresstime == 35 * 20) {
             addOutput(Materials.WoodTar.getFluid(1440L));
             addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5));
         }
