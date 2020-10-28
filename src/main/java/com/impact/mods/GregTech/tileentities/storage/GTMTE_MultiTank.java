@@ -145,9 +145,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 
             // Void excess if that is turned on
             if(doVoidExcess) {
-                for(GT_MetaTileEntity_Hatch_Input inputHatch : super.mInputHatches) {
+                for(GT_MetaTileEntity_Hatch_Input inputHatch : super.mInputHatches)
                     inputHatch.setDrainableStack(null);
-                }
+
+                for(GTMTE_TankHatch inputHatch : sMultiHatches)
+                    inputHatch.setDrainableStack(null);
             }
         }
 
