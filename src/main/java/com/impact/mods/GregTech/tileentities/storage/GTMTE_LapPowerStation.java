@@ -84,10 +84,9 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
     @Override
     public String[] getDescription() {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-        b.addInfo("Power storage structure!")
-                .addInfo("Looses energy equal to 1% of the total capacity every 24 hours.")
-                .addInfo("EXCEPTION: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
-                .addInfo("purpose of passive loss calculation. The full capacity is counted towards the actual power capacity.")
+        b
+                .addInfo("Multi battery buffer!")
+                .addInfo("Very big battery")
                 .addSeparator()
                 .beginStructureBlock(5, 4, 5)
                 .addController()
