@@ -6,9 +6,12 @@ import gregtech.api.util.GT_ModHandler;
 import mods.railcraft.common.blocks.tracks.EnumTrack;
 import mods.railcraft.common.items.ItemRail;
 import mods.railcraft.common.items.ItemRailbed;
+import mods.railcraft.common.items.RailcraftItem;
+import mods.railcraft.common.plugins.forge.CraftingPlugin;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import static gregtech.api.util.GT_ModHandler.removeRecipe;
 import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 
 public class RailCraftRecipe implements Runnable {
@@ -17,13 +20,20 @@ public class RailCraftRecipe implements Runnable {
 
 
     public void delRecipe() {
-        removeRecipeByOutput(EnumTrack.CONTROL.getItem(), true, false, false);
-
+        removeRecipeByOutput(EnumTrack.CONTROL.getItem());
     }
 
     public void handRecipe() {
         // --- Control Track
-        GT_ModHandler.addCraftingRecipe(EnumTrack.CONTROL.getItem(8), bits, new Object[]{"SRS", "ITI", "dRh", 'S', OrePrefixes.screw.get(Materials.Steel), 'R', OrePrefixes.stick.get(Materials.RedAlloy), 'I', ItemRail.EnumRail.ADVANCED, 'T', ItemRailbed.EnumRailbed.WOOD});
+        final Object[] recipe = {
+                "SRS", "ITI", "dRh",
+                'S', OrePrefixes.screw.get(Materials.Steel),
+                'R', OrePrefixes.stick.get(Materials.RedAlloy),
+                'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.ADVANCED),
+                'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
+        };
+        GT_ModHandler.addCraftingRecipe(EnumTrack.CONTROL.getItem(8), recipe);
+
 
     }
 
