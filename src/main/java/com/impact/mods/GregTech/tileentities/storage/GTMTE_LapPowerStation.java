@@ -498,7 +498,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
         ll.add(GREEN + NumberFormat.getNumberInstance().format(stored) + RESET + " EU");
         ll.add("Total Capacity: ");
         ll.add(YELLOW + NumberFormat.getNumberInstance().format(capacity) + RESET + " EU");
-        ll.add("Passive Loss: " + NumberFormat.getNumberInstance().format(passiveDischargeAmount) + " EU/t");
         ll.add("EU IN: ");
         ll.add(GREEN + NumberFormat.getNumberInstance().format(intputLastTick) + RESET + " EU/t");
         ll.add("EU OUT: ");
