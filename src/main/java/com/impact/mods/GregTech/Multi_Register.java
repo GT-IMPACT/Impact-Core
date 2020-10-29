@@ -3,6 +3,7 @@ package com.impact.mods.GregTech;
 
 import com.impact.mods.GregTech.tileentities.multi.*;
 import com.impact.mods.GregTech.tileentities.multi.generators.*;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_SingleTank;
@@ -48,7 +49,9 @@ public class Multi_Register {
         Heavy_Metal_Cyclone.set(new GTMTE_HeavyMetalCyclone(ID++, "multimachine.heavymetalcyclone", "Heavy Metal Cyclone").getStackForm(1L));
         Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID++, "multimachine.liquidenrichednqgenerator", "Liquid Enriched Naquadah Generator").getStackForm(1L));
 
-        Moon_Miner.set(new GTMTE_MoonMiner(ID, "multimachine.blockminer", "Moon Miner").getStackForm(1L));
+        Moon_Miner.set(new GTMTE_MoonMiner(ID++, "multimachine.blockminer", "Moon Miner").getStackForm(1L));
+
+        Parallel_Computer.set(new GTMTE_ParallelComputer(ID, "multimachine.parallelcomputer", "Parallel Computer").getStackForm(1L));
 
         Machine_CokeOven.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
         Machine_Multi_Farm.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));

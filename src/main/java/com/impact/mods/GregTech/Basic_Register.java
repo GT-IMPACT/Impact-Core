@@ -3,6 +3,8 @@ package com.impact.mods.GregTech;
 import com.impact.mods.GregTech.tileentities.basic.GTMTE_SemifluidGenerator;
 import com.impact.mods.GregTech.tileentities.basic.GTMTE_WaterTank;
 import com.impact.mods.GregTech.tileentities.hatches.*;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Output;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -80,8 +82,10 @@ public class Basic_Register {
         Generator_Steam_Turbine_IV.set(new GT_MetaTileEntity_SteamTurbine(ID2++, "basicgenerator.steamturbine.tier.05", "IV Steam Turbine", 5).getStackForm(1L));
         Generator_Diesel_IV.set(new GT_MetaTileEntity_DieselGenerator(ID2++, "basicgenerator.diesel.tier.05", "IV Combustion Generator", 5).getStackForm(1L));
         Generator_Gas_Turbine_IV.set(new GT_MetaTileEntity_GasTurbine(ID2++, "basicgenerator.gasturbine.tier.05", "IV Gas Turbine", 5).getStackForm(1L));
-        Generator_Semi_Turbine_IV.set(new GTMTE_SemifluidGenerator(ID2, "basicgenerator.semifluid.tier.05", "IV Semifluid Generator", 5).getStackForm(1L));
+        Generator_Semi_Turbine_IV.set(new GTMTE_SemifluidGenerator(ID2++, "basicgenerator.semifluid.tier.05", "IV Semifluid Generator", 5).getStackForm(1L));
 
+        Parallel_Hatch_IN.set(new GTMTE_ParallelHatch_Input(ID2++, "machine.parallelHatch.in", "Parallel Hatch IN", 6).getStackForm(1L));
+        Parallel_Hatch_OUT.set(new GTMTE_ParallelHatch_Output(ID2, "machine.parallelHatch.out", "Parallel Hatch OUT", 6).getStackForm(1L));
 
         DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035, "basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts", GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000, 0, 1, "Autoclave.png", "", false, false, 0, "DUSTWASHER", new Object[]{"IPI", "IMI", "ICI", 'I', OrePrefixes.plate.get(Materials.WroughtIron), 'P', GT_ItemList.ULVPump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
         DustWasherLV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13036, "basicmachine.dustwasher.tier.01", "LV Dust Washer", 1, "Washed your Dusts", GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 2, 0, 1, "Autoclave.png", "", false, false, 0, "DUSTWASHER", new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
