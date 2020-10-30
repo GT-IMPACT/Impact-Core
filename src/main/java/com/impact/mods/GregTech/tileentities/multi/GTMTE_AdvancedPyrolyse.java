@@ -129,7 +129,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        int xPar = tierHatch();
+        int xPar = tierHatch()*2;
 
         ArrayList<ItemStack> tInputList = getStoredInputs();
         ArrayList<FluidStack> tFluidList = this.getStoredFluids();
@@ -212,20 +212,8 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    long actualEUT = (long) (tRecipe.mEUt) * processed;
 
-                    if (actualEUT > Integer.MAX_VALUE) {
-                        byte divider = 0;
-                        while (actualEUT > Integer.MAX_VALUE) {
-                            actualEUT = actualEUT / 2;
-                            divider++;
-                        }
-                        calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration, 1, nominalV, this);
-                    } else
-                        calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
-
-
-                    if (this.mEUt == Integer.MAX_VALUE - 1) return false;
+                    this.mEUt = ((tRecipe.mEUt) * processed * tierHatch()/2;
 
                     if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
@@ -271,8 +259,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                 addOutput(Materials.CarbonDioxide.getGas(216L * mParallelPoint));
                 break;
             case 35 * 20:
-                if (this.mMaxProgresstime == 40 * 20)
-                    addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5 * mParallelPoint));
+                addOutput(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5 * mParallelPoint));
                 break;
         }
         return super.onRunningTick(aStack);
@@ -385,11 +372,11 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
      */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 5 * tierHatch();
+        return 5 * mParallelPoint;
     }
 
     @Override
     public int getParallel() {
-        return 1;
+        return mParallelPoint;
     }
 }
