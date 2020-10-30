@@ -213,7 +213,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
 
-                    this.mEUt = ((tRecipe.mEUt) * processed * tierHatch()/2;
+                    this.mEUt = (tRecipe.mEUt) * processed * tierHatch()/2;
 
                     if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
