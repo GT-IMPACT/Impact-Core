@@ -4,6 +4,7 @@ import com.impact.client.render.TESR_SETether;
 import com.impact.common.block.QuantumStuffRender;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.te.TE_NqTether;
+import com.impact.events.ClientEvent;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -22,6 +23,7 @@ public class ClientProxy extends CommonProxy {
         Block_QuantumStuff.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
         ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
+        register_event(new ClientEvent());
     }
 
     @Override
