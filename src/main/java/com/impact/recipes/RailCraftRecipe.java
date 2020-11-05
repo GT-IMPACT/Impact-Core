@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.util.GT_ModHandler.removeRecipe;
 import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
-import static mods.railcraft.common.plugins.forge.CraftingPlugin.addShapelessRecipe;
+import static mods.railcraft.common.plugins.forge.CraftingPlugin.addShapedRecipe;
 
 public class RailCraftRecipe implements Runnable {
 
@@ -36,7 +36,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.ADVANCED),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.CONTROL.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.CONTROL.getItem(8), recipe);
         // --- Locking Track
         recipe = new Object[] {
                 "SPS", "ITI", "dRh",
@@ -46,7 +46,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.ADVANCED),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.LOCKING.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.LOCKING.getItem(8), recipe);
         // --- Disembarkin Track
         recipe = new Object[] {
                 "SPS", "ITI", "dRh",
@@ -56,7 +56,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.ADVANCED),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.DISEMBARK.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.DISEMBARK.getItem(8), recipe);
         // --- Embarking Track
         recipe = new Object[] {
                 "SRS", "ITI", "dPh",
@@ -66,7 +66,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.ADVANCED),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.EMBARKING.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.EMBARKING.getItem(8), recipe);
         // --- Coupler Track
         recipe = new Object[] {
                 "SCS", "ITI", "dCh",
@@ -75,7 +75,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.ADVANCED),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.COUPLER.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.COUPLER.getItem(8), recipe);
         // --- Whistle Track
         recipe = new Object[] {
                 "SWS", "ITI", "dOh",
@@ -85,7 +85,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.WHISTLE.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.WHISTLE.getItem(8), recipe);
         // --- Locomotive Track
         recipe = new Object[] {
                 "SOS", "ITI", "dOh",
@@ -94,7 +94,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.LOCOMOTIVE.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.LOCOMOTIVE.getItem(8), recipe);
         // --- Limiter Track
         recipe = new Object[] {
                 "SPS", "ITI", "dDh",
@@ -104,7 +104,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.LIMITER.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.LIMITER.getItem(8), recipe);
         // --- Routing Track
         recipe = new Object[] {
                 "SPS", "ITI", "dDh",
@@ -114,7 +114,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.ROUTING.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.ROUTING.getItem(8), recipe);
         recipe = new Object[] {
                 "SPS", "ITI", "dDh",
                 'S', OrePrefixes.screw.get(Materials.Iron),
@@ -123,7 +123,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.ROUTING.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.ROUTING.getItem(8), recipe);
         // --- Buffer Stop
         recipe = new Object[] {
                 "SPS", "ITI", "dBh",
@@ -133,7 +133,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.BUFFER_STOP.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.BUFFER_STOP.getItem(8), recipe);
         // --- One Way Track
         recipe = new Object[] {
                 "SPS", "ITI", "dRh",
@@ -143,7 +143,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.ONEWAY.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.ONEWAY.getItem(8), recipe);
         // --- Directional Detector Track
         recipe = new Object[] {
                 "SPS", "ITI", "dRh",
@@ -153,7 +153,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.DETECTOR_DIRECTION.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.DETECTOR_DIRECTION.getItem(8), recipe);
         // --- Gated One Way Track
         recipe = new Object[] {
                 "SRS", "ITI", "dRh",
@@ -162,7 +162,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.ADVANCED),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.GATED_ONEWAY.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.GATED_ONEWAY.getItem(8), recipe);
         // --- Gated Track
         recipe = new Object[] {
                 "SRS", "ITI", "dRh",
@@ -171,7 +171,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.GATED.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.GATED.getItem(8), recipe);
         // --- Suspended Rail
         recipe = new Object[] {
                 "SRS", "ITI", "dRh",
@@ -180,7 +180,7 @@ public class RailCraftRecipe implements Runnable {
                 'I', RailcraftItem.rail.getRecipeObject(ItemRail.EnumRail.STANDARD),
                 'T', RailcraftItem.railbed.getRecipeObject(ItemRailbed.EnumRailbed.WOOD)
         };
-        addShapelessRecipe(EnumTrack.SUSPENDED.getItem(8), recipe);
+        addShapedRecipe(EnumTrack.SUSPENDED.getItem(8), recipe);
     }
 
     @Override
