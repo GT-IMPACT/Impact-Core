@@ -31,6 +31,8 @@ import net.minecraft.item.ItemStack;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.common.item.Core_List_Items.registerOreDictNames;
+import static com.impact.core.Config.DisableNether;
+import static com.impact.core.Config.DisableTheEnd;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.core.impactLog.WARNING;
 import static com.impact.impact.getModules;
@@ -76,8 +78,10 @@ public class MainLoader {
             hideItem(new ItemStack(FakeCircuits.getInstance(), 1, i));
         INFO("[preInit] Hide NEI Items - Loaded");
 
-        BlockHandler.replaceBlock(Blocks.portal, BlockNullPortal.class, ItemBlock.class);
-        INFO("[preInit] Disabled Nether Portal - Loaded");
+        if (DisableNether) {
+            BlockHandler.replaceBlock(Blocks.portal, BlockNullPortal.class, ItemBlock.class);
+            INFO("[preInit] Disabled Nether Portal - Loaded");
+        }
 
         for(Module module : getModules()) {
             if(!module.areRequirementsMet() && module.getIsActive()) {

@@ -15,8 +15,10 @@ public class Config {
 
     public static boolean disableLogger;
     public static boolean csv;
-    public static boolean hideBackground = true;
-    public static boolean toolTips = true;
+    public static boolean hideBackground;
+    public static boolean toolTips;
+    public static boolean DisableNether;
+    public static boolean DisableTheEnd;
 
     public Config(File file) {
         if (!loadConfig) {
@@ -37,18 +39,28 @@ public class Config {
             Property cfg;
             //todo GENERAL
             cfg = config.get("GENERAL", "Print csv", false);
-            cfg.comment = "Princsv, you need apache commons collections to be injected in the minecraft jar. [Default: false]";
+            cfg.comment = "[NEI Ore Plugin] Princsv, you need apache commons collections to be injected in the minecraft jar. [Default: false]";
             csv = cfg.getBoolean(false);
             General.add(cfg.getName());
 
             cfg = config.get("GENERAL", "Hide Background", true);
-            cfg.comment = "Hides the Background when the tooltip for the Dimensions is renderedr. [Default: true]";
+            cfg.comment = "[NEI Ore Plugin] Hides the Background when the tooltip for the Dimensions is renderedr. [Default: true]";
             hideBackground = cfg.getBoolean(true);
             General.add(cfg.getName());
 
             cfg = config.get("GENERAL", "DimTooltip", true);
-            cfg.comment = "Activates Dimensison Tooltips. [Default: true]";
+            cfg.comment = "[NEI Ore Plugin] Activates Dimensison Tooltips. [Default: true]";
             toolTips = cfg.getBoolean(true);
+            General.add(cfg.getName());
+
+            cfg = config.get("GENERAL", "Disable Nether", false);
+            cfg.comment = "Disable Nether. [Default: false]";
+            DisableNether = cfg.getBoolean(false);
+            General.add(cfg.getName());
+
+            cfg = config.get("GENERAL", "Disable The End", false);
+            cfg.comment = "Disable The End. [Default: false]";
+            DisableTheEnd = cfg.getBoolean(false);
             General.add(cfg.getName());
 
             //todo DEBUG
