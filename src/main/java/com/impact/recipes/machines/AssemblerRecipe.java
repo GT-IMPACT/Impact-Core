@@ -879,9 +879,9 @@ public class AssemblerRecipe implements Runnable {
         // --- Golden Rail
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Gold, 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), GT_ModHandler.getModItem("minecraft", "golden_rail", 4L), 300, 30);
         // --- Fence
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("minecraft", "planks", 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(10)}, null, GT_ModHandler.getModItem("minecraft", "fence", 1L), 300, 8);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("minecraft", "planks", 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(11)}, Materials.Iron.getMolten(16), GT_ModHandler.getModItem("minecraft", "fence", 2L), 300, 8);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("minecraft", "planks", 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(11)}, Materials.Steel.getMolten(16), GT_ModHandler.getModItem("minecraft", "fence", 4L), 300, 8);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(10)}, null, GT_ModHandler.getModItem("minecraft", "fence", 1L), 300, 8);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(11)}, Materials.Iron.getMolten(16), GT_ModHandler.getModItem("minecraft", "fence", 2L), 300, 8);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(11)}, Materials.Steel.getMolten(16), GT_ModHandler.getModItem("minecraft", "fence", 4L), 300, 8);
 
         /* ==== END VANILLA ==== */
         /** ==== START CARPENTERS BLOCKS ==== */
