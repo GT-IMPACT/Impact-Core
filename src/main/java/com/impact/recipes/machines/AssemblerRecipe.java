@@ -229,9 +229,21 @@ public class AssemblerRecipe implements Runnable {
         //Casings
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), CoreItems2.getRecipe(SteelBars.getMetaID(), 6), Casing_Farm.get(1L), 50, 16);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L)}, Materials.Redstone.getMolten(72L), Blockstack(UtilBlock, 1, 1), 100, 30, false);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Bronze, 1L)}, Materials.Redstone.getMolten(72L), Blockstack(UtilBlock, 1, 1), 100, 30, false);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
+        //Piston
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L)}, Materials.Redstone.getMolten(72L), Blockstack(UtilBlock, 1, 1), 100, 8, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 1L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Bronze, 1L)}, Materials.Redstone.getMolten(72L), Blockstack(UtilBlock, 1, 1), 100, 8, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 2L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Steel, 1L)}, Materials.Redstone.getMolten(144L), Blockstack(UtilBlock, 2, 1), 100, 16, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 4L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Aluminium, 1L)}, Materials.Redstone.getMolten(216L), Blockstack(UtilBlock, 4, 1), 200, 30, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 8L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.StainlessSteel, 1L)}, Materials.Redstone.getMolten(288L), Blockstack(UtilBlock, 8, 1), 300, 30, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cobblestone, 16L), GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Titanium, 1L)}, Materials.Redstone.getMolten(576L), Blockstack(UtilBlock, 16, 1), 400, 30, false);
+
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 8, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 8, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 1L), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 8, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 1L), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 2)}, Materials.Redstone.getMolten(144L), CoreItems2.getRecipe(53, 2), 100, 16, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Aluminium, 1L), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 4)}, Materials.Redstone.getMolten(216L), CoreItems2.getRecipe(53, 4), 200, 30, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 8)}, Materials.Redstone.getMolten(288L), CoreItems2.getRecipe(53, 8), 300, 30, false);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1L), GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 16)}, Materials.Redstone.getMolten(576L), CoreItems2.getRecipe(53, 16), 400, 30, false);
 
         if (Loader.isModLoaded("Natura"))
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Natura", "Natura.fence", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
