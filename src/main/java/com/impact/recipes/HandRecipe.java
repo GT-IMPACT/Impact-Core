@@ -1284,6 +1284,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         /* ==== END ZTONES ==== */
         /** ==== START CHICKENCHUNKS ==== */
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 0), tBitMask, new Object[]{" h ", "BPB", "PFP", 'B', OrePrefixes.bolt.get(Materials.Iron), 'P', OrePrefixes.plate.get(Materials.Gold), 'F', OrePrefixes.frameGt.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 9L, 1), tBitMask, new Object[]{"sC", 'С', GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 0)});
 
         /* ==== END CHICKENCHUNKS ==== */
 		/** ==== START IC2 ==== */

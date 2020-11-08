@@ -67,5 +67,10 @@ public class CuttingRecipe implements Runnable {
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 7), GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 5), GT_Values.NI,  50, 8);
 
         /* ==== END GALACTICRAFT ==== */
+        /** ==== START CHICKENCHUNKS ==== */
+        GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 0), GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 9L, 1), GT_Values.NI,  50, 8);
+
+        /* ==== END CHICKENCHUNKS ==== */
+
     }
 }

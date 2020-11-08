@@ -832,6 +832,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("Ztones", "tile.venaBlock", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 1), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 0), true, false, false);
