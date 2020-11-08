@@ -97,11 +97,11 @@ public class ComponentAssemblerRecipe implements Runnable {
             GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(HugeChargedGlassLense.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),}, GT_Values.NF, ItemList.Sensor_IV.get(1L), 200, 7680);
 
             //FieldGenerators
-            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4)}, Materials.RedSteel.getMolten(288), ItemList.Field_Generator_LV.get(1), 80, 30);
-            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4)}, Materials.TungstenSteel.getMolten(288), ItemList.Field_Generator_MV.get(1), 120, 120);
-            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4)}, Materials.NiobiumTitanium.getMolten(576), ItemList.Field_Generator_HV.get(1), 160, 480);
-            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4)}, Materials.HSSG.getMolten(576), ItemList.Field_Generator_EV.get(1), 160, 1920);
-            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4)}, Materials.HSSS.getMolten(576), ItemList.Field_Generator_IV.get(1L), 200, 7680);
+            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 4)}, null, ItemList.Field_Generator_LV.get(1), 80, 30);
+            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BT6, 4)}, null, ItemList.Field_Generator_MV.get(1), 120, 120);
+            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSSG, 4)}, null, ItemList.Field_Generator_HV.get(1), 160, 480);
+            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.NiobiumTitanium, 4)}, null, ItemList.Field_Generator_EV.get(1), 160, 1920);
+            GT_Values.RA.addComponentAssemblerRecipe(new ItemStack[]{ItemList.Emitter_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.HSSS, 4)}, null, ItemList.Field_Generator_IV.get(1L), 200, 7680);
 
         }
     }
