@@ -70,7 +70,9 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
                 .addInfo("One-block machine analog")
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                .addTypeMachine("Compressor, Extractor, Canning, Packager, Recycler, Hammer, Lathe")
+                .addTypeMachine("Compressor, Extractor, Canning,")
+                .addTypeMachine("Packager, Recycler, Hammer, Lathe,")
+                .addTypeMachine("Lathe, Polarizer")
                 .addScrew()
                 .addSeparatedBus()
                 .addSeparator()
@@ -101,7 +103,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
         return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sCompressorRecipes : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sExtractorRecipes :
                mMode == 2 ? GT_Recipe.GT_Recipe_Map.sCannerRecipes : mMode == 3 ? GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes :
                mMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes : mMode == 5 ? GT_Recipe.GT_Recipe_Map.sHammerRecipes :
-                            GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+               mMode == 6 ? GT_Recipe.GT_Recipe_Map.sLatheRecipes : GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
     }
 
     private int mLevel = 0;
@@ -246,9 +248,10 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
         else
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
-            if (mMode > 6) mMode = 0;
+            if (mMode > 7) mMode = 0;
 
-            mModed = (mMode == 0 ? " Compressor " : mMode == 1 ? " Extractor " : mMode == 2 ? " Canning " : mMode == 3 ? " Packager " : mMode == 4 ? " Recycler " : mMode == 5 ? " Hammer " : " Lathe ");
+            mModed = (mMode == 0 ? " Compressor " : mMode == 1 ? " Extractor " : mMode == 2 ? " Canning " :
+                    mMode == 3 ? " Packager " : mMode == 4 ? " Recycler " : mMode == 5 ? " Hammer " : mMode == 6 ? " Lathe " : " Polarizer ");
             GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
         }
     }

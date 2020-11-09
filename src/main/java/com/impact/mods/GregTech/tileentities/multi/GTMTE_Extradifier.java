@@ -68,7 +68,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
                 .addInfo("One-block machine analog")
                 .addParallelInfo(1,256)
                 .addInfo("Parallel Point will upped Upgrade Casing")
-                .addTypeMachine("Fluid Extractor, Fluid Solidifier")
+                .addTypeMachine("Fluid Extractor, Fluid Solidifier, Fluid Heater")
                 .addScrew()
                 .addSeparatedBus()
                 .addSeparator()
@@ -97,7 +97,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return mMode == 0 ?  GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes : GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
+        return mMode == 0 ?  GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes : GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes;
     }
 
     private int mLevel = 0;
@@ -263,9 +263,9 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
         else
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mMode++;
-            if (mMode > 1) mMode = 0;
+            if (mMode > 2) mMode = 0;
 
-            mModed = (mMode == 0 ? " Fluid Extractor " : " Fluid Solidifier ");
+            mModed = (mMode == 0 ? " Fluid Extractor " : mMode == 1 ? " Fluid Solidifier " : " Fluid Heater ");
             GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
         }
     }
