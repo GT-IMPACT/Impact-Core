@@ -48,7 +48,10 @@ public class Multi_Register {
         Heavy_Metal_Cyclone.set(new GTMTE_HeavyMetalCyclone(ID++, "multimachine.heavymetalcyclone", "Heavy Metal Cyclone").getStackForm(1L));
         Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID++, "multimachine.liquidenrichednqgenerator", "Liquid Enriched Naquadah Generator").getStackForm(1L));
 
-        Moon_Miner.set(new GTMTE_MoonMiner(ID, "multimachine.blockminer", "Moon Miner").getStackForm(1L));
+        Moon_Miner.set(new GTMTE_MoonMiner(ID++, "multimachine.blockminer", "Moon Miner").getStackForm(1L));
+
+        Rail_Assembler.set(new GTMTE_RailAssembler(ID++, "multimachine.railassembler", "Rail Assembler").getStackForm(1L));
+
 
         Machine_CokeOven.set(new GTMTE_CokeOven(13002, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
         Machine_Multi_Farm.set(new GTMTE_Farm(13001, "multimachine.farm", "Multiblock Farm").getStackForm(1L));

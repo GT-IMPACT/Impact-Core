@@ -8,6 +8,8 @@ import com.impact.events.PacketHandler;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
+import com.impact.mods.GregTech.enums.IRecipeAdder;
+import com.impact.mods.GregTech.enums.RecipeAdder;
 import com.impact.mods.GregTech.enums.Texture;
 import com.impact.mods.NEI.OrePugin.helper.CSVMaker;
 import com.impact.mods.NEI.OrePugin.helper.GT5OreLayerHelper;
@@ -53,8 +55,10 @@ public class impact {
     public static Config mConfig;
     public static FMLEventChannel channel;
     private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
+    public static IRecipeAdder I_RA;
 
     public impact() {
+        impact.I_RA = new RecipeAdder();
         Texture.Icons.VOID.name();
     }
 
