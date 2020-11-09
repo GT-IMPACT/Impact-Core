@@ -208,10 +208,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "dispenser", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "dropper", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "sticky_piston", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "rail", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "golden_rail", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "detector_rail", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "activator_rail", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "noteblock", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "jukebox", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "trapdoor", 1L, 0), true, false, false);
