@@ -18,16 +18,16 @@ public class GT_ItemRegister {
     }
 
     private void registerItems() {
-        GT_ItemList.ULVPump.set(GT.addItem(395, "Electric Pump (ULV)", "640 L/sec (as Cover)"));
+        GT_ItemList.ULVPump.set(GT.addItem(395, "ULV Electric Pump", "640 L/sec (as Cover)"));
         GregTech_API.registerCover(
                 GT_ItemList.ULVPump.get(1L),
                 new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[0][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)),
                 new GT_Cover_Pump(32)
         );
-        GT_ItemList.ULVMotor.set(GT.addItem(396, "Electric Motor (ULV)", ""));
-        GT_ItemList.ULVPiston.set(GT.addItem(397, "Electric Piston (ULV)", ""));
-        GT_ItemList.ULVRobotArm.set(GT.addItem(398, "Robot Arm (ULV)", ""));
-        GT_ItemList.ULVConveyorModule.set(GT.addItem(399, "Conveyor Module (ULV)", ""));
+        GT_ItemList.ULVMotor.set(GT.addItem(396, "ULV Electric Motor", ""));
+        GT_ItemList.ULVPiston.set(GT.addItem(397, "ULV Electric Piston", ""));
+        GT_ItemList.ULVRobotArm.set(GT.addItem(398, "ULV Robot Arm", ""));
+        GT_ItemList.ULVConveyorModule.set(GT.addItem(399, "ULV Conveyor Module", ""));
 
         /* === CHIPSETS === */
         GT_ItemList.EngineeringProcessorFluidDiamondCore.set(GT.addItem(471, "Engineering Processor Fluid Diamond Core", ""));
