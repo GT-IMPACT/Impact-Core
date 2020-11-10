@@ -4,6 +4,8 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.GregTech.gui.GUI_BASE;
@@ -14,6 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
@@ -28,6 +31,8 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.of
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore2;
+import static com.mojang.realmsclient.gui.ChatFormatting.*;
+import static com.mojang.realmsclient.gui.ChatFormatting.YELLOW;
 
 public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -377,5 +382,45 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
                 }
             });
         }
+    }
+
+    @Override
+    public String[] getInfoData() {
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        long pollut = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesTT) {
+            if (isValidMetaTileEntity(tEHatch)) {
+                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyTunnel tEHatch : mEnergyTunnelsTT) {
+            if (isValidMetaTileEntity(tEHatch)) {
+                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{
+                "Progress: " + GREEN + mProgresstime / 20 + RESET + " s / " + mMaxProgresstime / 20 + RESET + " s",
+                "Storage: " + GREEN + storedEnergy + RESET + " / " + RESET + YELLOW + maxEnergy + RESET + " EU",
+                "Usage Energy: " + RED + -mEUt + RESET + " EU/t",
+                "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ",
+                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
+                "Pollution: " + RED + getPollutionPerTick(null) + RESET,
+                getParallel()==-1? "" : "Parallel Point: " + YELLOW + getParallel(),
+        };
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
     }
 }

@@ -1,5 +1,7 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.GregTech.TecTech.TecTechUtils;
 import com.impact.mods.GregTech.gui.GUI_BASE;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.impact.util.Utilits.isB;
+import static com.mojang.realmsclient.gui.ChatFormatting.*;
+import static com.mojang.realmsclient.gui.ChatFormatting.YELLOW;
 import static gregtech.api.enums.GT_Values.V;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
@@ -378,5 +382,45 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public int getParallel() {
         return mParallelPoint;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        long pollut = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesTT) {
+            if (isValidMetaTileEntity(tEHatch)) {
+                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyTunnel tEHatch : mEnergyTunnelsTT) {
+            if (isValidMetaTileEntity(tEHatch)) {
+                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{
+                "Progress: " + GREEN + mProgresstime / 20 + RESET + " s / " + mMaxProgresstime / 20 + RESET + " s",
+                "Storage: " + GREEN + storedEnergy + RESET + " / " + RESET + YELLOW + maxEnergy + RESET + " EU",
+                "Usage Energy: " + RED + -mEUt + RESET + " EU/t",
+                "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ",
+                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
+                "Pollution: " + RED + getPollutionPerTick(null) + RESET,
+                getParallel()==-1? "" : "Parallel Point: " + YELLOW + getParallel(),
+        };
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
     }
 }
