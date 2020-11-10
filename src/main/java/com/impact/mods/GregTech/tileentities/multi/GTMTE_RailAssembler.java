@@ -36,12 +36,12 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 
     public static final GT_Recipe.GT_Recipe_Map sTrackAssemblerRecipes = new GT_Recipe.GT_Recipe_Map(
             new HashSet<GT_Recipe>(1000),
-            "impact.recipe.trackassembler",
-            "Track Assembler",
+            "impact.recipe.railassembler",
+            "Rail Assembler",
             null,
-            RES_PATH_GUI + "basicmachines/Default",
+            RES_PATH_GUI + "basic/RailAssembler",
             6, 1, 0, 0,
-            1, E, 1, E, true, true
+            1, E, 1, E, true, false
     );
 
     @Override
