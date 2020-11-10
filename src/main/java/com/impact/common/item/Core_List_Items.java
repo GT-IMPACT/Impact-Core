@@ -224,6 +224,8 @@ public enum Core_List_Items {
     LSFCCeramicPlate(161, 1),
     TachyonTube(162, 1),
     NaqChamberPart(163, 1),
+    ConcreteTie(164, 1),
+    ConcreteRailbed(165, 1),
 
     WoodenBrickForm1(0, 2),
 
