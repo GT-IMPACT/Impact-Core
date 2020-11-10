@@ -675,51 +675,6 @@ public class Holo_Impact implements Runnable {
             }
         });
 
-        //3D Printer
-        registerMetaClass(GTMTE_DDDPrinter.class, new IMultiblockInfoContainer<GTMTE_DDDPrinter>() {
-            //region Structure
-            private final IStructureDefinition<GTMTE_DDDPrinter> definition =
-                    StructureDefinition.<GTMTE_DDDPrinter>builder()
-                            .addShapeOldApi("main", new String[][]{
-
-                                    {"033330...03330", "533330...43330", "000000...00000",},
-                                    {"033330...03330", "022220...01110", "000000...00000",},
-                                    {"033330...03330", "022220...01110", "000000...00000",},
-                                    {"033330...03330", "022220...01110", "000000...00000",},
-                                    {"033330...03330", "022220...03330", "000000...00000",},
-                                    {"033330........", "033330........", "000000........",},
-                            })
-                            .addElement('0', ofBlock(sCaseCore2, 4))
-                            .addElement('1', ofBlock(sCaseCore2, 5))
-                            .addElement('2', ofBlock(sCaseCore2, 6))
-                            .addElement('3', ofBlock(IGlassBlock, 0))
-                            .addElement('4', ofBlockHint(decorateBlock[2], 1))
-                            .addElement('5', ofBlockHint(decorateBlock[2], 3))
-                            .build();
-            private final String[] desc = new String[]{
-                    EnumChatFormatting.RED + "Impact Details:",
-                    "- 3D Printed Casing",
-                    "- I-Glass (any I-Glass)",
-                    "- Configuration Casing (3x3 or 4x4)",
-                    "- Controller: " + EnumChatFormatting.RED + "Red - 3x3" + EnumChatFormatting.RESET + " | " + EnumChatFormatting.BLUE + "Blue - 4x4",
-                    "- Hatches (any 3D Printed Casing)",
-            };
-            //endregion
-
-            @Override
-            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_DDDPrinter tileEntity, ExtendedFacing aSide) {
-                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                        7, 1, 0, hintsOnly);
-            }
-
-            @Override
-            public String[] getDescription(ItemStack stackSize) {
-                return desc;
-            }
-        });
-
         //AdvancedVacuumFreezer
         registerMetaClass(GTMTE_AdvancedVacuumFreezer.class, new IMultiblockInfoContainer<GTMTE_AdvancedVacuumFreezer>() {
             //region Structure
