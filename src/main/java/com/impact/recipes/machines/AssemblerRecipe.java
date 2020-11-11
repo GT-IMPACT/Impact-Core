@@ -253,7 +253,7 @@ public class AssemblerRecipe implements Runnable {
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("Forestry", "fencesFireproof", 1L), ItemList.Plank_Oak.get(1L)}, Materials.Redstone.getMolten(72L), CoreItems2.getRecipe(53, 1), 100, 30, false);
         }
 
-        GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(53, 1), Blockstack(UtilBlock, 1, 1), null, Blockstack(Blocks.piston, 1), 100, 8);
+        GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(53, 1), Blockstack(UtilBlock, 1, 1), null, Blockstack(Blocks.piston, 1), 40, 8);
 
         //Quantum Armor Parts
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W), CoreItems2.getRecipe(52, 4), CoreItems2.getRecipe(41, 1), 1200, 1920);
