@@ -1,28 +1,3 @@
-/*
- * Thanks bartimaeusnek for creating parallel recipes
- *
- * Description:
- *
- * Copyright (c) 2018-2019 bartimaeusnek
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package com.impact.mods.GregTech.tileentities.multi.debug;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -833,5 +808,55 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mMode = aNBT.getByte("mMode");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public String[] getInfoData() {
+
+        final ArrayList<String> ll = new ArrayList<>();
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        int mPollutionReduction=0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesTT) {
+            if (isValidMetaTileEntity(tEHatch)) {
+                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyTunnel tEHatch : mEnergyTunnelsTT) {
+            if (isValidMetaTileEntity(tEHatch)) {
+                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                mPollutionReduction=Math.max(tHatch.calculatePollutionReduction(getPollutionPerTick(null)), mPollutionReduction);
+            }
+        }
+
+        ll.add("Progress: " + GREEN + mProgresstime / 20 + RESET + " s / " + mMaxProgresstime / 20 + RESET + " s");
+        ll.add("Storage: " + GREEN + storedEnergy + RESET + " / " + RESET + YELLOW + maxEnergy + RESET + " EU");
+        ll.add("Usage Energy: " + RED + -mEUt + RESET + " EU/t");
+        ll.add("Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ");
+        ll.add("Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET));
+        ll.add("Pollution: " + RED + mPollutionReduction + RESET);
+
+        if (getParallel() > -1)
+            ll.add("Parallel Point: " + YELLOW + getParallel());
+
+        final String[] a = new String[ll.size()];
+        return ll.toArray(a);
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
     }
 }

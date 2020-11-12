@@ -275,43 +275,4 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
         }
     }
 
-    @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        long pollut = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
-        }
-        for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesTT) {
-            if (isValidMetaTileEntity(tEHatch)) {
-                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
-        }
-        for (GT_MetaTileEntity_Hatch_EnergyTunnel tEHatch : mEnergyTunnelsTT) {
-            if (isValidMetaTileEntity(tEHatch)) {
-                storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
-        }
-
-        return new String[]{
-                "Progress: " + GREEN + mProgresstime / 20 + RESET + " s / " + mMaxProgresstime / 20 + RESET + " s",
-                "Storage: " + GREEN + storedEnergy + RESET + " / " + RESET + YELLOW + maxEnergy + RESET + " EU",
-                "Usage Energy: " + RED + -mEUt + RESET + " EU/t",
-                "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ",
-                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
-                "Pollution: " + RED + getPollutionPerTick(null) + RESET,
-                getParallel()==-1? "" : "Parallel Point: " + YELLOW + getParallel(),
-        };
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
 }
