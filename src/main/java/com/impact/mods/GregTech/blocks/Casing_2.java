@@ -33,6 +33,7 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Naquadah Base Casing"); //410
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Cyclone Casing"); //411
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Moon Miner Casing"); //412
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Rail Assembler Casing"); //413
 
         GT_ItemList.NukeTurbineCasing       .set(BlockstackMeta(this, 0));
         GT_ItemList.ElectromagneticCasing   .set(BlockstackMeta(this, 1));
@@ -47,6 +48,7 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
         GT_ItemList.NqCasing                .set(BlockstackMeta(this, 10));
         GT_ItemList.CycloneCasing           .set(BlockstackMeta(this, 11));
         GT_ItemList.MoonMinerCasing         .set(BlockstackMeta(this, 12));
+        GT_ItemList.RailAssemblerCasing     .set(BlockstackMeta(this, 13));
 
     }
 
@@ -67,6 +69,7 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
            case 10: return CASING_NAQUADAH.getIcon();
            case 11: return CASING_CYCLONE.getIcon();
            case 12: return CASING_MOON_MINER.getIcon();
+           case 13: return aSide <= 1 ? CASING_RAIL_ASSEMBLER_TOP.getIcon() : CASING_RAIL_ASSEMBLER_SIDE.getIcon();
            default: return null;
         }
     }

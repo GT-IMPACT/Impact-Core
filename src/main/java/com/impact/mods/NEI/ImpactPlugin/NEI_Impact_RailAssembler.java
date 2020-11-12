@@ -20,9 +20,12 @@ import java.util.List;
 
 public class NEI_Impact_RailAssembler extends NEI_Impact_Default {
 
+    int xPos = 4+1;
+    int yPos = 8+3;
+
     public NEI_Impact_RailAssembler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(81, 43, 42, 4), getOverlayIdentifier()));
+        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(81 - xPos, 40 - yPos, 42, 8), getOverlayIdentifier()));
     }
 
     public TemplateRecipeHandler newInstance() {
@@ -183,8 +186,8 @@ public class NEI_Impact_RailAssembler extends NEI_Impact_Default {
             amXPosInputs = new int[]{87, 15, 33, 51, 15, 33, 51, 15, 33, 51};
             amYPosInputs = new int[]{16, 16, 16, 16, 34, 34, 34, 52, 52, 52};
 
-            int xPos = 4+1;
-            int yPos = 8+3;
+
+
 
             int step = 0;
             if (aRecipe.getRepresentativeInput(step) != null)
