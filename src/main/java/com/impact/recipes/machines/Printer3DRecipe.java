@@ -219,6 +219,14 @@ public class Printer3DRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 16)
         }, new ItemStack(InsideBlock, 1, 1), null, 60 * 20, 30720);
 
+        //3DPrinter 4x4
+        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+                ItemList.Machine_IV_Printer.get(1L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 500), ItemList.Conveyor_Module_IV.get(4L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Inconel690, 4), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 6), GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TungstenSteel, 8),
+                GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.HastelloyC276, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
+        }, GT_ItemList.Machine_AdvDDDPrinter.get(1L), null, 50 * 20, 1920);
+
+
         /* ================================= end IMPACT MOD =================================*/
 
 /** ================================= start EnderIO =================================*/
