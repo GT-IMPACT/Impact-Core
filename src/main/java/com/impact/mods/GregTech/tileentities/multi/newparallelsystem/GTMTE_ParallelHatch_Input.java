@@ -1,38 +1,37 @@
 package com.impact.mods.GregTech.tileentities.multi.newparallelsystem;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static gregtech.api.enums.ItemList.Tool_NoteBook;
+import static gregtech.api.util.GT_ModHandler.isElectricItem;
 
 public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 
+    public int mMaxParallel = 1;
+    public int mCurrentParallelIn = 1;
 
-    public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier) {
+
+    public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
         super(aID, aName, aNameRegional, aTier, 0, new String[]{});
+        mMaxParallel = aMaxParallel;
     }
 
     public GTMTE_ParallelHatch_Input(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        // aNBT.setBoolean("outputting", modeOut);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        // modeOut = aNBT.getBoolean("outputting");
     }
 
     @Override
@@ -73,6 +72,10 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
     @Override
     public boolean isInputFacing(byte aSide) {
         return aSide == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    public void setCurrentParallelIn(int aCurrentParallelIn) {
+        mCurrentParallelIn = aCurrentParallelIn;
     }
 
 }
