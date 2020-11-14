@@ -30,9 +30,12 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.impact.mods.GregTech.TecTech.ITecTechEnabledMulti;
 import com.impact.mods.GregTech.TecTech.TecTechUtils;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Output;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
 import gregtech.GT_Mod;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
@@ -59,6 +62,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     public ArrayList TTTunnels = new ArrayList<>();
     @SuppressWarnings("rawtypes")
     public ArrayList TTMultiAmp = new ArrayList<>();
+
+    public final HashSet<GTMTE_ParallelHatch_Input> sParallHatchesIn = new HashSet<>();
+    public final HashSet<GTMTE_ParallelHatch_Output> sParallHatchesOut = new HashSet<>();
 
     @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -693,6 +699,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
 
                     if (found_Recipe) {
 
+//                        if (sParallHatchesIn.size() > 0) {//todo parallel
+//                            for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
+//                                ph.setAskPar(processed);
+//                                if (ph.getCurrentParallelIn() != ph.getAskPar()) return false;
+//                            }
+//                        }
+
                         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                         this.mEfficiencyIncrease = 10000;
                         long actualEUT = (long) (tRecipe.mEUt) * processed;
@@ -868,5 +881,24 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mMode = aNBT.getByte("mMode");
         super.loadNBTData(aNBT);
+    }
+
+    public boolean addParallHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        } else {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity == null) {
+                return false;
+            } else if (aMetaTileEntity instanceof GTMTE_ParallelHatch_Input) {
+                ((GTMTE_ParallelHatch_Input) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return sParallHatchesIn.add((GTMTE_ParallelHatch_Input) aMetaTileEntity);
+            } else if (aMetaTileEntity instanceof GTMTE_ParallelHatch_Output) {
+                ((GTMTE_ParallelHatch_Output) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return sParallHatchesOut.add((GTMTE_ParallelHatch_Output) aMetaTileEntity);
+            } else {
+                return false;
+            }
+        }
     }
 }

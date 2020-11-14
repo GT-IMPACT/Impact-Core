@@ -5,7 +5,8 @@ import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContain
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
-import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.GregTech.tileentities.hatches.GTMTE_TankHatch;
+import com.impact.mods.GregTech.tileentities.multi.debug.*;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -21,9 +22,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
+import java.util.HashSet;
+
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -31,9 +35,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     byte CASING_META = 12;
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
     int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
-
-    public int mParallelComputation = 1;
-    public int mTotalParallelCapacity = 0;
 
     //region Register
     public GTMTE_ParallelComputer(int aID, String aName, String aNameRegional) {
@@ -135,13 +136,37 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         return true;
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
 
+        for(GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
+            if ((getCurrentCapacityPP() - ph.getAskInputHatch()) > 0) {
+                mCurrentCapacityPP -= ph.getAskInputHatch();
+                ph.setCurrentParallelOut(ph.getAskInputHatch());
+            }
+        }
+    }
+
+    public int mCurrentCapacityPP = getMaxCapacityPP();
+    public int mMaxCapacityPP = 0;
+
+    public int getCurrentCapacityPP() {
+        return mCurrentCapacityPP;
+    }
+
+    public void setMaxCapacityPP(int setMax) {
+        mCurrentCapacityPP = setMax;
+    }
+
+    public int getMaxCapacityPP() {
+        return mMaxCapacityPP;
+    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack aStack) {
-
+        sParallHatchesOut.clear();
         int aTotalParallelCapacity = 0;
-        int aCurrentParallelOut = 0;
 
         //region Structure
         TThatches();
@@ -165,7 +190,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 if (X > -2 && X < 2 && Y > -2 && Y < 2) {
                     if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
                         if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
 
                         } else {
@@ -194,19 +220,15 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                         if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == Casing_Helper.sCaseCore1) {
                             switch (meta) {
                                 case 0:
-                                    aCurrentParallelOut = 4;
                                     aTotalParallelCapacity += 4;
                                     break;
                                 case 1:
-                                    aCurrentParallelOut = 16;
                                     aTotalParallelCapacity += 16;
                                     break;
                                 case 2:
-                                    aCurrentParallelOut = 64;
                                     aTotalParallelCapacity += 64;
                                     break;
                                 case 3:
-                                    aCurrentParallelOut = 256;
                                     aTotalParallelCapacity += 256;
                                     break;
                             }
@@ -262,7 +284,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         }
         //endregion
 
-        setTotalParallelCapacity(aTotalParallelCapacity);
+        setMaxCapacityPP(aTotalParallelCapacity);
 
         this.mWrench = true;
         this.mScrewdriver = true;
@@ -274,25 +296,24 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         return formationChecklist;
     }
 
-    public void setTotalParallelCapacity(int total) {
-        mTotalParallelCapacity = total;
-    }
-
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mTotalParallelCapacity", mTotalParallelCapacity);
+        aNBT.setInteger("mMaxCapacityPP", mMaxCapacityPP);
+        aNBT.setInteger("mCurrentCapacityPP", mCurrentCapacityPP);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mTotalParallelCapacity = aNBT.getInteger("mTotalParallelCapacity");
+        mMaxCapacityPP = aNBT.getInteger("mMaxCapacityPP");
+        mCurrentCapacityPP = aNBT.getInteger("mCurrentCapacityPP");
     }
 
     @Override
     public int getParallel() {
-        return -1;
+        if (getMaxCapacityPP() < 4) return -1;
+        return getMaxCapacityPP();
     }
 
     @Override

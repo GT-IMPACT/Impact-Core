@@ -1,33 +1,42 @@
 package com.impact.mods.GregTech.tileentities.multi.newparallelsystem;
 
+import com.impact.mods.GregTech.enums.Texture;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.*;
+import static com.impact.mods.GregTech.enums.Texture.Icons.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.ItemList.Tool_NoteBook;
 import static gregtech.api.util.GT_ModHandler.isElectricItem;
 
 public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
 
-    public int mMaxParallel = 1;
+    public int mMaxParallel;
     public int mCurrentParallelOut = 1;
+    public int mAskParInput = 1;
 
     public int mTargetX = 0;
     public int mTargetY = 0;
@@ -55,32 +64,18 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
         return new GTMTE_ParallelHatch_Output(mName, mTier, mDescriptionArray, mTextures);
     }
 
-    public void saveNBTData(NBTTagCompound aNBT) {
-        if (mFluid != null) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
-        aNBT.setInteger("mTargetX", this.mTargetX);
-        aNBT.setInteger("mTargetY", this.mTargetY);
-        aNBT.setInteger("mTargetZ", this.mTargetZ);
-        aNBT.setInteger("mTargetD", this.mTargetD);
-        aNBT.setInteger("mCurrentParallelOut", this.mCurrentParallelOut);
-    }
-
-    public void loadNBTData(NBTTagCompound aNBT) {
-        mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
-        this.mTargetX = aNBT.getInteger("mTargetX");
-        this.mTargetY = aNBT.getInteger("mTargetY");
-        this.mTargetZ = aNBT.getInteger("mTargetZ");
-        this.mTargetD = aNBT.getInteger("mTargetD");
-        this.mCurrentParallelOut = aNBT.getInteger("mCurrentParallelOut");
-    }
-
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(EM_D_CONN)};
+        return new ITexture[]{aBaseTexture,
+                new GT_RenderedTexture(PRL_HATCH_YELLOW, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+                new GT_RenderedTexture(EM_D_CONN)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(EM_D_CONN)};
+        return new ITexture[]{aBaseTexture,
+                new GT_RenderedTexture(PRL_HATCH_RED, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+                new GT_RenderedTexture(EM_D_CONN)};
     }
 
     @Override
@@ -108,6 +103,10 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
         return false;
     }
 
+    public int getMaxParallel() {
+        return mMaxParallel;
+    }
+
     public void setCurrentParallelOut(int aCurrentParallelOut) {
         mCurrentParallelOut = aCurrentParallelOut;
     }
@@ -120,12 +119,34 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
 
-        GT_Utility.sendChatToPlayer(aPlayer, "X: " + this.mTargetX + " Y: " + this.mTargetX + " Z: " + this.mTargetX + " D: " + this.mTargetD);
+        if (getBaseMetaTileEntity().isServerSide()) {
+            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+                if (ItemList.Tool_NoteBook.getItem() == tCurrentItem.getItem()) {
 
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
-    }
+                    GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 100, aPlayer);
+                    NBTTagCompound nbt = tCurrentItem.getTagCompound();
+                    if (nbt != null && !(nbt.getInteger("mXCoordIn") == 0 && nbt.getInteger("mYCoordIn") == 0 &&
+                            nbt.getInteger("mZCoordIn") == 0 && nbt.getInteger("mDCoordIn") == 0)) {
+                        this.mTargetX = nbt.getInteger("mXCoordIn");
+                        this.mTargetY = nbt.getInteger("mYCoordIn");
+                        this.mTargetZ = nbt.getInteger("mZCoordIn");
+                        this.mTargetD = nbt.getInteger("mDCoordIn");
+                        nbt.removeTag("mXCoordIn");
+                        nbt.removeTag("mYCoordIn");
+                        nbt.removeTag("mZCoordIn");
+                        nbt.removeTag("mDCoordIn");
+                        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Successful connection");
+                        GT_Utility.sendChatToPlayer(aPlayer, "X: " + this.mTargetX + " Y: " + this.mTargetY + " Z: " + this.mTargetZ);
+                        GT_Utility.sendChatToPlayer(aPlayer, "Current Parallel Point: " + 4);
+                    } else {
+                        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Connection error, try again");
+                    }
+                }
+            }
+        }
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -155,19 +176,47 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
                         if (tTile != null) {
                             if (tTile instanceof IGregTechTileEntity) {
                                 IMetaTileEntity inputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-                                if (inputPar.getBaseMetaTileEntity() instanceof GTMTE_ParallelHatch_Input) {
-                                    ((GTMTE_ParallelHatch_Input) inputPar.getBaseMetaTileEntity()).setCurrentParallelIn(mCurrentParallelOut);
+                                if (inputPar instanceof GTMTE_ParallelHatch_Input) {
+                                    getBaseMetaTileEntity().setActive(true);
+                                    inputPar.getBaseMetaTileEntity().setActive(true);
+                                    ((GTMTE_ParallelHatch_Input) inputPar).setOutParHatch(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
+                                    ((GTMTE_ParallelHatch_Input) inputPar).setCurrentParallelIn(mCurrentParallelOut);
                                 }
                             }
-
                         }
                     }
                 }
-                getBaseMetaTileEntity().setActive(true);
-            } else
-                getBaseMetaTileEntity().setActive(false);
+            } else getBaseMetaTileEntity().setActive(false);
         }
+    }
 
+
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mTargetX", this.mTargetX);
+        aNBT.setInteger("mTargetY", this.mTargetY);
+        aNBT.setInteger("mTargetZ", this.mTargetZ);
+        aNBT.setInteger("mTargetD", this.mTargetD);
+        aNBT.setInteger("mCurrentParallelOut", this.mCurrentParallelOut);
+        aNBT.setInteger("mAskParInput", this.mAskParInput);
+    }
+
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.mTargetX = aNBT.getInteger("mTargetX");
+        this.mTargetY = aNBT.getInteger("mTargetY");
+        this.mTargetZ = aNBT.getInteger("mTargetZ");
+        this.mTargetD = aNBT.getInteger("mTargetD");
+        this.mCurrentParallelOut = aNBT.getInteger("mCurrentParallelOut");
+        this.mAskParInput = aNBT.getInteger("mAskParInput");
+    }
+
+    public void setAskInputHatch(int askPar) {
+        mAskParInput = askPar;
+    }
+
+    public int getAskInputHatch() {
+        return mAskParInput;
     }
 
 }

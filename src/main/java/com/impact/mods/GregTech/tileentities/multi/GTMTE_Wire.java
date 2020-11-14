@@ -3,6 +3,8 @@ package com.impact.mods.GregTech.tileentities.multi;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.GregTech.gui.GUI_BASE;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Output;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -159,6 +161,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -177,6 +180,8 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
         if(this.mOutputBusses.size() > 3) formationChecklist = false;
         if(this.mEnergyHatches.size() > 4) formationChecklist = false;
         if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
+        if(this.sParallHatchesIn.size() > 2) formationChecklist = false;
+        if(this.sParallHatchesOut.size() != 0) formationChecklist = false;
 
         return formationChecklist;
     }
