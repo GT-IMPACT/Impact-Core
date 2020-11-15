@@ -2,7 +2,7 @@
 //
 //import com.impact.mods.GregTech.GTregister.GT_Materials;
 //import com.impact.mods.GregTech.casings.CORE_API;
-//import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+//import com.impact.mods.GregTech.tileentities.multi.GT_MetaTileEntity_MultiParallelBlockBase;
 //import com.impact.util.MultiBlockTooltipBuilder;
 //import gregtech.api.GregTech_API;
 //import gregtech.api.enums.Materials;

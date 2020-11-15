@@ -1,9 +1,5 @@
 package com.impact.mods.GregTech.tileentities.multi.newparallelsystem;
 
-import com.impact.mods.GregTech.enums.Texture;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -18,10 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_CONN;
-import static com.impact.mods.GregTech.enums.Texture.Icons.*;
+import static com.impact.mods.GregTech.enums.Texture.Icons.PRL_HATCH_RED;
+import static com.impact.mods.GregTech.enums.Texture.Icons.PRL_HATCH_YELLOW;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 
@@ -34,14 +30,16 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
     public int mTargetY = 0;
     public int mTargetZ = 0;
     public TileEntity tTile = null;
+    public boolean mTrueRecipe;
 
     public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
         super(aID, aName, aNameRegional, aTier, 0, new String[]{});
         mMaxParallel = aMaxParallel;
     }
 
-    public GTMTE_ParallelHatch_Input(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GTMTE_ParallelHatch_Input(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aMaxParallel) {
         super(aName, aTier, 0, aDescription, aTextures);
+        mMaxParallel = aMaxParallel;
     }
 
     @Override
@@ -75,7 +73,7 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GTMTE_ParallelHatch_Input(mName, mTier, mDescriptionArray, mTextures);
+        return new GTMTE_ParallelHatch_Input(mName, mTier, mDescriptionArray, mTextures, mMaxParallel);
     }
 
     @Override
@@ -117,29 +115,50 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + (getCurrentParallelIn() == getAskPar() ? "True Recipe" : "False Recipe"));
-    }
-
-    public void setOutParHatch(int X, int Y, int Z) {
-        mTargetX = X;
-        mTargetY = Y;
-        mTargetZ = Z;
+        if (aPlayer.isSneaking()) {
+            this.mTargetX = 0;
+            this.mTargetY = 0;
+            this.mTargetZ = 0;
+            getBaseMetaTileEntity().setActive(false);
+            GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Lost connection to Output Parallel Hatch");
+            GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Connection restored!");
+        } else {
+            GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + (getTrueRecipe() ? "True Recipe" : "False Recipe"));
+            GT_Utility.sendChatToPlayer(aPlayer, this.mTargetX + " " + this.mTargetY + " " + this.mTargetZ);
+            GT_Utility.sendChatToPlayer(aPlayer, getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+        }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (mTargetX != 0 && mTargetY != 0 && mTargetZ != 0) {
-            tTile = getBaseMetaTileEntity().getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
+            tTile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
             if (tTile != null) {
                 if (tTile instanceof IGregTechTileEntity) {
                     IMetaTileEntity outputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
                     if (outputPar instanceof GTMTE_ParallelHatch_Output) {
-                        ((GTMTE_ParallelHatch_Output) outputPar).setAskInputHatch(mMBaskPar);
+
+                        if (getBaseMetaTileEntity().getXCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetX
+                                && getBaseMetaTileEntity().getYCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetY
+                                && getBaseMetaTileEntity().getZCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetZ) {
+                            setTrueRecipe(((GTMTE_ParallelHatch_Output) outputPar).mIsTrueRecipe);
+                            aBaseMetaTileEntity.setActive(true);
+                        } else {
+                            aBaseMetaTileEntity.setActive(false);
+                            setTrueRecipe(false);
+                        }
                     }
                 }
             }
         }
+    }
+
+    public void setCoord(int x, int y, int z) {
+        this.mTargetX = x;
+        this.mTargetY = y;
+        this.mTargetZ = z;
     }
 
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -148,7 +167,6 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
         aNBT.setInteger("mTargetY", this.mTargetY);
         aNBT.setInteger("mTargetZ", this.mTargetZ);
         aNBT.setInteger("mCurrentParallelIn", this.mCurrentParallelIn);
-        aNBT.setInteger("mMBaskPar", this.mMBaskPar);
     }
 
     public void loadNBTData(NBTTagCompound aNBT) {
@@ -157,7 +175,14 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
         this.mTargetY = aNBT.getInteger("mTargetY");
         this.mTargetZ = aNBT.getInteger("mTargetZ");
         this.mCurrentParallelIn = aNBT.getInteger("mCurrentParallelIn");
-        this.mMBaskPar = aNBT.getInteger("mMBaskPar");
+    }
+
+    public int getMaxParallel() {
+        return mMaxParallel;
+    }
+
+    public int getCurrentParallelIn() {
+        return mCurrentParallelIn;
     }
 
     /**
@@ -167,28 +192,12 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
         mCurrentParallelIn = aCurrentParallelIn;
     }
 
-    public int getCurrentParallelIn() {
-        return mCurrentParallelIn;
+    public boolean getTrueRecipe() {
+        return mTrueRecipe;
     }
 
-    public int mMBaskPar = 2; //todo ask set to 0
-
-    /**
-     * @param ask Set MultiBlock Current Recipe Parallel Point
-     */
-    public void setAskPar(int ask) {
-        mMBaskPar = ask;
+    public void setTrueRecipe(boolean isTrue) {
+        mTrueRecipe = isTrue;
     }
-
-    public int getAskPar() {
-        return mMBaskPar;
-    }
-
-    /*
-    *todo in MBbase class:
-    * if (getCurrentParallelIn() == getAskPar()) {
-    *   return true;
-    * }
-    */
 
 }
