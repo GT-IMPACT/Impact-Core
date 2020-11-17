@@ -1,5 +1,7 @@
 package com.impact.mods.GregTech.tileentities.multi.newparallelsystem;
 
+import com.impact.core.Impact_API;
+import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -14,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+
+import java.util.Arrays;
 
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_CONN;
 import static com.impact.mods.GregTech.enums.Texture.Icons.PRL_HATCH_RED;
@@ -39,7 +43,11 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
     public boolean mIsTrueRecipe = false;
 
     public GTMTE_ParallelHatch_Output(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
-        super(aID, aName, aNameRegional, aTier, 0, new String[]{});
+        super(aID, aName, aNameRegional, aTier, 0, new String[]{
+                Utilits.impactTag(),
+                "Parallel points transceiver",
+                "Used in multi-block machines"
+        });
         mMaxParallel = aMaxParallel;
     }
 
@@ -96,19 +104,20 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
         return mMaxParallel;
     }
 
-    public void setCurrentParallelOut(int aCurrentParallelOut) {
-        mCurrentParallelOut = aCurrentParallelOut;
-    }
-
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        if (aPlayer.isSneaking()) {
-            this.mTargetX = 0;
-            this.mTargetY = 0;
-            this.mTargetZ = 0;
-            getBaseMetaTileEntity().setActive(false);
-            GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Lost connection to Input Parallel Hatch");
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (aPlayer.isSneaking()) {
+                this.mTargetX = 0;
+                this.mTargetY = 0;
+                this.mTargetZ = 0;
+                getBaseMetaTileEntity().setActive(false);
+                GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Lost connection to Input Parallel Hatch");
+            } else {
+                if (aPlayer.capabilities.isCreativeMode)
+                    GT_Utility.sendChatToPlayer(aPlayer, "Debug recipe: " + mIsTrueRecipe);
+            }
         }
     }
 
@@ -142,9 +151,22 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
                         nbt.removeTag("mYCoordIn");
                         nbt.removeTag("mZCoordIn");
                         nbt.removeTag("mDCoordIn");
-                        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Successful connection");
-                        GT_Utility.sendChatToPlayer(aPlayer, "X: " + this.mTargetX + " Y: " + this.mTargetY + " Z: " + this.mTargetZ);
-                        GT_Utility.sendChatToPlayer(aPlayer, "Current Parallel Point: " + 4);
+                        tTile = getBaseMetaTileEntity().getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+                        if (tTile != null) {
+                            if (tTile instanceof IGregTechTileEntity) {
+                                IMetaTileEntity inputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
+                                if (inputPar instanceof GTMTE_ParallelHatch_Input) {
+                                    if (((GTMTE_ParallelHatch_Input) inputPar).getMaxParallel() == getMaxParallel()) {
+                                        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Successful connection");
+                                        GT_Utility.sendChatToPlayer(aPlayer, "X: " + this.mTargetX + " Y: " + this.mTargetY + " Z: " + this.mTargetZ);
+                                        GT_Utility.sendChatToPlayer(aPlayer, "Current Parallel Point: " + 4);
+                                    } else {
+                                        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Connection error, try again");
+                                        getBaseMetaTileEntity().setActive(false);
+                                    }
+                                }
+                            }
+                        }
                     } else {
                         GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Connection error, try again");
                     }
@@ -178,12 +200,14 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
                         if (tTile instanceof IGregTechTileEntity) {
                             IMetaTileEntity inputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
                             if (inputPar instanceof GTMTE_ParallelHatch_Input) {
-                                if (getBaseMetaTileEntity().getXCoord() == ((GTMTE_ParallelHatch_Input) inputPar).mTargetX
-                                        && getBaseMetaTileEntity().getYCoord() == ((GTMTE_ParallelHatch_Input) inputPar).mTargetY
-                                        && getBaseMetaTileEntity().getZCoord() == ((GTMTE_ParallelHatch_Input) inputPar).mTargetZ) {
-                                    aBaseMetaTileEntity.setActive(true);
+                                if (((GTMTE_ParallelHatch_Input) inputPar).getMaxParallel() == getMaxParallel()) {
+                                    if (getBaseMetaTileEntity().getXCoord() == ((GTMTE_ParallelHatch_Input) inputPar).mTargetX
+                                            && getBaseMetaTileEntity().getYCoord() == ((GTMTE_ParallelHatch_Input) inputPar).mTargetY
+                                            && getBaseMetaTileEntity().getZCoord() == ((GTMTE_ParallelHatch_Input) inputPar).mTargetZ) {
+                                        aBaseMetaTileEntity.setActive(true);
+                                    } else aBaseMetaTileEntity.setActive(false);
+                                    ((GTMTE_ParallelHatch_Input) inputPar).setCoord(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
                                 } else aBaseMetaTileEntity.setActive(false);
-                                ((GTMTE_ParallelHatch_Input) inputPar).setCoord(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
                             }
                         }
                     }

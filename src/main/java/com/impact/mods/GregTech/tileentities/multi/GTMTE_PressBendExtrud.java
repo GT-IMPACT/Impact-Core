@@ -136,33 +136,14 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
                     final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-                    if (X == 0 && Y == 0 && (Z == -1 || Z == -2 || Z == -3)) {
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-                            this.mLevel = 4;
-                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-                            this.mLevel = 16;
-                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-                            this.mLevel = 64;
-                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-                            this.mLevel = 256;
-                        } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
-                            this.mLevel = 1;
-                        } else {
-                            formationChecklist = false;
-                        }
-                        continue;
-                    }
-
+                    if (X == 0 && Y == 0 && (Z == -1 || Z == -2 || Z == -3)) continue;
 
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                     if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -181,13 +162,15 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         if (this.mMufflerHatches.size() != 1) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
+        if (this.sParallHatchesIn.size() > 1) formationChecklist = false;
+        if (this.sParallHatchesOut.size() != 0) formationChecklist = false;
 
         return formationChecklist;
     }
 
     @Override
     public int getParallel() {
-        return this.mLevel;
+        return super.getParallel();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.impact.mods.GregTech.tileentities.multi.newparallelsystem;
 
+import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -33,7 +34,11 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
     public boolean mTrueRecipe;
 
     public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
-        super(aID, aName, aNameRegional, aTier, 0, new String[]{});
+        super(aID, aName, aNameRegional, aTier, 0, new String[]{
+                Utilits.impactTag(),
+                "Parallel points receiver",
+                "Used in multi-block machines"
+        });
         mMaxParallel = aMaxParallel;
     }
 
@@ -115,17 +120,18 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        if (aPlayer.isSneaking()) {
-            this.mTargetX = 0;
-            this.mTargetY = 0;
-            this.mTargetZ = 0;
-            getBaseMetaTileEntity().setActive(false);
-            GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Lost connection to Output Parallel Hatch");
-            GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Connection restored!");
-        } else {
-            GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + (getTrueRecipe() ? "True Recipe" : "False Recipe"));
-            GT_Utility.sendChatToPlayer(aPlayer, this.mTargetX + " " + this.mTargetY + " " + this.mTargetZ);
-            GT_Utility.sendChatToPlayer(aPlayer, getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (aPlayer.isSneaking()) {
+                this.mTargetX = 0;
+                this.mTargetY = 0;
+                this.mTargetZ = 0;
+                getBaseMetaTileEntity().setActive(false);
+                GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Lost connection to Output Parallel Hatch");
+                GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Connection restored!");
+            } else {
+                if (aPlayer.capabilities.isCreativeMode)
+                    GT_Utility.sendChatToPlayer(aPlayer, "Debug recipe: " + getTrueRecipe());
+            }
         }
     }
 
@@ -139,12 +145,16 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
                 if (tTile instanceof IGregTechTileEntity) {
                     IMetaTileEntity outputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
                     if (outputPar instanceof GTMTE_ParallelHatch_Output) {
-
-                        if (getBaseMetaTileEntity().getXCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetX
-                                && getBaseMetaTileEntity().getYCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetY
-                                && getBaseMetaTileEntity().getZCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetZ) {
-                            setTrueRecipe(((GTMTE_ParallelHatch_Output) outputPar).mIsTrueRecipe);
-                            aBaseMetaTileEntity.setActive(true);
+                        if (((GTMTE_ParallelHatch_Output) outputPar).getMaxParallel() == getMaxParallel() && outputPar.getBaseMetaTileEntity().isActive()) {
+                            if (getBaseMetaTileEntity().getXCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetX
+                                    && getBaseMetaTileEntity().getYCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetY
+                                    && getBaseMetaTileEntity().getZCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetZ) {
+                                setTrueRecipe(((GTMTE_ParallelHatch_Output) outputPar).mIsTrueRecipe);
+                                aBaseMetaTileEntity.setActive(true);
+                            } else {
+                                aBaseMetaTileEntity.setActive(false);
+                                setTrueRecipe(false);
+                            }
                         } else {
                             aBaseMetaTileEntity.setActive(false);
                             setTrueRecipe(false);
@@ -179,17 +189,6 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 
     public int getMaxParallel() {
         return mMaxParallel;
-    }
-
-    public int getCurrentParallelIn() {
-        return mCurrentParallelIn;
-    }
-
-    /**
-     * @param aCurrentParallelIn Set Current Parallel Point from POH
-     */
-    public void setCurrentParallelIn(int aCurrentParallelIn) {
-        mCurrentParallelIn = aCurrentParallelIn;
     }
 
     public boolean getTrueRecipe() {

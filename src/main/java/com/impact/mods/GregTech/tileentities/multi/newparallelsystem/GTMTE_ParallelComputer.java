@@ -105,7 +105,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     public String[] getDescription() {
         final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
         b
-                .addInfo("Digging rock on the moon, it's simple")
                 .addTypeMachine("Block Digger")
                 .addSeparator()
                 .addController()
@@ -127,10 +126,16 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     public boolean checkRecipe(ItemStack aStack) {
 
 
-        this.mMaxProgresstime = 20;
+        this.mMaxProgresstime = 10;
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = -20;
+
+        for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
+            if ((getCurrentCapacityPP() - ph.getMaxParallel()) < 0) {
+                ph.getBaseMetaTileEntity().setActive(false);
+            }
+        }
 
 
         return true;
@@ -166,6 +171,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     public void setMaxCapacityPP(int setMax) {
+        setCurrentCapacityPP(setMax);
         mMaxCapacityPP = setMax;
     }
 
@@ -183,104 +189,78 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
         boolean formationChecklist = true;
 
-        for (int X = -2; X <= 2; X++) {
-            for (int Y = -2; Y <= 2; Y++) {
-                if (X == 0 && Y == 0) {
-                    continue;
-                }
+        for (int X = 0; X <= 1; X++) {
+            for (int Y = -1; Y <= 2; Y++) {
+                if (X == 0 && Y == 0) continue;
 
                 final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
-                final IGregTechTileEntity currentTE =
-                        thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
-                if (X > -2 && X < 2 && Y > -2 && Y < 2) {
-                    if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-
-                        } else {
-                            formationChecklist = false;
-                        }
-                    }
-                } else {
-                    if (!super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-                        } else {
-                            formationChecklist = false;
-                        }
-                    }
-                }
-            }
-        }
-
-        for (int X = -2; X <= 2; X++) {
-            for (int Y = -2; Y <= 2; Y++) {
-                for (int Z = -1; Z >= -7; Z--) {
-                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-                    if (X > -2 && X < 2 && Y > -2 && Y < 2) {
-                        final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
-
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == Casing_Helper.sCaseCore1) {
-                            switch (meta) {
-                                case 0:
-                                    aTotalParallelCapacity += 4;
-                                    break;
-                                case 1:
-                                    aTotalParallelCapacity += 16;
-                                    break;
-                                case 2:
-                                    aTotalParallelCapacity += 64;
-                                    break;
-                                case 3:
-                                    aTotalParallelCapacity += 256;
-                                    break;
-                            }
-                        } else {
-                            formationChecklist = false;
-                        }
-                        continue;
-                    }
-
-                    final IGregTechTileEntity currentTE =
-                            thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-
-                    if (X == -2 && Y == -2 || X == 2 && Y == 2 || X == -2 && Y == 2 || X == 2 && Y == -2) {
-                        if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock)) {
-                            formationChecklist = false;
-                        }
+                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                            && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
-                        if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                                && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                            if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-                            } else if (!(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock)) {
-                                formationChecklist = false;
-                            }
+                        formationChecklist = false;
+                    }
+                }
+            }
+        }
+
+        int additionalZ = -4;
+        int ParallelsZ = 0;
+        int RacksZ = 0;
+        for (int X = 0; X <= 1; X++) {
+            for (int Y = -1; Y <= 2; Y++) {
+                for (int Z = -1; Z >= -17; Z--) {
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+                    //Parallels
+                    if (X == 0 && (Y == 0 || Y == 1)) {
+                        if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                                ParallelsZ = Z;
+                                break;
+                            } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock) {
+                            } else formationChecklist = false;
+                        }
+                    }
+
+                    //Racks
+                    if (X == 1 && (Y == 0 || Y == 1)) {
+                        if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                                && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+
+                            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                    && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                                RacksZ = Z;
+                                break;
+                            } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){
+
+                            } else formationChecklist = false;
                         }
                     }
                 }
             }
         }
-        for (int X = -2; X <= 2; X++) {
-            for (int Y = -2; Y <= 2; Y++) {
-                // Get next TE
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -8);
-                final IGregTechTileEntity currentTE =
-                        thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-                if (X > -2 && X < 2 && Y > -2 && Y < 2) {
-                    if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
-                        } else {
-                            formationChecklist = false;
-                        }
-                    }
-                } else {
-                    if (!super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                        if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) {
+
+        if (ParallelsZ < RacksZ || RacksZ < ParallelsZ) {
+            formationChecklist = false;
+        } else additionalZ = RacksZ;
+
+
+        for (int X = 0; X <= 1; X++) {
+            for (int Y = -1; Y <= 2; Y++) {
+                for (int Z = -1; Z >= additionalZ; Z--) {
+                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+                    if (Z == additionalZ) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                         } else {
                             formationChecklist = false;
                         }
@@ -290,8 +270,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         }
         //endregion
 
-        setMaxCapacityPP(9);
-        setCurrentCapacityPP(9);
+        setMaxCapacityPP(50);
+
 
         int cur = 0;
         for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {

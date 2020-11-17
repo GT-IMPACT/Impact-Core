@@ -41,4 +41,13 @@ public class CommonProxy implements IGuiHandler {
         FMLCommonHandler.instance().bus().register(obj);
         MinecraftForge.EVENT_BUS.register(obj);
     }
+
+    public void onServerStarted() {
+        Impact_API.sSpaceSatellite.clear();
+    }
+
+    public void onServerStopping() {
+        Impact_API.sSpaceSatellite.clear();
+    }
+
 }
