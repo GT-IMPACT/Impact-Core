@@ -226,6 +226,11 @@ public enum Core_List_Items {
     NaqChamberPart(163, 1),
     ConcreteTie(164, 1),
     ConcreteRailbed(165, 1),
+    ExtruderShapeRail(166, 1),
+    AdvancedMixIngot(167, 1),
+    ElectricMixIngot(168, 1),
+    ReinforcedMixIngot(169, 1),
+    HSMixIngot(170, 1),
 
     WoodenBrickForm1(0, 2),
 

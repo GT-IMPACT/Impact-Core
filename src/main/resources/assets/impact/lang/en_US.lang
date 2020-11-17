@@ -302,6 +302,11 @@ item.impact_item2.162.name=Tachyon Tube
 item.impact_item2.163.name=Naquadah Chamber Part
 item.impact_item2.164.name=Concrete Tie
 item.impact_item2.165.name=Concrete Railbed
+item.impact_item2.166.name=Extruder Shape (Rail)
+item.impact_item2.167.name=Advanced Metal Mix Ingot
+item.impact_item2.168.name=Electric Metal Mix Ingot
+item.impact_item2.169.name=Reinforced Metal Mix Ingot
+item.impact_item2.170.name=H.S. Metal Mix Ingot
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 
