@@ -25,8 +25,8 @@ import net.dragon.computery.item.Objects;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import pl.asie.computronics.Computronics;
 
+import static gregtech.api.util.GT_ModHandler.removeRecipe;
 import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 
 public class RailCraftRecipe implements Runnable {
@@ -64,10 +64,7 @@ public class RailCraftRecipe implements Runnable {
         removeRecipeByOutput(EnumDetector.ANIMAL.getItem());
         removeRecipeByOutput(EnumDetector.TANK.getItem());
         removeRecipeByOutput(EnumDetector.ADVANCED.getItem());
-
-        //todo не удаляется рецепт у энерджи детектора
         removeRecipeByOutput(EnumDetector.ENERGY.getItem());
-
         removeRecipeByOutput(EnumDetector.AGE.getItem());
         removeRecipeByOutput(EnumDetector.TRAIN.getItem());
         removeRecipeByOutput(EnumDetector.SHEEP.getItem());
@@ -80,11 +77,8 @@ public class RailCraftRecipe implements Runnable {
         removeRecipeByOutput(EnumMachineGamma.ITEM_UNLOADER_ADVANCED.getItem());
         removeRecipeByOutput(EnumMachineGamma.FLUID_LOADER.getItem());
         removeRecipeByOutput(EnumMachineGamma.FLUID_UNLOADER.getItem());
-
-        //todo отображается рецепт из ic2
         removeRecipeByOutput(EnumMachineGamma.ENERGY_LOADER.getItem());
         removeRecipeByOutput(EnumMachineGamma.ENERGY_UNLOADER.getItem());
-
         removeRecipeByOutput(EnumMachineGamma.DISPENSER_CART.getItem());
         removeRecipeByOutput(EnumMachineGamma.DISPENSER_TRAIN.getItem());
         removeRecipeByOutput(EnumMachineGamma.RF_LOADER.getItem());
@@ -130,8 +124,6 @@ public class RailCraftRecipe implements Runnable {
         removeRecipeByOutput(ItemSignalTuner.getItem());
         removeRecipeByOutput(ItemSignalBlockSurveyor.getItem());
         removeRecipeByOutput(RailcraftItem.signalLamp.getStack());
-
-        //todo
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "tool.magnifying.glass", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "armor.goggles", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "upgrade.lapotron", 1L));
@@ -142,22 +134,19 @@ public class RailCraftRecipe implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "part.circuit.controller", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "part.circuit.signal", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "part.circuit.receiver", 1L));
-
-        //todo не удаляется рецепт у кабеля
-        removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "machine.delta", 1L));
-
+        removeRecipeByOutput(EnumMachineDelta.WIRE.getItem());
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.WOOD));
 
-        //todo не удаляются рецепты
+        //todo НУЖНО ПРОВЕРИТЬ - НЕ УВЕРЕН ЧТО ПОФИКСИЛ
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.STANDARD));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.ADVANCED));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.ELECTRIC));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.REINFORCED));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.SPEED));
-        removeRecipeByOutput(RailcraftItem.rebar.getStack());
-        removeRecipeByOutput(new ItemStack(Computronics.railcraft.digitalControllerBox, 1, 0));
-        removeRecipeByOutput(new ItemStack(Computronics.railcraft.digitalReceiverBox, 1, 0));
-        removeRecipeByOutput(new ItemStack(Computronics.railcraft.locomotiveRelay, 1, 0));
+        removeRecipeByOutput((ItemStack)RailcraftItem.rebar.getRecipeObject());
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.digitalReceiverBox", 1L));
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.digitalControllerBox", 1L));
+        removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.locomotiveRelay", 1L));
 
         removeRecipeByOutput(new ItemStack(Blocks.rail));
         removeRecipeByOutput(new ItemStack(Blocks.golden_rail));
@@ -175,13 +164,12 @@ public class RailCraftRecipe implements Runnable {
 
     public void handRecipe() {
         Object[] recipe;
-        //todo не работает рецепт
         // --- Wire Support Frame
         recipe = new Object[] {
                 "RPR", "IwI", "III",
                 'P', OrePrefixes.plate.get(Materials.Iron),
                 'R', OrePrefixes.plate.get(Materials.Rubber),
-                'I', RailcraftItem.rebar
+                'I', RailcraftItem.rebar.getRecipeObject()
         };
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Railcraft", "frame", 2L), recipe);
 
@@ -1214,8 +1202,6 @@ public class RailCraftRecipe implements Runnable {
                 'C', new ItemStack(Items.golden_carrot, 1, 0)
         };
         GT_ModHandler.addCraftingRecipe(EnumMachineAlpha.FEED_STATION.getItem(1), recipe);
-
-        //todo
         // --- Trackmans Goggle
         recipe = new Object[] {
                 "LBL", "RSR", "PCP",
@@ -1227,7 +1213,6 @@ public class RailCraftRecipe implements Runnable {
                 'C', OrePrefixes.circuit.get(Materials.Basic)
         };
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Railcraft", "armor.goggles", 1L), recipe);
-        //todo
         // --- Magnifying Glass
         recipe = new Object[] {
                 "  L", " R ", "S  ",
@@ -1247,18 +1232,15 @@ public class RailCraftRecipe implements Runnable {
                 'N', GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 1L, 31)
         };
         GT_ModHandler.addCraftingRecipe(RailcraftItem.signalLamp.getStack(), recipe);
-
-        //todo
         // --- Lapatron Loader Upgrade
         recipe = new Object[] {
                 "PCP", "WLW", "PCP",
                 'W', OrePrefixes.itemCasing.get(Materials.Aluminium),
                 'C', OrePrefixes.circuit.get(Materials.Advanced),
                 'P', OrePrefixes.cableGt02.get(Materials.Platinum),
-                'L', GT_ModHandler.getModItem("IC2", "itemBatLamaCrystal", 1L,  GT_Values.W)
+                'L', GT_ModHandler.getModItem("IC2","itemBatLamaCrystal", 1L,  GT_Values.W)
         };
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Railcraft", "upgrade.lapotron", 1L), recipe);
-        //todo
         // --- Borehead Iron
         recipe = new Object[] {
                 "GPG", "PBP", "GPG",
@@ -1267,7 +1249,6 @@ public class RailCraftRecipe implements Runnable {
                 'P', OrePrefixes.plate.get(Materials.Iron)
         };
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Railcraft", "borehead.iron", 1L), recipe);
-        //todo
         // --- Borehead Steel
         recipe = new Object[] {
                 "GPG", "PBP", "GPG",
@@ -1276,7 +1257,6 @@ public class RailCraftRecipe implements Runnable {
                 'P', OrePrefixes.plate.get(Materials.Steel)
         };
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Railcraft", "borehead.steel", 1L), recipe);
-        //todo
         // --- Borehead Diamond
         recipe = new Object[] {
                 "DD ",
@@ -1558,7 +1538,7 @@ public class RailCraftRecipe implements Runnable {
                 'S', ItemList.Sensor_LV,
                 'B', EnumSignal.BOX_CONTROLLER.getItem(1)
         };
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Computronics.railcraft.digitalControllerBox, 1, 0), recipe);
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("computronics", "computronics.digitalControllerBox", 1L), recipe);
         // --- Digital Signal Receiver Box
         recipe = new Object[] {
                 "PSP","PBP","PCP",
@@ -1567,7 +1547,7 @@ public class RailCraftRecipe implements Runnable {
                 'S', ItemList.Sensor_LV,
                 'B', EnumSignal.BOX_RECEIVER.getItem(1)
         };
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Computronics.railcraft.digitalReceiverBox, 1, 0), recipe);
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("computronics", "computronics.digitalReceiverBox", 1L), recipe);
         // --- Digital Locomotive Relay
         recipe = new Object[] {
                 "SCE","AHM","hCw",
@@ -1578,7 +1558,7 @@ public class RailCraftRecipe implements Runnable {
                 'E', ItemList.Emitter_LV,
                 'H', ItemList.Hull_LV
         };
-        GT_ModHandler.addCraftingRecipe(new ItemStack(Computronics.railcraft.locomotiveRelay, 1, 0), recipe);
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("computronics", "computronics.locomotiveRelay", 1L), recipe);
 
 
         // --- RailAssembler Casing
@@ -1603,7 +1583,7 @@ public class RailCraftRecipe implements Runnable {
 
     public void assemblerRecipe() {
         // --- BatBox Cart
-        GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.minecart, 1), GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 0), EnumCart.ENERGY_BATBOX.getCartItem(), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.minecart, 1), GT_ModHandler.getModItem("IC2","blockElectric", 1L, 0), EnumCart.ENERGY_BATBOX.getCartItem(), 100, 16);
         // --- CESU Cart
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.minecart, 1), GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 7), EnumCart.ENERGY_CESU.getCartItem(), 100, 16);
         // --- MFE Cart
@@ -1628,7 +1608,6 @@ public class RailCraftRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2", "itemFreq", 1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1L), ItemSignalTuner.getItem(), 300, 30);
         // --- Signal Block Surveyor
         GT_Values.RA.addAssemblerRecipe(ItemSignalTuner.getItem(), new ItemStack(Items.compass), ItemSignalBlockSurveyor.getItem(), 300, 30);
-        //todo
         // --- Electric Shunting Wire
         GT_Values.RA.addWireAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 1L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Lead, 2L)}, null, GT_ModHandler.getModItem("Railcraft", "machine.delta", 4L), 100, 8);
         // --- Stone Tie
