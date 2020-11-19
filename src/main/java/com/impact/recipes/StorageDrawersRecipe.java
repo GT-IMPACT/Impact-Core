@@ -24,13 +24,13 @@ public class StorageDrawersRecipe implements Runnable{
             // --- Drawers 1
             GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullDrawers1, 1, i), tBitMask, new Object[]{"PPP", "SCS", "PPP", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
             // --- Drawers 1x2
-            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullDrawers2, 1, i), tBitMask, new Object[]{"PCP", "SPS", "PCP", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullDrawers2, 2, i), tBitMask, new Object[]{"PCP", "SPS", "PCP", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
             // --- Drawers 2x2
-            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullDrawers4, 1, i), tBitMask, new Object[]{"CPC", "SPS", "CPC", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullDrawers4, 4, i), tBitMask, new Object[]{"CPC", "SPS", "CPC", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
             // --- Compact Drawers 1x2
-            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfDrawers2, 1, i), tBitMask, new Object[]{"PPP", "CSC", "PPP", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfDrawers2, 2, i), tBitMask, new Object[]{"PPP", "CSC", "PPP", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
             // --- Compact Drawers 2x2
-            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfDrawers4, 1, i), tBitMask, new Object[]{"PCP", "CSC", "PCP", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+            GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfDrawers4, 4, i), tBitMask, new Object[]{"PCP", "CSC", "PCP", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
             // --- Drawers Trim
             GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.trim, 1, i), tBitMask, new Object[]{"SPS", "PPP", "SPS", 'P', GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), 'S', OrePrefixes.screw.get(Materials.Wood)});
         }
@@ -71,13 +71,13 @@ public class StorageDrawersRecipe implements Runnable{
         // --- Framed Drawers 1
         GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullCustom1, 1, 0), tBitMask, new Object[]{"PPP", "SCS", "PPP", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
         // --- Framed Drawers 1x2
-        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullCustom2, 1, 0), tBitMask, new Object[]{"PCP", "SPS", "PCP", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullCustom2, 2, 0), tBitMask, new Object[]{"PCP", "SPS", "PCP", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
         // --- Framed Drawers 2x2
-        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullCustom4, 1, 0), tBitMask, new Object[]{"CPC", "SPS", "CPC", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.fullCustom4, 4, 0), tBitMask, new Object[]{"CPC", "SPS", "CPC", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
         // --- Framed Compact Drawers 1x2
-        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfCustom2, 1, 0), tBitMask, new Object[]{"PPP", "CSC", "PPP", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfCustom2, 2, 0), tBitMask, new Object[]{"PPP", "CSC", "PPP", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
         // --- Framed Compact Drawers 2x2
-        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfCustom4, 1, 0), tBitMask, new Object[]{"PCP", "CSC", "PCP", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
+        GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.halfCustom4, 4, 0), tBitMask, new Object[]{"PCP", "CSC", "PCP", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood), 'C', "chestWood"});
         // --- Framed Drawers Trim
         GT_ModHandler.addCraftingRecipe(new ItemStack(ModBlocks.trimCustom, 1, 0), tBitMask, new Object[]{"SPS", "PPP", "SPS", 'P', GT_ModHandler.getModItem("CarpentersBlocks", "blockCarpentersBlock", 1, 0), 'S', OrePrefixes.screw.get(Materials.Wood)});
     }
@@ -88,13 +88,13 @@ public class StorageDrawersRecipe implements Runnable{
             // --- Drawers 1
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 1), GT_Utility.getIntegratedCircuit(1)}, null, new ItemStack(ModBlocks.fullDrawers1, 1, i), 100, 8);
             // --- Drawers 1x2
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 2), GT_Utility.getIntegratedCircuit(2)}, null, new ItemStack(ModBlocks.fullDrawers2, 1, i), 100, 8);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 2), GT_Utility.getIntegratedCircuit(2)}, null, new ItemStack(ModBlocks.fullDrawers2, 2, i), 100, 8);
             // --- Drawers 2x2
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 4), GT_Utility.getIntegratedCircuit(4)}, null, new ItemStack(ModBlocks.fullDrawers4, 1, i), 100, 8);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 4), GT_Utility.getIntegratedCircuit(4)}, null, new ItemStack(ModBlocks.fullDrawers4, 4, i), 100, 8);
             // --- Compact Drawers 1x2
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 2), GT_Utility.getIntegratedCircuit(3)}, null, new ItemStack(ModBlocks.halfDrawers2, 1, i), 100, 8);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 2), GT_Utility.getIntegratedCircuit(3)}, null, new ItemStack(ModBlocks.halfDrawers2, 2, i), 100, 8);
             // --- Compact Drawers 2x2
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 4), GT_Utility.getIntegratedCircuit(6)}, null, new ItemStack(ModBlocks.halfDrawers4, 1, i), 100, 8);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.trim, 1, i), new ItemStack(Blocks.chest, 4), GT_Utility.getIntegratedCircuit(6)}, null, new ItemStack(ModBlocks.halfDrawers4, 4, i), 100, 8);
             // --- Drawers Trim
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1), GT_ModHandler.getModItem("minecraft", "wooden_slab", 1L, i), GT_Utility.getIntegratedCircuit(1)}, null, new ItemStack(ModBlocks.trim, 1, i), 100, 8);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), GT_ModHandler.getModItem("minecraft", "wooden_slab", 2L, i), GT_Utility.getIntegratedCircuit(1)}, null, new ItemStack(ModBlocks.trim, 2, i), 100, 10);
