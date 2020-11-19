@@ -978,7 +978,9 @@ public class AssemblerRecipe implements Runnable {
         // --- Slightly Larger Chest
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "chest", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 2L), null, GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 1L, 0), 100, 30);
         // --- Trash Can
-        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2", "itemHarz", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 10L), null, GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L, 0), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.round, Materials.Rubber, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 10L), null, GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L, 0), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.round, Materials.StyreneButadieneRubber, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 10L), null, GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L, 0), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.round, Materials.Silicone, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 10L), null, GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L, 0), 400, 30);
         // --- Block Update Detector
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 32731), GT_ModHandler.getModItem("minecraft", "sticky_piston", 1L, 0), null, GT_ModHandler.getModItem("ExtraUtilities", "budoff", 1L, 0), 200, 30);
         // --- Block Update Detector (Advanced)
