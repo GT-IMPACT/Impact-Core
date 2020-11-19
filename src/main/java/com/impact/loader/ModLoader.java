@@ -5,6 +5,7 @@ import com.impact.mods.GregTech.TecTech.Holo_Vanila_GregTech;
 import com.impact.recipes.OpenComputersRecipe;
 import com.impact.recipes.RailCraftRecipe;
 import com.impact.recipes.TecTechRecipe;
+import com.impact.recipes.StorageDrawersRecipe;
 import cpw.mods.fml.common.Loader;
 
 public class ModLoader implements Runnable {
@@ -27,6 +28,11 @@ public class ModLoader implements Runnable {
         // --- RailCraft
         if (Loader.isModLoaded("Railcraft")) {
             new RailCraftRecipe().run();
+        }
+
+        // --- StorageDrawers
+        if (Loader.isModLoaded("StorageDrawers")) {
+            new StorageDrawersRecipe().run();
         }
     }
 }
