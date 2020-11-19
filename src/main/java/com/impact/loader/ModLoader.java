@@ -34,5 +34,10 @@ public class ModLoader implements Runnable {
         if (Loader.isModLoaded("StorageDrawers")) {
             new StorageDrawersRecipe().run();
         }
+		
+        // --- Jabba
+        if (Loader.isModLoaded("JABBA")) {
+            new JabbaRecipe().run();
+        }
     }
 }
