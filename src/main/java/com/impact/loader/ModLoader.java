@@ -2,10 +2,7 @@ package com.impact.loader;
 
 import com.impact.mods.GregTech.TecTech.Holo_Impact;
 import com.impact.mods.GregTech.TecTech.Holo_Vanila_GregTech;
-import com.impact.recipes.OpenComputersRecipe;
-import com.impact.recipes.RailCraftRecipe;
-import com.impact.recipes.TecTechRecipe;
-import com.impact.recipes.StorageDrawersRecipe;
+import com.impact.recipes.*;
 import cpw.mods.fml.common.Loader;
 
 public class ModLoader implements Runnable {
