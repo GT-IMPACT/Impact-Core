@@ -244,6 +244,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         int Tier = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
             if (isValidMetaTileEntity(tHatch)) Tier = tHatch.mTier;
+            setParallel(Math.max(Tier, 1));
         return Math.max(Tier, 1);
     }
 
@@ -376,11 +377,6 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
      */
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 5 * mParallelPoint;
-    }
-
-    @Override
-    public int getParallel() {
-        return mParallelPoint;
+        return 5 * mParallel;
     }
 }

@@ -155,6 +155,8 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
             }
         }
 
+        setParallel(this.mLevel);
+
        if(this.mInputBusses.size() > 2) formationChecklist = false;
        if(this.mInputHatches.size() > 2) formationChecklist = false;
        if(this.mOutputBusses.size() > 1) formationChecklist = false;
@@ -162,11 +164,6 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
        if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
-    }
-
-    @Override
-    public int getParallel() {
-        return this.mLevel;
     }
 
     @Override

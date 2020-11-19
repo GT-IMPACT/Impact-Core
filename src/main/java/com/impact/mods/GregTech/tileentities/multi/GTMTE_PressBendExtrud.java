@@ -183,6 +183,8 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
             }
         }
 
+        setParallel(this.mLevel);
+
         if (this.mInputBusses.size() > 15) formationChecklist = false;
         if (this.mOutputBusses.size() > 3) formationChecklist = false;
         if (this.mMufflerHatches.size() != 1) formationChecklist = false;
@@ -190,11 +192,6 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
-    }
-
-    @Override
-    public int getParallel() {
-        return this.mLevel;
     }
 
     @Override

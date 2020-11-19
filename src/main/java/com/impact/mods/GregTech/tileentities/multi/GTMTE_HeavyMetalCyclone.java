@@ -310,8 +310,6 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
         }
 
 
-//----------------------------------------------------------------------------------------------------------------------
-
         if (this.mInputBusses.size() > 3) formationChecklist = false;
         if (this.mInputHatches.size() > 6) formationChecklist = false;
         if (this.mOutputBusses.size() > 1) formationChecklist = false;
@@ -320,11 +318,6 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
-    }
-
-    @Override
-    public int getParallel() {
-        return 1;
     }
 
     @Override

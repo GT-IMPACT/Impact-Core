@@ -225,6 +225,8 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
+        setParallel(this.mLevel);
+
         if(this.mInputBusses.size() > 6) formationChecklist = false;
         if(this.mInputHatches.size() > 3) formationChecklist = false;
         if(this.mOutputBusses.size() > 3) formationChecklist = false;
@@ -233,12 +235,6 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
 
         return formationChecklist;
     }
-
-    @Override
-    public int getParallel() {
-        return this.mLevel;
-    }
-
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {

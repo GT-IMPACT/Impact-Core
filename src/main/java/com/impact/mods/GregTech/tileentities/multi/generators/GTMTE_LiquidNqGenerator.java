@@ -349,11 +349,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
     }
 
     @Override
-    public int getParallel() {
-        return 1;
-    }
-
-    @Override
     public int getPollutionPerTick(ItemStack aStack) {
         return 0;
     }

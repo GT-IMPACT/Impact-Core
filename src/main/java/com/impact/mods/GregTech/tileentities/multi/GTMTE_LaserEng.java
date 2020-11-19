@@ -286,6 +286,8 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
+        setParallel(this.mLevel);
+
         if (this.mInputBusses.size() > 16) formationChecklist = false;
         if (this.mOutputBusses.size() > 1) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
@@ -305,11 +307,6 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
                 GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
             }
         }
-    }
-
-    @Override
-    public int getParallel() {
-        return this.mLevel;
     }
 
     @Override

@@ -210,7 +210,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
-
+        setParallel(this.mLevel);
 
         if(this.mInputBusses.size() > 6) formationChecklist = false;
         if(this.mInputHatches.size() > 3) formationChecklist = false;
@@ -221,11 +221,6 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
         if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
-    }
-
-    @Override
-    public int getParallel() {
-        return this.mLevel;
     }
 
     /** === POLLUTION === */

@@ -213,6 +213,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
+        setParallel(this.mLevel);
 
         if(this.mInputBusses.size() > 8) formationChecklist = false;
         if(this.mOutputBusses.size() > 1) formationChecklist = false;
@@ -221,11 +222,6 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
         if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
-    }
-
-    @Override
-    public int getParallel() {
-        return this.mLevel;
     }
 
     @Override

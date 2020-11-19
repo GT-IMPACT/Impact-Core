@@ -105,11 +105,6 @@ public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
 
     @Override
-    public int getParallel() {
-        return -1;
-    }
-
-    @Override
     public boolean checkRecipe(ItemStack guiSlotItem) {
         boolean check = true;
         this.mMaxProgresstime = 20;

@@ -396,10 +396,4 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         }
         return false;
     }
-
-    @Override
-    public int getParallel() {
-        return 1;
-    }
-
 }

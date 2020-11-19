@@ -239,6 +239,8 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
             }
         }
 
+        setParallel(this.mLevel);
+
         if (this.mInputBusses.size() > 15) formationChecklist = false;
         if (this.mInputHatches.size() > 6) formationChecklist = false;
         if (this.mOutputBusses.size() > 3) formationChecklist = false;
@@ -247,11 +249,6 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
         return formationChecklist;
-    }
-
-    @Override
-    public int getParallel() {
-        return this.mLevel;
     }
 
     @Override

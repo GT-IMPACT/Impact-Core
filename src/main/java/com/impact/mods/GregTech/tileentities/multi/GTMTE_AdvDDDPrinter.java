@@ -224,9 +224,4 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
     }
-
-    @Override
-    public int getParallel() {
-        return -1;
-    }
 }

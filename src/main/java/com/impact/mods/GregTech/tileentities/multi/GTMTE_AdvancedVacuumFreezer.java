@@ -342,6 +342,8 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
             }
         }
 
+        setParallel(this.mLevel);
+
         if (this.mInputBusses.size() > 8) formationChecklist = false;
         if (this.mInputHatches.size() > 1) formationChecklist = false;
         if (this.mOutputBusses.size() > 1) formationChecklist = false;
@@ -356,11 +358,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
      * === SET PARALLEL ===
      */
     public int Parallel() {
-        return this.mLevel;
-    }
-
-    @Override
-    public int getParallel() {
         return this.mLevel;
     }
 
