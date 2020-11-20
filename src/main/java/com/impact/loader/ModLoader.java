@@ -36,5 +36,10 @@ public class ModLoader implements Runnable {
         if (Loader.isModLoaded("JABBA")) {
             new JabbaRecipe().run();
         }
+		
+		// --- SFM
+        if (Loader.isModLoaded("StevesFactoryManager")) {
+            new SFMRecipe().run();
+        }
     }
 }

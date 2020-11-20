@@ -161,23 +161,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1L, GT_Values.W), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1L, GT_Values.W), true, false, false);
 
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockMachineManagerName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableBreakerName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableSignName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableClusterName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableClusterName", 1L, 8), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableOutputName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableInputName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableRelayName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableRelayName", 1L, 8), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableBUDName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L, 1), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableCamouflageName", 1L, 2), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableIntakeName", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableIntakeName", 1L, 8), true, false, false);
-
         removeRecipeByOutput(GT_ModHandler.getModItem("LogisticsPipes", "logisticsSolidBlock", 1L, 15), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("LogisticsPipes", "logisticsSolidBlock", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("LogisticsPipes", "logisticsSolidBlock", 1L, 1), true, false, false);

@@ -577,10 +577,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("chestup", "OSMIUMNEUTRONIUMUpgrade", 1L, 0), tBitMask, new Object[]{"SPS", "PCP", "dPh", 'S', OrePrefixes.screw.get(Materials.Neutronium), 'P', OrePrefixes.plateDouble.get(Materials.Neutronium), 'C', OrePrefixes.plate.get(Materials.Osmium)});
 
         /* ==== END CHEST ==== */
-        /** ==== START SFM ==== */
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("StevesFactoryManager", "BlockMachineManagerName", 1L, 0), tBitMask, new Object[]{"PTP", "RDR", "PCP", 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'R', OrePrefixes.plate.get(Materials.RedAlloy), 'T', ItemList.Cover_Screen, 'D', ItemList.Casing_Processor, 'C', GT_ModHandler.getModItem("StevesFactoryManager", "BlockCableName", 1L, 0)});
-
-        /* ==== END SFM ==== */
         /** ==== START LOGISTIC PIPES and BC ==== */
         // --- Steel Pipe
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Transport", "item.buildcraftPipe.pipeitemsstone", 1L, 0), tBitMask, new Object[]{"PPP", "WGH", "PPP", 'P', OrePrefixes.plate.get(Materials.Steel), 'G', OrePrefixes.block.get(Materials.Glass), 'W', ToolDictNames.craftingToolWrench, 'H', ToolDictNames.craftingToolHardHammer});
