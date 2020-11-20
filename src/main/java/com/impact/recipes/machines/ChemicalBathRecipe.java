@@ -9,6 +9,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
@@ -86,5 +88,7 @@ public class ChemicalBathRecipe implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Mithril, 2), Materials.SulfuricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Mytryl, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SluiceSand, 1), new int[]{10000, 8000, 7500}, 400, 1920);
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Forcicium, 2), Materials.SulfuricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1), new int[]{10000, 8000, 7500}, 600, 30720);
 
+        // --- Chlorine cleaning of pistons
+        GT_Values.RA.addChemicalBathRecipe(new ItemStack(Blocks.sticky_piston), Materials.Chlorine.getGas(10L), new ItemStack(Blocks.piston), GT_Values.NI, GT_Values.NI, null, 30, 30);
     }
 }
