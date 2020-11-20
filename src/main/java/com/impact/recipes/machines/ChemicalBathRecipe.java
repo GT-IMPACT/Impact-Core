@@ -7,9 +7,11 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import static com.impact.common.item.Core_List_Items.*;
@@ -90,5 +92,9 @@ public class ChemicalBathRecipe implements Runnable {
 
         // --- Chlorine cleaning of pistons
         GT_Values.RA.addChemicalBathRecipe(new ItemStack(Blocks.sticky_piston), Materials.Chlorine.getGas(10L), new ItemStack(Blocks.piston), GT_Values.NI, GT_Values.NI, null, 30, 30);
+
+        // --- Tanned Leather
+        GT_Values.RA.addChemicalBathRecipe(new ItemStack(Items.leather, 2, 0), Materials.PhosphoricAcid.getFluid(100), GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), GT_Values.NI, GT_Values.NI, new int[]{10000}, 300 , 30);
+
     }
 }
