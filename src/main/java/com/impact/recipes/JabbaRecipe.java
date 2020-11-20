@@ -93,6 +93,8 @@ public class JabbaRecipe implements Runnable {
         // --- Storage Upgrade 243x
         GT_Values.RA.addAssemblerRecipe(new ItemStack(BetterBarrels.itemUpgradeCore, 3, 8), GT_Utility.getIntegratedCircuit(3), new ItemStack(BetterBarrels.itemUpgradeCore, 1, 9), 600, 120);
         GT_Values.RA.addAssemblerRecipe(new ItemStack(BetterBarrels.itemUpgradeCore, 1, 0), ItemList.Electric_Piston_EV.get(1L), new ItemStack(BetterBarrels.itemUpgradeCore, 1, 9), 300, 120);
+        // --- Void Upgrade
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(BetterBarrels.itemUpgradeCore, 1, 0), GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1)}, Materials.Redstone.getMolten(144), new ItemStack(BetterBarrels.itemUpgradeCore, 1, 7), 400, 30);
     }
 
     @Override

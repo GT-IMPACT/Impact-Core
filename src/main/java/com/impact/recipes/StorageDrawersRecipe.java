@@ -115,6 +115,8 @@ public class StorageDrawersRecipe implements Runnable{
         GT_Values.RA.addAssemblerRecipe(new ItemStack(ModItems.upgradeTemplate, 1, 0), new ItemStack(Items.name_tag), new ItemStack(ModItems.personalKey), 100, 30);
         // --- Storage Personal Key
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.paper), GT_Utility.getIntegratedCircuit(1), Materials.Glue.getFluid(144L), new ItemStack(ModItems.tape), 200, 30);
+        // --- Void Upgrade
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModItems.upgradeTemplate, 1, 0), GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1)}, Materials.Redstone.getMolten(144), new ItemStack(ModItems.upgradeVoid, 1, 0), 400, 30);
     }
 
     @Override
