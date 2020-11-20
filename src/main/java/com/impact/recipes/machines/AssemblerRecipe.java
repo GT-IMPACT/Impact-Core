@@ -557,6 +557,9 @@ public class AssemblerRecipe implements Runnable {
         // --- CoCraftingUnit
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), Materials.SolderingAlloy.getMolten(2304), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 1), 800, 1024);
 
+        // --- Crafting Monitor
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 400), Materials.SolderingAlloy.getMolten(576), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingMonitor", 1L, 0), 200, 480);
+
         // --- CraftingStorages
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 35), Materials.SolderingAlloy.getMolten(144), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 0), 1200, 64);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 36), Materials.SolderingAlloy.getMolten(576), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 1), 1200, 256);
