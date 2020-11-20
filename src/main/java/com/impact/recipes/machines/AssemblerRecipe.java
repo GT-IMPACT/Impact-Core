@@ -275,6 +275,9 @@ public class AssemblerRecipe implements Runnable {
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2)}, null, CoreItems2.getRecipe(99, 1), 100, 30);
 
+        // --- Charging Lapotron Crystal
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1), ItemList.Circuit_Parts_Crystal_Chip_Master.get(12), GT_ModHandler.getModItem("IC2", "reactorHeatSwitchDiamond", 1L, 1)}, Materials.SolderingAlloy.getMolten(1440L), GT_ModHandler.getModItem("IC2", "itemBatChargeLamaCrystal", 1L, 0), 200, 1920);
+
         /** ==== START SOLAR PARTS ==== */
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(109, 1), GT_ModHandler.getModItem("minecraft", "glowstone", 1L), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Iron, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(144), CoreItems2.getRecipe(117, 1), 600, 120);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(110, 1), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1), GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.MeteoricIron, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 2), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.RedAlloy, 4)}, Materials.SolderingAlloy.getMolten(288), CoreItems2.getRecipe(118, 1), 600, 480);

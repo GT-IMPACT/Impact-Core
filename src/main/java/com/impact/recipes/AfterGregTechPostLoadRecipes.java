@@ -1,7 +1,5 @@
 package com.impact.recipes;
 
-import com.impact.common.block.blocks.Block_Liquid;
-import com.impact.loader.ItemRegistery;
 import com.impact.recipes.debug.DEBUG_Recipe;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -40,6 +38,10 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1, GT_Values.W));
         removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumLeggings", 1, GT_Values.W));
         removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1, GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemBatChargeRE", 1L, GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemBatChargeAdv", 1L, GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemBatChargeCrystal", 1L, GT_Values.W));
+        removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemBatChargeLamaCrystal", 1L, GT_Values.W));
 
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 1), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 0), true, false, false);
