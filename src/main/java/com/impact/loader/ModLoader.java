@@ -38,7 +38,7 @@ public class ModLoader implements Runnable {
         }
 		
 		// --- SFM
-        if (Loader.isModLoaded("StevesFactoryManager")) {
+        if (Loader.isModLoaded("StevesFactoryManager") && Loader.isModLoaded("StevesAddons")) {
             new SFMRecipe().run();
         }
     }
