@@ -8,6 +8,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class FormingPressRecipe implements Runnable {
 
@@ -51,6 +53,11 @@ public class FormingPressRecipe implements Runnable {
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), CoreItems2.getRecipe(106, 1), 600, 122880);
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadria, 2L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), CoreItems2.getRecipe(107, 1), 600, 500000);
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4L), CoreItems2.getRecipe(108, 1), 600, 2000000);
+
+        // --- Leather
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Rubber, 4L), ItemList.Shape_Mold_Plate.get(0), new ItemStack(Items.leather, 1), 800, 16);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 4L), ItemList.Shape_Mold_Plate.get(0), new ItemStack(Items.leather, 1), 800, 16);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 4L), ItemList.Shape_Mold_Plate.get(0), new ItemStack(Items.leather, 1), 800, 16);
 
         /* ================================= end CORE MOD =================================*/
 

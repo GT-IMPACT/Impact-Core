@@ -96,5 +96,8 @@ public class ChemicalBathRecipe implements Runnable {
         // --- Tanned Leather
         GT_Values.RA.addChemicalBathRecipe(new ItemStack(Items.leather, 2, 0), Materials.PhosphoricAcid.getFluid(100), GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), GT_Values.NI, GT_Values.NI, new int[]{10000}, 300 , 30);
 
+        // --- Leather
+        GT_Values.RA.addChemicalBathRecipe(new ItemStack(Items.string, 4), Materials.PolyvinylChloride.getMolten(36L), new ItemStack(Items.leather, 1), GT_Values.NI, GT_Values.NI, new int[]{10000},100, 30);
+
     }
 }

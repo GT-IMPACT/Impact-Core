@@ -14,6 +14,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -1205,6 +1206,11 @@ public class AssemblerRecipe implements Runnable {
 
 
         /* ==== END GALACTICRAFT & GALAXYSPACE ==== */
+        /** ==== START BACKPACK ==== */
+        // --- Bound Leather
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Items.leather, 2), new ItemStack(Items.string, 3), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("Backpack", "boundLeather", 1L), 100, 16);
+
+        /* ==== END BACKPACK ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};
