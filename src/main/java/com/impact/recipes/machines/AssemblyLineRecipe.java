@@ -251,7 +251,7 @@ public class AssemblyLineRecipe implements Runnable {
                         ItemList.Emitter_LuV.get(8L),
                         ItemList.Sensor_LuV.get(8L),
                         CoreItems2.getRecipe(50, 10),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 16)},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Master), 16},
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 8),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 8),
                         GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 16),
@@ -269,7 +269,7 @@ public class AssemblyLineRecipe implements Runnable {
         GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Inconel792, 1), 156000, new Object[]{
                         ItemList.Hull_LuV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 4),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4)},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Master), 4},
                         GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
                         ItemList.Electric_Motor_LuV.get(4L),
                         ItemList.Electric_Pump_LuV.get(4L),
@@ -297,7 +297,7 @@ public class AssemblyLineRecipe implements Runnable {
                         ItemList.Electric_Pump_LuV.get(4L),
                         ItemList.Field_Generator_LuV.get(4L),
                         ItemList.Sensor_LuV.get(4L),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4)},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Master), 4L},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 8),
                         GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Ruby, 8)
                 },
@@ -316,7 +316,7 @@ public class AssemblyLineRecipe implements Runnable {
                         ItemList.Electric_Pump_ZPM.get(6L),
                         ItemList.Field_Generator_ZPM.get(8L),
                         ItemList.Sensor_ZPM.get(8L),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8)},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 8},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 16),
                         GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Sapphire, 16)
                 },

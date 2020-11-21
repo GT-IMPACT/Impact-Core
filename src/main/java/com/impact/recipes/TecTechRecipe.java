@@ -701,7 +701,7 @@ public class TecTechRecipe implements Runnable {
                         ItemList.UHV_Coil.get(1L),
                         ItemList.Circuit_HighEnergyFlow.get(1L, new Object() {
                         }),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 2)},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 2},
                 },
                 new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(11520)
@@ -716,7 +716,7 @@ public class TecTechRecipe implements Runnable {
                         ItemList.UEV_Coil.get(1L),
                         ItemList.Circuit_HighEnergyFlow.get(2L, new Object() {
                         }),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Bio), 2)},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Bio), 2},
                 },
                 new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(23040)
@@ -864,7 +864,7 @@ public class TecTechRecipe implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.GarnetRed, 16L),
-                            new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 1L)}
+                            new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1}
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(9216L),
@@ -899,7 +899,7 @@ public class TecTechRecipe implements Runnable {
                         GT_ModHandler.getModItem("SGCraft", "stargateRing", 7L, 1),
                         GT_ModHandler.getModItem("SGCraft", "stargateRing", 15L),
                         GT_ModHandler.getModItem("SGCraft", "ic2PowerUnit", 3L),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 1L)}
+                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 1}
                 },
                 new FluidStack[]{
                         Materials.InfinityCatalyst.getMolten(2304L),
@@ -918,7 +918,7 @@ public class TecTechRecipe implements Runnable {
                         ItemList.Electric_Pump_UV.get(12L),
                         ItemList.Field_Generator_UV.get(16L),
                         ItemList.Sensor_UV.get(16L),
-                        new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 32)},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 32},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUV, 32),
                         GT_OreDictUnificator.get(OrePrefixes.lens, Materials.MysteriousCrystal, 64)
                 },
