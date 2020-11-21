@@ -86,6 +86,43 @@ public class ItemRegistery {
         GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
         GregTech_API.sRadioHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
         GregTech_API.sElectroHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, W));
+
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W));
+
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getModItem( "nanoHelmet", 1, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getModItem( "nanoHelmet", 1, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getModItem( "nanoHelmet", 1, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("nanoHelmet", 1, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getModItem( "nanoHelmet", 1, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getModItem( "nanoHelmet", 1, W));
+
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("nanoBodyarmor", 1, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item( "nanoBodyarmor", 1, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item( "nanoBodyarmor", 1, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item( "nanoBodyarmor", 1, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item( "nanoBodyarmor", 1, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item( "nanoBodyarmor", 1, W));
+
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item( "nanoLeggings", 1, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item( "nanoLeggings", 1, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item( "nanoLeggings", 1, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item( "nanoLeggings", 1, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item( "nanoLeggings", 1, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item( "nanoLeggings", 1, W));
+
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("nanoBoots", 1, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item( "nanoBoots", 1, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item( "nanoBoots", 1, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item( "nanoBoots", 1, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("nanoBoots", 1, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item( "nanoBoots", 1, W));
+
+
         INFO("[Init] Hazmat Additions - Loaded");
     }
 
