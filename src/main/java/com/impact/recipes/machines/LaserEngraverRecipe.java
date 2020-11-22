@@ -23,12 +23,12 @@ public class LaserEngraverRecipe implements gregtech.api.interfaces.IOreRecipeRe
         switch (aOreDictName) {
             case "craftingLensRed":
                 GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Redstone, 1L), GT_Utility.copyAmount(0L, aStack), GT_ItemList.RedstoneRedChipset.get(1L), 50, 120, false);
-                GT_Values.RA.addLaserEngraverRecipe(ItemList.IC2_EnergyCrystal.getWildcard(1L), GT_Utility.copyAmount(0L, aStack), GT_ItemList.EngravedEnergyChip.get(1L), 600, 4096, true);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.EnergyCrystal.get(1L), GT_Utility.copyAmount(0L, aStack), GT_ItemList.EngravedEnergyChip.get(1L), 600, 4096, true);
                 GT_Values.RA.addLaserEngraverRecipe(CoreItems2.getRecipe(154, 1), GT_Utility.copyAmount(0L, aStack), GT_ModHandler.getModItem("OpenComputers", "item", 16L, 24), 600, 120, false);
                 break;
             case "craftingLensGreen":
-                GT_Values.RA.addLaserEngraverRecipe(ItemList.IC2_LapotronCrystal.getWildcard(1L), GT_Utility.copyAmount(0L, aStack), CoreItems2.getRecipe(46, 1), 600, 480, true);
-                GT_Values.RA.addLaserEngraverRecipe(ItemList.IC2_EnergyCrystal.getWildcard(1L), GT_Utility.copyAmount(0L, aStack), CoreItems2.getRecipe(100, 1), 300, 120, false);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.LapotronCrystal.get(1L), GT_Utility.copyAmount(0L, aStack), CoreItems2.getRecipe(46, 1), 600, 480, true);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.EnergyCrystal.get(1L), GT_Utility.copyAmount(0L, aStack), CoreItems2.getRecipe(100, 1), 300, 120, false);
                 GT_Values.RA.addLaserEngraverRecipe(CoreItems2.getRecipe(155, 1), GT_Utility.copyAmount(0L, aStack), GT_ModHandler.getModItem("OpenComputers", "item", 9L, 25), 600, 256, false);
                 break;
             case "craftingLensWhite":
