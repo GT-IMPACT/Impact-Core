@@ -445,8 +445,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(98, 1), tBitMask, new Object[]{"PRP", "ICI", "PMP", 'P', CoreItems2.getRecipe(84, 1), 'R', OrePrefixes.rotor.get(Materials.Iridium), 'M', ItemList.Electric_Motor_ZPM, 'I', ItemList.Neutron_Reflector, 'C', ItemList.Reactor_Coolant_Le_3});
 
         //IC2 Batteries
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.EnergyCrystal.get(1), bits, new Object[]{ItemList.IC2_EnergyCrystal.get(1)});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.LapotronCrystal.get(1), bits, new Object[]{ItemList.IC2_LapotronCrystal.get(1)});
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.EnergyCrystal.get(1), bits, new Object[]{ItemList.IC2_EnergyCrystal.get(1, GT_Values.W)});
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.LapotronCrystal.get(1), bits, new Object[]{ItemList.IC2_LapotronCrystal.get(1, GT_Values.W)});
 
         /**====START SOLAR COVER====*/
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(109, 1), tBitMask, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(101, 1), 'A', OrePrefixes.plateAlloy.get(Materials.Carbon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
