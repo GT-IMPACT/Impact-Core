@@ -26,6 +26,8 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 	private IIcon iconLapoUVTop;
 	private IIcon iconUltimateSide;
 	private IIcon iconUltimateTop;
+	private IIcon iconRedSide;
+	private IIcon iconRedTop;
 	
 	private Block_LapotronicEnergyUnit() {
 		super(Material.iron);
@@ -50,7 +52,10 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 		iconLapoZPMTop = ir.registerIcon("impact:LapotronicEnergyUnit3_top");
 		iconLapoUVSide = ir.registerIcon("impact:LapotronicEnergyUnit4_side");
 		iconLapoUVTop = ir.registerIcon("impact:LapotronicEnergyUnit4_top");
-		
+
+		iconRedSide = ir.registerIcon("impact:LapotronicEnergyUnit5_side");
+		iconRedTop = ir.registerIcon("impact:LapotronicEnergyUnit5_top");
+
 		iconUltimateSide = ir.registerIcon("impact:UltimateEnergyUnit_side");
 		iconUltimateTop = ir.registerIcon("impact:UltimateEnergyUnit_top");
 	}
@@ -63,8 +68,10 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
 		par3List.add(new ItemStack(par1, 1, 4));
+		par3List.add(new ItemStack(par1, 1, 4));
 		// Ultimate battery
 		par3List.add(new ItemStack(par1, 1, 5));
+		par3List.add(new ItemStack(par1, 1, 6));
 	}
 	
 	@Override
@@ -75,6 +82,7 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 		case 3: return (side < 2) ? iconLapoZPMTop : iconLapoZPMSide;
 		case 4: return (side < 2) ? iconLapoUVTop : iconLapoUVSide;
 		case 5: return (side < 2) ? iconUltimateTop : iconUltimateSide;
+		case 6: return (side < 2) ? iconRedTop : iconRedSide;
 		default: return iconUltimateTop;
 		}
 	}

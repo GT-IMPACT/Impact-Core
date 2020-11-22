@@ -239,6 +239,9 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
                         } else if(meta <= 5){
                             tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
                             capacity = capacity.add(MAX_LONG);
+                        } else if (meta <= 6) {
+                            tempCapacity = tempCapacity.add(BigInteger.valueOf(819200000L));
+                            capacity = capacity.add(BigInteger.valueOf(819200000L));
                         }
                         capacitors[meta - 1]++;
                     } else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){
