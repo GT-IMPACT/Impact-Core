@@ -68,7 +68,6 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
 		par3List.add(new ItemStack(par1, 1, 4));
-		par3List.add(new ItemStack(par1, 1, 4));
 		// Ultimate battery
 		par3List.add(new ItemStack(par1, 1, 5));
 		par3List.add(new ItemStack(par1, 1, 6));

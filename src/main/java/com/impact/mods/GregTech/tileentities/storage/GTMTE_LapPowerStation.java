@@ -60,7 +60,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
     private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
     private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
     // Count the amount of capacitors of each tier in each slot (translate with meta - 1)
-    private final int[] capacitors = new int[5];
+    private final int[] capacitors = new int[6];
     public BigInteger capacity = BigInteger.ZERO;
     public BigInteger stored = BigInteger.ZERO;
     public BigInteger passiveDischargeAmount = BigInteger.ZERO;
@@ -232,16 +232,29 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
                     final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
                     if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0) ) {
                         // Add capacity
-                        if(meta <= 4){
-                            final long c = (long) (100000000L * Math.pow(10, meta - 1));
-                            tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-                            capacity = capacity.add(BigInteger.valueOf(c));
-                        } else if(meta <= 5){
-                            tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
-                            capacity = capacity.add(MAX_LONG);
-                        } else if (meta <= 6) {
-                            tempCapacity = tempCapacity.add(BigInteger.valueOf(819200000L));
-                            capacity = capacity.add(BigInteger.valueOf(819200000L));
+                        long c = 0;
+                        switch (meta) {
+                            case 1:
+                                c = 250000000L;
+                                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
+                                capacity = capacity.add(BigInteger.valueOf(c));
+                                break;
+                            case 2:
+                            case 3:
+                            case 4:
+                                c = (long) (100000000L * Math.pow(10, meta - 1));
+                                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
+                                capacity = capacity.add(BigInteger.valueOf(c));
+                                break;
+                            case 5:
+                                tempCapacity = tempCapacity.add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
+                                capacity = capacity.add(MAX_LONG);
+                                break;
+                            case 6:
+                                c = 819200000L;
+                                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
+                                capacity = capacity.add(BigInteger.valueOf(c));
+                                break;
                         }
                         capacitors[meta - 1]++;
                     } else if(thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){
@@ -306,11 +319,17 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase  {
         // Calculate total capacity
         capacity = BigInteger.ZERO;
         for(int i = 0; i < capacitors.length; i++){
-            if(i <= 3){
+            if (i == 0) {
+                final long c = 250000000;
+                capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+            } else if(i <= 3){
                 final long c = (long) (100000000L * Math.pow(10, i));
                 capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
-            } else {
+            } else if (i == 4) {
                 capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
+            } else {
+                final long c = 819200000L;
+                capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
             }
         }
         // Calculate how much energy to void each tick
