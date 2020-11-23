@@ -67,7 +67,7 @@ public enum GT_ItemList implements IItemContainer {
     Diode_4A_ULV, Diode_4A_LV, Diode_4A_MV, Diode_4A_HV, Diode_4A_EV, Diode_4A_IV, Diode_4A_LuV, Diode_4A_ZPM, Diode_4A_UV,
     Diode_16A_ULV, Diode_16A_LV, Diode_16A_MV, Diode_16A_HV, Diode_16A_EV, Diode_16A_IV, Diode_16A_LuV, Diode_16A_ZPM, Diode_16A_UV,
 
-    Tank_Hatch,
+    Tank_Hatch, Quadruple_Input_Hatch, Nonuple_Input_Hatch,
     Nuclear_Resistant_OH,
 
     //MULTI

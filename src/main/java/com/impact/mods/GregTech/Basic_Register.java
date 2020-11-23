@@ -83,7 +83,10 @@ public class Basic_Register {
         Generator_Gas_Turbine_IV.set(new GT_MetaTileEntity_GasTurbine(ID2++, "impact.basicgenerator.gasturbine.tier.05", "IV Gas Turbine", 5).getStackForm(1L));
         Generator_Semi_Turbine_IV.set(new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.05", "IV Semifluid Generator", 5).getStackForm(1L));
 
-        Creative_Tank.set(new GTMTE_DebugTank(ID2, "impact.machine.creativetank", "Creative Tank", 5).getStackForm(1L));
+        Creative_Tank.set(new GTMTE_DebugTank(ID2++, "impact.machine.creativetank", "Creative Tank", 5).getStackForm(1L));
+
+        Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.quadruple", "Quadruple Input Hatch", 4, 4, 16000).getStackForm(1L));
+        Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.nonuple", "Nonuple Input Hatch", 5, 9, 16000).getStackForm(1L));
 
 
 
