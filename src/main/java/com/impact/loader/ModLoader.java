@@ -23,7 +23,7 @@ public class ModLoader implements Runnable {
         }
 
         // --- RailCraft
-        if (Loader.isModLoaded("Railcraft")) {
+        if (Loader.isModLoaded("Railcraft") && Loader.isModLoaded("computery")) {
             new RailCraftRecipe().run();
         }
 
