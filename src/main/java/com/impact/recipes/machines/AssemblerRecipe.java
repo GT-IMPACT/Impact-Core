@@ -216,6 +216,14 @@ public class AssemblerRecipe implements Runnable {
         //Maintenance Hatch
         GT_Values.RA.addAssemblerRecipe(ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(4), GT_Values.NF, ItemList.Hatch_Maintenance.get(1L), 40 * 20, 30);
 
+        //Quadruple Input Hatch
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1), ItemList.Large_Fluid_Cell_Titanium.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Polytetrafluoroethylene.getMolten(576L), GT_ItemList.Quadruple_Input_Hatch.get(1), 480, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1), ItemList.Large_Fluid_Cell_Titanium.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Polybenzimidazole.getMolten(72L), GT_ItemList.Quadruple_Input_Hatch.get(1), 480, 1920);
+        //Nonuple Input Hatch
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), ItemList.Large_Fluid_Cell_TungstenSteel.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.TungstenSteel, 1L), GT_Utility.getIntegratedCircuit(9)}, Materials.Polytetrafluoroethylene.getMolten(1152L), GT_ItemList.Nonuple_Input_Hatch.get(1), 480, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1), ItemList.Large_Fluid_Cell_TungstenSteel.get(1), GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.TungstenSteel, 1L), GT_Utility.getIntegratedCircuit(9)}, Materials.Polybenzimidazole.getMolten(144L), GT_ItemList.Nonuple_Input_Hatch.get(1), 480, 7680);
+
+
         /* ================================= end GT MOD =================================*/
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(54, 1), 100, 120);
