@@ -15,6 +15,7 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_GasTurbine;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_PortableTank;
 
+import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.GregTech.GT_ItemList.*;
 
 public class Basic_Register {
@@ -85,10 +86,10 @@ public class Basic_Register {
 
         Creative_Tank.set(new GTMTE_DebugTank(ID2++, "impact.machine.creativetank", "Creative Tank", 5).getStackForm(1L));
 
-        Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.quadruple", "Quadruple Input Hatch", 4, 4, 16000).getStackForm(1L));
-        Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.nonuple", "Nonuple Input Hatch", 5, 9, 16000).getStackForm(1L));
+        Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.quadruple", "Quadruple Input Hatch", 4).getStackForm(1L));
+        Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.nonuple", "Nonuple Input Hatch", 5).getStackForm(1L));
 
-
+        INFO( "Last ID Basic_Register.java: " + ID2);
 
         DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035, "impact.basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts", GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000, 0, 1, "Autoclave.png", "", false, false, 0, "DUSTWASHER", new Object[]{"IPI", "IMI", "ICI", 'I', OrePrefixes.plate.get(Materials.WroughtIron), 'P', GT_ItemList.ULVPump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
         DustWasherLV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13036, "impact.basicmachine.dustwasher.tier.01", "LV Dust Washer", 1, "Washed your Dusts", GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 2, 0, 1, "Autoclave.png", "", false, false, 0, "DUSTWASHER", new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
