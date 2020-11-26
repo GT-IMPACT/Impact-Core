@@ -559,7 +559,7 @@ public class TecTechRecipe implements Runnable {
                 ItemList.Field_Generator_UV.get(2),
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Wafer_HPIC.get(64),
-                ItemList.Circuit_Parts_DiodeSMD.get(64),
+                ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 32),
         }, new FluidStack[]{
                 Materials.SolderingAlloy.getMolten(2880),
@@ -576,7 +576,7 @@ public class TecTechRecipe implements Runnable {
                 ItemList.Circuit_Wafer_UHPIC.get(64),
                 ItemList.Circuit_Wafer_UHPIC.get(64),
                 ItemList.Circuit_Wafer_SoC2.get(32),
-                ItemList.Circuit_Parts_DiodeSMD.get(64),
+                ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUEV, 64),
         }, new FluidStack[]{
                 Materials.SolderingAlloy.getMolten(3760),
@@ -592,10 +592,10 @@ public class TecTechRecipe implements Runnable {
                         ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(36L),
                         ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(36L),
                         ItemList.Circuit_Chip_PPIC.get(64L),
-                        ItemList.Circuit_Parts_DiodeSMD.get(64L),
-                        ItemList.Circuit_Parts_CapacitorSMD.get(64L),
-                        ItemList.Circuit_Parts_ResistorSMD.get(64L),
-                        ItemList.Circuit_Parts_TransistorSMD.get(64L),
+                        ItemList.Circuit_Parts_DiodeASMD.get(64L),
+                        ItemList.Circuit_Parts_CapacitorASMD.get(64L),
+                        ItemList.Circuit_Parts_ResistorASMD.get(64L),
+                        ItemList.Circuit_Parts_TransistorASMD.get(64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine.get(Materials.Neutronium), 64L)},
                 new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(1440),
@@ -610,7 +610,7 @@ public class TecTechRecipe implements Runnable {
                         ItemList.Field_Generator_UEV.get(2),
                         ItemList.Circuit_Wafer_SoC3.get(64),
                         ItemList.Circuit_Wafer_SoC3.get(64),
-                        ItemList.Circuit_Parts_DiodeSMD.get(64),
+                        ItemList.Circuit_Parts_DiodeASMD.get(64),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUEV, 16),},
                 new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(2880),
