@@ -231,9 +231,8 @@ public class Printer3DRecipe implements Runnable {
 
 /** ================================= start EnderIO =================================*/
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Enderium, 1), GT_ModHandler.getModItem("EnderIO", "itemBasicCapacitor", 1L, 2), ItemList.Emitter_EV.get(1L),
-                ItemList.Sensor_EV.get(1L), GT_ModHandler.getModItem("EnderIO", "itemMaterial", 4L, 5), GT_ModHandler.getModItem("EnderIO", "blockFusedQuartz", 4L, 0),
-                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 8)
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), GT_ModHandler.getModItem("EnderIO", "itemBasicCapacitor", 1L, 2), ItemList.Emitter_HV.get(1L),
+                ItemList.Sensor_HV.get(1L), GT_ModHandler.getModItem("EnderIO", "blockFusedQuartz", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 8)
         }, GT_ModHandler.getModItem("EnderIO", "blockTelePad", 9L, 0), null, 20 * 20, 480);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
