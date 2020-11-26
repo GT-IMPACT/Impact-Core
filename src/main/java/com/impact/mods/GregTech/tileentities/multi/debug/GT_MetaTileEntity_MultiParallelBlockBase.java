@@ -7,14 +7,11 @@ import com.impact.mods.GregTech.TecTech.TecTechUtils;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.GT_Mod;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -736,12 +733,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         return false;
     }
 
-    public void setParallel(int parallel) {
-        mParallel = parallel;
+    public int getParallel() {
+        return mParallel;
     }
 
-    public int getParallel(){
-        return mParallel;
+    public void setParallel(int parallel) {
+        mParallel = parallel;
     }
 
     /**
@@ -833,7 +830,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     public String[] addInfoData() {
         final ArrayList<String> ll = new ArrayList<>();
 
-        ll.add( mParallel > 1 ? "Parallel Point: " + Integer.toString(mParallel) : "Parallel not found");
+        ll.add(mParallel > 1 ? "Parallel Point: " + Integer.toString(mParallel) : "Parallel not found");
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);
