@@ -5,8 +5,6 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.impact.util.Utilits.impactTag;
-
 /**
  * Have you ever felt like your tooltips just aren't enterprise enough? Use this!
  */
@@ -208,7 +206,7 @@ public class MultiBlockTooltipBuilder {
 
     public void signAndFinalize(String author) {
         iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
-        iLines.add(impactTag());
+        iLines.add("Added by " + author);
         iArray = new String[iLines.size()];
         sArray = new String[sLines.size()];
         iLines.toArray(iArray);
@@ -219,7 +217,7 @@ public class MultiBlockTooltipBuilder {
     public void signAndFinalize(String author, boolean ctrl) {
         iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LSHIFT]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
         iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LCTRL]" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to more info");
-        iLines.add(impactTag());
+        iLines.add("Added by " + author);
         iArray = new String[iLines.size()];
         sArray = new String[sLines.size()];
         cArray = new String[cLines.size()];

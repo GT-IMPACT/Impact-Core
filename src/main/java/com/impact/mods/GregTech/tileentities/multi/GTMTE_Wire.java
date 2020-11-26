@@ -3,8 +3,8 @@ package com.impact.mods.GregTech.tileentities.multi;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
-import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -137,14 +137,33 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
                         continue;
                     }
 
-                    if ( (X==1||X==2)&&Z==-1&&Y==0 ) continue;
+                    if ( (X==1||X==2)&&Z==-1&&Y==0 ) {
+                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                            this.mLevel = 4;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
+                            this.mLevel = 16;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
+                            this.mLevel = 64;
+                        } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
+                            this.mLevel = 256;
+                        } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
+                            this.mLevel = 1;
+                        } else {
+                            formationChecklist = false;
+                        }
+                        continue;
+                    }
+
 
                     IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
                     if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
                         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -165,8 +184,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
         if(this.mOutputBusses.size() > 3) formationChecklist = false;
         if(this.mEnergyHatches.size() > 4) formationChecklist = false;
         if(this.mMaintenanceHatches.size() != 1) formationChecklist = false;
-        if(this.sParallHatchesIn.size() > 1) formationChecklist = false;
-        if(this.sParallHatchesOut.size() != 0) formationChecklist = false;
 
         return formationChecklist;
     }

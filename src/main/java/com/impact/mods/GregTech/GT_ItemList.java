@@ -68,11 +68,6 @@ public enum GT_ItemList implements IItemContainer {
     Diode_16A_ULV, Diode_16A_LV, Diode_16A_MV, Diode_16A_HV, Diode_16A_EV, Diode_16A_IV, Diode_16A_LuV, Diode_16A_ZPM, Diode_16A_UV,
 
     Tank_Hatch, Quadruple_Input_Hatch, Nonuple_Input_Hatch,
-    Parallel_Hatch_IN4, Parallel_Hatch_OUT4, Parallel_Hatch_IN16, Parallel_Hatch_OUT16, Parallel_Hatch_IN64, Parallel_Hatch_OUT64,
-    Parallel_Hatch_IN256, Parallel_Hatch_OUT256,
-
-    Communication_Hatch_Transmitter, Communication_Hatch_Receiver,
-
     Nuclear_Resistant_OH,
 
     //MULTI
@@ -84,9 +79,7 @@ public enum GT_ItemList implements IItemContainer {
     PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
     AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
 
-
     Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched, Moon_Miner, Rail_Assembler,
-    Parallel_Computer, Communication_Tower, Space_Satellite,
 
     //Cases
     UpgradeCasingT1, UpgradeCasingT2, UpgradeCasingT3, UpgradeCasingT4, PBECasing, EngraverCasing, AssemblerCasing,

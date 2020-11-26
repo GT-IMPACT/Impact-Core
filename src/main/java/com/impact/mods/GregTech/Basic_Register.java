@@ -4,10 +4,6 @@ import com.impact.mods.GregTech.tileentities.basic.GTMTE_DebugTank;
 import com.impact.mods.GregTech.tileentities.basic.GTMTE_SemifluidGenerator;
 import com.impact.mods.GregTech.tileentities.basic.GTMTE_WaterTank;
 import com.impact.mods.GregTech.tileentities.hatches.*;
-import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Input;
-import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelHatch_Output;
-import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_SpaceSatellite_Receiver;
-import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_SpaceSatellite_Transmitter;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -83,34 +79,17 @@ public class Basic_Register {
         Generator_Diesel_EV.set(new GT_MetaTileEntity_DieselGenerator(ID2++, "impact.basicgenerator.diesel.tier.04", "EV Combustion Generator", 4).getStackForm(1L));
         Generator_Gas_Turbine_EV.set(new GT_MetaTileEntity_GasTurbine(ID2++, "impact.basicgenerator.gasturbine.tier.04", "EV Gas Turbine", 4).getStackForm(1L));
         Generator_Semi_Turbine_EV.set(new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.04", "EV Semifluid Generator", 4).getStackForm(1L));
-
-        Generator_Steam_Turbine_IV.set(new GT_MetaTileEntity_SteamTurbine(ID2++, "impact.basicgenerator.steamturbine.tier.05", "IV Steam Turbine", 5).getStackForm(1L));
+        Generator_Steam_Turbine_IV.set(new GT_MetaTileEntity_SteamTurbine(ID2++, "basicgenerator.steamturbine.tier.05", "IV Steam Turbine", 5).getStackForm(1L));
         Generator_Diesel_IV.set(new GT_MetaTileEntity_DieselGenerator(ID2++, "impact.basicgenerator.diesel.tier.05", "IV Combustion Generator", 5).getStackForm(1L));
         Generator_Gas_Turbine_IV.set(new GT_MetaTileEntity_GasTurbine(ID2++, "impact.basicgenerator.gasturbine.tier.05", "IV Gas Turbine", 5).getStackForm(1L));
         Generator_Semi_Turbine_IV.set(new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.05", "IV Semifluid Generator", 5).getStackForm(1L));
-        
+
         Creative_Tank.set(new GTMTE_DebugTank(ID2++, "impact.machine.creativetank", "Creative Tank", 5).getStackForm(1L));
 
         Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.quadruple", "Quadruple Input Hatch", 4).getStackForm(1L));
         Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.nonuple", "Nonuple Input Hatch", 5).getStackForm(1L));
 
-        Parallel_Hatch_IN4.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.4", "Parallel Hatch 4P IN", 6, 4).getStackForm(1L));
-        Parallel_Hatch_OUT4.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.4", "Parallel Hatch 4P OUT", 6, 4).getStackForm(1L));
-
-        Parallel_Hatch_IN16.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.16", "Parallel Hatch 16P IN", 7, 16).getStackForm(1L));
-        Parallel_Hatch_OUT16.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.16", "Parallel Hatch 16P OUT", 7, 16).getStackForm(1L));
-
-        Parallel_Hatch_IN64.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.64", "Parallel Hatch 64P IN", 8, 64).getStackForm(1L));
-        Parallel_Hatch_OUT64.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.64", "Parallel Hatch 64P OUT", 8, 64).getStackForm(1L));
-
-        Parallel_Hatch_IN256.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.256", "Parallel Hatch 256P IN", 9, 256).getStackForm(1L));
-        Parallel_Hatch_OUT256.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.256", "Parallel Hatch 256P OUT", 9, 256).getStackForm(1L));
-
-        Communication_Hatch_Transmitter.set(new GTMTE_SpaceSatellite_Transmitter(ID2++, "impact.machine.communicationhatch.transmitter", "Communication Transmitter Hatch").getStackForm(1L));
-        Communication_Hatch_Receiver.set(new GTMTE_SpaceSatellite_Receiver(ID2++, "impact.machine.communicationhatch.receiver", "Communication Receiver Hatch").getStackForm(1L));
-
-
-INFO( "Last ID Basic_Register.java: " + ID2);
+        INFO( "Last ID Basic_Register.java: " + ID2);
 
         DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035, "impact.basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts", GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000, 0, 1, "Autoclave.png", "", false, false, 0, "DUSTWASHER", new Object[]{"IPI", "IMI", "ICI", 'I', OrePrefixes.plate.get(Materials.WroughtIron), 'P', GT_ItemList.ULVPump, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
         DustWasherLV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13036, "impact.basicmachine.dustwasher.tier.01", "LV Dust Washer", 1, "Washed your Dusts", GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 2, 0, 1, "Autoclave.png", "", false, false, 0, "DUSTWASHER", new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
