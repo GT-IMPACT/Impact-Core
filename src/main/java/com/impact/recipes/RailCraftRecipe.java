@@ -143,7 +143,7 @@ public class RailCraftRecipe implements Runnable {
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.ELECTRIC));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.REINFORCED));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.SPEED));
-        removeRecipeByOutput((ItemStack)RailcraftItem.rebar.getRecipeObject());
+        //removeRecipeByOutput((ItemStack)RailcraftItem.rebar.getRecipeObject());
         removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.digitalReceiverBox", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.digitalControllerBox", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.locomotiveRelay", 1L));
