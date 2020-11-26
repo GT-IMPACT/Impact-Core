@@ -134,7 +134,7 @@ public class RailCraftRecipe implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "part.circuit.controller", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "part.circuit.signal", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "part.circuit.receiver", 1L));
-        removeRecipeByOutput(EnumMachineDelta.WIRE.getItem());
+        removeRecipeByOutput(GT_ModHandler.getModItem("Railcraft", "machine.delta", 1L));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.WOOD));
 
         //todo НУЖНО ПРОВЕРИТЬ - НЕ УВЕРЕН ЧТО ПОФИКСИЛ
@@ -143,7 +143,7 @@ public class RailCraftRecipe implements Runnable {
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.ELECTRIC));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.REINFORCED));
         removeRecipeByOutput(RailcraftItem.rail.getStack(1, ItemRail.EnumRail.SPEED));
-        //removeRecipeByOutput((ItemStack)RailcraftItem.rebar.getRecipeObject());
+        removeRecipeByOutput(RailcraftItem.rebar.getStack(1));
         removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.digitalReceiverBox", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.digitalControllerBox", 1L));
         removeRecipeByOutput(GT_ModHandler.getModItem("computronics", "computronics.locomotiveRelay", 1L));
@@ -169,7 +169,7 @@ public class RailCraftRecipe implements Runnable {
                 "RPR", "IwI", "III",
                 'P', OrePrefixes.plate.get(Materials.Iron),
                 'R', OrePrefixes.plate.get(Materials.Rubber),
-                'I', RailcraftItem.rebar.getRecipeObject()
+                'I', GT_ModHandler.getModItem("Railcraft", "part.rebar", 1L)
         };
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Railcraft", "frame", 2L), recipe);
 
@@ -1232,13 +1232,13 @@ public class RailCraftRecipe implements Runnable {
                 'N', GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 1L, 31)
         };
         GT_ModHandler.addCraftingRecipe(RailcraftItem.signalLamp.getStack(), recipe);
-        // --- Lapatron Loader Upgrade
+        // --- Lapotron Loader Upgrade
         recipe = new Object[] {
                 "PCP", "WLW", "PCP",
                 'W', OrePrefixes.itemCasing.get(Materials.Aluminium),
                 'C', OrePrefixes.circuit.get(Materials.Advanced),
                 'P', OrePrefixes.cableGt02.get(Materials.Platinum),
-                'L', GT_ModHandler.getModItem("IC2","itemBatLamaCrystal", 1L,  GT_Values.W)
+                'L', ItemList.LapotronCrystal
         };
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Railcraft", "upgrade.lapotron", 1L), recipe);
         // --- Borehead Iron
