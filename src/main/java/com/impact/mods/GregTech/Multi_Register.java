@@ -3,6 +3,8 @@ package com.impact.mods.GregTech;
 
 import com.impact.mods.GregTech.tileentities.multi.*;
 import com.impact.mods.GregTech.tileentities.multi.generators.*;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_ParallelComputer;
+import com.impact.mods.GregTech.tileentities.multi.newparallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
 import com.impact.mods.GregTech.tileentities.storage.GTMTE_SingleTank;
@@ -33,7 +35,9 @@ public class Multi_Register {
         Machine_Macerator.set(new GTMTE_Macerator(ID++, "impact.multimachine.macerator", "Multi Maceration Stack").getStackForm(1L));
         Machine_Mixer.set(new GTMTE_Mixer(ID++, "impact.multimachine.mixer", "Multi Mixing Machine").getStackForm(1L));
         Machine_Siftarator.set(new GTMTE_Siftarator(ID++, "impact.multimachine.siftarator", "Multi Siftaration Unit").getStackForm(1L));
+
         Machine_DDDPrinter.set(new GTMTE_DDDPrinter(ID++, "impact.multimachine.dddprinter", "Basic 3D Printer").getStackForm(1L));
+
         Machine_FreezSolidifier.set(new GTMTE_FreezerSolidifier(ID++, "impact.multimachine.freezsolidifier", "Freezer Solidifier").getStackForm(1L));
         Machine_BlastSmelter.set(new GTMTE_BlastSmelter(ID++, "impact.multimachine.blastsmelter", "Blast Smelter").getStackForm(1L));
         WaterDrill.set(new GTMTE_DrillerWater(ID++, "impact.multimachine.waterdrill", "Electric Water Drilling Rig").getStackForm(1L));
@@ -49,11 +53,14 @@ public class Multi_Register {
         Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID++, "impact.multimachine.liquidenrichednqgenerator", "Liquid Enriched Naquadah Generator").getStackForm(1L));
 
         Moon_Miner.set(new GTMTE_MoonMiner(ID++, "impact.multimachine.blockminer", "Moon Miner").getStackForm(1L));
+
         Machine_AdvDDDPrinter.set(new GTMTE_AdvDDDPrinter(ID++, "impact.multimachine.advdddprinter", "Advanced 3D Printer").getStackForm(1L));
 
         Rail_Assembler.set(new GTMTE_RailAssembler(ID++, "impact.multimachine.railassembler", "Rail Assembler").getStackForm(1L));
 
-
+        Parallel_Computer.set(new GTMTE_ParallelComputer(ID++, "impact.multimachine.parallelcomputer", "Parallel Supercomputer").getStackForm(1L));
+        Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "impact.multimachine.communicationtower", "Communication Tower").getStackForm(1L));
+        
         Machine_CokeOven.set(new GTMTE_CokeOven(13002, "impact.multimachine.cokeoven", "Coke Oven").getStackForm(1L));
         Machine_Multi_Farm.set(new GTMTE_Farm(13001, "impact.multimachine.farm", "Multiblock Farm").getStackForm(1L));
 

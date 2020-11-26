@@ -3,20 +3,26 @@ package com.impact.client.gui;
 import com.impact.impact;
 import com.impact.mods.ASP.client.GuiAdvSolarPanel;
 import com.impact.mods.ASP.common.TE.TileEntitySolarPanel;
+import com.impact.mods.GregTech.gui.Container_LapTopSetting;
+import com.impact.mods.GregTech.gui.GUI_LapTopSetting;
 import com.impact.mods.RailCraft.carts.item.client.OpenableGUI;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import static com.impact.core.impactLog.INFO;
 import static com.impact.core.impactLog.WARNING;
+import static gregtech.api.util.GT_LanguageManager.getTranslation;
+import static gregtech.api.util.GT_Utility.trans;
 
 public class GUIHandler implements IGuiHandler {
 
-    public static final int GUI_ID_Solar = 0, GUI_ID_Carts = 2;
+    public static final int GUI_ID_Solar = 0, GUI_ID_Carts = 2, GUI_ID_LapTop = 3;
 
     public GUIHandler() {
         NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, this);
@@ -34,6 +40,13 @@ public class GUIHandler implements IGuiHandler {
             case GUI_ID_Carts:
                 if (e instanceof OpenableGUI)
                     return ((OpenableGUI) e).getServerGuiElement(ID, player, world, x, y, z);
+            case GUI_ID_LapTop: {
+                if (world.getTileEntity(x, y, z) instanceof IGregTechTileEntity) {
+                    IGregTechTileEntity gte = (IGregTechTileEntity) world.getTileEntity(x, y, z);
+                    return new Container_LapTopSetting(player.inventory, gte);
+                }
+            }
+
 
                 INFO("GUIHandler Server - Loaded");
         }
@@ -53,7 +66,12 @@ public class GUIHandler implements IGuiHandler {
             case GUI_ID_Carts:
                 if (e instanceof OpenableGUI)
                     return ((OpenableGUI) e).getClientGuiElement(ID, player, world, x, y, z);
-
+            case GUI_ID_LapTop: {
+                if (world.getTileEntity(x, y, z) instanceof IGregTechTileEntity) {
+                    IGregTechTileEntity gte = (IGregTechTileEntity) world.getTileEntity(x, y, z);
+                    return new GUI_LapTopSetting(player.inventory, gte, gte.getInventoryName());
+                }
+            }
                 INFO("GUIHandler Client - Loaded");
         }
         WARNING("GUIHandler Client - Not Loaded");

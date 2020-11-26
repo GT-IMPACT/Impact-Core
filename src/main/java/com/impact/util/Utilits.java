@@ -1,10 +1,6 @@
 package com.impact.util;
 
-import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -13,13 +9,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class Utilits {
 
@@ -191,5 +187,26 @@ public class Utilits {
         int ID = EntityRegistry.findGlobalUniqueEntityId();
         EntityRegistry.registerGlobalEntityID(entityClass, name, ID);
         EntityRegistry.registerModEntity(entityClass, name, ID, instance, 128, 1, true);
+    }
+
+    public static String impactTag() {
+        return "" + EnumChatFormatting.DARK_GRAY + "Impact: " + EnumChatFormatting.DARK_GRAY + "GregTech Module";
+    }
+
+    public static int square(int a) {
+        return a*a;
+    }
+
+    public static int distanceBetween2D(int x1, int x2, int y1, int y2) {
+        int x = square(x1 - x2);
+        int y = square(y1 - y2);
+        return (int) Math.sqrt(x+y);
+    }
+
+    public static int distanceBetween3D(int x1, int x2, int y1, int y2, int z1, int z2) {
+        int x = square(x1 - x2);
+        int y = square(y1 - y2);
+        int z = square(z1 - z2);
+        return (int) Math.sqrt(x+y+z);
     }
 }
