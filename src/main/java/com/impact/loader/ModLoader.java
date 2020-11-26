@@ -41,5 +41,10 @@ public class ModLoader implements Runnable {
         if (Loader.isModLoaded("StevesFactoryManager") && Loader.isModLoaded("StevesAddons")) {
             new SFMRecipe().run();
         }
+
+        // --- TiCo
+        if (Loader.isModLoaded("TConstruct")) {
+            new TConstructRecipe().run();
+        }
     }
 }
