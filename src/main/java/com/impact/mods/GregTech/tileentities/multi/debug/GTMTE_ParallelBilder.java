@@ -1,6 +1,5 @@
 package com.impact.mods.GregTech.tileentities.multi.debug;
 
-import com.impact.mods.GregTech.tileentities.multi.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;

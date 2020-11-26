@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.impact.mods.GregTech.tileentities.multi;
+package com.impact.mods.GregTech.tileentities.multi.debug;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
@@ -44,7 +44,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -787,7 +786,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && aTick%20==0) {
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
             int maxParallel = 1;
             if (sParallHatchesIn.size() > 0) {//todo parallel
                 for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
@@ -806,26 +805,28 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                         if (aComTower.getBaseMetaTileEntity().isActive()) {
                             if (mFrequency == ((GTMTE_TowerCommunication) aComTower).mFrequency) {
                                 mIsConnect = ((GTMTE_TowerCommunication) aComTower).mIsConnect;
-                            }  else mIsConnect = false;
-                        }  else mIsConnect = false;
+                            } else mIsConnect = false;
+                        } else mIsConnect = false;
                     }
                 } else mIsConnect = false;
             }
         }
     }
 
-    public void setRecipeCheckParallel(boolean isTrue) {
-        mRecipeCheckParallel = isTrue;
-    }
     public boolean getRecipeCheckParallel() {
         return !mRecipeCheckParallel;
     }
 
-    public void setParallel(int setParallel){
-        mParallel = setParallel;
+    public void setRecipeCheckParallel(boolean isTrue) {
+        mRecipeCheckParallel = isTrue;
     }
+
     public int getParallel() {
         return mParallel;
+    }
+
+    public void setParallel(int setParallel) {
+        mParallel = setParallel;
     }
 
     /**
@@ -1019,20 +1020,20 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         }
     }
 
-    public void setFrequency(int aFreq, EntityPlayer aPlayer){
+    public void setFrequency(int aFreq, EntityPlayer aPlayer) {
         mFrequency = aFreq;
         Impact_API.sCommunicationTower.put(aFreq, new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), getBaseMetaTileEntity().getWorld().provider.dimensionId});
         GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + EnumChatFormatting.GREEN + aFreq);
     }
 
-    public void getFrequency(int aFreq, EntityPlayer aPlayer){
+    public void getFrequency(int aFreq, EntityPlayer aPlayer) {
         if (Impact_API.sCommunicationTower.get(aFreq) != null) {
             //GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sCommunicationTower.get(aFreq)));
             if (Utilits.distanceBetween2D(getBaseMetaTileEntity().getXCoord(), Impact_API.sCommunicationTower.get(aFreq)[0],
                     getBaseMetaTileEntity().getZCoord(), Impact_API.sCommunicationTower.get(aFreq)[2]) < 64) {
                 setCoord(Impact_API.sCommunicationTower.get(aFreq));
                 GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Connection successful");
-            } else  GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Too far for connection");
+            } else GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Too far for connection");
         } else GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Frequency not found");
     }
 
