@@ -57,7 +57,6 @@ import javax.annotation.Nonnegative;
 import java.util.*;
 
 import static com.impact.core.Refstrings.MODID;
-import static com.mojang.realmsclient.gui.ChatFormatting.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
@@ -67,7 +66,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
     public final HashSet<GTMTE_ParallelHatch_Output> sParallHatchesOut = new HashSet<>();
     public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
     public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
-    public int mParallel = 1;
+    public int mParallel = 0;
     public boolean mRecipeCheckParallel = false;
     @SuppressWarnings("rawtypes")
     public ArrayList TTTunnels = new ArrayList<>();
@@ -295,8 +294,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         int tInputList_sS = tInputList.size();
         for (int i = 0; i < tInputList_sS - 1; i++) {
             for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
+                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
                         tInputList.remove(j--);
                         tInputList_sS = tInputList.size();
                     } else {
@@ -829,49 +828,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         mParallel = setParallel;
     }
 
-    /**
-     * === INFO DATA ===
-     */
     @Override
-    public String[] getInfoData() {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            long storedEnergy = 0;
-            long maxEnergy = 0;
-            long pollut = 0;
-            for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-                if (isValidMetaTileEntity(tHatch)) {
-                    storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                    maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-                }
-            }
-            for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesTT) {
-                if (isValidMetaTileEntity(tEHatch)) {
-                    storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
-                    maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
-                }
-            }
-            for (GT_MetaTileEntity_Hatch_EnergyTunnel tEHatch : mEnergyTunnelsTT) {
-                if (isValidMetaTileEntity(tEHatch)) {
-                    storedEnergy += tEHatch.getBaseMetaTileEntity().getStoredEU();
-                    maxEnergy += tEHatch.getBaseMetaTileEntity().getEUCapacity();
-                }
-            }
+    public String[] addInfoData() {
+        final ArrayList<String> ll = new ArrayList<>();
 
-            return new String[]{
-                    "Progress: " + GREEN + mProgresstime / 20 + RESET + " s / " + mMaxProgresstime / 20 + RESET + " s",
-                    "Storage: " + GREEN + storedEnergy + RESET + " / " + RESET + YELLOW + maxEnergy + RESET + " EU",
-                    "Usage Energy: " + RED + -mEUt + RESET + " EU/t",
-                    "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ",
-                    "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
-                    "Pollution: " + RED + getPollutionPerTick(null) + RESET,
-                    getParallel() == -1 ? "" : "Parallel Point: " + YELLOW + getParallel(),
-            };
-        }
-        return null;
-    }
+        ll.add(mParallel > 1 ? "Parallel Point: " + mParallel : "Parallel not found");
 
-    public boolean isGivingInformation() {
-        return super.isGivingInformation();
+        final String[] a = new String[ll.size()];
+        return ll.toArray(a);
     }
 
     public void TThatches() {
