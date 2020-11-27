@@ -20,5 +20,6 @@ public class AutoclaveRecipe implements Runnable {
         GT_Values.RA.addAutoclaveRecipe(CoreItems.getRecipe(38, 1), Materials.Water.getFluid(200L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1), 7000, 2000, 24);
         GT_Values.RA.addAutoclaveRecipe(CoreItems.getRecipe(38, 1), GT_ModHandler.getDistilledWater(1000), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1), 9000, 1500, 24);
 
+        GT_Values.RA.addAutoclaveSpaceRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 9L), Materials.EnrichedBacterialSludge.getFluid(1000L), GT_ModHandler.getModItem("GalaxySpace","item.UnknowCrystal",1L), 10000, 2000, 7680, true);
     }
 }
