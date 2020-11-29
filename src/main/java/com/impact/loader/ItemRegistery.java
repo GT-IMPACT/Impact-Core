@@ -44,6 +44,7 @@ public class ItemRegistery {
     public static Block FluidTankBlock;
     public static Block CeramicBlock;
     public static Block CollisionBlock;
+    public static Block SpaceElevatorBlock;
     public static Block HCloud, HMetal;
     public static Block HFluid;
     public static Block MarsStone;
@@ -143,6 +144,7 @@ public class ItemRegistery {
         CollisionBlock = Block_CollisionBlocks.registerBlock();
         FluidTankBlock = Block_FluidTank.registerBlock();
         CeramicBlock = Block_Ceramic.registerBlock();
+        SpaceElevatorBlock = Block_SpaceElevatorTether.registerBlock();
         HCloud = Block_HCloud.registerBlock();
         HMetal = new Block_Pattern_Space(Material.rock, "HMetal");
         MarsStone = new Block_Pattern_Space(Material.rock, "MarsStone");

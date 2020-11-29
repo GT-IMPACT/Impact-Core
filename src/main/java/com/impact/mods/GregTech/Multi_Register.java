@@ -53,6 +53,8 @@ public class Multi_Register {
 
         Rail_Assembler.set(new GTMTE_RailAssembler(ID++, "impact.multimachine.railassembler", "Rail Assembler").getStackForm(1L));
 
+        Space_Elevator.set(new GTMTE_SpaceElevator(ID++, "impact.multimachine.spaceelevator", "Space Elevator").getStackForm(1L));
+
 
         Machine_CokeOven.set(new GTMTE_CokeOven(13002, "impact.multimachine.cokeoven", "Coke Oven").getStackForm(1L));
         Machine_Multi_Farm.set(new GTMTE_Farm(13001, "impact.multimachine.farm", "Multiblock Farm").getStackForm(1L));
