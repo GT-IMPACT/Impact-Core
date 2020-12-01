@@ -184,6 +184,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemBigFilterUpgrade", 1L, 1), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemPowerItemFilter", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemOCConduit", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTravelAnchor", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "crafting_table", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "chest", 1L, 0), true, false, false);
@@ -817,6 +818,8 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 1), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.core.screwdriver", 1L, 0), true, false, false);
+
+        removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Desh, 1), true, false, false);

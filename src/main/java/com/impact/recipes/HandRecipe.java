@@ -679,6 +679,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("EnderIO", "itemFunctionUpgrade", 1L), tBitMask, new Object[]{"SES", "PDP", "hGd", 'P', OrePrefixes.plate.get(Materials.Silicon), 'S', OrePrefixes.screw.get(Materials.Steel), 'G', OrePrefixes.gear.get(Materials.Steel), 'E', OrePrefixes.gearGtSmall.get(Materials.Steel), 'D', OrePrefixes.gem.get(Materials.Diamond)});
         // --- YetaWrench
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("EnderIO", "itemYetaWrench", 1L), tBitMask, new Object[]{"IhI", "IGI", " I ", 'I', OrePrefixes.ingot.get(Materials.Steel), 'G', OrePrefixes.gear.get(Materials.Steel)});
+        // --- Travel Anchor
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("EnderIO", "blockTravelAnchor", 1L), tBitMask, new Object[]{"PGP", "COC", "PFP", 'O', GT_ModHandler.getModItem("EnderIO", "itemMachinePart", 1L), 'P', OrePrefixes.plate.get(Materials.ElectricalSteel), 'C', OrePrefixes.circuit.get(Materials.Basic), 'G', GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L), 'F', ItemList.Field_Generator_LV});
 
         /* ==== END ENDER IO ==== */
         /** ==== START AE2/EC2 ==== */
@@ -985,8 +987,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "epicLappack", 1L, 27), tBitMask, new Object[]{"PCP", "PUP", "SOS", 'P', OrePrefixes.itemCasing.get(Materials.HSSG), 'C', OrePrefixes.circuit.get(Materials.Superconductor), 'S', OrePrefixes.wireGt12.get(Materials.SuperconductorZPM), 'U', GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1L, GT_Values.W), 'O', ItemList.Energy_LapotronicOrb2});
         // --- Vajra
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "vajra", 1L, 27), tBitMask, new Object[]{"HVL", "CIC", "SOS", 'S', OrePrefixes.stick.get(Materials.Trinium), 'C', OrePrefixes.circuit.get(Materials.Elite), 'L', OrePrefixes.lens.get(Materials.ReinforcedGlass), 'V', GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 4), 'I', GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 5), 'H', GT_ItemList.EngravedEnergyChip, 'O', CoreItems2.getRecipe(46, 1)});
-        // --- Relocator
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "relocator", 1L), tBitMask, new Object[]{"EPS", "CIC", "POP", 'P', OrePrefixes.plate.get(Materials.Phoenixite), 'C', OrePrefixes.circuit.get(Materials.Piko), 'I', GT_ModHandler.getModItem("SGCraft", "stargateBase", 1L), 'O', CoreItems2.getRecipe(46, 1), 'S', ItemList.Sensor_UHV, 'E', ItemList.Emitter_UHV});
         // --- GraviTool
         //GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GraviSuite", "graviTool", 1L), tBitMask, new Object[]{"AHA", "RBR", "WCT", 'A', "plateAlloyCarbon", 'B', "batteryElite", 'R', "plateAlloyAdvanced", 'C', OrePrefixes.circuit.get(Materials.Advanced), 'H', GT_ModHandler.getModItem("IC2", "itemToolHoe", 1L, GT_Values.W), 'W', GT_ModHandler.getModItem("IC2", "itemToolWrenchElectric", 1L, GT_Values.W), 'T', GT_ModHandler.getModItem("IC2", "itemTreetapElectric", 1L, GT_Values.W)});
         // --- Advanced Chainsaw
@@ -1466,15 +1466,15 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Plasma Shovel
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.plasmashovel", 1L), tBitMask, new Object[]{"fCh", "PSP", "WBW", 'P', OrePrefixes.plate.get(Materials.Desh), 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 1), 'B', GT_ModHandler.getModItem("GalaxySpace", "item.LeadBattery", 1L, 100), 'W', GT_ModHandler.getModItem("GalacticraftCore", "tile.aluminumWire", 1L, 1), 'S', GT_ModHandler.getModItem("GalacticraftCore", "item.steelPole", 1L)});
         // --- Space Suit Helmet
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_helmet", 1L), tBitMask, new Object[]{"CHC", "CIC", "MOM", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L, 1), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_helmet", 1L), 'I', GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenMask", 1L, 1), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5), 'O', GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenConcentrator", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_helmet", 1L), tBitMask, new Object[]{"CHC", "CIC", "MOM", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_helmet", 1L), 'I', GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenMask", 1L, 1), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5), 'O', GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenConcentrator", 1L)});
         // --- Space Suit Chestplate
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_plate", 1L), tBitMask, new Object[]{"CHC", "CIC", "CMC", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L, 1), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_plate", 1L), 'I', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_plate", 1L), tBitMask, new Object[]{"CHC", "CIC", "CMC", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_plate", 1L), 'I', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5)});
         // --- Space Suit Leggings
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_leg", 1L), tBitMask, new Object[]{"CHC", "ICI", "IMI", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L, 1), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_leg", 1L), 'I', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_leg", 1L), tBitMask, new Object[]{"CHC", "ICI", "IMI", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_leg", 1L), 'I', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5)});
         // --- Space Suit Boots
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_boots", 1L), tBitMask, new Object[]{"CHC", "CMC", "IMI", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L, 1), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_boots", 1L), 'I', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.spacesuit_boots", 1L), tBitMask, new Object[]{"CHC", "CMC", "IMI", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L), 'H', GT_ModHandler.getModItem("GalaxySpace", "item.lead_boots", 1L), 'I', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5)});
         // --- Small Fuel Canister
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallFuelCanister", 1L), tBitMask, new Object[]{"SdS", "CMC", "ShS", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L, 1), 'S', OrePrefixes.screw.get(Materials.HSLA), 'M', GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallCanister", 1L)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallFuelCanister", 1L), tBitMask, new Object[]{"SdS", "CMC", "ShS", 'C', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L), 'S', OrePrefixes.screw.get(Materials.HSLA), 'M', GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallCanister", 1L)});
         // --- Blank Fuel Tank
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallCanister", 1L), tBitMask, new Object[]{"PRP", "PwP", "PRP", 'P', GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 1L, 9), 'R', OrePrefixes.ring.get(Materials.Steel)});
         // --- Decorate Lead
@@ -1503,6 +1503,11 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.ModuleLander3", 1L), tBitMask, new Object[]{"MMM", "IDI", "MMM", 'M', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5), 'I', GT_ModHandler.getModItem("GalacticraftCore", "item.steelPole", 1L), 'D', GT_ModHandler.getModItem("GalaxySpace", "item.ModuleLander2", 1L)});
 
         /* ==== END GALACTICRAFT & GALAXYSPACE ==== */
+        /** ==== START OPENBLOCKS ==== */
+        // --- Elevator
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L), tBitMask, new Object[]{"w h", "PHP", "GBG", 'P', OrePrefixes.plate.get(Materials.Steel), 'G', OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'H', new ItemStack(Blocks.heavy_weighted_pressure_plate)});
+
+        /* ==== END OPENBLOCKS ==== */
 
     }
 
