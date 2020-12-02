@@ -328,5 +328,25 @@ public class AssemblyLineRecipe implements Runnable {
                 },
                 GT_ItemList.Naquadah_Liquid_Enriched.get(1L), 320 * 20, 118236);
 
+        // --- Relocator
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Casing_Coil_Superconductor.get(1L), 288000, new Object[]{
+                ItemList.Casing_Coil_Superconductor.get(1L),
+                GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockSpatialIOPort", 1),
+                ItemList.Field_Generator_IV.get(4L),
+                ItemList.Sensor_LuV.get(8L),
+                ItemList.Emitter_LuV.get(8L),
+                GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockSpatialPylon", 8),
+                new Object[]{OrePrefixes.circuit.get(Materials.Master), 8L},
+                ItemList.Circuit_Wafer_NPIC.get(32L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L)
+        }, new FluidStack[]{
+                Materials.NiobiumTitanium.getMolten(1440L),
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                Materials.Enderium.getMolten(2880L)
+        }, GT_ModHandler.getModItem("GraviSuite", "relocator", 1, 26), 8000, 28600);
+
     }
 }

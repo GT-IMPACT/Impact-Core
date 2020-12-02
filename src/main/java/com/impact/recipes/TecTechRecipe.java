@@ -934,5 +934,32 @@ public class TecTechRecipe implements Runnable {
                 },
                 GT_ItemList.Naquadah_multi.get(1L), 320 * 20, 500000);
 
+        //Teleporter
+        TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("SGCraft", "stargateController", 1L),
+                192000, 512, 2000000, 16, new Object[]{
+                        ItemList.Hull_UEV.get(1),
+                        GT_ModHandler.getModItem("SGCraft", "stargateBase", 1L),
+                        GT_ModHandler.getModItem("SGCraft", "stargateRing", 8L),
+                        GT_ModHandler.getModItem("SGCraft", "stargateRing", 4L, 1),
+                        GT_ModHandler.getModItem("SGCraft", "ic2PowerUnit", 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 16),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 8L},
+                        ItemList.Sensor_UEV.get(16),
+                        ItemList.Emitter_UEV.get(16),
+                        ItemList.Field_Generator_UEV.get(4),
+                        ItemList.Circuit_Chip_FPIC.get(64),
+                        ItemList.Circuit_Chip_FPIC.get(64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.BlackPlutonium, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.BlackPlutonium, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.BlackPlutonium, 64)
+                },
+                new FluidStack[]{
+                        Materials.InfinityCatalyst.getMolten(2304L),
+                        Materials.PerroxPolymer.getMolten(9216L),
+                        Materials.Phoenixite.getMolten(9216L),
+                        Materials.Americium.getPlasma(9216L)
+                },
+                ItemList.Teleporter.get(1L), 300 * 20, 8000000);
+
     }
 }

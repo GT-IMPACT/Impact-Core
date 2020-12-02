@@ -237,8 +237,8 @@ public class Printer3DRecipe implements Runnable {
 
 /** ================================= start EnderIO =================================*/
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), GT_ModHandler.getModItem("EnderIO", "itemBasicCapacitor", 1L, 2), ItemList.Emitter_HV.get(1L),
-                ItemList.Sensor_HV.get(1L), GT_ModHandler.getModItem("EnderIO", "blockFusedQuartz", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 8)
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), GT_ModHandler.getModItem("EnderIO", "itemBasicCapacitor", 1L, 2), ItemList.Field_Generator_MV.get(1L),
+                ItemList.Sensor_HV.get(2L), GT_ModHandler.getModItem("EnderIO", "blockFusedQuartz", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 8)
         }, GT_ModHandler.getModItem("EnderIO", "blockTelePad", 9L, 0), null, 20 * 20, 480);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
@@ -731,13 +731,6 @@ public class Printer3DRecipe implements Runnable {
         /* ================================= end  Compact-Kinetic =================================*/
 
 /** ================================= start GT =================================*/
-
-        //Teleporter
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_ModHandler.getModItem("EnderIO", "blockTransceiver", 1, 0), ItemList.Energy_LapotronicOrb2.get(1L), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockSpatialIOPort", 1, 0), ItemList.Field_Generator_LuV.get(3L),
-                GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuantumLinkChamber", 1, 0), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuantumRing", 8, 0), ItemList.Tool_DataOrb.get(4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8),
-                GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockSpatialPylon", 12, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Europium, 12)
-        }, ItemList.Teleporter.get(1L), null, 50 * 20, 30720);
 
         //Fusion Casing MK1
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
