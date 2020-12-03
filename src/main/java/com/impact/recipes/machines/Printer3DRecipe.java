@@ -235,18 +235,6 @@ public class Printer3DRecipe implements Runnable {
 
         /* ================================= end IMPACT MOD =================================*/
 
-/** ================================= start EnderIO =================================*/
-        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), GT_ModHandler.getModItem("EnderIO", "itemBasicCapacitor", 1L, 2), ItemList.Field_Generator_MV.get(1L),
-                ItemList.Sensor_HV.get(2L), GT_ModHandler.getModItem("EnderIO", "blockFusedQuartz", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 8)
-        }, GT_ModHandler.getModItem("EnderIO", "blockTelePad", 9L, 0), null, 20 * 20, 480);
-
-        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-                GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuantumLinkChamber", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Enderium, 1), ItemList.Field_Generator_LuV.get(1L), GT_ModHandler.getModItem("EnderIO", "itemBasicCapacitor", 4L, 2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_ModHandler.getModItem("EnderIO", "blockFusedQuartz", 6L, 0), GT_ModHandler.getModItem("EnderIO", "itemMaterial", 8L, 5), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 12)
-        }, GT_ModHandler.getModItem("EnderIO", "blockTransceiver", 1L, 0), null, 40 * 20, 30720);
-        /* ================================= end  EnderIO =================================*/
-
 /** ================================= start AE2 =================================*/
         //ME Controller
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{

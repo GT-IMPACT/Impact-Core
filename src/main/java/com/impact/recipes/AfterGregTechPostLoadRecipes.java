@@ -61,9 +61,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 6), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 3), true, false, false);
 
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTelePad", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTransceiver", 1L, 0), true, false, false);
-
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockController", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockChest", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockDrive", 1L, 0), true, false, false);
@@ -174,17 +171,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("LogisticsPipes", "item.PipeItemsBasicLogistics", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("LogisticsPipes", "item.PipeFluidBasic", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("LogisticsPipes", "item.PipeBlockRequestTable", 1L, 0), true, false, false);
-
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockInventoryPanel", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemFunctionUpgrade", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemItemConduit", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemLiquidConduit", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemYetaWrench", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemBigFilterUpgrade", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemBigFilterUpgrade", 1L, 1), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemPowerItemFilter", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "itemOCConduit", 1L, 0), true, false, false);
-        removeRecipeByOutput(GT_ModHandler.getModItem("EnderIO", "blockTravelAnchor", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "crafting_table", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "chest", 1L, 0), true, false, false);

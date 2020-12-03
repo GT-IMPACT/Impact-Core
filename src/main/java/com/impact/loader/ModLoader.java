@@ -46,5 +46,10 @@ public class ModLoader implements Runnable {
         if (Loader.isModLoaded("TConstruct")) {
             new TConstructRecipe().run();
         }
+
+        // --- EnderIO
+        if (Loader.isModLoaded("EnderIO")) {
+            new EnderIORecipe().run();
+        }
     }
 }
