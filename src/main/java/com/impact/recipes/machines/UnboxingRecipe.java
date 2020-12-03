@@ -32,6 +32,7 @@ public class UnboxingRecipe implements Runnable {
         GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("extracells", "craftingstorage", 1L, 3), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0), GT_ModHandler.getModItem("extracells", "storage.component", 1L, 3), 50, 256);
 
         GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 1), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_LapotronicOrb.get(1L), 1600, 64);
+        GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 6), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.EnergyCrystal_IV.get(1L), 1600, 64);
         GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 2), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_LapotronicOrb2.get(1L), 1800, 256);
         GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 3), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_Module.get(1L), 2000, 1024);
         GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 4), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Inconel792, 1), ItemList.Energy_Cluster.get(1L), 2200, 4096);
