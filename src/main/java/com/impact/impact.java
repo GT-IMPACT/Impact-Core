@@ -27,14 +27,25 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
+import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.impact.core.Config.csv;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 
 @Mod(
         modid = MODID,
@@ -113,6 +124,12 @@ public class impact {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent postinit) {
         MainLoader.postInit();
+//        final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+//        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel,40), 40);
+//        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel,20), 20);
+//        inputMap.put(new ItemStack(IGlassBlock, 20), 20);
+//        inputMap.put(new ItemStack(GCItems.rocketEngine, 4), 4);
+//        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
     }
 
     @Mod.EventHandler
