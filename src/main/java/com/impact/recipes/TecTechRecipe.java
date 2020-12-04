@@ -99,7 +99,7 @@ public class TecTechRecipe implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
                         ItemList.Emitter_UV.get(2),
                         ItemList.Circuit_Wetwaresupercomputer.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Diamericiumtitanium, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Diamericiumtitanium, 2),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(2000),
                         Materials.Silver.getMolten(2592),
@@ -114,7 +114,7 @@ public class TecTechRecipe implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
                         ItemList.Sensor_UV.get(2),
                         ItemList.Circuit_Wetwaresupercomputer.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Diamericiumtitanium, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Diamericiumtitanium, 2),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(2000),
                         Materials.Silver.getMolten(2592),
@@ -131,7 +131,7 @@ public class TecTechRecipe implements Runnable {
                         ItemList.Sensor_UV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 4),
                         GT_OreDictUnificator.get(OrePrefixes.lens, Materials.MysteriousCrystal, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Diamericiumtitanium, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Diamericiumtitanium, 4),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(2000),
                         Materials.Neutronium.getMolten(2592),
@@ -699,7 +699,7 @@ public class TecTechRecipe implements Runnable {
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Machine_DigitalTransformer_UV.get(1L),
                 12000, 16, 100000, 2, new Object[]{
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1L, 12159),
+                        ItemList.WetTransformer_UEV_UHV.get(1),
                         ItemList.Cover_Screen.get(16L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Osmium, 2L),
                         ItemList.UHV_Coil.get(1L),
@@ -714,7 +714,7 @@ public class TecTechRecipe implements Runnable {
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Machine_DigitalTransformer_UHV.get(1L),
                 24000, 32, 100000, 4, new Object[]{
-                        GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1L, 12160),
+                        ItemList.WetTransformer_UIV_UEV.get(1),
                         ItemList.Cover_Screen.get(32L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Osmium, 2L),
                         ItemList.UEV_Coil.get(1L),
