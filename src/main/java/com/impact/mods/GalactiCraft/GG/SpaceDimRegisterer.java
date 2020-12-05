@@ -1,6 +1,7 @@
 package com.impact.mods.GalactiCraft.GG;
 
 import bloodasp.galacticgreg.api.*;
+import com.impact.ImpactGalacticModule;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.ChunkProviderEnd;
 
@@ -31,9 +32,10 @@ public class SpaceDimRegisterer {
     /**
      * Just a helper to convert a single element to a list
      */
-    private List<ModDBMDef> singleToList(ModDBMDef pDef) {
+    private List<ModDBMDef> singleToList(ModDBMDef... pDef) {
         List<ModDBMDef> tLst = new ArrayList<>();
-        tLst.add(pDef);
+        for (int i = 0; i < pDef.length; i++)
+            tLst.add(pDef[i]);
         return tLst;
     }
 
@@ -57,6 +59,7 @@ public class SpaceDimRegisterer {
         registerModContainer(Setup_GalactiCraftCore());
         registerModContainer(Setup_GalactiCraftPlanets());
         registerModContainer(Setup_GalaxySpace());
+        registerModContainer(Setup_ImpactGalacticModule());
     }
 
     /**
@@ -174,7 +177,7 @@ public class SpaceDimRegisterer {
         // The resulting config setting will be: <ModID>_<Name you give here as arg0>_false = false
         // make sure to never change this name once you've generated your config files, as it will overwrite everything!
 
-        // 30.11.2016 GSpace v1.1.3 Stable
+        // 05.12.2020 GalaxySpace Impact Edition
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Pluto", "galaxyspace.systems.SolarSystem.planets.pluto.dimension.ChunkProviderPluto", Enums.DimensionType.Planet, singleToList(DBMPluto)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Triton", "galaxyspace.systems.SolarSystem.moons.triton.dimension.ChunkProviderTriton", Enums.DimensionType.Planet, singleToList(DBMTriton)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Proteus", "galaxyspace.systems.SolarSystem.moons.proteus.dimension.ChunkProviderProteus", Enums.DimensionType.Planet, singleToList(DBMProteus)));
@@ -183,15 +186,15 @@ public class SpaceDimRegisterer {
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Callisto", "galaxyspace.systems.SolarSystem.moons.callisto.dimension.ChunkProviderCallisto", Enums.DimensionType.Planet, singleToList(DBMCallisto)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Ganymede", "galaxyspace.systems.SolarSystem.moons.ganymede.dimension.ChunkProviderGanymede", Enums.DimensionType.Planet, singleToList(DBMGanymede)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Ceres", "galaxyspace.systems.SolarSystem.planets.ceres.dimension.ChunkProviderCeres", Enums.DimensionType.Planet, singleToList(DBMCeres)));
-        modCGalaxySpace.addDimensionDef(new ModDimensionDef("Deimos", "galaxyspace.systems.SolarSystem.moons.deimos.dimension.ChunkProviderDeimos", Enums.DimensionType.Planet, singleToList(DBMDeimos)));
+        //modCGalaxySpace.addDimensionDef(new ModDimensionDef("Deimos", "galaxyspace.systems.SolarSystem.moons.deimos.dimension.ChunkProviderDeimos", Enums.DimensionType.Planet, singleToList(DBMDeimos)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Enceladus", "galaxyspace.systems.SolarSystem.moons.enceladus.dimension.ChunkProviderEnceladus", Enums.DimensionType.Planet, singleToList(DBMEnceladus)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Io", "galaxyspace.systems.SolarSystem.moons.io.dimension.ChunkProviderIo", Enums.DimensionType.Planet, singleToList(DBMIO)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Europa", "galaxyspace.systems.SolarSystem.moons.europa.dimension.ChunkProviderEuropa", Enums.DimensionType.Planet, DBMEuropa));
-        modCGalaxySpace.addDimensionDef(new ModDimensionDef("Phobos", "galaxyspace.systems.SolarSystem.moons.phobos.dimension.ChunkProviderPhobos", Enums.DimensionType.Planet, singleToList(DBMPhobos)));
+        //modCGalaxySpace.addDimensionDef(new ModDimensionDef("Phobos", "galaxyspace.systems.SolarSystem.moons.phobos.dimension.ChunkProviderPhobos", Enums.DimensionType.Planet, singleToList(DBMPhobos)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Venus", "galaxyspace.systems.SolarSystem.planets.venus.dimension.ChunkProviderVenus", Enums.DimensionType.Planet, singleToList(DBMVenus)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Mercury", "galaxyspace.systems.SolarSystem.planets.mercury.dimension.ChunkProviderMercury", Enums.DimensionType.Planet, singleToList(DBMMercury)));
-        modCGalaxySpace.addDimensionDef(new ModDimensionDef("MakeMake", "galaxyspace.systems.SolarSystem.planets.makemake.dimension.ChunkProviderMakemake", Enums.DimensionType.Planet, singleToList(DBMMakemake)));
-        modCGalaxySpace.addDimensionDef(new ModDimensionDef("Haumea", "galaxyspace.systems.SolarSystem.planets.haumea.dimension.ChunkProviderHaumea", Enums.DimensionType.Planet, singleToList(DBMHaumea)));
+        //modCGalaxySpace.addDimensionDef(new ModDimensionDef("MakeMake", "galaxyspace.systems.SolarSystem.planets.makemake.dimension.ChunkProviderMakemake", Enums.DimensionType.Planet, singleToList(DBMMakemake)));
+        //modCGalaxySpace.addDimensionDef(new ModDimensionDef("Haumea", "galaxyspace.systems.SolarSystem.planets.haumea.dimension.ChunkProviderHaumea", Enums.DimensionType.Planet, singleToList(DBMHaumea)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("CentauriA", "galaxyspace.systems.ACentauriSystem.planets.aCentauriBb.dimension.ChunkProviderACentauri", Enums.DimensionType.Planet, singleToList(DBMCentauriA)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("VegaB", "galaxyspace.systems.VegaSystem.planets.vegaB.dimension.ChunkProviderVegaB", Enums.DimensionType.Planet, singleToList(DBMVegaB)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("BarnardC", "galaxyspace.systems.BarnardsSystem.planets.barnardaC.dimension.ChunkProviderBarnardaC", Enums.DimensionType.Planet, DBMbarnardaC));
@@ -209,4 +212,20 @@ public class SpaceDimRegisterer {
         modCGalaxySpace.addDimensionDef(dimKupierBelt);
         return modCGalaxySpace;
     }
+
+    private ModContainer Setup_ImpactGalacticModule() {
+        ModContainer ImpactGalacticModule = new ModContainer("Impact|GalacticModule");
+        final ModDBMDef DBMPhobos = new ModDBMDef("phobosblocks", 1);
+        final ModDBMDef DBMDeimos = new ModDBMDef("deimosblocks", 1);
+        final ModDBMDef DBMMakemake = new ModDBMDef("makemakeblocks", 1);
+        final ModDBMDef DBMHaumea = new ModDBMDef("haumeablocks");
+
+        ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Deimos", "com.impact.systems.SolarSystems.moon.deimos.dimension.ChunkProviderDeimos", Enums.DimensionType.Planet, singleToList(DBMDeimos)));
+        ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Phobos", "com.impact.systems.SolarSystems.moon.phobos.dimension.ChunkProviderPhobos", Enums.DimensionType.Planet, singleToList(DBMPhobos)));
+        ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Makemake", "com.impact.systems.SolarSystems.planet.makemake.dimension.ChunkProviderMakemake", Enums.DimensionType.Planet, singleToList(DBMMakemake)));
+        ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Haumea", "com.impact.systems.SolarSystems.planet.haumea.dimension.ChunkProviderHaumea", Enums.DimensionType.Planet, singleToList(DBMHaumea)));
+
+        return ImpactGalacticModule;
+    }
+
 }
