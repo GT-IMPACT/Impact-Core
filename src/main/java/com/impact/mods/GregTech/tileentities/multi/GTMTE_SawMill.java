@@ -157,6 +157,12 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
                 }
                 this.mOutputFluids = recipe.mFluidOutputs;
                 this.updateSlots();
+                this.mWrench = true;
+                this.mScrewdriver = true;
+                this.mSoftHammer = true;
+                this.mHardHammer = true;
+                this.mSolderingTool = true;
+                this.mCrowbar = true;
                 return true;
             }
         }

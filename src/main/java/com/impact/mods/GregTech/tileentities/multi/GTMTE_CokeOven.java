@@ -129,6 +129,12 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
                 }
                 this.mOutputFluids = recipe.mFluidOutputs;
                 this.updateSlots();
+                this.mWrench = true;
+                this.mScrewdriver = true;
+                this.mSoftHammer = true;
+                this.mHardHammer = true;
+                this.mSolderingTool = true;
+                this.mCrowbar = true;
                 return true;
             }
         }
