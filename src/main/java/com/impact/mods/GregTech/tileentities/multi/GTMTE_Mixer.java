@@ -1,7 +1,5 @@
 package com.impact.mods.GregTech.tileentities.multi;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.GregTech.gui.GUI_BASE;
@@ -12,7 +10,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -25,8 +22,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static com.mojang.realmsclient.gui.ChatFormatting.*;
-import static com.mojang.realmsclient.gui.ChatFormatting.YELLOW;
 
 public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -102,7 +97,7 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase {
     /** === RECIPE MAP === */
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+        return GT_Recipe.GT_Recipe_Map.sMultuMixerRecipes;
     }
 
     private int mLevel = 0;
