@@ -12,7 +12,7 @@ public class Impact_API {
     /**
      * The OreGeneration Map
      */
-    public static final Map<ItemStack[], BiomeGenBase> sBiomeOres = new HashMap<>();
+    public static final Map<BiomeGenBase, ItemStack[]> sBiomeOres = new HashMap<>();
 
     /**
      * The Space Satellite Frequencies
@@ -22,7 +22,6 @@ public class Impact_API {
     /**
      * The MultiBlocks connect with Communication Tower Frequencies
      */
-
     public static final Map<Integer, int[]> sCommunicationTower = new ConcurrentHashMap<>();
 
 }

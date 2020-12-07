@@ -18,6 +18,7 @@ import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.RailCraft.carts.item.events.Module;
 import com.impact.recipes.AfterGregTechPostLoadRecipes;
 import com.impact.recipes.HandRecipe;
+import com.impact.recipes.RegisterOreVein;
 import com.impact.recipes.machines.*;
 import com.impact.util.OreDictRegister;
 import cpw.mods.fml.common.Loader;
@@ -173,6 +174,7 @@ public class MainLoader {
         new ArcFurnaceRecipe().run();
         new UnboxingRecipe().run();
         new CannerRecipe().run();
+        new RegisterOreVein().run();
 
         addAfterGregTechPostLoadRunner();
         INFO("[postLoad] After GregTech PostLoad Runner - Loaded");
