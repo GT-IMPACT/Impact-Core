@@ -1,7 +1,9 @@
 package com.impact.mods.NEI.ImpactPlugin;
 
+import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import com.impact.mods.GregTech.tileentities.multi.GTMTE_RailAssembler;
+import com.impact.recipes.RegisterOreVein;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.util.GT_Recipe;
@@ -35,6 +37,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
             new NEI_RocketFuelSingle();
             //new NEI_OxygenSuppSingle();
             new NEI_Impact_RailAssembler(GTMTE_RailAssembler.sTrackAssemblerRecipes);
+           // new NEI_Impact_OreVeinHelper(RegisterOreVein.sVeinOres);
         }
 
         sIsAdded = true;

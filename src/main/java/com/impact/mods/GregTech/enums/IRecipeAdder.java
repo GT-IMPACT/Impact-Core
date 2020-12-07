@@ -6,4 +6,6 @@ public interface IRecipeAdder {
 
     public boolean addTrackAssemblerRecipe(ItemStack[] aInputs, ItemStack aOutput, int aDuration, int aEUt);
 
+    public boolean addVeinOres(ItemStack[] aOutputs, int aBiomeNumber);
+
 }
