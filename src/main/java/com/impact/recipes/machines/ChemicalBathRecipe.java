@@ -13,9 +13,12 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.loader.ItemRegistery.UtilBlock;
 import static com.impact.util.Utilits.Blockstack;
 
 public class ChemicalBathRecipe implements Runnable {
@@ -99,6 +102,10 @@ public class ChemicalBathRecipe implements Runnable {
 
         // --- Leather
         GT_Values.RA.addChemicalBathRecipe(new ItemStack(Items.string, 4), Materials.PolyvinylChloride.getMolten(36L), new ItemStack(Items.leather, 1), GT_Values.NI, GT_Values.NI, new int[]{10000},100, 30);
+
+        // --- White Concrete
+        GT_Values.RA.addChemicalBathRecipe(Blockstack(UtilBlock, 1, 0), new FluidStack(FluidRegistry.getFluid("dye.chemical.dyewhite"), 18), Blockstack(UtilBlock, 1, 2), GT_Values.NI, GT_Values.NI, new int[]{10000},64, 2);
+        GT_Values.RA.addChemicalBathRecipe(Blockstack(UtilBlock, 1, 0), new FluidStack(FluidRegistry.getFluid("dye.watermixed.dyewhite"), 18), Blockstack(UtilBlock, 1, 2), GT_Values.NI, GT_Values.NI, new int[]{10000},64, 2);
 
     }
 }

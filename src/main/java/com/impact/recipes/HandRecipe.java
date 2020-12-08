@@ -18,8 +18,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static com.impact.common.item.Core_List_Items.*;
-import static com.impact.loader.ItemRegistery.CeramicBlock;
-import static com.impact.loader.ItemRegistery.FluidTankBlock;
+import static com.impact.loader.ItemRegistery.*;
 import static com.impact.util.Utilits.Blockstack;
 import static gregtech.api.GregTech_API.getStackofAmountFromOreDict;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES;
@@ -554,6 +553,9 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Diode_16A_LuV.get(1L), 0, new Object[]{"PSP", "WCW", 'P', OrePrefixes.plate.get(Materials.HastelloyN), 'W', OrePrefixes.cableGt16.get(Materials.YttriumBariumCuprate), 'S', OrePrefixes.spring.get(Materials.YttriumBariumCuprate), 'C', ItemList.Casing_LuV});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Diode_16A_ZPM.get(1L), 0, new Object[]{"PSP", "WCW", 'P', OrePrefixes.plate.get(Materials.Lafium), 'W', OrePrefixes.cableGt16.get(Materials.Naquadah), 'S', OrePrefixes.spring.get(Materials.Naquadah), 'C', ItemList.Casing_ZPM});
         GT_ModHandler.addCraftingRecipe(GT_ItemList.Diode_16A_UV.get(1L), 0, new Object[]{"PSP", "WCW", 'P', OrePrefixes.plate.get(Materials.CinobiteA243), 'W', OrePrefixes.cableGt16.get(Materials.ElectrumFlux), 'S', OrePrefixes.spring.get(Materials.ElectrumFlux), 'C', ItemList.Casing_UV});
+
+        //White Concrete
+        GT_ModHandler.addCraftingRecipe(Blockstack(UtilBlock, 8, 2), bitsd, new Object[]{"CCC", "CDC", "CCC", 'C', Blockstack(UtilBlock, 1, 0), 'D', Dyes.dyeWhite});
 
     }
     public void run2() {
@@ -1275,7 +1277,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Overclocked Heat Vent
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVentGold", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', OrePrefixes.screw.get(Materials.StainlessSteel), 'S', OrePrefixes.plate.get(Materials.Gold), 'V', GT_ModHandler.getModItem("IC2", "reactorVentDiamond", 1L, 1)});
         // --- Component Heat Vent
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVentSpread", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', CoreItems2.getRecipe(51, 1), 'S', OrePrefixes.plateDense.get(Materials.Tin), 'V', GT_ModHandler.getModItem("IC2", "reactorVent", 1L, 1)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVentSpread", 1L, 0), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', CoreItems2.getRecipe(51, 1), 'S', OrePrefixes.plateDense.get(Materials.Tin), 'V', GT_ModHandler.getModItem("IC2", "reactorVent", 1L, 1)});
         // --- Heat Exchanger
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorHeatSwitch", 1L, 1), tBitMask, new Object[]{"COC", "SVS", "CSC", 'C', OrePrefixes.plate.get(Materials.Silver), 'S', OrePrefixes.plate.get(Materials.Aluminium), 'V', OrePrefixes.plate.get(Materials.Copper), 'O', OrePrefixes.circuit.get(Materials.Basic)});
         // --- Reactor Heat Exchanger
@@ -1508,6 +1510,23 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L), tBitMask, new Object[]{"w h", "PHP", "GBG", 'P', OrePrefixes.plate.get(Materials.Steel), 'G', OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'H', new ItemStack(Blocks.heavy_weighted_pressure_plate)});
 
         /* ==== END OPENBLOCKS ==== */
+        /** ==== START NUCLEAR CONTROL ==== */
+        // --- Remote Sensor Kit
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemRemoteSensorKit", 1L, 0), tBitMask, new Object[]{GT_ModHandler.getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0)});
+        // --- Energy Sensor Kit
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemEnergySensorKit", 1L, 0), tBitMask, new Object[]{GT_ModHandler.getModItem("IC2NuclearControl", "ItemEnergySensorLocationCard", 1L, 0)});
+        // --- Counter Sensor Kit
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorKit", 1L, 0), tBitMask, new Object[]{GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 0)});
+        // --- Liquid Sensor Kit
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorKit", 1L, 1), tBitMask, new Object[]{GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 1)});
+        // --- Generator Sensor Kit
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorKit", 1L, 2), tBitMask, new Object[]{GT_ModHandler.getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 2)});
+        // --- GregTech Sensor Kit
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.NC_SensorKit.get(1), tBitMask, new Object[]{ItemList.NC_SensorCard});
+        // --- AE Sensor Kit
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "KitAppeng", 1L, 0), tBitMask, new Object[]{GT_ModHandler.getModItem("IC2NuclearControl", "CardAppeng", 1L, 0)});
+
+        /* ==== END NUCLEAR CONTROL ==== */
 
     }
 

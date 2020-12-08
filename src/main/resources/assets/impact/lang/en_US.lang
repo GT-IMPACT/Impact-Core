@@ -69,6 +69,7 @@ gui.AdvancedSolarPanel.energyPerTick=EU/t
 #Decorated Block
 tile.impact_util.0.name=Concrete
 tile.impact_util.1.name=Piston Block
+tile.impact_util.2.name=White Concrete
 
 tile.impact_coal.0.name=Coke Coal Block
 tile.impact_coal.1.name=Compressed Coal Coke
