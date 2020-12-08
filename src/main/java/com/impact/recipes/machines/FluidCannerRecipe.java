@@ -38,6 +38,9 @@ public class FluidCannerRecipe implements Runnable{
         GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankHeavyFull", 1L, 5400), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankHeavyFull", 1L, 0), Materials.Oxygen.getGas(5400L), GT_Values.NF);
         GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt4", 1L, 7200), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt4", 1L, 0), Materials.Oxygen.getGas(7200L), GT_Values.NF);
         GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt5", 1L, 9000), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt5", 1L, 0), Materials.Oxygen.getGas(9000L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t4", 1L, 10800), GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t4", 1L, 0), Materials.Oxygen.getGas(10800L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t5", 1L, 12600), GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t5", 1L, 0), Materials.Oxygen.getGas(12600L), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t6", 1L, 14400), GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t6", 1L, 0), Materials.Oxygen.getGas(14400L), GT_Values.NF);
 
         GT_Values.RA.addFluidCannerRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.fuelCanisterPartial", 1L, 1001), GT_ModHandler.getModItem("GalacticraftCore", "item.fuelCanisterPartial", 1L, 1), new FluidStack(ItemList.sRocketFuel,1000), GT_Values.NF);
 
