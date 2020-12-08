@@ -118,6 +118,7 @@ public class AssemblerRecipe implements Runnable {
 
         //Sawmill
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 6L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1L), GT_Utility.getIntegratedCircuit(2)}, null, GT_ItemList.SawCase.get(2L), 50, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ItemList.ULVConveyorModule.get(1), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 4L), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("impact", "impact_sawmill_block", 5L), 60, 30);
 
         /* ================================= end IMPACT MOD =================================*/
 
