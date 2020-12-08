@@ -14,9 +14,9 @@ public class ImplosionCompressorRecipe implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Aluminium, 2L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualAluminium", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Bronze, 2L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedDualBronze", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-        GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(97, 1), 5, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.StainlessSteel, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Aluminium, 2L), 1, CoreItems2.getRecipe(176, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Bronze, 2L), 1, CoreItems2.getRecipe(175, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(97, 1), 5, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 4), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.StainlessSteel, 1L));
         GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedCoal", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(74, 3), 1, CoreItems2.getRecipe(78, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(75, 3), 1, CoreItems2.getRecipe(82, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
@@ -29,21 +29,22 @@ public class ImplosionCompressorRecipe implements Runnable {
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(83, 2), 1, CoreItems2.getRecipe(94, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(85, 2), 1, CoreItems2.getRecipe(95, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
         GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Titanium, 2L), 1, CoreItems2.getRecipe(96, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-        GT_Values.RA.addImplosionRecipe(ItemList.Ingot_Heavy1.get(1L, new Object[0]), 8, GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.StainlessSteel, 2L));
-        GT_Values.RA.addImplosionRecipe(ItemList.Ingot_Heavy2.get(1L, new Object[0]), 8, GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 3), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 2L));
-        GT_Values.RA.addImplosionRecipe(ItemList.Ingot_Heavy3.get(1L, new Object[0]), 8, GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TungstenSteel, 2L));
+        GT_Values.RA.addImplosionRecipe(ItemList.Ingot_Heavy1.get(1L), 8, GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.StainlessSteel, 2L));
+        GT_Values.RA.addImplosionRecipe(ItemList.Ingot_Heavy2.get(1L), 8, GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 3), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 2L));
+        GT_Values.RA.addImplosionRecipe(ItemList.Ingot_Heavy3.get(1L), 8, GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TungstenSteel, 2L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(16,1), 8, CoreItems2.getRecipe(11,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Chrome, 2L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(17,1), 8, CoreItems2.getRecipe(12,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iridium, 2L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(18,1), 8, CoreItems2.getRecipe(13,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Osmium, 2L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(19,1), 8, CoreItems2.getRecipe(14,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neutronium, 2L));
         GT_Values.RA.addImplosionRecipe(CoreItems2.getRecipe(20,1), 8, CoreItems2.getRecipe(15,1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phoenixite, 2L));
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 3), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Nickel, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 6), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Oriharukon, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 7), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Platinum, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 8), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
-        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Duraluminium, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 1L), 1, CoreItems2.getRecipe(171, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Nickel, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 2), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Oriharukon, 1L), 1, CoreItems2.getRecipe(173, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Platinum, 1L), 1, CoreItems2.getRecipe(172, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Adamantium, 1L), 1, CoreItems2.getRecipe(174, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+        GT_Values.RA.addImplosionRecipe(GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Cobalt, 1L), 1, GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
 
-		GT_Values.RA.addImplosionRecipe(ItemList.Ingot_IridiumAlloy.get(1L), 8, GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L));
+        GT_Values.RA.addImplosionRecipe(ItemList.Ingot_IridiumAlloy.get(1L), 8, GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L));
 
     }
 }

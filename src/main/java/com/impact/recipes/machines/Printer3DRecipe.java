@@ -1014,15 +1014,15 @@ public class Printer3DRecipe implements Runnable {
         /* ================================= end  GT =================================*/
         /** ================================= START GALACTICRAFT =================================*/
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
-                CoreItems2.getRecipe(0, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.noseCone", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedSDHD120", 3L, 0),
-                GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 8L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.rocketFins", 4L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallFuelCanister", 1L, 0),
+                CoreItems2.getRecipe(0, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.noseCone", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 3L, 4),
+                GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 8L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.rocketFins", 4L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.Modules", 1L, 3),
                 GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 1L, 0)
         }, GT_ModHandler.getModItem("GalacticraftCore", "item.spaceship", 1L, 0), null, 100 * 20, 480);
 
         GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
                 CoreItems2.getRecipe(1, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.noseCone", 1L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.heavyPlating", 3L, 0),
                 GT_ModHandler.getModItem("GalacticraftMars", "item.null", 10L, 3), GT_ModHandler.getModItem("GalacticraftCore", "item.rocketFins", 4L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 2L, 1),
-                GT_ModHandler.getModItem("GalaxySpace", "item.ModuleSmallFuelCanister", 2L, 0), GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 2L, 0)
+                GT_ModHandler.getModItem("GalaxySpace", "item.Modules", 2L, 3), GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 2L, 0)
         }, GT_ModHandler.getModItem("GalacticraftMars", "item.spaceshipTier2", 1L, 0), null, 120 * 20, 1920);
 
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
