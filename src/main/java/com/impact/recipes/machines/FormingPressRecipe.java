@@ -7,6 +7,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -60,6 +61,12 @@ public class FormingPressRecipe implements Runnable {
         GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 4L), ItemList.Shape_Mold_Plate.get(0), new ItemStack(Items.leather, 1), 800, 16);
 
         /* ================================= end CORE MOD =================================*/
+        /** ================================= start IC2 =================================*/
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 4L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1L), GT_ModHandler.getModItem("IC2", "reactorPlating", 1L, 0), 200, 256);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Copper, 1L), GT_ModHandler.getModItem("IC2", "reactorPlating", 1L, 0), GT_ModHandler.getModItem("IC2", "reactorPlatingHeat", 1L, 0), 220, 480);
+        GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 8L), GT_ModHandler.getModItem("IC2", "reactorPlating", 1L, 0), GT_ModHandler.getModItem("IC2", "reactorPlatingExplosive", 1L, 0), 220, 480);
+
+        /* ================================= end IC2 =================================*/
 
     }
 }

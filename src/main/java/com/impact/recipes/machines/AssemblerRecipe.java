@@ -406,11 +406,6 @@ public class AssemblerRecipe implements Runnable {
                 GT_ModHandler.getIC2Item("quantumBoots", 1L, 26), 1500, 7680);
         /*====END QUANTUM SUITE====*/
 
-        GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), true, false, true);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium, 2)}, null, GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), 600, 64);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 1)}, null, GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), 600, 64);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1)}, null, ItemList.Neutron_Reflector.get(1), 1200, 256);
-
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Glass, 1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 4L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, CoreItems2.getRecipe(143, 1), 100, 30);
         GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(143, 3), GT_Utility.getIntegratedCircuit(3), CoreItems2.getRecipe(144, 1), 300, 60);
         GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(144, 2), GT_Utility.getIntegratedCircuit(2), CoreItems2.getRecipe(145, 1), 600, 90);
@@ -1198,7 +1193,7 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 6L, 9), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, 2), GT_Utility.getIntegratedCircuit(2)}, null, GT_ModHandler.getModItem("GalaxySpace", "item.BasicItems", 1L, 0), 50, 16);
         // --- Small Fuel Canister
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.BasicItems", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 2L, 4), GT_Utility.getIntegratedCircuit(1)}, Materials.HSLA.getMolten(72), GT_ModHandler.getModItem("GalaxySpace", "item.Modules", 1L, 3), 100, 64);
-		// --- EPOT
+        // --- EPOT
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t4", 1L, 10800), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenConcentrator", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_epp_t1", 1L, 10800), 600, 4096);
 
         /* ==== END GALACTICRAFT & GALAXYSPACE ==== */
@@ -1207,6 +1202,18 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(Items.leather, 2), new ItemStack(Items.string, 3), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("Backpack", "boundLeather", 1L), 100, 16);
 
         /* ==== END BACKPACK ==== */
+        /** ==== START IC2 ==== */
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 4), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 4), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 1), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("IC2", "reactorReflector", 1L, 1), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TinAlloy, 6), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 1), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("IC2", "reactorReflector", 1L, 1), 100, 16);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 16), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 16), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 6), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 4), GT_Utility.getIntegratedCircuit(2)}, null, CoreItems2.getRecipe(141, 1), 120, 256);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TinAlloy, 24), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 8), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Carbon, 6), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 4), GT_Utility.getIntegratedCircuit(2)}, null, CoreItems2.getRecipe(141, 1), 120, 256);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium, 2), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), 600, 64);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 1), GT_Utility.getIntegratedCircuit(1)}, null, GT_ModHandler.getModItem("IC2", "reactorReflectorThick", 1L, 1), 600, 64);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 8), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium, 16), GT_Utility.getIntegratedCircuit(2)}, null, CoreItems2.getRecipe(NeutronReflectorParts.getMetaID(), 1), 400, 256);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorSmallParts.getMetaID(), 8), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 8), GT_Utility.getIntegratedCircuit(2)}, null, CoreItems2.getRecipe(NeutronReflectorParts.getMetaID(), 1), 400, 256);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1)}, null, ItemList.Neutron_Reflector.get(1), 1200, 256);
+
+        /* ==== END IC2 ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};

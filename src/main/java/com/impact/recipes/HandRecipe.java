@@ -1266,6 +1266,24 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 		/** ==== START IC2 ==== */
         // --- Frequency Transmitter
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "itemFreq", 1L, 0), tBitMask, new Object[]{" S ", "PBP", " C ", 'C', OrePrefixes.circuit.get(Materials.Basic), 'P', OrePrefixes.itemCasing.get(Materials.Iron), 'B', GT_ModHandler.getModItem("minecraft", "stone_button", 1L, 0), 'S', ItemList.Sensor_LV});
+        // --- Heat Vent
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVent", 1L, 1), tBitMask, new Object[]{"PBP", "BwB", "PBP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'B', new ItemStack(Blocks.iron_bars)});
+        // --- Reactor Heat Vent
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVentCore", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', OrePrefixes.plateDouble.get(Materials.Copper), 'S', OrePrefixes.plate.get(Materials.Silver), 'V', GT_ModHandler.getModItem("IC2", "reactorVent", 1L, 1)});
+        // --- Advanced Heat Vent
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVentDiamond", 1L, 1), tBitMask, new Object[]{"BVB", "BDB", "BVB", 'D', OrePrefixes.gem.get(Materials.Diamond), 'V', GT_ModHandler.getModItem("IC2", "reactorVentCore", 1L, 1), 'B', CoreItems2.getRecipe(51, 1)});
+        // --- Overclocked Heat Vent
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVentGold", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', OrePrefixes.screw.get(Materials.StainlessSteel), 'S', OrePrefixes.plate.get(Materials.Gold), 'V', GT_ModHandler.getModItem("IC2", "reactorVentDiamond", 1L, 1)});
+        // --- Component Heat Vent
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorVentSpread", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', CoreItems2.getRecipe(51, 1), 'S', OrePrefixes.plateDense.get(Materials.Tin), 'V', GT_ModHandler.getModItem("IC2", "reactorVent", 1L, 1)});
+        // --- Heat Exchanger
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorHeatSwitch", 1L, 1), tBitMask, new Object[]{"COC", "SVS", "CSC", 'C', OrePrefixes.plate.get(Materials.Silver), 'S', OrePrefixes.plate.get(Materials.Aluminium), 'V', OrePrefixes.plate.get(Materials.Copper), 'O', OrePrefixes.circuit.get(Materials.Basic)});
+        // --- Reactor Heat Exchanger
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchCore", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', OrePrefixes.plateDouble.get(Materials.Copper), 'S', OrePrefixes.plate.get(Materials.Silver), 'V', GT_ModHandler.getModItem("IC2", "reactorHeatSwitch", 1L, 1)});
+        // --- Component Heat Exchanger
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchSpread", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', OrePrefixes.screw.get(Materials.StainlessSteel), 'S', OrePrefixes.plate.get(Materials.Gold), 'V', GT_ModHandler.getModItem("IC2", "reactorHeatSwitchCore", 1L, 1)});
+        // --- Advanced Heat Exchanger
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchDiamond", 1L, 1), tBitMask, new Object[]{"LCL", "VDV", "LCL", 'L', OrePrefixes.plate.get(Materials.Lapis), 'D', OrePrefixes.plate.get(Materials.Diamond), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'V', GT_ModHandler.getModItem("IC2", "reactorHeatSwitchSpread", 1L, 1)});
 
         /* ==== END IC2 ==== */
         /** ==== START PROJECTRED ==== */
