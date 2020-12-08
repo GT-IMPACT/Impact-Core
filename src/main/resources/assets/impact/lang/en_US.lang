@@ -307,6 +307,12 @@ item.impact_item2.167.name=Advanced Metal Mix Ingot
 item.impact_item2.168.name=Electric Metal Mix Ingot
 item.impact_item2.169.name=Reinforced Metal Mix Ingot
 item.impact_item2.170.name=H.S. Metal Mix Ingot
+item.impact_item2.171.name=Lead Compressed Plate
+item.impact_item2.172.name=Platinum Compressed Plate
+item.impact_item2.173.name=Oriharukon Compressed Plate
+item.impact_item2.174.name=Adamantium Compressed Plate
+item.impact_item2.175.name=Bronze Dual Compressed Plate
+item.impact_item2.176.name=Aluminium Dual Compressed Plate
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 

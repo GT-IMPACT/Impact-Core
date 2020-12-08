@@ -231,6 +231,12 @@ public enum Core_List_Items {
     ElectricMixIngot(168, 1),
     ReinforcedMixIngot(169, 1),
     HSMixIngot(170, 1),
+	LeadCompressedPlate(171, 1),
+    PlatinumCompressedPlate(172, 1),
+    OriharukonCompressedPlate(173, 1),
+    AdamantiumCompressedPlate(174, 1),
+    BronzeDualCompressedPlate(175, 1),
+    AluminiumDualCompressedPlate(176, 1),
 
     WoodenBrickForm1(0, 2),
 
