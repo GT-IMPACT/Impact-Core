@@ -1198,7 +1198,8 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 6L, 9), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, 2), GT_Utility.getIntegratedCircuit(2)}, null, GT_ModHandler.getModItem("GalaxySpace", "item.BasicItems", 1L, 0), 50, 16);
         // --- Small Fuel Canister
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.BasicItems", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 2L, 4), GT_Utility.getIntegratedCircuit(1)}, Materials.HSLA.getMolten(72), GT_ModHandler.getModItem("GalaxySpace", "item.Modules", 1L, 3), 100, 64);
-
+		// --- EPOT
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t4", 1L, 10800), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenConcentrator", 1L, 0), GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_epp_t1", 1L, 10800), 600, 4096);
 
         /* ==== END GALACTICRAFT & GALAXYSPACE ==== */
         /** ==== START BACKPACK ==== */
