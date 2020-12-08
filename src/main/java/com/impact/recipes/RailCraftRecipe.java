@@ -26,6 +26,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import static com.impact.loader.ItemRegistery.UtilBlock;
+import static com.impact.util.Utilits.Blockstack;
 import static gregtech.api.util.GT_ModHandler.removeRecipe;
 import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 
@@ -1601,7 +1603,7 @@ public class RailCraftRecipe implements Runnable {
         // --- Stone Railbed
         GT_Values.RA.addAssemblerRecipe(RailcraftItem.tie.getStack(4, ItemTie.EnumTie.STONE), ItemList.Circuit_Integrated.getWithDamage(0L, 4), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), 100, 4);
         // --- Concrete Railbed
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(164, 4), new ItemStack(GregTech_API.sBlockConcretes, 1, 8), ItemList.Circuit_Integrated.getWithDamage(0L, 4)}, null, CoreItems2.getRecipe(165, 1), 200, 8);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(164, 4), Blockstack(UtilBlock, 1, 0), GT_Utility.getIntegratedCircuit(4)}, null, CoreItems2.getRecipe(165, 1), 200, 8);
         // --- Electric Meter
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2", "itemToolMEter", 1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1L), ItemElectricMeter.getItem(), 300, 30);
         // --- Signal Tuner
@@ -1718,7 +1720,7 @@ public class RailCraftRecipe implements Runnable {
 
         // --- H.S Track
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), RailcraftItem.rail.getStack(2, ItemRail.EnumRail.SPEED), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Aluminium, 2L)}, EnumTrack.SPEED.getItem(8), 200, 6);
-        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(4, ItemRail.EnumRail.SPEED), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSLA, 2L)}, EnumTrack.SPEED.getItem(8), 200, 6);
+        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(4, ItemRail.EnumRail.SPEED), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSLA, 2L)}, EnumTrack.SPEED.getItem(20), 200, 6);
         // --- H.S Booster Track
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(5), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), RailcraftItem.rail.getStack(2, ItemRail.EnumRail.SPEED), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Aluminium, 2L)}, EnumTrack.SPEED_BOOST.getItem(4), 200, 6);
         // --- H.S Switch
@@ -1731,11 +1733,11 @@ public class RailCraftRecipe implements Runnable {
         // --- Track
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.WOOD), RailcraftItem.rail.getStack(2, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iron, 2L)}, new ItemStack(Blocks.rail, 8), 200, 6);
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), RailcraftItem.rail.getStack(4, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, new ItemStack(Blocks.rail, 16), 300, 8);
-        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(6, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, new ItemStack(Blocks.rail, 20), 400, 12);
+        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(6, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, new ItemStack(Blocks.rail, 32), 400, 12);
         // --- Golden Track
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(5), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.WOOD), RailcraftItem.rail.getStack(2, ItemRail.EnumRail.ADVANCED), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, new ItemStack(Blocks.golden_rail, 4), 200, 6);
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(5), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), RailcraftItem.rail.getStack(4, ItemRail.EnumRail.ADVANCED), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.RedAlloy, 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, new ItemStack(Blocks.golden_rail, 8), 300, 8);
-        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(5), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(6, ItemRail.EnumRail.ADVANCED), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSLA, 2L)}, new ItemStack(Blocks.golden_rail, 10), 400, 12);
+        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(5), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(6, ItemRail.EnumRail.ADVANCED), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedAlloy, 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSLA, 2L)}, new ItemStack(Blocks.golden_rail, 16), 400, 12);
         // --- Switch
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(10), new ItemStack(Blocks.rail), RailcraftItem.rail.getStack(1, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1L)}, EnumTrack.SWITCH.getItem(2), 200, 6);
         // --- WYE
@@ -1743,7 +1745,7 @@ public class RailCraftRecipe implements Runnable {
         // --- Junction
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(20), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.WOOD), RailcraftItem.rail.getStack(4, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iron, 2L)}, EnumTrack.JUNCTION.getItem(4), 200, 6);
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(20), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), RailcraftItem.rail.getStack(8, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.JUNCTION.getItem(8), 300, 8);
-        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(20), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(10, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.JUNCTION.getItem(12), 400, 12);
+        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(20), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(10, ItemRail.EnumRail.STANDARD), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.JUNCTION.getItem(16), 400, 12);
 
         // --- Control Track
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(7), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.WOOD), RailcraftItem.rail.getStack(2, ItemRail.EnumRail.ADVANCED), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.RedAlloy, 1L), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.CONTROL.getItem(4), 200, 6);
@@ -1795,7 +1797,7 @@ public class RailCraftRecipe implements Runnable {
         // --- Directional Detector
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(7), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.WOOD), RailcraftItem.rail.getStack(2, ItemRail.EnumRail.STANDARD), EnumDetector.ADVANCED.getItem(), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iron, 2L)}, EnumTrack.DETECTOR_DIRECTION.getItem(4), 200, 6);
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(7), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), RailcraftItem.rail.getStack(4, ItemRail.EnumRail.STANDARD), EnumDetector.ADVANCED.getItem(), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iron, 2L)}, EnumTrack.DETECTOR_DIRECTION.getItem(8), 300, 8);
-        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(7), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(6, ItemRail.EnumRail.STANDARD), EnumDetector.ADVANCED.getItem(), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.DETECTOR_DIRECTION.getItem(12), 400, 12);
+        impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(7), CoreItems2.getRecipe(165, 1), RailcraftItem.rail.getStack(6, ItemRail.EnumRail.STANDARD), EnumDetector.ADVANCED.getItem(), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.DETECTOR_DIRECTION.getItem(16), 400, 12);
         // --- Gated One Way Track
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(7), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.WOOD), RailcraftItem.rail.getStack(2, ItemRail.EnumRail.ADVANCED), new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.GATED_ONEWAY.getItem(4), 200, 6);
         impact.I_RA.addTrackAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(7), RailcraftItem.railbed.getStack(1, ItemRailbed.EnumRailbed.STONE), RailcraftItem.rail.getStack(4, ItemRail.EnumRail.ADVANCED), new ItemStack(Blocks.fence), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L)}, EnumTrack.GATED_ONEWAY.getItem(8), 300, 8);
