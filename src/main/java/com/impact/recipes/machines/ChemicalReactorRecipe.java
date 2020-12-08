@@ -31,6 +31,8 @@ public class ChemicalReactorRecipe implements Runnable {
         GT_Values.RA.addChemicalRecipe(CoreItems.getRecipe(38, 3), Materials.Sodium.getDust(1), Materials.Water.getFluid(1000L), null, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 3L, 1), 500);
         GT_Values.RA.addChemicalRecipe(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(3000), null, Itemstack(Core_Items.getInstance(), 1, 40), null, 400, 30);
 
+        GT_Values.RA.addChemicalRecipe(GT_ModHandler.getModItem("GalaxySpace","item.BasicItems", 4L, 10), Materials.Osmiridium.getDust(2),  Materials.GrowthMediumSterilized.getFluid(1000L), Materials.BacterialSludge.getFluid(1000L), ItemList.Circuit_Chip_Stemcell.get(64L), GT_Values.NI, 600, 30720);
+
         /** ==== START EXTRA UTILITIES ==== */
         // --- Ethereal Glass
         GT_Values.RA.addChemicalRecipe(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1L), null, null, GT_ModHandler.getModItem("ExtraUtilities", "etherealglass", 1L, 0), 100);
