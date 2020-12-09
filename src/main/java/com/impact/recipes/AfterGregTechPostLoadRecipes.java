@@ -839,6 +839,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.core.screwdriver", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "devnull", 1L, 0), true, false, false);
 
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Desh, 1), true, false, false);
