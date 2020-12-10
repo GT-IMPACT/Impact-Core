@@ -62,7 +62,7 @@ public class impact {
     @Mod.Instance(MODID)
     public static impact instance;
     public static SendUtils SendUtils_instance = new SendUtils();
-    public static String ModPackVersion = "";
+    public static String ModPackVersion = "1.0.0.0";
     public static Config mConfig;
     public static FMLEventChannel channel;
     private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
