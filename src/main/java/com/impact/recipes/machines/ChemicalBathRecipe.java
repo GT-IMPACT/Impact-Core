@@ -68,7 +68,7 @@ public class ChemicalBathRecipe implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(GregTech_API.getStackofAmountFromOreDict("dustTCetiE", 64), Materials.RadoxPolymer.getMolten(144L), GT_ItemList.packTCetiE.get(1L), GT_Values.NI, GT_Values.NI, new int[]{10000}, 200, 12188);
 
 
-        for (byte i = 0; i <= 15; i = (byte) (i + 1)) {
+        for (int i = 0; i <= 15; i++) {
             for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
                 if (i != 15) {
                     GT_Values.RA.addChemicalBathRecipe(Blockstack(IGlassBlock, 1, 0), Dyes.VALUES[i].getFluidDye(j, 18L), Blockstack(IGlassBlock, 1, (15 - i)), GT_Values.NI, GT_Values.NI, null, 200, 2);
@@ -76,7 +76,7 @@ public class ChemicalBathRecipe implements Runnable {
             }
         }
 
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (int i = 0; i < 16; i++) {
             for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
                 GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 16), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 15 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
                 GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 36), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 35 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
@@ -91,7 +91,7 @@ public class ChemicalBathRecipe implements Runnable {
             GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemPaintBall", 1L, 15 - i), Materials.Chlorine.getGas(50L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 6), GT_Values.NI, GT_Values.NI, null, 20, 2);
         }
 
-        for (byte i = 1; i <= 15; i++) {
+        for (int i = 1; i <= 15; i++) {
             if (i != 0) {
                 GT_Values.RA.addChemicalBathRecipe(Blockstack(IGlassBlock, 1, i), Materials.Chlorine.getGas(50L), Blockstack(IGlassBlock, 0, 0), GT_Values.NI, GT_Values.NI, null, 200, 2);
             }

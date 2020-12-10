@@ -1543,7 +1543,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Workbench Big Backpack
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Backpack", "workbenchbackpack", 1L, 217), tBitMask, new Object[]{"RLR", "LBL", "RCR", 'R', OrePrefixes.ring.get(Materials.Steel), 'L', new ItemStack(Blocks.wool), 'B', GT_ModHandler.getModItem("Backpack", "backpack", 1L, 100), 'C', GT_ModHandler.getModItem("TConstruct", "CraftingSlab", 1L)});
 
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (int i = 0; i < 16; i++) {
             // --- Small Backpack*
             GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("Backpack", "backpack", 1L, i + 1), tBitMask, new Object[]{Dyes.VALUES[i], GT_ModHandler.getModItem("Backpack", "backpack", 1L)});
             // --- Medium Backpack*
