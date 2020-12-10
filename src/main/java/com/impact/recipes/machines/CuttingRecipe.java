@@ -5,6 +5,8 @@ import com.impact.common.item.Core_Items2;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 import static com.impact.util.Utilits.Itemstack;
 
@@ -71,6 +73,12 @@ public class CuttingRecipe implements Runnable {
         GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 0), GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 9L, 1), GT_Values.NI,  50, 8);
 
         /* ==== END CHICKENCHUNKS ==== */
+
+        // --- Carpet
+        for (int i = 0; i < 16; i++) {
+            GT_Values.RA.addCutterRecipe(new ItemStack(Blocks.wool, 1, i), new ItemStack(Blocks.carpet, 2, i), GT_Values.NI, 50, 8);
+        }
+
 
     }
 }

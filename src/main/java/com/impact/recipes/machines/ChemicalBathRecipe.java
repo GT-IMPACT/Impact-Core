@@ -3,10 +3,7 @@ package com.impact.recipes.machines;
 import com.impact.common.item.Core_Items2;
 import com.impact.mods.GregTech.GT_ItemList;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -121,6 +118,16 @@ public class ChemicalBathRecipe implements Runnable {
         // --- White Concrete
         GT_Values.RA.addChemicalBathRecipe(Blockstack(UtilBlock, 1, 0), new FluidStack(FluidRegistry.getFluid("dye.chemical.dyewhite"), 18), Blockstack(UtilBlock, 1, 2), GT_Values.NI, GT_Values.NI, new int[]{10000},64, 2);
         GT_Values.RA.addChemicalBathRecipe(Blockstack(UtilBlock, 1, 0), new FluidStack(FluidRegistry.getFluid("dye.watermixed.dyewhite"), 18), Blockstack(UtilBlock, 1, 2), GT_Values.NI, GT_Values.NI, new int[]{10000},64, 2);
+
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
+                if (i != 15) {
+                    GT_Values.RA.addChemicalBathRecipe(new ItemStack(Blocks.wool, 1, 0), Dyes.VALUES[i].getFluidDye(j, 72L), new ItemStack(Blocks.wool, 1, 15 - i), GT_Values.NI, GT_Values.NI, null, 64, 2);
+                }
+                GT_Values.RA.addChemicalBathRecipe(new ItemStack(Blocks.glass, 1, 0), Dyes.VALUES[i].getFluidDye(j, 18L), new ItemStack(Blocks.stained_glass, 1, 15 - i), GT_Values.NI, GT_Values.NI, null, 64, 2);
+                GT_Values.RA.addChemicalBathRecipe(new ItemStack(Blocks.hardened_clay, 1, 0), Dyes.VALUES[i].getFluidDye(j, 18L), new ItemStack(Blocks.stained_hardened_clay, 1, 15 - i), GT_Values.NI, GT_Values.NI, null, 64, 2);
+            }
+        }
 
     }
 }

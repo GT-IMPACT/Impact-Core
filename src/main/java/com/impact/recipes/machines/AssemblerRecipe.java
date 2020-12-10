@@ -6,10 +6,7 @@ import com.impact.loader.ItemRegistery;
 import com.impact.mods.GregTech.GT_ItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -855,6 +852,12 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(10)}, null, GT_ModHandler.getModItem("minecraft", "fence", 1L), 300, 8);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(11)}, Materials.Iron.getMolten(16), GT_ModHandler.getModItem("minecraft", "fence", 2L), 300, 8);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 2L), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L), GT_Utility.getIntegratedCircuit(11)}, Materials.Steel.getMolten(16), GT_ModHandler.getModItem("minecraft", "fence", 4L), 300, 8);
+        // --- Carpet
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
+                GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.string, 3), ItemList.Circuit_Integrated.getWithDamage(0L, 3L, new Object[0]), Dyes.VALUES[i].getFluidDye(j, 24L), new ItemStack(Blocks.carpet, 2, 15 - i), 128, 5);
+            }
+        }
 
         /* ==== END VANILLA ==== */
         /** ==== START CARPENTERS BLOCKS ==== */
