@@ -76,9 +76,24 @@ public class ChemicalBathRecipe implements Runnable {
             }
         }
 
+        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+            for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
+                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 16), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 15 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
+                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 36), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 35 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
+                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 56), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 55 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
+                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 76), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 75 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
+                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 6), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemPaintBall", 1L, 15 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
+            }
+            GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 15 - i), Materials.Chlorine.getGas(50L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 16), GT_Values.NI, GT_Values.NI, null, 20, 2);
+            GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 35 - i), Materials.Chlorine.getGas(50L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 36), GT_Values.NI, GT_Values.NI, null, 20, 2);
+            GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 55 - i), Materials.Chlorine.getGas(50L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 56), GT_Values.NI, GT_Values.NI, null, 20, 2);
+            GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 75 - i), Materials.Chlorine.getGas(50L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 76), GT_Values.NI, GT_Values.NI, null, 20, 2);
+            GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemPaintBall", 1L, 15 - i), Materials.Chlorine.getGas(50L), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 6), GT_Values.NI, GT_Values.NI, null, 20, 2);
+        }
+
         for (byte i = 1; i <= 15; i++) {
             if (i != 0) {
-                GT_Values.RA.addChemicalBathRecipe(Blockstack(IGlassBlock, 1, i), Materials.Chlorine.getMolten(50L), Blockstack(IGlassBlock, 0, 0), GT_Values.NI, GT_Values.NI, null, 200, 2);
+                GT_Values.RA.addChemicalBathRecipe(Blockstack(IGlassBlock, 1, i), Materials.Chlorine.getGas(50L), Blockstack(IGlassBlock, 0, 0), GT_Values.NI, GT_Values.NI, null, 200, 2);
             }
         }
 
