@@ -1,5 +1,6 @@
 package com.impact.recipes;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -10,6 +11,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import tconstruct.library.crafting.DryingRackRecipes;
 
 public class TConstructRecipe implements Runnable {
 
@@ -445,6 +447,12 @@ public class TConstructRecipe implements Runnable {
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("TConstruct", "materials", 1L, 12), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L)}, new int[]{10000}, 300, 2);
     }
 
+    public void dryingRackRecipe() {
+        if (Loader.isModLoaded("Backpack")) {
+            DryingRackRecipes.addDryingRecipe(GT_ModHandler.getModItem("Backpack", "boundLeather", 1L, 0), 4000, GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0));
+        }
+    }
+
     @Override
     public void run() {
         delRecipe();
@@ -459,5 +467,6 @@ public class TConstructRecipe implements Runnable {
         forgeHammerRecipe();
         mixerRecipe();
         pulveriserRecipe();
+        dryingRackRecipe();
     }
 }

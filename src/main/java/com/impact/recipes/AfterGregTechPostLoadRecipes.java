@@ -29,6 +29,8 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeFurnaceSmelting(GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 2));
         removeFurnaceSmelting(GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L));
 
+        removeFurnaceSmelting(GT_ModHandler.getModItem("Backpack", "boundLeather", 1L));
+
         //removeRecipeByOutput();
         removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoHelmet", 1, GT_Values.W));
         removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBodyarmor", 1, GT_Values.W));
@@ -55,7 +57,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchCore", 1L, 1), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchSpread", 1L, 1), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchDiamond", 1L, 1), true, false, true);
-
 
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 1), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 0), true, false, false);
@@ -846,6 +847,11 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
 
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "devnull", 1L, 0), true, false, false);
+
+        removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "workbenchbackpack", 1L, GT_Values.W), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "boundLeather", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "backpack", 1L, GT_Values.W), true, false, false);
 
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Desh, 1), true, false, false);
