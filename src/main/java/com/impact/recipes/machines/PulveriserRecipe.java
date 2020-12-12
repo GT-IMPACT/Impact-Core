@@ -4,6 +4,7 @@ import com.impact.common.item.Core_Items;
 import com.impact.common.item.Core_Items2;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -98,6 +99,8 @@ public class PulveriserRecipe implements Runnable {
         GT_Values.RA.addPulveriserRecipe(CoreItems2.getRecipe(152, 1),   new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "barnardaCdirt", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L)}, new int[]{10000, 2000}, 100, 40);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1),   new ItemStack[]{CoreItems.getRecipe(38, 1)}, new int[]{10000}, 300, 2);
+
+        GT_Values.RA.addPulveriserRecipe(ItemList.Casing_BronzePlatedBricks.get(1),   new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L)}, new int[]{10000, 10000}, 300, 2);
 
         /* ================================= end CUSTOM RECIPES =================================*/
 /** ================================= start GALAXYSPACE =================================*/

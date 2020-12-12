@@ -24,5 +24,6 @@ public class ArcFurnaceRecipe implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L, 0), new ItemStack[]{CoreItems2.getRecipe(19, 64), CoreItems2.getRecipe(19, 64), CoreItems2.getRecipe(18, 50), GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Neutronium,54)}, null, 2400, 1572864);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L, 0), new ItemStack[]{CoreItems2.getRecipe(20, 64), CoreItems2.getRecipe(20, 64), CoreItems2.getRecipe(19, 60), GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Phoenixite,64)}, null, 2800, 6291456);
 
+        GT_Values.RA.addArcFurnaceRecipe(ItemList.Casing_BronzePlatedBricks.get(1), new ItemStack[]{ GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Bronze,4), GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Stone,1)}, null, 160, 96);
     }
 }
