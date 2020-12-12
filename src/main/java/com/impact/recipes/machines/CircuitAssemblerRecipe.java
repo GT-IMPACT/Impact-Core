@@ -236,6 +236,10 @@ public class CircuitAssemblerRecipe implements Runnable {
                 //ICChip
                 GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Coated.get(1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 6)}, tMat.getMolten(144L * tMultiplier / 2L), GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 1L, 0), 200, 16);
 
+                // --- Blank Gene Sample
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Epoxy_Advanced.get(1), ItemList.Circuit_Parts_PetriDish.get(1L), ItemList.Circuit_Chip_CPU.get(2), ItemList.Circuit_Chip_Ram.get(4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 16), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 4)}, tMat.getMolten(144L * tMultiplier), GT_ModHandler.getModItem("gendustry", "GeneSampleBlank", 1L, 0), 400, 2560, true);
+                // --- Genetic Template
+                GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Epoxy_Advanced.get(1), ItemList.Circuit_Parts_PetriDish.get(1L), ItemList.Circuit_Chip_Ram.get(4), ItemList.Circuit_Chip_NOR.get(32), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 32), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 8)}, tMat.getMolten(144L * tMultiplier), GT_ModHandler.getModItem("gendustry", "GeneTemplate", 1L, 0), 500, 7680, true);
 
             }
         }

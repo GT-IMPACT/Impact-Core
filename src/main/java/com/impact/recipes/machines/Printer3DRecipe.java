@@ -1072,6 +1072,36 @@ public class Printer3DRecipe implements Runnable {
         }, GT_ModHandler.getModItem("SGCraft", "ocInterface", 1L, 0), null, 100 * 20, 500000);
 
         /* ================================= END GREG'S SG CRAFT =================================*/
+        /** ================================= START GENDUSTRY =================================*/
+        // --- Mutagen Producer
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Hull_LuV.get(1), GT_ModHandler.getModItem("gendustry", "GeneticsProcessor", 2L, 0), GT_ModHandler.getModItem("gendustry", "BeeReceptacle", 2L, 0), GT_ModHandler.getModItem("gendustry", "PowerModule", 2L, 0),
+                ItemList.Robot_Arm_LuV.get(2), ItemList.Electric_Pump_LuV.get(4), GT_ModHandler.getModItem("gendustry", "MutagenTank", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Trinium, 4),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 32), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 32)
+        }, GT_ModHandler.getModItem("gendustry", "MutagenProducer", 1L, 0), null, 100 * 20, 65576);
+
+        // --- Mutatron
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Hull_LuV.get(1), GT_ModHandler.getModItem("gendustry", "GeneticsProcessor", 2L, 0), GT_ModHandler.getModItem("gendustry", "BeeReceptacle", 2L, 0), GT_ModHandler.getModItem("gendustry", "PowerModule", 2L, 0),
+                ItemList.Robot_Arm_LuV.get(2), GT_ModHandler.getModItem("gendustry", "MutagenTank", 4L, 0), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Osmium, 4), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 8),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 32), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 32)
+        }, GT_ModHandler.getModItem("gendustry", "Mutatron", 1L, 0), null, 100 * 20, 65576);
+
+        // --- Advanced Mutatron
+        GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+                ItemList.Hull_ZPM.get(1), GT_ModHandler.getModItem("gendustry", "GeneticsProcessor", 4L, 0), GT_ModHandler.getModItem("gendustry", "BeeReceptacle", 4L, 0), GT_ModHandler.getModItem("gendustry", "PowerModule", 4L, 0),
+                ItemList.Robot_Arm_ZPM.get(4), GT_ModHandler.getModItem("gendustry", "MutagenTank", 8L, 0), GT_OreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 8), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MysteriousCrystal, 16),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 64), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 64)
+        }, GT_ModHandler.getModItem("gendustry", "MutatronAdv", 1L, 0), null, 200 * 20, 500000);
+
+        // --- Industrial Apiary
+        GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+                GT_ModHandler.getModItem("Forestry", "apiculture", 1L, 0), GT_ModHandler.getModItem("Forestry", "alveary", 2L, 2), GT_ModHandler.getModItem("Forestry", "alveary", 2L, 3),
+                GT_ModHandler.getModItem("Forestry", "alveary", 2L, 4), GT_ModHandler.getModItem("Forestry", "alveary", 2L, 5), GT_ModHandler.getModItem("Forestry", "alveary", 2L, 6),
+                GT_ModHandler.getModItem("Forestry", "alveary", 2L, 7), GT_ModHandler.getModItem("Forestry", "alveary", 4L, 0), ItemList.Field_Generator_HV.get(4)
+        }, GT_ModHandler.getModItem("gendustry", "IndustrialApiary", 1L, 0), null, 60 * 20, 1024);
+
+        /* ================================= END GENDUSTRY =================================*/
 
     }
 }

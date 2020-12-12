@@ -1218,6 +1218,23 @@ public class AssemblerRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorParts.getMetaID(), 1), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1)}, null, ItemList.Neutron_Reflector.get(1), 1200, 256);
 
         /* ==== END IC2 ==== */
+        /** ==== START GENDUSTRY ==== */
+        // --- Upgrade Frame
+        GT_Values.RA.addAssemblerRecipe(CoreItems2.getRecipe(146, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1), Materials.Mutagen.getFluid(100L), GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1L), 400, 7680);
+        // --- Genetics Processor
+        GT_Values.RA.addAssemblerRecipe(GT_ItemList.GeneticCircuit.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1), Materials.Mutagen.getFluid(500L), GT_ModHandler.getModItem("gendustry", "GeneticsProcessor", 1L), 400, 7680);
+        // --- Environmental Processor
+        GT_Values.RA.addAssemblerRecipe(GT_ItemList.EnvironmentalCircuit.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1), Materials.Bacteria.getFluid(500L), GT_ModHandler.getModItem("gendustry", "EnvProcessor", 1L), 400, 7680);
+        // --- Genetics Labware
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Diamond, 2), new ItemStack(Items.glass_bottle, 4)}, null, GT_ModHandler.getModItem("gendustry", "Labware", 1L), 200, 1920, true);
+        // --- Item Ejector Cover
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 1), GT_ModHandler.getModItem("IC2", "upgradeModule", 1L, 3), GT_ModHandler.getModItem("gendustry", "EjectCover", 1L), 200, 7680);
+        // --- Item Import Cover
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 1), GT_ModHandler.getModItem("IC2", "upgradeModule", 1L, 6), GT_ModHandler.getModItem("gendustry", "ImportCover", 1L), 200, 7680);
+        // --- Item Sensor Cover
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 1), GT_ModHandler.getModItem("IC2", "upgradeModule", 1L, 5), GT_ModHandler.getModItem("gendustry", "ErrorSensorCover", 1L), 200, 7680);
+
+        /* ==== END GENDUSTRY ==== */
 
 
         ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1), GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1), GT_ItemList.Hatch_Input_OPV.get(1), GT_ItemList.Hatch_Input_MAX.get(1)};

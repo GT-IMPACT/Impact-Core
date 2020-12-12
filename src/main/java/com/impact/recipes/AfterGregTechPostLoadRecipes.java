@@ -853,6 +853,33 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "backpack", 1L, GT_Values.W), true, false, false);
 
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "IndustrialApiary", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "MutagenProducer", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Mutatron", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Imprinter", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Sampler", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "MutatronAdv", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Liquifier", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Extractor", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Transposer", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Replicator", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "GeneSampleBlank", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "GeneTemplate", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Labware", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "BeeReceptacle", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "PowerModule", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "MutagenTank", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "GeneticsProcessor", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "EnvProcessor", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "UpgradeFrame", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "ClimateModule", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1L, GT_Values.W), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "IndustrialGrafter", 1L, GT_Values.W), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "IndustrialScoop", 1L, GT_Values.W), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "EjectCover", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "ImportCover", 1L, 0), true, false, false);
+        removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "ErrorSensorCover", 1L, 0), true, false, false);
+
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true, false, false);
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Desh, 1), true, false, false);
         removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.MeteoricIron, 1), true, false, false);
