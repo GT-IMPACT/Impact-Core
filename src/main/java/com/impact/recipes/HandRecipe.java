@@ -1135,9 +1135,9 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Painting Press
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioPaintPress", 1L, 0), tBitMask, new Object[]{"PPB", "R  ", "BIB", 'P', OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.bolt.get(Materials.Iron), 'R', OrePrefixes.ring.get(Materials.Iron), 'I', OrePrefixes.block.get(Materials.Iron)});
         // --- Fancy Gold Latern
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioLantern", 1L, 0), tBitMask, new Object[]{"PDP", "GTG", "PPP", 'P', OrePrefixes.plate.get(Materials.Gold), 'D', OrePrefixes.dust.get(Materials.Glowstone), 'G', "paneGlassColorles", 'T', GT_ModHandler.getModItem("minecraft", "torch", 1L, 0)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioLantern", 1L, 0), tBitMask, new Object[]{"PDP", "GTG", "PPP", 'P', OrePrefixes.plate.get(Materials.Gold), 'D', OrePrefixes.dust.get(Materials.Glowstone), 'G', new ItemStack(Blocks.glass_pane), 'T', GT_ModHandler.getModItem("minecraft", "torch", 1L, 0)});
         // --- Fancy Iron Latern
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioIronLantern", 1L, 0), tBitMask, new Object[]{"PDP", "GTG", "PPP", 'P', OrePrefixes.plate.get(Materials.Iron), 'D', OrePrefixes.dust.get(Materials.Glowstone), 'G', "paneGlassColorless", 'T', GT_ModHandler.getModItem("minecraft", "torch", 1L, 0)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioIronLantern", 1L, 0), tBitMask, new Object[]{"PDP", "GTG", "PPP", 'P', OrePrefixes.plate.get(Materials.Iron), 'D', OrePrefixes.dust.get(Materials.Glowstone), 'G', new ItemStack(Blocks.glass_pane), 'T', GT_ModHandler.getModItem("minecraft", "torch", 1L, 0)});
         // --- Fancy Gold Lamp
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioLamp", 1L, 0), tBitMask, new Object[]{"PBP", " S ", "PPP", 'P', OrePrefixes.plate.get(Materials.Gold), 'S', OrePrefixes.stick.get(Materials.Gold), 'B', GT_ModHandler.getModItem("GregsLighting", "glowstoneBulb", 1L, 0)});
         // --- Fancy Iron Lamp
@@ -1150,13 +1150,14 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioStuffs", 1L, 0), tBitMask, new Object[]{" P ", "G G", "GGG", 'P', OrePrefixes.plate.get(Materials.Rubber), 'G', GT_ModHandler.getModItem("minecraft", "glass_pane", 1L, 0)});
         // --- Diner Plate
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioStuffs", 1L, 2), tBitMask, new Object[]{"P P", " P ", 'P', OrePrefixes.plate.get(Materials.NetherQuartz)});
-        // --- Frame Sheet
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Oak});
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Spruce});
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Birch});
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Jungle});
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_Acacia});
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', ItemList.Plank_DarkOak});
+        // --- Clock
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioClock", 1L, 6), tBitMask, new Object[]{"SCS", "SIS","SPS", 'S', GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 1L, 0), 'C', new ItemStack(Items.clock), 'I', new ItemStack(Items.stick), 'P', OrePrefixes.plate.get(Materials.Gold)});
+        for (int i = 0; i < 6; i++) {
+            // --- Frame Sheet
+            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 2L, 0), tBitMask, new Object[]{"Gs", 'G', new ItemStack(Blocks.planks, 1, i)});
+            // --- Clock
+            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "BiblioClock", 1L, i), tBitMask, new Object[]{"SCS", "SIS","SPS", 'S', new ItemStack(Blocks.wooden_slab, 1, i), 'C', new ItemStack(Items.clock), 'I', new ItemStack(Items.stick), 'P', OrePrefixes.plate.get(Materials.Gold)});
+        }
         // --- Frame Board
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.FramingBoard", 2L, 0), tBitMask, new Object[]{"Gs", 'G', GT_ModHandler.getModItem("BiblioCraft", "item.FramingSheet", 1L, 0)});
         // --- Drafting Compass

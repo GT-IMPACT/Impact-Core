@@ -379,6 +379,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioClipboard", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.SlottedBook", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "item.AtlasBook", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("BiblioCraft", "BiblioClock", 1L, GT_Values.W), true, false, true);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "Wireless", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("ae2stuff", "WirelessKit", 1L, 0), true, false, true);
