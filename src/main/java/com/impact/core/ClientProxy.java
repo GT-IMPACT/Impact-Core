@@ -42,7 +42,7 @@ public class ClientProxy extends CommonProxy {
     public void preload() {
     }
 
-    public void register_event(Object obj) {
+    public static void register_event(Object obj) {
         FMLCommonHandler.instance().bus().register(obj);
         MinecraftForge.EVENT_BUS.register(obj);
     }

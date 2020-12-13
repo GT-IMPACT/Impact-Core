@@ -9,6 +9,7 @@ import com.impact.common.item.FakeCircuits;
 import com.impact.common.item.WoodBrickFormTool;
 import com.impact.impact;
 import com.impact.mods.ASP.ASP;
+import com.impact.mods.GTScanner.GTScanner;
 import com.impact.mods.GalactiCraft.GG.SpaceDimRegisterer;
 import com.impact.mods.GregTech.Basic_Register;
 import com.impact.mods.GregTech.GT_ItemRegister;
@@ -94,6 +95,8 @@ public class MainLoader {
             if(module.getIsActive())
                 module.init(event);
         }
+
+        GTScanner.preInit();
     }
 
     public static void load(FMLInitializationEvent event) {
