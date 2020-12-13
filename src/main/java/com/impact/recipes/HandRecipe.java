@@ -801,9 +801,15 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "bed", 1L), tBitMask, new Object[]{"WWW", "FPF", 'P', OrePrefixes.plank.get(Materials.Wood), 'F', GT_ModHandler.getModItem("minecraft", "fence", 1L), 'W', "blockWool"});
         // --- Fishing Rod
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "fishing_rod", 1L), tBitMask, new Object[]{"  S", " SI", "SxR", 'S', OrePrefixes.stickLong.get(Materials.Wood), 'R', OrePrefixes.ring.get(Materials.Iron), 'I', GT_ModHandler.getModItem("minecraft", "string", 1L)});
-        // --- Alt Wools
         for (int i = 0; i < 16; i++) {
-            GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Blocks.wool, 1, 15 - i), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{new ItemStack(Blocks.wool, 1, 0), Dyes.VALUES[i]});
+            // --- Carpet
+            GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.carpet, 1, i), tBitMask, new Object[]{"WW", 'W', new ItemStack(Blocks.wool, 1, i)});
+            GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.carpet, 3, i), tBitMask, new Object[]{"WWs", 'W', new ItemStack(Blocks.wool, 1, i)});
+            GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Blocks.carpet, 1, 15 - i), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{new ItemStack(Blocks.carpet, 1, 0), Dyes.VALUES[i]});
+            // --- Glass Pane
+            GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.stained_glass_pane, 2, i), tBitMask, new Object[]{"sW", 'W', new ItemStack(Blocks.stained_glass, 1, i)});
+            GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.stained_glass_pane, 8, 15 - i), tBitMask, new Object[]{"WWW", "WDW", "WWW", 'W', new ItemStack(Blocks.glass_pane, 1, 0), 'D', Dyes.VALUES[i]});
+            GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Blocks.stained_glass, 1, 15 - i), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{new ItemStack(Blocks.glass, 1, 0), Dyes.VALUES[i]});
         }
 
         /* ==== END VANILLA ==== */

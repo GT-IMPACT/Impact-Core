@@ -6,6 +6,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -236,6 +237,8 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "comparator", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "repeater", 1L, 0), true, false, false);
 		removeRecipeByOutput(GT_ModHandler.getModItem("minecraft", "ender_eye", 1L, 0), true, false, false);
+        removeRecipeByOutput(new ItemStack(Blocks.carpet, 1, GT_Values.W), true, false, false);
+        removeRecipeByOutput(new ItemStack(Blocks.stained_glass_pane, 1, GT_Values.W), true, false, false);
 
         removeRecipeByOutput(GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L, 0), true, false, false);
         removeRecipeByOutput(GT_ModHandler.getModItem("malisisdoors", "sliding_trapdoor", 1L, 0), true, false, false);
