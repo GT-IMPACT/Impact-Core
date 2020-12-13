@@ -1,10 +1,14 @@
 package com.impact.mods.GTScanner;
 
 import com.impact.core.CommonProxy;
+import com.impact.network.ImpactNetwork;
+import com.impact.network.ImpactPacket01;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
+import gregtech.api.enums.GT_Values;
 import gregtech.common.GT_UndergroundOil;
+import gregtech.common.net.MessageSetFlaskCapacity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -28,7 +32,7 @@ public class GTScanner {
     public static GTScanner baseClassInstance;
     private static Minecraft mc = Minecraft.getMinecraft();
     public boolean isScan = false;
-    public FluidStack unerOil = null;
+    public static FluidStack udnerOil = null;
     Map chunkInfo = new HashMap<>();
     int counter;
 
@@ -42,8 +46,8 @@ public class GTScanner {
         checkOre = new KeyBinding("Scan Ores on/off", 44, "GT Scanner Mod");
         ClientRegistry.registerKeyBinding(checkOre);
 
-//        checkOil = new KeyBinding("Scan UnderOils on/off", 45, "GT Scanner Mod");
-//        ClientRegistry.registerKeyBinding(checkOil);
+        //checkOil = new KeyBinding("Scan UnderOils on/off", 45, "GT Scanner Mod");
+        //ClientRegistry.registerKeyBinding(checkOil);
     }
 
     public void SetScan(boolean value) {
@@ -72,11 +76,17 @@ public class GTScanner {
         if (this.isScan) scan();
     }
 
+    public static void setFluidStack(FluidStack aOil) {
+        udnerOil = aOil;
+    }
+
     public void scan() {
         this.chunkInfo.clear();
         int chunkCoordX = mc.thePlayer.chunkCoordX;
         int chunkCoordZ = mc.thePlayer.chunkCoordZ;
         World world = mc.thePlayer.worldObj;
+
+        ImpactNetwork.INSTANCE.sendToServer(new ImpactPacket01(mc.thePlayer));
 
         for (int x = chunkCoordX * 16; x <= chunkCoordX * 16 + 16; x++) {
             for (int z = chunkCoordZ * 16; z <= chunkCoordZ * 16 + 16; z++) {
@@ -137,40 +147,31 @@ public class GTScanner {
                     Data oreData = (Data) this.chunkInfo.get(key);
 
                     if (!(key instanceof FluidStack)) {
-                        text =  EnumChatFormatting.WHITE + key.toString() + " - A: " +
+                        text = " " + EnumChatFormatting.WHITE + key.toString() + " - A: " +
                                 EnumChatFormatting.YELLOW + oreData.count + EnumChatFormatting.WHITE + " Y: " +
                                 EnumChatFormatting.YELLOW + oreData.height + EnumChatFormatting.RESET;
                         y -= fontRender.FONT_HEIGHT;
                         fontRender.drawStringWithShadow(text, x, y, 0);
                     }
                 }
+
+                if (udnerOil != null) {
+                    if (udnerOil.amount > 0 && udnerOil.amount < 100) {
+                        text = " ▉ " + EnumChatFormatting.WHITE + udnerOil.getLocalizedName() +
+                                " - A: " + EnumChatFormatting.YELLOW + udnerOil.amount + EnumChatFormatting.WHITE + " L" + EnumChatFormatting.RESET;
+                        y -= fontRender.FONT_HEIGHT;
+                        fontRender.drawStringWithShadow(text, x, y, udnerOil.getFluid().getColor(udnerOil));
+                    }
+                }
             }
         }
     }
     public void checkOil() {
-        int pX = ((int) mc.thePlayer.posX) >> 4;
-        int pZ = ((int) mc.thePlayer.posZ) >> 4;
-        World world = mc.thePlayer.worldObj;
-        String message;
-        unerOil = GT_UndergroundOil.undergroundOilReadInformation(world.getChunkFromChunkCoords(pX, pZ));
-        if (unerOil != null) {
-            if (unerOil.amount > 0) {
-
-                message = " " + EnumChatFormatting.WHITE + unerOil.getLocalizedName() +
-                        " - A: " + EnumChatFormatting.YELLOW + unerOil.amount + EnumChatFormatting.WHITE + " L" + EnumChatFormatting.RESET;
-
-                ChatComponentText chatComponentText = new ChatComponentText(message);
-                mc.thePlayer.addChatMessage(chatComponentText);
-            }
-        }
     }
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (GTScanner.checkOre.isPressed())
-            SetScan(!this.isScan);
-        //else if (GTScanner.checkOil.isPressed())
-        //    checkOil();
+        if (GTScanner.checkOre.isPressed()) SetScan(!this.isScan);
     }
 
     public class Data {
