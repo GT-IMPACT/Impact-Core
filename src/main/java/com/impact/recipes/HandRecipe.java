@@ -403,15 +403,15 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potin, 9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Copper), OrePrefixes.dust.get(Materials.Tin), OrePrefixes.dust.get(Materials.Tin), OrePrefixes.dust.get(Materials.Lead)});
 
         //Wooden Brick Form
-        GT_ModHandler.addShapelessCraftingRecipe(WoodForm.getRecipe(1), bits, new Object[]{ToolDictNames.craftingToolKnife, GT_ModHandler.getModItem("TConstruct", "blankPattern", 1L, 0)});
+        GT_ModHandler.addShapelessCraftingRecipe(WoodForm.getRecipe(1), tBitMask, new Object[]{ToolDictNames.craftingToolKnife, GT_ModHandler.getModItem("TConstruct", "blankPattern", 1L, 0)});
 
         //Bricks
-        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredClayBrick.getMetaID(), 8), bits, new Object[]{"CCC", "CFC", "CCC", 'C', new ItemStack(Items.clay_ball, 1, 0), 'F', WoodForm.get()});
-        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredClayBrick.getMetaID(), 1), bits, new Object[]{new ItemStack(Items.clay_ball, 1, 0), WoodForm.get()});
-        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredSearedBrick.getMetaID(), 8), bits, new Object[]{"GGG", "GFG", "GGG", 'G', GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), 'F', WoodForm.get()});
-        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredSearedBrick.getMetaID(), 1), bits, new Object[]{GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), WoodForm.get()});
-        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 3), bits, new Object[]{"CCC", "SFS", "SSS", 'C', new ItemStack(Items.clay_ball, 1, 0), 'S', new ItemStack(Blocks.sand, 1, 0), 'F', WoodForm.get()});
-        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 1), bits, new Object[]{new ItemStack(Items.clay_ball, 1, 0), new ItemStack(Blocks.sand, 1, 0), OrePrefixes.block.get(Materials.Sand), WoodForm.get()});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredClayBrick.getMetaID(), 8), tBitMask, new Object[]{"CCC", "CFC", "CCC", 'C', new ItemStack(Items.clay_ball, 1, 0), 'F', WoodForm.get()});
+        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredClayBrick.getMetaID(), 1), tBitMask, new Object[]{new ItemStack(Items.clay_ball, 1, 0), WoodForm.get()});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredSearedBrick.getMetaID(), 8), tBitMask, new Object[]{"GGG", "GFG", "GGG", 'G', GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), 'F', WoodForm.get()});
+        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredSearedBrick.getMetaID(), 1), tBitMask, new Object[]{GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), WoodForm.get()});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 3), tBitMask, new Object[]{"CCC", "SFS", "SSS", 'C', new ItemStack(Items.clay_ball, 1, 0), 'S', new ItemStack(Blocks.sand, 1, 0), 'F', WoodForm.get()});
+        GT_ModHandler.addShapelessCraftingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 1), tBitMask, new Object[]{new ItemStack(Items.clay_ball, 1, 0), new ItemStack(Blocks.sand, 1, 0), OrePrefixes.block.get(Materials.Sand), WoodForm.get()});
 
         GT_ModHandler.removeFurnaceSmelting(GT_ModHandler.getModItem("minecraft", "clay_ball", 1L, 0));
         GT_ModHandler.removeFurnaceSmelting(GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1));
@@ -421,7 +421,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addSmeltingRecipe(CoreItems2.getRecipe(UnfiredCokeOvenBrick.getMetaID(), 1), CoreItems2.getRecipe(CokeOvenBrick.getMetaID(), 1));
 
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(SteelBars.getMetaID(), 3), tBitMask, new Object[]{" h ", "SSS", "SSS", 'S', OrePrefixes.stick.get(Materials.Steel)});
-        GT_ModHandler.addCraftingRecipe(GT_ItemList.Casing_Farm.get(1L), bits, new Object[]{"ThT", "TFT", "TwT", 'T', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'F', OrePrefixes.frameGt.get(Materials.Steel)});
+        GT_ModHandler.addCraftingRecipe(GT_ItemList.Casing_Farm.get(1L), tBitMask, new Object[]{"ThT", "TFT", "TwT", 'T', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'F', OrePrefixes.frameGt.get(Materials.Steel)});
         GT_ModHandler.addCraftingRecipe(CoreItems.getRecipe(DustSmallFertilizer.getMetaID(), 4), tBitMask, new Object[]{" D", "  ", 'D', GT_ModHandler.getModItem("IC2", "itemFertilizer", 1L, 0)});
         GT_ModHandler.addCraftingRecipe(CoreItems.getRecipe(DustTinyFertilizer.getMetaID(), 9), tBitMask, new Object[]{"D ", "  ", 'D', GT_ModHandler.getModItem("IC2", "itemFertilizer", 1L, 0)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "itemFertilizer", 1L, 0), tBitMask, new Object[]{"DD", "DD", 'D', CoreItems.getRecipe(DustSmallFertilizer.getMetaID(), 4)});
@@ -444,8 +444,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(98, 1), tBitMask, new Object[]{"PRP", "ICI", "PMP", 'P', CoreItems2.getRecipe(84, 1), 'R', OrePrefixes.rotor.get(Materials.Iridium), 'M', ItemList.Electric_Motor_ZPM, 'I', ItemList.Neutron_Reflector, 'C', ItemList.Reactor_Coolant_Le_3});
 
         //IC2 Batteries
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.EnergyCrystal.get(1), bits, new Object[]{ItemList.IC2_EnergyCrystal.get(1, GT_Values.W)});
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.LapotronCrystal.get(1), bits, new Object[]{ItemList.IC2_LapotronCrystal.get(1, GT_Values.W)});
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.EnergyCrystal.get(1), tBitMask, new Object[]{ItemList.IC2_EnergyCrystal.get(1, GT_Values.W)});
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.LapotronCrystal.get(1), tBitMask, new Object[]{ItemList.IC2_LapotronCrystal.get(1, GT_Values.W)});
 
         /**====START SOLAR COVER====*/
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(109, 1), tBitMask, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(101, 1), 'A', OrePrefixes.plateAlloy.get(Materials.Carbon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
@@ -1385,7 +1385,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         // --- Air Lock Controller
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.airLockFrame", 1L, 1), tBitMask, new Object[]{"PPP", "VAV", "WRW", 'P', OrePrefixes.plate.get(Materials.MeteoricSteel), 'R', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'W', OrePrefixes.circuit.get(Materials.Advanced), 'A', GT_ModHandler.getModItem("GalacticraftCore", "tile.airLockFrame", 1L), 'V', GT_ModHandler.getModItem("GalacticraftCore", "item.airVent", 1L)});
         // --- Aluminium Wire
-        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.aluminumWire", 1L), bits, new Object[]{OrePrefixes.cableGt01.get(Materials.Aluminium)});
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.aluminumWire", 1L), tBitMask, new Object[]{OrePrefixes.cableGt01.get(Materials.Aluminium)});
         // --- Heavy Aluminium Wire
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "tile.aluminumWire", 3L, 1), tBitMask, new Object[]{"AAA", "WWW", "AAA", 'A', GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 1L, 8), 'W', GT_ModHandler.getModItem("GalacticraftCore", "tile.aluminumWire", 1L)});
         // --- Spin Truster
