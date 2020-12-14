@@ -13,13 +13,30 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import tconstruct.library.crafting.DryingRackRecipes;
 
+import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
+
 public class TConstructRecipe implements Runnable {
 
+    private static final long tBitMask = GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE/* | GT_ModHandler.RecipeBits.REVERSIBLE*/;
+
     public void delRecipe() {
+        removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelGoggles", 1L, 0));
+        removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelWings", 1L, 0));
+        removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelVest", 1L, 0));
+        removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelBoots", 1L, 0));
+        removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelGlove", 1L, 0));
+        removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelBelt", 1L, 0));
 
     }
 
     public void handRecipe() {
+
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelGoggles", 1L, 0), tBitMask, new Object[]{"LSL", "RBR", "DHD", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'R', OrePrefixes.ring.get(Materials.Electrum), 'B', OrePrefixes.bolt.get(Materials.Electrum), 'D', OrePrefixes.lens.get(Materials.Diamond), 'H', new ItemStack(Items.diamond_helmet)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelWings", 1L, 0), tBitMask, new Object[]{"SLS", "FPF", "FHF", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'P', new ItemStack(Blocks.piston), 'F', GT_ModHandler.getModItem("TConstruct", "fletching", 1L, 0), 'H', new ItemStack(Items.diamond_leggings)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelVest", 1L, 0), tBitMask, new Object[]{"LEL", "PHP", "LPL", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'E', OrePrefixes.plate.get(Materials.Electrum), 'P', OrePrefixes.plate.get(Materials.Obsidian), 'H', new ItemStack(Items.diamond_chestplate)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelBoots", 1L, 0), tBitMask, new Object[]{"LSL", "LHL", "PdP", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'P', new ItemStack(Blocks.piston), 'H', new ItemStack(Items.diamond_boots)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelGlove", 1L, 0), tBitMask, new Object[]{"SLS", "LLL", "dLD", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'D', OrePrefixes.plate.get(Materials.Diamond)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelBelt", 1L, 0), tBitMask, new Object[]{"S S", "LDL", "LdL", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'D', OrePrefixes.plate.get(Materials.Diamond)});
 
     }
 
