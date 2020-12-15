@@ -1139,15 +1139,15 @@ public class AssemblerRecipe implements Runnable {
         // ---  T3 Rocket + chest
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.itemTier3Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalacticraftMars", "item.itemTier3Rocket", 1L, 3), 200, 64);
         // ---  T4 Rocket + chest
-        //GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier4Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier4Rocket", 1L, 3), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier4Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier4Rocket", 1L, 3), 200, 64);
         // ---  T5 Rocket + chest
-        //GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier5Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier5Rocket", 1L, 3), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier5Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier5Rocket", 1L, 3), 200, 64);
         // ---  T6 Rocket + chest
-        //GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier6Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier6Rocket", 1L, 3), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier6Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier6Rocket", 1L, 3), 200, 64);
         // ---  T7 Rocket + chest
-        //GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L, 3), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier7Rocket", 1L, 3), 200, 64);
         // ---  T8 Rocket + chest
-        //GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L, 3), 200, 64);
+        GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L), GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 2), GT_ModHandler.getModItem("GalaxySpace", "item.Tier8Rocket", 1L, 3), 200, 64);
 
         // --- Oxygen Mask
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2", "itemArmorHazmatHelmet", 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 16), Materials.Rubber.getMolten(144), GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenMask", 1L), 400, 120);
