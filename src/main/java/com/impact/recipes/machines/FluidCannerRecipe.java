@@ -5,6 +5,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.impact.common.item.Core_List_Items.*;
@@ -30,6 +31,9 @@ public class FluidCannerRecipe implements Runnable{
         GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(144, 1), ItemList.Reactor_Coolant_NaK_3.get(1L), Materials.SodiumPotassium.getFluid(3000L), GT_Values.NF);
         GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(145, 1), ItemList.Reactor_Coolant_NaK_6.get(1L), Materials.SodiumPotassium.getFluid(6000L), GT_Values.NF);
 
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(143, 1), GT_ModHandler.getModItem("IC2", "reactorCoolantSimple", 1L, 1), new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(144, 1), GT_ModHandler.getModItem("IC2", "reactorCoolantTriple", 1L, 1), new FluidStack(FluidRegistry.getFluid("ic2coolant"), 3000), GT_Values.NF);
+        GT_Values.RA.addFluidCannerRecipe(CoreItems2.getRecipe(145, 1), GT_ModHandler.getModItem("IC2", "reactorCoolantSix", 1L, 1), new FluidStack(FluidRegistry.getFluid("ic2coolant"), 6000), GT_Values.NF);
 
         /* ================================= end GT =================================*/
 
