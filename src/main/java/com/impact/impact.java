@@ -8,6 +8,7 @@ import com.impact.events.PacketHandler;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
+import com.impact.mods.GTScanner.GTScanner;
 import com.impact.mods.GregTech.enums.IRecipeAdder;
 import com.impact.mods.GregTech.enums.RecipeAdder;
 import com.impact.mods.GregTech.enums.Texture;
@@ -98,13 +99,11 @@ public class impact {
         INFO("MainLoader PREINIT Loaded ");
         //MainLoader.preInitClient();
 
-        MinecraftForge.EVENT_BUS.register(new impactEvents());
+        CommonProxy.register_event(new impactEvents());
+        CommonProxy.register_event(new TickHandler());
+
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
         channel.register(new PacketHandler());
-
-        TickHandler tickHandler = new TickHandler();
-        FMLCommonHandler.instance().bus().register(tickHandler);
-        MinecraftForge.EVENT_BUS.register(tickHandler);
 
         proxy.preload();
     }

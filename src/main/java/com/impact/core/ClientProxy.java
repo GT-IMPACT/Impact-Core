@@ -7,11 +7,15 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.te.TE_NqTether;
 import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.events.ClientEvent;
+import com.impact.mods.GTScanner.GTScanner;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,6 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ClientProxy extends CommonProxy {
 
     public static Minecraft mc = FMLClientHandler.instance().getClient();
+    public static KeyBinding checkOre;
 
     @Override
     public void registerRenderInfo() {
@@ -45,5 +50,10 @@ public class ClientProxy extends CommonProxy {
     public static void register_event(Object obj) {
         FMLCommonHandler.instance().bus().register(obj);
         MinecraftForge.EVENT_BUS.register(obj);
+    }
+
+    public void preInit() {
+        checkOre = new KeyBinding("Scan Ores on/off", 44, "GT Scanner Mod");
+        ClientRegistry.registerKeyBinding(checkOre);
     }
 }

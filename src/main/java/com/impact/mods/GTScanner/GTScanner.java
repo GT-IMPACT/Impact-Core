@@ -1,19 +1,17 @@
 package com.impact.mods.GTScanner;
 
+import com.impact.core.ClientProxy;
 import com.impact.core.CommonProxy;
 import com.impact.network.ImpactNetwork;
 import com.impact.network.ImpactPacket01;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
-import gregtech.api.enums.GT_Values;
-import gregtech.common.GT_UndergroundOil;
-import gregtech.common.net.MessageSetFlaskCapacity;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
@@ -27,12 +25,9 @@ import java.util.Map;
 
 public class GTScanner {
 
-    public static KeyBinding checkOre;
-    public static KeyBinding checkOil;
     public static GTScanner baseClassInstance;
-    private static Minecraft mc = Minecraft.getMinecraft();
-    public boolean isScan = false;
     public static FluidStack udnerOil = null;
+    public boolean isScan = false;
     Map chunkInfo = new HashMap<>();
     int counter;
 
@@ -43,15 +38,21 @@ public class GTScanner {
 
     public static void init(GTScanner baseClassInstance) {
         GTScanner.baseClassInstance = baseClassInstance;
-        checkOre = new KeyBinding("Scan Ores on/off", 44, "GT Scanner Mod");
-        ClientRegistry.registerKeyBinding(checkOre);
-
-        //checkOil = new KeyBinding("Scan UnderOils on/off", 45, "GT Scanner Mod");
-        //ClientRegistry.registerKeyBinding(checkOil);
     }
 
+    public static void setFluidStack(FluidStack aOil) {
+        udnerOil = aOil;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (ClientProxy.checkOre.isPressed()) SetScan(!this.isScan);
+    }
+
+    @SideOnly(Side.CLIENT)
     public void SetScan(boolean value) {
-        EnumChatFormatting[] color = new EnumChatFormatting[] {
+        EnumChatFormatting[] color = new EnumChatFormatting[]{
                 EnumChatFormatting.GREEN,
                 EnumChatFormatting.WHITE,
                 EnumChatFormatting.RED
@@ -62,31 +63,27 @@ public class GTScanner {
                     "[GT Scan] On",
                     "[A] - Amount, [Y] - Y Coord"
             };
-        }
-        else message = new String[]{"[GT Scan] Off"};
-        for (int i = 0; i < message.length; i++){
+        } else message = new String[]{"[GT Scan] Off"};
+        for (int i = 0; i < message.length; i++) {
             ChatComponentText chatComponentText = new ChatComponentText(message[i]);
             ChatStyle chatComponentStyle = chatComponentText.getChatStyle();
             if (value) chatComponentStyle.setColor(color[i]);
             else chatComponentStyle.setColor(color[2]);
 
-            mc.thePlayer.addChatMessage(chatComponentText);
+            Minecraft.getMinecraft().thePlayer.addChatMessage(chatComponentText);
         }
         this.isScan = value;
         if (this.isScan) scan();
     }
 
-    public static void setFluidStack(FluidStack aOil) {
-        udnerOil = aOil;
-    }
-
+    @SideOnly(Side.CLIENT)
     public void scan() {
         this.chunkInfo.clear();
-        int chunkCoordX = mc.thePlayer.chunkCoordX;
-        int chunkCoordZ = mc.thePlayer.chunkCoordZ;
-        World world = mc.thePlayer.worldObj;
+        int chunkCoordX = Minecraft.getMinecraft().thePlayer.chunkCoordX;
+        int chunkCoordZ = Minecraft.getMinecraft().thePlayer.chunkCoordZ;
+        World world = Minecraft.getMinecraft().thePlayer.worldObj;
 
-        ImpactNetwork.INSTANCE.sendToServer(new ImpactPacket01(mc.thePlayer));
+        ImpactNetwork.INSTANCE.sendToServer(new ImpactPacket01(Minecraft.getMinecraft().thePlayer));
 
         for (int x = chunkCoordX * 16; x <= chunkCoordX * 16 + 16; x++) {
             for (int z = chunkCoordZ * 16; z <= chunkCoordZ * 16 + 16; z++) {
@@ -121,6 +118,7 @@ public class GTScanner {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void RenderGameOverlayEvent(RenderGameOverlayEvent event) {
         if (this.isScan) {
@@ -131,10 +129,10 @@ public class GTScanner {
                 this.counter = 0;
             }
             if (event.type == RenderGameOverlayEvent.ElementType.TEXT) {
-                ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
-                FontRenderer fontRender = mc.fontRenderer;
+                ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+                FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
                 int height = res.getScaledHeight();
-                mc.entityRenderer.setupOverlayRendering();
+                Minecraft.getMinecraft().entityRenderer.setupOverlayRendering();
 
                 int x = 0;
                 int y = height;
@@ -165,13 +163,6 @@ public class GTScanner {
                 }
             }
         }
-    }
-    public void checkOil() {
-    }
-
-    @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (GTScanner.checkOre.isPressed()) SetScan(!this.isScan);
     }
 
     public class Data {

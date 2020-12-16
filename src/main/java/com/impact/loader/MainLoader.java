@@ -97,6 +97,7 @@ public class MainLoader {
         }
 
         GTScanner.preInit();
+        impact.proxy.preInit();
     }
 
     public static void load(FMLInitializationEvent event) {
