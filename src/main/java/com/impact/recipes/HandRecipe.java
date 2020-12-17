@@ -1514,6 +1514,11 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t5", 1L, 12600), tBitMask, new Object[]{"PTP", "PCP", "PPP", 'P', CoreItems2.getRecipe(83, 1), 'C', ItemList.Large_Fluid_Cell_Iridium.get(1), 'T', GT_ModHandler.getModItem("GalacticraftCore", "tile.oxygenPipe", 1L)});
         // --- Very Ultra Oxygen Tank
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t6", 1L, 14400), tBitMask, new Object[]{"PTP", "PCP", "PPP", 'P', CoreItems2.getRecipe(85, 1), 'C', ItemList.Large_Fluid_Cell_Osmium.get(1), 'T', GT_ModHandler.getModItem("GalacticraftCore", "tile.oxygenPipe", 1L)});
+        // --- Module "Expander"
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.BasicItems", 1L, 14), tBitMask, new Object[]{"SCS", "PIP", "RFR", 'S', OrePrefixes.stick.get(Materials.ElectricalSteel), 'P', OrePrefixes.plate.get(Materials.ElectricalSteel), 'R', OrePrefixes.ring.get(Materials.ElectricalSteel), 'I', OrePrefixes.circuit.get(Materials.Advanced), 'F', ItemList.Field_Generator_MV, 'C', ItemList.HV_Coil});
+        // --- Module "Stabilization"
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.BasicItems", 1L, 15), tBitMask, new Object[]{"SCS", "PIP", "RFR", 'S', OrePrefixes.stick.get(Materials.VanadiumSteel), 'P', OrePrefixes.plate.get(Materials.VanadiumSteel), 'R', OrePrefixes.ring.get(Materials.VanadiumSteel), 'I', OrePrefixes.circuit.get(Materials.Advanced), 'F', ItemList.Field_Generator_MV, 'C', ItemList.Electric_Pump_HV});
+
 
         /* ==== END GALACTICRAFT & GALAXYSPACE ==== */
         /** ==== START OPENBLOCKS ==== */
