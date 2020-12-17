@@ -1,10 +1,7 @@
 package com.impact.recipes;
 
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -60,6 +57,15 @@ public class TConstructRecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Aluminium, 1), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4), GT_ModHandler.getModItem("TConstruct", "heartCanister", 1L), 2400, 480);
     }
 
+    public void chemicalBathRecipe() {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < Dyes.VALUES[i].getSizeOfFluidList(); j++) {
+                GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock", 1L, 0), Dyes.VALUES[i].getFluidDye(j, 36L), GT_ModHandler.getModItem("TConstruct", "GlassBlock.StainedClear", 1L, 15 - i), GT_Values.NI, GT_Values.NI, null, 20, 2);
+            }
+            GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock.StainedClear", 1L, i), Materials.Chlorine.getGas(50L), GT_ModHandler.getModItem("TConstruct", "GlassBlock", 1L, 0), GT_Values.NI, GT_Values.NI, null, 20, 2);
+        }
+    }
+
     public void chemicalReactorRecipe() {
         GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Diamond, 8L), new ItemStack(Items.golden_apple, 1, 1), null, null, GT_ModHandler.getModItem("TConstruct", "diamondApple", 1L, 0), 3600);
     }
@@ -73,6 +79,12 @@ public class TConstructRecipe implements Runnable {
         GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 4L, 0), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 1), 300, 2);
         GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 4L, 2), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 17), 300, 2);
         GT_Values.RA.addCompressorRecipe(new ItemStack(Items.paper, 64), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 0), 300, 2);
+    }
+
+    public void cutterRecipe() {
+        for (int i = 0; i < 16; i++) {
+            GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("TConstruct", "GlassBlock.StainedClear", 3L, i), GT_ModHandler.getModItem("TConstruct", "GlassPaneClearStained", 8L, i), GT_Values.NI, 50, 8);
+        }
     }
 
     public void EBFRecipe() {
@@ -476,8 +488,10 @@ public class TConstructRecipe implements Runnable {
         handRecipe();
         alloySmelterRecipe();
         assemblerRecipe();
+        chemicalBathRecipe();
         chemicalReactorRecipe();
         compressorRecipe();
+        cutterRecipe();
         EBFRecipe();
         extractorRecipe();
         extruderRecipe();
