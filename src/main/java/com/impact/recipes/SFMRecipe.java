@@ -56,7 +56,7 @@ public class SFMRecipe implements Runnable {
         // --- Cable Cluster
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 1, 0), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 2), GT_Utility.getIntegratedCircuit(1)}, Materials.Redstone.getMolten(288), new ItemStack(ModBlocks.blockCableCluster, 1, 0), 200, 480);
         // --- Advanced Cable Cluster
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 1, 0), GT_Utility.getIntegratedCircuit(1)}, null, new ItemStack(ModBlocks.blockCableCluster, 1, 8), 200, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 8, 0), GT_Utility.getIntegratedCircuit(1)}, null, new ItemStack(ModBlocks.blockCableCluster, 1, 8), 200, 480);
         // --- Redstone Emitter
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 1, 0), ItemList.Emitter_HV.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Electrum.getMolten(288), new ItemStack(ModBlocks.blockCableOutput, 1, 0), 200, 480);
         // --- Redstone Reciever
@@ -64,7 +64,7 @@ public class SFMRecipe implements Runnable {
         // --- Inventory Relay
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 1, 0), ItemList.Cover_ActivityDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(288), new ItemStack(ModBlocks.blockCableRelay, 1, 0), 200, 480);
         // --- Advanced Inventory Relay
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 8, 0), ItemList.Cover_ItemDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(576), new ItemStack(ModBlocks.blockCableRelay, 1, 8), 300, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 1, 0), ItemList.Cover_ItemDetector.get(1), GT_Utility.getIntegratedCircuit(2)}, Materials.Redstone.getMolten(576), new ItemStack(ModBlocks.blockCableRelay, 1, 8), 300, 480);
         // --- Block Detector
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ModBlocks.blockCable, 1, 0), GT_ModHandler.getModItem("ExtraUtilities", "budoff", 1L, 3), GT_Utility.getIntegratedCircuit(2)}, Materials.RedAlloy.getMolten(288), new ItemStack(ModBlocks.blockCableBUD, 1, 0), 200, 480);
         // --- Cable Camouflage
