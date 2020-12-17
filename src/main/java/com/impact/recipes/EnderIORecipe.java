@@ -243,7 +243,7 @@ public class EnderIORecipe implements Runnable {
         // --- Transceiver
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuantumLinkChamber", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Enderium, 1), ItemList.Field_Generator_LuV.get(1L), new ItemStack(EnderIO.itemBasicCapacitor, 4, 2),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), new ItemStack(EnderIO.blockFusedQuartz, 6, 0), new ItemStack(EnderIO.itemMaterial, 8, 5), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 12)
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), new ItemStack(EnderIO.blockFusedQuartz, 6, 0), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 12)
         }, new ItemStack(EnderIO.blockTransceiver, 1, 0), null, 40 * 20, 30720);
 
     }
