@@ -426,6 +426,7 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenComputers", "screen3", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenComputers", "eeprom", 1L, 0), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenComputers", "hoverBoots", 1L, 0), true, false, true);
+        removeRecipeByOutput(GT_ModHandler.getModItem("OpenComputers", "item", 1L, 20), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenComputers", "item", 1L, 19), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenComputers", "item", 1L, 82), true, false, true);
         removeRecipeByOutput(GT_ModHandler.getModItem("OpenComputers", "item", 1L, 86), true, false, true);
