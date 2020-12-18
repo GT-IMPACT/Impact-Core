@@ -8,6 +8,7 @@ import com.impact.systems.SolarSystems.moon.phobos.dimension.ChunkProviderPhobos
 import com.impact.systems.SolarSystems.planet.haumea.dimension.ChunkProviderHaumea;
 import com.impact.systems.SolarSystems.planet.makemake.dimension.ChunkProviderMakemake;
 import galaxyspace.core.registers.blocks.GSBlocks;
+import galaxyspace.core.world.worldengine.WE_ChunkProvider;
 import galaxyspace.systems.BarnardsSystem.core.registers.blocks.BRBlocks;
 import galaxyspace.systems.BarnardsSystem.planets.barnardaC.dimension.ChunkProviderBarnardaC;
 import galaxyspace.systems.SolarSystem.moons.callisto.dimension.ChunkProviderCallisto;
@@ -169,7 +170,7 @@ public class SpaceDimRegisterer {
         DBMbarnardaC.add(new ModDBMDef(Blocks.stone));
 
         List<ModDBMDef> DBMTitan = new ArrayList<>();
-        DBMTitan.add(new ModDBMDef("titanblocks", 2, true));
+        DBMTitan.add(new ModDBMDef(GSBlocks.TitanBlocks, 2));
 
         List<ModDBMDef> DBMTriton = new ArrayList<>();
         DBMTriton.add(new ModDBMDef("tritonblocks", 2, true));
@@ -196,6 +197,7 @@ public class SpaceDimRegisterer {
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Pluto", ChunkProviderPluto.class, Enums.DimensionType.Planet, singleToList(DBMPluto)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Triton", ChunkProviderTriton.class, Enums.DimensionType.Planet, DBMTriton));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Titan", ChunkProviderTitan.class, Enums.DimensionType.Planet, DBMTitan));
+        modCGalaxySpace.addDimensionDef(new ModDimensionDef("Titan", WE_ChunkProvider.class, Enums.DimensionType.Planet, DBMTitan));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Callisto", ChunkProviderCallisto.class, Enums.DimensionType.Planet, singleToList(DBMCallisto)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Ganymede", ChunkProviderGanymede.class, Enums.DimensionType.Planet, singleToList(DBMGanymede)));
         modCGalaxySpace.addDimensionDef(new ModDimensionDef("Ceres", ChunkProviderCeres.class, Enums.DimensionType.Planet, singleToList(DBMCeres)));
