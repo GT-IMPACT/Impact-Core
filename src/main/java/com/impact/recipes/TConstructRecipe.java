@@ -46,6 +46,10 @@ public class TConstructRecipe implements Runnable {
         GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("TConstruct", "materials", 9L, 24), ItemList.Shape_Mold_Ingot.get(0), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 14), 200, 2);
         GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 6), ItemList.Shape_Mold_Ingot.get(0), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 37), 200, 16);
         GT_Values.RA.addAlloySmelterRecipe(GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 1L, 1), ItemList.Shape_Mold_Ingot.get(0), GT_ModHandler.getModItem("TConstruct", "materials", 1L, 2), 130, 3);
+        GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L), GT_ModHandler.getModItem("TConstruct", "materials", 4L, 14), 200, 16);
+        GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 3L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L), GT_ModHandler.getModItem("TConstruct", "materials", 4L, 14), 200, 16);
+        GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 3L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L), GT_ModHandler.getModItem("TConstruct", "materials", 4L, 14), 200, 16);
+        GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 3L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1L), GT_ModHandler.getModItem("TConstruct", "materials", 4L, 14), 200, 16);
     }
 
     public void assemblerRecipe() {
