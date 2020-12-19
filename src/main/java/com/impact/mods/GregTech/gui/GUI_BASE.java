@@ -56,9 +56,9 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
 
         if (this.mContainer != null) {
             if (((mContainer).mDisplayErrorCode & 64) != 0) {
-                fontRendererObj.drawString(EnumChatFormatting.RED + "====================", 25, 30, 0);
+                fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 30, 0);
                 fontRendererObj.drawString(EnumChatFormatting.RED + "Incomplete Structure", 25, 40, 0);
-                fontRendererObj.drawString(EnumChatFormatting.RED + "====================", 25, 50, 0);
+                fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 50, 0);
             } else {
                 if (((this.mContainer).mDisplayErrorCode & 1) != 0) {
                     this.fontRendererObj.drawString(this.trans("132", EnumChatFormatting.WHITE + "Need" + EnumChatFormatting.RED + " Wrench"), 10, 20, 0);
@@ -107,9 +107,10 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
             if (mContainer.mTileEntity != null) {
                 getTooltip(mouseX, mouseY, 152, 62, 16, 16, new String[]{
                         "Start/Stop machine",
-                        EnumChatFormatting.RED + "Incomplete structure",
-                        EnumChatFormatting.YELLOW + "Ready to start",
-                        EnumChatFormatting.GREEN + "Starting",
+                        EnumChatFormatting.DARK_GRAY + "Button color:",
+                        EnumChatFormatting.RED + "    Any Problem",
+                        EnumChatFormatting.YELLOW + "    Ready to start",
+                        EnumChatFormatting.GREEN + "    Starting",
                 });
             }
         }
