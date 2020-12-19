@@ -27,9 +27,18 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import java.util.HashMap;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.common.item.Core_List_Items.registerOreDictNames;
@@ -38,6 +47,7 @@ import static com.impact.core.Config.DisableTheEnd;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.core.impactLog.WARNING;
 import static com.impact.impact.getModules;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
 
 public class MainLoader {
 
@@ -189,6 +199,13 @@ public class MainLoader {
     }
 
     public static void postInit() {
+        final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
+        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel,40), 40);
+        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel,20), 20);
+        inputMap.put(new ItemStack(IGlassBlock, 20), 20);
+        inputMap.put(new ItemStack(GCItems.rocketEngine, 4), 4);
+        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
+
     }
 
     public static void addAfterGregTechPostLoadRunner() {

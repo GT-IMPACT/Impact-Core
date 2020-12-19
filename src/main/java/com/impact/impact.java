@@ -125,12 +125,6 @@ public class impact {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent postinit) {
         MainLoader.postInit();
-//        final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-//        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel,40), 40);
-//        inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel,20), 20);
-//        inputMap.put(new ItemStack(IGlassBlock, 20), 20);
-//        inputMap.put(new ItemStack(GCItems.rocketEngine, 4), 4);
-//        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(inputMap)));
     }
 
     @Mod.EventHandler
