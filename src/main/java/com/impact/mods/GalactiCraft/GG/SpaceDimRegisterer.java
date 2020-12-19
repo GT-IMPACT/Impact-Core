@@ -7,6 +7,8 @@ import com.impact.systems.SolarSystems.moon.deimos.dimension.ChunkProviderDeimos
 import com.impact.systems.SolarSystems.moon.phobos.dimension.ChunkProviderPhobos;
 import com.impact.systems.SolarSystems.planet.haumea.dimension.ChunkProviderHaumea;
 import com.impact.systems.SolarSystems.planet.makemake.dimension.ChunkProviderMakemake;
+import com.impact.systems.SolarSystems.planet.oberon.dimension.ChunkProviderOberon;
+import com.impact.systems.SolarSystems.planet.proteus.dimension.ChunkProviderProteus;
 import galaxyspace.core.registers.blocks.GSBlocks;
 import galaxyspace.core.world.worldengine.WE_ChunkProvider;
 import galaxyspace.systems.BarnardsSystem.core.registers.blocks.BRBlocks;
@@ -224,11 +226,15 @@ public class SpaceDimRegisterer {
         final ModDBMDef DBMDeimos = new ModDBMDef(IGM_Blocks.DeimosBlocks, 1);
         final ModDBMDef DBMMakemake = new ModDBMDef(IGM_Blocks.MakeMakeBlocks, 1);
         final ModDBMDef DBMHaumea = new ModDBMDef(IGM_Blocks.HaumeaBlocks);
+        final ModDBMDef DBMOberon = new ModDBMDef(IGM_Blocks.OberonBlocks, 2);
+        final ModDBMDef DBMProteus = new ModDBMDef(IGM_Blocks.ProteusBlocks, 2);
 
         ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Deimos", ChunkProviderDeimos.class, Enums.DimensionType.Planet, singleToList(DBMDeimos)));
         ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Phobos", ChunkProviderPhobos.class, Enums.DimensionType.Planet, singleToList(DBMPhobos)));
         ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Makemake", ChunkProviderMakemake.class, Enums.DimensionType.Planet, singleToList(DBMMakemake)));
         ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Haumea", ChunkProviderHaumea.class, Enums.DimensionType.Planet, singleToList(DBMHaumea)));
+        ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Oberon", ChunkProviderOberon.class, Enums.DimensionType.Planet, singleToList(DBMOberon)));
+        ImpactGalacticModule.addDimensionDef(new ModDimensionDef("Proteus", ChunkProviderProteus.class, Enums.DimensionType.Planet, singleToList(DBMProteus)));
 
         return ImpactGalacticModule;
     }
