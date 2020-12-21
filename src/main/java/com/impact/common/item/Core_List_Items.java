@@ -237,6 +237,8 @@ public enum Core_List_Items {
     AdamantiumCompressedPlate(174, 1),
     BronzeDualCompressedPlate(175, 1),
     AluminiumDualCompressedPlate(176, 1),
+    CobblestoneRod(177, 1),
+    SandstoneRod(178, 1),
 
     WoodenBrickForm1(0, 2),
 

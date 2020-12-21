@@ -447,6 +447,10 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.EnergyCrystal.get(1), tBitMask, new Object[]{ItemList.IC2_EnergyCrystal.get(1, GT_Values.W)});
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.LapotronCrystal.get(1), tBitMask, new Object[]{ItemList.IC2_LapotronCrystal.get(1, GT_Values.W)});
 
+        //Rods
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(177,1), tBitMask, new Object[]{"f ", " S", 'S', new ItemStack(Blocks.cobblestone)});
+        GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(178,1), tBitMask, new Object[]{"f ", " S", 'S', new ItemStack(Blocks.sandstone)});
+
         /**====START SOLAR COVER====*/
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(109, 1), tBitMask, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(101, 1), 'A', OrePrefixes.plateAlloy.get(Materials.Carbon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(110, 1), tBitMask, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(102, 1), 'A', OrePrefixes.plate.get(Materials.Silicon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
@@ -583,28 +587,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         //GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("chestup", "OSMIUMNEUTRONIUMUpgrade", 1L, 0), tBitMask, new Object[]{"SPS", "PCP", "dPh", 'S', OrePrefixes.screw.get(Materials.Neutronium), 'P', OrePrefixes.plateDouble.get(Materials.Neutronium), 'C', OrePrefixes.plate.get(Materials.Osmium)});
 
         /* ==== END CHEST ==== */
-        /** ==== START LOGISTIC PIPES and BC ==== */
-        // --- Steel Pipe
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Transport", "item.buildcraftPipe.pipeitemsstone", 1L, 0), tBitMask, new Object[]{"PPP", "WGH", "PPP", 'P', OrePrefixes.plate.get(Materials.Steel), 'G', OrePrefixes.block.get(Materials.Glass), 'W', ToolDictNames.craftingToolWrench, 'H', ToolDictNames.craftingToolHardHammer});
-        // --- Filler
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Builders", "fillerBlock", 1L, 0), tBitMask, new Object[]{"PMP", "CHC", "GIG", 'P', ItemList.Electric_Piston_MV, 'M', GT_ModHandler.getModItem("BuildCraft|Core", "markerBlock", 1L, 0), 'C', ItemList.Conveyor_Module_MV, 'H', ItemList.MACHINE_HULLS[2], 'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Gold, 1), 'I', GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 1)});
-        // --- Builder
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Builders", "builderBlock", 1L, 0), tBitMask, new Object[]{"PMP", "CHC", "GIG", 'P', ItemList.Robot_Arm_MV, 'M', GT_ModHandler.getModItem("BuildCraft|Core", "markerBlock", 1L, 0), 'C', ItemList.Conveyor_Module_MV, 'H', ItemList.MACHINE_HULLS[2], 'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Birmabright, 1), 'I', GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 1)});
-        // --- Architect
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Builders", "architectBlock", 1L, 0), tBitMask, new Object[]{"PMP", "CHC", "GIG", 'P', ItemList.Robot_Arm_MV, 'M', GT_ModHandler.getModItem("BuildCraft|Core", "markerBlock", 1L, 0), 'C', ItemList.Conveyor_Module_MV, 'H', ItemList.MACHINE_HULLS[2], 'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Birmabright, 1), 'I', ItemList.Cover_Screen});
-        // --- Library
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Builders", "libraryBlock", 1L, 0), tBitMask, new Object[]{"PGP", "CHC", "PIP", 'P', OrePrefixes.plate.get(Materials.Iron), 'C', OrePrefixes.circuit.get(Materials.Basic), 'H', ItemList.MACHINE_HULLS[2], 'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Birmabright, 1), 'I', ItemList.Cover_Screen});
-        // --- Marker Blue
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Core", "markerBlock", 1L, 0), tBitMask, new Object[]{" S ", " L ", "   ", 'L', OrePrefixes.stick.get(Materials.Wood), 'S', GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1)});
-        // --- Marker Yellow
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Core", "constructionMarkerBlock", 1L, 0), tBitMask, new Object[]{" S ", " L ", "   ", 'L', OrePrefixes.stick.get(Materials.Wood), 'S', getStackofAmountFromOreDict("dyeYellow", 1)});
-        // --- Marker Green
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Core", "pathMarkerBlock", 1L, 0), tBitMask, new Object[]{" S ", " L ", "   ", 'L', OrePrefixes.stick.get(Materials.Wood), 'S', getStackofAmountFromOreDict("dyeGreen", 1)});
-        // --- BluePrint
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Builders", "blueprintItem", 1L, 0), tBitMask, new Object[]{"LS ", "   ", "   ", 'L', OrePrefixes.plate.get(Materials.Paper), 'S', GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1)});
-        // --- BlackPrint
-        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Builders", "templateItem", 1L, 0), tBitMask, new Object[]{"LS ", "   ", "   ", 'L', OrePrefixes.plate.get(Materials.Paper), 'S', getStackofAmountFromOreDict("dyeBlack", 1)});
-
+        /** ==== START LOGISTIC PIPES ==== */
         // --- Logistics Power Junction
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("LogisticsPipes", "logisticsSolidBlock", 1L, 1), tBitMask, new Object[]{"GMG", "ECE", "IWI", 'G', OrePrefixes.gear.get(Materials.Steel), 'I', OrePrefixes.circuit.get(Materials.Good), 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'E', ItemList.Electric_Motor_MV, 'M', ItemList.Cover_Screen, 'C', ItemList.MACHINE_HULLS[2]});
         // --- Logistics Secгrity Junction

@@ -51,5 +51,10 @@ public class ModLoader implements Runnable {
         if (Loader.isModLoaded("EnderIO")) {
             new EnderIORecipe().run();
         }
+
+        // --- BuildCraft
+        if (Loader.isModLoaded("BuildCraft|Core")) {
+            new BuildCraftRecipe().run();
+        }
     }
 }

@@ -23,17 +23,18 @@ public class TConstructRecipe implements Runnable {
         removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelBoots", 1L, 0));
         removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelGlove", 1L, 0));
         removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "travelBelt", 1L, 0));
+        removeRecipeByOutput(GT_ModHandler.getModItem("TConstruct", "toolRod", 1L, 1));
 
     }
 
     public void handRecipe() {
-
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelGoggles", 1L, 0), tBitMask, new Object[]{"LSL", "RBR", "DHD", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'R', OrePrefixes.ring.get(Materials.Electrum), 'B', OrePrefixes.bolt.get(Materials.Electrum), 'D', OrePrefixes.lens.get(Materials.Diamond), 'H', new ItemStack(Items.diamond_helmet)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelWings", 1L, 0), tBitMask, new Object[]{"SLS", "FPF", "FHF", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'P', new ItemStack(Blocks.piston), 'F', GT_ModHandler.getModItem("TConstruct", "fletching", 1L, 0), 'H', new ItemStack(Items.diamond_leggings)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelVest", 1L, 0), tBitMask, new Object[]{"LEL", "PHP", "LPL", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'E', OrePrefixes.plate.get(Materials.Electrum), 'P', OrePrefixes.plate.get(Materials.Obsidian), 'H', new ItemStack(Items.diamond_chestplate)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelBoots", 1L, 0), tBitMask, new Object[]{"LSL", "LHL", "PdP", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'P', new ItemStack(Blocks.piston), 'H', new ItemStack(Items.diamond_boots)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelGlove", 1L, 0), tBitMask, new Object[]{"SLS", "LLL", "dLD", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'D', OrePrefixes.plate.get(Materials.Diamond)});
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "travelBelt", 1L, 0), tBitMask, new Object[]{"S S", "LDL", "LdL", 'L', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0), 'S', OrePrefixes.screw.get(Materials.Electrum), 'D', OrePrefixes.plate.get(Materials.Diamond)});
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("TConstruct", "toolRod", 1L, 1), tBitMask, new Object[]{"f ", " S", 'S', new ItemStack(Blocks.stone)});
 
     }
 
@@ -458,6 +459,10 @@ public class TConstructRecipe implements Runnable {
         GT_Values.RA.addForgeHammerRecipe(GT_ModHandler.getModItem("TConstruct", "Smeltery", 1L, 2), GT_ModHandler.getModItem("TConstruct", "materials", 3L, 2), 16, 20);
     }
 
+    public void latheRecipe() {
+        GT_Values.RA.addLatheRecipe(new ItemStack(Blocks.stone), GT_ModHandler.getModItem("TConstruct", "toolRod", 2L, 1), null, 100, 16);
+    }
+
     public void mixerRecipe() {
         // --- Grout
         GT_Values.RA.addMixerRecipe(new ItemStack(Blocks.sand, 1, GT_Values.W), new ItemStack(Blocks.gravel, 3), new ItemStack(Items.clay_ball, 2), GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(2000L), GT_Values.NF, GT_ModHandler.getModItem("TConstruct", "CraftedSoil", 8L, 1), 120, 16);
@@ -500,6 +505,7 @@ public class TConstructRecipe implements Runnable {
         extractorRecipe();
         extruderRecipe();
         forgeHammerRecipe();
+        latheRecipe();
         mixerRecipe();
         pulveriserRecipe();
         dryingRackRecipe();
