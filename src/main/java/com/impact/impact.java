@@ -8,7 +8,6 @@ import com.impact.events.PacketHandler;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
-import com.impact.mods.GTScanner.GTScanner;
 import com.impact.mods.GregTech.enums.IRecipeAdder;
 import com.impact.mods.GregTech.enums.RecipeAdder;
 import com.impact.mods.GregTech.enums.Texture;
@@ -19,7 +18,6 @@ import com.impact.mods.RailCraft.carts.item.ChestCartModule;
 import com.impact.mods.RailCraft.carts.item.events.Module;
 import com.impact.network.ImpactNetwork;
 import com.impact.util.SendUtils;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -29,25 +27,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static com.impact.core.Config.csv;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
-import static com.impact.loader.ItemRegistery.IGlassBlock;
 
 @Mod(
         modid = MODID,
@@ -64,11 +50,11 @@ public class impact {
     @Mod.Instance(MODID)
     public static impact instance;
     public static SendUtils SendUtils_instance = new SendUtils();
-    public static String ModPackVersion = "1.0.0.1";
+    public static String ModPackVersion = "1.0.0.2";
     public static Config mConfig;
     public static FMLEventChannel channel;
-    private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
     public static IRecipeAdder I_RA;
+    private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
 
     public impact() {
         impact.I_RA = new RecipeAdder();
