@@ -3,7 +3,7 @@ package com.impact.mods.GTScanner;
 import com.impact.core.ClientProxy;
 import com.impact.core.CommonProxy;
 import com.impact.network.ImpactNetwork;
-import com.impact.network.ImpactPacket01;
+import com.impact.network.ImpactPacketGTScanner;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -83,7 +83,7 @@ public class GTScanner {
         int chunkCoordZ = Minecraft.getMinecraft().thePlayer.chunkCoordZ;
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
 
-        ImpactNetwork.INSTANCE.sendToServer(new ImpactPacket01(Minecraft.getMinecraft().thePlayer));
+        ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketGTScanner(Minecraft.getMinecraft().thePlayer));
 
         for (int x = chunkCoordX * 16; x <= chunkCoordX * 16 + 16; x++) {
             for (int z = chunkCoordZ * 16; z <= chunkCoordZ * 16 + 16; z++) {

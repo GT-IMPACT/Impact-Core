@@ -179,7 +179,7 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
             //Long EUt calculation
             long xEUt=aEUt;
             //Isnt too low EUt check?
-            long tempEUt = xEUt<V[1] ? V[1] : xEUt;
+            long tempEUt = Math.max(xEUt, V[1]);
 
             mMaxProgresstime = aDuration;
 

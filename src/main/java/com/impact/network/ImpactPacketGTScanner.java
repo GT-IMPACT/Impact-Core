@@ -12,19 +12,19 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 
-public class ImpactPacket01 extends ImpactPacket {
+public class ImpactPacketGTScanner extends ImpactPacket {
 
     private int playerID, dimID;
 
-    public ImpactPacket01() {
+    public ImpactPacketGTScanner() {
     }
 
-    public ImpactPacket01(int dimensionId, int aPlayerID) {
+    public ImpactPacketGTScanner(int dimensionId, int aPlayerID) {
         this.dimID = dimensionId;
         this.playerID = aPlayerID;
     }
 
-    public ImpactPacket01(EntityPlayer p) {
+    public ImpactPacketGTScanner(EntityPlayer p) {
         this.dimID = p.worldObj.provider.dimensionId;
         this.playerID = p.getEntityId();
     }
@@ -45,7 +45,7 @@ public class ImpactPacket01 extends ImpactPacket {
 
     @Override
     public Object decode(ByteArrayDataInput aData) {
-        return new ImpactPacket01(aData.readInt(), aData.readInt());
+        return new ImpactPacketGTScanner(aData.readInt(), aData.readInt());
     }
 
     @Override
