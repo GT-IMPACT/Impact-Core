@@ -208,7 +208,7 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
 
 
         if (this.mInputBusses.size() > 30) formationChecklist = false;
-        if (this.mOutputBusses.size() > 1) formationChecklist = false;
+        if (this.mOutputBusses.size() > 3) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 

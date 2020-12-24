@@ -218,7 +218,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
 
         if (this.mInputBusses.size() > 1) formationChecklist = false;
         if (this.mInputHatches.size() > 1) formationChecklist = false;
-        if (this.mOutputBusses.size() > 1) formationChecklist = false;
+        if (this.mOutputBusses.size() > 2) formationChecklist = false;
         if (this.mEnergyHatches.size() != 1) formationChecklist = false;
         mWrench = true;
         mScrewdriver = true;

@@ -289,7 +289,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
         setParallel(this.mLevel);
 
         if (this.mInputBusses.size() > 16) formationChecklist = false;
-        if (this.mOutputBusses.size() > 1) formationChecklist = false;
+        if (this.mOutputBusses.size() > 3) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
         if (this.mMaintenanceHatches.size() != 1) formationChecklist = false;
 
