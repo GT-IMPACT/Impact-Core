@@ -610,14 +610,14 @@ public class Printer3DRecipe implements Runnable {
                 GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, 1), ItemList.Transformer_ZPM_LuV.get(1L), GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1, 1), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
                 GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 2), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 3), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Duranium, 2),
                 ItemList.Energy_LapotronicOrb2.get(1L), ItemList.Field_Generator_IV.get(2L), ItemList.Electric_Motor_ZPM.get(2L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Duranium, 4)
-        }, GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, 26), null, 50 * 20, 30720);
+        }, GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, GT_Values.W), null, 50 * 20, 30720);
 
         //K2P4
         GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
                 GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, 1), ItemList.Transformer_UV_ZPM.get(1L), GT_ModHandler.getModItem("GraviSuite", "epicLappack", 1, 1), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 8, 1),
                 CoreItems2.getRecipe(98,4), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 7), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Tritanium, 2),
                 ItemList.Energy_Module.get(1L), ItemList.Field_Generator_LuV.get(2L), ItemList.Electric_Motor_UV.get(2L), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tritanium, 8)
-        }, GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, 26), null, 60 * 20, 122880);
+        }, GT_ModHandler.getModItem("GraviSuite", "kpChestPlate", 1, GT_Values.W), null, 60 * 20, 122880);
         /* ================================= end  Gravisuite =================================*/
 
 /** ================================= start IC2 =================================*/
