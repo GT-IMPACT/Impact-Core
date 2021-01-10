@@ -65,5 +65,14 @@ public class MixerRecipe implements Runnable {
         GT_Values.RA.addMixerRecipe(CoreItems.getRecipe(38,1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L), GT_Values.NI, Materials.Water.getFluid(500L), GT_Values.NF, GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 2L, 8), 20, 16);
 
         /* ================================= end AE =================================*/
+
+        //GT Nitration Muxture
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitricAcid, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI,
+                Materials.SulfuricAcid.getFluid(1000L),
+                Materials.NitrationMixture.getFluid(2000),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
+                24*20, 2
+        );
     }
 }
