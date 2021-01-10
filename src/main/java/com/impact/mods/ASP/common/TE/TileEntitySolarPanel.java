@@ -1,6 +1,7 @@
 package com.impact.mods.ASP.common.TE;
 
 import com.impact.mods.ASP.common.ContainerAdvSolarPanel;
+import galaxyspace.core.configs.GSConfigDimensions;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
@@ -10,6 +11,7 @@ import ic2.api.item.IElectricItem;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
+import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -189,11 +192,20 @@ public class TileEntitySolarPanel extends TileEntityBase implements IEnergyTile,
     }
 
     public void updateVisibility() {
-        Boolean rainWeather = this.wetBiome && (this.worldObj.isRaining() || this.worldObj.isThundering());
-        this.sunIsUp = this.worldObj.isDaytime() && !rainWeather;
+        World world = this.worldObj;
 
-        this.skyIsVisible = this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !this.noSunWorld;
+        int Asteroids = ConfigManagerAsteroids.dimensionIDAsteroids;
+        int KuiperBelt = GSConfigDimensions.dimensionIDKuiperBelt;
 
+        boolean rainWeather = this.wetBiome && (world.isRaining() || world.isThundering());
+
+        if (world.provider.dimensionId == Asteroids || world.provider.dimensionId == KuiperBelt) {
+            this.sunIsUp = world.isDaytime();
+            this.skyIsVisible = world.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord);
+        } else {
+            this.sunIsUp = world.isDaytime() && !rainWeather;
+            this.skyIsVisible = world.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !this.noSunWorld;
+        }
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -314,7 +326,7 @@ public class TileEntitySolarPanel extends TileEntityBase implements IEnergyTile,
     }
 
     public String getInventoryName() {
-        return "Advanced Solar Panel";
+        return "Impact Solar Panel";
     }
 
     public boolean hasCustomInventoryName() {

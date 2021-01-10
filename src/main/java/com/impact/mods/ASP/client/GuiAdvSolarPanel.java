@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiAdvSolarPanel extends GuiContainer {
     public TileEntitySolarPanel tileentity;
-    private static ResourceLocation tex = new ResourceLocation("advancedsolarpanel", "textures/gui/GUIAdvancedSolarPanel.png");
+    private static ResourceLocation tex = new ResourceLocation("impactsolarpanel", "textures/gui/GUIAdvancedSolarPanel.png");
 
     public GuiAdvSolarPanel(TileEntitySolarPanel tileentitysolarpanel, InventoryPlayer inventoryplayer) {
         super(new ContainerAdvSolarPanel(inventoryplayer, tileentitysolarpanel));
