@@ -451,6 +451,16 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(177,1), tBitMask, new Object[]{"f ", " S", 'S', new ItemStack(Blocks.cobblestone)});
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(178,1), tBitMask, new Object[]{"f ", " S", 'S', new ItemStack(Blocks.sandstone)});
 
+        //GT Wood Ring
+        GT_ModHandler.addCraftingRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Wood, 4L),
+                new Object[]{
+                        "f ",
+                        " S",
+                        'S', GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1L)
+        });
+
+
         /**====START SOLAR COVER====*/
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(109, 1), tBitMask, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(101, 1), 'A', OrePrefixes.plateAlloy.get(Materials.Carbon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(110, 1), tBitMask, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(102, 1), 'A', OrePrefixes.plate.get(Materials.Silicon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
