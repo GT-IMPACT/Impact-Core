@@ -1290,6 +1290,10 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchSpread", 1L, 1), tBitMask, new Object[]{"CSC", "SVS", "CSC", 'C', OrePrefixes.screw.get(Materials.StainlessSteel), 'S', OrePrefixes.plate.get(Materials.Gold), 'V', GT_ModHandler.getModItem("IC2", "reactorHeatSwitchCore", 1L, 1)});
         // --- Advanced Heat Exchanger
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "reactorHeatSwitchDiamond", 1L, 1), tBitMask, new Object[]{"LCL", "VDV", "LCL", 'L', OrePrefixes.plate.get(Materials.Lapis), 'D', OrePrefixes.plate.get(Materials.Diamond), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'V', GT_ModHandler.getModItem("IC2", "reactorHeatSwitchSpread", 1L, 1)});
+        // --- Recrafting Iron Scaffold
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "blockIronScaffold", 1L), new Object[]{"L", 'L', OrePrefixes.frameGt.get(Materials.Steel)});
+        // --- Recrafting Iron Scaffold
+        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), new Object[]{"L", 'L', GT_ModHandler.getModItem("IC2", "blockIronScaffold", 1L)});
 
         /* ==== END IC2 ==== */
         /** ==== START PROJECTRED ==== */
