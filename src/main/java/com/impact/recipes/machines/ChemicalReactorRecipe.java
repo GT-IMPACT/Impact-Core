@@ -2,6 +2,7 @@ package com.impact.recipes.machines;
 
 import com.impact.common.item.Core_Items;
 import com.impact.common.item.Core_Items2;
+import com.impact.util.Utilits;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -43,5 +44,13 @@ public class ChemicalReactorRecipe implements Runnable {
         GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Diamond, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), Materials.Redstone.getMolten(144), null, GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 1L, 0), 1200);
 
         /* ==== END WR-CBE ==== */
+
+        //GT NO2
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                Utilits.arrayIS(GT_Utility.getIntegratedCircuit(3)),
+                Utilits.arrayFS(Materials.Nitrogen.getGas(1000L), Materials.Oxygen.getGas(2000L)),
+                Utilits.arrayFS(Materials.NitrogenDioxide.getGas(3000L)),
+                null, 8*20, 30
+        );
     }
 }

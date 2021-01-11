@@ -192,4 +192,12 @@ public class Utilits {
         EntityRegistry.registerGlobalEntityID(entityClass, name, ID);
         EntityRegistry.registerModEntity(entityClass, name, ID, instance, 128, 1, true);
     }
+
+    public static ItemStack[] arrayIS(ItemStack... is) {
+        return is.clone();
+    }
+
+    public static FluidStack[] arrayFS(FluidStack... fs) {
+        return fs.clone();
+    }
 }
