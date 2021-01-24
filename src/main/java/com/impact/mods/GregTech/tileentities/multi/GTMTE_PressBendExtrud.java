@@ -96,7 +96,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
                 .addController()
                 .addEnergyHatch("Any casing")
                 .addMaintenanceHatch("Any casing")
-                .addInputBus("Any casing (max x15)")
+                .addInputBus("Any casing (max x20)")
                 .addOutputBus("Any casing (max x3)")
                 .addMuffler("Any casing")
                 .addCasingInfo("PBE Casing")
@@ -185,7 +185,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
         setParallel(this.mLevel);
 
-        if (this.mInputBusses.size() > 15) formationChecklist = false;
+        if (this.mInputBusses.size() > 20) formationChecklist = false;
         if (this.mOutputBusses.size() > 3) formationChecklist = false;
         if (this.mMufflerHatches.size() != 1) formationChecklist = false;
         if (this.mEnergyHatches.size() > 4) formationChecklist = false;
