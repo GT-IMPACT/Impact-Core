@@ -327,7 +327,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        return impactRecipe(itemStack);
+        return impactRecipe();
     }
 
     static class build implements Runnable {
