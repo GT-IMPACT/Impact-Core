@@ -119,54 +119,13 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        ItemStack[] inputs = tInputList.toArray(new ItemStack[tInputList.size()]);
-
-        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-        FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-
-        if (inputs.length > 0 || fluids.length > 0) {
-            long tVoltage = getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
-                    false, V[tTier], fluids, inputs);
-            if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-
-                int EUt = recipe.mEUt;
-                int maxProgresstime = recipe.mDuration;
-
-                if (tTier > 0) {
-                    EUt = recipe.mEUt * (1 << tTier - 1);
-                    maxProgresstime = (recipe.mDuration / (1 << tTier - 1));
-                }
-
-                if (maxProgresstime < 1) {
-                    maxProgresstime = 1;
-                    EUt = recipe.mEUt * recipe.mDuration / 2;
-                }
-
-                this.mEUt = -EUt;
-                this.mMaxProgresstime = maxProgresstime;
-                mOutputItems = new ItemStack[recipe.mOutputs.length];
-                for (int i = 0; i < recipe.mOutputs.length; i++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
-                        this.mOutputItems[i] = recipe.getOutput(i);
-                    }
-                }
-                this.mOutputFluids = recipe.mFluidOutputs;
-                this.updateSlots();
-                this.mWrench = true;
-                this.mScrewdriver = true;
-                this.mSoftHammer = true;
-                this.mHardHammer = true;
-                this.mSolderingTool = true;
-                this.mCrowbar = true;
-                return true;
-            }
-        }
-        return false;
+        this.mWrench = true;
+        this.mScrewdriver = true;
+        this.mSoftHammer = true;
+        this.mHardHammer = true;
+        this.mSolderingTool = true;
+        this.mCrowbar = true;
+        return impactRecipe();
     }
 
 

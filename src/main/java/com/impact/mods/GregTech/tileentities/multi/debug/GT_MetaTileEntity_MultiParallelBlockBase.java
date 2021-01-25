@@ -257,7 +257,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
         int tInputList_sS = tInputList.size();
         for (int i = 0; i < tInputList_sS - 1; i++) {
             for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+                if (GT_Utility.areStacksEqual( tInputList.get(i), tInputList.get(j))) {
                     if ((tInputList.get(i)).stackSize >= (tInputList.get(j)).stackSize) {
                         tInputList.remove(j--);
                         tInputList_sS = tInputList.size();
@@ -270,7 +270,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
             }
         }
         tInputList.add(mInventory[1]);
-        ItemStack[] inputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+        ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
 
         ArrayList<FluidStack> tFluidList = getStoredFluids();
         int tFluidList_sS = tFluidList.size();
@@ -288,42 +288,30 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 }
             }
         }
-        FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
 
         if (inputs.length > 0 || fluids.length > 0) {
-            long nominalV = TecTechUtils.getnominalVoltageTT(this);
-            byte tier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
+            long tVoltage = TecTechUtils.getnominalVoltageTT(this);
+            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
-                    false, V[tier], fluids, inputs);
+                    false, V[tTier], fluids, inputs);
             if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
 
-                int EUt = recipe.mEUt;
-                int maxProgresstime = recipe.mDuration;
+                calculateOverclockedNessMulti(recipe.mEUt, recipe.mDuration, 1, tVoltage);
 
-                if (getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill0 || getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill1 || getRecipeMap() == GT_Recipe.GT_Recipe_Map.sSawMill2) {
-                    if (tier > 1) {
-                        while (EUt <= V[tier] && maxProgresstime > 2) {
-                            EUt *= 2;
-                            maxProgresstime /= 2;
-                        }
-                    }
-                    if (maxProgresstime < 1) {
-                        maxProgresstime = 1;
-                        EUt = recipe.mEUt * recipe.mDuration / 2;
-                    }
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                    return false;
+                if (this.mEUt > 0) {
+                    this.mEUt = (-this.mEUt);
                 }
-
-                this.mEUt = -EUt;
-                this.mMaxProgresstime = maxProgresstime;
                 mOutputItems = new ItemStack[recipe.mOutputs.length];
                 for (int i = 0; i < recipe.mOutputs.length; i++) {
                     if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
                         this.mOutputItems[i] = recipe.getOutput(i);
                     }
                 }
-
                 this.mOutputFluids = recipe.mFluidOutputs;
                 this.updateSlots();
                 return true;
@@ -393,7 +381,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                         this.mEfficiencyIncrease = 10000;
                         long actualEUT = (long) (tRecipe.mEUt) * processed;
 
-                        calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, getRecipeMap().mAmperage, nominalV, this);
+                        calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 
                         if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
                             return false;
