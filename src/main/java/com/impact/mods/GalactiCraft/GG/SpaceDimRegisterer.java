@@ -175,7 +175,8 @@ public class SpaceDimRegisterer {
         DBMTitan.add(new ModDBMDef(GSBlocks.TitanBlocks, 2));
 
         List<ModDBMDef> DBMTriton = new ArrayList<>();
-        DBMTriton.add(new ModDBMDef("tritonblocks", 3, true));
+        DBMTriton.add(new ModDBMDef(GSBlocks.TritonBlocks, 3));
+        DBMTriton.add(new ModDBMDef("TritonSubGrunt"));
 
         final ModDBMDef DBMMiranda = new ModDBMDef(GSBlocks.MirandaBlocks, 2);
 
