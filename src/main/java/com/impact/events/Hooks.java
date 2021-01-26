@@ -3,6 +3,11 @@ package com.impact.events;
 
 import com.impact.core.Config;
 import gloomyfolken.hooklib.asm.Hook;
+import gloomyfolken.hooklib.asm.ReturnCondition;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockObsidian;
+import net.minecraft.block.BlockQuartz;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.opengl.Display;
@@ -41,5 +46,15 @@ public class Hooks {
 
         bytebuffer.flip();
         return bytebuffer;
+    }
+
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static void setHarvestLevel(BlockQuartz block, String toolClass, int level) {
+        block.setHarvestLevel(toolClass, 0);
+    }
+
+    @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
+    public static void setHarvestLevel(BlockObsidian block, String toolClass, int level) {
+        block.setHarvestLevel(toolClass, 3);
     }
 }
