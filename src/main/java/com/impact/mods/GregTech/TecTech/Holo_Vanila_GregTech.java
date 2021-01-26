@@ -1769,9 +1769,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                 return desc;
             }
         });
-
-        Random rand = new Random();
-
+        
         //EBF
         registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new IMultiblockInfoContainer<GT_MetaTileEntity_ElectricBlastFurnace>() {
             //region Structure
@@ -1784,9 +1782,9 @@ public class Holo_Vanila_GregTech implements Runnable {
 
                             })
                             .addElement('0', ofBlock(sBlockCasings1, 11))
-                            .addElement('1', ofBlock(sBlockCasings5, rand.nextInt(7)))
+                            .addElement('1', ofBlock(sBlockCasings5, 0))
                             .build();
-            private final String[] desc = new String[]{
+            private final String[] desc = new String[] {
                     EnumChatFormatting.RED + "Impact Details:",
                     "- Heat Proof Machine Casing",
                     "- Coil Block (any Coil Block)",
