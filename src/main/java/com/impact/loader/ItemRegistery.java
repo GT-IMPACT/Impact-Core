@@ -25,10 +25,10 @@ public class ItemRegistery {
             null,
             null,
             new Core_FakeBlock("FakeBlock", new String[]{
-                    Refstrings.MODID + ":glass/blockGB0",
-                    Refstrings.MODID + ":glass/blockGB14",
-                    Refstrings.MODID + ":glass/blockGB13",
-                    Refstrings.MODID + ":glass/blockGB11",
+                    Refstrings.MODID + ":glass/blockGB0", //white
+                    Refstrings.MODID + ":glass/blockGB14", //red
+                    Refstrings.MODID + ":glass/blockGB13", //green
+                    Refstrings.MODID + ":glass/blockGB11", //blue
                     Refstrings.MODID + ":glass/frameGt",
             }, 2)
     };

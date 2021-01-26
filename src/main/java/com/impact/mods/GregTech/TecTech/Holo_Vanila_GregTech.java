@@ -4,6 +4,9 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_BlastSmelter;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_CokeOven;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,6 +14,8 @@ import gregtech.common.tileentities.machines.multi.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+
+import java.util.Random;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
@@ -1220,6 +1225,88 @@ public class Holo_Vanila_GregTech implements Runnable {
             }
         });
 
+        //Diesel Engine
+        registerMetaClass(GT_MetaTileEntity_DieselEngine.class, new IMultiblockInfoContainer<GT_MetaTileEntity_DieselEngine>() {
+            //region Structure
+            private final IStructureDefinition<GT_MetaTileEntity_DieselEngine> definition =
+                    StructureDefinition.<GT_MetaTileEntity_DieselEngine>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"000","0.0","000"},
+                                    {"131","323","131"},
+                                    {"131","323","131"},
+                                    {"111","141","111"},
+                            })
+                            .addElement('0', ofBlock(sBlockCasings4, 13))
+                            .addElement('1', ofBlock(sBlockCasings4, 2))
+                            .addElement('2', ofBlock(sBlockCasings2, 4))
+                            .addElement('3', ofBlockHint(decorateBlock[2], 0))
+                            .addElement('4', ofBlockHint(decorateBlock[2], 1))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Engine Intake Casing",
+                    "- Stable Titanium Machine Casing",
+                    "- Titanium Gear Box Casing",
+                    "-" + EnumChatFormatting.RED + " Red: " + EnumChatFormatting.RESET + "Dynamo Hatch",
+                    "-" + EnumChatFormatting.WHITE + " White: " + EnumChatFormatting.RESET + "Hathes or Stable Titanium Machine Casing",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_DieselEngine tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        1, 1, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+        //Diesel Engine 2
+        registerMetaClass(GT_MetaTileEntity_DieselEngine2.class, new IMultiblockInfoContainer<GT_MetaTileEntity_DieselEngine2>() {
+            //region Structure
+            private final IStructureDefinition<GT_MetaTileEntity_DieselEngine2> definition =
+                    StructureDefinition.<GT_MetaTileEntity_DieselEngine2>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"000","0.0","000"},
+                                    {"131","323","131"},
+                                    {"131","323","131"},
+                                    {"111","141","111"},
+                            })
+                            .addElement('0', ofBlock(sBlockCasings2, 15))
+                            .addElement('1', ofBlock(sBlockCasings4, 0))
+                            .addElement('2', ofBlock(sBlockCasings7, 1))
+                            .addElement('3', ofBlockHint(decorateBlock[2], 0))
+                            .addElement('4', ofBlockHint(decorateBlock[2], 1))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Tungstensteel Pipe Casing",
+                    "- Robust Tungstensteel Machine Casing",
+                    "- Tungstensteel Gear Box Casing",
+                    "-" + EnumChatFormatting.RED + " Red: " + EnumChatFormatting.RESET + "Dynamo Hatch",
+                    "-" + EnumChatFormatting.WHITE + " White: " + EnumChatFormatting.RESET + "Hathes or Robust Tungstensteel Machine Casing",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_DieselEngine2 tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        1, 1, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
         //MultiFurnace
         registerMetaClass(GT_MetaTileEntity_MultiFurnace.class, new IMultiblockInfoContainer<GT_MetaTileEntity_MultiFurnace>() {
             //region Structure
@@ -1280,6 +1367,38 @@ public class Holo_Vanila_GregTech implements Runnable {
 
             @Override
             public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_LargeChemicalReactor tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        1, 1, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+        //Vacuum Freezer
+        registerMetaClass(GT_MetaTileEntity_VacuumFreezer.class, new IMultiblockInfoContainer<GT_MetaTileEntity_VacuumFreezer>() {
+            //region Structure
+            private final IStructureDefinition<GT_MetaTileEntity_VacuumFreezer> definition =
+                    StructureDefinition.<GT_MetaTileEntity_VacuumFreezer>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"000", "0.0", "000",},
+                                    {"000", "0A0", "000",},
+                                    {"000", "000", "000",},
+                            })
+                            .addElement('0', ofBlock(sBlockCasings2, 1))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Frost Proof Machine Casing",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_VacuumFreezer tileEntity, ExtendedFacing aSide) {
                 IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                 definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                         base.getXCoord(), base.getYCoord(), base.getZCoord(),
@@ -1618,6 +1737,77 @@ public class Holo_Vanila_GregTech implements Runnable {
             }
         });
 
+        //Coke Oven
+        registerMetaClass(GTMTE_CokeOven.class, new IMultiblockInfoContainer<GTMTE_CokeOven>() {
+            //region Structure
+            private final IStructureDefinition<GTMTE_CokeOven> definition =
+                    StructureDefinition.<GTMTE_CokeOven>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"000","0.0","000"},
+                                    {"000","0A0","000"},
+                                    {"000","000","000"},
+                            })
+                            .addElement('0', ofBlock(sBlockCasings8, 5))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Coke Oven Bricks",
+                    "- Hathes: any coke Oven Bricks",
+            };
+            //endregion
 
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_CokeOven tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        1, 1, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
+
+        Random rand = new Random();
+
+        //EBF
+        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new IMultiblockInfoContainer<GT_MetaTileEntity_ElectricBlastFurnace>() {
+            //region Structure
+            private final IStructureDefinition<GT_MetaTileEntity_ElectricBlastFurnace> definition =
+                    StructureDefinition.<GT_MetaTileEntity_ElectricBlastFurnace>builder()
+                            .addShapeOldApi("main", new String[][]{
+                                    {"000", "111", "111", "0.0"},
+                                    {"000", "1A1", "1A1", "000"},
+                                    {"000", "111", "111", "000"},
+
+                            })
+                            .addElement('0', ofBlock(sBlockCasings1, 11))
+                            .addElement('1', ofBlock(sBlockCasings5, rand.nextInt(7)))
+                            .build();
+            private final String[] desc = new String[]{
+                    EnumChatFormatting.RED + "Impact Details:",
+                    "- Heat Proof Machine Casing",
+                    "- Coil Block (any Coil Block)",
+                    "- Muffler Hatch (top side center Heat Proof Machine Casing)",
+                    "- Other Hatches (any Heat Proof Machine Casing)",
+                    "- * Output Hatch for Muffler Pollution (any top side Heat Proof Machine Casing)",
+            };
+            //endregion
+
+            @Override
+            public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_ElectricBlastFurnace tileEntity, ExtendedFacing aSide) {
+                IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+                definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                        1, 3, 0, hintsOnly);
+            }
+
+            @Override
+            public String[] getDescription(ItemStack stackSize) {
+                return desc;
+            }
+        });
     }
 }
