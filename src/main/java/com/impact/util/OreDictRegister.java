@@ -19,9 +19,14 @@ public class OreDictRegister {
     }
 
     public static void register_space_rocks() {
+        reg_rock(OreDictTypes.Mars.name(), GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 9));
+        for (int i = 0; i < 3; i++) {
+            reg_rock(OreDictTypes.Mars.name(), GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, i + 4));
+            reg_rock(OreDictTypes.Asteroids.name(), GT_ModHandler.getModItem("GalacticraftMars", "tile.asteroidsBlock", 1L, i));
+        }
 
-        for (byte i = 0; i < 3; i++) {
-            if (Loader.isModLoaded("GalaxySpace")) {
+        if (Loader.isModLoaded("GalaxySpace")) {
+            for (int i = 0; i < 3; i++) {
                 reg_rock(OreDictTypes.Phobos.name(), GT_ModHandler.getModItem("GalaxySpace", "phobosblocks", 1L, i));
                 reg_rock(OreDictTypes.Io.name(), GT_ModHandler.getModItem("GalaxySpace", "ioblocks", 1L, i));
                 reg_rock(OreDictTypes.PlanetMercury.name(), GT_ModHandler.getModItem("GalaxySpace", "mercuryblocks", 1L, i));
@@ -54,7 +59,7 @@ public class OreDictRegister {
             reg_rock(OreDictTypes.Proteus.name(), GT_ModHandler.getModItem("GalaxySpace", "proteusglowstone", 1L, 0));
             reg_rock(OreDictTypes.Ceres.name(), GT_ModHandler.getModItem("GalaxySpace", "ceresglowstone", 1L, 0));
 
-            for (byte i = 0; i < 2; i++) {
+            for (int i = 0; i < 2; i++) {
                 reg_rock(OreDictTypes.Deimos.name(), GT_ModHandler.getModItem("GalaxySpace", "deimosblocks", 1L, i));
                 reg_rock(OreDictTypes.Venus.name(), GT_ModHandler.getModItem("GalaxySpace", "venusblocks", 1L, i));
                 reg_rock(OreDictTypes.Ceres.name(), GT_ModHandler.getModItem("GalaxySpace", "ceresblocks", 1L, i));
@@ -70,7 +75,7 @@ public class OreDictRegister {
 
     public static void reg_additional() {
         if (Loader.isModLoaded("GalaxySpace"))
-            for (byte i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 OreDictionary.registerOre("cropSpace", GT_ModHandler.getModItem("GalaxySpace", "tcetiedandelions", 1L, i));
                 OreDictionary.registerOre("cropTcetiESeaweed", GT_ModHandler.getModItem("GalaxySpace", "tcetiedandelions", 1L, i));
             }
@@ -112,7 +117,7 @@ public class OreDictRegister {
     public enum OreDictTypes {
         dust, rock, Space, BarnardaE, BarnardaF, Callisto, CentauriA, Ceres, Deimos, Enceladus,
         Europa, Ganymede, Haumea, Io, MakeMake, PlanetMercury, Miranda, Oberon, Phobos, Pluto,
-        Proteus, TcetiE, Titan, Triton, VegaB, Venus,
+        Proteus, TcetiE, Titan, Triton, VegaB, Venus, Mars, Asteroids
     }
 
 }
