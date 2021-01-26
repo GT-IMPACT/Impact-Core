@@ -87,4 +87,7 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
         };
     }
 
+    public long maxEUStore() {
+        return GT_Values.V[this.mTier] * 50L * (this.maxAmps / 2);
+    }
 }
