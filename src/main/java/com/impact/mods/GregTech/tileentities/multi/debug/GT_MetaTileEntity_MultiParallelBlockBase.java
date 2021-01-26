@@ -299,7 +299,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends GT_MetaTi
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
 
-                calculateOverclockedNessMulti(recipe.mEUt, recipe.mDuration, 1, tVoltage);
+                calculateOverclockedNessMulti(recipe.mEUt, recipe.mDuration, 1, tVoltage, this);
 
                 if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                     return false;
