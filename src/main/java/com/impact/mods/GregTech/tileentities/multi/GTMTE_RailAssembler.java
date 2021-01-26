@@ -185,7 +185,7 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        return impactRecipe(itemStack);
+        return impactRecipe();
     }
 
     @Override
