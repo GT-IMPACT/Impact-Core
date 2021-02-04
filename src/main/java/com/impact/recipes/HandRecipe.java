@@ -454,6 +454,11 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
                         'S', GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1L)
         });
 
+        //Filter Casing
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Vent.get(6L), bits, new Object[]{"PPP", "SFS", "MIV", 'P', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'I', OrePrefixes.stick.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.VanadiumSteel), 'M', ItemList.Electric_Motor_HV, 'V', OrePrefixes.rotor.get(Materials.BlackSteel), 'S', ItemList.Component_Filter});
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Vent.get(24L), bits, new Object[]{"PSP", "GFR", "MIV", 'P', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'G', OrePrefixes.gearGtSmall.get(Materials.Titanium), 'R', OrePrefixes.ring.get(Materials.Titanium), 'I', OrePrefixes.stickLong.get(Materials.Titanium), 'F', OrePrefixes.frameGt.get(Materials.Titanium), 'M', ItemList.Electric_Motor_EV, 'V', OrePrefixes.rotor.get(Materials.HSLA), 'S', ItemList.Component_Filter});
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Vent.get(64L), bits, new Object[]{"PSP", "GFR", "MIV", 'P', GT_ModHandler.getModItem("EnderIO", "blockDarkIronBars", 1L), 'G', OrePrefixes.gearGtSmall.get(Materials.TungstenSteel), 'R', OrePrefixes.ring.get(Materials.TungstenSteel), 'I', OrePrefixes.stickLong.get(Materials.TungstenSteel), 'F', OrePrefixes.frameGt.get(Materials.MaragingSteel250), 'M', ItemList.Electric_Motor_IV, 'V', OrePrefixes.rotor.get(Materials.HastelloyC276), 'S', ItemList.Component_Filter});
+
 
         /**====START SOLAR COVER====*/
         GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(109, 1), tBitMask, new Object[]{"PAP", "ACA", "PAP", 'C', CoreItems2.getRecipe(101, 1), 'A', OrePrefixes.plateAlloy.get(Materials.Carbon), 'P', OrePrefixes.plateAlloy.get(Materials.Advanced)});
