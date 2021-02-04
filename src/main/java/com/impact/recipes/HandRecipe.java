@@ -680,6 +680,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
         // --- Illuminated Panel
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), tBitMask, new Object[]{"hVd", "SGS", "DPD", 'P', OrePrefixes.plate.get(Materials.Glowstone), 'V', OrePrefixes.plate.get(Materials.VanadiumSteel), 'S', OrePrefixes.screw.get(Materials.CertusQuartz), 'G', GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockQuartzGlass", 1L), 'D', "dustFluix"});
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), tBitMask, new Object[]{GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 160)});
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 180), tBitMask, new Object[]{GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 200)});
 
         // --- Blank Pattern
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 52), tBitMask, new Object[]{"WWW", "PCP", "PQP", 'P', OrePrefixes.plate.get(Materials.Plastic), 'W', OrePrefixes.wireFine.get(Materials.Tin), 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'C', OrePrefixes.circuit.get(Materials.Basic)});
