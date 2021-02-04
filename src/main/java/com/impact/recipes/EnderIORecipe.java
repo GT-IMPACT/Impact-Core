@@ -157,6 +157,8 @@ public class EnderIORecipe implements Runnable {
         GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.itemTravelStaff, 1, 16), new Object[]{"dCE", "SIC", "ISw", 'I', OrePrefixes.stick.get(Materials.DarkSteel), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'S', OrePrefixes.screw.get(Materials.VibrantAlloy), 'E', ItemList.Sensor_HV});
         // --- DarkSteel Pressure Plate
         GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 0), new Object[]{"ShS", "PIP", "SdS", 'S', OrePrefixes.screw.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.DarkSteel), 'I', OrePrefixes.spring.get(Materials.Steel)});
+        // --- DarkIron Bars
+        GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.blockDarkIronBars, 3, 0), new Object[]{" h ", "SSS", "SSS", 'S', OrePrefixes.stick.get(Materials.DarkSteel)});
         // --- Farming Station
         GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.blockFarmStation, 1, 0), new Object[]{"RPR", "IMI", "GCG", 'P', OrePrefixes.plateDense.get(Materials.PulsatingIron), 'G', OrePrefixes.gearGt.get(Materials.ElectricalSteel), 'C', new ItemStack(EnderIO.itemBasicCapacitor, 1, 2), 'I', OrePrefixes.circuit.get(Materials.Advanced), 'M', new ItemStack(EnderIO.itemMachinePart, 1, 0), 'R', ItemList.Robot_Arm_HV});
         // --- Conduit Probe
@@ -228,6 +230,8 @@ public class EnderIORecipe implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0), GT_Utility.getIntegratedCircuit(1), new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 1), 50, 30);
         // --- Dark Pressure Plate
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DarkSteel, 2L), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Steel, 1L), new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 0), 200, 16);
+        // --- DarkIron Bars
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.DarkSteel, 3L), GT_Utility.getIntegratedCircuit(3), new ItemStack(EnderIO.blockDarkIronBars, 4, 0), 400, 48);
         // --- Powered Light Inverted
         GT_Values.RA.addAssemblerRecipe(new ItemStack(EnderIO.blockElectricLight, 1, 0), GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L), new ItemStack(EnderIO.blockElectricLight, 1, 1), 200, 64);
         // --- Light Inverted
