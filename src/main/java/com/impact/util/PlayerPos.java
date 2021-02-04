@@ -2,58 +2,52 @@ package com.impact.util;
 
 import net.minecraft.entity.Entity;
 
-public class PlayerPos{
-    public int dim;
-    public float pitch;
-    public float yaw;
-    public double posX;
-    public double posY;
-    public double posZ;
+public class PlayerPos {
 
-    public PlayerPos(double x, double y, double z)
-    {
-        this.posX = x;
-        this.posY = y;
-        this.posZ = z;
-    }
+  public int dim;
+  public float pitch;
+  public float yaw;
+  public double posX;
+  public double posY;
+  public double posZ;
 
-    public PlayerPos(Entity entity)
-    {
-        this.dim = entity.dimension;
-        this.posX = entity.posX;
-        this.posY = entity.posY;
-        this.posZ = entity.posZ;
-        this.pitch = entity.rotationPitch;
-        this.yaw = entity.rotationYaw;
-    }
+  public PlayerPos(double x, double y, double z) {
+    this.posX = x;
+    this.posY = y;
+    this.posZ = z;
+  }
 
-    public int getDim()
-    {
-        return dim;
-    }
+  public PlayerPos(Entity entity) {
+    this.dim = entity.dimension;
+    this.posX = entity.posX;
+    this.posY = entity.posY;
+    this.posZ = entity.posZ;
+    this.pitch = entity.rotationPitch;
+    this.yaw = entity.rotationYaw;
+  }
 
-    public double getX()
-    {
-        return posX;
-    }
+  public int getDim() {
+    return dim;
+  }
 
-    public double getY()
-    {
-        return posY;
-    }
+  public double getX() {
+    return posX;
+  }
 
-    public double getZ()
-    {
-        return posZ;
-    }
-    public float getPitch()
-    {
-        return pitch;
-    }
+  public double getY() {
+    return posY;
+  }
 
-    public float getYaw()
-    {
-        return yaw;
-    }
+  public double getZ() {
+    return posZ;
+  }
+
+  public float getPitch() {
+    return pitch;
+  }
+
+  public float getYaw() {
+    return yaw;
+  }
 
 }

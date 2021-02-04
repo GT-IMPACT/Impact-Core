@@ -19,245 +19,253 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 
 @Optional.InterfaceList({
-        @Optional.Interface(iface = "mods.railcraft.api.carts.IMinecart", modid = "RailcraftAPI|carts"),
-        @Optional.Interface(iface = "mods.railcraft.api.carts.IItemTransfer", modid = "RailcraftAPI|carts")
+    @Optional.Interface(iface = "mods.railcraft.api.carts.IMinecart", modid = "RailcraftAPI|carts"),
+    @Optional.Interface(iface = "mods.railcraft.api.carts.IItemTransfer", modid = "RailcraftAPI|carts")
 })
-abstract public class EntityExtraCartChestMinecart extends CartTransferBase implements IInventory, IMinecart, IItemTransfer {
+abstract public class EntityExtraCartChestMinecart extends CartTransferBase implements IInventory,
+    IMinecart, IItemTransfer {
 
-    protected boolean passThrough = false;
-    private ItemStack[] minecartContainerItems = new ItemStack[108];
-    private boolean dropContentsWhenDead = true;
+  protected boolean passThrough = false;
+  private ItemStack[] minecartContainerItems = new ItemStack[108];
+  private boolean dropContentsWhenDead = true;
 
-    public EntityExtraCartChestMinecart(World world) {
-        super(world);
+  public EntityExtraCartChestMinecart(World world) {
+    super(world);
+  }
+
+  public EntityExtraCartChestMinecart(World p_i1717_1_, double p_i1717_2_, double p_i1717_4_,
+      double p_i1717_6_) {
+    super(p_i1717_1_, p_i1717_2_, p_i1717_4_, p_i1717_6_);
+  }
+
+  public void killMinecartNoDrop(DamageSource damageSource) {
+    super.killMinecart(damageSource);
+  }
+
+  public void killMinecart(DamageSource damageSource, ItemStack drop) {
+    super.killMinecart(damageSource);
+    float f = this.rand.nextFloat() * 0.8F + 0.1F;
+    float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
+    float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
+    EntityItem entityitem = new EntityItem(this.worldObj, this.posX + (double) f,
+        this.posY + (double) f1, this.posZ + (double) f2, drop);
+    float f3 = 0.05F;
+    entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
+    entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
+    entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
+    if (!this.worldObj.isRemote) {
+      this.worldObj.spawnEntityInWorld(entityitem);
     }
+  }
 
-    public EntityExtraCartChestMinecart(World p_i1717_1_, double p_i1717_2_, double p_i1717_4_, double p_i1717_6_) {
-        super(p_i1717_1_, p_i1717_2_, p_i1717_4_, p_i1717_6_);
-    }
+  @Override
+  public ItemStack getStackInSlot(int p_70301_1_) {
+    return this.getMinecartContainerItems()[p_70301_1_];
+  }
 
-    public void killMinecartNoDrop(DamageSource damageSource) {
-        super.killMinecart(damageSource);
-    }
+  @Override
+  public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
+    if (this.getMinecartContainerItems()[p_70298_1_] != null) {
+      ItemStack itemstack;
 
-    public void killMinecart(DamageSource damageSource, ItemStack drop) {
-        super.killMinecart(damageSource);
-        float f = this.rand.nextFloat() * 0.8F + 0.1F;
-        float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
-        float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
-        EntityItem entityitem = new EntityItem(this.worldObj, this.posX + (double) f, this.posY + (double) f1, this.posZ + (double) f2, drop);
-        float f3 = 0.05F;
-        entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
-        entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
-        entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-        if (!this.worldObj.isRemote) {
-            this.worldObj.spawnEntityInWorld(entityitem);
+      if (this.getMinecartContainerItems()[p_70298_1_].stackSize <= p_70298_2_) {
+        itemstack = this.getMinecartContainerItems()[p_70298_1_];
+        this.getMinecartContainerItems()[p_70298_1_] = null;
+        return itemstack;
+      } else {
+        itemstack = this.getMinecartContainerItems()[p_70298_1_].splitStack(p_70298_2_);
+
+        if (this.getMinecartContainerItems()[p_70298_1_].stackSize == 0) {
+          this.getMinecartContainerItems()[p_70298_1_] = null;
         }
+
+        return itemstack;
+      }
+    } else {
+      return null;
     }
+  }
 
-    @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return this.getMinecartContainerItems()[p_70301_1_];
+  @Override
+  public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
+    if (this.getMinecartContainerItems()[p_70304_1_] != null) {
+      ItemStack itemstack = this.getMinecartContainerItems()[p_70304_1_];
+      this.getMinecartContainerItems()[p_70304_1_] = null;
+      return itemstack;
+    } else {
+      return null;
     }
+  }
 
-    @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        if (this.getMinecartContainerItems()[p_70298_1_] != null) {
-            ItemStack itemstack;
+  @Override
+  public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
+    this.getMinecartContainerItems()[p_70299_1_] = p_70299_2_;
 
-            if (this.getMinecartContainerItems()[p_70298_1_].stackSize <= p_70298_2_) {
-                itemstack = this.getMinecartContainerItems()[p_70298_1_];
-                this.getMinecartContainerItems()[p_70298_1_] = null;
-                return itemstack;
-            } else {
-                itemstack = this.getMinecartContainerItems()[p_70298_1_].splitStack(p_70298_2_);
+    if (p_70299_2_ != null && p_70299_2_.stackSize > this.getInventoryStackLimit()) {
+      p_70299_2_.stackSize = this.getInventoryStackLimit();
+    }
+  }
 
-                if (this.getMinecartContainerItems()[p_70298_1_].stackSize == 0) {
-                    this.getMinecartContainerItems()[p_70298_1_] = null;
-                }
 
-                return itemstack;
+  @Override
+  public boolean isUseableByPlayer(EntityPlayer player) {
+    return this.isDead ? false : player.getDistanceSqToEntity(this) <= 64.0D;
+  }
+
+  @Override
+  public void openInventory() {
+  }
+
+  @Override
+  public void closeInventory() {
+  }
+
+  @Override
+  public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
+    return true;
+  }
+
+  @Override
+  public String getInventoryName() {
+    return this.hasCustomInventoryName() ? this.func_95999_t() : "container.minecart";
+  }
+
+  @Override
+  public int getInventoryStackLimit() {
+    return 64;
+  }
+
+  @Override
+  public void travelToDimension(int p_71027_1_) {
+    this.setDropContentsWhenDead(false);
+    super.travelToDimension(p_71027_1_);
+  }
+
+  @Override
+  public void setDead() {
+    if (this.isDropContentsWhenDead()) {
+      for (int i = 0; i < this.getSizeInventory(); ++i) {
+        ItemStack itemstack = this.getStackInSlot(i);
+
+        if (itemstack != null) {
+          float f = this.rand.nextFloat() * 0.8F + 0.1F;
+          float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
+          float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
+
+          while (itemstack.stackSize > 0) {
+            int j = this.rand.nextInt(21) + 10;
+
+            if (j > itemstack.stackSize) {
+              j = itemstack.stackSize;
             }
-        } else {
-            return null;
-        }
-    }
 
-    @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-        if (this.getMinecartContainerItems()[p_70304_1_] != null) {
-            ItemStack itemstack = this.getMinecartContainerItems()[p_70304_1_];
-            this.getMinecartContainerItems()[p_70304_1_] = null;
-            return itemstack;
-        } else {
-            return null;
-        }
-    }
+            itemstack.stackSize -= j;
+            EntityItem entityitem = new EntityItem(this.worldObj, this.posX + (double) f,
+                this.posY + (double) f1, this.posZ + (double) f2,
+                new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
 
-    @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-        this.getMinecartContainerItems()[p_70299_1_] = p_70299_2_;
-
-        if (p_70299_2_ != null && p_70299_2_.stackSize > this.getInventoryStackLimit()) {
-            p_70299_2_.stackSize = this.getInventoryStackLimit();
-        }
-    }
-
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.isDead ? false : player.getDistanceSqToEntity(this) <= 64.0D;
-    }
-
-    @Override
-    public void openInventory() {
-    }
-
-    @Override
-    public void closeInventory() {
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return true;
-    }
-
-    @Override
-    public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.func_95999_t() : "container.minecart";
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public void travelToDimension(int p_71027_1_) {
-        this.setDropContentsWhenDead(false);
-        super.travelToDimension(p_71027_1_);
-    }
-
-    @Override
-    public void setDead() {
-        if (this.isDropContentsWhenDead()) {
-            for (int i = 0; i < this.getSizeInventory(); ++i) {
-                ItemStack itemstack = this.getStackInSlot(i);
-
-                if (itemstack != null) {
-                    float f = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
-
-                    while (itemstack.stackSize > 0) {
-                        int j = this.rand.nextInt(21) + 10;
-
-                        if (j > itemstack.stackSize) {
-                            j = itemstack.stackSize;
-                        }
-
-                        itemstack.stackSize -= j;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.posX + (double) f, this.posY + (double) f1, this.posZ + (double) f2, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
-
-                        if (itemstack.hasTagCompound()) {
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-                        }
-
-                        float f3 = 0.05F;
-                        entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
-                        entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        if (!this.worldObj.isRemote) {
-                            this.worldObj.spawnEntityInWorld(entityitem);
-                        }
-                    }
-                }
+            if (itemstack.hasTagCompound()) {
+              entityitem.getEntityItem()
+                  .setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
             }
-        }
 
-        super.setDead();
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-        super.writeEntityToNBT(p_70014_1_);
-        NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < this.getMinecartContainerItems().length; ++i) {
-            if (this.getMinecartContainerItems()[i] != null) {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                this.getMinecartContainerItems()[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
+            float f3 = 0.05F;
+            entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
+            entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
+            entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
+            if (!this.worldObj.isRemote) {
+              this.worldObj.spawnEntityInWorld(entityitem);
             }
+          }
         }
-
-        p_70014_1_.setTag("Items", nbttaglist);
+      }
     }
 
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-        super.readEntityFromNBT(p_70037_1_);
-        NBTTagList nbttaglist = p_70037_1_.getTagList("Items", 10);
-        this.setMinecartContainerItems(new ItemStack[this.getSizeInventory()]);
+    super.setDead();
+  }
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            int j = nbttagcompound1.getByte("Slot") & 255;
+  @Override
+  protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
+    super.writeEntityToNBT(p_70014_1_);
+    NBTTagList nbttaglist = new NBTTagList();
 
-            if (j >= 0 && j < this.getMinecartContainerItems().length) {
-                this.getMinecartContainerItems()[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-            }
-        }
+    for (int i = 0; i < this.getMinecartContainerItems().length; ++i) {
+      if (this.getMinecartContainerItems()[i] != null) {
+        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+        nbttagcompound1.setByte("Slot", (byte) i);
+        this.getMinecartContainerItems()[i].writeToNBT(nbttagcompound1);
+        nbttaglist.appendTag(nbttagcompound1);
+      }
     }
 
-    @Override
-    public boolean interactFirst(EntityPlayer player) {
-        if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player))) {
-            return true;
-        }
+    p_70014_1_.setTag("Items", nbttaglist);
+  }
 
-        if (!this.worldObj.isRemote && !player.isSneaking()) {
-            FMLNetworkHandler.openGui(player, impact.instance, GUIHandler.GUI_ID_Carts, player.worldObj, this.getEntityId(), 0, 0);
-        }
+  @Override
+  protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
+    super.readEntityFromNBT(p_70037_1_);
+    NBTTagList nbttaglist = p_70037_1_.getTagList("Items", 10);
+    this.setMinecartContainerItems(new ItemStack[this.getSizeInventory()]);
 
-        return true;
+    for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+      NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+      int j = nbttagcompound1.getByte("Slot") & 255;
+
+      if (j >= 0 && j < this.getMinecartContainerItems().length) {
+        this.getMinecartContainerItems()[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+      }
+    }
+  }
+
+  @Override
+  public boolean interactFirst(EntityPlayer player) {
+    if (net.minecraftforge.common.MinecraftForge.EVENT_BUS
+        .post(new MinecartInteractEvent(this, player))) {
+      return true;
     }
 
-    @Override
-    public int getSizeInventory() {
-        return 0;
+    if (!this.worldObj.isRemote && !player.isSneaking()) {
+      FMLNetworkHandler.openGui(player, impact.instance, GUIHandler.GUI_ID_Carts, player.worldObj,
+          this.getEntityId(), 0, 0);
     }
 
-    @Override
-    public void markDirty() {
+    return true;
+  }
 
-    }
+  @Override
+  public int getSizeInventory() {
+    return 0;
+  }
 
-    @Override
-    public int getMinecartType() {
-        return 0;
-    }
+  @Override
+  public void markDirty() {
+
+  }
+
+  @Override
+  public int getMinecartType() {
+    return 0;
+  }
 
 
-    public ItemStack[] getMinecartContainerItems() {
-        return minecartContainerItems;
-    }
+  public ItemStack[] getMinecartContainerItems() {
+    return minecartContainerItems;
+  }
 
-    public void setMinecartContainerItems(ItemStack[] minecartContainerItems) {
-        this.minecartContainerItems = minecartContainerItems;
-    }
+  public void setMinecartContainerItems(ItemStack[] minecartContainerItems) {
+    this.minecartContainerItems = minecartContainerItems;
+  }
 
-    public boolean isDropContentsWhenDead() {
-        return dropContentsWhenDead;
-    }
+  public boolean isDropContentsWhenDead() {
+    return dropContentsWhenDead;
+  }
 
-    public void setDropContentsWhenDead(boolean dropContentsWhenDead) {
-        this.dropContentsWhenDead = dropContentsWhenDead;
-    }
+  public void setDropContentsWhenDead(boolean dropContentsWhenDead) {
+    this.dropContentsWhenDead = dropContentsWhenDead;
+  }
 
-    @Optional.Method(modid = "RailcraftAPI|carts")
-    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
-        return false;
-    }
+  @Optional.Method(modid = "RailcraftAPI|carts")
+  public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+    return false;
+  }
 }

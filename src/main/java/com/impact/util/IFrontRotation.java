@@ -1,11 +1,12 @@
 package com.impact.util;
 
 public interface IFrontRotation {
-    boolean isFrontRotationValid(byte frontRotation, byte frontFacing);
 
-    void rotateAroundFrontPlane(boolean direction);
+  boolean isFrontRotationValid(byte frontRotation, byte frontFacing);
 
-    void forceSetRotationDoRender(byte frontRotation);
+  void rotateAroundFrontPlane(boolean direction);
 
-    byte getFrontRotation();
+  void forceSetRotationDoRender(byte frontRotation);
+
+  byte getFrontRotation();
 }

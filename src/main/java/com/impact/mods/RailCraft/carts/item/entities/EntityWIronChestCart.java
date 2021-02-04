@@ -14,52 +14,54 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 @Optional.Interface(iface = "mods.railcraft.api.carts.IMinecart", modid = "RailcraftAPI|carts")
-public class EntityWIronChestCart extends EntityExtraCartChestMinecart implements OpenableGUI, IMinecart {
+public class EntityWIronChestCart extends EntityExtraCartChestMinecart implements OpenableGUI,
+    IMinecart {
 
-    private Block Chest = Block.getBlockFromName("chestup:Blockchestup");
+  private Block Chest = Block.getBlockFromName("chestup:Blockchestup");
 
-    public EntityWIronChestCart(World world) {
-        super(world);
-        this.setDisplayTileData(0);
+  public EntityWIronChestCart(World world) {
+    super(world);
+    this.setDisplayTileData(0);
+  }
+
+  @Override
+  public int getSizeInventory() {
+    return 45;
+  }
+
+  @Override
+  public Block func_145817_o() {
+    return Chest;
+  }
+
+  @Override
+  public void killMinecart(DamageSource par1DamageSource) {
+    super.killMinecart(par1DamageSource, new ItemStack(Chest, 1, 0));
+  }
+
+  @Override
+  public boolean interactFirst(EntityPlayer player) {
+    ItemStack curItem = player.getCurrentEquippedItem();
+    return super.interactFirst(player);
+  }
+
+  @Override
+  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    return new GuiWIronChestCart(player.inventory, this);
+  }
+
+  @Override
+  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    return new ContainerWIronChestCart(player.inventory, this);
+  }
+
+  @Optional.Method(modid = "RailcraftAPI|carts")
+  public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
+    ItemStack CartStack = new ItemStack(ChestCartItems.ChestCart, 1, 0);
+    if (cart instanceof EntityWIronChestCart && stack.getItem() == CartStack.getItem()
+        && stack.getItemDamage() == 3) {
+      return true;
     }
-
-    @Override
-    public int getSizeInventory() {
-        return 45;
-    }
-
-    @Override
-    public Block func_145817_o() {
-        return Chest;
-    }
-
-    @Override
-    public void killMinecart(DamageSource par1DamageSource) {
-        super.killMinecart(par1DamageSource, new ItemStack(Chest, 1, 0));
-    }
-
-    @Override
-    public boolean interactFirst(EntityPlayer player) {
-        ItemStack curItem = player.getCurrentEquippedItem();
-        return super.interactFirst(player);
-    }
-
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return new GuiWIronChestCart(player.inventory, this);
-    }
-
-    @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return new ContainerWIronChestCart(player.inventory, this);
-    }
-
-    @Optional.Method(modid = "RailcraftAPI|carts")
-    public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
-        ItemStack CartStack = new ItemStack(ChestCartItems.ChestCart, 1, 0);
-        if (cart instanceof EntityWIronChestCart && stack.getItem() == CartStack.getItem() && stack.getItemDamage() == 3) {
-            return true;
-        }
-        return false;
-    }
+    return false;
+  }
 }

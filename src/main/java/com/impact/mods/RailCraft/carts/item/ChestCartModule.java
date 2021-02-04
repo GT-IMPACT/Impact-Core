@@ -6,25 +6,26 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 
 public class ChestCartModule extends Module {
-    @Override
-    public String getModuleName() {
-        return "ChestUp";
-    }
 
-    @Override
-    public Boolean areRequirementsMet() {
-        return Loader.isModLoaded("chestup");
-    }
+  @Override
+  public String getModuleName() {
+    return "ChestUp";
+  }
 
-    @Override
-    public void load(FMLInitializationEvent event) {
-    }
+  @Override
+  public Boolean areRequirementsMet() {
+    return Loader.isModLoaded("chestup");
+  }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        ChestCartItems.init();
-        ChestCartItems.registerItems();
-        ChestCartItems.registerRecipes();
-        ChestCartEntities.init();
-    }
+  @Override
+  public void load(FMLInitializationEvent event) {
+  }
+
+  @Override
+  public void postInit(FMLPostInitializationEvent event) {
+    ChestCartItems.init();
+    ChestCartItems.registerItems();
+    ChestCartItems.registerRecipes();
+    ChestCartEntities.init();
+  }
 }

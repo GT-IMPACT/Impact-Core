@@ -8,40 +8,40 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy implements IGuiHandler {
 
-    public void addTexturePage() {
-    }
+  public static void register_event(Object obj) {
+    FMLCommonHandler.instance().bus().register(obj);
+    MinecraftForge.EVENT_BUS.register(obj);
+  }
 
-    public void registerRenderInfo() {
-    }
+  public void addTexturePage() {
+  }
 
-    @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return null;
-    }
+  public void registerRenderInfo() {
+  }
 
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return null;
-    }
+  @Override
+  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    return null;
+  }
 
-    public World getClientWorld() {
-        return null;
-    }
+  @Override
+  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    return null;
+  }
 
-    public void registerRenderers() {
-    }
+  public World getClientWorld() {
+    return null;
+  }
 
-    public void preInit() {
-    }
+  public void registerRenderers() {
+  }
 
-    public void load() {
-    }
+  public void preInit() {
+  }
 
-    public void preload() {
-    }
+  public void load() {
+  }
 
-    public static void register_event(Object obj) {
-        FMLCommonHandler.instance().bus().register(obj);
-        MinecraftForge.EVENT_BUS.register(obj);
-    }
+  public void preload() {
+  }
 }

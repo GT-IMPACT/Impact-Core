@@ -18,48 +18,51 @@ import org.lwjgl.input.Keyboard;
 
 public class ClientEvent {
 
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onGuiOpenEvent(GuiOpenEvent event) {
-        if (event.gui instanceof GuiMainMenu) {
-            event.gui = new ImpactGuiMainMenu();
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public void onGuiOpenEvent(GuiOpenEvent event) {
+    if (event.gui instanceof GuiMainMenu) {
+      event.gui = new ImpactGuiMainMenu();
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onMouseEvent(final MouseEvent event) {
+    final EntityPlayer entityPlayer = Minecraft.getMinecraft().thePlayer;
+    if (Keyboard.isKeyDown(184) || Keyboard.isKeyDown(56) || Keyboard.isKeyDown(157) || Keyboard
+        .isKeyDown(29)) {
+      final ItemStack itemStack = entityPlayer.getHeldItem();
+      if (itemStack != null && itemStack.getItem() instanceof IB_IGlass) {
+        if (event.dwheel != 0) {
+          PacketHandler.sendPacketToServer(new ToggleMetaData(event.dwheel > 0));
         }
+        event.setCanceled(true);
+      }
+    }
+  }
+
+  @SubscribeEvent
+  public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
+    Error e = new Error();
+    e.setStackTrace(new StackTraceElement[]{});
+
+    try {
+      Class.forName("net.minecraftxray.loader.XRayForgeTweaker");
+      Minecraft.getMinecraft().crashed(new CrashReport("", e));
+      return;
+    } catch (Exception E) {
     }
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void onMouseEvent(final MouseEvent event) {
-        final EntityPlayer entityPlayer = Minecraft.getMinecraft().thePlayer;
-        if (Keyboard.isKeyDown(184) || Keyboard.isKeyDown(56) || Keyboard.isKeyDown(157) || Keyboard.isKeyDown(29)) {
-            final ItemStack itemStack = entityPlayer.getHeldItem();
-            if (itemStack != null && itemStack.getItem() instanceof IB_IGlass) {
-                if (event.dwheel != 0) PacketHandler.sendPacketToServer(new ToggleMetaData(event.dwheel > 0));
-                event.setCanceled(true);
-            }
-        }
+    try {
+      Class.forName("de.Kradxn.Xray.mod_Xray");
+      Minecraft.getMinecraft().crashed(new CrashReport("", e));
+      return;
+    } catch (Exception E) {
     }
+  }
 
-    @SubscribeEvent
-    public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        Error e = new Error();
-        e.setStackTrace(new StackTraceElement[]{});
-
-        try {
-            Class.forName("net.minecraftxray.loader.XRayForgeTweaker");
-            Minecraft.getMinecraft().crashed(new CrashReport("", e));
-            return;
-        } catch (Exception E) {
-        }
-
-        try {
-            Class.forName("de.Kradxn.Xray.mod_Xray");
-            Minecraft.getMinecraft().crashed(new CrashReport("", e));
-            return;
-        } catch (Exception E) {
-        }
-    }
-
-    //    @SideOnly(Side.CLIENT)
+  //    @SideOnly(Side.CLIENT)
 //    @SubscribeEvent
 //    public void onClientTick(TickEvent.ClientTickEvent event) {
 //        Minecraft minecraft = Minecraft.getMinecraft();

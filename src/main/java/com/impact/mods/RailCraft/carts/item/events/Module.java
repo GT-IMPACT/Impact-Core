@@ -6,28 +6,29 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 
 public abstract class Module {
-    private Boolean isActive = true;
 
-    public abstract String getModuleName();
+  private Boolean isActive = true;
 
-    public Boolean areRequirementsMet() {
-        return true;
-    }
+  public abstract String getModuleName();
 
-    public Boolean getIsActive() {
-        return isActive;
-    }
+  public Boolean areRequirementsMet() {
+    return true;
+  }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
+  public Boolean getIsActive() {
+    return isActive;
+  }
 
-    public void init(FMLPreInitializationEvent event) {
-    }
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
+  }
 
-    public void load(FMLInitializationEvent event) {
-    }
+  public void init(FMLPreInitializationEvent event) {
+  }
 
-    public void postInit(FMLPostInitializationEvent event) {
-    }
+  public void load(FMLInitializationEvent event) {
+  }
+
+  public void postInit(FMLPostInitializationEvent event) {
+  }
 }
