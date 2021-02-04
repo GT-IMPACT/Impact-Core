@@ -93,6 +93,9 @@ public class OpenComputersRecipe implements Runnable {
         // --- Item Selector
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("OpenPeripheral", "selector", 1L, 0), tBitMask, new Object[] {"PRP", "CHw", 'C', GT_ModHandler.getModItem("OpenComputers", "item", 1L, 66), 'R', ItemList.Cover_ItemDetector, 'H', ItemList.Casing_MV, 'P', OrePrefixes.plate.get(Materials.Aluminium)});
 
+        // --- P2P
+        GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 468), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 460), GT_ModHandler.getModItem("OpenComputers", "cable", 1L, 0)});
+
         // --- Grog
         GT_Values.RA.addChemicalRecipe(Materials.Acetone.getCells(1), Materials.Sugar.getDust(1), Materials.SulfuricAcid.getFluid(1000), null, GT_ModHandler.getModItem("OpenComputers", "item", 1L, 18), ItemList.Cell_Empty.get(1), 800, 480);
         GT_Values.RA.addChemicalRecipe(Materials.SulfuricAcid.getCells(1), Materials.Sugar.getDust(1), Materials.Acetone.getFluid(1000), null, GT_ModHandler.getModItem("OpenComputers", "item", 1L, 18), ItemList.Cell_Empty.get(1), 800, 480);
