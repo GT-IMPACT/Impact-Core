@@ -21,5 +21,10 @@ public class ExtractorRecipe implements Runnable {
         GT_Values.RA.addExtractorRecipe(CoreItems2.getRecipe(151, 64), CoreItems.getRecipe(35, 1), 400, 262144);
         GT_Values.RA.addExtractorRecipe(ItemList.Casing_CokeOvenBrick.get(1L), CoreItems2.getRecipe(65, 4), 300, 2);
         GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("TConstruct", "Smeltery", 1L, 2), GT_ModHandler.getModItem("TConstruct", "materials", 4L, 2), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 5L, 7), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 1), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 8L, 7), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 2), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 7L, 7), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("GalacticraftMars", "item.thermalPadding", 1L, 3), GT_ModHandler.getModItem("GalacticraftMars", "item.itemBasicAsteroids", 4L, 7), 300, 2);
+
     }
 }
