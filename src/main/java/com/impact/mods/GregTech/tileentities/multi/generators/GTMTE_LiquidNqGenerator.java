@@ -45,28 +45,16 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
   public int EU_PER_TICK = 524288;
   protected int fuelConsumption = 0;
-  /**
-   * === SET BLOCKS STRUCTURE ===
-   */
   Block CASING = Casing_Helper.sCaseCore2;
   byte CASING_META = 10;
-  /**
-   * === SET TEXTURES HATCHES AND CONTROLLER ===
-   */
   ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
   int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
-  /**
-   * === NAMED ===
-   */
   public GTMTE_LiquidNqGenerator(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
     new FuelNqGenerator().run();
   }
 
-  /**
-   * === NAMED ===
-   */
   public GTMTE_LiquidNqGenerator(String aName) {
     super(aName);
   }
@@ -75,9 +63,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
     return true;
   }
 
-  /**
-   * === SET TEXTURE ===
-   */
   @Override
   public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
       final byte aFacing,
@@ -90,17 +75,11 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
         : new ITexture[]{INDEX_CASE};
   }
 
-  /**
-   * === META ENTITY ===
-   */
   @Override
   public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
     return new GTMTE_LiquidNqGenerator(this.mName);
   }
 
-  /**
-   * === DESCRIPTION ===
-   */
   @Override
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
@@ -110,7 +89,7 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
             + "EU/t including 16A")
         .addSeparator()
         .addController()
-        .addDynamoHatch("Any casing")
+        .addDynamoHatch("Any casing back side")
         .addMaintenanceHatch("Any casing")
         .addInputHatch("Any casing (max x3)")
         .addCasingInfo("Naquadah Base Casing and I-Glass")
@@ -124,9 +103,6 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
     }
   }
 
-  /**
-   * === GUI ===
-   */
   @Override
   public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
       IGregTechTileEntity aBaseMetaTileEntity) {
@@ -184,12 +160,12 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
         final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 1);
 
-          if (X == -2 && Y == 0 || X == 2 && Y == 0 || X == 0 && Y == -2 || X == 0 && Y == 2) {
-              continue;
-          }
-          if (X > -2 && X < 2 && Y > -2 && Y < 2) {
-              continue;
-          }
+        if (X == -2 && Y == 0 || X == 2 && Y == 0 || X == 0 && Y == -2 || X == 0 && Y == 2) {
+          continue;
+        }
+        if (X > -2 && X < 2 && Y > -2 && Y < 2) {
+          continue;
+        }
 
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
@@ -214,18 +190,18 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
         final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
 
-          if (X == 0 && Y == 0) {
-              continue;
-          }
-          if (X == -3 && Y == -3 || X == 3 && Y == 3 || X == 3 && Y == -3 || X == -3 && Y == 3) {
-              continue;
-          }
-          if (X == 3 && Y == -2 || X == 3 && Y == 2 || X == -3 && Y == -2 || X == -3 && Y == 2) {
-              continue;
-          }
-          if (X == 2 && Y == -3 || X == 2 && Y == 3 || X == -2 && Y == -3 || X == -2 && Y == 3) {
-              continue;
-          }
+        if (X == 0 && Y == 0) {
+          continue;
+        }
+        if (X == -3 && Y == -3 || X == 3 && Y == 3 || X == 3 && Y == -3 || X == -3 && Y == 3) {
+          continue;
+        }
+        if (X == 3 && Y == -2 || X == 3 && Y == 2 || X == -3 && Y == -2 || X == -3 && Y == 2) {
+          continue;
+        }
+        if (X == 2 && Y == -3 || X == 2 && Y == 3 || X == -2 && Y == -3 || X == -2 && Y == 3) {
+          continue;
+        }
 
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
@@ -251,15 +227,15 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
           final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-            if (X == -3 && Y == -3 || X == 3 && Y == 3 || X == 3 && Y == -3 || X == -3 && Y == 3) {
-                continue;
-            }
-            if (X == 3 && Y == -2 || X == 3 && Y == 2 || X == -3 && Y == -2 || X == -3 && Y == 2) {
-                continue;
-            }
-            if (X == 2 && Y == -3 || X == 2 && Y == 3 || X == -2 && Y == -3 || X == -2 && Y == 3) {
-                continue;
-            }
+          if (X == -3 && Y == -3 || X == 3 && Y == 3 || X == 3 && Y == -3 || X == -3 && Y == 3) {
+            continue;
+          }
+          if (X == 3 && Y == -2 || X == 3 && Y == 2 || X == -3 && Y == -2 || X == -3 && Y == 2) {
+            continue;
+          }
+          if (X == 2 && Y == -3 || X == 2 && Y == 3 || X == -2 && Y == -3 || X == -2 && Y == 3) {
+            continue;
+          }
 
           if (X == 0 && Y == 0 && (Z == -1 || Z == -5)) {
             if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
@@ -318,15 +294,15 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
         final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -6);
 
-          if (X == -3 && Y == -3 || X == 3 && Y == 3 || X == 3 && Y == -3 || X == -3 && Y == 3) {
-              continue;
-          }
-          if (X == 3 && Y == -2 || X == 3 && Y == 2 || X == -3 && Y == -2 || X == -3 && Y == 2) {
-              continue;
-          }
-          if (X == 2 && Y == -3 || X == 2 && Y == 3 || X == -2 && Y == -3 || X == -2 && Y == 3) {
-              continue;
-          }
+        if (X == -3 && Y == -3 || X == 3 && Y == 3 || X == 3 && Y == -3 || X == -3 && Y == 3) {
+          continue;
+        }
+        if (X == 3 && Y == -2 || X == 3 && Y == 2 || X == -3 && Y == -2 || X == -3 && Y == 2) {
+          continue;
+        }
+        if (X == 2 && Y == -3 || X == 2 && Y == 3 || X == -2 && Y == -3 || X == -2 && Y == 3) {
+          continue;
+        }
 
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
@@ -351,9 +327,9 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
         final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -7);
 
-          if (X == -2 && Y == 0 || X == 2 && Y == 0 || X == 0 && Y == -2 || X == 0 && Y == 2) {
-              continue;
-          }
+        if (X == -2 && Y == 0 || X == 2 && Y == 0 || X == 0 && Y == -2 || X == 0 && Y == 2) {
+          continue;
+        }
 
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
@@ -374,33 +350,30 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
       }
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-
-      if (this.mInputBusses.size() != 0) {
-          formationChecklist = false;
-      }
-      if (this.mInputHatches.size() > 3) {
-          formationChecklist = false;
-      }
-      if (this.mOutputBusses.size() != 0) {
-          formationChecklist = false;
-      }
-      if (this.mOutputHatches.size() != 0) {
-          formationChecklist = false;
-      }
-      if (this.mMufflerHatches.size() != 0) {
-          formationChecklist = false;
-      }
-      if (this.mEnergyHatches.size() != 0) {
-          formationChecklist = false;
-      }
-      if (this.mDynamoHatches.size() > 1) {
-          formationChecklist = false;
-      }
-      if (this.mMaintenanceHatches.size() != 1) {
-          formationChecklist = false;
-      }
-
+    if (this.mInputBusses.size() != 0) {
+      formationChecklist = false;
+    }
+    if (this.mInputHatches.size() > 3) {
+      formationChecklist = false;
+    }
+    if (this.mOutputBusses.size() != 0) {
+      formationChecklist = false;
+    }
+    if (this.mOutputHatches.size() != 0) {
+      formationChecklist = false;
+    }
+    if (this.mMufflerHatches.size() != 0) {
+      formationChecklist = false;
+    }
+    if (this.mEnergyHatches.size() != 0) {
+      formationChecklist = false;
+    }
+    if (this.mDynamoHatches.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.mMaintenanceHatches.size() != 1) {
+      formationChecklist = false;
+    }
     return formationChecklist;
   }
 
@@ -434,9 +407,9 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
               super.mMaxProgresstime = 20; // 1 Second
               super.mEfficiencyIncrease = 50; // 50 - 0.5% per cycle
-                if (mEfficiency > 9000) {
-                    super.mEUt = EU_PER_TICK; //LuV * 16A
-                }
+              if (mEfficiency > 9000) {
+                super.mEUt = EU_PER_TICK; //LuV * 16A
+              }
               quantumStuff(true);
               return true;
             }
@@ -501,11 +474,11 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     public void run() {
-        for (int i = 0; i < FUEL_NAME.length; i++) {
-            RA.addFuel(FUEL_NAME[i],
-                GT_Utility.getFluidForFilledItem(FUEL_NAME[i], true) == null ? GT_Utility
-                    .getContainerItem(FUEL_NAME[i], true) : null, FUEL_PER_SECOND[i] * 16, 8);
-        }
+      for (int i = 0; i < FUEL_NAME.length; i++) {
+        RA.addFuel(FUEL_NAME[i],
+            GT_Utility.getFluidForFilledItem(FUEL_NAME[i], true) == null ? GT_Utility
+                .getContainerItem(FUEL_NAME[i], true) : null, FUEL_PER_SECOND[i] * 16, 8);
+      }
 
       registerMetaClass(GTMTE_LiquidNqGenerator.class,
           new IMultiblockInfoContainer<GTMTE_LiquidNqGenerator>() {
