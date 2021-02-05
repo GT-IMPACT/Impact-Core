@@ -775,7 +775,7 @@ public class TecTechRecipe implements Runnable {
     TT_recipeAdder
         .addResearchableAssemblylineRecipe(ItemList.Casing_Core_Chamber.get(1L), 48000, 128,
             1000000, 6, new Object[]{
-                ItemList.Teleporter.get(1L),
+                ItemList.Hull_MAX.get(1L),
                 ItemList.Casing_Dyson_Ring.get(16L),
                 ItemList.Casing_Fusion_Coil.get(16L),
                 ItemList.Field_Generator_UV.get(4L),
