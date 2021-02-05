@@ -208,11 +208,13 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 
   @Override
   public boolean onRunningTick(ItemStack aStack) {
+    if (getBaseMetaTileEntity().getTimer() % 20 == 0) {
       if (this.mEfficiency > 0 && depleteInput(getFluidStack("supercoolant", 50))) {
-          addOutput(getFluidStack("ic2hotcoolant", 25));
+        addOutput(getFluidStack("ic2hotcoolant", 25));
       } else {
-          stopMachine();
+        stopMachine();
       }
+    }
     return super.onRunningTick(aStack);
   }
 
