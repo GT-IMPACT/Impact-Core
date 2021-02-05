@@ -66,6 +66,7 @@ public class BuildCraftRecipe implements Runnable {
         GT_ModHandler.getModItem("BuildCraft|Transport", "filteredBufferBlock", 1L, 0));
     removeRecipeByOutput(GT_ModHandler.getModItem("BuildCraft|Robotics", "zonePlan", 1L, 0));
     removeRecipeByOutput(GT_ModHandler.getModItem("BuildCraft|Robotics", "requester", 1L, 0));
+    removeRecipeByOutput(GT_ModHandler.getModItem("BuildCraft|Transport", "pipeWaterproof", 1L, 0));
 
     removeRecipeByOutput(GT_ModHandler
         .getModItem("BuildCraft|Transport", "item.buildcraftPipe.pipeitemswood", 1L, GT_Values.W));
