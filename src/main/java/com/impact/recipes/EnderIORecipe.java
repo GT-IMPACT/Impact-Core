@@ -79,6 +79,11 @@ public class EnderIORecipe implements Runnable {
     removeRecipeByOutput(new ItemStack(EnderIO.blockReservoir, 1, 0), true, false, false);
     removeRecipeByOutput(new ItemStack(DarkSteelItems.itemMagnet, 1, 16), true, false, false);
     removeRecipeByOutput(new ItemStack(EnderIO.blockElectricLight, 1, 0), true, false, false);
+    removeRecipeByOutput(new ItemStack(EnderIO.blockElectricLight, 1, 1), true, false, false);
+    removeRecipeByOutput(new ItemStack(EnderIO.blockElectricLight, 1, 2), true, false, false);
+    removeRecipeByOutput(new ItemStack(EnderIO.blockElectricLight, 1, 3), true, false, false);
+    removeRecipeByOutput(new ItemStack(EnderIO.blockElectricLight, 1, 4), true, false, false);
+    removeRecipeByOutput(new ItemStack(EnderIO.blockElectricLight, 1, 5), true, false, false);
     removeRecipeByOutput(new ItemStack(EnderIO.blockAttractor, 1, 0), true, false, false);
     removeRecipeByOutput(new ItemStack(EnderIO.blockExperianceOblisk, 1, 0), true, false, false);
     removeRecipeByOutput(new ItemStack(EnderIO.itemXpTransfer, 1, 0), true, false, false);
@@ -209,6 +214,9 @@ public class EnderIORecipe implements Runnable {
         new Object[]{"ShS", "PIP", "SdS", 'S', OrePrefixes.screw.get(Materials.Steel), 'P',
             OrePrefixes.plate.get(Materials.DarkSteel), 'I',
             OrePrefixes.spring.get(Materials.Steel)});
+    // --- DarkIron Bars
+    GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.blockDarkIronBars, 3, 0),
+        new Object[]{" h ", "SSS", "SSS", 'S', OrePrefixes.stick.get(Materials.DarkSteel)});
     // --- Farming Station
     GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.blockFarmStation, 1, 0),
         new Object[]{"RPR", "IMI", "GCG", 'P', OrePrefixes.plateDense.get(Materials.PulsatingIron),
@@ -233,11 +241,18 @@ public class EnderIORecipe implements Runnable {
         new Object[]{"ECC", "wST", "ECC", 'E', OrePrefixes.plate.get(Materials.ElectricalSteel),
             'C', OrePrefixes.plate.get(Materials.ConductiveIron), 'S',
             OrePrefixes.screw.get(Materials.SteelMagnetic), 'T', ItemList.Emitter_LV});
-    // --- Light
+    // --- Powered Light
     GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.blockElectricLight, 1, 0),
         new Object[]{"QQQ", "PDP", "PCP", 'Q', new ItemStack(EnderIO.blockFusedQuartz, 1, 0), 'P',
-            OrePrefixes.plate.get(Materials.Iron), 'D', OrePrefixes.dust.get(Materials.Glowstone),
-            'C', new ItemStack(EnderIO.itemPowerConduit, 1, 0)});
+            OrePrefixes.plate.get(Materials.Silicon), 'D',
+            GT_ModHandler.getModItem("GregsLighting", "glowstoneBulb", 1L, 0), 'C',
+            new ItemStack(EnderIO.itemPowerConduit, 1, 0)});
+    // --- Light
+    GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.blockElectricLight, 1, 2),
+        new Object[]{"QQQ", "PDP", "PCP", 'Q', new ItemStack(EnderIO.blockFusedQuartz, 1, 0), 'P',
+            OrePrefixes.plate.get(Materials.Silicon), 'D',
+            GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 1L, 0),
+            'C', OrePrefixes.wireGt01.get(Materials.RedAlloy)});
     // --- Item Conduit Speed Upgrade
     GT_ModHandler.addCraftingRecipe(new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0),
         new Object[]{"POP", "GIG", "PWP", 'P', OrePrefixes.plate.get(Materials.ElectricalSteel),
@@ -395,7 +410,60 @@ public class EnderIORecipe implements Runnable {
         .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DarkSteel, 2L),
             GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Steel, 1L),
             new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 0), 200, 16);
-
+    // --- DarkIron Bars
+    GT_Values.RA
+        .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.DarkSteel, 3L),
+            GT_Utility.getIntegratedCircuit(3), new ItemStack(EnderIO.blockDarkIronBars, 4, 0), 400,
+            48);
+    // --- Powered Light Inverted
+    GT_Values.RA.addAssemblerRecipe(new ItemStack(EnderIO.blockElectricLight, 1, 0),
+        GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L),
+        new ItemStack(EnderIO.blockElectricLight, 1, 1), 200, 64);
+    // --- Light Inverted
+    GT_Values.RA.addAssemblerRecipe(new ItemStack(EnderIO.blockElectricLight, 1, 2),
+        GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L),
+        new ItemStack(EnderIO.blockElectricLight, 1, 3), 100, 16);
+    // --- Wireless Powered Light
+    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(EnderIO.blockElectricLight, 4, 0),
+            GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Copper, 1L),
+            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 4L)}, null,
+        new ItemStack(EnderIO.blockElectricLight, 4, 4), 100, 120);
+    GT_Values.RA.addAssemblerRecipe(
+        new ItemStack[]{new ItemStack(EnderIO.blockElectricLight, 16, 0),
+            GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Electrum, 1L),
+            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.HSLA, 4L)}, null,
+        new ItemStack(EnderIO.blockElectricLight, 16, 4), 150, 480);
+    GT_Values.RA.addAssemblerRecipe(
+        new ItemStack[]{new ItemStack(EnderIO.blockElectricLight, 64, 0),
+            GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Platinum, 1L),
+            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.TungstenSteel, 4L)}, null,
+        new ItemStack(EnderIO.blockElectricLight, 64, 4), 200, 1920);
+    // --- Wireless Powered Light Inverted
+    GT_Values.RA.addAssemblerRecipe(new ItemStack(EnderIO.blockElectricLight, 1, 4),
+        GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L),
+        new ItemStack(EnderIO.blockElectricLight, 1, 5), 100, 64);
+    // --- Light
+    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.ElectricalSteel, 1L),
+            GT_ModHandler.getModItem("GalacticraftCore", "tile.arclamp", 1L),
+            new ItemStack(EnderIO.blockFusedQuartz, 4, 0)}, null,
+        new ItemStack(EnderIO.blockElectricLight, 16, 2), 200, 64);
+    GT_Values.RA.addAssemblerRecipe(
+        new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Desh, 1L),
+            GT_ModHandler.getModItem("GalacticraftCore", "tile.arclamp", 1L),
+            new ItemStack(EnderIO.blockFusedQuartz, 16, 0)}, null,
+        new ItemStack(EnderIO.blockElectricLight, 64, 2), 300, 256);
+    // --- Powered Light
+    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.ElectricalSteel, 1L),
+            GT_ModHandler.getModItem("GregsLighting", "ic2ElectricFloodlight", 1L),
+            new ItemStack(EnderIO.blockFusedQuartz, 4, 0)}, null,
+        new ItemStack(EnderIO.blockElectricLight, 16, 0), 200, 64);
+    GT_Values.RA.addAssemblerRecipe(
+        new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Desh, 1L),
+            GT_ModHandler.getModItem("GregsLighting", "ic2ElectricFloodlight", 1L),
+            new ItemStack(EnderIO.blockFusedQuartz, 16, 0)}, null,
+        new ItemStack(EnderIO.blockElectricLight, 64, 0), 300, 256);
   }
 
   public void chemicalBathRecipe() {
@@ -434,7 +502,6 @@ public class EnderIORecipe implements Runnable {
         GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DarkSteel, 12)
     }, new ItemStack(EnderIO.blockTransceiver, 1, 0), null, 40 * 20, 30720);
-
   }
 
   @Override
