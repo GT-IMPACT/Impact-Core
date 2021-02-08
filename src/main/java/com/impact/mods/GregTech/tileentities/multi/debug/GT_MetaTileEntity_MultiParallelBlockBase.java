@@ -872,4 +872,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     final String[] a = new String[ll.size()];
     return ll.toArray(a);
   }
+
+  public int getPollutionPerTick(ItemStack aStack) {
+    return 0;
+  }
 }

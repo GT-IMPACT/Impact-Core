@@ -1,87 +1,10 @@
 package com.impact.mods.GregTech;
 
-
-import static com.impact.mods.GregTech.GT_ItemList.AdvPyrolyse;
-import static com.impact.mods.GregTech.GT_ItemList.AdvVacuumFreezer;
-import static com.impact.mods.GregTech.GT_ItemList.BasicWaterPump;
-import static com.impact.mods.GregTech.GT_ItemList.Heavy_Metal_Cyclone;
-import static com.impact.mods.GregTech.GT_ItemList.LapPowerStation;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_AdvDDDPrinter;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_ArcFurnace;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Assembler;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_BlastSmelter;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Brewmenter;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Centrifuge;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_CokeOven;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Cutting;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_DDDPrinter;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Electrolyzer;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Extradifier;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_FreezSolidifier;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_LaserEngraver;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Macerator;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Mixer;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Multi_Farm;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_PBE;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Siftarator;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Supply;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Utility;
-import static com.impact.mods.GregTech.GT_ItemList.Machine_Wire;
-import static com.impact.mods.GregTech.GT_ItemList.Moon_Miner;
-import static com.impact.mods.GregTech.GT_ItemList.Multi_Tank;
-import static com.impact.mods.GregTech.GT_ItemList.Naquadah_Liquid_Enriched;
-import static com.impact.mods.GregTech.GT_ItemList.Naquadah_Liquid_multi;
-import static com.impact.mods.GregTech.GT_ItemList.Naquadah_multi;
-import static com.impact.mods.GregTech.GT_ItemList.Pyrolyse;
-import static com.impact.mods.GregTech.GT_ItemList.Rail_Assembler;
-import static com.impact.mods.GregTech.GT_ItemList.SOFC_Huge;
-import static com.impact.mods.GregTech.GT_ItemList.SOFC_Low;
-import static com.impact.mods.GregTech.GT_ItemList.SOFC_Medium;
-import static com.impact.mods.GregTech.GT_ItemList.SawMill;
-import static com.impact.mods.GregTech.GT_ItemList.Single_Tank;
-import static com.impact.mods.GregTech.GT_ItemList.Space_Elevator;
-import static com.impact.mods.GregTech.GT_ItemList.WaterDrill;
-
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_AdvDDDPrinter;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_AdvancedPyrolyse;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_AdvancedVacuumFreezer;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_ArcFurnace;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Assembler;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_BasicWaterPump;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_BlastSmelter;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Brewmenter;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Centrifuge;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_CokeOven;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Cutting;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_DDDPrinter;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_DrillerWater;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Electrolyzer;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Extradifier;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Farm;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_FreezerSolidifier;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_HeavyMetalCyclone;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_LaserEng;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Macerator;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Mixer;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_MoonMiner;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_PressBendExtrud;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Pyrolyse;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_RailAssembler;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_SawMill;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Siftarator;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_SpaceElevator;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Supply;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Utility;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_Wire;
-import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_HyperNaquadahGenerator;
-import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_LiquidEnrichedNqGenerator;
-import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_LiquidNqGenerator;
-import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_SOFC_I;
-import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_SOFC_II;
-import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_SOFC_III;
-import com.impact.mods.GregTech.tileentities.storage.GTMTE_LapPowerStation;
-import com.impact.mods.GregTech.tileentities.storage.GTMTE_MultiTank;
-import com.impact.mods.GregTech.tileentities.storage.GTMTE_SingleTank;
+import static com.impact.mods.GregTech.GT_ItemList.*;
+import com.impact.mods.GregTech.tileentities.multi.*;
+import com.impact.mods.GregTech.tileentities.multi.generators.*;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_REACTOR;
+import com.impact.mods.GregTech.tileentities.storage.*;
 
 public class Multi_Register {
 
@@ -108,7 +31,8 @@ public class Multi_Register {
         new GTMTE_Electrolyzer(ID++, "impact.multimachine.electrolyzer", "Multi Electrolyzer")
             .getStackForm(1L));
     Machine_Wire.set(
-        new GTMTE_Wire(ID++, "impact.multimachine.wire", "Multi Wire Factory").getStackForm(1L));
+        new GTMTE_Wire(ID++, "impact.multimachine.wire", "Multi Wire Factory")
+            .getStackForm(1L));
     Machine_Supply.set(
         new GTMTE_Supply(ID++, "impact.multimachine.supply", "Multi Supply Production")
             .getStackForm(1L));
@@ -156,7 +80,8 @@ public class Multi_Register {
     SawMill
         .set(new GTMTE_SawMill(ID++, "impact.multimachine.sawmill", "Saw Mill").getStackForm(1L));
     Pyrolyse.set(
-        new GTMTE_Pyrolyse(ID++, "impact.multimachine.pyrolyse", "Pyrolyse Oven").getStackForm(1L));
+        new GTMTE_Pyrolyse(ID++, "impact.multimachine.pyrolyse", "Pyrolyse Oven")
+            .getStackForm(1L));
     AdvPyrolyse.set(new GTMTE_AdvancedPyrolyse(ID++, "impact.multimachine.advpyrolyse",
         "Advanced Pyrolyse Oven").getStackForm(1L));
     Naquadah_multi.set(
@@ -185,10 +110,15 @@ public class Multi_Register {
         new GTMTE_SpaceElevator(ID++, "impact.multimachine.spaceelevator", "Space Elevator")
             .getStackForm(1L));
 
+    Nuclear_Reactor.set(new GTMTE_REACTOR(ID++, "impact.multis.nuclear", "Nuclear Reactor")
+        .getStackForm(1));
+
     Machine_CokeOven.set(
-        new GTMTE_CokeOven(13002, "impact.multimachine.cokeoven", "Coke Oven").getStackForm(1L));
+        new GTMTE_CokeOven(13002, "impact.multimachine.cokeoven", "Coke Oven")
+            .getStackForm(1L));
     Machine_Multi_Farm
-        .set(new GTMTE_Farm(13001, "impact.multimachine.farm", "Multiblock Farm").getStackForm(1L));
+        .set(new GTMTE_Farm(13001, "impact.multimachine.farm", "Multiblock Farm")
+            .getStackForm(1L));
 
     SOFC_Low.set(
         new GTMTE_SOFC_I(13101, "impact.multimachine.fuelcellmk1", "Solid-Oxide Generator Tier 1",

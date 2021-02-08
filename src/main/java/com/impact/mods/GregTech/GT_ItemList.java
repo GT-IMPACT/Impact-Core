@@ -68,7 +68,7 @@ public enum GT_ItemList implements IItemContainer {
   Diode_16A_ULV, Diode_16A_LV, Diode_16A_MV, Diode_16A_HV, Diode_16A_EV, Diode_16A_IV, Diode_16A_LuV, Diode_16A_ZPM, Diode_16A_UV,
 
   Tank_Hatch, Quadruple_Input_Hatch, Nonuple_Input_Hatch,
-  Nuclear_Resistant_OH,
+  Nuclear_Hatch_Rod,
 
   //MULTI
   Machine_CokeOven, Machine_Multi_Farm, Multi_Tank, Single_Tank, SOFC_Low, SOFC_Medium, SOFC_Huge,
@@ -80,6 +80,7 @@ public enum GT_ItemList implements IItemContainer {
   AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
 
   Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched, Moon_Miner, Rail_Assembler, Space_Elevator,
+  Nuclear_Reactor,
 
   //Cases
   UpgradeCasingT1, UpgradeCasingT2, UpgradeCasingT3, UpgradeCasingT4, PBECasing, EngraverCasing, AssemblerCasing,

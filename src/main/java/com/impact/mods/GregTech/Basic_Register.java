@@ -90,6 +90,7 @@ import static com.impact.mods.GregTech.GT_ItemList.Machine_ULV_Assembler;
 import static com.impact.mods.GregTech.GT_ItemList.Machine_UV_ComponentAssembler;
 import static com.impact.mods.GregTech.GT_ItemList.Machine_ZPM_ComponentAssembler;
 import static com.impact.mods.GregTech.GT_ItemList.Nonuple_Input_Hatch;
+import static com.impact.mods.GregTech.GT_ItemList.Nuclear_Hatch_Rod;
 import static com.impact.mods.GregTech.GT_ItemList.Portable_Tank_EV;
 import static com.impact.mods.GregTech.GT_ItemList.Portable_Tank_HV;
 import static com.impact.mods.GregTech.GT_ItemList.Portable_Tank_IV;
@@ -109,6 +110,7 @@ import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Diode;
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_InputBus;
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_Reactor_Rod_Hatch;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -280,6 +282,11 @@ public class Basic_Register {
     Nonuple_Input_Hatch.set(
         new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.nonuple", "Nonuple Input Hatch", 5)
             .getStackForm(1L));
+
+    Nuclear_Hatch_Rod.set(
+        new GTMTE_Reactor_Rod_Hatch(ID2++, "impact.hatch.nuclear.rod", "Nuclear Rod Hatch")
+            .getStackForm(1L));
+
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
