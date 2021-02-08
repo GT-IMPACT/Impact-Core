@@ -41,26 +41,15 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   public int modeBuses = 0;
   public byte mMode = -1;
 
-  /**
-   * @param aID           - ID Machine
-   * @param aName         - Named Machine
-   * @param aNameRegional - Localized Named Machine
-   */
   public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName,
       final String aNameRegional) {
     super(aID, aName, aNameRegional);
   }
 
-  /**
-   * === NAMED ===
-   */
   public GT_MetaTileEntity_MultiParallelBlockBase(final String aName) {
     super(aName);
   }
 
-  /**
-   * === NOMINAL VOLTAGE ===
-   */
   public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
     long rVoltage = 0L;
     long rAmperage = 0L;
@@ -77,9 +66,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     return rVoltage * rAmperage;
   }
 
-  /**
-   * === OVERCLOCKED PART 1 ===
-   */
   public static void calculateOverclockedNessMulti(@Nonnegative int aEUt,
       @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
       GT_MetaTileEntity_MultiParallelBlockBase base) {
@@ -132,9 +118,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     }
   }
 
-  /**
-   * === OVERCLOCKED PART 2 ===
-   */
   public static void calculateOverclockedNessMultiPefectOC(int aEUt, int aDuration, int mAmperage,
       long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
     byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
@@ -224,46 +207,28 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     }
   }
 
-  /**
-   * === GUI CONTAINER ===
-   */
   @Override
   public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
       IGregTechTileEntity aBaseMetaTileEntity) {
     return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
   }
 
-  /**
-   * === BASIC MULTIBLOCKS PROPERTY ===
-   */
   public int getMaxEfficiency(ItemStack aStack) {
     return 10000;
   }
 
-  /**
-   * === BASIC MULTIBLOCKS PROPERTY ===
-   */
   public boolean isCorrectMachinePart(ItemStack aStack) {
     return true;
   }
 
-  /**
-   * === BASIC MULTIBLOCKS PROPERTY ===
-   */
   public boolean isFacingValid(byte aFacing) {
     return aFacing > 1;
   }
 
-  /**
-   * === BASIC MULTIBLOCKS PROPERTY ===
-   */
   public int getDamageToComponent(ItemStack aStack) {
     return 0;
   }
 
-  /**
-   * === BASIC MULTIBLOCKS PROPERTY ===
-   */
   public boolean explodesOnComponentBreak(ItemStack aStack) {
     return false;
   }
@@ -807,9 +772,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     mParallel = parallel;
   }
 
-  /**
-   * === INFO DATA ===
-   */
   public void TThatches() {
     mEnergyHatchesTT.clear();
     mDynamoHatchesTT.clear();
