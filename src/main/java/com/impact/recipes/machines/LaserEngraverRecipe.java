@@ -42,12 +42,20 @@ public class LaserEngraverRecipe implements gregtech.api.interfaces.IOreRecipeRe
         GT_Values.RA
             .addLaserEngraverRecipe(CoreItems2.getRecipe(155, 1), GT_Utility.copyAmount(0L, aStack),
                 GT_ModHandler.getModItem("OpenComputers", "item", 9L, 25), 600, 256, false);
+        GT_Values.RA.addLaserEngraverRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1L), GT_Utility.copyAmount(0L, aStack),
+            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 15),
+            6000, 480, false);
         break;
       case "craftingLensWhite":
         GT_Values.RA.addLaserEngraverRecipe(
             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 4L),
             GT_Utility.copyAmount(0L, aStack), GT_ItemList.EngravedDiamondCrystalChip.get(1L), 400,
             1920, true);
+        GT_Values.RA.addLaserEngraverRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1L), GT_Utility.copyAmount(0L, aStack),
+            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 19),
+            6000, 480, false);
         break;
       case "craftingLensYellow":
         GT_Values.RA.addLaserEngraverRecipe(
@@ -56,11 +64,21 @@ public class LaserEngraverRecipe implements gregtech.api.interfaces.IOreRecipeRe
             true);
         GT_Values.RA
             .addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 4L),
-                GT_Utility.copyAmount(0L, aStack), GT_ItemList.EngravedGoldChip.get(1L), 300, 480,
-                false);
+            GT_Utility.copyAmount(0L, aStack), GT_ItemList.EngravedGoldChip.get(1L), 300, 480,
+            false);
         GT_Values.RA
             .addLaserEngraverRecipe(CoreItems2.getRecipe(156, 1), GT_Utility.copyAmount(0L, aStack),
-                GT_ModHandler.getModItem("OpenComputers", "item", 6L, 26), 600, 480, true);
+            GT_ModHandler.getModItem("OpenComputers", "item", 6L, 26), 600, 480, true);
+        GT_Values.RA.addLaserEngraverRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1L), GT_Utility.copyAmount(0L, aStack),
+            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 14),
+            6000, 480, false);
+        break;
+      case "craftingLensBlue":
+        GT_Values.RA.addLaserEngraverRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 1L), GT_Utility.copyAmount(0L, aStack),
+            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 13),
+            6000, 480, false);
         break;
     }
   }

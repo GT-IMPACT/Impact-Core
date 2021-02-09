@@ -2,15 +2,7 @@ package com.impact.loader;
 
 import com.impact.mods.GregTech.TecTech.Holo_Impact;
 import com.impact.mods.GregTech.TecTech.Holo_Vanila_GregTech;
-import com.impact.recipes.BuildCraftRecipe;
-import com.impact.recipes.EnderIORecipe;
-import com.impact.recipes.JabbaRecipe;
-import com.impact.recipes.OpenComputersRecipe;
-import com.impact.recipes.RailCraftRecipe;
-import com.impact.recipes.SFMRecipe;
-import com.impact.recipes.StorageDrawersRecipe;
-import com.impact.recipes.TConstructRecipe;
-import com.impact.recipes.TecTechRecipe;
+import com.impact.recipes.*;
 import cpw.mods.fml.common.Loader;
 
 public class ModLoader implements Runnable {
@@ -63,6 +55,11 @@ public class ModLoader implements Runnable {
     // --- BuildCraft
     if (Loader.isModLoaded("BuildCraft|Core")) {
       new BuildCraftRecipe().run();
+    }
+
+    // --- AE
+    if (Loader.isModLoaded("appliedenergistics2")) {
+      new AERecipe().run();
     }
   }
 }
