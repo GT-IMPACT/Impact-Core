@@ -18,8 +18,7 @@ public class GT_GUIContainer_Reactor_Rod extends GT_GUIContainerMetaTile_Machine
   @Override
   protected void drawGuiContainerForegroundLayer(int par1, int par2) {
     fontRendererObj.drawString(mName, 6, 4, 4210752);
-    GT_Container_Reactor_Rod container = (GT_Container_Reactor_Rod) mContainer; //todo проверить изменение процентажа
-    fontRendererObj.drawString((container.mDownRod * 10) + "%", 109, 41, 4210752);
+    fontRendererObj.drawString(((GT_Container_Reactor_Rod) mContainer).mDownRod * 10 + "%", 109, 41, 4210752);
   }
 
   @Override
@@ -29,8 +28,7 @@ public class GT_GUIContainer_Reactor_Rod extends GT_GUIContainerMetaTile_Machine
     int x = (width - xSize) / 2;
     int y = (height - ySize) / 2;
     drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-    GT_Container_Reactor_Rod container = (GT_Container_Reactor_Rod) mContainer; //todo проверить изменение графики
-    double tScale = (double) container.mDownRod / 10D;
+    double tScale = (double) ((GT_Container_Reactor_Rod) mContainer).mDownRod / 10D;
     drawTexturedModalRect(x + 90, y + 26, 178, 26,16, Math.min(52, (int) (tScale * 52)));
     drawTexturedModalRect(x + 90, y + 26,176, 26,2, 52);
   }

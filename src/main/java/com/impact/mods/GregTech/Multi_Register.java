@@ -3,7 +3,7 @@ package com.impact.mods.GregTech;
 import static com.impact.mods.GregTech.GT_ItemList.*;
 import com.impact.mods.GregTech.tileentities.multi.*;
 import com.impact.mods.GregTech.tileentities.multi.generators.*;
-import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_REACTOR;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.*;
 import com.impact.mods.GregTech.tileentities.storage.*;
 
 public class Multi_Register {
@@ -110,7 +110,11 @@ public class Multi_Register {
         new GTMTE_SpaceElevator(ID++, "impact.multimachine.spaceelevator", "Space Elevator")
             .getStackForm(1L));
 
-    Nuclear_Reactor.set(new GTMTE_REACTOR(ID++, "impact.multis.nuclear", "Nuclear Reactor")
+    Nuclear_Reactor_I.set(new GTMTE_NuclearReactorI(ID++, "impact.multis.nuclear1", "Nuclear Reactor I")
+        .getStackForm(1));
+    Nuclear_Reactor_II.set(new GTMTE_NuclearReactorII(ID++, "impact.multis.nuclear2", "Nuclear Reactor II")
+        .getStackForm(1));
+    Nuclear_Reactor_III.set(new GTMTE_NuclearReactorIII(ID++, "impact.multis.nuclear3", "Nuclear Reactor III")
         .getStackForm(1));
 
     Machine_CokeOven.set(

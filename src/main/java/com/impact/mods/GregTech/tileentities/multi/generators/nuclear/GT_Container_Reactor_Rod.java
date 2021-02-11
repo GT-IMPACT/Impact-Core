@@ -1,5 +1,6 @@
 package com.impact.mods.GregTech.tileentities.multi.generators.nuclear;
 
+import com.impact.mods.GregTech.gui.CustomSlot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -8,12 +9,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_Reactor_Rod extends GT_ContainerMetaTile_Machine {
 
-  public int mDownRod = 0;
+  public int mDownRod;
 
   public GT_Container_Reactor_Rod(InventoryPlayer aInventoryPlayer,
       IGregTechTileEntity aTileEntity) {
@@ -22,7 +24,7 @@ public class GT_Container_Reactor_Rod extends GT_ContainerMetaTile_Machine {
 
   @Override
   public void addSlots(InventoryPlayer aInventoryPlayer) {
-    addSlotToContainer(new Slot(this.mTileEntity, 0, 90, 8)); //todo сделать стаксайз - x1
+    addSlotToContainer(new CustomSlot(this.mTileEntity, 0, 90, 8, 1));
     addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 70, 8, false, false, 1));
     addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 70, 62, false, false, 1));
   }
@@ -77,7 +79,13 @@ public class GT_Container_Reactor_Rod extends GT_ContainerMetaTile_Machine {
   public void detectAndSendChanges() {
     super.detectAndSendChanges();
     if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
-    this.mDownRod = ((GTMTE_Reactor_Rod_Hatch) mTileEntity).mDownRod;
+    this.mDownRod = ((GTMTE_Reactor_Rod_Hatch) mTileEntity.getMetaTileEntity()).mDownRod;
+
+    for (Object crafter : this.crafters) {
+      ICrafting var1 = (ICrafting) crafter;
+      var1.sendProgressBarUpdate(this, 100, mDownRod & 65535);
+      var1.sendProgressBarUpdate(this, 101, mDownRod >>> 16);
+    }
   }
 
   @SideOnly(Side.CLIENT)
@@ -85,10 +93,10 @@ public class GT_Container_Reactor_Rod extends GT_ContainerMetaTile_Machine {
   public void updateProgressBar(int par1, int par2) {
     super.updateProgressBar(par1, par2);
     switch (par1) {
-      case 0:
+      case 100:
         mDownRod = mDownRod & -65536 | par2;
         break;
-      case 1:
+      case 101:
         mDownRod = mDownRod & 65535 | par2 << 16;
         break;
     }

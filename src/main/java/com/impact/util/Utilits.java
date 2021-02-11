@@ -1,6 +1,7 @@
 package com.impact.util;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -215,5 +216,9 @@ public class Utilits {
     }
     final ItemStack metaStack = new ItemStack(item, size, meta);
     return metaStack;
+  }
+
+  public static String getUniqueIdentifier(ItemStack is) {
+    return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
   }
 }
