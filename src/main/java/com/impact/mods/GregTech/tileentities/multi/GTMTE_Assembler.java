@@ -73,6 +73,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         .addEnergyHatch("Any casing")
         .addMaintenanceHatch("Any casing")
         .addInputBus("Any casing (max x15)")
+        .addInputHatch("Any casing (max x6)")
         .addOutputBus("Any casing (max x3)")
         .addCasingInfo("Assembler Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
