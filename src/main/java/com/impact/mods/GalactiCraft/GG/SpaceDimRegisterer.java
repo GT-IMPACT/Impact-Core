@@ -217,9 +217,9 @@ public class SpaceDimRegisterer {
     modCGalaxySpace.addDimensionDef(
         new ModDimensionDef("Triton", ChunkProviderTriton.class, Enums.DimensionType.Planet,
             DBMTriton));
-    modCGalaxySpace.addDimensionDef(
-        new ModDimensionDef("Titan", ChunkProviderTitan.class, Enums.DimensionType.Planet,
-            DBMTitan));
+//    modCGalaxySpace.addDimensionDef(
+//        new ModDimensionDef("Titan", ChunkProviderTitan.class, Enums.DimensionType.Planet,
+//            DBMTitan));
     modCGalaxySpace.addDimensionDef(
         new ModDimensionDef("Titan", WE_ChunkProvider.class, Enums.DimensionType.Planet, DBMTitan));
     modCGalaxySpace.addDimensionDef(
