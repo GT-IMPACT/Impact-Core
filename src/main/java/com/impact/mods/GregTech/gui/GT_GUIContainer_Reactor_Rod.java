@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.tileentities.multi.generators.nuclear;
+package com.impact.mods.GregTech.gui;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

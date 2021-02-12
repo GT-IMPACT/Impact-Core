@@ -1,13 +1,11 @@
 package com.impact.mods.GregTech.gui;
 
-import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
-import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_Reactor_Rod_Hatch;
+import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_NuclearReactorBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Utility;
 import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;

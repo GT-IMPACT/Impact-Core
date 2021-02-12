@@ -1,9 +1,7 @@
-package com.impact.mods.GregTech.tileentities.multi.generators.nuclear;
+package com.impact.mods.GregTech.tileentities.hatches;
 
-import static com.impact.util.Utilits.getUniqueIdentifier;
-
-import com.github.technus.tectech.util.Util;
-import gregtech.api.enums.ItemList;
+import com.impact.mods.GregTech.gui.GT_Container_Reactor_Rod;
+import com.impact.mods.GregTech.gui.GT_GUIContainer_Reactor_Rod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,7 +9,6 @@ import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.core.util.StackUtil;
 import java.util.HashMap;

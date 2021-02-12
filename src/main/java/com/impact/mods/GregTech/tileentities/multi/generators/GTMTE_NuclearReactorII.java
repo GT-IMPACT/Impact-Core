@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.tileentities.multi.generators.nuclear;
+package com.impact.mods.GregTech.tileentities.multi.generators;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
@@ -9,6 +9,7 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.impact.mods.GregTech.tileentities.hatches.GTMTE_Reactor_Rod_Hatch;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;

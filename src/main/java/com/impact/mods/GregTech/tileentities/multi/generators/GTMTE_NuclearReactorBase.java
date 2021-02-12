@@ -1,14 +1,11 @@
-package com.impact.mods.GregTech.tileentities.multi.generators.nuclear;
+package com.impact.mods.GregTech.tileentities.multi.generators;
 
 import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore1;
 
 import com.impact.mods.GregTech.gui.GT_Container_NuclearReactor;
-import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.mods.GregTech.gui.GUI_NuclearReactor;
+import com.impact.mods.GregTech.tileentities.hatches.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.MultiBlockTooltipBuilder;
-import com.impact.util.Vector3i;
-import com.impact.util.Vector3ic;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -18,23 +15,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
 import ic2.core.IC2DamageSource;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
-import org.lwjgl.input.Keyboard;
 
 public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiParallelBlockBase {
 
