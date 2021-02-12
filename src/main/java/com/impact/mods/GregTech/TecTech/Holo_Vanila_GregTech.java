@@ -66,7 +66,6 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrilling
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray2;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -510,45 +509,6 @@ public class Holo_Vanila_GregTech implements Runnable {
             definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                 base.getXCoord(), base.getYCoord(), base.getZCoord(),
                 1, 4, 0, hintsOnly);
-          }
-
-          @Override
-          public String[] getDescription(ItemStack stackSize) {
-            return desc;
-          }
-        });
-
-    //PyrolyseOven
-    registerMetaClass(GT_MetaTileEntity_PyrolyseOven.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_PyrolyseOven>() {
-          //region Structure
-          private final IStructureDefinition<GT_MetaTileEntity_PyrolyseOven> definition =
-              StructureDefinition.<GT_MetaTileEntity_PyrolyseOven>builder()
-                  .addShapeOldApi("main", new String[][]{
-                      {"00000", "00000", "00000", "00.00",},
-                      {"00000", "0AAA0", "0AAA0", "01110",},
-                      {"00000", "0AAA0", "0AAA0", "01110",},
-                      {"00000", "0AAA0", "0AAA0", "01110",},
-                      {"00000", "00000", "00000", "00000",},
-                  })
-                  .addElement('0', ofBlock(sBlockCasings8, 2))
-                  .addElement('1', ofBlock(sBlockCasings5, 0))
-                  .build();
-          private final String[] desc = new String[]{
-              EnumChatFormatting.RED + "Impact Details:",
-              "- Pyrolyse Oven Casing",
-              "- Coil Block (any Coil Block)",
-
-          };
-          //endregion
-
-          @Override
-          public void construct(ItemStack stackSize, boolean hintsOnly,
-              GT_MetaTileEntity_PyrolyseOven tileEntity, ExtendedFacing aSide) {
-            IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-                base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                2, 3, 0, hintsOnly);
           }
 
           @Override

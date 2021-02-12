@@ -2,11 +2,8 @@ package com.impact.mods.GregTech.gui;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
-import java.util.Arrays;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 

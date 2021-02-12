@@ -110,7 +110,7 @@ import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Diode;
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_InputBus;
 import com.impact.mods.GregTech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
-import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_Reactor_Rod_Hatch;
+import com.impact.mods.GregTech.tileentities.hatches.GTMTE_Reactor_Rod_Hatch;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;

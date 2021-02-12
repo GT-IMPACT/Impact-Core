@@ -3,7 +3,6 @@ package com.impact.mods.GregTech;
 import static com.impact.mods.GregTech.GT_ItemList.*;
 import com.impact.mods.GregTech.tileentities.multi.*;
 import com.impact.mods.GregTech.tileentities.multi.generators.*;
-import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.*;
 import com.impact.mods.GregTech.tileentities.storage.*;
 
 public class Multi_Register {
