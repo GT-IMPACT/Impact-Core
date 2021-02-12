@@ -166,6 +166,11 @@ public class MultiBlockTooltipBuilder {
     return this;
   }
 
+  public MultiBlockTooltipBuilder addNuclearRod(String info) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + "Nuclear Rod Hatch: " + EnumChatFormatting.GRAY + info);
+    return this;
+  }
+
   public MultiBlockTooltipBuilder addInputHatch(String info) {
     sLines.add(TAB + EnumChatFormatting.GREEN + "Input Hatch: " + EnumChatFormatting.GRAY + info);
     return this;

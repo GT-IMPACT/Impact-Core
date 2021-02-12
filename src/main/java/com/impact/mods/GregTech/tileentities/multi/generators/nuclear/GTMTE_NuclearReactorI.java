@@ -89,19 +89,18 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
-        .addParallelInfo(4, 256)
-        .addInfo("Parallel Point will upped Upgrade Casing")
-        .addPollution(200, 12800)
+        .addInfo("Radiation!")
+        .addTypeMachine("Nuclear Reactor")
+        .addInfo("A nuclear reactor that consumes water produces steam")
+        .addInfo("at temperatures above 50 degrees, it produces superheated steam and")
+        .addInfo("emits radiation within a radius of 10 blocks")
         .addSeparator()
-        .beginStructureBlock(3, 3, 3)
+        .beginStructureBlock(0, 0, 0)
         .addController()
-        .addParallelCase("Middle сenter")
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (only x1)")
-        .addOutputBus("Any casing (only x1)")
-        .addCasingInfo("Wiremill Casing")
+        .addNuclearRod("Any top middle casing (max x1)")
+        .addInputHatch("Any casing (max x1)")
+        .addOutputHatch("Any casing (max x6)")
+        .addCasingInfo("Radiation Proof Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
