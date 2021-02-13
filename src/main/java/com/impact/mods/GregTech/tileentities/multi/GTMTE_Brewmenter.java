@@ -63,6 +63,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
     b
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
+        .addInfo("Upgrade Casing must be filled in completely")
         .addInfo("Parallel Point will upped Upgrade Casing")
         .addTypeMachine("Brewery, Fermenter")
         .addScrew()

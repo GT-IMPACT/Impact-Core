@@ -70,6 +70,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     b
         .addInfo("Speed Freeez!")
         .addParallelInfo(1, 256)
+        .addInfo("Upgrade Casing must be filled in completely")
         .addInfo("Parallel Point will upped Upgrade Casing")
         .addInfo("Super Coolant is required for operation: 50 per second")
         .addInfo("At the output, get Hot Coolant: 25 per second")

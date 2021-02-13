@@ -44,6 +44,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
         .addInfo("Parallel Point will upped Upgrade Casing")
+        .addInfo("Upgrade Casing must be filled in completely")
         .addTypeMachine("Freezer Solidification")
         .addSeparatedBus()
         .addSeparator()

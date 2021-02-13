@@ -63,6 +63,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
         .addInfo("Parallel Point will upped Upgrade Casing")
+        .addInfo("Upgrade Casing must be filled in completely")
         .addTypeMachine("Laser Engraver")
         .addSeparatedBus()
         .addSeparator()

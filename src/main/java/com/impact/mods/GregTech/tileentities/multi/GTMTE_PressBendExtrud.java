@@ -61,6 +61,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
     b
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
+        .addInfo("Upgrade Casing must be filled in completely")
         .addInfo("Parallel Point will upped Upgrade Casing")
         .addPollution(200, 12800)
         .addTypeMachine("Extruder, Bender, Presser")

@@ -61,6 +61,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
     b
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
+        .addInfo("Upgrade Casing must be filled in completely")
         .addInfo("Parallel Point will upped Upgrade Casing")
         .addPollution(200, 12800)
         .addTypeMachine("Arc Furnace, Alloy Smelter")
