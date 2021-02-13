@@ -38,11 +38,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
   public long mCurrentTemp = 1;
   public long mMaxTemp = 1;
   public long mCurrentOutput = 1;
-  Block INDEX_PAGE = GregTech_API.sBlockCasings3;
-  byte INDEX_CASE_PAGE = 12;
   ITexture INDEX_CASE = Textures.BlockIcons.CASING_BLOCKS[12 + 32];
-  int INDEX_CASE1 = INDEX_CASE_PAGE + (3 * 128);
-  Block INDEX_PAGE_PARALLEL = sCaseCore1;
 
 
   public GTMTE_NuclearReactorBase(int aID, String aName, String aNameRegional) {
@@ -69,6 +65,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     aNBT.setLong("mCurrentTemp", mCurrentTemp);
     aNBT.setLong("mMaxTemp", mMaxTemp);
     aNBT.setLong("mCurrentOutput", mCurrentOutput);
+    aNBT.setBoolean("mFirstStart", mFirstStart);
   }
 
   @Override
@@ -77,6 +74,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     this.mCurrentTemp = aNBT.getLong("mCurrentTemp");
     this.mMaxTemp = aNBT.getLong("mMaxTemp");
     this.mCurrentOutput = aNBT.getLong("mCurrentOutput");
+    this.mFirstStart = aNBT.getBoolean("mFirstStart");
   }
 
   @Override
