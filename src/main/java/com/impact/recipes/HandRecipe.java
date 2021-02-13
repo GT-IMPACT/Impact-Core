@@ -453,7 +453,11 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
             " S",
             'S', GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1L)
         });
-
+    //Stone Dust
+    GT_ModHandler.addShapelessCraftingRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
+            new Object[]{"stone", ToolDictNames.craftingToolMortar
+            });
     //Filter Casing
     GT_ModHandler.addCraftingRecipe(ItemList.Casing_Vent.get(6L), bits, new Object[]{"PPP", "SFS", "MIV", 'P', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'I', OrePrefixes.stick.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.VanadiumSteel), 'M', ItemList.Electric_Motor_HV, 'V', OrePrefixes.rotor.get(Materials.BlackSteel), 'S', ItemList.Component_Filter});
     GT_ModHandler.addCraftingRecipe(ItemList.Casing_Vent.get(24L), bits, new Object[]{"PSP", "GFR", "MIV", 'P', CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'G', OrePrefixes.gearGtSmall.get(Materials.Titanium), 'R', OrePrefixes.ring.get(Materials.Titanium), 'I', OrePrefixes.stickLong.get(Materials.Titanium), 'F', OrePrefixes.frameGt.get(Materials.Titanium), 'M', ItemList.Electric_Motor_EV, 'V', OrePrefixes.rotor.get(Materials.HSLA), 'S', ItemList.Component_Filter});
@@ -1242,6 +1246,10 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Ztones", "tile.reedBlock", 8L, 0), tBitMask, new Object[]{"LLL", "LSL", "LLL", 'L', GT_ModHandler.getModItem("Ztones", "stoneTile", 1L, 0), 'S', OrePrefixes.plate.get(Materials.Wood)});
     // --- Vena Block
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Ztones", "tile.venaBlock", 8L, 0), tBitMask, new Object[]{"LLL", "LSL", "LLL", 'L', GT_ModHandler.getModItem("Ztones", "stoneTile", 1L, 0), 'S', OrePrefixes.plate.get(Materials.Lapis)});
+    // --- Ofanix
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Ztones", "ofanix", 1L, 0), tBitMask,
+            new Object[]{"hSC", "SGS", "fSs", 'C', GT_ModHandler.getModItem("TConstruct", "CraftingSlab", 1L, 0),
+                    'S', OrePrefixes.stick.get(Materials.Iron), 'G', OrePrefixes.gem.get(Materials.Diamond)});
 
     /* ==== END ZTONES ==== */
     /** ==== START CHICKENCHUNKS ==== */
@@ -1274,6 +1282,22 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2", "blockIronScaffold", 1L), new Object[]{"L", 'L', OrePrefixes.frameGt.get(Materials.Steel)});
     // --- Recrafting Iron Scaffold
     GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), new Object[]{"L", 'L', GT_ModHandler.getModItem("IC2", "blockIronScaffold", 1L)});
+    // --- Electric Treetap
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","itemTreetapElectric",1, 26),bits,
+            new Object[] {"dRD","RPB","ECS",'R', OrePrefixes.stickLong.get(Materials.Steel),'D', OrePrefixes.toolHeadDrill.get(Materials.Steel),
+                    'P',ItemList.Electric_Pump_LV,'B',GT_ModHandler.getModItem("IC2","itemBatRE",1,GT_Values.W),
+                    'E',GT_ModHandler.getModItem("IC2","itemRecipePart",1,3),'C', OrePrefixes.cableGt01.get(Materials.Tin),
+                    'S', OrePrefixes.screw.get(Materials.Steel)});
+    // --- Electric Hoe
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","itemToolHoe",1, 26),bits,
+            new Object[] {"dPH","PGB","ECS", 'S', OrePrefixes.screw.get(Materials.Steel),'H', OrePrefixes.toolHeadHoe.get(Materials.Steel),
+                    'G', OrePrefixes.gearGtSmall.get(Materials.Steel),'B',GT_ModHandler.getModItem("IC2","itemBatRE",1,GT_Values.W),
+                    'E',GT_ModHandler.getModItem("IC2","itemRecipePart",1,3), 'P', OrePrefixes.plate.get(Materials.Steel),
+                    'C', OrePrefixes.cableGt01.get(Materials.Tin)});
+    // --- Small Power Unit
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","itemRecipePart",1, 3),bits,
+            new Object[] {"WPW","PdP","CMC",'W', OrePrefixes.cableGt01.get(Materials.Copper),'P', OrePrefixes.itemCasing.get(Materials.Steel),
+                    'M',ItemList.Electric_Motor_LV, 'C', OrePrefixes.circuit.get(Materials.Basic)});
 
     /* ==== END IC2 ==== */
     /** ==== START PROJECTRED ==== */

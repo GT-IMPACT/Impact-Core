@@ -83,6 +83,12 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
     // --- Recrafting Iron Scaffold
     removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "blockIronScaffold", 1L), true, false,
         true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemTreetapElectric",1,GT_Values.W), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemToolHoe",1,GT_Values.W), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemRecipePart",1,3), true, false,
+            true);
 
     removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 1), true,
         false, false);
@@ -1590,10 +1596,11 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         false);
     removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Replicator", 1L, 0), true, false,
         false);
-    removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "GeneSampleBlank", 1L, 0), true,
+    /*removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "GeneSampleBlank", 1L, 0), true,
         false, false);
     removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "GeneTemplate", 1L, 0), true, false,
         false);
+        */
     removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "Labware", 1L, 0), true, false,
         false);
     removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "BeeReceptacle", 1L, 0), true, false,
