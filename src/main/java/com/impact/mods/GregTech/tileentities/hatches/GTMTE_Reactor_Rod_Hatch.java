@@ -144,6 +144,9 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 
   @Override
   public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+    if (aTimer < 10) {
+      getBaseMetaTileEntity().setFrontFacing((byte) 1);
+    }
     ItemStack is = mInventory[0];
     if (aBaseMetaTileEntity.isServerSide() && aTimer % 20 == 0) {
       if (mStartReactor && mDownRod > 0) {
