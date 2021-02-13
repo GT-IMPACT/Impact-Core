@@ -78,6 +78,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
         .addInfo("Right-Click to the controller with a screwdriver will turn on excess voiding.")
         .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+        .addInfo("If the integrity of Tank Storage is broken, the fluids are removed.")
         .addSeparator()
         .addInfo("Note on hatch locking:")
         .addSeparator()

@@ -77,6 +77,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
     b.addInfo("High-Tech fluid tank!")
         .addInfo("Right-Click the controller with a screwdriver will turn on excess voiding.")
         .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+        .addInfo("If the integrity of Tank Storage is broken, the fluids are removed.")
         .addSeparator()
         .addInfo("Note on hatch locking:")
         .addSeparator()
