@@ -984,7 +984,7 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 4)},
             tMat.getMolten(144L * tMultiplier),
-            GT_ModHandler.getModItem("gendustry", "GeneSampleBlank", 1L, 0), 400, 2560, true);
+                CoreItems2.getRecipe(179, 1), 400, 2560, true);
         // --- Genetic Template
         GT_Values.RA.addCircuitAssemblerRecipe(
             new ItemStack[]{ItemList.Circuit_Board_Epoxy_Advanced.get(1),
@@ -993,7 +993,7 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 32),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 8)},
             tMat.getMolten(144L * tMultiplier),
-            GT_ModHandler.getModItem("gendustry", "GeneTemplate", 1L, 0), 500, 7680, true);
+                CoreItems2.getRecipe(180, 1), 500, 7680, true);
 
       }
     }
