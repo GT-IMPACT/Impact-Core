@@ -716,7 +716,7 @@ public class CircuitAssemblerRecipe implements Runnable {
                 ItemList.Circuit_Chip_SoC4.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 32),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 8)},
-            tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Master.get(1), 50, 153600,
+            tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Master.get(1), 50, 500000,
             true);
         //2
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -791,7 +791,7 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Platinum, 32),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Europium, 16)},
             tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Quantummainframe.get(1), 50,
-            500000, true);
+            2000000, true);
         //2
         GT_Values.RA.addCircuitAssemblerSpaceRecipe(
             new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
@@ -844,7 +844,7 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Americium, 32)},
             tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 50,
-            2000000, true);
+            8000000, true);
         //2
         GT_Values.RA.addCircuitAssemblerSpaceRecipe(
             new ItemStack[]{ItemList.Circuit_Board_Wetware_Extreme.get(2L),
@@ -871,7 +871,7 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16),
                 GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 64)},
             tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Wetwaremainframe.get(1), 50,
-            8000000, true);
+            32000000, true);
 
         GT_Values.RA.addCircuitAssemblerRecipe(
             new ItemStack[]{ItemList.Circuit_Board_Plastic_Advanced.get(1),
