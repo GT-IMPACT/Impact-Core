@@ -20,12 +20,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 
-  private static Map<ItemStack, Integer> componentProperty = new HashMap<>();
   public int mDownRod = 0;
   public int mCountCells = 0;
   public float mTemp = 0;
   public boolean mStartReactor = false;
-  public ItemStack mDepletedCell;
 
   public GTMTE_Reactor_Rod_Hatch(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional, 5, 1, new String[]{
@@ -62,7 +60,7 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 
   @Override
   public boolean isFacingValid(byte aFacing) {
-    return true;
+    return aFacing == 1;
   }
 
   @Override
