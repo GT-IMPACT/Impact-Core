@@ -129,28 +129,34 @@ public class JabbaRecipe implements Runnable {
   public void assemblerRecipe() {
     // --- Barrel
     GT_Values.RA
-        .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1),
+        .addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1),
             GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 1L, 0),
+                        GT_Utility.getIntegratedCircuit(2)}, null,
             new ItemStack(BetterBarrels.blockBarrel, 1, 0), 100, 8);
     GT_Values.RA
-        .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1),
+        .addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1),
             GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 2L, 0),
+                        GT_Utility.getIntegratedCircuit(2)}, null,
             new ItemStack(BetterBarrels.blockBarrel, 2, 0), 100, 10);
     GT_Values.RA
-        .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
+        .addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
             GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 2L, 0),
+                        GT_Utility.getIntegratedCircuit(2)}, null,
             new ItemStack(BetterBarrels.blockBarrel, 2, 0), 100, 10);
     GT_Values.RA
-        .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+        .addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
             GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 4L, 0),
+                        GT_Utility.getIntegratedCircuit(2)}, null,
             new ItemStack(BetterBarrels.blockBarrel, 4, 0), 100, 12);
     GT_Values.RA
-        .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+        .addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
             GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 8L, 0),
+                        GT_Utility.getIntegratedCircuit(2)}, null,
             new ItemStack(BetterBarrels.blockBarrel, 8, 0), 100, 16);
-    GT_Values.RA.addAssemblerRecipe(
-        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+    GT_Values.RA
+        .addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
         GT_ModHandler.getModItem("ExtraUtilities", "chestFull", 16L, 0),
+                        GT_Utility.getIntegratedCircuit(2)}, null,
         new ItemStack(BetterBarrels.blockBarrel, 16, 0), 100, 24);
     // --- Storage Upgrade
     GT_Values.RA.addAssemblerRecipe(new ItemStack(BetterBarrels.blockBarrel, 1, 0),
