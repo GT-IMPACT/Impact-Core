@@ -1631,8 +1631,10 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
     removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "ErrorSensorCover", 1L, 0), true,
         false, false);
 
-    removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, GT_Values.W),
-            true, false, false);
+    for (int i = 0; i < 16; i++) {
+      removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 19 + i),
+              true, false, false);
+    }
 
     removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true,
         false, false);
