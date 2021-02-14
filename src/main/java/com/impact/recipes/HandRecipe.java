@@ -780,6 +780,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
       GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.stained_glass_pane, 2, i), tBitMask, new Object[]{"sW", 'W', new ItemStack(Blocks.stained_glass, 1, i)});
       GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.stained_glass_pane, 8, 15 - i), tBitMask, new Object[]{"WWW", "WDW", "WWW", 'W', new ItemStack(Blocks.glass_pane, 1, 0), 'D', Dyes.VALUES[i]});
       GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Blocks.stained_glass, 1, 15 - i), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{new ItemStack(Blocks.glass_pane, 1, 0), Dyes.VALUES[i]});
+      // --- GT's Dye
+      GT_ModHandler.addShapelessCraftingRecipe(ItemList.DYE_ONLY_ITEMS[i].get(1), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{Dyes.VALUES[i]});
     }
 
     /* ==== END VANILLA ==== */

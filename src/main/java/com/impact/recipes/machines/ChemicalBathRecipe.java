@@ -234,6 +234,10 @@ public class ChemicalBathRecipe implements Runnable {
             Dyes.VALUES[i].getFluidDye(j, 18L),
             new ItemStack(Blocks.stained_hardened_clay, 1, 15 - i), GT_Values.NI, GT_Values.NI,
             null, 64, 2);
+        GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 2L),
+                Dyes.VALUES[i].getFluidDye(j, 36L),
+                GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 34 - i), GT_Values.NI, GT_Values.NI,
+                null, 64, 2);
       }
     }
 

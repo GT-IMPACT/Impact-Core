@@ -4,14 +4,14 @@ import static com.impact.util.Utilits.Itemstack;
 
 import com.impact.common.item.Core_Items;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class MixerRecipe implements Runnable {
 
@@ -169,5 +169,13 @@ public class MixerRecipe implements Runnable {
         GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
         24 * 20, 2
     );
+
+    /** ================================= start ProjectRed =================================*/
+    for (int i = 0; i < 16; i++) {
+    GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 2L), ItemList.DYE_ONLY_ITEMS[15 - i].get(2),
+            GT_Utility.getIntegratedCircuit(1), null, null, null,
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 19 + i), 50, 8);
+    }
+    /* ================================= end ProjectRed =================================*/
   }
 }

@@ -3301,6 +3301,51 @@ public class AssemblerRecipe implements Runnable {
         GT_ModHandler.getModItem("gendustry", "ErrorSensorCover", 1L), 200, 7680);
 
     /* ==== END GENDUSTRY ==== */
+    /** ==== START ProjectRED ==== */
+    // --- Lamp
+    for (int i = 0; i < 16; i++) {
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 2L, 19 + i),
+                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(216),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 4L, i), 100, 4, false);
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 2L, 19 + i),
+                      new ItemStack(Blocks.redstone_torch, 1), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(216),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 4L, 16 + i), 100, 4, false);
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 4L, 19 + i),
+                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 2), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(432),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 8L, i), 120, 6, false);
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 4L, 19 + i),
+                      new ItemStack(Blocks.redstone_torch, 2), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(432),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 8L, 16 + i), 120, 6, false);
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 6L, 19 + i),
+                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 3), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(648),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 16L, i), 140, 8, false);
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 6L, 19 + i),
+                      new ItemStack(Blocks.redstone_torch, 3), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(648),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 16L, 16 + i), 140, 8, false);
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 8L, 19 + i),
+                      GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 4), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(864),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 32L, i), 160, 10, false);
+      GT_Values.RA.addAssemblerRecipe(
+              new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+                      GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 8L, 19 + i),
+                      new ItemStack(Blocks.redstone_torch, 4), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(864),
+              GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 32L, 16 + i), 160, 10, false);
+    }
+    /* ==== END ProjectRED ==== */
 
     ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1),
         GT_ItemList.Hatch_Input_UMV.get(1), GT_ItemList.Hatch_Input_UXV.get(1),
