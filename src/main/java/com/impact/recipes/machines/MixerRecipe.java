@@ -176,6 +176,10 @@ public class MixerRecipe implements Runnable {
             GT_Utility.getIntegratedCircuit(1), null, null, null,
             GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 19 + i), 50, 8);
     }
+    GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 1L),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), GT_Utility.getIntegratedCircuit(1),
+            GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrotine, 1L), 200, 8);
+
     /* ================================= end ProjectRed =================================*/
   }
 }

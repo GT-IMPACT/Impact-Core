@@ -72,5 +72,17 @@ public class AlloySmelterRecipe implements Runnable {
         GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock2", 1L, 8), 200, 8);
 
     /* ==== END EXTRA UTILITIES ==== */
+
+    // --- Infused Silicon Compound
+    GT_Values.RA.addAlloySmelterRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 8L),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 42), 400, 30);
+    // --- Glowing Silicon Compound
+    GT_Values.RA.addAlloySmelterRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 8L),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 43), 400, 30);
+
   }
 }

@@ -35,6 +35,11 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
 
     removeFurnaceSmelting(GT_ModHandler.getModItem("Backpack", "boundLeather", 1L));
 
+    removeFurnaceSmelting(new ItemStack(Blocks.stone));
+
+    removeFurnaceSmelting(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 42));
+    removeFurnaceSmelting(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 43));
+
     //removeRecipeByOutput();
     removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoHelmet", 1, GT_Values.W));
     removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBodyarmor", 1, GT_Values.W));
@@ -1559,8 +1564,29 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 1),
         true, false, false);
     removeRecipeByOutput(
-        GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.core.screwdriver", 1L, 0), true,
+        GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.screwdriver", 1L, 0), true,
         false, false);
+    for (int i = 0; i < 16; i++) {
+      removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 19 + i),
+              true, false, false);
+      removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, i),
+              true, false, false);
+    }
+    for (int i = 1; i < 10; i++) {
+      removeRecipeByOutput(
+              GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, i), true,
+              false, false);
+    }
+    removeRecipeByOutput(
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 42),
+            true, false, false);
+    removeRecipeByOutput(
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 43),
+            true, false, false);
+    removeRecipeByOutput(
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.wiredebugger", 1L, 0),
+            true, false, false);
+
 
     removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L, 0), true, false,
         false);
@@ -1630,11 +1656,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         false);
     removeRecipeByOutput(GT_ModHandler.getModItem("gendustry", "ErrorSensorCover", 1L, 0), true,
         false, false);
-
-    for (int i = 0; i < 16; i++) {
-      removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 19 + i),
-              true, false, false);
-    }
 
     removeRecipeByOutput(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CokeCoal, 1), true,
         false, false);

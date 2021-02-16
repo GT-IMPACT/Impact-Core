@@ -1308,7 +1308,19 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     // --- Printer
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 1), tBitMask, new Object[]{"EME", "LAL", "PFP", 'P', OrePrefixes.plate.get(Materials.Steel), 'L', "craftingLensRed", 'F', GT_ModHandler.getModItem("Forestry", "factory2", 1L, 2), 'M', ItemList.Cover_Screen, 'E', ItemList.Emitter_LV, 'A', ItemList.Machine_LV_Assembler});
     // --- Screwdriver
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.core.screwdriver", 1L, 0), tBitMask, new Object[]{" fI", "BIh", "RB ", 'I', OrePrefixes.stick.get(Materials.Iron), 'R', OrePrefixes.stick.get(Materials.Rubber), 'B', "dyeBlue"});
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.screwdriver", 1L, 0), tBitMask, new Object[]{" fI", "BIh", "RB ", 'I', OrePrefixes.stick.get(Materials.Iron), 'R', OrePrefixes.stick.get(Materials.Rubber), 'B', "dyeBlue"});
+    // --- Multimeter
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.wiredebugger", 1L, 0), tBitMask, new Object[]{"WSW", "PGP", "RdR", 'S', OrePrefixes.stick.get(Materials.SteelMagnetic), 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'P', OrePrefixes.itemCasing.get(Materials.Steel), 'G', OrePrefixes.plate.get(Materials.Glowstone), 'R', OrePrefixes.screw.get(Materials.Steel)});
+    // --- Insulated Red Alloy Wires
+      for (int i = 0; i < 16; i++) {
+          GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, 16 - i), tBitMask,
+                  new Object[]{GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, 0),
+                          GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, 0),
+                          OrePrefixes.plate.get(Materials.Rubber), Dyes.VALUES[i]});
+      }
+    // --- Circuit Plate
+    GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+            tBitMask,new Object[]{OrePrefixes.plate.get(Materials.Concrete)});
 
     /* ==== END PROJECTRED ==== */
     /** ==== START PRACTICAL LOGISTICS ==== */

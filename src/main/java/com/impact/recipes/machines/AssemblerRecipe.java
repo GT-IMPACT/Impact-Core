@@ -14,6 +14,7 @@ import static com.impact.loader.ItemRegistery.UtilBlock;
 import static com.impact.mods.GregTech.GT_ItemList.Casing_Farm;
 import static com.impact.util.Utilits.Blockstack;
 import static com.impact.util.Utilits.simpleMetaStack;
+import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 
 import com.impact.common.item.Core_Items;
 import com.impact.common.item.Core_Items2;
@@ -3345,6 +3346,33 @@ public class AssemblerRecipe implements Runnable {
                       new ItemStack(Blocks.redstone_torch, 4), GT_Utility.getIntegratedCircuit(1)}, Materials.Glass.getMolten(864),
               GT_ModHandler.getModItem("ProjRed|Illumination", "projectred.illumination.lamp", 32L, 16 + i), 160, 10, false);
     }
+    // --- Conductive Plate
+    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1), Materials.Redstone.getMolten(144),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 1), 200, 16);
+    // --- Wired Plate
+    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 2), 300, 30);
+    // --- Bundled Plate
+    for (int i = 18; i < 34; i++) {
+      GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+              GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, i),
+              GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 3), 400, 30);
+    }
+    // --- Anode
+    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 4), 400, 30);
+    // --- Cathode
+    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+            new ItemStack(Blocks.redstone_torch, 1),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 5), 400, 30);
+    // --- Platformed Plate
+    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 4L, 2),
+            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Plastic, 4),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 9), 300, 64);
+
     /* ==== END ProjectRED ==== */
 
     ItemStack[] inHatches = {GT_ItemList.Hatch_Input_UEV.get(1), GT_ItemList.Hatch_Input_UIV.get(1),

@@ -156,5 +156,25 @@ public class FormingPressRecipe implements Runnable {
 
     /* ================================= end IC2 =================================*/
 
+    // --- Silicon Chip
+    GT_Values.RA.addFormingPressRecipe(
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 13),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 7), 600, 30);
+    GT_Values.RA.addFormingPressRecipe(
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 42),
+            ItemList.Shape_Mold_Ball.get(0),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 13), 600, 30);
+
+    // --- Energized Chip
+    GT_Values.RA.addFormingPressRecipe(
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 14),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 8), 600, 30);
+    GT_Values.RA.addFormingPressRecipe(
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 43),
+            ItemList.Shape_Mold_Ball.get(0),
+            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 14), 600, 30);
+
   }
 }
