@@ -769,6 +769,10 @@ public class AssemblerRecipe implements Runnable {
             GT_Utility.getIntegratedCircuit(9)}, Materials.Polybenzimidazole.getMolten(144L),
         GT_ItemList.Nonuple_Input_Hatch.get(1), 480, 7680);
 
+    //ME Output Hatch
+    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockInterface", 1L, 0),
+            ItemList.Hatch_Output_Bus_HV.get(1L), ItemList.Hatch_Output_Bus_ME.get(1L), 200, 480);
+
 
     /* ================================= end GT MOD =================================*/
 
