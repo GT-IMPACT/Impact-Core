@@ -150,14 +150,15 @@ public class Basic_Register {
     Generator_Diesel_EV.set(
         new GT_MetaTileEntity_DieselGenerator(ID2++, "impact.basicgenerator.diesel.tier.04",
             "EV Combustion Generator", 4).getStackForm(1L));
-    ID2++;    //Generator_Gas_Turbine_EV.set(new GT_MetaTileEntity_GasTurbine(ID2++, "impact.basicgenerator.gasturbine.tier.04", "EV Gas Turbine", 4).getStackForm(1L));
+    ID2++; // TODO ID:14564 null
     Generator_Semi_Turbine_EV.set(
         new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.04",
             "EV Semifluid Generator", 4).getStackForm(1L));
-    ID2++;    //Generator_Steam_Turbine_IV.set(new GT_MetaTileEntity_SteamTurbine(ID2++, "basicgenerator.steamturbine.tier.05", "IV Steam Turbine", 5).getStackForm(1L));
-    ID2++;    //Generator_Diesel_IV.set(new GT_MetaTileEntity_DieselGenerator(ID2++, "impact.basicgenerator.diesel.tier.05", "IV Combustion Generator", 5).getStackForm(1L));
-    ID2++;    //Generator_Gas_Turbine_IV.set(new GT_MetaTileEntity_GasTurbine(ID2++, "impact.basicgenerator.gasturbine.tier.05", "IV Gas Turbine", 5).getStackForm(1L));
-    ID2++;    //Generator_Semi_Turbine_IV.set(new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.05", "IV Semifluid Generator", 5).getStackForm(1L));
+
+    ID2++; // TODO ID:14566 null
+    ID2++; // TODO ID:14567 null
+    ID2++; // TODO ID:14568 null
+    ID2++; // ID:14569 GT_MetaTileEntity_Hatch_OutputBus_ME
 
     Creative_Tank.set(new GTMTE_DebugTank(ID2++, "impact.machine.creativetank", "Creative Tank", 5)
         .getStackForm(1L));
@@ -172,7 +173,6 @@ public class Basic_Register {
     Nuclear_Hatch_Rod.set(
         new GTMTE_Reactor_Rod_Hatch(ID2++, "impact.hatch.nuclear.rod", "Nuclear Rod Hatch")
             .getStackForm(1L));
-
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
