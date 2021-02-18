@@ -438,8 +438,8 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(98, 1), tBitMask, new Object[]{"PRP", "ICI", "PMP", 'P', CoreItems2.getRecipe(84, 1), 'R', OrePrefixes.rotor.get(Materials.Iridium), 'M', ItemList.Electric_Motor_ZPM, 'I', ItemList.Neutron_Reflector, 'C', ItemList.Reactor_Coolant_Le_3});
 
     //IC2 Batteries
-    GT_ModHandler.addShapelessCraftingRecipe(ItemList.EnergyCrystal.get(1), tBitMask, new Object[]{ItemList.IC2_EnergyCrystal.get(1, GT_Values.W)});
-    GT_ModHandler.addShapelessCraftingRecipe(ItemList.LapotronCrystal.get(1), tBitMask, new Object[]{ItemList.IC2_LapotronCrystal.get(1, GT_Values.W)});
+    GT_ModHandler.addShapelessCraftingRecipe(ItemList.EnergyCrystal.get(1), tBitMask, new Object[]{OrePrefixes.battery.get(Materials.Elite)});
+    GT_ModHandler.addShapelessCraftingRecipe(ItemList.LapotronCrystal.get(1), tBitMask, new Object[]{OrePrefixes.battery.get(Materials.Master)});
 
     //Rods
     GT_ModHandler.addCraftingRecipe(CoreItems2.getRecipe(177,1), tBitMask, new Object[]{"f ", " S", 'S', new ItemStack(Blocks.cobblestone)});
@@ -1287,13 +1287,13 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     // --- Electric Treetap
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","itemTreetapElectric",1, 26),bits,
             new Object[] {"dRD","RPB","ECS",'R', OrePrefixes.stickLong.get(Materials.Steel),'D', OrePrefixes.toolHeadDrill.get(Materials.Steel),
-                    'P',ItemList.Electric_Pump_LV,'B',GT_ModHandler.getModItem("IC2","itemBatRE",1,GT_Values.W),
+                    'P',ItemList.Electric_Pump_LV,'B', OrePrefixes.battery.get(Materials.Basic),
                     'E',GT_ModHandler.getModItem("IC2","itemRecipePart",1,3),'C', OrePrefixes.cableGt01.get(Materials.Tin),
                     'S', OrePrefixes.screw.get(Materials.Steel)});
     // --- Electric Hoe
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","itemToolHoe",1, 26),bits,
             new Object[] {"dPH","PGB","ECS", 'S', OrePrefixes.screw.get(Materials.Steel),'H', OrePrefixes.toolHeadHoe.get(Materials.Steel),
-                    'G', OrePrefixes.gearGtSmall.get(Materials.Steel),'B',GT_ModHandler.getModItem("IC2","itemBatRE",1,GT_Values.W),
+                    'G', OrePrefixes.gearGtSmall.get(Materials.Steel),'B', OrePrefixes.battery.get(Materials.Basic),
                     'E',GT_ModHandler.getModItem("IC2","itemRecipePart",1,3), 'P', OrePrefixes.plate.get(Materials.Steel),
                     'C', OrePrefixes.cableGt01.get(Materials.Tin)});
     // --- Small Power Unit
