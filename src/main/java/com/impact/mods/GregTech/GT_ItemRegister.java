@@ -3,9 +3,11 @@ package com.impact.mods.GregTech;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.covers.GT_Cover_Pump;
+import gregtech.common.covers.GT_Cover_SteamValve;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
 
 public class GT_ItemRegister {
@@ -18,13 +20,7 @@ public class GT_ItemRegister {
   }
 
   private void registerItems() {
-    GT_ItemList.ULVPump.set(GT.addItem(395, "ULV Electric Pump", "640 L/sec (as Cover)"));
-    GregTech_API.registerCover(
-        GT_ItemList.ULVPump.get(1L),
-        new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[0][0],
-            new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP)),
-        new GT_Cover_Pump(32)
-    );
+    GT_ItemList.ULVPump.set(GT.addItem(395, "ULV Electric Pump", "640 L/sec"));
     GT_ItemList.ULVMotor.set(GT.addItem(396, "ULV Electric Motor", ""));
     GT_ItemList.ULVPiston.set(GT.addItem(397, "ULV Electric Piston", ""));
     GT_ItemList.ULVRobotArm.set(GT.addItem(398, "ULV Robot Arm", ""));
