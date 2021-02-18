@@ -1,13 +1,4 @@
 package com.impact.mods.GregTech;
-
-
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_MultiTexture;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.covers.GT_Cover_Pump;
-import gregtech.common.covers.GT_Cover_SteamValve;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
 
 public class GT_ItemRegister {
