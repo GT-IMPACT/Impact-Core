@@ -98,16 +98,18 @@ public class DimensionHelper {
         if (s.equals(DimNameDisplayed[i])) {
           s = DimName[i].replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "")
               .replaceAll("GalaxySpace_", "").replaceAll("Mining_World", "Aroma World")
-              .replaceAll("Vanilla_", "Vanilla ");
-          if (s.equals("Twilight")) {
-            s = "Twilight Forrest";
-          } else if (s.equals("Underdark")) {
-            s = "Deep Dark";
-          } else if (s.equals("EndAsteroid")) {
-            s = "Far End Asteroids";
-          }
-
+              .replaceAll("Vanilla_", "Vanilla ").replaceAll("Impact_GalacticModule_", "");
+          
           switch (s) {
+            case "Twilight":
+              s = "Twilight Forrest";
+              break;
+            case "Underdark":
+              s = "Deep Dark";
+              break;
+            case "EndAsteroid":
+              s = "Far End Asteroids";
+              break;
             case "Moon":
               s = s + " (T1)";
               break;
@@ -152,7 +154,7 @@ public class DimensionHelper {
             case "BarnardE":
             case "BarnardF":
             case "TcetiE":
-              s = s + " (T8)";
+              s = s + " (doesn't work)";
               break;
           }
 
