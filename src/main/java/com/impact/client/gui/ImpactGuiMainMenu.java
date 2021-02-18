@@ -104,7 +104,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
       this.mc.displayGuiScreen(new GuiModList(this));
     }
     if (b.id == 20) {
-      urlopen("https://gt-impact.github.io/");
+      urlopen("https://gtimpact.space/");
     }
     if (b.id == 21) {
       urlopen("https://discord.gg/bMf2qvd");
@@ -164,7 +164,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     }
 
     try {
-      URL url = new URL("https://gt-impact.github.io/version");
+      URL url = new URL("https://gtimpact.space/version");
 
       InputStream in = url.openStream();
       BufferedReader br = new BufferedReader(new InputStreamReader(in));
