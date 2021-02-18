@@ -48,7 +48,6 @@ public class Utilits {
         && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
   }
 
-
   public static NBTTagCompound getNBT(ItemStack aStack) {
     NBTTagCompound rNBT = aStack.getTagCompound();
     return ((rNBT == null) ? new NBTTagCompound() : rNBT);
@@ -220,5 +219,9 @@ public class Utilits {
 
   public static String getUniqueIdentifier(ItemStack is) {
     return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
+  }
+
+  public static int getRandom(int min, int max) {
+    return (int) (Math.random() * ((max - min) + 1)) + min;
   }
 }
