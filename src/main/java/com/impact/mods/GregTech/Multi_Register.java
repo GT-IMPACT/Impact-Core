@@ -94,27 +94,27 @@ public class Multi_Register {
     Naquadah_Liquid_Enriched.set(
         new GTMTE_LiquidEnrichedNqGenerator(ID++, "impact.multimachine.liquidenrichednqgenerator",
             "Liquid Enriched Naquadah Generator").getStackForm(1L));
-
     Moon_Miner.set(
         new GTMTE_MoonMiner(ID++, "impact.multimachine.blockminer", "Moon Miner").getStackForm(1L));
     Machine_AdvDDDPrinter.set(
         new GTMTE_AdvDDDPrinter(ID++, "impact.multimachine.advdddprinter", "Advanced 3D Printer")
             .getStackForm(1L));
-
     Rail_Assembler.set(
         new GTMTE_RailAssembler(ID++, "impact.multimachine.railassembler", "Rail Assembler")
             .getStackForm(1L));
-
     Space_Elevator.set(
         new GTMTE_SpaceElevator(ID++, "impact.multimachine.spaceelevator", "Space Elevator")
             .getStackForm(1L));
-
     Nuclear_Reactor_I.set(new GTMTE_NuclearReactorI(ID++, "impact.multis.nuclear1", "Nuclear Reactor I")
         .getStackForm(1));
     Nuclear_Reactor_II.set(new GTMTE_NuclearReactorII(ID++, "impact.multis.nuclear2", "Nuclear Reactor II")
         .getStackForm(1));
     Nuclear_Reactor_III.set(new GTMTE_NuclearReactorIII(ID++, "impact.multis.nuclear3", "Nuclear Reactor III")
         .getStackForm(1));
+    Huge_Steam_Turbine.set(new GTMTE_HugeSteamTurbine(ID++, "impact.multis.hugesteamturbine", "Huge Steam Turbine")
+        .getStackForm(1));
+
+    System.out.println("Multi_Register.java | Last ID: " + ID);
 
     Machine_CokeOven.set(
         new GTMTE_CokeOven(13002, "impact.multimachine.cokeoven", "Coke Oven")

@@ -810,7 +810,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       offset.y = z;
       offset.z = y;
     }
-
     return offset;
   }
 
