@@ -3,7 +3,6 @@ package com.impact.mods.GregTech.tileentities.multi;
 import static com.impact.util.Utilits.isB;
 import static gregtech.api.enums.GT_Values.V;
 
-import com.impact.mods.GregTech.TecTech.TecTechUtils;
 import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.MultiBlockTooltipBuilder;
@@ -118,7 +117,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
       GT_Recipe tRecipe;
 
-      long nominalV = TecTechUtils.getnominalVoltageTT(this);
+      long nominalV = getMaxInputVoltage();
       byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 
       tRecipe = getRecipeMap()

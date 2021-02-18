@@ -5,8 +5,6 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import com.impact.mods.GregTech.TecTech.ITecTechEnabledMulti;
-import com.impact.mods.GregTech.TecTech.TecTechUtils;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -31,13 +29,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
-    GT_MetaTileEntity_MultiBlockBase implements ITecTechEnabledMulti {
+    GT_MetaTileEntity_MultiBlockBase {
 
   public int mParallel = 0;
-  @SuppressWarnings("rawtypes")
-  public ArrayList TTTunnels = new ArrayList<>();
-  @SuppressWarnings("rawtypes")
-  public ArrayList TTMultiAmp = new ArrayList<>();
   public int modeBuses = 0;
   public byte mMode = -1;
 
@@ -178,22 +172,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         && !aMetaTileEntity.getBaseMetaTileEntity().isDead();
   }
 
-  @Override
-  public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity,
-      int aBaseCasingIndex) {
-    return TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex);
-  }
-
-  @Override
-  public boolean drainEnergyInput(long aEU) {
-    return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
-  }
-
-  @Override
-  public long getMaxInputVoltage() {
-    return TecTechUtils.getMaxInputVoltage(this);
-  }
-
   public void ScrewClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     if (aPlayer.isSneaking()) {
       if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
@@ -273,7 +251,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
 
     if (inputs.length > 0 || fluids.length > 0) {
-      long tVoltage = TecTechUtils.getnominalVoltageTT(this);
+      long tVoltage = getMaxInputVoltage();
       byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
       GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
           false, V[tTier], fluids, inputs);
@@ -330,7 +308,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
       }
       if (tInputList.size() > 0 || tFluidList.size() > 0) {
-        long nominalV = TecTechUtils.getnominalVoltageTT(this);
+        long nominalV = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
         GT_Recipe tRecipe;
         tRecipe = getRecipeMap()
@@ -426,7 +404,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
         GT_Recipe tRecipe;
 
-        long nominalV = TecTechUtils.getnominalVoltageTT(this);
+        long nominalV = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 
         tRecipe = getRecipeMap()
@@ -611,7 +589,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
         GT_Recipe tRecipe;
 
-        long nominalV = TecTechUtils.getnominalVoltageTT(this);
+        long nominalV = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 
         tRecipe = getRecipeMap()
@@ -831,23 +809,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       }
     }
     return aTier;
-  }
-
-  @Override
-  public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
-    return this.mEnergyHatches;
-  }
-
-  @Override
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  public List getTecTechEnergyTunnels() {
-    return TTTunnels;
-  }
-
-  @Override
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  public List getTecTechEnergyMultis() {
-    return TTMultiAmp;
   }
 
   @Override

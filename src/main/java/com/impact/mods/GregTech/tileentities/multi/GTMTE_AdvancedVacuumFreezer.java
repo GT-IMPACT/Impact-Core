@@ -4,7 +4,6 @@ import static com.impact.util.Utilits.getFluidStack;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
-import com.impact.mods.GregTech.TecTech.TecTechUtils;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -120,7 +119,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
       ArrayList<ItemStack> tInputList = this.getStoredInputs();
       ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
       if (tInputList.size() > 0) {
-        long nominalV = TecTechUtils.getnominalVoltageTT(this);
+        long nominalV = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
         GT_Recipe tRecipe;
         tRecipe = getRecipeMap()
