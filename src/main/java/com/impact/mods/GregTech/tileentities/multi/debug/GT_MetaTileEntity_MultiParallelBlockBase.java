@@ -9,6 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Output;
@@ -49,6 +50,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   public final HashSet<GTMTE_ParallelHatch_Output> sParallHatchesOut = new HashSet<>();
   public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
   public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
+  public final HashSet<GTMTE_ComputerRack> sComputerRack = new HashSet<>();
   public boolean mRecipeCheckParallel = false;
   public int mParallel = 0;
   public int modeBuses = 0;
@@ -586,6 +588,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   }
 
   public boolean impactRecipe(ItemStack itemStack, int aParallel) {
+    if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
+      stopMachine();
+      return false;
+    }
     ArrayList<ItemStack> tInputList = null;
     ArrayList<FluidStack> tFluidList = null;
     ItemStack[] tInputs = null;
@@ -863,34 +869,45 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   }
 
   /*
-  * NEW PARALLEL SYSTEM TEST
-  */
+   * NEW PARALLEL SYSTEM TEST
+   */
 
   @Override
   public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
     if (!aPlayer.isSneaking()) {
-      if (sParallHatchesIn.size() > 0 || getBaseMetaTileEntity().getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
-        aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
+      if (sParallHatchesIn.size() > 0 || getBaseMetaTileEntity()
+          .getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
+        aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, this.getBaseMetaTileEntity().getWorld(),
+            this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
+            this.getBaseMetaTileEntity().getZCoord());
       }
     }
   }
 
   public void setFrequency(int aFreq, EntityPlayer aPlayer) {
     mFrequency = aFreq;
-    Impact_API.sCommunicationTower.put(aFreq, new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), getBaseMetaTileEntity().getWorld().provider.dimensionId});
+    Impact_API.sCommunicationTower.put(aFreq,
+        new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord(),
+            getBaseMetaTileEntity().getWorld().provider.dimensionId});
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + EnumChatFormatting.GREEN + aFreq);
   }
 
   public void getFrequency(int aFreq, EntityPlayer aPlayer) {
     if (Impact_API.sCommunicationTower.get(aFreq) != null) {
       //GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sCommunicationTower.get(aFreq)));
-      if (Utilits.distanceBetween2D(getBaseMetaTileEntity().getXCoord(), Impact_API.sCommunicationTower.get(aFreq)[0],
+      if (Utilits.distanceBetween2D(getBaseMetaTileEntity().getXCoord(),
+          Impact_API.sCommunicationTower.get(aFreq)[0],
           getBaseMetaTileEntity().getZCoord(), Impact_API.sCommunicationTower.get(aFreq)[2]) < 64) {
         setCoord(Impact_API.sCommunicationTower.get(aFreq));
         GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Connection successful");
-      } else GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Too far for connection");
-    } else GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Frequency not found");
+      } else {
+        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Too far for connection");
+      }
+    } else {
+      GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Frequency not found");
+    }
   }
 
   public void setCoord(int[] coords) {
@@ -900,7 +917,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     this.mTargetD = coords[3];
   }
 
-  public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+  public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity,
+      int aBaseCasingIndex) {
     if (aTileEntity == null) {
       return false;
     } else {
@@ -919,7 +937,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     }
   }
 
-  public boolean addParallHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+  public boolean addParallHatchToMachineList(IGregTechTileEntity aTileEntity,
+      int aBaseCasingIndex) {
     if (aTileEntity == null) {
       return false;
     } else {
@@ -938,6 +957,23 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     }
   }
 
+  public boolean addRackHatch(IGregTechTileEntity aTileEntity,
+      int aBaseCasingIndex) {
+    if (aTileEntity == null) {
+      return false;
+    } else {
+      final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+      if (aMetaTileEntity == null) {
+        return false;
+      } else if (aMetaTileEntity instanceof GTMTE_ComputerRack) {
+        ((GTMTE_ComputerRack) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        return sComputerRack.add((GTMTE_ComputerRack) aMetaTileEntity);
+      } else {
+        return false;
+      }
+    }
+  }
+
   public boolean getRecipeCheckParallel() {
     return !mRecipeCheckParallel;
   }
@@ -946,16 +982,16 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     mRecipeCheckParallel = isTrue;
   }
 
-  public void setParallel(int setParallel) {
-    mParallel = setParallel;
-  }
-
   public int getParallelCurrent() {
     return mParallel;
   }
 
   public int getParallel() {
     return mParallel;
+  }
+
+  public void setParallel(int setParallel) {
+    mParallel = setParallel;
   }
 
   public void clearHatches() {
@@ -969,32 +1005,47 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   @Override
   public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
     super.onPostTick(aBaseMetaTileEntity, aTick);
-    if (--this.mUpdate == 0 || --this.mStartUpCheck == 0) {
-      clearHatches();
-    }
     if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
-      int maxParallel = 1;
-      if (sParallHatchesIn.size() > 0) {//todo parallel
-        for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
-          maxParallel = ph.getMaxParallel();
-          setRecipeCheckParallel(ph.getTrueRecipe());
-        }
-        setParallel(maxParallel);
-        if (getRecipeCheckParallel() || !mIsConnect) stopMachine();
-      } else setParallel(1);
+      connectParallelHatches();
+      connectParallelComputer(aBaseMetaTileEntity);
+    }
+  }
 
-      if (sParallHatchesIn.size() > 0 || aBaseMetaTileEntity.getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
-        tile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
-        if (tile != null && tile instanceof IGregTechTileEntity) {
-          IMetaTileEntity aComTower = ((IGregTechTileEntity) tile).getMetaTileEntity();
-          if (aComTower instanceof GTMTE_TowerCommunication) {
-            if (aComTower.getBaseMetaTileEntity().isActive()) {
-              if (mFrequency == ((GTMTE_TowerCommunication) aComTower).mFrequency) {
-                mIsConnect = ((GTMTE_TowerCommunication) aComTower).mIsConnect;
-              } else mIsConnect = false;
-            } else mIsConnect = false;
+  public void connectParallelHatches() {
+    int maxParallel = 1;
+    if (sParallHatchesIn.size() > 0) { //todo parallel
+      for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
+        maxParallel = ph.getMaxParallel();
+        setRecipeCheckParallel(ph.getTrueRecipe());
+      }
+      setParallel(maxParallel);
+      if (getRecipeCheckParallel() || !mIsConnect) {
+        stopMachine();
+      }
+    } else {
+      setParallel(1);
+    }
+  }
+
+  public void connectParallelComputer(IGregTechTileEntity aBaseMetaTileEntity) {
+    if (sParallHatchesIn.size() > 0 || aBaseMetaTileEntity
+        .getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
+      tile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+      if (tile != null && tile instanceof IGregTechTileEntity) {
+        IMetaTileEntity aComTower = ((IGregTechTileEntity) tile).getMetaTileEntity();
+        if (aComTower instanceof GTMTE_TowerCommunication) {
+          if (aComTower.getBaseMetaTileEntity().isActive()) {
+            if (mFrequency == ((GTMTE_TowerCommunication) aComTower).mFrequency) {
+              mIsConnect = ((GTMTE_TowerCommunication) aComTower).mIsConnect;
+            } else {
+              mIsConnect = false;
+            }
+          } else {
+            mIsConnect = false;
           }
-        } else mIsConnect = false;
+        }
+      } else {
+        mIsConnect = false;
       }
     }
   }

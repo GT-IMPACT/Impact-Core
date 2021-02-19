@@ -98,7 +98,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         return desc;
       }
     });
-
   }
 
   @Override
@@ -124,20 +123,15 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
   @Override
   public boolean checkRecipe(ItemStack aStack) {
-
-
     this.mMaxProgresstime = 10;
     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
     this.mEfficiencyIncrease = 10000;
     this.mEUt = -20;
-
     for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
       if ((getCurrentCapacityPP() - ph.getMaxParallel()) < 0) {
         ph.getBaseMetaTileEntity().setActive(false);
       }
     }
-
-
     return true;
   }
 
@@ -145,15 +139,19 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
   public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
     super.onPostTick(aBaseMetaTileEntity, aTick);
     if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
-      for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
-        if (aBaseMetaTileEntity.isActive()) {
-          if (ph.getBaseMetaTileEntity().isAllowedToWork()) {
-            ph.setRecipe(true);
-            if (!mIsConnect) ph.setRecipe(false);
-          }
-        } else {
-          ph.setRecipe(false);
+      connect(aBaseMetaTileEntity);
+    }
+  }
+
+  public void connect(IGregTechTileEntity aBaseMetaTileEntity) {
+    for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
+      if (aBaseMetaTileEntity.isActive()) {
+        if (ph.getBaseMetaTileEntity().isAllowedToWork()) {
+          ph.setRecipe(true);
+          if (!mIsConnect) ph.setRecipe(false);
         }
+      } else {
+        ph.setRecipe(false);
       }
     }
   }
@@ -234,7 +232,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
           //Racks
           if (X == 1 && (Y == 0 || Y == 1)) {
             if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                && !super.addRackHatch(currentTE, CASING_TEXTURE_ID)) {
 
               if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                   && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {

@@ -99,7 +99,6 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
   @Override
   public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
-
     if (getBaseMetaTileEntity().isServerSide()) {
       ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
       if (ItemList.Tool_NoteBook.getItem() == tCurrentItem.getItem()) {
@@ -112,7 +111,6 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
         GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.YELLOW + "Connection start");
         GT_Utility.sendChatToPlayer(aPlayer, "X: " + getBaseMetaTileEntity().getXCoord() + " Y: " +
             getBaseMetaTileEntity().getYCoord() + " Z: " + getBaseMetaTileEntity().getZCoord());
-
       }
     }
   }
@@ -138,27 +136,30 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
   @Override
   public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
     super.onPostTick(aBaseMetaTileEntity, aTick);
-
     if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
-      tTile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
-      if (tTile != null) {
-        if (tTile instanceof IGregTechTileEntity) {
-          IMetaTileEntity outputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-          if (outputPar instanceof GTMTE_ParallelHatch_Output) {
-            if (((GTMTE_ParallelHatch_Output) outputPar).getMaxParallel() == getMaxParallel() && outputPar.getBaseMetaTileEntity().isActive()) {
-              if (getBaseMetaTileEntity().getXCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetX
-                  && getBaseMetaTileEntity().getYCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetY
-                  && getBaseMetaTileEntity().getZCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetZ) {
-                setTrueRecipe(((GTMTE_ParallelHatch_Output) outputPar).mIsTrueRecipe);
-                aBaseMetaTileEntity.setActive(true);
-              } else {
-                aBaseMetaTileEntity.setActive(false);
-                setTrueRecipe(false);
-              }
+      connect(aBaseMetaTileEntity);
+    }
+  }
+
+  public void connect(IGregTechTileEntity aBaseMetaTileEntity) {
+    tTile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+    if (tTile != null) {
+      if (tTile instanceof IGregTechTileEntity) {
+        IMetaTileEntity outputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
+        if (outputPar instanceof GTMTE_ParallelHatch_Output) {
+          if (((GTMTE_ParallelHatch_Output) outputPar).getMaxParallel() == getMaxParallel() && outputPar.getBaseMetaTileEntity().isActive()) {
+            if (getBaseMetaTileEntity().getXCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetX
+                && getBaseMetaTileEntity().getYCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetY
+                && getBaseMetaTileEntity().getZCoord() == ((GTMTE_ParallelHatch_Output) outputPar).mTargetZ) {
+              setTrueRecipe(((GTMTE_ParallelHatch_Output) outputPar).mIsTrueRecipe);
+              aBaseMetaTileEntity.setActive(true);
             } else {
               aBaseMetaTileEntity.setActive(false);
               setTrueRecipe(false);
             }
+          } else {
+            aBaseMetaTileEntity.setActive(false);
+            setTrueRecipe(false);
           }
         }
       }

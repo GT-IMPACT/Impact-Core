@@ -232,7 +232,6 @@ public class MultiBlockTooltipBuilder {
     cLines.toArray(cArray);
   }
 
-
   public String[] getInformation() {
     return iArray;
   }

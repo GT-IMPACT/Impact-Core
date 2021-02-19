@@ -30,7 +30,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
   byte CASING_META = 9;
   ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
   int CASING_TEXTURE_ID = CASING_META + 128 * 3;
-  private int mLevel = 0;
+  private final int mLevel = 0;
 
   public GTMTE_Wire(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -89,7 +89,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
       IGregTechTileEntity aBaseMetaTileEntity) {
     return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
         "MultiParallelBlockGUI.png", mModed);
-
   }
 
   @Override
@@ -100,6 +99,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
     // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+    clearHatches();
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -133,23 +133,23 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
           }
 
           if ((X == 1 || X == 2) && Z == -1 && Y == 0) {
-            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-              this.mLevel = 4;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-              this.mLevel = 16;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-              this.mLevel = 64;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-              this.mLevel = 256;
-            } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
-              this.mLevel = 1;
-            } else {
-              formationChecklist = false;
-            }
+//            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+//              this.mLevel = 4;
+//            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
+//              this.mLevel = 16;
+//            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
+//              this.mLevel = 64;
+//            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
+//              this.mLevel = 256;
+//            } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
+//              this.mLevel = 1;
+//            } else {
+//              formationChecklist = false;
+//            }
             continue;
           }
 
@@ -159,6 +159,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
               && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+              && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -172,8 +173,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
         }
       }
     }
-
-    setParallel(this.mLevel);
 
     if (this.mInputBusses.size() > 6) {
       formationChecklist = false;
@@ -190,6 +189,12 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
     if (this.mMaintenanceHatches.size() != 1) {
       formationChecklist = false;
     }
+    if (this.sParallHatchesIn.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.sParallHatchesOut.size() != 0) {
+      formationChecklist = false;
+    }
 
     return formationChecklist;
   }
@@ -204,10 +209,8 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
     return 0;
   }
 
-
   public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
       float aZ) {
-
     if (aPlayer.isSneaking()) {
       ScrewClick(aSide, aPlayer, aX, aY, aZ);
     } else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
@@ -215,7 +218,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
       if (mMode > 1) {
         mMode = 0;
       }
-
       mModed = (mMode == 0 ? " WireMill " : " Wire Assembler ");
       GT_Utility.sendChatToPlayer(aPlayer,
           "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
