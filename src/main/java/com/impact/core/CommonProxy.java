@@ -44,4 +44,12 @@ public class CommonProxy implements IGuiHandler {
 
   public void preload() {
   }
+
+  public void onServerStarted() {
+    Impact_API.sSpaceSatellite.clear();
+  }
+
+  public void onServerStopping() {
+    Impact_API.sSpaceSatellite.clear();
+  }
 }

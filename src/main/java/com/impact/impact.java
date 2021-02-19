@@ -27,6 +27,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -64,6 +66,16 @@ public class impact {
       MODULES_ENABLED.add(new ChestCartModule());
     }
     return MODULES_ENABLED;
+  }
+
+  @Mod.EventHandler
+  public void onServerStarted(FMLServerStartedEvent aEvent) {
+    proxy.onServerStarted();
+  }
+
+  @Mod.EventHandler
+  public void onServerStopping(FMLServerStoppingEvent aEvent) {
+    proxy.onServerStopping();
   }
 
   @Mod.EventHandler

@@ -99,7 +99,6 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
   }
 
   public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    TThatches();
     // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,

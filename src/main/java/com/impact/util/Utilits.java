@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -224,4 +225,26 @@ public class Utilits {
   public static int getRandom(int min, int max) {
     return (int) (Math.random() * ((max - min) + 1)) + min;
   }
+
+  public static String impactTag() {
+    return "" + EnumChatFormatting.DARK_GRAY + "Impact: " + EnumChatFormatting.DARK_GRAY + "GregTech Module";
+  }
+
+  public static int square(int a) {
+    return a*a;
+  }
+
+  public static int distanceBetween2D(int x1, int x2, int y1, int y2) {
+    int x = square(x1 - x2);
+    int y = square(y1 - y2);
+    return (int) Math.sqrt(x+y);
+  }
+
+  public static int distanceBetween3D(int x1, int x2, int y1, int y2, int z1, int z2) {
+    int x = square(x1 - x2);
+    int y = square(y1 - y2);
+    int z = square(z1 - z2);
+    return (int) Math.sqrt(x+y+z);
+  }
+
 }

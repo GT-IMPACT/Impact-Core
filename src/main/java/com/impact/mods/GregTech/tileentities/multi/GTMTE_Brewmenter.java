@@ -100,7 +100,6 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
   }
 
   public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    TThatches();
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,

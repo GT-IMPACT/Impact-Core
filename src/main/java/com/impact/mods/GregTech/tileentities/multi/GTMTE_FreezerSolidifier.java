@@ -92,7 +92,6 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
   }
 
   public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    TThatches();
     // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,

@@ -122,8 +122,6 @@ public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
     if (getBaseMetaTileEntity().getYCoord() > 70) {
       return false;
     }
-
-    TThatches();
     // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,

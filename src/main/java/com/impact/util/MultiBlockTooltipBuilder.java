@@ -1,5 +1,7 @@
 package com.impact.util;
 
+import static com.impact.util.Utilits.impactTag;
+
 import java.util.LinkedList;
 import java.util.List;
 import net.minecraft.util.EnumChatFormatting;
@@ -209,12 +211,11 @@ public class MultiBlockTooltipBuilder {
   public void signAndFinalize(String author) {
     iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LSHIFT]"
         + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
-    iLines.add("Added by " + author);
+    iLines.add(impactTag());
     iArray = new String[iLines.size()];
     sArray = new String[sLines.size()];
     iLines.toArray(iArray);
     sLines.toArray(sArray);
-
   }
 
   public void signAndFinalize(String author, boolean ctrl) {
@@ -222,7 +223,7 @@ public class MultiBlockTooltipBuilder {
         + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to structure");
     iLines.add("Hold " + EnumChatFormatting.DARK_BLUE + EnumChatFormatting.BOLD + "[LCTRL]"
         + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " to more info");
-    iLines.add("Added by " + author);
+    iLines.add(impactTag());
     iArray = new String[iLines.size()];
     sArray = new String[sLines.size()];
     cArray = new String[cLines.size()];

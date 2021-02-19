@@ -26,6 +26,12 @@ public class Texture {
     CASING_HYPER_TOP, CASING_HYPER_SIDE1, CASING_HYPER_SIDE2, CASING_CYCLONE, CASING_MOON_MINER,
     CASING_RAIL_ASSEMBLER_SIDE, CASING_RAIL_ASSEMBLER_TOP, CASING_SPACE_ELEVATOR_TOP,
 
+    PRL_HATCH_RED, PRL_HATCH_YELLOW, PRL_HATCH_GREEN,
+
+    OVERLAY_RACK, OVERLAY_RACK_ACTIVE,
+    OVERLAY_RACK1, OVERLAY_RACK2, OVERLAY_RACK3, OVERLAY_RACK4, OVERLAY_RACK5, OVERLAY_RACK6, OVERLAY_RACK7, OVERLAY_RACK8,
+    OVERLAY_RACK9, OVERLAY_RACK10, OVERLAY_RACK11, OVERLAY_RACK12, OVERLAY_RACK13, OVERLAY_RACK14, OVERLAY_RACK15,
+
     VOID;
 
     public static final IIconContainer[]
@@ -43,6 +49,24 @@ public class Texture {
         CASING_HYPER_SIDE1,
         CASING_HYPER_SIDE1
     },
+        RACK_OVERLAY = new IIconContainer[]{
+            OVERLAY_RACK,
+            OVERLAY_RACK1,
+            OVERLAY_RACK2,
+            OVERLAY_RACK3,
+            OVERLAY_RACK4,
+            OVERLAY_RACK5,
+            OVERLAY_RACK6,
+            OVERLAY_RACK7,
+            OVERLAY_RACK8,
+            OVERLAY_RACK9,
+            OVERLAY_RACK10,
+            OVERLAY_RACK11,
+            OVERLAY_RACK12,
+            OVERLAY_RACK13,
+            OVERLAY_RACK14,
+            OVERLAY_RACK_ACTIVE
+        },
         Test = new IIconContainer[]{
 
         };
@@ -50,7 +74,7 @@ public class Texture {
 
     protected IIcon mIcon;
 
-    private Icons() {
+    Icons() {
       GregTech_API.sGTBlockIconload.add(this);
     }
 

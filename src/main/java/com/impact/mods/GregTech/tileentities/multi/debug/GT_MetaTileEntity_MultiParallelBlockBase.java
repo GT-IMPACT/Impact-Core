@@ -1,14 +1,25 @@
 package com.impact.mods.GregTech.tileentities.multi.debug;
 
+import static com.impact.core.Refstrings.MODID;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
+import com.impact.client.gui.GUIHandler;
+import com.impact.core.Impact_API;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelComputer;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Output;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite_Receiver;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite_Transmitter;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_TowerCommunication;
+import com.impact.util.Utilits;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
 import gregtech.GT_Mod;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -19,21 +30,36 @@ import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import javax.annotation.Nonnegative;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     GT_MetaTileEntity_MultiBlockBase {
 
+  public final HashSet<GTMTE_ParallelHatch_Input> sParallHatchesIn = new HashSet<>();
+  public final HashSet<GTMTE_ParallelHatch_Output> sParallHatchesOut = new HashSet<>();
+  public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
+  public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
+  public boolean mRecipeCheckParallel = false;
   public int mParallel = 0;
   public int modeBuses = 0;
   public byte mMode = -1;
+  public int mFrequency = -1;
+  public int mTargetX = 0;
+  public int mTargetY = 0;
+  public int mTargetZ = 0;
+  public int mTargetD = 0;
+  public boolean mIsConnect = false;
+  public TileEntity tile = null;
 
   public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName,
       final String aNameRegional) {
@@ -742,21 +768,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     return false;
   }
 
-  public int getParallel() {
-    return mParallel;
-  }
-
-  public void setParallel(int parallel) {
-    mParallel = parallel;
-  }
-
-  public void TThatches() {
-    mEnergyHatchesTT.clear();
-    mDynamoHatchesTT.clear();
-    mEnergyTunnelsTT.clear();
-    mDynamoTunnelsTT.clear();
-  }
-
   public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
     final Vector3i offset = new Vector3i();
 
@@ -814,12 +825,26 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   @Override
   public void saveNBTData(NBTTagCompound aNBT) {
     aNBT.setByte("mMode", mMode);
+    aNBT.setInteger("mTargetX", this.mTargetX);
+    aNBT.setInteger("mTargetY", this.mTargetY);
+    aNBT.setInteger("mTargetZ", this.mTargetZ);
+    aNBT.setInteger("mTargetD", this.mTargetD);
+    aNBT.setInteger("mFrequency", this.mFrequency);
+    aNBT.setBoolean("mIsReceive", this.mIsConnect);
+    aNBT.setInteger("mParallel", this.mParallel);
     super.saveNBTData(aNBT);
   }
 
   @Override
   public void loadNBTData(NBTTagCompound aNBT) {
     this.mMode = aNBT.getByte("mMode");
+    this.mTargetX = aNBT.getInteger("mTargetX");
+    this.mTargetY = aNBT.getInteger("mTargetY");
+    this.mTargetZ = aNBT.getInteger("mTargetZ");
+    this.mTargetD = aNBT.getInteger("mTargetD");
+    this.mFrequency = aNBT.getInteger("mFrequency");
+    this.mIsConnect = aNBT.getBoolean("mIsReceive");
+    this.mParallel = aNBT.getInteger("mParallel");
     super.loadNBTData(aNBT);
   }
 
@@ -835,5 +860,142 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
   public int getPollutionPerTick(ItemStack aStack) {
     return 0;
+  }
+
+  /*
+  * NEW PARALLEL SYSTEM TEST
+  */
+
+  @Override
+  public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
+    if (!aPlayer.isSneaking()) {
+      if (sParallHatchesIn.size() > 0 || getBaseMetaTileEntity().getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
+        aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
+      }
+    }
+  }
+
+  public void setFrequency(int aFreq, EntityPlayer aPlayer) {
+    mFrequency = aFreq;
+    Impact_API.sCommunicationTower.put(aFreq, new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), getBaseMetaTileEntity().getWorld().provider.dimensionId});
+    GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + EnumChatFormatting.GREEN + aFreq);
+  }
+
+  public void getFrequency(int aFreq, EntityPlayer aPlayer) {
+    if (Impact_API.sCommunicationTower.get(aFreq) != null) {
+      //GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sCommunicationTower.get(aFreq)));
+      if (Utilits.distanceBetween2D(getBaseMetaTileEntity().getXCoord(), Impact_API.sCommunicationTower.get(aFreq)[0],
+          getBaseMetaTileEntity().getZCoord(), Impact_API.sCommunicationTower.get(aFreq)[2]) < 64) {
+        setCoord(Impact_API.sCommunicationTower.get(aFreq));
+        GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Connection successful");
+      } else GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Too far for connection");
+    } else GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Frequency not found");
+  }
+
+  public void setCoord(int[] coords) {
+    this.mTargetX = coords[0];
+    this.mTargetY = coords[1];
+    this.mTargetZ = coords[2];
+    this.mTargetD = coords[3];
+  }
+
+  public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    if (aTileEntity == null) {
+      return false;
+    } else {
+      final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+      if (aMetaTileEntity == null) {
+        return false;
+      } else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Receiver) {
+        ((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        return sCommunReceiver.add((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity);
+      } else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Transmitter) {
+        ((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        return sCommunTransmitter.add((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity);
+      } else {
+        return false;
+      }
+    }
+  }
+
+  public boolean addParallHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    if (aTileEntity == null) {
+      return false;
+    } else {
+      final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+      if (aMetaTileEntity == null) {
+        return false;
+      } else if (aMetaTileEntity instanceof GTMTE_ParallelHatch_Input) {
+        ((GTMTE_ParallelHatch_Input) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        return sParallHatchesIn.add((GTMTE_ParallelHatch_Input) aMetaTileEntity);
+      } else if (aMetaTileEntity instanceof GTMTE_ParallelHatch_Output) {
+        ((GTMTE_ParallelHatch_Output) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        return sParallHatchesOut.add((GTMTE_ParallelHatch_Output) aMetaTileEntity);
+      } else {
+        return false;
+      }
+    }
+  }
+
+  public boolean getRecipeCheckParallel() {
+    return !mRecipeCheckParallel;
+  }
+
+  public void setRecipeCheckParallel(boolean isTrue) {
+    mRecipeCheckParallel = isTrue;
+  }
+
+  public void setParallel(int setParallel) {
+    mParallel = setParallel;
+  }
+
+  public int getParallelCurrent() {
+    return mParallel;
+  }
+
+  public int getParallel() {
+    return mParallel;
+  }
+
+  public void clearHatches() {
+    sParallHatchesIn.clear();
+    sParallHatchesOut.clear();
+    sCommunTransmitter.clear();
+    sCommunReceiver.clear();
+    mDynamoTunnelsTT.clear();
+  }
+
+  @Override
+  public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+    super.onPostTick(aBaseMetaTileEntity, aTick);
+    if (--this.mUpdate == 0 || --this.mStartUpCheck == 0) {
+      clearHatches();
+    }
+    if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
+      int maxParallel = 1;
+      if (sParallHatchesIn.size() > 0) {//todo parallel
+        for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
+          maxParallel = ph.getMaxParallel();
+          setRecipeCheckParallel(ph.getTrueRecipe());
+        }
+        setParallel(maxParallel);
+        if (getRecipeCheckParallel() || !mIsConnect) stopMachine();
+      } else setParallel(1);
+
+      if (sParallHatchesIn.size() > 0 || aBaseMetaTileEntity.getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
+        tile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+        if (tile != null && tile instanceof IGregTechTileEntity) {
+          IMetaTileEntity aComTower = ((IGregTechTileEntity) tile).getMetaTileEntity();
+          if (aComTower instanceof GTMTE_TowerCommunication) {
+            if (aComTower.getBaseMetaTileEntity().isActive()) {
+              if (mFrequency == ((GTMTE_TowerCommunication) aComTower).mFrequency) {
+                mIsConnect = ((GTMTE_TowerCommunication) aComTower).mIsConnect;
+              } else mIsConnect = false;
+            } else mIsConnect = false;
+          }
+        } else mIsConnect = false;
+      }
+    }
   }
 }

@@ -3,6 +3,9 @@ package com.impact.mods.GregTech;
 import static com.impact.mods.GregTech.GT_ItemList.*;
 import com.impact.mods.GregTech.tileentities.multi.*;
 import com.impact.mods.GregTech.tileentities.multi.generators.*;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelComputer;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.GregTech.tileentities.storage.*;
 
 public class Multi_Register {
@@ -113,6 +116,10 @@ public class Multi_Register {
         .getStackForm(1));
     Huge_Steam_Turbine.set(new GTMTE_HugeSteamTurbine(ID++, "impact.multis.hugesteamturbine", "Huge Steam Turbine")
         .getStackForm(1));
+
+    Parallel_Computer.set(new GTMTE_ParallelComputer(ID++, "impact.multis.parallelcomputer", "Parallel Supercomputer").getStackForm(1L));
+    Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "impact.multis.communicationtower", "Communication Tower").getStackForm(1L));
+    Space_Satellite.set(new GTMTE_SpaceSatellite(ID++, "impact.multis.spacesatellite", "Space Satellite").getStackForm(1L));
 
     System.out.println("Multi_Register.java | Last ID: " + ID);
 
