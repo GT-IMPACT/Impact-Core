@@ -447,6 +447,28 @@ public class Printer3DRecipe implements Runnable {
         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
     }, GT_ItemList.Machine_AdvDDDPrinter.get(1L), null, 50 * 20, 1920);
 
+    //Communication Tower
+    GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+            ItemList.Hull_HV.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+            GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 4),
+            ItemList.Tool_DataStick.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 4),
+            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8),
+            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel, 8)
+    }, GT_ItemList.Communication_Tower.get(1L), null, 40 * 20, 480);
+    //Space Satelitte
+    GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+            ItemList.Hull_HV.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+            GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 4),
+            GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 4L, 1),
+            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.VanadiumSteel, 4),
+            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8),
+            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel, 8)
+    }, GT_ItemList.Space_Satellite.get(1L), null, 50 * 20, 480);
 
     /* ================================= end IMPACT MOD =================================*/
 

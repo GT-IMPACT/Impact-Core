@@ -1,15 +1,6 @@
 package com.impact.recipes.machines;
 
-import static com.impact.common.item.Core_List_Items.ChargedGlassLense;
-import static com.impact.common.item.Core_List_Items.HugeChargedGlassLense;
-import static com.impact.common.item.Core_List_Items.NeutronReflectorParts;
-import static com.impact.common.item.Core_List_Items.NeutronReflectorSmallParts;
-import static com.impact.common.item.Core_List_Items.QuantumCrystal;
-import static com.impact.common.item.Core_List_Items.QuantumPartBoots;
-import static com.impact.common.item.Core_List_Items.QuantumPartChestplate;
-import static com.impact.common.item.Core_List_Items.QuantumPartHelmet;
-import static com.impact.common.item.Core_List_Items.QuantumPartLeggings;
-import static com.impact.common.item.Core_List_Items.SteelBars;
+import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.loader.ItemRegistery.UtilBlock;
 import static com.impact.mods.GregTech.GT_ItemList.Casing_Farm;
 import static com.impact.util.Utilits.Blockstack;
@@ -773,6 +764,74 @@ public class AssemblerRecipe implements Runnable {
     GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockInterface", 1L, 0),
             ItemList.Hatch_Output_Bus_HV.get(1L), ItemList.Hatch_Output_Bus_ME.get(1L), 200, 480);
 
+    //Communication Transmitter Hatch
+    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+            ItemList.Hull_HV.get(1L),
+            ItemList.Field_Generator_HV.get(2L), ItemList.Sensor_HV.get(4L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 4),
+            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.StainlessSteel, 4),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8),
+            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel, 8)
+    }, null, GT_ItemList.Communication_Hatch_Transmitter.get(1L), 40 * 20, 480);
+    //Communication Receiver Hatch
+    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+            ItemList.Hull_HV.get(1L),
+            ItemList.Field_Generator_HV.get(2L), ItemList.Emitter_HV.get(4L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.HSLA, 4),
+            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.StainlessSteel, 4),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8),
+            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel, 8)
+    }, null, GT_ItemList.Communication_Hatch_Receiver.get(1L), 40 * 20, 480);
+    //Parallel Hatch 4P IN
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_IV.get(1), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 1),
+                    ItemList.Sensor_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_IN4.get(1), 600, 7680);
+    //Parallel Hatch 4P OUT
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_IV.get(1), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 1),
+                    ItemList.Emitter_IV.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_OUT4.get(1), 600, 7680);
+    //Parallel Hatch 16P IN
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_LuV.get(1), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 2),
+                    ItemList.Sensor_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_IN16.get(1), 800, 30720);
+    //Parallel Hatch 16P OUT
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_LuV.get(1), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 2),
+                    ItemList.Emitter_LuV.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_OUT16.get(1), 800, 30720);
+    //Parallel Hatch 64P IN
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 3),
+                    ItemList.Sensor_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_IN64.get(1), 1000, 122880);
+    //Parallel Hatch 64P OUT
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_ZPM.get(1), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 3),
+                    ItemList.Emitter_ZPM.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_OUT64.get(1), 1000, 122880);
+    //Parallel Hatch 256P IN
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_UV.get(1), GT_ModHandler.getModItem("extracells", "craftingstorage", 1L),
+                    ItemList.Sensor_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_IN256.get(1), 1200, 500000);
+    //Parallel Hatch 256P OUT
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_UV.get(1), GT_ModHandler.getModItem("extracells", "craftingstorage", 1L),
+                    ItemList.Emitter_UV.get(1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 4L),
+                    GT_Utility.getIntegratedCircuit(1)}, null,
+            GT_ItemList.Parallel_Hatch_OUT256.get(1), 1200, 500000);
 
     /* ================================= end GT MOD =================================*/
 

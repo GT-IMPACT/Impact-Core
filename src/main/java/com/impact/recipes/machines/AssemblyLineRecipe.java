@@ -335,7 +335,28 @@ public class AssemblyLineRecipe implements Runnable {
         },
         GT_ItemList.Naquadah_Liquid_Enriched.get(1L), 320 * 20, 118236);
 
-    // --- Relocator
+      //Parallel Supercomputer
+      GT_Values.RA.addAssemblylineRecipe(
+              GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockController", 1), 172000,
+              new Object[]{
+                      GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockController", 1),
+                      new Object[]{OrePrefixes.circuit.get(Materials.Elite), 4},
+                      ItemList.Tool_DataOrb.get(1L),
+                      GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
+                      GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorIV, 4),
+                      GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Duraluminium, 8),
+                      GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16),
+                      GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)
+              },
+              new FluidStack[]{
+                      Materials.SolderingAlloy.getMolten(2304),
+                      Materials.Lubricant.getFluid(2000),
+                      new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                      Materials.Hydrogen.getGas(2000)
+              },
+              GT_ItemList.Parallel_Computer.get(1L), 100 * 20, 30720);
+
+      // --- Relocator
     GT_Values.RA
         .addAssemblylineRecipe(ItemList.Casing_Coil_Superconductor.get(1L), 288000, new Object[]{
             ItemList.Casing_Coil_Superconductor.get(1L),
