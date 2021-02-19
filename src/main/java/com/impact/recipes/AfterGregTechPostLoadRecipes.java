@@ -94,6 +94,23 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
             true);
     removeRecipeByOutput(GT_ModHandler.getModItem("IC2","itemRecipePart",1,3), true, false,
             true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "blockChargepad", 1L), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "blockChargepad", 1L, 1), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "blockChargepad", 1L, 2), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "blockChargepad", 1L, 3), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "itemMOX", 1L), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "itemUran", 1L), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "reactorUraniumSimple", 1L), true, false,
+            true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("IC2", "reactorMOXSimple", 1L), true, false,
+            true);
+
 
     removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 1L, 1), true,
         false, false);

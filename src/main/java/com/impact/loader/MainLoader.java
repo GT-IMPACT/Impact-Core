@@ -193,6 +193,7 @@ public class MainLoader {
     new CannerRecipe().run();
     new RegisterOreVein().run();
     new PackagerRecipe().run();
+    new ThermalCentrifugeRecipe().run();
 
     addAfterGregTechPostLoadRunner();
     INFO("[postLoad] After GregTech PostLoad Runner - Loaded");

@@ -3268,6 +3268,19 @@ public class AssemblerRecipe implements Runnable {
         new ItemStack[]{CoreItems2.getRecipe(NeutronReflectorParts.getMetaID(), 1),
             GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1)}, null,
         ItemList.Neutron_Reflector.get(1), 1200, 256);
+    // --- Mox Nuclear Fuel
+    GT_Values.RA.addAssemblerRecipe(
+            GT_ModHandler.getModItem("IC2", "itemUran238", 6L),
+            GT_ModHandler.getModItem("IC2", "itemPlutonium", 3L),
+            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000),
+            GT_ModHandler.getModItem("IC2", "itemMOX", 1L), 400, 256);
+    // --- Enriched Uranium Nuclear Fuel
+    GT_Values.RA.addAssemblerRecipe(
+            GT_ModHandler.getModItem("IC2", "itemUran238", 6L),
+            GT_ModHandler.getModItem("IC2", "itemUran235small", 3L),
+            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000),
+            GT_ModHandler.getModItem("IC2", "itemUran", 1L), 400, 120);
+
 
     /* ==== END IC2 ==== */
     /** ==== START GENDUSTRY ==== */

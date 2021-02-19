@@ -7,6 +7,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 public class ExtruderRecipe implements Runnable {
 
@@ -47,5 +48,8 @@ public class ExtruderRecipe implements Runnable {
             ItemList.Shape_Extruder_Bolt.get(0L),
             GT_ModHandler.getModItem("GalacticraftCore", "item.steelPole", 1L, 0), 600, 30);
 
+    GT_Values.RA.addExtruderRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Zirconium, 1),
+            ItemList.Shape_Extruder_Cell.get(0L),
+            GT_ModHandler.getIC2Item("fuelRod", 1), 200, 120);
   }
 }

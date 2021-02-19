@@ -16,11 +16,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-
 import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.loader.ItemRegistery.*;
 import static com.impact.util.Utilits.Blockstack;
-import static gregtech.api.GregTech_API.getStackofAmountFromOreDict;
 import static gregtech.api.util.GT_ModHandler.RecipeBits.DELETE_ALL_OTHER_RECIPES;
 
 public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
@@ -1300,8 +1298,28 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","itemRecipePart",1, 3),bits,
             new Object[] {"WPW","PdP","CMC",'W', OrePrefixes.cableGt01.get(Materials.Copper),'P', OrePrefixes.itemCasing.get(Materials.Steel),
                     'M',ItemList.Electric_Motor_LV, 'C', OrePrefixes.circuit.get(Materials.Basic)});
+    // --- Charge Pad Bat Box
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","blockChargepad",1, 0),bits,
+              new Object[] {"SHS","COC","PdP",'S', OrePrefixes.screw.get(Materials.Iron),'P', OrePrefixes.itemCasing.get(Materials.Iron),
+                      'C', OrePrefixes.circuit.get(Materials.Basic), 'H', GT_ModHandler.getModItem("minecraft","wooden_pressure_plate",1,0),
+                      'O', GT_ModHandler.getModItem("IC2","blockElectric",1,0)});
+      // --- Charge Pad CESU
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","blockChargepad",1, 1),bits,
+              new Object[] {"SHS","COC","PdP",'S', OrePrefixes.screw.get(Materials.Steel),'P', OrePrefixes.itemCasing.get(Materials.Steel),
+                      'C', OrePrefixes.circuit.get(Materials.Good), 'H', GT_ModHandler.getModItem("minecraft","stone_pressure_plate",1,0),
+                      'O', GT_ModHandler.getModItem("IC2","blockElectric",1,7)});
+      // --- Charge Pad MFE
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","blockChargepad",1, 2),bits,
+              new Object[] {"SHS","COC","PdP",'S', OrePrefixes.screw.get(Materials.Aluminium),'P', OrePrefixes.itemCasing.get(Materials.Aluminium),
+                      'C', OrePrefixes.circuit.get(Materials.Advanced), 'H', GT_ModHandler.getModItem("minecraft","heavy_weighted_pressure_plate",1,0),
+                      'O', GT_ModHandler.getModItem("IC2","blockElectric",1,1)});
+      // --- Charge Pad MFSU
+      GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("IC2","blockChargepad",1, 3),bits,
+              new Object[] {"SHS","COC","PdP",'S', OrePrefixes.screw.get(Materials.StainlessSteel),'P', OrePrefixes.itemCasing.get(Materials.StainlessSteel),
+                      'C', OrePrefixes.circuit.get(Materials.Data), 'H', GT_ModHandler.getModItem("minecraft","light_weighted_pressure_plate",1,0),
+                      'O', GT_ModHandler.getModItem("IC2","blockElectric",1,2)});
 
-    /* ==== END IC2 ==== */
+      /* ==== END IC2 ==== */
     /** ==== START PROJECTRED ==== */
     // --- Workbench
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L), tBitMask, new Object[]{"PCP", "WFW", "WWW", 'P', OrePrefixes.plate.get(Materials.Iron), 'W', OrePrefixes.plate.get(Materials.Wood), 'F', GT_ModHandler.getModItem("Forestry", "factory2", 1L, 2), 'C', ItemList.Cover_Crafting});
@@ -1654,7 +1672,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("gendustry", "MutagenTank", 1L), tBitMask, new Object[]{"SPS", "CIC", "SdS", 'S', OrePrefixes.screw.get(Materials.HSSS), 'P', OrePrefixes.plate.get(Materials.HSSG), 'C', CoreItems2.getRecipe(52, 1), 'I', ItemList.Large_Fluid_Cell_TungstenSteel});
 
     /* ==== END GENDUSTRY ==== */
-
   }
 
 
