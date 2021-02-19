@@ -47,8 +47,8 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
     return aSide == aFacing
         ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
         aActive
-            ? Textures.BlockIcons.MP1a
-            : Textures.BlockIcons.MP1)}
+            ? Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5
+            : Textures.BlockIcons.LARGETURBINE_ST5)}
         : new ITexture[]{INDEX_CASE};
   }
 
@@ -61,16 +61,17 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Multi-Amperes generator")
-        .addInfo("Outputs " + "" + "EU/t including 16A")
+        .addInfo("Mega steam turbine!")
+        .addInfo("The turbine operates at 100% efficiency")
+        .addInfo("Accepts both steam (2L = 1EU / t)")
+        .addInfo("and superheated steam (1L = 1EU / t)")
         .addSeparator()
         .addController()
-        .addDynamoHatch("Any casing back side")
+        .addDynamoHatch("Any casing back side (max x9")
         .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x3)")
-        .addCasingInfo("Naquadah Base Casing and I-Glass")
-        .addOtherStructurePart("Naquadah Chamber Casing", "inside structure")
-        .addOtherStructurePart("Tether Core", "for contain core naqahdah")
+        .addInputHatch("Any casing (max x15)")
+        .addCasingInfo("Huge Turbine Casing and I-Glass")
+        .addOtherStructurePart("Steel GearBox Casing", "inside structure")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
