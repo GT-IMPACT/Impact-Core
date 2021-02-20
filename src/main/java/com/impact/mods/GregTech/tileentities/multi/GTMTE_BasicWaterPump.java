@@ -138,7 +138,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     public boolean checkRecipe(ItemStack aStack) {
         this.mEfficiency = 10000;
 
-        addOutput(GT_ModHandler.getWater(this.getWaterVolume()));
+        addOutput(GT_ModHandler.getWater(getWaterVolume()));
 
         this.mEUt = 0;
         this.mMaxProgresstime = 20;
@@ -315,28 +315,25 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     public int getTierFluidHatch() {
-        if (mOutputHatches.size() > 0 && isValidMetaTileEntity(mOutputHatches.get(0))) return mOutputHatches.get(0).mTier + 1;
+        if (mOutputHatches.size() > 0 && isValidMetaTileEntity(mOutputHatches.get(0)))
+            return mOutputHatches.get(0).mTier + 1;
         return 0;
     }
 
     private boolean dumpFluid(FluidStack copiedFluidStack, boolean restrictiveHatchesOnly) {
-        for (GT_MetaTileEntity_Primitive_Hatch_Output tHatch : mOutputHatches1) {
-            if (!isValidMetaTileEntity(tHatch) || (restrictiveHatchesOnly && tHatch.mMode == 0)) {
-                continue;
+        if (mOutputHatches1.size() > 0) {
+            GT_MetaTileEntity_Primitive_Hatch_Output tHatch = mOutputHatches1.get(0);
+            int tAmount = tHatch.fill(copiedFluidStack, false);
+            if (tAmount >= copiedFluidStack.amount) {
+                boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
+                tHatch.onEmptyingContainerWhenEmpty();
+                return filled;
+            } else if (tAmount > 0) {
+                copiedFluidStack.amount = copiedFluidStack.amount - tHatch.fill(copiedFluidStack, true);
+                tHatch.onEmptyingContainerWhenEmpty();
             }
-            if (GT_ModHandler.isSteam(copiedFluidStack)) {
-                if (!tHatch.outputsSteam()) {
-                    continue;
-                }
-            } else {
-                if (!tHatch.outputsLiquids()) {
-                    continue;
-                }
-                if (tHatch.isFluidLocked() && tHatch.getLockedFluidName() != null && !tHatch
-                        .getLockedFluidName().equals(copiedFluidStack.getUnlocalizedName())) {
-                    continue;
-                }
-            }
+        } else {
+            GT_MetaTileEntity_Hatch_Output tHatch = mOutputHatches.get(0);
             int tAmount = tHatch.fill(copiedFluidStack, false);
             if (tAmount >= copiedFluidStack.amount) {
                 boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
@@ -356,6 +353,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         if (!this.dumpFluid(copiedFluidStack, true)) {
             this.dumpFluid(copiedFluidStack, false);
         }
+
         return false;
     }
 
