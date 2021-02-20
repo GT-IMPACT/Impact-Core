@@ -206,7 +206,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
                 ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
 
-        int minCasingAmount = 12; // Минимальное количество кейсов
         boolean formationChecklist = true; // Если все ок, машина собралась
 
         for (byte X = 0; X >= -3; X--) {
@@ -236,7 +235,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
                 if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                         && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
                         == CASING_META)) {
-                    minCasingAmount--;
                 } else {
                     formationChecklist = false;
 
@@ -248,7 +246,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
                 == GregTech_API.sBlockMachines)
                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == frameMeta)) {
-            minCasingAmount--;
         } else {
             formationChecklist = false;
         }
@@ -257,7 +254,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         if ((thisController.getBlockOffset(offset2.x(), offset2.y(), offset2.z())
                 == GregTech_API.sBlockMachines)
                 && (thisController.getMetaIDOffset(offset2.x(), offset2.y(), offset2.z()) == frameMeta)) {
-            minCasingAmount--;
         } else {
             formationChecklist = false;
         }
@@ -266,7 +262,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         if ((thisController.getBlockOffset(offset3.x(), offset3.y(), offset3.z())
                 == GregTech_API.sBlockMachines)
                 && (thisController.getMetaIDOffset(offset3.x(), offset3.y(), offset3.z()) == frameMeta)) {
-            minCasingAmount--;
         } else {
             formationChecklist = false;
         }
@@ -275,7 +270,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         if ((thisController.getBlockOffset(offset4.x(), offset4.y(), offset4.z())
                 == GregTech_API.sBlockMachines)
                 && (thisController.getMetaIDOffset(offset4.x(), offset4.y(), offset4.z()) == frameMeta)) {
-            minCasingAmount--;
         } else {
             formationChecklist = false;
         }
@@ -284,7 +278,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         if ((thisController.getBlockOffset(offset5.x(), offset5.y(), offset5.z())
                 == GregTech_API.sBlockMachines)
                 && (thisController.getMetaIDOffset(offset5.x(), offset5.y(), offset5.z()) == frameMeta)) {
-            minCasingAmount--;
         } else {
             formationChecklist = false;
         }
@@ -293,7 +286,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         if ((thisController.getBlockOffset(offset6.x(), offset6.y(), offset6.z())
                 == GregTech_API.sBlockMachines)
                 && (thisController.getMetaIDOffset(offset6.x(), offset6.y(), offset6.z()) == frameMeta)) {
-            minCasingAmount--;
         } else {
             formationChecklist = false;
         }
@@ -303,7 +295,6 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
             if ((thisController.getBlockOffset(offset7.x(), offset7.y(), offset7.z())
                     == GregTech_API.sBlockMachines)
                     && (thisController.getMetaIDOffset(offset7.x(), offset7.y(), offset7.z()) == frameMeta)) {
-                minCasingAmount--;
             } else {
                 formationChecklist = false;
             }
@@ -324,18 +315,8 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
     }
 
     public int getTierFluidHatch() {
-        int tier = 0;
-        for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                tier = tHatch.mTier + 1;
-            }
-        }
-        for (GT_MetaTileEntity_Primitive_Hatch_Output tHatch : mOutputHatches1) {
-            if (isValidMetaTileEntity(tHatch)) {
-                tier = tHatch.mTier;
-            }
-        }
-        return tier;
+        if (mOutputHatches.size() > 0 && isValidMetaTileEntity(mOutputHatches.get(0))) return mOutputHatches.get(0).mTier + 1;
+        return 0;
     }
 
     private boolean dumpFluid(FluidStack copiedFluidStack, boolean restrictiveHatchesOnly) {
