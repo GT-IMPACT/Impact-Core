@@ -833,6 +833,20 @@ public class AssemblerRecipe implements Runnable {
                     GT_Utility.getIntegratedCircuit(1)}, null,
             GT_ItemList.Parallel_Hatch_OUT256.get(1), 1200, 500000);
 
+    // --- Packager Input Bus
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_IV.get(1), ItemList.Robot_Arm_IV.get(1), ItemList.Conveyor_Module_IV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2L),
+                    GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 5),
+                    GT_Utility.getIntegratedCircuit(4)}, Materials.Polytetrafluoroethylene.getMolten(1152L),
+            GT_ItemList.Boxinator_Hatch_Input.get(1), 480, 7680);
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_IV.get(1), ItemList.Robot_Arm_IV.get(1), ItemList.Conveyor_Module_IV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2L),
+                    GT_ModHandler.getModItem("chestup", "Blockchestup", 1L, 5),
+                    GT_Utility.getIntegratedCircuit(4)}, Materials.Polybenzimidazole.getMolten(144L),
+            GT_ItemList.Boxinator_Hatch_Input.get(1), 480, 7680);
+
     /* ================================= end GT MOD =================================*/
 
     GT_Values.RA.addAssemblerRecipe(
