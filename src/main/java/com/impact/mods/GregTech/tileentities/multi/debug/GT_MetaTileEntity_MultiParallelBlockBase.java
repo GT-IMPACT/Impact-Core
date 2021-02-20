@@ -9,6 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.GregTech.tileentities.hatches.GTMTE_BoxinatorInputBus;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Input;
@@ -283,7 +284,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
       GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
           false, V[tTier], fluids, inputs);
-      if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+      if (recipe != null) {
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
@@ -342,7 +343,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         tRecipe = getRecipeMap()
             .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
 
-        if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+        if (tRecipe != null) {
 
           if (!needCleanroom(tRecipe)) {
             return false;
@@ -434,7 +435,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         tRecipe = getRecipeMap()
             .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
 
-        if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+        if (tRecipe != null) {
 
           if (!needCleanroom(tRecipe)) {
             return false;
@@ -637,7 +638,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
         GT_Recipe tRecipe = getRecipeMap()
             .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
-        if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+        if (tRecipe != null) {
           if (!needCleanroom(tRecipe)) {
             return false;
           }
