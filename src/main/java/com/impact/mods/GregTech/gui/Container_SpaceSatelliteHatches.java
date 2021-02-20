@@ -22,7 +22,8 @@ public class Container_SpaceSatelliteHatches extends GT_ContainerMetaTile_Machin
   public int mTargetD = 0;
   public int mIsEnable = 0;
 
-  public Container_SpaceSatelliteHatches(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+  public Container_SpaceSatelliteHatches(InventoryPlayer aInventoryPlayer,
+      IGregTechTileEntity aTileEntity) {
     super(aInventoryPlayer, aTileEntity);
   }
 
@@ -34,38 +35,54 @@ public class Container_SpaceSatelliteHatches extends GT_ContainerMetaTile_Machin
   }
 
   @Override
-  public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-    if (aSlotIndex < 0) return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+  public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold,
+      EntityPlayer aPlayer) {
+    if (aSlotIndex < 0) {
+      return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+    }
 
     Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
     if ((tSlot != null) && (this.mTileEntity.getMetaTileEntity() != null)) {
 
       if (this.mTileEntity.getMetaTileEntity() instanceof GTMTE_SpaceSatellite_Transmitter) {
-        int aFrequency = ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency;
+        int aFrequency = ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity
+            .getMetaTileEntity()).mFrequency;
         if (aSlotIndex == 0) {
-          ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency += (aShifthold == 1 ? 10 : 1);
+          ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency += (
+              aShifthold == 1 ? 10 : 1);
           return null;
         } else if (aSlotIndex == 1) {
-          ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency -= (aShifthold == 1 ? 10 : 1);
-          if (aFrequency < 0)
-            ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency = 0;
+          ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency -= (
+              aShifthold == 1 ? 10 : 1);
+          if (aFrequency < 0) {
+            ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity
+                .getMetaTileEntity()).mFrequency = 0;
+          }
           return null;
         } else if (aSlotIndex == 2) {
-          ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).setFrequency(((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency, aPlayer);
+          ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).setFrequency(
+              ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency,
+              aPlayer);
         }
       }
       if (this.mTileEntity.getMetaTileEntity() instanceof GTMTE_SpaceSatellite_Receiver) {
-        int aFrequency = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency;
+        int aFrequency = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity
+            .getMetaTileEntity()).mFrequency;
         if (aSlotIndex == 0) {
-          ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency += (aShifthold == 1 ? 10 : 1);
+          ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency += (
+              aShifthold == 1 ? 10 : 1);
           return null;
         } else if (aSlotIndex == 1) {
-          ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency -= (aShifthold == 1 ? 10 : 1);
-          if (aFrequency < 0)
+          ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency -= (
+              aShifthold == 1 ? 10 : 1);
+          if (aFrequency < 0) {
             ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency = 0;
+          }
           return null;
         } else if (aSlotIndex == 2) {
-          ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).getFrequency(((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency, aPlayer);
+          ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).getFrequency(
+              ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency,
+              aPlayer);
         }
       }
     }
@@ -75,28 +92,40 @@ public class Container_SpaceSatelliteHatches extends GT_ContainerMetaTile_Machin
   @Override
   public void detectAndSendChanges() {
     super.detectAndSendChanges();
-    if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) return;
+    if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
+      return;
+    }
 
     if (this.mTileEntity.getMetaTileEntity() instanceof GTMTE_SpaceSatellite_Transmitter) {
       this.mTargetX = (this.mTileEntity.getMetaTileEntity()).getBaseMetaTileEntity().getXCoord();
       this.mTargetY = (this.mTileEntity.getMetaTileEntity()).getBaseMetaTileEntity().getYCoord();
       this.mTargetZ = (this.mTileEntity.getMetaTileEntity()).getBaseMetaTileEntity().getZCoord();
-      this.mTargetD = (this.mTileEntity.getMetaTileEntity()).getBaseMetaTileEntity().getWorld().provider.dimensionId;
+      this.mTargetD = (this.mTileEntity.getMetaTileEntity()).getBaseMetaTileEntity()
+          .getWorld().provider.dimensionId;
 
-      this.mFrequency = ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mFrequency;
+      this.mFrequency = ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity
+          .getMetaTileEntity()).mFrequency;
 
-      mIsEnable = ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mIsTransmit ? 1 : 0;
+      mIsEnable =
+          ((GTMTE_SpaceSatellite_Transmitter) this.mTileEntity.getMetaTileEntity()).mIsTransmit ? 1
+              : 0;
     }
 
     if (this.mTileEntity.getMetaTileEntity() instanceof GTMTE_SpaceSatellite_Receiver) {
-      this.mTargetX = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mTargetX;
-      this.mTargetY = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mTargetY;
-      this.mTargetZ = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mTargetZ;
-      this.mTargetD = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mTargetD;
+      this.mTargetX = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity
+          .getMetaTileEntity()).mTargetX;
+      this.mTargetY = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity
+          .getMetaTileEntity()).mTargetY;
+      this.mTargetZ = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity
+          .getMetaTileEntity()).mTargetZ;
+      this.mTargetD = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity
+          .getMetaTileEntity()).mTargetD;
 
-      this.mFrequency = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mFrequency;
+      this.mFrequency = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity
+          .getMetaTileEntity()).mFrequency;
 
-      mIsEnable = ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mIsReceive ? 1 : 0;
+      mIsEnable =
+          ((GTMTE_SpaceSatellite_Receiver) this.mTileEntity.getMetaTileEntity()).mIsReceive ? 1 : 0;
     }
 
     for (Object crafter : this.crafters) {

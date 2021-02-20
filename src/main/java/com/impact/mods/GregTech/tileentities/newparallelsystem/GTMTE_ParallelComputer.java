@@ -1,5 +1,13 @@
 package com.impact.mods.GregTech.tileentities.newparallelsystem;
 
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.mojang.realmsclient.gui.ChatFormatting.GREEN;
+import static com.mojang.realmsclient.gui.ChatFormatting.RED;
+import static com.mojang.realmsclient.gui.ChatFormatting.RESET;
+import static com.mojang.realmsclient.gui.ChatFormatting.YELLOW;
+
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -20,11 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
-
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static com.mojang.realmsclient.gui.ChatFormatting.*;
 
 public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -56,48 +59,52 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
   @Override
   public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
       final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-    return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+    return aSide == aFacing ? new ITexture[]{INDEX_CASE,
+        new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)}
+        : new ITexture[]{INDEX_CASE};
   }
 
   public void run() {
-    registerMetaClass(GTMTE_ParallelComputer.class, new IMultiblockInfoContainer<GTMTE_ParallelComputer>() {
-      //region Structure
-      private final IStructureDefinition<GTMTE_ParallelComputer> definition =
-          StructureDefinition.<GTMTE_ParallelComputer>builder()
-              .addShape("main", new String[][]{
-                  {"AAAAA", "AAAAA", "AA~AA", "AAAAA", "AAAAA"},
-                  {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                  {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                  {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                  {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                  {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                  {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                  {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                  {"AAAAA", "AAAAA", "AAAAA", "AAAAA", "AAAAA"}
-              })
-              .addElement('A', ofBlock(CASING, CASING_META))
-              .addElement('B', ofBlock(Casing_Helper.sCaseCore1, 0))
-              .addElement('C', ofBlock(IGlassBlock))
-              .build();
-      private final String[] desc = new String[]{
-          EnumChatFormatting.RED + "Impact Details:",
-          //todo
-      };
+    registerMetaClass(GTMTE_ParallelComputer.class,
+        new IMultiblockInfoContainer<GTMTE_ParallelComputer>() {
+          //region Structure
+          private final IStructureDefinition<GTMTE_ParallelComputer> definition =
+              StructureDefinition.<GTMTE_ParallelComputer>builder()
+                  .addShape("main", new String[][]{
+                      {"AAAAA", "AAAAA", "AA~AA", "AAAAA", "AAAAA"},
+                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
+                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
+                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
+                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
+                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
+                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
+                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
+                      {"AAAAA", "AAAAA", "AAAAA", "AAAAA", "AAAAA"}
+                  })
+                  .addElement('A', ofBlock(CASING, CASING_META))
+                  .addElement('B', ofBlock(Casing_Helper.sCaseCore1, 0))
+                  .addElement('C', ofBlock(IGlassBlock))
+                  .build();
+          private final String[] desc = new String[]{
+              EnumChatFormatting.RED + "Impact Details:",
+              //todo
+          };
 
-      //endregion
-      @Override
-      public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_ParallelComputer tileEntity, ExtendedFacing aSide) {
-        IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-        definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-            base.getXCoord(), base.getYCoord(), base.getZCoord(),
-            2, 2, 0, hintsOnly);
-      }
+          //endregion
+          @Override
+          public void construct(ItemStack stackSize, boolean hintsOnly,
+              GTMTE_ParallelComputer tileEntity, ExtendedFacing aSide) {
+            IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                2, 2, 0, hintsOnly);
+          }
 
-      @Override
-      public String[] getDescription(ItemStack stackSize) {
-        return desc;
-      }
-    });
+          @Override
+          public String[] getDescription(ItemStack stackSize) {
+            return desc;
+          }
+        });
   }
 
   @Override
@@ -148,7 +155,9 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
       if (aBaseMetaTileEntity.isActive()) {
         if (ph.getBaseMetaTileEntity().isAllowedToWork()) {
           ph.setRecipe(true);
-          if (!mIsConnect) ph.setRecipe(false);
+          if (!mIsConnect) {
+            ph.setRecipe(false);
+          }
         }
       } else {
         ph.setRecipe(false);
@@ -177,6 +186,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
   @Override
   public boolean checkMachine(IGregTechTileEntity thisController, ItemStack aStack) {
     sParallHatchesOut.clear();
+    sComputerRack.clear();
     int aTotalParallelCapacity = 0;
 
     //region Structure
@@ -189,16 +199,20 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     for (int X = 0; X <= 1; X++) {
       for (int Y = -1; Y <= 2; Y++) {
-        if (X == 0 && Y == 0) continue;
+        if (X == 0 && Y == 0) {
+          continue;
+        }
 
         final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
 
-        IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+        IGregTechTileEntity currentTE = thisController
+            .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
         if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
           if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+              == CASING_META)) {
           } else {
             formationChecklist = false;
           }
@@ -213,7 +227,25 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
       for (int Y = -1; Y <= 2; Y++) {
         for (int Z = -1; Z >= -17; Z--) {
           final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-          IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+          IGregTechTileEntity currentTE = thisController
+              .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+          //Racks
+          if (X == 1 && (Y == 0 || Y == 1)) {
+            if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                && !super.addRackHatch(currentTE, CASING_TEXTURE_ID)) {
+              if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                  == CASING_META)) {
+                RacksZ = Z;
+                break;
+              } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
+                  == IGlassBlock) {
+              } else {
+                formationChecklist = false;
+              }
+            }
+          }
 
           //Parallels
           if (X == 0 && (Y == 0 || Y == 1)) {
@@ -221,26 +253,15 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
               if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                  == CASING_META)) {
                 ParallelsZ = Z;
                 break;
-              } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock) {
-              } else formationChecklist = false;
-            }
-          }
-
-          //Racks
-          if (X == 1 && (Y == 0 || Y == 1)) {
-            if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                && !super.addRackHatch(currentTE, CASING_TEXTURE_ID)) {
-
-              if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                RacksZ = Z;
-                break;
-              } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock){
-
-              } else formationChecklist = false;
+              } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
+                  == IGlassBlock) {
+              } else {
+                formationChecklist = false;
+              }
             }
           }
         }
@@ -249,8 +270,9 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     if (ParallelsZ < RacksZ || RacksZ < ParallelsZ) {
       formationChecklist = false;
-    } else additionalZ = RacksZ;
-
+    } else {
+      additionalZ = RacksZ;
+    }
 
     for (int X = 0; X <= 1; X++) {
       for (int Y = -1; Y <= 2; Y++) {
@@ -258,7 +280,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
           final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
           if (Z == additionalZ) {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                == CASING_META)) {
             } else {
               formationChecklist = false;
             }
@@ -269,7 +292,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     //endregion
 
     setMaxCapacityPP(50);
-
 
     int cur = 0;
     for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
@@ -307,7 +329,9 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
   @Override
   public int getParallelCurrent() {
-    if (getMaxCapacityPP() < 4) return -1;
+    if (getMaxCapacityPP() < 4) {
+      return -1;
+    }
     return getMaxCapacityPP();
   }
 
@@ -318,10 +342,13 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
   public String[] getInfoData() {
     return new String[]{
-        "Storage PP: " + GREEN + getMaxCapacityPP() + RESET + " / " + YELLOW + getCurrentCapacityPP() + "PP",
+        "Storage PP: " + GREEN + getMaxCapacityPP() + RESET + " / " + YELLOW
+            + getCurrentCapacityPP() + "PP",
         "Usage Energy: " + RED + -mEUt + RESET + " EU/t",
         "Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t ",
-        "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
+        "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good "
+            + YELLOW + mEfficiency / 100.0F + " %" + RESET
+            : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
     };
   }
 }

@@ -1,5 +1,7 @@
 package com.impact.mods.GregTech.gui;
 
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
@@ -7,15 +9,14 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-import static gregtech.api.util.GT_LanguageManager.getTranslation;
-
 public class GUI_LapTopSetting extends GT_GUIContainerMetaTile_Machine {
 
   public String mName;
 
-  public GUI_LapTopSetting(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String name) {
-    super(new Container_LapTopSetting(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "SpaceSatelliteHatches.png");
+  public GUI_LapTopSetting(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
+      String name) {
+    super(new Container_LapTopSetting(aInventoryPlayer, aTileEntity),
+        RES_PATH_GUI + "SpaceSatelliteHatches.png");
     mName = name;
   }
 
@@ -23,12 +24,20 @@ public class GUI_LapTopSetting extends GT_GUIContainerMetaTile_Machine {
 
     if (this.mContainer != null) {
       Container_LapTopSetting aContainer = (Container_LapTopSetting) this.mContainer;
-      this.fontRendererObj.drawString(GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name"), 33, 8, 16448255);
-      this.fontRendererObj.drawString("Frequency: " +  GT_Utility.parseNumberToString(aContainer.mFrequency), 33, 20, 16448255);
+      this.fontRendererObj
+          .drawString(GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name"), 33,
+              8, 16448255);
+      this.fontRendererObj
+          .drawString("Frequency: " + GT_Utility.parseNumberToString(aContainer.mFrequency), 33, 20,
+              16448255);
       this.fontRendererObj.drawString("Coords:", 33, 30, 16448255);
-      this.fontRendererObj.drawString("X: " + aContainer.mTargetX + " Y: " + aContainer.mTargetY + " Z: " + aContainer.mTargetZ, 33, 40, 16448255);
+      this.fontRendererObj.drawString(
+          "X: " + aContainer.mTargetX + " Y: " + aContainer.mTargetY + " Z: " + aContainer.mTargetZ,
+          33, 40, 16448255);
       this.fontRendererObj.drawString("Dim ID: " + aContainer.mTargetD, 33, 50, 16448255);
-      this.fontRendererObj.drawString("Satellite connection: " + (aContainer.mIsEnable == 1 ? (EnumChatFormatting.GREEN + "on") : (EnumChatFormatting.RED + "off")), 33, 64, 16448255);
+      this.fontRendererObj.drawString(
+          "Satellite connection: " + (aContainer.mIsEnable == 1 ? (EnumChatFormatting.GREEN + "on")
+              : (EnumChatFormatting.RED + "off")), 33, 64, 16448255);
     }
   }
 

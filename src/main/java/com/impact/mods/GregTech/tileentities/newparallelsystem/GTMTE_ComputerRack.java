@@ -1,5 +1,9 @@
 package com.impact.mods.GregTech.tileentities.newparallelsystem;
 
+import static com.impact.mods.GregTech.enums.Texture.Icons.OVERLAY_RACK;
+import static com.impact.mods.GregTech.enums.Texture.Icons.RACK_OVERLAY;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
+
 import com.impact.mods.GregTech.gui.GT_Container_Rack;
 import com.impact.mods.GregTech.gui.GT_GUIContainer_Rack;
 import com.impact.util.Utilits;
@@ -13,10 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import static com.impact.mods.GregTech.enums.Texture.Icons.OVERLAY_RACK;
-import static com.impact.mods.GregTech.enums.Texture.Icons.RACK_OVERLAY;
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 
 public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
@@ -38,14 +38,16 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
 
   @Override
   public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-    ITexture base = new GT_RenderedTexture(OVERLAY_RACK, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()));
+    ITexture base = new GT_RenderedTexture(OVERLAY_RACK,
+        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()));
     int meta = mTexturesUpdate;
     return new ITexture[]{aBaseTexture, base, new GT_RenderedTexture(RACK_OVERLAY[meta])};
   }
 
   @Override
   public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-    ITexture base = new GT_RenderedTexture(OVERLAY_RACK, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()));
+    ITexture base = new GT_RenderedTexture(OVERLAY_RACK,
+        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()));
     int meta = mTexturesUpdate;
     return new ITexture[]{aBaseTexture, base, new GT_RenderedTexture(RACK_OVERLAY[meta])};
   }
@@ -79,12 +81,14 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
   }
 
   @Override
-  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
     return new GT_Container_Rack(aPlayerInventory, aBaseMetaTileEntity);
   }
 
   @Override
-  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
     return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, "123");
   }
 
@@ -104,7 +108,8 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
   }
 
   @Override
-  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
+      float aZ) {
     super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     if (getBaseMetaTileEntity().isServerSide()) {
       getBaseMetaTileEntity().setActive(true);
@@ -113,7 +118,9 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
 
   @Override
   public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-    if (aBaseMetaTileEntity.isClientSide()) return true;
+    if (aBaseMetaTileEntity.isClientSide()) {
+      return true;
+    }
     aBaseMetaTileEntity.openGUI(aPlayer);
     return true;
   }
@@ -132,7 +139,9 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
   }
 
   public int getStackSize(ItemStack aInv) {
-    if (aInv == null || aInv.stackSize <= 0) return 0;
+    if (aInv == null || aInv.stackSize <= 0) {
+      return 0;
+    }
     return 1;
   }
 

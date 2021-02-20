@@ -9,7 +9,6 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
-import com.impact.mods.GregTech.tileentities.hatches.GTMTE_BoxinatorInputBus;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Input;
@@ -136,6 +135,56 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         }
         if (base.mMaxProgresstime <= 0) {
           base.mMaxProgresstime = 1;//set time to 1 tick
+        }
+      }
+    }
+  }
+
+  //TODO: 20.02.2021 Future
+  public static void calculateOverclockedNew(@Nonnegative int aEUt,
+      @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
+      GT_MetaTileEntity_MultiParallelBlockBase base) {
+    byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+    if (mTier == 0) {
+      //Long time calculation
+      long xMaxProgresstime = ((long) aDuration) << 1;
+      if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
+        //make impossible if too long
+        base.mEUt = Integer.MAX_VALUE - 1;
+        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+      } else {
+        base.mEUt = aEUt >> 2;
+        base.mMaxProgresstime = (int) xMaxProgresstime;
+      }
+    } else {
+      //Long EUt calculation
+      long xEUt = aEUt;
+      //Isnt too low EUt check?
+      long tempEUt = Math.max(xEUt, V[1]);
+      base.mMaxProgresstime = aDuration;
+      while (tempEUt <= V[mTier - 1] * mAmperage) {
+        tempEUt = (tempEUt << 2) * 3 / 2;
+//        tempEUt <<= 2; //bit shift to 2 / example: 480 << 2 = 1920
+//        tempEUt *= 3; //1920 * 4 = 7680  | 1920 * 3 = 5760
+        base.mMaxProgresstime >>= 2; //this is effect of overclocking
+        xEUt = base.mMaxProgresstime <= 0 ? (xEUt >> 2) * 3 / 2 : (xEUt << 2) * 3 / 2;
+        //U know, if the time is less than 1 tick make the machine use less power
+      }
+      while (xEUt > maxInputVoltage) {
+        //downclock one notch until we are good again, we have overshot.
+        xEUt = (xEUt << 2) * 3 / 2;
+        base.mMaxProgresstime <<= 2;
+      }
+      if (xEUt > Integer.MAX_VALUE - 1) {
+        base.mEUt = Integer.MAX_VALUE - 1;
+        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+      } else {
+        base.mEUt = (int) xEUt;
+        if (base.mEUt == 0) {
+          base.mEUt = 1;
+        }
+        if (base.mMaxProgresstime <= 0) {
+          base.mMaxProgresstime = 1;
         }
       }
     }
@@ -754,7 +803,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       }
     }
     return false;
-}
+  }
 
   public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
     final Vector3i offset = new Vector3i();
@@ -869,20 +918,21 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
   public void setFrequency(int aFreq, EntityPlayer aPlayer) {
     mFrequency = aFreq;
-    Impact_API.sCommunicationTower.put(aFreq,
+    Impact_API.sCommunicationTower.put(Integer.toString(aFreq) + aPlayer.getUniqueID(),
         new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord(),
             getBaseMetaTileEntity().getWorld().provider.dimensionId});
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + EnumChatFormatting.GREEN + aFreq);
+    GT_Utility.sendChatToPlayer(aPlayer, "UUID: " + EnumChatFormatting.YELLOW + aPlayer.getUniqueID()); //// TODO: 21.02.2021 DEL
   }
 
   public void getFrequency(int aFreq, EntityPlayer aPlayer) {
-    if (Impact_API.sCommunicationTower.get(aFreq) != null) {
+    if (Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer)) != null) {
       //GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sCommunicationTower.get(aFreq)));
       if (Utilits.distanceBetween2D(getBaseMetaTileEntity().getXCoord(),
-          Impact_API.sCommunicationTower.get(aFreq)[0],
-          getBaseMetaTileEntity().getZCoord(), Impact_API.sCommunicationTower.get(aFreq)[2]) < 64) {
-        setCoord(Impact_API.sCommunicationTower.get(aFreq));
+          Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer))[0],
+          getBaseMetaTileEntity().getZCoord(), Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer))[2]) < 64) {
+        setCoord(Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer)));
         GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Connection successful");
       } else {
         GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Too far for connection");
@@ -1010,6 +1060,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   }
 
   public void connectParallelComputer(IGregTechTileEntity aBaseMetaTileEntity) {
+    mIsConnect = false;
     if (sParallHatchesIn.size() > 0 || aBaseMetaTileEntity
         .getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
       tile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
@@ -1019,15 +1070,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (aComTower.getBaseMetaTileEntity().isActive()) {
             if (mFrequency == ((GTMTE_TowerCommunication) aComTower).mFrequency) {
               mIsConnect = ((GTMTE_TowerCommunication) aComTower).mIsConnect;
-            } else {
-              mIsConnect = false;
             }
-          } else {
-            mIsConnect = false;
           }
         }
-      } else {
-        mIsConnect = false;
       }
     }
   }

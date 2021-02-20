@@ -145,9 +145,10 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
   }
 
   public void getFrequency(int freq, EntityPlayer aPlayer) {
-    if (Impact_API.sSpaceSatellite.get(freq) != null) {
-      GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sSpaceSatellite.get(freq)));
-      setCoord(Impact_API.sSpaceSatellite.get(freq));
+    if (Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer)) != null) {
+      GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer))));
+      setCoord(Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer)));
+      GT_Utility.sendChatToPlayer(aPlayer, "UUID: " + EnumChatFormatting.YELLOW + aPlayer.getUniqueID()); //// TODO: 21.02.2021 DEL
     } else GT_Utility.sendChatToPlayer(aPlayer, "Frequency not found");
   }
 

@@ -5,9 +5,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_Rack extends GT_GUIContainerMetaTile_Machine {
+
   private final String mName;
 
-  public GT_GUIContainer_Rack(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
+  public GT_GUIContainer_Rack(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
+      String aName) {
     super(new GT_Container_Rack(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/rack.png");
     mName = aName;
   }

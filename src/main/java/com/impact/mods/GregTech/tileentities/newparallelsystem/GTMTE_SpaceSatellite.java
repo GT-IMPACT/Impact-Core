@@ -1,5 +1,9 @@
 package com.impact.mods.GregTech.tileentities.newparallelsystem;
 
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static micdoodle8.mods.galacticraft.core.util.ConfigManagerCore.disableSpaceStationCreation;
+
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -20,10 +24,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
-
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static micdoodle8.mods.galacticraft.core.util.ConfigManagerCore.disableSpaceStationCreation;
 
 public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBase {
 
@@ -53,41 +53,45 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
   @Override
   public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
       final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-    return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+    return aSide == aFacing ? new ITexture[]{INDEX_CASE,
+        new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)}
+        : new ITexture[]{INDEX_CASE};
   }
 
   public void run() {
-    registerMetaClass(GTMTE_SpaceSatellite.class, new IMultiblockInfoContainer<GTMTE_SpaceSatellite>() {
-      //region Structure
-      private final IStructureDefinition<GTMTE_SpaceSatellite> definition =
-          StructureDefinition.<GTMTE_SpaceSatellite>builder()
-              .addShape("main", new String[][]{
-                  {" A A "," A A "," A A "," A A "},
-                  {" A A ","AAAAA","AA~AA","AAAAA"},
-                  {" A A ","AAAAA","AAAAA","AAAAA"},
-                  {" A A "," A A "," A A "," A A "},
-              })
-              .addElement('A', ofBlock(CASING, CASING_META))
-              .build();
-      private final String[] desc = new String[]{
-          EnumChatFormatting.RED + "Impact Details:",
-          "- Space Satellite Casing",
-      };
+    registerMetaClass(GTMTE_SpaceSatellite.class,
+        new IMultiblockInfoContainer<GTMTE_SpaceSatellite>() {
+          //region Structure
+          private final IStructureDefinition<GTMTE_SpaceSatellite> definition =
+              StructureDefinition.<GTMTE_SpaceSatellite>builder()
+                  .addShape("main", new String[][]{
+                      {" A A ", " A A ", " A A ", " A A "},
+                      {" A A ", "AAAAA", "AA~AA", "AAAAA"},
+                      {" A A ", "AAAAA", "AAAAA", "AAAAA"},
+                      {" A A ", " A A ", " A A ", " A A "},
+                  })
+                  .addElement('A', ofBlock(CASING, CASING_META))
+                  .build();
+          private final String[] desc = new String[]{
+              EnumChatFormatting.RED + "Impact Details:",
+              "- Space Satellite Casing",
+          };
 
-      //endregion
-      @Override
-      public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SpaceSatellite tileEntity, ExtendedFacing aSide) {
-        IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-        definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-            base.getXCoord(), base.getYCoord(), base.getZCoord(),
-            2, 2, 1, hintsOnly);
-      }
+          //endregion
+          @Override
+          public void construct(ItemStack stackSize, boolean hintsOnly,
+              GTMTE_SpaceSatellite tileEntity, ExtendedFacing aSide) {
+            IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                2, 2, 1, hintsOnly);
+          }
 
-      @Override
-      public String[] getDescription(ItemStack stackSize) {
-        return desc;
-      }
-    });
+          @Override
+          public String[] getDescription(ItemStack stackSize) {
+            return desc;
+          }
+        });
 
   }
 
@@ -157,10 +161,12 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
         if (!(DimensionManager.getProvider(dimId).getClass().getName().contains("Orbit")
             || DimensionManager.getProvider(dimId).getClass().getName().endsWith("Space")
             || DimensionManager.getProvider(dimId).getClass().getName().endsWith("SS")
-            || DimensionManager.getProvider(dimId).getClass().getName().contains("SpaceStation")))
+            || DimensionManager.getProvider(dimId).getClass().getName().contains("SpaceStation"))) {
           return false;
-      } else if (!DimensionManager.getProvider(dimId).getClass().getName().contains("Moon"))
+        }
+      } else if (!DimensionManager.getProvider(dimId).getClass().getName().contains("Moon")) {
         return false;
+      }
     }
     //region Structure
     final Vector3ic forgeDirection = new Vector3i(
@@ -173,19 +179,27 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
     for (int X = -2; X <= 2; X++) {
       for (int Y = -1; Y <= 2; Y++) {
         for (int Z = 1; Z >= -2; Z--) {
-          if (X == 0 && Y == 0 && Z == 0) continue;
+          if (X == 0 && Y == 0 && Z == 0) {
+            continue;
+          }
 
-          if ((Z == 1 || Z == -2) && !(X == -1 || X == 1)) continue;
-          if (Y == 2 && !(X == -1 || X == 1)) continue;
+          if ((Z == 1 || Z == -2) && !(X == -1 || X == 1)) {
+            continue;
+          }
+          if (Y == 2 && !(X == -1 || X == 1)) {
+            continue;
+          }
 
           final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-          IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+          IGregTechTileEntity currentTE = thisController
+              .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
           if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                == CASING_META)) {
             } else {
               formationChecklist = false;
             }
