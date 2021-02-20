@@ -1,5 +1,10 @@
 package com.impact.mods.GregTech.tileentities.newparallelsystem;
 
+import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_CONN;
+import static com.impact.mods.GregTech.enums.Texture.Icons.PRL_HATCH_RED;
+import static com.impact.mods.GregTech.enums.Texture.Icons.PRL_HATCH_YELLOW;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
+
 import com.impact.core.Impact_API;
 import com.impact.mods.GregTech.gui.Container_SpaceSatelliteHatches;
 import com.impact.mods.GregTech.gui.GUI_SpaceSatelliteHathes;
@@ -15,11 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-
-import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_CONN;
-import static com.impact.mods.GregTech.enums.Texture.Icons.PRL_HATCH_RED;
-import static com.impact.mods.GregTech.enums.Texture.Icons.PRL_HATCH_YELLOW;
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
 
@@ -37,7 +37,8 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
     });
   }
 
-  public GTMTE_SpaceSatellite_Transmitter(String aName, String[] aDescription, ITexture[][][] aTextures) {
+  public GTMTE_SpaceSatellite_Transmitter(String aName, String[] aDescription,
+      ITexture[][][] aTextures) {
     super(aName, 3, 0, aDescription, aTextures);
   }
 
@@ -47,26 +48,31 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
   }
 
   @Override
-  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
     return new Container_SpaceSatelliteHatches(aPlayerInventory, aBaseMetaTileEntity);
   }
 
   @Override
-  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GUI_SpaceSatelliteHathes(aPlayerInventory, aBaseMetaTileEntity, "Communication Transmitter");
+  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
+    return new GUI_SpaceSatelliteHathes(aPlayerInventory, aBaseMetaTileEntity,
+        "Communication Transmitter");
   }
 
   @Override
   public ITexture[] getTexturesActive(ITexture aBaseTexture) {
     return new ITexture[]{aBaseTexture,
-        new GT_RenderedTexture(PRL_HATCH_YELLOW, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+        new GT_RenderedTexture(PRL_HATCH_YELLOW,
+            Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
         new GT_RenderedTexture(EM_D_CONN)};
   }
 
   @Override
   public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
     return new ITexture[]{aBaseTexture,
-        new GT_RenderedTexture(PRL_HATCH_RED, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+        new GT_RenderedTexture(PRL_HATCH_RED,
+            Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
         new GT_RenderedTexture(EM_D_CONN)};
   }
 
@@ -95,24 +101,29 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
     return false;
   }
 
-  public void setIsTransmit(boolean aIsTransmit) {
-    mIsTransmit = aIsTransmit;
-  }
-
   public boolean getIsTransmit() {
     return mIsTransmit;
   }
 
+  public void setIsTransmit(boolean aIsTransmit) {
+    mIsTransmit = aIsTransmit;
+  }
+
   @Override
-  public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-    if (aBaseMetaTileEntity.isClientSide()) return true;
-    if (aSide == aBaseMetaTileEntity.getFrontFacing())
+  public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
+      byte aSide, float aX, float aY, float aZ) {
+    if (aBaseMetaTileEntity.isClientSide()) {
+      return true;
+    }
+    if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
       GT_Utility.sendChatToPlayer(aPlayer, "Connection only with Laptop!");
+    }
     return true;
   }
 
   @Override
-  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
+      float aZ) {
     super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     if (getBaseMetaTileEntity().isServerSide()) {
       GT_Utility.sendChatToPlayer(aPlayer, "Check: " + mIsTransmit);
@@ -128,8 +139,11 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
   }
 
   public void setFrequency(int freq, EntityPlayer aPlayer) {
-    Impact_API.sSpaceSatellite.put(freq, new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), getBaseMetaTileEntity().getWorld().provider.dimensionId});
+    Impact_API.sSpaceSatellite.put(Utilits.inToStringUUID(freq, aPlayer),
+        Utilits.getCoordsBaseMTE(getBaseMetaTileEntity()));
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + EnumChatFormatting.YELLOW + freq);
+    GT_Utility.sendChatToPlayer(aPlayer,
+        "UUID: " + EnumChatFormatting.YELLOW + aPlayer.getUniqueID()); //// TODO: 21.02.2021 DEL
   }
 
   @Override

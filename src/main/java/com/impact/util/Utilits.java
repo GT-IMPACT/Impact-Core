@@ -2,6 +2,7 @@ package com.impact.util;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -9,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -227,24 +229,37 @@ public class Utilits {
   }
 
   public static String impactTag() {
-    return "" + EnumChatFormatting.DARK_GRAY + "Impact: " + EnumChatFormatting.DARK_GRAY + "GregTech Module";
+    return "" + EnumChatFormatting.DARK_GRAY + "Impact: " + EnumChatFormatting.DARK_GRAY
+        + "GregTech Module";
   }
 
   public static int square(int a) {
-    return a*a;
+    return a * a;
   }
 
   public static int distanceBetween2D(int x1, int x2, int y1, int y2) {
     int x = square(x1 - x2);
     int y = square(y1 - y2);
-    return (int) Math.sqrt(x+y);
+    return (int) Math.sqrt(x + y);
   }
 
   public static int distanceBetween3D(int x1, int x2, int y1, int y2, int z1, int z2) {
     int x = square(x1 - x2);
     int y = square(y1 - y2);
     int z = square(z1 - z2);
-    return (int) Math.sqrt(x+y+z);
+    return (int) Math.sqrt(x + y + z);
   }
 
+  public static int[] getCoordsBaseMTE(IGregTechTileEntity iGregTechTileEntity) {
+    return new int[]{
+        iGregTechTileEntity.getXCoord(),
+        iGregTechTileEntity.getYCoord(),
+        iGregTechTileEntity.getZCoord(),
+        iGregTechTileEntity.getWorld().provider.dimensionId,
+    };
+  }
+
+  public static String inToStringUUID(int integer, EntityPlayer player) {
+    return Integer.toString(integer) + player.getUniqueID();
+  }
 }

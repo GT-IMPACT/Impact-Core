@@ -1,5 +1,12 @@
 package com.impact.mods.GregTech.tileentities.newparallelsystem;
 
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofChain;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHatchAdder;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHintDeferred;
+import static com.impact.core.Refstrings.MODID;
+import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore2;
+
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
@@ -10,6 +17,7 @@ import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
+import com.impact.util.Utilits;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -18,6 +26,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import java.text.NumberFormat;
+import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -28,45 +38,63 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import org.lwjgl.input.Keyboard;
 
-import java.text.NumberFormat;
-import java.util.HashSet;
-
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
-import static com.impact.core.Refstrings.MODID;
-import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore2;
-
-public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_EM implements
+    IConstructable {
 
   private static final String[] description = new String[]{
       EnumChatFormatting.RED + "Impact Details:",
       "- Steel Frame Box",
       "- Communication Tower Casing",
-      "- Communication Receiver (" + EnumChatFormatting.RED + "Red Point" + EnumChatFormatting.RESET + ")",
+      "- Communication Receiver (" + EnumChatFormatting.RED + "Red Point" + EnumChatFormatting.RESET
+          + ")",
   };
   public static Block CASING = Casing_Helper.sCaseCore2;
   public static byte CASING_META = 12;
   public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
   public static int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
-  public static int frameId = 4096 + Materials.Steel.mMetaItemSubID;
-  public static int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
   private static final IStructureDefinition<GTMTE_TowerCommunication> STRUCTURE_DEFINITION =
       StructureDefinition.<GTMTE_TowerCommunication>builder()
           .addShape("main", new String[][]{
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"},
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ", "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
-              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ", "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ", "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
-              {"   E   ", "   E   ", "   E   ", "   E   ", "  DED  ", "   E   ", "       ", "       ", "       ", " E   E ", "       ", "       ", "       ", "       ", "E     E", "       ", "       ", " AA~AA ", " AAAAA "},
-              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ", "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ", "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ", "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"}
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
+                  "       ", "       ", "       ", "       ", "       ", "       ", "       ",
+                  " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"},
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
+                  "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ",
+                  "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
+              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ",
+                  "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ",
+                  "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
+              {"   E   ", "   E   ", "   E   ", "   E   ", "  DED  ", "   E   ", "       ",
+                  "       ", "       ", " E   E ", "       ", "       ", "       ", "       ",
+                  "E     E", "       ", "       ", " AA~AA ", " AAAAA "},
+              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ",
+                  "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ",
+                  "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
+                  "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ",
+                  "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
+                  "       ", "       ", "       ", "       ", "       ", "       ", "       ",
+                  " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"}
           })
           .addElement('A', ofChain(
-              ofHatchAdder(GTMTE_TowerCommunication::addClassicToMachineList, CASING_TEXTURE_ID, sCaseCore2, CASING_META),
+              ofHatchAdder(GTMTE_TowerCommunication::addClassicToMachineList, CASING_TEXTURE_ID,
+                  sCaseCore2, CASING_META),
               ofBlock(CASING, CASING_META)))
-          .addElement('D', ofHatchAdder(GTMTE_TowerCommunication::addCommunicationHatchToMachineList, CASING_TEXTURE_ID, sCaseCore2, CASING_META))
-          .addElement('E', ofHintDeferred(() -> new IIcon[]{Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-          }, Materials.Steel.mRGBa))
+          .addElement('D',
+              ofHatchAdder(GTMTE_TowerCommunication::addCommunicationHatchToMachineList,
+                  CASING_TEXTURE_ID, sCaseCore2, CASING_META))
+          .addElement('E', ofHintDeferred(
+              () -> new IIcon[]{Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                  Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                  Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                  Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                  Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+                  Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+              }, Materials.Steel.mRGBa))
           .build();
+  public static int frameId = 4096 + Materials.Steel.mMetaItemSubID;
+  public static int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
   public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
   public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
   public boolean Stuff;
@@ -88,7 +116,8 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
     super(aName);
   }
 
-  public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+  public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity,
+      int aBaseCasingIndex) {
     if (aTileEntity == null) {
       return false;
     } else {
@@ -120,17 +149,22 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   @Override
   public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
       final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-    return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+    return aSide == 1 ? new ITexture[]{INDEX_CASE,
+        new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)}
+        : new ITexture[]{INDEX_CASE};
   }
 
   @Override
-  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
     return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
   }
 
   @Override
-  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Hyper Generator", "MultiParallelBlockGUI.png");
+  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
+    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Hyper Generator",
+        "MultiParallelBlockGUI.png");
   }
 
   @Override
@@ -147,11 +181,10 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 
   @Override
   public boolean checkRecipe_EM(ItemStack itemStack) {
-    this.mMaxProgresstime = 10;
-    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+    this.mMaxProgresstime = 1;
+    this.mEfficiency = 10000;
     this.mEfficiencyIncrease = 10000;
     this.mEUt = 0;
-
     return true;
   }
 
@@ -162,16 +195,16 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
     if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
       if (aBaseMetaTileEntity.isActive()) {
         for (GTMTE_SpaceSatellite_Receiver ph : sCommunReceiver) {
-          if (ph.getBaseMetaTileEntity().isActive())
+          if (ph.getBaseMetaTileEntity().isActive()) {
             this.mIsConnect = ph.getIsReceive();
-          else this.mIsConnect = false;
+          } else {
+            this.mIsConnect = false;
+          }
         }
       }
     }
 
     if (aBaseMetaTileEntity.isServerSide()) {
-      if ((aTick < 10000 && aTick % 20 == 0) || (aTick % 20 * 600 == 0))
-        checkMachine_EM(aBaseMetaTileEntity, null);
       if (aTick % 20 * 60 == 0) {
         this.mWrench = true;
         this.mScrewdriver = true;
@@ -208,9 +241,13 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   public String[] getInfoData() {
 
     return new String[]{
-        "Total Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt * 256) + EnumChatFormatting.RESET + " EU/t",
-        "Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt) + EnumChatFormatting.RESET + " EU/t | Amperes: " + EnumChatFormatting.GREEN + "256" + EnumChatFormatting.RESET + " A",
-        "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F + EnumChatFormatting.YELLOW + " %",
+        "Total Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance()
+            .format(super.mEUt * 256) + EnumChatFormatting.RESET + " EU/t",
+        "Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt)
+            + EnumChatFormatting.RESET + " EU/t | Amperes: " + EnumChatFormatting.GREEN + "256"
+            + EnumChatFormatting.RESET + " A",
+        "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F
+            + EnumChatFormatting.YELLOW + " %",
         "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
             ? EnumChatFormatting.GREEN + "No Problems" + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET),
@@ -231,14 +268,19 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
     if (!aPlayer.isSneaking()) {
-      aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
+      aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, this.getBaseMetaTileEntity().getWorld(),
+          this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
+          this.getBaseMetaTileEntity().getZCoord());
     }
   }
 
-  public void setFrequency(int aFreq, EntityPlayer aPlayer){
+  public void setFrequency(int aFreq, EntityPlayer aPlayer) {
     mFrequency = aFreq;
-    Impact_API.sCommunicationTower.put(aFreq, new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(), getBaseMetaTileEntity().getZCoord(), getBaseMetaTileEntity().getWorld().provider.dimensionId});
+    Impact_API.sCommunicationTower.put(Utilits.inToStringUUID(aFreq, aPlayer),
+        Utilits.getCoordsBaseMTE(getBaseMetaTileEntity()));
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + aFreq);
+    GT_Utility.sendChatToPlayer(aPlayer,
+        "UUID: " + EnumChatFormatting.YELLOW + aPlayer.getUniqueID()); //// TODO: 21.02.2021 DEL
   }
 
   public void setCoord(int[] coords) {

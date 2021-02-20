@@ -31,10 +31,11 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
     int b1 = 0;
     if (getInventory() != null) {
       for (int i = 0; i < 4; i++) {
-        if (getStackSize(getSlot(i).getStack()) == 1)
+        if (getStackSize(getSlot(i).getStack()) == 1) {
           b1 += 1 << i;
-        else
+        } else {
           b1 += 0;
+        }
       }
     }
     GT_Values.NW.sendPacketToAllPlayersInRange(mTileEntity.getWorld(),
@@ -47,7 +48,9 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
   }
 
   public int getStackSize(ItemStack aInv) {
-    if (aInv == null || aInv.stackSize <= 0) return 0;
+    if (aInv == null || aInv.stackSize <= 0) {
+      return 0;
+    }
     return 1;
   }
 
@@ -64,7 +67,9 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
   @Override
   public void detectAndSendChanges() {
     super.detectAndSendChanges();
-    if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
+    if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
+      return;
+    }
 //        heat = ((GT_MetaTileEntity_Hatch_Rack) mTileEntity.getMetaTileEntity()).heat > 0;
 
 //        for (Object crafter : crafters) {
@@ -84,39 +89,53 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
   }
 
   @Override
-  public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-    if (mActive != 0) return null;
+  public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold,
+      EntityPlayer aPlayer) {
+    if (mActive != 0) {
+      return null;
+    }
     return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
   }
 
   @Override
   public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
-    if (mActive != 0) return null;
+    if (mActive != 0) {
+      return null;
+    }
     return super.transferStackInSlot(aPlayer, aSlotIndex);
   }
 
   @Override
   public boolean canDragIntoSlot(Slot par1Slot) {
-    if (mActive != 0) return false;
+    if (mActive != 0) {
+      return false;
+    }
     return super.canDragIntoSlot(par1Slot);
   }
 
   @Override
   public void putStacksInSlots(ItemStack[] par1ArrayOfItemStack) {
-    if (mActive != 0) return;
+    if (mActive != 0) {
+      return;
+    }
 
     super.putStacksInSlots(par1ArrayOfItemStack);
   }
 
   @Override
-  protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount, boolean par4) {
-    if (mActive != 0) return false;
+  protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount,
+      boolean par4) {
+    if (mActive != 0) {
+      return false;
+    }
     return super.mergeItemStack(aStack, aStartIndex, aSlotCount, par4);
   }
 
   @Override
   public void putStackInSlot(int par1, ItemStack par2ItemStack) {
-    if (mActive != 0) return;
+    if (mActive != 0) {
+      return;
+    }
     super.putStackInSlot(par1, par2ItemStack);
   }
 }
