@@ -155,7 +155,9 @@ public class Basic_Register {
     Generator_Diesel_EV.set(
         new GT_MetaTileEntity_DieselGenerator(ID2++, "impact.basicgenerator.diesel.tier.04",
             "EV Combustion Generator", 4).getStackForm(1L));
-    ID2++; // TODO ID:14564 null
+    Boxinator_Hatch_Input.set(
+        new GTMTE_BoxinatorInputBus(ID2++, "impact.boxinator.hatch.input",
+            "Packager Input Bus", 5, 256).getStackForm(1L));
     Generator_Semi_Turbine_EV.set(
         new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.04",
             "EV Semifluid Generator", 4).getStackForm(1L));
