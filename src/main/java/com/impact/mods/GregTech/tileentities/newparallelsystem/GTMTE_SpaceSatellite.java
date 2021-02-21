@@ -27,10 +27,10 @@ import org.lwjgl.input.Keyboard;
 
 public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-  Block CASING = Casing_Helper.sCaseCore2;
-  byte CASING_META = 12;
-  ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-  int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+  public static Block CASING = Casing_Helper.sCasePage8_3;
+  public static byte CASING_META = 5;
+  public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
+  public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
 
   //region Register
   public GTMTE_SpaceSatellite(int aID, String aName, String aNameRegional) {
@@ -120,9 +120,9 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
   @Override
   public boolean checkRecipe(ItemStack aStack) {
     this.mMaxProgresstime = 10;
-    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+    this.mEfficiency = 10000;
     this.mEfficiencyIncrease = 10000;
-    this.mEUt = -16;
+    this.mEUt = 0;
     return true;
   }
 

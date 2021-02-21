@@ -54,7 +54,7 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
     return new ITexture[]{aBaseTexture,
         new GT_RenderedTexture(PRL_HATCH_YELLOW,
             Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-        new GT_RenderedTexture(EM_D_CONN)};
+        /*new GT_RenderedTexture(EM_D_CONN)*/};
   }
 
   @Override
@@ -62,7 +62,7 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
     return new ITexture[]{aBaseTexture,
         new GT_RenderedTexture(PRL_HATCH_RED,
             Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-        new GT_RenderedTexture(EM_D_CONN)};
+        /*new GT_RenderedTexture(EM_D_CONN)*/};
   }
 
   @Override
@@ -134,7 +134,8 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
         GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.BLUE + "Connection restored!");
       } else {
         if (aPlayer.capabilities.isCreativeMode) {
-          GT_Utility.sendChatToPlayer(aPlayer, "Debug recipe: " + getTrueRecipe());
+          GT_Utility.sendChatToPlayer(aPlayer,
+              "Debug recipe: " + getTrueRecipe()); //// TODO: 21.02.2021 del
         }
       }
     }
@@ -144,38 +145,37 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
   public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
     super.onPostTick(aBaseMetaTileEntity, aTick);
     if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
-      connect(aBaseMetaTileEntity);
-    }
-  }
-
-  public void connect(IGregTechTileEntity aBaseMetaTileEntity) {
-    tTile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
-    if (tTile != null) {
-      if (tTile instanceof IGregTechTileEntity) {
-        IMetaTileEntity outputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-        if (outputPar instanceof GTMTE_ParallelHatch_Output) {
-          if (((GTMTE_ParallelHatch_Output) outputPar).getMaxParallel() == getMaxParallel()
-              && outputPar.getBaseMetaTileEntity().isActive()) {
-            if (getBaseMetaTileEntity().getXCoord()
-                == ((GTMTE_ParallelHatch_Output) outputPar).mTargetX
-                && getBaseMetaTileEntity().getYCoord()
-                == ((GTMTE_ParallelHatch_Output) outputPar).mTargetY
-                && getBaseMetaTileEntity().getZCoord()
-                == ((GTMTE_ParallelHatch_Output) outputPar).mTargetZ) {
-              setTrueRecipe(((GTMTE_ParallelHatch_Output) outputPar).mIsTrueRecipe);
-              aBaseMetaTileEntity.setActive(true);
-            } else {
-              aBaseMetaTileEntity.setActive(false);
-              setTrueRecipe(false);
-            }
-          } else {
-            aBaseMetaTileEntity.setActive(false);
-            setTrueRecipe(false);
+      tTile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+      if (tTile != null) {
+        if (tTile instanceof IGregTechTileEntity) {
+          IMetaTileEntity outputPar = ((IGregTechTileEntity) tTile).getMetaTileEntity();
+          if (outputPar instanceof GTMTE_ParallelHatch_Output) {
+            connectOut((GTMTE_ParallelHatch_Output) outputPar);
           }
         }
       }
     }
   }
+
+  public void connectOut(GTMTE_ParallelHatch_Output output) {
+    boolean isActive = false;
+    boolean isActiveRecipe = false;
+    if (output.getMaxParallel() == getMaxParallel()
+        && output.getBaseMetaTileEntity().isActive()) {
+      if (getBaseMetaTileEntity().getXCoord()
+          == output.mTargetX
+          && getBaseMetaTileEntity().getYCoord()
+          == output.mTargetY
+          && getBaseMetaTileEntity().getZCoord()
+          == output.mTargetZ) {
+        isActive = true;
+        isActiveRecipe = output.mIsTrueRecipe;
+      }
+    }
+    setTrueRecipe(isActiveRecipe);
+    getBaseMetaTileEntity().setActive(isActive);
+  }
+
 
   public void setCoord(int x, int y, int z) {
     this.mTargetX = x;

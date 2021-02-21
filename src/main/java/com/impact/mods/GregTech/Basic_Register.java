@@ -22,6 +22,7 @@ public class Basic_Register {
 
   public void run() {
     registerMachines();
+    GTMTE_ComputerRack.run();
   }
 
   private void registerMachines() {

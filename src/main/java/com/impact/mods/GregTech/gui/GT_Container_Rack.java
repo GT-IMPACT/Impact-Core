@@ -1,11 +1,7 @@
 package com.impact.mods.GregTech.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet_Block_Event_Four_Int;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -19,32 +15,10 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
 
   @Override
   public void addSlots(InventoryPlayer aInventoryPlayer) {
-    addSlotToContainer(new Slot(mTileEntity, 0, 69, 28));
-    addSlotToContainer(new Slot(mTileEntity, 1, 91, 28));
-    addSlotToContainer(new Slot(mTileEntity, 2, 69, 50));
-    addSlotToContainer(new Slot(mTileEntity, 3, 91, 50));
-  }
-
-  @Override
-  public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-    super.onContainerClosed(par1EntityPlayer);
-    int b1 = 0;
-    if (getInventory() != null) {
-      for (int i = 0; i < 4; i++) {
-        if (getStackSize(getSlot(i).getStack()) == 1) {
-          b1 += 1 << i;
-        } else {
-          b1 += 0;
-        }
-      }
-    }
-    GT_Values.NW.sendPacketToAllPlayersInRange(mTileEntity.getWorld(),
-        new GT_Packet_Block_Event_Four_Int(
-            mTileEntity.getXCoord(), mTileEntity.getYCoord(), mTileEntity.getZCoord(),
-            mTileEntity.getWorld().provider.dimensionId,
-            b1, 0, 0, 0),
-        mTileEntity.getXCoord(), mTileEntity.getZCoord());
-    mTileEntity.issueTextureUpdate();
+    addSlotToContainer(new CustomSlot(this.mTileEntity, 0, 69, 28, 1));
+    addSlotToContainer(new CustomSlot(this.mTileEntity, 1, 91, 28, 1));
+    addSlotToContainer(new CustomSlot(this.mTileEntity, 2, 69, 50, 1));
+    addSlotToContainer(new CustomSlot(this.mTileEntity, 3, 91, 50, 1));
   }
 
   public int getStackSize(ItemStack aInv) {
@@ -62,30 +36,6 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
   @Override
   public int getShiftClickSlotCount() {
     return 4;
-  }
-
-  @Override
-  public void detectAndSendChanges() {
-    super.detectAndSendChanges();
-    if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
-      return;
-    }
-//        heat = ((GT_MetaTileEntity_Hatch_Rack) mTileEntity.getMetaTileEntity()).heat > 0;
-
-//        for (Object crafter : crafters) {
-//            ICrafting var1 = (ICrafting) crafter;
-//            var1.sendProgressBarUpdate(this, 100, heat ? 1 : 0);
-//        }
-
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void updateProgressBar(int par1, int par2) {
-    super.updateProgressBar(par1, par2);
-//        if (par1 == 100) {
-//            heat = par2 != 0;
-//        }
   }
 
   @Override
@@ -118,7 +68,6 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
     if (mActive != 0) {
       return;
     }
-
     super.putStacksInSlots(par1ArrayOfItemStack);
   }
 

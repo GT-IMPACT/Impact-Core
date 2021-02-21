@@ -3,6 +3,7 @@ package com.impact.mods.GregTech.tileentities.newparallelsystem;
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.loader.ItemRegistery.InsideBlock;
 import static com.mojang.realmsclient.gui.ChatFormatting.GREEN;
 import static com.mojang.realmsclient.gui.ChatFormatting.RED;
 import static com.mojang.realmsclient.gui.ChatFormatting.RESET;
@@ -33,10 +34,10 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
   public int mMaxCapacityPP = 0;
   public int mCurrentCapacityPP = 0;
-  Block CASING = Casing_Helper.sCaseCore2;
-  byte CASING_META = 12;
-  ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-  int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+  public static Block CASING = Casing_Helper.sCasePage8_3;
+  public static byte CASING_META = 7;
+  public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
+  public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
 
   //region Register
   public GTMTE_ParallelComputer(int aID, String aName, String aNameRegional) {
@@ -133,7 +134,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     this.mMaxProgresstime = 10;
     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
     this.mEfficiencyIncrease = 10000;
-    this.mEUt = -20;
+    this.mEUt = 0; // TODO: 21.02.2021 CHANGE
     for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
       if ((getCurrentCapacityPP() - ph.getMaxParallel()) < 0) {
         ph.getBaseMetaTileEntity().setActive(false);
@@ -147,21 +148,28 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     super.onPostTick(aBaseMetaTileEntity, aTick);
     if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
       connect(aBaseMetaTileEntity);
+      int maxCur = 0;
+      boolean isActive = false;
+      for (GTMTE_ComputerRack rack : sComputerRack) {
+        if (aBaseMetaTileEntity.isActive()) {
+          maxCur += rack.mCapacityP;
+          isActive = true;
+        }
+        rack.getBaseMetaTileEntity().setActive(isActive);
+      }
+      setMaxCapacityPP(maxCur);
     }
   }
 
   public void connect(IGregTechTileEntity aBaseMetaTileEntity) {
+    boolean isActive = false;
     for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
       if (aBaseMetaTileEntity.isActive()) {
-        if (ph.getBaseMetaTileEntity().isAllowedToWork()) {
-          ph.setRecipe(true);
-          if (!mIsConnect) {
-            ph.setRecipe(false);
-          }
+        if (ph.getBaseMetaTileEntity().isAllowedToWork() || mIsConnect) {
+          isActive = true;
         }
-      } else {
-        ph.setRecipe(false);
       }
+      ph.setRecipe(isActive);
     }
   }
 
@@ -234,13 +242,15 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
           if (X == 1 && (Y == 0 || Y == 1)) {
             if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                 && !super.addRackHatch(currentTE, CASING_TEXTURE_ID)) {
-              if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
-                  == CASING_META)) {
+              if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING
+                  && thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                  == CASING_META) {
                 RacksZ = Z;
                 break;
               } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-                  == IGlassBlock) {
+                  == InsideBlock
+                  && thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                  == 2) {
               } else {
                 formationChecklist = false;
               }
@@ -258,7 +268,9 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 ParallelsZ = Z;
                 break;
               } else if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-                  == IGlassBlock) {
+                  == InsideBlock
+                  && thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                  == 2) {
               } else {
                 formationChecklist = false;
               }
@@ -290,9 +302,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
       }
     }
     //endregion
-
-    setMaxCapacityPP(50);
-
     int cur = 0;
     for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
       if ((getCurrentCapacityPP() - ph.getMaxParallel()) >= 0) {

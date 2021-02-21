@@ -6,6 +6,7 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.of
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHintDeferred;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore2;
+import static com.impact.mods.GregTech.enums.Texture.Icons.*;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -48,10 +49,10 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
       "- Communication Receiver (" + EnumChatFormatting.RED + "Red Point" + EnumChatFormatting.RESET
           + ")",
   };
-  public static Block CASING = Casing_Helper.sCaseCore2;
-  public static byte CASING_META = 12;
-  public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-  public static int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+  public static Block CASING = Casing_Helper.sCasePage8_3;
+  public static byte CASING_META = 6;
+  public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
+  public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
   private static final IStructureDefinition<GTMTE_TowerCommunication> STRUCTURE_DEFINITION =
       StructureDefinition.<GTMTE_TowerCommunication>builder()
           .addShape("main", new String[][]{
@@ -150,7 +151,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
       final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
     return aSide == 1 ? new ITexture[]{INDEX_CASE,
-        new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)}
+        new GT_RenderedTexture(aActive ? TOWER_OVERLAY_ACTIVE : TOWER_OVERLAY)}
         : new ITexture[]{INDEX_CASE};
   }
 

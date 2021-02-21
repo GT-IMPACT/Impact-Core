@@ -65,7 +65,7 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
     return new ITexture[]{aBaseTexture,
         new GT_RenderedTexture(PRL_HATCH_YELLOW,
             Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-        new GT_RenderedTexture(EM_D_CONN)};
+        /*new GT_RenderedTexture(EM_D_CONN)*/};
   }
 
   @Override
@@ -73,7 +73,7 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
     return new ITexture[]{aBaseTexture,
         new GT_RenderedTexture(PRL_HATCH_RED,
             Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-        new GT_RenderedTexture(EM_D_CONN)};
+        /*new GT_RenderedTexture(EM_D_CONN)*/};
   }
 
   @Override

@@ -1,7 +1,8 @@
 package com.impact.mods.GregTech.tileentities.newparallelsystem;
 
-import static com.impact.mods.GregTech.enums.Texture.Icons.OVERLAY_RACK;
-import static com.impact.mods.GregTech.enums.Texture.Icons.RACK_OVERLAY;
+import static com.github.technus.tectech.util.Util.getUniqueIdentifier;
+import static com.impact.mods.GregTech.GT_ItemList.*;
+import static com.impact.mods.GregTech.enums.Texture.Icons.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import com.impact.mods.GregTech.gui.GT_Container_Rack;
@@ -13,6 +14,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,14 +25,15 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
 
+  public static Map<String, Components> mMapItem = new HashMap<>();
   public int mCapacityP = 0;
-  public int mTexturesUpdate = 0;
 
   public GTMTE_ComputerRack(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional, 5, 4, new String[]{
         Utilits.impactTag(),
-        "Parallel points receiver",
-        "Used in multi-block machines"
+        "Increase the total amount of parall points",
+        "Used in Super Parallel Computer",
+        Utilits.impactTag()
     });
   }
 
@@ -36,29 +41,22 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
     super(aName, 5, 4, aDescription, aTextures);
   }
 
+  public static void run() {
+    new Components(UpgradeCasingT1.get(1), 1);
+    new Components(UpgradeCasingT2.get(1), 2);
+    new Components(UpgradeCasingT3.get(1), 3);
+    new Components(UpgradeCasingT4.get(1), 4);
+  }
+
   @Override
   public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-    ITexture base = new GT_RenderedTexture(OVERLAY_RACK,
-        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()));
-    int meta = mTexturesUpdate;
-    return new ITexture[]{aBaseTexture, base, new GT_RenderedTexture(RACK_OVERLAY[meta])};
+    return new ITexture[]{aBaseTexture, new GT_RenderedTexture(RACK_OVERLAY_ACTIVE)};
   }
 
   @Override
   public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-    ITexture base = new GT_RenderedTexture(OVERLAY_RACK,
-        Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA()));
-    int meta = mTexturesUpdate;
-    return new ITexture[]{aBaseTexture, base, new GT_RenderedTexture(RACK_OVERLAY[meta])};
+    return new ITexture[]{aBaseTexture, new GT_RenderedTexture(RACK_OVERLAY)};
   }
-
-  @Override
-  public void receiveClientEvent(int aB1, int aB2, int aB3, int aB4) {
-    super.receiveClientEvent(aB1, aB2, aB3, aB4);
-    mTexturesUpdate = aB1;
-    getBaseMetaTileEntity().issueTextureUpdate();
-  }
-
 
   @Override
   public boolean isSimpleMachine() {
@@ -112,7 +110,8 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
       float aZ) {
     super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     if (getBaseMetaTileEntity().isServerSide()) {
-      getBaseMetaTileEntity().setActive(true);
+      getBaseMetaTileEntity().setActive(aPlayer.isSneaking());
+      GT_Utility.sendChatToPlayer(aPlayer, "mCapacityP: " + mCapacityP);
     }
   }
 
@@ -126,15 +125,21 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
   }
 
   @Override
-  public void onCloseGUI() {
-    super.onCloseGUI();
-    getBaseMetaTileEntity().issueTextureUpdate();
-  }
-
-  @Override
   public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
     super.onPostTick(aBaseMetaTileEntity, aTick);
-    if (aBaseMetaTileEntity.isServerSide()) {
+    if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
+      int curCap = 0;
+      for (ItemStack stack : mInventory) {
+        if (stack == null || stack.stackSize != 1) {
+          continue;
+        }
+        Components comp = mMapItem.get(getUniqueIdentifier(stack));
+        if (comp == null) {
+          continue;
+        }
+        curCap += 1 << (2 * comp.capacity);
+      }
+      this.mCapacityP = curCap;
     }
   }
 
@@ -145,13 +150,47 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
     return 1;
   }
 
+  @Override
+  public int getInventoryStackLimit() {
+    return 1;
+  }
+
   public void saveNBTData(NBTTagCompound aNBT) {
     super.saveNBTData(aNBT);
-    aNBT.setInteger("mTexturesUpdate", this.mTexturesUpdate);
+    aNBT.setInteger("mCapacityP", this.mCapacityP);
   }
 
   public void loadNBTData(NBTTagCompound aNBT) {
     super.loadNBTData(aNBT);
-    this.mTexturesUpdate = aNBT.getInteger("mTexturesUpdate");
+    this.mCapacityP = aNBT.getInteger("mCapacityP");
+  }
+
+  public static class Components implements Comparable<Components> {
+
+    private final String unlocalizedName;
+    private final int capacity;
+
+    public Components(ItemStack is, int capacity) {
+      this(Utilits.getUniqueIdentifier(is), capacity);
+    }
+
+    public Components(String is, int capacity) {
+      unlocalizedName = is;
+      this.capacity = capacity;
+      mMapItem.put(is, this);
+    }
+
+    @Override
+    public int compareTo(Components o) {
+      return unlocalizedName.compareTo(o.unlocalizedName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj instanceof Components) {
+        return compareTo((Components) obj) == 0;
+      }
+      return false;
+    }
   }
 }

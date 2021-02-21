@@ -66,14 +66,14 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
   public ITexture[] getTexturesActive(ITexture aBaseTexture) {
     return new ITexture[]{aBaseTexture,
         new GT_RenderedTexture(PRL_HATCH_GREEN, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-        new GT_RenderedTexture(EM_D_CONN)};
+        /*new GT_RenderedTexture(EM_D_CONN)*/};
   }
 
   @Override
   public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
     return new ITexture[]{aBaseTexture,
         new GT_RenderedTexture(PRL_HATCH_RED, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-        new GT_RenderedTexture(EM_D_CONN)};
+        /*new GT_RenderedTexture(EM_D_CONN)*/};
   }
 
   @Override

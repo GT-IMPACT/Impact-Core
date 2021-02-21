@@ -99,8 +99,7 @@ public enum GT_ItemList implements IItemContainer {
   DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, NqCasing, CycloneCasing, MoonMinerCasing, RailAssemblerCasing,
   SpaceElevatorCasing,
 
-  Casing_Farm, Huge_Casing_Turbine,
-
+  Casing_Farm, Huge_Casing_Turbine, Space_Satellite_Casing, Tower_Casing, Computer_Casing,
 
   end;
   private ItemStack mStack;

@@ -10,7 +10,7 @@ public class GT_GUIContainer_Rack extends GT_GUIContainerMetaTile_Machine {
 
   public GT_GUIContainer_Rack(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
       String aName) {
-    super(new GT_Container_Rack(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/rack.png");
+    super(new GT_Container_Rack(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/ComputerRack.png");
     mName = aName;
   }
 
