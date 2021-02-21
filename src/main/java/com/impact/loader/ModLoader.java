@@ -1,5 +1,6 @@
 package com.impact.loader;
 
+import com.impact.mods.ASP.ASP;
 import com.impact.mods.GregTech.TecTech.Holo_Impact;
 import com.impact.mods.GregTech.TecTech.Holo_Vanila_GregTech;
 import com.impact.recipes.*;
@@ -60,6 +61,11 @@ public class ModLoader implements Runnable {
     // --- AE
     if (Loader.isModLoaded("appliedenergistics2")) {
       new AERecipe().run();
+    }
+
+    // --- Chisel
+    if (Loader.isModLoaded("chisel")) {
+      new ChiselGroup().run();
     }
   }
 }
