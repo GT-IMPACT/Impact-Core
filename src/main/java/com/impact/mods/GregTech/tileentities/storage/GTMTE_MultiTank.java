@@ -84,7 +84,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         .addSeparator()
         .beginStructureBlock(5, 9, 5, true)
         .addController()
-        .addEnergyHatch("Any top or bottom casing")
         .addOtherStructurePart("Inner 3x7x3 tube", "Tank Storage Block")
         .addOtherStructurePart("Outer 5x1&9x5 Casing", "Chemical Casing")
         .addOtherStructurePart("Outer 5x7x5 glass shell", "I-Glass")
