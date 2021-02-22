@@ -339,12 +339,12 @@ public class CentrifugeRecipe implements Runnable {
             GT_Values.NI, GT_Values.NI, new int[]{10000, 10000, 10000}, 400, 8);
 
     GT_Values.RA.addCentrifugeRecipe(
-        GT_OreDictUnificator.get(OrePrefixes.dust.get(Materials.Orichalcum), 1L), GT_Values.NI,
+        GT_OreDictUnificator.get(OrePrefixes.dust.get(Materials.Orichalcum), 4L), GT_Values.NI,
         GT_Values.NF, GT_Values.NF,
-        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Trinium, 1L),
-        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Trinium, 1L),
-        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Trinium, 1L),
-        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Oriharukon, 1L), GT_Values.NI,
+        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1L),
+        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1L),
+        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1L),
+        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Oriharukon, 1L), GT_Values.NI,
         GT_Values.NI, new int[]{10000, 10000, 10000, 10000}, 300, 122880);
     GT_Values.RA
         .addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust.get(Materials.Mytryl), 6L),
