@@ -1,6 +1,7 @@
 package com.impact.recipes.machines;
 
 import static com.impact.common.item.Core_List_Items.*;
+import static com.impact.loader.ItemRegistery.InsideBlock;
 import static com.impact.loader.ItemRegistery.UtilBlock;
 import static com.impact.mods.GregTech.GT_ItemList.Casing_Farm;
 import static com.impact.util.Utilits.Blockstack;
@@ -845,6 +846,13 @@ public class AssemblerRecipe implements Runnable {
             Materials.Polybenzimidazole.getMolten(144L),
             GT_ItemList.Boxinator_Hatch_Input.get(1), 480, 7680);
 
+    // --- Computer Rack
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{GT_ItemList.Computer_Casing.get(1L), ItemList.Hatch_Input_Bus_IV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2L), ItemList.Circuit_Parts_GlassFiber.get(16)},
+            Materials.TungstenSteel.getMolten(1296L),
+            GT_ItemList.Parallel_Hatch_Rack.get(1), 400, 7680);
+
     /* ================================= end GT MOD =================================*/
 
     GT_Values.RA.addAssemblerRecipe(
@@ -1244,6 +1252,37 @@ public class AssemblerRecipe implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HastelloyC276, 16),
             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSE, 16)}, null,
         GT_ItemList.LSCC.get(1L), 600, 7680);
+
+    //Space Satellite Casing
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSLA, 6),
+                    GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8)}, null,
+            GT_ItemList.Space_Satellite_Casing.get(2L), 100, 120);
+
+    //Tower Casing
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Ultimet, 6),
+                    GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8)}, null,
+            GT_ItemList.Tower_Casing.get(2L), 100, 120);
+
+    //Computer Casing
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Zamak, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.MaragingSteel300, 6),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSG, 16)}, Materials.HSSE.getMolten(288),
+            GT_ItemList.Computer_Casing.get(2L), 200, 1920);
+
+    //Vent Casing
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MaragingSteel300, 6),
+                    GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8)}, null,
+            new ItemStack(InsideBlock, 2, 2) , 100, 120);
 
     /* ====END CASINGS ==== */
     /** ====START QUANTUM SUITE ==== */
