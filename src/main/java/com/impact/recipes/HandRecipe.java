@@ -570,7 +570,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ItemList.Diode_16A_UV.get(1L), 0, new Object[]{"PSP", "WCW", 'P', OrePrefixes.plate.get(Materials.CinobiteA243), 'W', OrePrefixes.cableGt16.get(Materials.ElectrumFlux), 'S', OrePrefixes.spring.get(Materials.ElectrumFlux), 'C', ItemList.Casing_UV});
 
     //White Concrete
-    GT_ModHandler.addCraftingRecipe(Blockstack(UtilBlock, 8, 2), bitsd, new Object[]{"CCC", "CDC", "CCC", 'C', Blockstack(UtilBlock, 1, 0), 'D', Dyes.dyeWhite});
+    GT_ModHandler.addCraftingRecipe(Blockstack(UtilBlock, 8, 2), tBitMask, new Object[]{"CCC", "CDC", "CCC", 'C', Blockstack(UtilBlock, 1, 0), 'D', Dyes.dyeWhite});
 
   }
   public void run2() {
