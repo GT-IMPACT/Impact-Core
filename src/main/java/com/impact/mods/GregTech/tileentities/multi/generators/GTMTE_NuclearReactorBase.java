@@ -1,6 +1,8 @@
 package com.impact.mods.GregTech.tileentities.multi.generators;
 
 import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore1;
+import static com.impact.mods.GregTech.enums.Texture.Icons.REACTOR_OVERLAY;
+import static com.impact.mods.GregTech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
 
 import com.impact.mods.GregTech.gui.GT_Container_NuclearReactor;
 import com.impact.mods.GregTech.gui.GUI_NuclearReactor;
@@ -54,7 +56,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
       byte aColorIndex, boolean aActive, boolean aRedstone) {
     if (aSide == aFacing) {
       return new ITexture[]{INDEX_CASE,
-          new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)};
+          new GT_RenderedTexture(aActive ? REACTOR_OVERLAY_ACTIVE : REACTOR_OVERLAY)};
     }
     return new ITexture[]{INDEX_CASE};
   }

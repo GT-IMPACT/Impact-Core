@@ -1067,10 +1067,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       if (tile != null && tile instanceof IGregTechTileEntity) {
         IMetaTileEntity aComTower = ((IGregTechTileEntity) tile).getMetaTileEntity();
         if (aComTower instanceof GTMTE_TowerCommunication) {
-          if (aComTower.getBaseMetaTileEntity().isActive()) {
-            if (mFrequency == ((GTMTE_TowerCommunication) aComTower).mFrequency) {
+          if (aComTower.getBaseMetaTileEntity().isActive()
+              && mFrequency == ((GTMTE_TowerCommunication) aComTower).mFrequency) {
               mIsConnect = ((GTMTE_TowerCommunication) aComTower).mIsConnect;
-            }
           }
         }
       }

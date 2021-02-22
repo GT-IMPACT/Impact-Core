@@ -14,6 +14,8 @@ import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContain
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
+import com.impact.mods.GregTech.gui.Container_SuperParallelComputer;
+import com.impact.mods.GregTech.gui.GUI_SuperParallelComputer;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
@@ -24,6 +26,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -32,12 +35,12 @@ import org.lwjgl.input.Keyboard;
 
 public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-  public int mMaxCapacityPP = 0;
-  public int mCurrentCapacityPP = 0;
   public static Block CASING = Casing_Helper.sCasePage8_3;
   public static byte CASING_META = 7;
   public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
   public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
+  public int mMaxCapacityPP = 0;
+  public int mCurrentCapacityPP = 0;
 
   //region Register
   public GTMTE_ParallelComputer(int aID, String aName, String aNameRegional) {
@@ -63,6 +66,19 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     return aSide == aFacing ? new ITexture[]{INDEX_CASE,
         new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)}
         : new ITexture[]{INDEX_CASE};
+  }
+
+  @Override
+  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
+    return new GUI_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+  }
+
+  @Override
+  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
+    return new Container_SuperParallelComputer(aPlayerInventory,
+        aBaseMetaTileEntity, this);
   }
 
   public void run() {
@@ -112,15 +128,15 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addTypeMachine("Block Digger")
+        .addTypeMachine("Parallel Super Computer")
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addOutputBus("Any casing (max x1)")
-        .addInputHatch("Any casing (max x1)")
-        .addOtherStructurePart("Block of Digger (x1)", "to the very center from below")
-        .addCasingInfo("Moon Miner Casing")
+        .addEnergyHatch("Computer Casing")
+        .addMaintenanceHatch("Computer Casing")
+        .addOtherStructurePart("Computer Rack", "Empty Rack Casing, Right Side")
+        .addOtherStructurePart("Parallel Hatch Out", "Empty Rack Casing, Left Side")
+        .addOtherStructurePart("Empty Rack Casing", "inside")
+        .addCasingInfo("Computer Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
@@ -135,11 +151,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
     this.mEfficiencyIncrease = 10000;
     this.mEUt = 0; // TODO: 21.02.2021 CHANGE
-    for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
-      if ((getCurrentCapacityPP() - ph.getMaxParallel()) < 0) {
-        ph.getBaseMetaTileEntity().setActive(false);
-      }
-    }
     return true;
   }
 
@@ -158,14 +169,27 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         rack.getBaseMetaTileEntity().setActive(isActive);
       }
       setMaxCapacityPP(maxCur);
+      int cur = 0;
+      for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
+        if ((getCurrentCapacityPP() - ph.getMaxParallel()) >= 0) {
+          if (ph.getBaseMetaTileEntity().isAllowedToWork()) {
+            cur += ph.getMaxParallel();
+          }
+          if ((getCurrentCapacityPP() - ph.getMaxParallel()) < 0) {
+            ph.getBaseMetaTileEntity().setActive(isActive);
+          }
+        }
+      }
+      mCurrentCapacityPP = cur;
     }
   }
+
 
   public void connect(IGregTechTileEntity aBaseMetaTileEntity) {
     boolean isActive = false;
     for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
       if (aBaseMetaTileEntity.isActive()) {
-        if (ph.getBaseMetaTileEntity().isAllowedToWork() || mIsConnect) {
+        if (ph.getBaseMetaTileEntity().isAllowedToWork() && mIsConnect) {
           isActive = true;
         }
       }
@@ -301,17 +325,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         }
       }
     }
-    //endregion
-    int cur = 0;
-    for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
-      if ((getCurrentCapacityPP() - ph.getMaxParallel()) >= 0) {
-        if (ph.getBaseMetaTileEntity().isAllowedToWork()) {
-          cur = ph.getMaxParallel();
-          mCurrentCapacityPP -= cur;
-        }
-      }
-    }
-
     this.mWrench = true;
     this.mScrewdriver = true;
     this.mSoftHammer = true;

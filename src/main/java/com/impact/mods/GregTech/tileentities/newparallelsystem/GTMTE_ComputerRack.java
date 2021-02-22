@@ -30,7 +30,6 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
 
   public GTMTE_ComputerRack(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional, 5, 4, new String[]{
-        Utilits.impactTag(),
         "Increase the total amount of parall points",
         "Used in Super Parallel Computer",
         Utilits.impactTag()
@@ -87,7 +86,7 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
   @Override
   public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
       IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, "123");
+    return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, "Computer Rack");
   }
 
   @Override

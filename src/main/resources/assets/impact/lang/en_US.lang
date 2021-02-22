@@ -340,6 +340,7 @@ tile.impact_lapotronicenergyunit_block.6.name=Energium Capacitor (IV)
 tile.impact_sawmill_block.name=Saw Mill Conveyor
 tile.impact_inside_block.0.name=Naquadah Chamber Casing
 tile.impact_inside_block.1.name=Cyclone Chamber Casing
+tile.impact_inside_block.2.name=Empty Rack Casing
 tile.impact_nqtether_block.name=Tether Core
 tile.impact_collision_block.0.name=Block of Digger
 tile.impact_spaceelevatortether_block.name=Space Elevator Hawser
@@ -356,8 +357,6 @@ tile.impact_fluidtankblock_block.7.name=Tank Storage Block (Tier 8)
 tile.impact_ceramic_block.0.name=YSZ Ceramic Electrolyte Unit
 tile.impact_ceramic_block.1.name=GDC Ceramic Electrolyte Unit
 tile.impact_ceramic_block.2.name=LSCF Ceramic Electrolyte Unit
-
-#tile.blockMachine3.0.name=Advanced Crop Harvester
 
 #Planets Lang
 tile.Hydrogen.name=Hydrogen

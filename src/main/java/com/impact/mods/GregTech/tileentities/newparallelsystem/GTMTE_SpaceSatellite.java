@@ -19,6 +19,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.DimensionManager;
@@ -49,6 +50,18 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
     return new GTMTE_SpaceSatellite(this.mName);
   }
   //endregion
+
+  @Override
+  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
+    return false;
+  }
+
+  @Override
+  public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
+      IGregTechTileEntity aBaseMetaTileEntity) {
+    return false;
+  }
 
   @Override
   public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
@@ -103,8 +116,6 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
         .addInfo(disableSpaceStationCreation ?
             "Installation on the Moon required" :
             "Installation on the Space Station required")
-        .addInfo("ватафак? " + disableSpaceStationCreation)
-
         .addController()
         .addEnergyHatch("Any casing")
         .addOtherStructurePart("Communication Transmitter", "Any casing")
@@ -131,6 +142,7 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
     super.onPostTick(aBaseMetaTileEntity, aTick);
     if (aBaseMetaTileEntity.isServerSide()) {
       if (aTick % 20 == 0) {
+        aBaseMetaTileEntity.setActive(true);
         for (GTMTE_SpaceSatellite_Transmitter th : sCommunTransmitter) {
           if (aBaseMetaTileEntity.isActive()) {
             th.getBaseMetaTileEntity().setActive(true);

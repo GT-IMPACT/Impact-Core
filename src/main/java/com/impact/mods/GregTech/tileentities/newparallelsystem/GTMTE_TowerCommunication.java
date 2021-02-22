@@ -6,7 +6,8 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.of
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHintDeferred;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.GregTech.blocks.Casing_Helper.sCaseCore2;
-import static com.impact.mods.GregTech.enums.Texture.Icons.*;
+import static com.impact.mods.GregTech.enums.Texture.Icons.TOWER_OVERLAY;
+import static com.impact.mods.GregTech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -15,8 +16,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
-import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
-import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Utilits;
 import gregtech.api.GregTech_API;
@@ -158,14 +157,13 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   @Override
   public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
       IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
+    return false;
   }
 
   @Override
   public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
       IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Hyper Generator",
-        "MultiParallelBlockGUI.png");
+    return false;
   }
 
   @Override
@@ -194,6 +192,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
     super.onPostTick(aBaseMetaTileEntity, aTick);
 
     if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
+      aBaseMetaTileEntity.setActive(true);
       if (aBaseMetaTileEntity.isActive()) {
         for (GTMTE_SpaceSatellite_Receiver ph : sCommunReceiver) {
           if (ph.getBaseMetaTileEntity().isActive()) {
@@ -221,15 +220,12 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addTypeMachine("Block Digger")
+        .addTypeMachine("Communication Tower")
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addOutputBus("Any casing (max x1)")
-        .addInputHatch("Any casing (max x1)")
-        .addOtherStructurePart("Block of Digger (x1)", "to the very center from below")
-        .addCasingInfo("Moon Miner Casing")
+        .addOtherStructurePart("Communication Receiver Hatch", "Top")
+        .addOtherStructurePart("Any blocks", "Arbitrary structure")
+        .addCasingInfo("Tower Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
@@ -240,18 +236,8 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 
   @Override
   public String[] getInfoData() {
-
     return new String[]{
-        "Total Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance()
-            .format(super.mEUt * 256) + EnumChatFormatting.RESET + " EU/t",
-        "Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt)
-            + EnumChatFormatting.RESET + " EU/t | Amperes: " + EnumChatFormatting.GREEN + "256"
-            + EnumChatFormatting.RESET + " A",
-        "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F
-            + EnumChatFormatting.YELLOW + " %",
-        "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
-            ? EnumChatFormatting.GREEN + "No Problems" + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET),
+        "Frequency: " + mFrequency + "",
     };
   }
 
@@ -280,8 +266,6 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
     Impact_API.sCommunicationTower.put(Utilits.inToStringUUID(aFreq, aPlayer),
         Utilits.getCoordsBaseMTE(getBaseMetaTileEntity()));
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + aFreq);
-    GT_Utility.sendChatToPlayer(aPlayer,
-        "UUID: " + EnumChatFormatting.YELLOW + aPlayer.getUniqueID()); //// TODO: 21.02.2021 DEL
   }
 
   public void setCoord(int[] coords) {
