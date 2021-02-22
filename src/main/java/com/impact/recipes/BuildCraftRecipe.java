@@ -243,15 +243,7 @@ public class BuildCraftRecipe implements Runnable {
             new Object[]{"PUP", "GCG", "PGP", 'P', OrePrefixes.itemCasing.get(Materials.Steel), 'G',
                 CoreItems2.getRecipe(SteelBars.getMetaID(), 1), 'U', ItemList.Electric_Pump_LV, 'C',
                 GT_ModHandler.getModItem("extracells", "certustank", 1L, 0)});
-    // --- Quarry
-    GT_ModHandler
-        .addCraftingRecipe(GT_ModHandler.getModItem("BuildCraft|Builders", "machineBlock", 1L, 0),
-            tBitMask, new Object[]{"PHP", "COC", "PMP", 'P',
-                OrePrefixes.itemCasing.get(Materials.StainlessSteel), 'M',
-                ItemList.Electric_Motor_MV, 'O', ItemList.Machine_MV_Miner, 'C',
-                OrePrefixes.circuit.get(Materials.Good), 'H',
-                OrePrefixes.toolHeadDrill.get(Materials.StainlessSteel)});
-
+    
     // --- Wooden Pipe
     GT_ModHandler.addCraftingRecipe(GT_ModHandler
             .getModItem("BuildCraft|Transport", "item.buildcraftPipe.pipeitemswood", 1L, 0), tBitMask,
