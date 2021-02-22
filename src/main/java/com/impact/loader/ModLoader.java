@@ -65,7 +65,7 @@ public class ModLoader implements Runnable {
 
     // --- Chisel
     if (Loader.isModLoaded("chisel")) {
-      new ChiselGroup().run();
+      ChiselGroup.run();
     }
   }
 }

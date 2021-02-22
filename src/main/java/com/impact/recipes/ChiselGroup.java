@@ -1,7 +1,6 @@
 package com.impact.recipes;
 
 import com.cricketcraft.chisel.api.carving.CarvingUtils;
-import net.minecraft.block.Block;
 import team.chisel.carving.Carving;
 
 import static com.riciJak.Ztones.init.ModBlocks.*;
