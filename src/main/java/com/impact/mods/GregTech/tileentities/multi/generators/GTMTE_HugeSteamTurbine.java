@@ -87,7 +87,8 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
         "MultiParallelBlockGUI.png");
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,

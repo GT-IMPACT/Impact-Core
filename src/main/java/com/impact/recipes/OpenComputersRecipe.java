@@ -448,7 +448,7 @@ public class OpenComputersRecipe implements Runnable {
                 ItemList.Sensor_HV, 'E', ItemList.Emitter_HV, 'W',
                 OrePrefixes.cableGt02.get(Materials.Gold)});
 
-    for (Materials tMat : Materials.values()) {//TODO dream things using soldering go in here!
+    for (Materials tMat : Materials.values()) {
       if (tMat.mStandardMoltenFluid != null && tMat.contains(SubTag.SOLDERING_MATERIAL) && !(
           GregTech_API.mUseOnlyGoodSolderingMaterials && !tMat
               .contains(SubTag.SOLDERING_MATERIAL_GOOD))) {

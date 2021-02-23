@@ -100,7 +100,8 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
     return GT_Recipe.GT_Recipe_Map.sCyclonRecipes;
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,

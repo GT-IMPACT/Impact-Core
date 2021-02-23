@@ -151,7 +151,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,

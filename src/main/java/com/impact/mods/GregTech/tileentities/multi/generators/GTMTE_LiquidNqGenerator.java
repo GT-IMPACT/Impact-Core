@@ -145,7 +145,8 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
     return offset;
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,

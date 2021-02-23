@@ -30,7 +30,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
   byte CASING_META = 9;
   ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
   int CASING_TEXTURE_ID = CASING_META + 128 * 3;
-  private final int mLevel = 0;
 
   public GTMTE_Wire(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -63,8 +62,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
     b
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
-        .addInfo("Parallel Point will upped Upgrade Casing")
-        .addInfo("Upgrade Casing must be filled in completely")
         .addTypeMachine("WireMill, Wire Assembler")
         .addScrew()
         .addSeparatedBus()
@@ -75,6 +72,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
         .addInputBus("Any casing (max x6)")
         .addOutputBus("Any casing (max x3)")
         .addInputHatch("Any casing (max x3)")
+        .addParallelHatch("Any casing (max x1)")
         .addCasingInfo("Wire Factory Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -97,9 +95,8 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
         : GT_Recipe.GT_Recipe_Map.sWireAssemblerRecipes;
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
-    clearHatches();
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -133,23 +130,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
           }
 
           if ((X == 1 || X == 2) && Z == -1 && Y == 0) {
-//            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-//              this.mLevel = 4;
-//            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-//              this.mLevel = 16;
-//            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-//              this.mLevel = 64;
-//            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-//                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-//              this.mLevel = 256;
-//            } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
-//              this.mLevel = 1;
-//            } else {
-//              formationChecklist = false;
-//            }
             continue;
           }
 
@@ -201,7 +181,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mLevel);
+    return impactRecipe(itemStack, mParallel);
   }
 
   @Override

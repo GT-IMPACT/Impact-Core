@@ -36,7 +36,7 @@ public class Config {
       }
 
       Property cfg;
-      //todo GENERAL
+      //GENERAL
       cfg = config.get("GENERAL", "Print csv", false);
       cfg.comment = "[NEI Ore Plugin] Princsv, you need apache commons collections to be injected in the minecraft jar. [Default: false]";
       csv = cfg.getBoolean(false);
@@ -62,7 +62,7 @@ public class Config {
       DisableTheEnd = cfg.getBoolean(false);
       General.add(cfg.getName());
 
-      //todo DEBUG
+      //DEBUG
       cfg = config.get("DEBUG", "disableLogger", true);
       cfg.comment = "Disabled Logger. [Default: true]";
       disableLogger = cfg.getBoolean(true);

@@ -449,6 +449,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   }
 
   public boolean impactRecipe(ItemStack itemStack, int aParallel, boolean aChance) {
+    if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
+      stopMachine();
+      return false;
+    }
     ArrayList<ItemStack> tInputList = null;
     ArrayList<FluidStack> tFluidList = null;
     ItemStack[] tInputs = null;
@@ -942,6 +946,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     }
   }
 
+  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+    clearHatches();
+    return machineStructure(thisController);
+  }
+
+  public abstract boolean machineStructure(IGregTechTileEntity thisController);
+
   public void setCoord(int[] coords) {
     this.mTargetX = coords[0];
     this.mTargetY = coords[1];
@@ -1027,10 +1038,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   }
 
   public void clearHatches() {
-    sParallHatchesIn.clear();
     sParallHatchesOut.clear();
-    sCommunTransmitter.clear();
+    sParallHatchesIn.clear();
+    sComputerRack.clear();
     sCommunReceiver.clear();
+    sCommunTransmitter.clear();
     mDynamoTunnelsTT.clear();
   }
 

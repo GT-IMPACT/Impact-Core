@@ -144,8 +144,8 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
     return GT_Recipe.GT_Recipe_Map.sPrimitiveLine;
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,

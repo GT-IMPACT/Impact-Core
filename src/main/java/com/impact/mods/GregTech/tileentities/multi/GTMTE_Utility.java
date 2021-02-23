@@ -7,8 +7,6 @@ import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.mods.GregTech.tileentities.hatches.GTMTE_BoxinatorInputBus;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite_Receiver;
-import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite_Transmitter;
 import com.impact.util.MultiBlockTooltipBuilder;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
@@ -16,7 +14,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -35,13 +32,11 @@ import org.lwjgl.input.Keyboard;
 public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   public static String mModed;
-
+  public final ArrayList<GTMTE_BoxinatorInputBus> sBoxinatorHatch = new ArrayList<>();
   Block CASING = Casing_Helper.sCaseCore1;
   byte CASING_META = 11;
   ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
   int CASING_TEXTURE_ID = CASING_META + 128 * 3;
-  private int mLevel = 0;
-  public final ArrayList<GTMTE_BoxinatorInputBus> sBoxinatorHatch = new ArrayList<>();
 
   public GTMTE_Utility(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -74,8 +69,6 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     b
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
-        .addInfo("Parallel Point will upped Upgrade Casing")
-        .addInfo("Upgrade Casing must be filled in completely")
         .addTypeMachine("Compressor, Extractor, Canning,")
         .addTypeMachine("Packager, Recycler, Hammer,")
         .addTypeMachine("Lathe, Polarizer")
@@ -88,6 +81,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
         .addMuffler("Any casing")
         .addInputBus("Any casing (max x6)")
         .addOutputBus("Any casing (max x3)")
+        .addParallelHatch("Any casing (max x1)")
         .addCasingInfo("Utility Machine Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -133,8 +127,8 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -154,6 +148,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
             && !checkBoxinatorHatch(currentTE, CASING_TEXTURE_ID)
             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
           if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
               && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
@@ -175,27 +170,8 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
           }
 
           if ((Z == -1 || Z == -2 || Z == -3) && X == 0 && Y == 0) {
-            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-              this.mLevel = 4;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-              this.mLevel = 16;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-              this.mLevel = 64;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-              this.mLevel = 256;
-            } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
-              this.mLevel = 1;
-            } else {
-              formationChecklist = false;
-            }
             continue;
           }
-          String glass = thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-              .getUnlocalizedName();
           if ((Z == -1 || Z == -2 || Z == -3) && X == -1 && Y == 0) {
             if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock) {
             } else {
@@ -211,6 +187,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
               && !checkBoxinatorHatch(currentTE, CASING_TEXTURE_ID)
               && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+              && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
@@ -235,6 +212,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
               && !checkBoxinatorHatch(currentTE, CASING_TEXTURE_ID)
               && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+              && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
@@ -247,9 +225,6 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
         }
       }
     }
-
-    setParallel(this.mLevel);
-
     if (this.mInputBusses.size() > 6) {
       formationChecklist = false;
     }
@@ -268,6 +243,12 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     if (this.sBoxinatorHatch.size() > 2) {
       formationChecklist = false;
     }
+    if (this.sParallHatchesIn.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.sParallHatchesOut.size() != 0) {
+      formationChecklist = false;
+    }
     return formationChecklist;
   }
 
@@ -276,7 +257,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     if (getRecipeMap() == GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes) {
       checkRecipeBoxinator();
     }
-    return impactRecipe(itemStack, mLevel);
+    return impactRecipe(itemStack, mParallel);
   }
 
   public boolean checkRecipeBoxinator() {
@@ -434,18 +415,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public int getPollutionPerTick(ItemStack aStack) {
-    switch (this.mLevel) {
-      case 4:
-        return 4 * 50;
-      case 16:
-        return 16 * 50;
-      case 64:
-        return 64 * 50;
-      case 256:
-        return 256 * 50;
-      default:
-        return 0;
-    }
+    return 50 * mParallel;
   }
 
 

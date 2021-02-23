@@ -114,7 +114,8 @@ public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
     }
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     int ID = getBaseMetaTileEntity().getWorld().provider.dimensionId;
     if (!DimensionManager.getProvider(ID).getClass().getName().contains("Moon")) {
       return false;

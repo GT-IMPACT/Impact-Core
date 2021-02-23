@@ -103,8 +103,8 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
   }
 
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,

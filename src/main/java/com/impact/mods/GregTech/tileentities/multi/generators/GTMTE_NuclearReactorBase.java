@@ -235,8 +235,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     return false;
   }
 
-  public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     mRodHatches.clear();
-    return this.checkMachineFunction(aBaseMetaTileEntity);
+    return this.checkMachineFunction(thisController);
   }
 }

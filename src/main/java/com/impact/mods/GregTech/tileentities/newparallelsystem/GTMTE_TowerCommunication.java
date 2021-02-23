@@ -43,9 +43,9 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 
   private static final String[] description = new String[]{
       EnumChatFormatting.RED + "Impact Details:",
-      "- Steel Frame Box",
-      "- Communication Tower Casing",
-      "- Communication Receiver (" + EnumChatFormatting.RED + "Red Point" + EnumChatFormatting.RESET
+      " - Arbitrary structure",
+      " - Communication Tower Casing",
+      " - Communication Receiver (" + EnumChatFormatting.RED + "Red Point" + EnumChatFormatting.RESET
           + ")",
   };
   public static Block CASING = Casing_Helper.sCasePage8_3;
@@ -79,11 +79,11 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
           })
           .addElement('A', ofChain(
               ofHatchAdder(GTMTE_TowerCommunication::addClassicToMachineList, CASING_TEXTURE_ID,
-                  sCaseCore2, CASING_META),
+                  CASING, CASING_META),
               ofBlock(CASING, CASING_META)))
           .addElement('D',
               ofHatchAdder(GTMTE_TowerCommunication::addCommunicationHatchToMachineList,
-                  CASING_TEXTURE_ID, sCaseCore2, CASING_META))
+                  CASING_TEXTURE_ID, CASING, CASING_META))
           .addElement('E', ofHintDeferred(
               () -> new IIcon[]{Textures.BlockIcons.FRAMEBOXGT.getIcon(),
                   Textures.BlockIcons.FRAMEBOXGT.getIcon(),

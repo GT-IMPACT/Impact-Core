@@ -190,7 +190,8 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
         return offset;
     }
 
-    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+    @Override
+    public boolean machineStructure(IGregTechTileEntity thisController) {
         mOutputHatches1.clear();
 
         BiomeDictionary.Type tBiomeType = BiomeDictionary.getTypesForBiome(thisController.getBiome())[0];

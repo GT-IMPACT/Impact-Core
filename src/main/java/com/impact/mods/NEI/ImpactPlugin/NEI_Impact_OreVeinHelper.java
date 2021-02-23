@@ -34,7 +34,7 @@ public class NEI_Impact_OreVeinHelper extends NEI_Impact_Default {
 
   public String getGuiTexture() {
     return "gregtech:textures/gui/basic/Default.png";
-  }//todo
+  }
 
   public void loadCraftingRecipes(String outputId, Object... results) {
     if (outputId.equals(getOverlayIdentifier())) {

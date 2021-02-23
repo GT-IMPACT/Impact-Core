@@ -4,7 +4,6 @@ import static com.impact.util.Utilits.getFluidStack;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
-import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.mods.GregTech.tileentities.multi.debug.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.MultiBlockTooltipBuilder;
@@ -37,7 +36,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
   Block CASING = GregTech_API.sBlockCasings2;
   byte CASING_META = 1;
   byte CASING_TEXTURE_ID = 17;
-  private int mLevel = 0;
 
   public GTMTE_AdvancedVacuumFreezer(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -69,8 +67,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     b
         .addInfo("Speed Freeez!")
         .addParallelInfo(1, 256)
-        .addInfo("Upgrade Casing must be filled in completely")
-        .addInfo("Parallel Point will upped Upgrade Casing")
         .addInfo("Super Coolant is required for operation: 50 per second")
         .addInfo("At the output, get Hot Coolant: 25 per second")
         .addTypeMachine("Vacuum Freezer")
@@ -83,6 +79,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
         .addOutputHatch("Any casing (max x1)")
         .addInputBus("Any casing (max x8)")
         .addOutputBus("Any casing (max x1)")
+        .addParallelHatch("Any casing (max x1)")
         .addCasingInfo("Frost Proof Machine Casing and IC2 Coolant fluid")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -104,14 +101,18 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
   }
 
   public boolean checkRecipe(ItemStack itemStack) {
+    if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
+      stopMachine();
+      return false;
+    }
     for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
       ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
       tBus.mRecipeMap = getRecipeMap();
       if (isValidMetaTileEntity(tBus)) {
         for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-            if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-            }
+          if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+            tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+          }
         }
       }
       ArrayList<FluidStack> tFluidList = this.getStoredFluids();
@@ -133,53 +134,53 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
             return false;
           }
 
-            if (tRecipe.mSpecialValue == -200 && (mCleanroom == null
-                || mCleanroom.mEfficiency == 0)) {
-                return false;
-            }
+          if (tRecipe.mSpecialValue == -200 && (mCleanroom == null
+              || mCleanroom.mEfficiency == 0)) {
+            return false;
+          }
 
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
           boolean found_Recipe = false;
           int processed = 0;
           while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
-              && processed < Parallel()) { //THIS PARALLEL
-              if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
-                  .isRecipeInputEqual(true, tFluids, tInputs)) {
-                  found_Recipe = true;
-                  for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                      outputItems.add(tRecipe.getOutput(i));
-                  }
-                  ++processed;
-              } else {
-                  break;
+              && processed < mParallel) { //THIS PARALLEL
+            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+                .isRecipeInputEqual(true, tFluids, tInputs)) {
+              found_Recipe = true;
+              for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                outputItems.add(tRecipe.getOutput(i));
               }
+              ++processed;
+            } else {
+              break;
+            }
           }
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
-              if (actualEUT > Integer.MAX_VALUE) {
-                  byte divider = 0;
-                  while (actualEUT > Integer.MAX_VALUE) {
-                      actualEUT = actualEUT / 2;
-                      divider++;
-                  }
-                  calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
-                      tRecipe.mDuration * (divider * 2), 1, nominalV, this);
-              } else {
-                  calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
-                      this);
+            if (actualEUT > Integer.MAX_VALUE) {
+              byte divider = 0;
+              while (actualEUT > Integer.MAX_VALUE) {
+                actualEUT = actualEUT / 2;
+                divider++;
               }
+              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+                  tRecipe.mDuration * (divider * 2), 1, nominalV, this);
+            } else {
+              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+                  this);
+            }
             //In case recipe is too OP for that machine
-              if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
-                  && this.mEUt == Integer.MAX_VALUE - 1) {
-                  return false;
-              }
+            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
+                && this.mEUt == Integer.MAX_VALUE - 1) {
+              return false;
+            }
             if (this.mEUt > 0) {
               this.mEUt = (-this.mEUt);
             }
             int TimeProgress;
-            switch (Parallel()) {
+            switch (mParallel) {
               default:
                 TimeProgress = this.mMaxProgresstime;
                 break;
@@ -218,8 +219,8 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     return super.onRunningTick(aStack);
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -232,9 +233,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
       for (byte Z = 0; Z >= -4; Z--) {
         for (byte Y = -1; Y <= 2; Y++) {
 
-            if (X == 0 && Y == 0 && Z == 0) {
-                continue;
-            }
+          if (X == 0 && Y == 0 && Z == 0) {
+            continue;
+          }
 
           final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
@@ -248,39 +249,13 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
             continue;
           }
 
-          if (Z == -4 && (Y == 0 || Y == 1)) {
-            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-                == Casing_Helper.sCaseCore1)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-              this.mLevel = 4;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-                == Casing_Helper.sCaseCore1)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-              this.mLevel = 16;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-                == Casing_Helper.sCaseCore1)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-              this.mLevel = 64;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-                == Casing_Helper.sCaseCore1)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-              this.mLevel = 256;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
-                == CASING_META)) {
-              this.mLevel = 1;
-            } else {
-              formationChecklist = false;
-            }
-            continue;
-          }
-
           IGregTechTileEntity currentTE = thisController
               .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
           if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+              && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -299,9 +274,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
       for (byte Y = -1; Y <= 1; Y++) {
         final Vector3ic offset = rotateOffsetVector(forgeDirection, -2, Y, Z);
 
-          if (Z == -1 && Y == 1) {
-              continue;
-          }
+        if (Z == -1 && Y == 1) {
+          continue;
+        }
 
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
@@ -309,6 +284,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
           if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -326,9 +302,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
       for (byte Y = -1; Y <= 1; Y++) {
         final Vector3ic offset = rotateOffsetVector(forgeDirection, 2, Y, Z);
 
-          if (Z == -1 && Y == 1) {
-              continue;
-          }
+        if (Z == -1 && Y == 1) {
+          continue;
+        }
 
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
@@ -336,6 +312,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
           if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -349,31 +326,31 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
       }
     }
 
-    setParallel(this.mLevel);
-
-      if (this.mInputBusses.size() > 8) {
-          formationChecklist = false;
-      }
-      if (this.mInputHatches.size() > 1) {
-          formationChecklist = false;
-      }
-      if (this.mOutputBusses.size() > 3) {
-          formationChecklist = false;
-      }
-      if (this.mOutputHatches.size() > 1) {
-          formationChecklist = false;
-      }
-      if (this.mEnergyHatches.size() > 4) {
-          formationChecklist = false;
-      }
-      if (this.mMaintenanceHatches.size() != 1) {
-          formationChecklist = false;
-      }
+    if (this.mInputBusses.size() > 8) {
+      formationChecklist = false;
+    }
+    if (this.mInputHatches.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.mOutputBusses.size() > 3) {
+      formationChecklist = false;
+    }
+    if (this.mOutputHatches.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.mEnergyHatches.size() > 4) {
+      formationChecklist = false;
+    }
+    if (this.mMaintenanceHatches.size() != 1) {
+      formationChecklist = false;
+    }
+    if (this.sParallHatchesIn.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.sParallHatchesOut.size() != 0) {
+      formationChecklist = false;
+    }
     return formationChecklist;
-  }
-
-  public int Parallel() {
-    return this.mLevel;
   }
 
   @Override
@@ -383,9 +360,9 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     if (aPlayer.isSneaking()) {
       if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
         modeBuses++;
-          if (modeBuses > 1) {
-              modeBuses = 0;
-          }
+        if (modeBuses > 1) {
+          modeBuses = 0;
+        }
 
         GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
       }

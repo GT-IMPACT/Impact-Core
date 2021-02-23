@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -261,5 +262,9 @@ public class Utilits {
 
   public static String inToStringUUID(int integer, EntityPlayer player) {
     return Integer.toString(integer) + player.getUniqueID();
+  }
+
+  public static boolean isValidDim(int idDim, String nameDim) {
+    return DimensionManager.getProvider(idDim).getClass().getName().contains(nameDim);
   }
 }

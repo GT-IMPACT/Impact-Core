@@ -88,23 +88,19 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
           private final IStructureDefinition<GTMTE_ParallelComputer> definition =
               StructureDefinition.<GTMTE_ParallelComputer>builder()
                   .addShape("main", new String[][]{
-                      {"AAAAA", "AAAAA", "AA~AA", "AAAAA", "AAAAA"},
-                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                      {"CCCCC", "CBBBC", "CBBBC", "CBBBC", "CCCCC"},
-                      {"AAAAA", "AAAAA", "AAAAA", "AAAAA", "AAAAA"}
+                      {"AA", "AA", "~A", "AA"},
+                      {"AA", "BB", "BB", "AA"},
+                      {"AA", "BB", "BB", "AA"},
+                      {"AA", "AA", "AA", "AA"},
                   })
                   .addElement('A', ofBlock(CASING, CASING_META))
-                  .addElement('B', ofBlock(Casing_Helper.sCaseCore1, 0))
-                  .addElement('C', ofBlock(IGlassBlock))
+                  .addElement('B', ofBlock(InsideBlock, 2))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
-              //todo
+              "It's minimal length structure",
+              " - Computer Casing",
+              " - Empty Rack Casing (inside)"
           };
 
           //endregion
@@ -114,7 +110,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
             IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
             definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                 base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                2, 2, 0, hintsOnly);
+                1, 2, 0, hintsOnly);
           }
 
           @Override
@@ -150,7 +146,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     this.mMaxProgresstime = 10;
     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
     this.mEfficiencyIncrease = 10000;
-    this.mEUt = 0; // TODO: 21.02.2021 CHANGE
+    this.mEUt = 8192 + mMaxCapacityPP;
+    this.mEUt = -this.mEUt;
     return true;
   }
 
@@ -213,30 +210,23 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
   public void setMaxCapacityPP(int setMax) {
     setCurrentCapacityPP(setMax);
     mMaxCapacityPP = setMax;
+    mParallel = setMax;
   }
 
   @Override
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack aStack) {
-    sParallHatchesOut.clear();
-    sComputerRack.clear();
-    int aTotalParallelCapacity = 0;
-
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     //region Structure
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
-
     boolean formationChecklist = true;
-
     for (int X = 0; X <= 1; X++) {
       for (int Y = -1; Y <= 2; Y++) {
         if (X == 0 && Y == 0) {
           continue;
         }
-
         final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
-
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
         if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -251,7 +241,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         }
       }
     }
-
     int additionalZ = -4;
     int ParallelsZ = 0;
     int RacksZ = 0;
@@ -264,8 +253,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
           //Racks
           if (X == 1 && (Y == 0 || Y == 1)) {
-            if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                && !super.addRackHatch(currentTE, CASING_TEXTURE_ID)) {
+            if (!super.addRackHatch(currentTE, CASING_TEXTURE_ID)) {
               if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING
                   && thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
                   == CASING_META) {
@@ -280,12 +268,9 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
               }
             }
           }
-
           //Parallels
           if (X == 0 && (Y == 0 || Y == 1)) {
-            if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
+            if (!super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
               if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                   && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
                   == CASING_META)) {
@@ -303,35 +288,32 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         }
       }
     }
-
     if (ParallelsZ < RacksZ || RacksZ < ParallelsZ) {
       formationChecklist = false;
     } else {
       additionalZ = RacksZ;
     }
-
     for (int X = 0; X <= 1; X++) {
       for (int Y = -1; Y <= 2; Y++) {
         for (int Z = -1; Z >= additionalZ; Z--) {
-          final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-          if (Z == additionalZ) {
-            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
-                == CASING_META)) {
-            } else {
-              formationChecklist = false;
+          if (Y == -1 || Y == 2) {
+            final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
+            IGregTechTileEntity currentTE = thisController
+                .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+            if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+              if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
+                  == CASING_META)) {
+              } else {
+                formationChecklist = false;
+              }
             }
           }
         }
       }
     }
-    this.mWrench = true;
-    this.mScrewdriver = true;
-    this.mSoftHammer = true;
-    this.mHardHammer = true;
-    this.mSolderingTool = true;
-    this.mCrowbar = true;
-
     return formationChecklist;
   }
 

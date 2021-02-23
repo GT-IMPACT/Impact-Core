@@ -29,7 +29,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
 
-  //todo Приемник
+  //Приемник
   public int mTargetX = 0;
   public int mTargetY = 0;
   public int mTargetZ = 0;
@@ -148,7 +148,6 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
     if (Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer)) != null) {
       GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer))));
       setCoord(Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer)));
-      GT_Utility.sendChatToPlayer(aPlayer, "UUID: " + EnumChatFormatting.YELLOW + aPlayer.getUniqueID()); //// TODO: 21.02.2021 DEL
     } else GT_Utility.sendChatToPlayer(aPlayer, "Frequency not found");
   }
 

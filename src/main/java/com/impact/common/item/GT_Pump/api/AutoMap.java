@@ -326,19 +326,16 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 
   @Override
   public int lastIndexOf(Object o) {
-    //TODO
     return indexOf(o);
   }
 
   @Override
   public ListIterator<V> listIterator() {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public ListIterator<V> listIterator(int index) {
-    // TODO Auto-generated method stub
     return null;
   }
 

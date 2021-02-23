@@ -23,7 +23,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
 
-  //todo Передатчик
+  //Передатчик
   public boolean mIsTransmit = false;
   public int mFrequency = 0;
 
@@ -142,8 +142,6 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
     Impact_API.sSpaceSatellite.put(Utilits.inToStringUUID(freq, aPlayer),
         Utilits.getCoordsBaseMTE(getBaseMetaTileEntity()));
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + EnumChatFormatting.YELLOW + freq);
-    GT_Utility.sendChatToPlayer(aPlayer,
-        "UUID: " + EnumChatFormatting.YELLOW + aPlayer.getUniqueID()); //// TODO: 21.02.2021 DEL
   }
 
   @Override

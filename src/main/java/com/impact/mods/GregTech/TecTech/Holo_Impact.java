@@ -64,18 +64,16 @@ public class Holo_Impact implements Runnable {
               StructureDefinition.<GTMTE_PressBendExtrud>builder()
                   .addShapeOldApi("main", new String[][]{
                       {"000", "0.0", "000",},
-                      {"000", "010", "000",},
-                      {"000", "010", "000",},
-                      {"000", "010", "000",},
+                      {"000", "0.0", "000",},
+                      {"000", "0.0", "000",},
+                      {"000", "0.0", "000",},
                       {"000", "000", "000",},
                   })
                   .addElement('0', ofBlock(sCaseCore1, 4))
-                  .addElement('1', ofBlock(sCaseCore1, 0))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
               "- PBE Casing",
-              "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
               "- Hatches (any PBE Casing)",
           };
           //endregion
@@ -104,18 +102,16 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_Assembler>builder()
               .addShapeOldApi("main", new String[][]{
                   {"01110AAA0", "011100.00", "000000000",},
-                  {"011100000", "022222220", "000000000",},
+                  {"011100000", "0.......0", "000000000",},
                   {"000000000", "000000000", "000000000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 6))
               .addElement('1', ofBlock(IGlassBlock, 0))
-              .addElement('2', ofBlock(sCaseCore1, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Assembler Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Assembler Casing)",
       };
       //endregion
@@ -183,18 +179,16 @@ public class Holo_Impact implements Runnable {
                   .addShapeOldApi("main", new String[][]{
                       {".000.", ".0.0.", ".0.0.", ".000.",},
                       {"00000", "0.0.0", "0.0.0", "00000",},
-                      {"00.00", ".010.", ".010.", "00000",},
+                      {"00.00", ".0.0.", ".0.0.", "00000",},
                       {"00000", "0.0.0", "0.0.0", "00000",},
                       {".000.", ".0.0.", ".0.0.", ".000.",},
 
                   })
                   .addElement('0', ofBlock(sBlockCasings2, 1))
-                  .addElement('1', ofBlock(sCaseCore1, 0))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
               "- Frost Proof Machine Casing",
-              "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
               "- Hatches (any Frost Proof Machine Casing)",
           };
           //endregion
@@ -221,24 +215,22 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_LaserEng>builder()
               .addShapeOldApi("main", new String[][]{
                   {"...", "...", "...", "0.0", "000",},
-                  {"000", "...", "...", "432", "000",},
-                  {"010", ".5.", "...", "432", "000",},
-                  {"010", "...", "...", "432", "000",},
+                  {"000", "...", "...", "321", "000",},
+                  {"000", ".4.", "...", "321", "000",},
+                  {"000", "...", "...", "321", "000",},
                   {"000", "000", "000", "000", "000",},
 
               })
               .addElement('0', ofBlock(sCaseCore1, 5))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 11))
-              .addElement('3', ofBlock(IGlassBlock, 13))
-              .addElement('4', ofBlock(IGlassBlock, 14))
-              .addElement('5', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 11))
+              .addElement('2', ofBlock(IGlassBlock, 13))
+              .addElement('3', ofBlock(IGlassBlock, 14))
+              .addElement('4', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Engraver Casing",
           "- I-Glass (Red, Green, Blue and White)",
-          "- Upgrade Casing (Tier 1-4) or Engraver Casing (no parallel)",
           "- Hatches (any Engraver Casing)",
       };
       //endregion
@@ -264,21 +256,19 @@ public class Holo_Impact implements Runnable {
       private final IStructureDefinition<GTMTE_Centrifuge> definition =
           StructureDefinition.<GTMTE_Centrifuge>builder()
               .addShapeOldApi("main", new String[][]{
-                  {"00000", ".202.", ".202.", "00.00",},
-                  {"00000", "2AAA2", "2AAA2", "00000",},
-                  {"00000", "0A1A0", "0A1A0", "00000",},
-                  {"00000", "2AAA2", "2AAA2", "00000",},
-                  {"00000", ".202.", ".202.", "00000",},
+                  {"00000", ".101.", ".101.", "00.00",},
+                  {"00000", "1AAA1", "1AAA1", "00000",},
+                  {"00000", "0A.A0", "0A.A0", "00000",},
+                  {"00000", "1AAA1", "1AAA1", "00000",},
+                  {"00000", ".101.", ".101.", "00000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 7))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Centrifuge Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Centrifuge Casing)",
       };
       //endregion
@@ -305,20 +295,18 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_Electrolyzer>builder()
               .addShapeOldApi("main", new String[][]{
                   {"000", "000", "0.0", "000",},
-                  {"020", "212", "000", ".0.",},
-                  {"020", "212", "000", ".0.",},
-                  {"020", "212", "000", ".0.",},
+                  {"010", "1.1", "000", ".0.",},
+                  {"010", "1.1", "000", ".0.",},
+                  {"010", "1.1", "000", ".0.",},
                   {"000", "000", "000", "000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 8))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Electrolyzer Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Electrolyzer Casing)",
       };
       //endregion
@@ -344,19 +332,17 @@ public class Holo_Impact implements Runnable {
       private final IStructureDefinition<GTMTE_Wire> definition =
           StructureDefinition.<GTMTE_Wire>builder()
               .addShapeOldApi("main", new String[][]{
-                  {".0220", "..220", ".0000",},
-                  {".0220", "00110", "00000",},
-                  {"00220", "00000", "00000",},
+                  {".0110", "..110", ".0000",},
+                  {".0110", "00..0", "00000",},
+                  {"00110", "00000", "00000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 9))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Wire Factory Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Wire Factory Casing)",
       };
       //endregion
@@ -382,21 +368,19 @@ public class Holo_Impact implements Runnable {
       private final IStructureDefinition<GTMTE_Supply> definition =
           StructureDefinition.<GTMTE_Supply>builder()
               .addShapeOldApi("main", new String[][]{
-                  {".000.", ".202.", ".202.", ".202.", ".000.",},
-                  {"00000", "2AAA2", "2AAA2", "2AAA2", "00000",},
-                  {"00.00", "0A1A0", "0A1A0", "0A1A0", "00000",},
-                  {"00000", "2AAA2", "2AAA2", "2AAA2", "00000",},
-                  {".000.", ".202.", ".202.", ".202.", ".000.",},
+                  {".000.", ".101.", ".101.", ".101.", ".000.",},
+                  {"00000", "1AAA1", "1AAA1", "1AAA1", "00000",},
+                  {"00.00", "0A.A0", "0A.A0", "0A.A0", "00000",},
+                  {"00000", "1AAA1", "1AAA1", "1AAA1", "00000",},
+                  {".000.", ".101.", ".101.", ".101.", ".000.",},
               })
               .addElement('0', ofBlock(sCaseCore1, 10))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Supply Production Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Supply Production Casing)",
       };
       //endregion
@@ -423,20 +407,18 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_Utility>builder()
               .addShapeOldApi("main", new String[][]{
                   {"......", "000...", "0.0...", "000000",},
-                  {"..0000", "000000", "210000", "000000",},
-                  {"..0000", "000000", "210000", "000000",},
-                  {"..0000", "000000", "210000", "000000",},
+                  {"..0000", "000000", "1.0000", "000000",},
+                  {"..0000", "000000", "1.0000", "000000",},
+                  {"..0000", "000000", "1.0000", "000000",},
                   {"......", "000...", "000...", "000000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 11))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Utility Machine Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Utility Machine Casing)",
       };
       //endregion
@@ -463,20 +445,18 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_Brewmenter>builder()
               .addShapeOldApi("main", new String[][]{
                   {".000.", ".000.", ".000.", ".0.0.",},
-                  {"00200", "00.00", "00.00", "00000",},
-                  {"02020", "0.1.0", "0.1.0", "00000",},
-                  {"00200", "00.00", "00.00", "00000",},
+                  {"00100", "00.00", "00.00", "00000",},
+                  {"01010", "0...0", "0...0", "00000",},
+                  {"00100", "00.00", "00.00", "00000",},
                   {".000.", ".000.", ".000.", ".000.",},
               })
               .addElement('0', ofBlock(sCaseCore1, 12))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Brewmenter Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Brewmenter Casing)",
       };
       //endregion
@@ -504,17 +484,15 @@ public class Holo_Impact implements Runnable {
               .addShapeOldApi("main", new String[][]{
                   {".....", ".000.", ".000.", "00.00",},
                   {".000.", "0...0", "0...0", "00000",},
-                  {".000.", "0.1.0", "0.1.0", "00000",},
+                  {".000.", "0...0", "0...0", "00000",},
                   {".000.", "0...0", "0...0", "00000",},
                   {".....", ".000.", ".000.", "00000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 13))
-              .addElement('1', ofBlock(sCaseCore1, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Arc Casing",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Arc Casing)",
       };
       //endregion
@@ -540,19 +518,17 @@ public class Holo_Impact implements Runnable {
       private final IStructureDefinition<GTMTE_Cutting> definition =
           StructureDefinition.<GTMTE_Cutting>builder()
               .addShapeOldApi("main", new String[][]{
-                  {"..020", "00020", "00.20", "00000",},
-                  {"..020", "00010", "00010", "00000",},
-                  {"..020", "00020", "00020", "00000",},
+                  {"..010", "00010", "00.10", "00000",},
+                  {"..010", "000.0", "000.0", "00000",},
+                  {"..010", "00010", "00010", "00000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 14))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Cutting Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Cutting Casing)",
       };
       //endregion
@@ -579,20 +555,18 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_Extradifier>builder()
               .addShapeOldApi("main", new String[][]{
                   {".000.", "0...0", "0...0", "0...0", ".0.0.",},
-                  {"00200", ".020.", ".020.", ".020.", "00000",},
-                  {"02020", ".212.", ".212.", ".212.", "00000",},
-                  {"00200", ".020.", ".020.", ".020.", "00000",},
+                  {"00100", ".010.", ".010.", ".010.", "00000",},
+                  {"01010", ".1.1.", ".1.1.", ".1.1.", "00000",},
+                  {"00100", ".010.", ".010.", ".010.", "00000",},
                   {".000.", "0...0", "0...0", "0...0", ".000.",},
               })
               .addElement('0', ofBlock(sCaseCore2, 2))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Extradification Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Extradification Casing)",
       };
       //endregion
@@ -619,16 +593,14 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_Macerator>builder()
               .addShapeOldApi("main", new String[][]{
                   {"000", "000", "000", "000", "000", "0.0",},
-                  {"000", "010", "010", "010", "010", "000",},
+                  {"000", "0.0", "0.0", "0.0", "0.0", "000",},
                   {"000", "000", "000", "000", "000", "000",},
               })
               .addElement('0', ofBlock(sCaseCore2, 3))
-              .addElement('1', ofBlock(sCaseCore1, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Maceration Casing",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Maceration Casing)",
       };
       //endregion
@@ -654,20 +626,18 @@ public class Holo_Impact implements Runnable {
       private final IStructureDefinition<GTMTE_Mixer> definition =
           StructureDefinition.<GTMTE_Mixer>builder()
               .addShapeOldApi("main", new String[][]{
-                  {"000", ".2.", ".2.", "0.0",},
-                  {"000", "212", "212", "000",},
-                  {"000", ".2.", ".2.", "000",},
+                  {"000", ".1.", ".1.", "0.0",},
+                  {"000", "1.1", "1.1", "000",},
+                  {"000", ".1.", ".1.", "000",},
                   {"000", "000", "000", "000",},
               })
               .addElement('0', ofBlock(sCaseCore1, 15))
-              .addElement('1', ofBlock(sCaseCore1, 0))
-              .addElement('2', ofBlock(IGlassBlock, 0))
+              .addElement('1', ofBlock(IGlassBlock, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Mixing Casing",
           "- I-Glass (any I-Glass)",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Mixing Casing)",
       };
       //endregion
@@ -694,16 +664,14 @@ public class Holo_Impact implements Runnable {
           StructureDefinition.<GTMTE_Siftarator>builder()
               .addShapeOldApi("main", new String[][]{
                   {"000..", ".0...", "000.0", "0.000", "000.0",},
-                  {"000..", "000..", "01000", "01100", "00000",},
+                  {"000..", "000..", "0.000", "0..00", "00000",},
                   {"000..", ".0...", "000.0", "00000", "000.0",},
               })
               .addElement('0', ofBlock(sCaseCore2, 1))
-              .addElement('1', ofBlock(sCaseCore1, 0))
               .build();
       private final String[] desc = new String[]{
           EnumChatFormatting.RED + "Impact Details:",
           "- Electromagnetic Casing",
-          "- Upgrade Casing (Tier 1-4) or Air (no parallel)",
           "- Hatches (any Electromagnetic Casing)",
       };
       //endregion
@@ -732,19 +700,17 @@ public class Holo_Impact implements Runnable {
                   .addShapeOldApi("main", new String[][]{
 
                       {".000.", ".000.", ".0.0.", ".000.",},
-                      {".020.", ".020.", "00200", "00000",},
-                      {".020.", "00200", "00200", "00000",},
-                      {".020.", "00000", "00000", "00000",},
-                      {".000.", ".111.", ".111.", ".000.",},
+                      {".010.", ".010.", "00100", "00000",},
+                      {".010.", "00100", "00100", "00000",},
+                      {".010.", "00000", "00000", "00000",},
+                      {".000.", ".000.", ".000.", ".000.",},
                   })
                   .addElement('0', ofBlock(sBlockCasings2, 1))
-                  .addElement('1', ofBlock(sCaseCore1, 0))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('1', ofBlockHint(decorateBlock[2], 1))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
               "- Frost Proof Machine Casing",
-              "- Upgrade Casing (Tier 1-4) or Frost Proof Machine Casing (no parallel)",
               "- " + EnumChatFormatting.RED + "Red:" + EnumChatFormatting.RESET + " Fluid Coolant",
               "- Hatches (any Frost Proof Machine Casing)",
           };

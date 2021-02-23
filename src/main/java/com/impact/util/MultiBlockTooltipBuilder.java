@@ -98,8 +98,8 @@ public class MultiBlockTooltipBuilder {
    * @return Instance this method was called on.
    */
 
-  public MultiBlockTooltipBuilder addParallelCase(String info) {
-    sLines.add(TAB + EnumChatFormatting.RED + "Upgrade Case: " + EnumChatFormatting.GRAY + info);
+  public MultiBlockTooltipBuilder addParallelHatch(String info) {
+    sLines.add(TAB + EnumChatFormatting.RED + "Parallel Hatch: " + EnumChatFormatting.GRAY + info);
     return this;
   }
 

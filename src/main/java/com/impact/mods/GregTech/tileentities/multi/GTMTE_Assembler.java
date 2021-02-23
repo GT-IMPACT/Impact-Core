@@ -64,8 +64,6 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
     b
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
-        .addInfo("Upgrade Casing must be filled in completely")
-        .addInfo("Parallel Point will upped Upgrade Casing")
         .addTypeMachine("Assembler, Circuit Assembler, Component Assembler")
         .addScrew()
         .addSeparatedBus()
@@ -76,6 +74,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         .addInputBus("Any casing (max x15)")
         .addInputHatch("Any casing (max x6)")
         .addOutputBus("Any casing (max x3)")
+        .addParallelHatch("Any casing (max x1)")
         .addCasingInfo("Assembler Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -99,8 +98,8 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
             : GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -119,6 +118,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
+            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
@@ -149,23 +149,6 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         }
 
         if ((X >= -5 && X <= 1) && Z == -1) {
-          if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-            this.mLevel = 4;
-          } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-            this.mLevel = 16;
-          } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-            this.mLevel = 64;
-          } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-            this.mLevel = 256;
-          } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
-            this.mLevel = 1;
-          } else {
-            formationChecklist = false;
-          }
           continue;
         }
 
@@ -174,6 +157,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
         if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
+            && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
@@ -243,7 +227,12 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
     if (this.mMaintenanceHatches.size() != 1) {
       formationChecklist = false;
     }
-
+    if (this.sParallHatchesIn.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.sParallHatchesOut.size() != 0) {
+      formationChecklist = false;
+    }
     return formationChecklist;
   }
 

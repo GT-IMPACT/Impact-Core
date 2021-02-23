@@ -2,6 +2,7 @@ package com.impact.mods.GregTech.tileentities.newparallelsystem;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.impact.util.Utilits.isValidDim;
 import static micdoodle8.mods.galacticraft.core.util.ConfigManagerCore.disableSpaceStationCreation;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
@@ -165,20 +166,17 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
   }
 
   @Override
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack aStack) {
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     int dimId = thisController.getWorld().provider.dimensionId;
-    boolean debug = true;
-    if (debug) {
-      if (!disableSpaceStationCreation) {
-        if (!(DimensionManager.getProvider(dimId).getClass().getName().contains("Orbit")
-            || DimensionManager.getProvider(dimId).getClass().getName().endsWith("Space")
-            || DimensionManager.getProvider(dimId).getClass().getName().endsWith("SS")
-            || DimensionManager.getProvider(dimId).getClass().getName().contains("SpaceStation"))) {
-          return false;
-        }
-      } else if (!DimensionManager.getProvider(dimId).getClass().getName().contains("Moon")) {
+    if (!disableSpaceStationCreation) {
+      if (!(isValidDim(dimId, "Orbit")
+          || isValidDim(dimId,"Space")
+          || isValidDim(dimId,"SS")
+          || isValidDim(dimId,"SpaceStation"))) {
         return false;
       }
+    } else if (!isValidDim(dimId,"Moon")) {
+      return false;
     }
     //region Structure
     final Vector3ic forgeDirection = new Vector3i(

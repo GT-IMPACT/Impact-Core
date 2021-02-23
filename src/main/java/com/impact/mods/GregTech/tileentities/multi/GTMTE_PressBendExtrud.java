@@ -28,7 +28,6 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
   byte CASING_META = 4;
   ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
   int CASING_TEXTURE_ID = CASING_META + 128 * 3;
-  private int mLevel = 0;
 
   public GTMTE_PressBendExtrud(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -61,8 +60,6 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
     b
         .addInfo("One-block machine analog")
         .addParallelInfo(1, 256)
-        .addInfo("Upgrade Casing must be filled in completely")
-        .addInfo("Parallel Point will upped Upgrade Casing")
         .addPollution(200, 12800)
         .addTypeMachine("Extruder, Bender, Presser")
         .addScrew()
@@ -74,6 +71,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         .addInputBus("Any casing (max x20)")
         .addOutputBus("Any casing (max x3)")
         .addMuffler("Any casing")
+        .addParallelHatch("Any casing (max x1)")
         .addCasingInfo("PBE Casing")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -97,8 +95,8 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
             : GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
   }
 
-  public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-    // Вычисляем вектор направления, в котором находится задняя поверхность контроллера
+  @Override
+  public boolean machineStructure(IGregTechTileEntity thisController) {
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -118,23 +116,6 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
           final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
           if (X == 0 && Y == 0 && (Z == -1 || Z == -2 || Z == -3)) {
-            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-              this.mLevel = 4;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-              this.mLevel = 16;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-              this.mLevel = 64;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-              this.mLevel = 256;
-            } else if (thisController.getAirOffset(offset.x(), offset.y(), offset.z())) {
-              this.mLevel = 1;
-            } else {
-              formationChecklist = false;
-            }
             continue;
           }
 
@@ -144,6 +125,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
               && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+              && !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
@@ -157,8 +139,6 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
         }
       }
     }
-
-    setParallel(this.mLevel);
 
     if (this.mInputBusses.size() > 20) {
       formationChecklist = false;
@@ -175,29 +155,23 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
     if (this.mMaintenanceHatches.size() != 1) {
       formationChecklist = false;
     }
-
+    if (this.sParallHatchesIn.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.sParallHatchesOut.size() != 0) {
+      formationChecklist = false;
+    }
     return formationChecklist;
   }
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mLevel);
+    return impactRecipe(itemStack, mParallel);
   }
 
   @Override
   public int getPollutionPerTick(ItemStack aStack) {
-    switch (this.mLevel) {
-      case 4:
-        return 4 * 50;
-      case 16:
-        return 16 * 50;
-      case 64:
-        return 64 * 50;
-      case 256:
-        return 256 * 50;
-      default:
-        return 0;
-    }
+    return 50 * mParallel;
   }
 
   public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,

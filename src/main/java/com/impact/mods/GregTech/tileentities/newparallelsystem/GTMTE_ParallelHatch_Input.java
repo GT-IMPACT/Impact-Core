@@ -135,7 +135,7 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
       } else {
         if (aPlayer.capabilities.isCreativeMode) {
           GT_Utility.sendChatToPlayer(aPlayer,
-              "Debug recipe: " + getTrueRecipe()); //// TODO: 21.02.2021 del
+              "Debug recipe: " + getTrueRecipe());
         }
       }
     }
