@@ -269,6 +269,43 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
     int minCasingAmount = 12; // Минимальное количество кейсов
     boolean formationChecklist = true; // Если все ок, машина собралась
 
+    final Vector3ic check = rotateOffsetVector(forgeDirection, 0, 2, 0);
+    byte tUsedMeta = thisController.getMetaIDOffset(check.x(), check.y(), check.z());
+    switch (tUsedMeta) {
+      case 0:
+        this.mHeatingCapacity = 1801;
+        break;
+      case 1:
+        this.mHeatingCapacity = 2701;
+        break;
+      case 2:
+        this.mHeatingCapacity = 3601;
+        break;
+      case 3:
+        this.mHeatingCapacity = 4501;
+        break;
+      case 4:
+        this.mHeatingCapacity = 5401;
+        break;
+      case 5:
+        this.mHeatingCapacity = 7201;
+        break;
+      case 6:
+        this.mHeatingCapacity = 9001;
+        break;
+      case 7:
+        this.mHeatingCapacity = 10801;
+        break;
+      case 8:
+        this.mHeatingCapacity = 12601;
+        break;
+      case 12:
+        this.mHeatingCapacity = 19801;
+        break;
+      default:
+        return false;
+    }
+    
     for (byte X = -2; X <= 2; X++) {
       for (byte Z = 0; Z >= -4; Z--) {
         for (byte Y = 0; Y <= 3; Y++) {
@@ -289,35 +326,7 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 
           if ((Y == 1 || Y == 2)) {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
-              this.mHeatingCapacity = 1801;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 1)) {
-              this.mHeatingCapacity = 2701;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 2)) {
-              this.mHeatingCapacity = 3601;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-              this.mHeatingCapacity = 4501;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
-              this.mHeatingCapacity = 5401;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 5)) {
-              this.mHeatingCapacity = 7201;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 6)) {
-              this.mHeatingCapacity = 9001;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 7)) {
-              this.mHeatingCapacity = 10801;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 8)) {
-              this.mHeatingCapacity = 12601;
-            } else if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 12)) {
-              this.mHeatingCapacity = 19801;
+                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == tUsedMeta)) {
             } else {
               formationChecklist = false;
             }
