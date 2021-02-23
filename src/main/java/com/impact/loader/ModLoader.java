@@ -13,59 +13,8 @@ public class ModLoader implements Runnable {
 
     // --- TecTech
     if (Loader.isModLoaded("tectech")) {
-      new TecTechRecipe().run();
       new Holo_Impact().run();
       new Holo_Vanila_GregTech().run();
-    }
-
-    // --- OpenComputers
-    if (Loader.isModLoaded("OpenComputers")) {
-      new OpenComputersRecipe().run();
-    }
-
-    // --- RailCraft
-    if (Loader.isModLoaded("Railcraft") && Loader.isModLoaded("computery")) {
-      new RailCraftRecipe().run();
-    }
-
-    // --- StorageDrawers
-    if (Loader.isModLoaded("StorageDrawers")) {
-      new StorageDrawersRecipe().run();
-    }
-
-    // --- Jabba
-    if (Loader.isModLoaded("JABBA")) {
-      new JabbaRecipe().run();
-    }
-
-    // --- SFM
-    if (Loader.isModLoaded("StevesFactoryManager") && Loader.isModLoaded("StevesAddons")) {
-      new SFMRecipe().run();
-    }
-
-    // --- TiCo
-    if (Loader.isModLoaded("TConstruct")) {
-      new TConstructRecipe().run();
-    }
-
-    // --- EnderIO
-    if (Loader.isModLoaded("EnderIO")) {
-      new EnderIORecipe().run();
-    }
-
-    // --- BuildCraft
-    if (Loader.isModLoaded("BuildCraft|Core")) {
-      new BuildCraftRecipe().run();
-    }
-
-    // --- AE
-    if (Loader.isModLoaded("appliedenergistics2")) {
-      new AERecipe().run();
-    }
-
-    // --- Chisel
-    if (Loader.isModLoaded("chisel")) {
-      ChiselGroup.run();
     }
   }
 }
