@@ -35,7 +35,6 @@ public class NEI_Impact_Config implements IConfigureNEI {
       new NEI_RocketFuelSingle();
       //new NEI_OxygenSuppSingle();
       new NEI_Impact_RailAssembler(GTMTE_RailAssembler.sTrackAssemblerRecipes);
-      // new NEI_Impact_OreVeinHelper(RegisterOreVein.sVeinOres);
     }
 
     sIsAdded = true;
