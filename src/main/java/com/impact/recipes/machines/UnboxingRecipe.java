@@ -31,35 +31,6 @@ public class UnboxingRecipe implements Runnable {
     GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("impact", "BlockAdvSolarPanel", 1L, 8),
         ItemList.Cover_SolarPanel_UV.get(1L), ItemList.Robot_Arm_UV.get(1L), 2400, 7680);
 
-    GT_Values.RA.addUnboxingRecipe(
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 0),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 35), 50, 16);
-    GT_Values.RA.addUnboxingRecipe(
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 1),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 36), 50, 30);
-    GT_Values.RA.addUnboxingRecipe(
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 2),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 37), 50, 48);
-    GT_Values.RA.addUnboxingRecipe(
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 3),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 38), 50, 64);
-
-    GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("extracells", "craftingstorage", 1L, 0),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("extracells", "storage.component", 1L, 0), 50, 96);
-    GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("extracells", "craftingstorage", 1L, 1),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("extracells", "storage.component", 1L, 1), 50, 120);
-    GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("extracells", "craftingstorage", 1L, 2),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("extracells", "storage.component", 1L, 2), 50, 192);
-    GT_Values.RA.addUnboxingRecipe(GT_ModHandler.getModItem("extracells", "craftingstorage", 1L, 3),
-        GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-        GT_ModHandler.getModItem("extracells", "storage.component", 1L, 3), 50, 256);
 
     GT_Values.RA.addUnboxingRecipe(
         GT_ModHandler.getModItem("impact", "impact_lapotronicenergyunit_block", 1, 1),

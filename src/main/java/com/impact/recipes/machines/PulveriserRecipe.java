@@ -447,9 +447,7 @@ public class PulveriserRecipe implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L)},
         new int[]{10000, 2000}, 100, 40);
 
-    GT_Values.RA.addPulveriserRecipe(
-        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1),
-        new ItemStack[]{CoreItems.getRecipe(38, 1)}, new int[]{10000}, 300, 2);
+
 
     GT_Values.RA.addPulveriserRecipe(ItemList.Casing_BronzePlatedBricks.get(1),
         new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 4L),

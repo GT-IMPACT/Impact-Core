@@ -668,16 +668,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("LogisticsPipes", "item.logisticsItemCard", 1L), tBitMask, new Object[]{" C ", "BMB", "FIF", 'C', GT_ModHandler.getModItem("ExtraUtilities", "chestMini", 1L), 'B', OrePrefixes.bolt.get(Materials.RedAlloy), 'F', OrePrefixes.foil.get(Materials.Gold), 'I', OrePrefixes.circuit.get(Materials.Basic), 'M', GT_ModHandler.getModItem("LogisticsPipes", "item.itemModule", 1L)});
 
     /* ==== END LOGISTIC PIPES ==== */
-    /** ==== START AE2/EC2 ==== */
-
-    // --- Advanced Storage Housing
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("extracells", "storage.casing", 1L), tBitMask, new Object[]{"hGS", "TOT", "SVd", 'O', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 39), 'T', OrePrefixes.plate.get(Materials.Iridium), 'V', OrePrefixes.plate.get(Materials.HastelloyC276), 'S', OrePrefixes.screw.get(Materials.CertusQuartz), 'G', OrePrefixes.plate.get(Materials.ReinforcedGlass)});
-
-    // --- Fluid Storage Housing
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("extracells", "storage.casing", 1L, 1), tBitMask, new Object[]{"hQS", "TGT", "SVd", 'Q', OrePrefixes.plate.get(Materials.CertusQuartz), 'T', OrePrefixes.plate.get(Materials.Birmabright), 'V', OrePrefixes.plate.get(Materials.StainlessSteel), 'S', OrePrefixes.screw.get(Materials.NetherQuartz), 'G', "paneGlass"});
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("extracells", "storage.casing", 1L, 1), tBitMask, new Object[]{"hQS", "TGT", "SVd", 'Q', OrePrefixes.plate.get(Materials.CertusQuartz), 'T', OrePrefixes.plate.get(Materials.Birmabright), 'V', OrePrefixes.plate.get(Materials.StainlessSteel), 'S', OrePrefixes.screw.get(Materials.NetherQuartz), 'G', GT_ModHandler.getModItem("TConstruct", "GlassPane", 1L)});
-
-    /* ==== END AE2/EC2 ==== */
     /** ==== START VANILLA ==== */
     // --- Crafting Table
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("minecraft", "crafting_table", 1L), tBitMask, new Object[]{"WW", "WW", 'W', "logWood"});
@@ -1150,20 +1140,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("BiblioCraft", "item.BiblioClipboard", 1L, 0), tBitMask, new Object[]{"ERE", "dGs", "PPP", 'E', OrePrefixes.screw.get(Materials.Iron), 'R', OrePrefixes.springSmall.get(Materials.Iron), 'G', GT_ModHandler.getModItem("gregtech", "gt.metaitem.01", 1L, 17809), 'P', GT_ModHandler.getModItem("minecraft", "paper", 1L, 0)});
 
     /* ==== END BIBLIOCRAFT ==== */
-    /** ==== START AE2STUFF ==== */
-    // --- Wireless Setup Kit
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2stuff", "WirelessKit", 1L, 0), tBitMask, new Object[]{"SWS", "PAP", "dIw", 'S', OrePrefixes.screw.get(Materials.Titanium), 'P', OrePrefixes.plate.get(Materials.Birmabright), 'I', OrePrefixes.stick.get(Materials.Birmabright), 'W', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 41), 'A', GT_ModHandler.getModItem("appliedenergistics2", "item.ToolNetworkTool", 1L, 0)});
-    // --- Network Visualisation Tool
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2stuff", "Visualiser", 1L, 0), tBitMask, new Object[]{"E S", "PMP", "PCP", 'P', OrePrefixes.plate.get(Materials.Birmabright), 'C', OrePrefixes.circuit.get(Materials.Data), 'E', ItemList.Emitter_EV, 'S', ItemList.Sensor_EV, 'M', GT_ModHandler.getModItem("OpenComputers", "hologram2", 1L)});
-    // --- Pattern Encoder
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2stuff", "Encoder", 1L, 0), tBitMask,
-            new Object[]{"POP", "ACA", "PEP", 'P', OrePrefixes.plate.get(Materials.VanadiumSteel),
-                    'O', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 340),
-                    'A', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 23),
-                    'C', GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0),
-                    'E', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 16)});
-
-    /* ==== END AE2STUFF ==== */
     /** ==== START Compact Generators ==== */
     // --- Kinetic Gearbox Rotor (Iridium)
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("compactkineticgenerators", "IridiumRotor", 1L, 0), tBitMask, new Object[]{"dBS", "BAB", "SBw", 'S', OrePrefixes.screw.get(Materials.Lafium), 'B', GT_ModHandler.getModItem("compactkineticgenerators", "IridiumBlade", 1L, 0), 'A', GT_ModHandler.getModItem("IC2", "itemRecipePart", 1L, 12)});
@@ -1199,12 +1175,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Forestry", "builderBagT2", 1L, 0), tBitMask, new Object[]{"WRW", "WBW", "WCW", 'R', OrePrefixes.ring.get(Materials.Steel), 'B', GT_ModHandler.getModItem("Forestry", "builderBag", 1L, 0), 'C', GT_ModHandler.getModItem("Backpack", "backpack", 1L, 100), 'W', GT_ModHandler.getModItem("Backpack", "tannedLeather", 1L, 0)});
 
     /* ==== END Forestry ==== */
-    /** ==== START WIRELESS TERMINAL ==== */
-    // --- Terminal
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2wct", "wirelessCraftingTerminal", 1L, 0), tBitMask, new Object[]{"SAE", "PTP", "PBP", 'P', OrePrefixes.plate.get(Materials.HastelloyN), 'E', ItemList.Emitter_IV, 'B', ItemList.BatteryHull_IV_Full, 'S', ItemList.Sensor_IV, 'T', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 360), 'A', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 41)});
-
-    /* ==== END WIRELESS TERMINAL ==== */
-
     /** ==== START ZTONES ==== */
     // --- Ztones Tile
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 8L, 0), tBitMask, new Object[]{"LLL", "LSL", "LLL", 'L', GT_ModHandler.getModItem("minecraft", "stone_slab", 1L, 0), 'S', GT_ModHandler.getModItem("minecraft", "stone", 1L, 0)});
