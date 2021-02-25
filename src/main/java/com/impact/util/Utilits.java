@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -266,5 +267,12 @@ public class Utilits {
 
   public static boolean isValidDim(int idDim, String nameDim) {
     return DimensionManager.getProvider(idDim).getClass().getName().contains(nameDim);
+  }
+
+  public static AxisAlignedBB setBoxAABB(IGregTechTileEntity igt, double radius){
+    return AxisAlignedBB.getBoundingBox(
+        (igt.getXCoord() - radius), (igt.getYCoord() - radius),
+        (igt.getZCoord() - radius), (igt.getXCoord() + radius),
+        (igt.getYCoord() + radius), (igt.getZCoord() + radius));
   }
 }
