@@ -548,7 +548,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
     final ArrayList<String> ll = new ArrayList<>();
 
     if (mfh != null) {
-      ll.add(EnumChatFormatting.YELLOW + "Stored Fluids:" + EnumChatFormatting.RESET);
+      ll.add(EnumChatFormatting.YELLOW + "Stored Fluid:" + EnumChatFormatting.RESET);
       for (int i = 0; i < mfh.fluids.size(); i++) {
         ll.add(
             i + " - " + mfh.fluids.get(i).getLocalizedName() + ": " + mfh.fluids.get(i).amount
@@ -559,13 +559,9 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
     ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
     ll.add("Auto-voiding: " + doVoidExcess);
     if (mfh != null && mfh.fluids != null) {
-      ll.add("Per-Fluid Capacity: " + NumberFormat.getNumberInstance().format(mfh.getCapacity())
+      ll.add("Fluid Capacity: " + NumberFormat.getNumberInstance().format(mfh.getCapacity())
           + "L");
     }
-    ll.add("Running Cost: " + ((-super.mEUt) * 10000 / Math.max(1000, super.mEfficiency)) + "EU/t");
-    ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus()) ?
-        EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
-        : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
     ll.add("---------------------------------------------");
 
     final String[] a = new String[ll.size()];
