@@ -191,10 +191,10 @@ public class ChemicalBathRecipe implements Runnable {
     GT_Values.RA
         .addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DeepIron, 4),
             Materials.SodiumPersulfate.getFluid(1000),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2),
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Indium, 1),
-            new int[]{10000, 10000, 2000}, 600, 7680);
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 1),
+            new int[]{10000, 10000, 10000}, 600, 7680);
 
     // --- Chlorine cleaning of pistons
     GT_Values.RA
