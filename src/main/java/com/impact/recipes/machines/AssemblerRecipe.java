@@ -1,8 +1,7 @@
 package com.impact.recipes.machines;
 
 import static com.impact.common.item.Core_List_Items.*;
-import static com.impact.loader.ItemRegistery.InsideBlock;
-import static com.impact.loader.ItemRegistery.UtilBlock;
+import static com.impact.loader.ItemRegistery.*;
 import static com.impact.mods.GregTech.GT_ItemList.Casing_Farm;
 import static com.impact.util.Utilits.Blockstack;
 import static com.impact.util.Utilits.simpleMetaStack;
@@ -1283,6 +1282,13 @@ public class AssemblerRecipe implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MaragingSteel300, 6),
                     GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.RedSteel, 8)}, null,
             new ItemStack(InsideBlock, 2, 2) , 100, 120);
+
+    //Space Elevator Casing
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSLA, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Vanadium, 6),
+                    GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.BlueSteel, 8)}, null,
+            GT_ItemList.SpaceElevatorCasing.get(2L) , 100, 120);
 
     /* ====END CASINGS ==== */
     /** ====START QUANTUM SUITE ==== */
