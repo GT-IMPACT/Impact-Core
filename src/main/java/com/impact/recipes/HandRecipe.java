@@ -1204,23 +1204,7 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ae2wct", "wirelessCraftingTerminal", 1L, 0), tBitMask, new Object[]{"SAE", "PTP", "PBP", 'P', OrePrefixes.plate.get(Materials.HastelloyN), 'E', ItemList.Emitter_IV, 'B', ItemList.BatteryHull_IV_Full, 'S', ItemList.Sensor_IV, 'T', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 360), 'A', GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 41)});
 
     /* ==== END WIRELESS TERMINAL ==== */
-    /** ==== START WR-CBE ==== */
-    // --- Stone Bowl
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Core", "stoneBowl", 1L, 0), tBitMask, new Object[]{"P P", "PhP", "PPP", 'P', "stone"});
-    // --- Remote
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "remote", 1L, 0), tBitMask, new Object[]{"dTf", "CMC", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.TungstenSteel), 'S', OrePrefixes.screw.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.Advanced), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 'M', ItemList.Cover_Screen});
-    // --- Wireless Sniffer
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "sniffer", 1L, 0), tBitMask, new Object[]{"DTD", "PSP", "RRR", 'P', OrePrefixes.itemCasing.get(Materials.TungstenSteel), 'S', OrePrefixes.stick.get(Materials.TungstenSteel), 'D', GT_ModHandler.getModItem("WR-CBE|Core", "recieverDish", 1L, 0), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
-    // --- Private Sniffer
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Addons", "psniffer", 1L, 0), tBitMask, new Object[]{"DTD", "PSP", "RRR", 'P', OrePrefixes.itemCasing.get(Materials.TungstenSteel), 'S', OrePrefixes.stick.get(Materials.TungstenSteel), 'D', GT_ModHandler.getModItem("WR-CBE|Core", "blazeRecieverDish", 1L, 0), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
-    // --- Wireless Transmitter
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 0), tBitMask, new Object[]{"dTS", "WWI", "RRR", 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'I', OrePrefixes.stick.get(Materials.Birmabright), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
-    // --- Wireless Receiver
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 1), tBitMask, new Object[]{"dTS", "WWI", "RRR", 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'I', OrePrefixes.stick.get(Materials.Birmabright), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "recieverDish", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
-    // --- Wireless Jammer
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("WR-CBE|Logic", "wirelessLogic", 1L, 2), tBitMask, new Object[]{"dTS", "WWI", "RRR", 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'I', OrePrefixes.stick.get(Materials.Birmabright), 'T', GT_ModHandler.getModItem("WR-CBE|Core", "blazeTransceiver", 1L, 0), 'R', GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0)});
 
-    /* ==== END WR-CBE ==== */
     /** ==== START ZTONES ==== */
     // --- Ztones Tile
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("Ztones", "stoneTile", 8L, 0), tBitMask, new Object[]{"LLL", "LSL", "LLL", 'L', GT_ModHandler.getModItem("minecraft", "stone_slab", 1L, 0), 'S', GT_ModHandler.getModItem("minecraft", "stone", 1L, 0)});
@@ -1320,27 +1304,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
                       'O', GT_ModHandler.getModItem("IC2","blockElectric",1,2)});
 
       /* ==== END IC2 ==== */
-    /** ==== START PROJECTRED ==== */
-    // --- Workbench
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L), tBitMask, new Object[]{"PCP", "WFW", "WWW", 'P', OrePrefixes.plate.get(Materials.Iron), 'W', OrePrefixes.plate.get(Materials.Wood), 'F', GT_ModHandler.getModItem("Forestry", "factory2", 1L, 2), 'C', ItemList.Cover_Crafting});
-    // --- Printer
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 1), tBitMask, new Object[]{"EME", "LAL", "PFP", 'P', OrePrefixes.plate.get(Materials.Steel), 'L', "craftingLensRed", 'F', GT_ModHandler.getModItem("Forestry", "factory2", 1L, 2), 'M', ItemList.Cover_Screen, 'E', ItemList.Emitter_LV, 'A', ItemList.Machine_LV_Assembler});
-    // --- Screwdriver
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.screwdriver", 1L, 0), tBitMask, new Object[]{" fI", "BIh", "RB ", 'I', OrePrefixes.stick.get(Materials.Iron), 'R', OrePrefixes.stick.get(Materials.Rubber), 'B', "dyeBlue"});
-    // --- Multimeter
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.wiredebugger", 1L, 0), tBitMask, new Object[]{"WSW", "PGP", "RdR", 'S', OrePrefixes.stick.get(Materials.SteelMagnetic), 'W', OrePrefixes.wireGt01.get(Materials.RedAlloy), 'P', OrePrefixes.itemCasing.get(Materials.Steel), 'G', OrePrefixes.plate.get(Materials.Glowstone), 'R', OrePrefixes.screw.get(Materials.Steel)});
-    // --- Insulated Red Alloy Wires
-      for (int i = 0; i < 16; i++) {
-          GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, 16 - i), tBitMask,
-                  new Object[]{GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, 0),
-                          GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, 0),
-                          OrePrefixes.plate.get(Materials.Rubber), Dyes.VALUES[i]});
-      }
-    // --- Circuit Plate
-    GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 0),
-            tBitMask,new Object[]{OrePrefixes.plate.get(Materials.Concrete)});
-
-    /* ==== END PROJECTRED ==== */
     /** ==== START PRACTICAL LOGISTICS ==== */
     // --- Energy Reader
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("PracticalLogistics", "EnergyReader", 1L, 0), tBitMask, new Object[]{"SES", "TBT", "hRd", 'S', OrePrefixes.screw.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'R', ItemList.Cover_EnergyDetector, 'E', OrePrefixes.circuit.get(Materials.Basic), 'T', GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L)});

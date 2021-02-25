@@ -956,26 +956,6 @@ public class CircuitAssemblerRecipe implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Orichalcum, 8)},
             Materials.Ledox.getMolten(288L), ItemList.Circuit_Board_Crystal.get(1L), 1400, 122880,
             true);
-
-        //ICChip
-        GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Coated.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Copper, 6)},
-            tMat.getMolten(144L * tMultiplier / 2L),
-            GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 1L, 0),
-            200, 16);
-        GT_Values.RA.addCircuitAssemblerRecipe(
-            new ItemStack[]{ItemList.Circuit_Board_Phenolic.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 6)},
-            tMat.getMolten(144L * tMultiplier / 2L),
-            GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 2L, 0),
-            200, 30);
-        GT_Values.RA.addCircuitAssemblerRecipe(
-            new ItemStack[]{ItemList.Circuit_Board_Plastic.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Electrum, 6)},
-            tMat.getMolten(144L * tMultiplier / 2L),
-            GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 4L, 0),
-            200, 48);
-
         // --- Blank Gene Sample
         GT_Values.RA.addCircuitAssemblerRecipe(
             new ItemStack[]{ItemList.Circuit_Board_Epoxy_Advanced.get(1),

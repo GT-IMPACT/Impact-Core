@@ -33,10 +33,7 @@ public class LaserEngraverRecipe implements gregtech.api.interfaces.IOreRecipeRe
         GT_Values.RA
             .addLaserEngraverRecipe(CoreItems2.getRecipe(154, 1), GT_Utility.copyAmount(0L, aStack),
                 GT_ModHandler.getModItem("OpenComputers", "item", 16L, 24), 600, 120, false);
-        GT_Values.RA
-            .addLaserEngraverRecipe(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 5),
-                GT_Utility.copyAmount(0L, aStack), GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 6),
-                    500, 30, false);
+
         break;
       case "craftingLensGreen":
         GT_Values.RA.addLaserEngraverRecipe(ItemList.LapotronCrystal.get(1L),

@@ -37,9 +37,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
 
     removeFurnaceSmelting(new ItemStack(Blocks.stone));
 
-    removeFurnaceSmelting(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 42));
-    removeFurnaceSmelting(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 43));
-
     //removeRecipeByOutput();
     removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoHelmet", 1, GT_Values.W));
     removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBodyarmor", 1, GT_Values.W));
@@ -1571,38 +1568,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
     removeRecipeByOutput(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 1),
         true, false, false);
 
-    removeRecipeByOutput(
-        GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.fabrication.icchip", 1L, 0),
-        true, false, false);
-    removeRecipeByOutput(
-        GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 0),
-        true, false, false);
-    removeRecipeByOutput(
-        GT_ModHandler.getModItem("ProjRed|Fabrication", "projectred.integration.icblock", 1L, 1),
-        true, false, false);
-    removeRecipeByOutput(
-        GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.screwdriver", 1L, 0), true,
-        false, false);
-    for (int i = 0; i < 16; i++) {
-      removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 19 + i),
-              true, false, false);
-      removeRecipeByOutput(GT_ModHandler.getModItem("ProjRed|Transmission", "projectred.transmission.wire", 1L, i),
-              true, false, false);
-    }
-    for (int i = 1; i < 10; i++) {
-      removeRecipeByOutput(
-              GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, i), true,
-              false, false);
-    }
-    removeRecipeByOutput(
-            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 42),
-            true, false, false);
-    removeRecipeByOutput(
-            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.part", 1L, 43),
-            true, false, false);
-    removeRecipeByOutput(
-            GT_ModHandler.getModItem("ProjRed|Core", "projectred.core.wiredebugger", 1L, 0),
-            true, false, false);
 
 
     removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L, 0), true, false,
