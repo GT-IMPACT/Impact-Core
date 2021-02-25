@@ -41,7 +41,7 @@ public class MixerRecipe implements Runnable {
         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 4L),
         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
-        GT_Utility.getIntegratedCircuit(5), GT_Values.NF, GT_Values.NF,
+        GT_Utility.getIntegratedCircuit(3), GT_Values.NF, GT_Values.NF,
         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EglinSteel, 16L), 30 * 20, 16);
 
     GT_Values.RA
