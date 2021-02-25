@@ -575,10 +575,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
       ll.add("Per-Fluid Capacity: " + NumberFormat.getNumberInstance().format(mfh.getCapacity())
           + "L");
     }
-    ll.add("Running Cost: " + ((-super.mEUt) * 10000 / Math.max(1000, super.mEfficiency)) + "EU/t");
-    ll.add("Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus()) ?
-        EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
-        : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
     ll.add("---------------------------------------------");
 
     final String[] a = new String[ll.size()];
