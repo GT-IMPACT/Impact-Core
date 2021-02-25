@@ -2,6 +2,8 @@ package com.impact.client.render;
 
 import com.impact.core.Refstrings;
 import com.impact.mods.GregTech.tileentities.multi.GTMTE_SpaceElevator;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -11,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class TESR_SpaceElevatorTether extends TileEntitySpecialRenderer {
 
   private static final ResourceLocation tetherBeamTexture = new ResourceLocation(Refstrings.MODID,
