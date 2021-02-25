@@ -91,8 +91,8 @@ public class GTScanner {
     int chunkCoordZ = Minecraft.getMinecraft().thePlayer.chunkCoordZ;
     World world = Minecraft.getMinecraft().thePlayer.worldObj;
 
-    ImpactNetwork.INSTANCE
-        .sendToServer(new ImpactPacketGTScanner(Minecraft.getMinecraft().thePlayer));
+//    ImpactNetwork.INSTANCE
+//        .sendToServer(new ImpactPacketGTScanner(Minecraft.getMinecraft().thePlayer));
 
     for (int x = chunkCoordX * 16; x <= chunkCoordX * 16 + 16; x++) {
       for (int z = chunkCoordZ * 16; z <= chunkCoordZ * 16 + 16; z++) {
@@ -164,15 +164,15 @@ public class GTScanner {
           }
         }
 
-        if (udnerOil != null) {
-          if (udnerOil.amount > 0 && udnerOil.amount < 100) {
-            text = " ▉ " + EnumChatFormatting.WHITE + udnerOil.getLocalizedName() +
-                " - A: " + EnumChatFormatting.YELLOW + udnerOil.amount + EnumChatFormatting.WHITE
-                + " L" + EnumChatFormatting.RESET;
-            y -= fontRender.FONT_HEIGHT;
-            fontRender.drawStringWithShadow(text, x, y, udnerOil.getFluid().getColor(udnerOil));
-          }
-        }
+//        if (udnerOil != null) {
+//          if (udnerOil.amount > 0 && udnerOil.amount < 100) {
+//            text = " ▉ " + EnumChatFormatting.WHITE + udnerOil.getLocalizedName() +
+//                " - A: " + EnumChatFormatting.YELLOW + udnerOil.amount + EnumChatFormatting.WHITE
+//                + " L" + EnumChatFormatting.RESET;
+//            y -= fontRender.FONT_HEIGHT;
+//            fontRender.drawStringWithShadow(text, x, y, udnerOil.getFluid().getColor(udnerOil));
+//          }
+//        }
       }
     }
   }
