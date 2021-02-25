@@ -110,7 +110,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
             IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
             definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                 base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                1, 2, 0, hintsOnly);
+                0, 2, 0, hintsOnly);
           }
 
           @Override
@@ -313,6 +313,12 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
           }
         }
       }
+    }
+    if (this.mEnergyHatches.size() > 1) {
+      formationChecklist = false;
+    }
+    if (this.mMaintenanceHatches.size() != 1) {
+      formationChecklist = false;
     }
     return formationChecklist;
   }

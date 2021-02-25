@@ -99,7 +99,7 @@ public class MultiBlockTooltipBuilder {
    */
 
   public MultiBlockTooltipBuilder addParallelHatch(String info) {
-    sLines.add(TAB + EnumChatFormatting.RED + "Parallel Hatch: " + EnumChatFormatting.GRAY + info);
+    sLines.add(TAB + EnumChatFormatting.GREEN + "Parallel Hatch: " + EnumChatFormatting.GRAY + info);
     return this;
   }
 

@@ -150,7 +150,7 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
             if (super.depleteInput(liquid)) {
 
               super.mMaxProgresstime = 20; // 1 Second
-              super.mEfficiencyIncrease = 50; // 50 - 0.5% per cycle
+              super.mEfficiencyIncrease = 250; // 50 - 0.5% per cycle
               if (mEfficiency > 9000) {
                 super.eAmpereFlow = 256;
                 super.mEUt = EU_PER_TICK / 256;

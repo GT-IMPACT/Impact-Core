@@ -23,4 +23,8 @@ public class Impact_API {
    */
   public static final Map<String, int[]> sCommunicationTower = new ConcurrentHashMap<>();
 
+  /**
+   * The Space Elevator Frequencies
+   */
+  public static final Map<String, int[]> sElevatorSpace = new ConcurrentHashMap<>();
 }
