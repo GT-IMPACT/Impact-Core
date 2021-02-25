@@ -38,7 +38,7 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch {
 
   public GTMTE_TankHatch(int aID, String aName, String aNameRegional, int aTier) {
     super(aID, aName, aNameRegional, aTier, INV_SLOT_COUNT, new String[]{
-        "All-in-one access for the T.F.F.T",
+        "All-in-one access for the High-Tech fluid tank",
         "Right-click with a screwdriver to toggle auto-output"}
     );
   }
