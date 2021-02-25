@@ -910,8 +910,8 @@ public class Printer3DRecipe implements Runnable {
         GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Oriharukon, 8),
         GT_OreDictUnificator.get(OrePrefixes.round, Materials.NaquadahAlloy, 16),
         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Americium, 16),
-        GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Osmiridium, 16)
-    }, ItemList.LargePlasmaTurbine.get(1L), null, 100 * 20, 122880);
+        GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Pikyonium64B, 16)
+    }, ItemList.LargePlasmaTurbine.get(1L), null, 100 * 20, 500000);
 
     //Heat Exchanger
     GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
