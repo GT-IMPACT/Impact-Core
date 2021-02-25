@@ -1,6 +1,6 @@
-package com.impact.mods.ASP.common.TE;
+package com.impact.mods.asp.common.te;
 
-import com.impact.mods.ASP.common.ContainerAdvSolarPanel;
+import com.impact.mods.asp.common.ContainerAdvSolarPanel;
 import galaxyspace.core.configs.GSConfigDimensions;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;

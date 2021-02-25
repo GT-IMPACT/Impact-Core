@@ -1,9 +1,7 @@
-package com.impact.mods.GTScanner;
+package com.impact.mods.gtscanner;
 
 import com.impact.core.ClientProxy;
 import com.impact.core.CommonProxy;
-import com.impact.network.ImpactNetwork;
-import com.impact.network.ImpactPacketGTScanner;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.relauncher.Side;

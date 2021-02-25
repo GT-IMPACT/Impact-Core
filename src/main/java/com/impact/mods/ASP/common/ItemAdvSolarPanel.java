@@ -1,4 +1,4 @@
-package com.impact.mods.ASP.common;
+package com.impact.mods.asp.common;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

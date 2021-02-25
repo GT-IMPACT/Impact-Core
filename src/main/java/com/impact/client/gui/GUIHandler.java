@@ -4,11 +4,11 @@ import static com.impact.core.impactLog.INFO;
 import static com.impact.core.impactLog.WARNING;
 
 import com.impact.impact;
-import com.impact.mods.ASP.client.GuiAdvSolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntitySolarPanel;
+import com.impact.mods.asp.client.GuiAdvSolarPanel;
+import com.impact.mods.asp.common.te.TileEntitySolarPanel;
 import com.impact.mods.GregTech.gui.Container_LapTopSetting;
 import com.impact.mods.GregTech.gui.GUI_LapTopSetting;
-import com.impact.mods.RailCraft.carts.item.client.OpenableGUI;
+import com.impact.mods.railcraft.carts.item.client.OpenableGUI;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

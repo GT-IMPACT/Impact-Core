@@ -1,4 +1,4 @@
-package com.impact.mods.NEI.ImpactPlugin;
+package com.impact.mods.nei.impactplugin;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;

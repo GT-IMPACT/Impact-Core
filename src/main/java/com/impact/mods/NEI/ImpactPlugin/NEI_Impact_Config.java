@@ -1,4 +1,4 @@
-package com.impact.mods.NEI.ImpactPlugin;
+package com.impact.mods.nei.impactplugin;
 
 import codechicken.nei.api.IConfigureNEI;
 import com.impact.mods.GregTech.tileentities.multi.GTMTE_RailAssembler;

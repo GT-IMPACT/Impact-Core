@@ -1,7 +1,7 @@
-package com.impact.mods.ASP.client;
+package com.impact.mods.asp.client;
 
-import com.impact.mods.ASP.common.ContainerAdvSolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntitySolarPanel;
+import com.impact.mods.asp.common.ContainerAdvSolarPanel;
+import com.impact.mods.asp.common.te.TileEntitySolarPanel;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;

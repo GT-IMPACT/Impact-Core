@@ -1,4 +1,4 @@
-package com.impact.mods.GregTech.TecTech;
+package com.impact.mods.GregTech.tectech;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;

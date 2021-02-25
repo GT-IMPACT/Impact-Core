@@ -1,4 +1,4 @@
-package com.impact.mods.ASP.common.TE;
+package com.impact.mods.asp.common.te;
 
 public class TileEntity32768SolarPanel extends TileEntitySolarPanel {
 

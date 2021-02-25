@@ -1,16 +1,16 @@
-package com.impact.mods.ASP;
+package com.impact.mods.asp;
 
-import com.impact.mods.ASP.common.BlockAdvSolarPanel;
-import com.impact.mods.ASP.common.ItemAdvSolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity128SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity131072SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity2048SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity32768SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity32SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity512SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity524288SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity8192SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity8SolarPanel;
+import com.impact.mods.asp.common.BlockAdvSolarPanel;
+import com.impact.mods.asp.common.ItemAdvSolarPanel;
+import com.impact.mods.asp.common.te.TileEntity128SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity131072SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity2048SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity32768SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity32SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity512SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity524288SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity8192SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity8SolarPanel;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 

@@ -1,4 +1,4 @@
-package com.impact.mods.ASP.client;
+package com.impact.mods.asp.client;
 
 
 import codechicken.nei.api.IConfigureNEI;

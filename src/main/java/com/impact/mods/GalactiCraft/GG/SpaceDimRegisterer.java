@@ -1,4 +1,4 @@
-package com.impact.mods.GalactiCraft.GG;
+package com.impact.mods.galacticraft.gg;
 
 import bloodasp.galacticgreg.api.AsteroidBlockComb;
 import bloodasp.galacticgreg.api.Enums;
@@ -24,7 +24,6 @@ import galaxyspace.systems.SolarSystem.moons.europa.dimension.ChunkProviderEurop
 import galaxyspace.systems.SolarSystem.moons.ganymede.dimension.ChunkProviderGanymede;
 import galaxyspace.systems.SolarSystem.moons.io.dimension.ChunkProviderIo;
 import galaxyspace.systems.SolarSystem.moons.miranda.dimension.ChunkProviderMiranda;
-import galaxyspace.systems.SolarSystem.moons.titan.dimension.ChunkProviderTitan;
 import galaxyspace.systems.SolarSystem.moons.triton.dimension.ChunkProviderTriton;
 import galaxyspace.systems.SolarSystem.planets.ceres.dimension.ChunkProviderCeres;
 import galaxyspace.systems.SolarSystem.planets.kuiperbelt.dimension.ChunkProviderKuiper;

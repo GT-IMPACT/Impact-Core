@@ -1,4 +1,4 @@
-package com.impact.mods.NEI.ImpactPlugin;
+package com.impact.mods.nei.impactplugin;
 
 import static gregtech.api.util.GT_Utility.trans;
 

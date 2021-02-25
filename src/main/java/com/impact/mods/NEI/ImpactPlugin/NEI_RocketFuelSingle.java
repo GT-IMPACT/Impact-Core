@@ -1,4 +1,4 @@
-package com.impact.mods.NEI.ImpactPlugin;
+package com.impact.mods.nei.impactplugin;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;

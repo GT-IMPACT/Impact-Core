@@ -1,20 +1,20 @@
-package com.impact.mods.ASP.common;
+package com.impact.mods.asp.common;
 
 import static com.impact.client.gui.GUIHandler.GUI_ID_Solar;
 
 import com.impact.impact;
-import com.impact.mods.ASP.ASP;
-import com.impact.mods.ASP.common.TE.TileEntity128SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity131072SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity2048SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity32768SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity32SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity512SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity524288SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity8192SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntity8SolarPanel;
-import com.impact.mods.ASP.common.TE.TileEntityBase;
-import com.impact.mods.ASP.common.TE.TileEntitySolarPanel;
+import com.impact.mods.asp.ASP;
+import com.impact.mods.asp.common.te.TileEntity128SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity131072SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity2048SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity32768SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity32SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity512SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity524288SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity8192SolarPanel;
+import com.impact.mods.asp.common.te.TileEntity8SolarPanel;
+import com.impact.mods.asp.common.te.TileEntityBase;
+import com.impact.mods.asp.common.te.TileEntitySolarPanel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
