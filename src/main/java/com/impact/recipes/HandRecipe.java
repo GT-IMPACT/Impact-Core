@@ -1487,13 +1487,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
 
 
     /* ==== END GALACTICRAFT & GALAXYSPACE ==== */
-    /** ==== START OPENBLOCKS ==== */
-    // --- Elevator
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L), tBitMask, new Object[]{"w h", "PHP", "GBG", 'P', OrePrefixes.plate.get(Materials.Steel), 'G', OrePrefixes.gearGtSmall.get(Materials.Steel), 'B', OrePrefixes.frameGt.get(Materials.Steel), 'H', new ItemStack(Blocks.heavy_weighted_pressure_plate)});
-    // --- DevNull
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("OpenBlocks", "devnull", 1L), tBitMask, new Object[]{"dCh", "SBS", 'S', OrePrefixes.screw.get(Materials.Iron), 'B', OrePrefixes.frameGt.get(Materials.Iron), 'C', GT_ModHandler.getModItem("ExtraUtilities", "trashcan", 1L)});
-
-    /* ==== END OPENBLOCKS ==== */
     /** ==== START NUCLEAR CONTROL ==== */
     // --- Remote Sensor Kit
     GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("IC2NuclearControl", "ItemRemoteSensorKit", 1L, 0), tBitMask, new Object[]{GT_ModHandler.getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0)});

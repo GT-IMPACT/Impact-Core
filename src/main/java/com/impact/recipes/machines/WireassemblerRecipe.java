@@ -7,6 +7,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 
+import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
+
 public class WireassemblerRecipe implements Runnable {
 
   @Override
@@ -36,6 +38,14 @@ public class WireassemblerRecipe implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 4L)},
         Materials.Trinium.getMolten(720L), ItemList.Casing_Coil_Superconductor.get(1L), 375,
         2000000, true);
+
+    GT_Values.RA.addWireAssemblerRecipe(new ItemStack[]{
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSLA, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Vanadium, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Vanadium, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Vanadium, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Vanadium, 64L)}, null,
+            new ItemStack(SpaceElevatorBlock, 1, 0), 80*20, 1024, false);
 
   }
 }

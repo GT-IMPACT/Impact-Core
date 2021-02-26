@@ -183,7 +183,7 @@ public class BlastSmelterRecipe implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 4),
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4),
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8)}, null, null,
-        Materials.Pikyonium64B.getMoltenHot(144L * 56), 336 * 20, 500000, 9900);
+        Materials.Pikyonium64B.getMoltenHot(144L * 71), 336 * 20, 500000, 9900);
     GT_Values.RA.addBlastSmelterRecipe(
         new ItemStack[]{ItemList.Circuit_Integrated.getWithDamage(0L, 1L),
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3),

@@ -470,6 +470,19 @@ public class Printer3DRecipe implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel, 8)
     }, GT_ItemList.Space_Satellite.get(1L), null, 50 * 20, 480);
 
+    //Space Elevator
+    GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+            ItemList.Hull_EV.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
+            GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L),
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSLA, 4),
+            GT_ModHandler.getModItem("EnderIO", "blockTravelAnchor", 2L, 0),
+            ItemList.Conveyor_Module_EV.get(8L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Vanadium, 16),
+            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSLA, 32),
+            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 32)
+    }, GT_ItemList.Space_Elevator.get(1L), null, 60 * 20, 1920);
+
     /* ================================= end IMPACT MOD =================================*/
 
 /** ================================= start ExtraUtilities =================================*/
@@ -887,15 +900,18 @@ public class Printer3DRecipe implements Runnable {
     //Plasma Turbine
     GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
         ItemList.Hull_UV.get(1L),
+        ItemList.Casing_Coil_Superconductor.get(4L),
+        ItemList.Electric_Pump_UV.get(4L),
         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.NaquadahAlloy, 4),
         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 8),
-        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Oriharukon, 8),
+        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Draconium, 8),
         GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Naquadah, 8),
-        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 8)
-/*TriniumNaquadahAlloy*/, GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Draconium, 8),
+        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 8),
+        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Oriharukon, 8),
         GT_OreDictUnificator.get(OrePrefixes.round, Materials.NaquadahAlloy, 16),
-        GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Osmiridium, 16)
-    }, ItemList.LargePlasmaTurbine.get(1L), null, 100 * 20, 122880);
+        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Americium, 16),
+        GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Pikyonium64B, 16)
+    }, ItemList.LargePlasmaTurbine.get(1L), null, 100 * 20, 500000);
 
     //Heat Exchanger
     GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{

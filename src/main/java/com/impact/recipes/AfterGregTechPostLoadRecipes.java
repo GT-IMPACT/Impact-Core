@@ -1568,13 +1568,6 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
     removeRecipeByOutput(GT_ModHandler.getModItem("ChickenChunks", "chickenChunkLoader", 1L, 1),
         true, false, false);
 
-
-
-    removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "elevator", 1L, 0), true, false,
-        false);
-    removeRecipeByOutput(GT_ModHandler.getModItem("OpenBlocks", "devnull", 1L, 0), true, false,
-        false);
-
     removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "workbenchbackpack", 1L, GT_Values.W),
         true, false, false);
     removeRecipeByOutput(GT_ModHandler.getModItem("Backpack", "boundLeather", 1L), true, false,
