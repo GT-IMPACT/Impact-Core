@@ -19,8 +19,10 @@ public class IB_Casing_1
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
     super.addInformation(aStack, aPlayer, aList, aF3_H);
-    aList.add(this.mNoMobsToolTip);
-    aList.add(this.mNoTileEntityToolTip);
+    if (getDamage(aStack) > 3) {
+      aList.add(this.mNoMobsToolTip);
+      aList.add(this.mNoTileEntityToolTip);
+    }
     switch (getDamage(aStack)) {
       case 0:
         aList.add(this.mUpgrade1Tooltip);

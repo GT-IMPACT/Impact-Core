@@ -43,7 +43,7 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
       int aMaxParallel) {
     super(aID, aName, aNameRegional, aTier, 0, new String[]{
         Utilits.impactTag(),
-        "Parallel points transceiver",
+        "Parallel points transmitter",
         "Used in multi-block machines"
     });
     mMaxParallel = aMaxParallel;

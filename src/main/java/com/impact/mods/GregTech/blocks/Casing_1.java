@@ -38,13 +38,13 @@ public class Casing_1 extends GT_Block_Casings_Abstract {
           b);
     }
     GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".0.name", "Upgrade Casing T1");  // 0   384
+        .addStringLocalization(getUnlocalizedName() + ".0.name", "Parallel СPU Т1");  // 0   384
     GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".1.name", "Upgrade Casing T2");  // 1   385
+        .addStringLocalization(getUnlocalizedName() + ".1.name", "Parallel СPU T2");  // 1   385
     GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".2.name", "Upgrade Casing T3");  // 2   386
+        .addStringLocalization(getUnlocalizedName() + ".2.name", "Parallel СPU T3");  // 2   386
     GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".3.name", "Upgrade Casing T4");  // 3   387
+        .addStringLocalization(getUnlocalizedName() + ".3.name", "Parallel СPU T4");  // 3   387
     GT_LanguageManager
         .addStringLocalization(getUnlocalizedName() + ".4.name", "PBE Casing");  // 4   388
     GT_LanguageManager
