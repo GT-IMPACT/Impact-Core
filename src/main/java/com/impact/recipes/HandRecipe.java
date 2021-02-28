@@ -1468,8 +1468,6 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     //GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "metalsblock", 5L, 9), tBitMask, new Object[]{"hP ", "PSP", " Pw", 'P', GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 1L, 6), 'S', "stone"});
     // --- Advanced Fuel Loader
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "advFuelLoader", 1L), tBitMask, new Object[]{"SWS", "PTM", "AIA", 'I', OrePrefixes.pipeMedium.get(Materials.TungstenSteel), 'S', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5), 'A', CoreItems2.getRecipe(IceCompressedPlate.getMetaID(), 1), 'W', OrePrefixes.circuit.get(Materials.Elite), 'M', ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Pump_IV, 'T', ItemList.Large_Fluid_Cell_TungstenSteel});
-    // --- Advanced Landing Pad
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "advlandingpad", 5L), tBitMask, new Object[]{"III", "PPP", "BBB", 'B', OrePrefixes.frameGt.get(Materials.TungstenSteel), 'P', GT_ModHandler.getModItem("GalacticraftMars", "item.null", 1L, 5), 'I', OrePrefixes.plate.get(Materials.MaragingSteel300)});
     // --- Gravity Module
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalaxySpace", "gravitationmoduleon", 1L), tBitMask, new Object[]{"PLP", "CFC", "IHI", 'L', OrePrefixes.lens.get(Materials.Diamond), 'C', OrePrefixes.cableGt02.get(Materials.Aluminium), 'I', OrePrefixes.circuit.get(Materials.Data), 'F', ItemList.Field_Generator_HV, 'H', ItemList.Hull_EV, 'P', GT_ModHandler.getModItem("GalaxySpace", "item.CompressedPlates", 1L, 4)});
     // --- Magnetic Field Generator
