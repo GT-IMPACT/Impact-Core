@@ -2780,53 +2780,6 @@ public class AssemblerRecipe implements Runnable {
         GT_ModHandler.getModItem("Ztones", "tile.zorgBlock", 16L, 0), 100, 8);
 
     /* ==== END ZTONES ==== */
-    /** ==== START PRACTICAL LOGISTICS ==== */
-    // --- Data Emitter
-    GT_Values.RA
-        .addAssemblerRecipe(GT_ModHandler.getModItem("PracticalLogistics", "InfoReader", 1L, 0),
-            ItemList.Emitter_LV.get(1),
-            GT_ModHandler.getModItem("PracticalLogistics", "DataEmitter", 1L, 0), 200, 8);
-    // --- Data Receiver
-    GT_Values.RA
-        .addAssemblerRecipe(GT_ModHandler.getModItem("PracticalLogistics", "InfoReader", 1L, 0),
-            ItemList.Sensor_LV.get(1),
-            GT_ModHandler.getModItem("PracticalLogistics", "DataReceiver", 1L, 0), 200, 8);
-    // --- Transceiver
-    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("IC2", "itemFreq", 1L, 0),
-        GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L),
-        GT_ModHandler.getModItem("PracticalLogistics", "Transceiver", 1L, 0), 200, 8);
-    // --- Redstone Signaller
-    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("minecraft", "redstone_torch", 1L),
-        GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L),
-        GT_ModHandler.getModItem("PracticalLogistics", "RedstoneSignaller_OFF", 1L), 200, 8);
-    // --- Data Cable
-    GT_Values.RA
-        .addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Cobalt, 1L),
-            GT_ModHandler.getModItem("EnderIO", "itemMaterial", 4L, 1),
-            GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L, 0), 100, 8);
-    // --- Channelled Cable
-    GT_Values.RA.addAssemblerRecipe(
-        new ItemStack[]{GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 8L),
-            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2),
-            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1),
-            GT_Utility.getIntegratedCircuit(1)}, null,
-        GT_ModHandler.getModItem("PracticalLogistics", "MultiCable", 1L), 200, 8);
-    // --- Clock
-    GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem("ExtraUtilities", "timer", 1L),
-        GT_ModHandler.getModItem("PracticalLogistics", "DataCable", 1L),
-        GT_ModHandler.getModItem("PracticalLogistics", "Clock", 1L, 0), 200, 8);
-    // --- Display Screen
-    GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Screen.get(1),
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 2),
-            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicon, 4)}, null,
-        GT_ModHandler.getModItem("PracticalLogistics", "DisplayScreenItem", 1L, 0), 200, 8);
-    // --- Large Display Screen
-    GT_Values.RA.addAssemblerRecipe(
-        GT_ModHandler.getModItem("PracticalLogistics", "DisplayScreenItem", 2L, 0),
-        GT_Utility.getIntegratedCircuit(1),
-        GT_ModHandler.getModItem("PracticalLogistics", "LargeDisplayScreen", 1L, 0), 100, 8);
-
-    /* ==== END PRACTICAL LOGISTICS ==== */
     /** ==== START GALACTICRAFT & GALAXYSPACE ==== */
     // ---  T1 Rocket + chest
     GT_Values.RA
