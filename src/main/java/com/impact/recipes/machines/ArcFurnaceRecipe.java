@@ -61,5 +61,39 @@ public class ArcFurnaceRecipe implements Runnable {
     GT_Values.RA.addArcFurnaceRecipe(ItemList.Casing_BronzePlatedBricks.get(1),
         new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 4),
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1)}, null, 160, 96);
+
+    // --- Canister
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankLightFull", 1L, GT_Values.W),
+                    new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9)}, null, 600, 64);
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankMedFull", 1L, GT_Values.W),
+                    new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.MeteoricIron, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 9)}, null, 600, 120);
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankHeavyFull", 1L, GT_Values.W),
+                    new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Desh, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel, 9)}, null, 700, 256);
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt4", 1L, GT_Values.W),
+                    new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 9)}, null, 800, 480);
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.oxygenTankt5", 1L, GT_Values.W),
+                    new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Trinium, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 9)}, null, 900, 1024);
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t4", 1L, GT_Values.W),
+                    new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Draconium, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Chrome, 9)}, null, 1000, 1920);
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t5", 1L, GT_Values.W),
+                    new ItemStack[]{CoreItems2.getRecipe(73, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 9)}, null, 1100, 4096);
+    GT_Values.RA
+            .addArcFurnaceRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.oxygentank_t6", 1L, GT_Values.W),
+                    new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Quantium, 21),
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 9)}, null, 1200, 7680);
   }
 }
