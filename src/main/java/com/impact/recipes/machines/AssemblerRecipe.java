@@ -852,6 +852,18 @@ public class AssemblerRecipe implements Runnable {
             Materials.TungstenSteel.getMolten(1296L),
             GT_ItemList.Parallel_Hatch_Rack.get(1), 400, 7680);
 
+    // --- Nuclear Rod Hatch
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_EV.get(1), ItemList.Electric_Motor_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 4L), GT_Utility.getIntegratedCircuit(4)},
+            Materials.Polytetrafluoroethylene.getMolten(576L),
+            GT_ItemList.Nuclear_Hatch_Rod.get(1), 480, 1920);
+    GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{ItemList.Hull_EV.get(1), ItemList.Electric_Motor_EV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 4L), GT_Utility.getIntegratedCircuit(4)},
+            Materials.Polybenzimidazole.getMolten(72L),
+            GT_ItemList.Nuclear_Hatch_Rod.get(1), 480, 1920);
+
     /* ================================= end GT MOD =================================*/
 
     GT_Values.RA.addAssemblerRecipe(

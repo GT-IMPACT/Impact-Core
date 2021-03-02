@@ -483,6 +483,31 @@ public class Printer3DRecipe implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 32)
     }, GT_ItemList.Space_Elevator.get(1L), null, 60 * 20, 1920);
 
+    //Nuclear Reactor I
+    GT_Values.RA.addPrimitiveLineRecipe(new ItemStack[]{
+            ItemList.Hull_EV.get(1L), ItemList.Robot_Arm_EV.get(1L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 2),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
+            GT_ModHandler.getModItem("IC2", "reactorPlatingExplosive", 8), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 8)
+    }, GT_ItemList.Nuclear_Reactor_I.get(1), null, 30 * 20, 1920);
+
+    //Nuclear Reactor II
+    GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+            ItemList.Hull_IV.get(1L), ItemList.Robot_Arm_IV.get(2L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 4),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 6),
+            GT_ModHandler.getModItem("IC2", "reactorPlatingExplosive", 8), CoreItems2.getRecipe(141, 8),
+            GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 10)
+    }, GT_ItemList.Nuclear_Reactor_II.get(1), null, 50 * 20, 7680);
+
+    //Nuclear Reactor II
+    GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
+            ItemList.Hull_LuV.get(1L), ItemList.Robot_Arm_LuV.get(4L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 8),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8),
+            CoreItems2.getRecipe(142, 8), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 12)
+    }, GT_ItemList.Nuclear_Reactor_III.get(1), null, 80 * 20, 30720);
+
     /* ================================= end IMPACT MOD =================================*/
 
 /** ================================= start ExtraUtilities =================================*/
@@ -550,11 +575,11 @@ public class Printer3DRecipe implements Runnable {
 /** ================================= start IC2 =================================*/
     //Nuclear Reactor
     GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
-        ItemList.Hull_IV.get(1L), ItemList.Robot_Arm_IV.get(2L),
-        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 4),
-        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
-        GT_ModHandler.getModItem("IC2", "blockReactorChamber", 4L, 0), CoreItems2.getRecipe(141, 8),
-        GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 12)
+            ItemList.Hull_IV.get(1L), ItemList.Robot_Arm_IV.get(2L),
+            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 4),
+            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
+            GT_ModHandler.getModItem("IC2", "blockReactorChamber", 4L, 0), CoreItems2.getRecipe(141, 8),
+            GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Lead, 12)
     }, GT_ModHandler.getModItem("IC2", "blockGenerator", 1L, 5), null, 40 * 20, 1920);
 
     //Kinetic Generator
