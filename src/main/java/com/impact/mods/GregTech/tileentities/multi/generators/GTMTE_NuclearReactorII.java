@@ -26,8 +26,8 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
 
   final Block GENERAL_CASING = GregTech_API.sBlockCasings3;
   final int GENERAL_CASING_META = 12;
-  final Block SECOND_CASING = GregTech_API.sBlockCasings8;
-  final int SECOND_CASING_META = 1;
+  final Block SECOND_CASING = GregTech_API.sBlockCasings2;
+  final int SECOND_CASING_META = 13;
   final int TEXTURE_HATCH = 44;
 
   public GTMTE_NuclearReactorII(int aID, String aName, String aNameRegional) {
@@ -62,6 +62,7 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
         .addInputHatch("Any casing (max x3)")
         .addOutputHatch("Any casing (max x12)")
         .addCasingInfo("Radiation Proof Casing")
+        .addOtherStructurePart("Steel Pipe Casing", "pipes!")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
@@ -89,9 +90,12 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
               .addElement('B', ofBlock(SECOND_CASING, SECOND_CASING_META))
               .addElement('E', ofBlockHint(decorateBlock[2], 1))
               .build();
-      private final String[] desc = new String[]{
-          EnumChatFormatting.RED + "Impact Details:",
-      };
+          private final String[] desc = new String[]{
+              EnumChatFormatting.RED + "Impact Details:",
+              " - Radiation Proof Casing",
+              " - Steel Pipe Casing",
+              " - " + EnumChatFormatting.RED + "RED" + EnumChatFormatting.RESET + " Nuclear Rod Hatch or Radiation Proof Casing",
+          };
       //endregion
 
       @Override
