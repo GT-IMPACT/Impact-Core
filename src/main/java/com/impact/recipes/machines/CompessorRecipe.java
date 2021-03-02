@@ -65,19 +65,9 @@ public class CompessorRecipe implements Runnable {
 
     GT_Values.RA
         .addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L),
-            GT_ModHandler.getModItem("GalaxySpace", "ceresglowstone", 1L), 200, 8);
+            GT_ModHandler.getModItem("GalaxySpace", "dungeonglowstone", 1L), 200, 8);
     GT_Values.RA
         .addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 1),
-            GT_ModHandler.getModItem("GalaxySpace", "ioglowstone", 1L), 200, 8);
-    GT_Values.RA
-        .addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 2),
-            GT_ModHandler.getModItem("GalaxySpace", "enceladusglowstone", 1L), 200, 8);
-    GT_Values.RA
-        .addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 3),
-            GT_ModHandler.getModItem("GalaxySpace", "proteusglowstone", 1L), 200, 8);
-    GT_Values.RA
-        .addCompressorRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 4),
-            GT_ModHandler.getModItem("GalaxySpace", "plutoglowstone", 1L), 200, 8);
-
+            GT_ModHandler.getModItem("GalaxySpace", "dungeonglowstone", 1L, 1), 200, 8);
   }
 }

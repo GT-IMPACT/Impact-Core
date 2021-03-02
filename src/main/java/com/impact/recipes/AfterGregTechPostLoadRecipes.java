@@ -1379,16 +1379,10 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         false, true);
     removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "convertersurface", 1L, 0), true,
         false, true);
-    removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "ceresglowstone", 1L, 0), true,
+    removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "dungeonglowstone", 1L, 0), true,
         false, true);
-    removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "ioglowstone", 1L, 0), true, false,
+    removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "dungeonglowstone", 1L, 1), true, false,
         true);
-    removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "enceladusglowstone", 1L, 0), true,
-        false, true);
-    removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "proteusglowstone", 1L, 0), true,
-        false, true);
-    removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "plutoglowstone", 1L, 0), true,
-        false, true);
     //removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.RocketParts", 1L, 0), true, false, true);
     //removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.RocketParts", 1L, 1), true, false, true);
     //removeRecipeByOutput(GT_ModHandler.getModItem("GalaxySpace", "item.RocketParts", 1L, 2), true, false, true);

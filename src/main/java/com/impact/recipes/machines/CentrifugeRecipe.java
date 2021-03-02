@@ -372,30 +372,6 @@ public class CentrifugeRecipe implements Runnable {
             GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tantalite, 1L),
             GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tungsten, 1L), null, null,
             new int[]{10000, 7500, 6000, 5000}, 500, 256);
-    GT_Values.RA
-        .addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 2),
-            GT_Values.NI, GT_Values.NF, GT_Values.NF,
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Chrome, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iridium, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Osmium, 1L), null, null,
-            new int[]{10000, 7500, 6000, 5000}, 600, 480);
-    GT_Values.RA
-        .addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 3),
-            GT_Values.NI, GT_Values.NF, GT_Values.NF,
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uraninite, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Draconium, 1L), null, null,
-            new int[]{10000, 7500, 6000, 5000}, 700, 1024);
-    GT_Values.RA
-        .addCentrifugeRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 4),
-            GT_Values.NI, GT_Values.NF, GT_Values.NF,
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.BlackPlutonium, 1L), null,
-            null, new int[]{10000, 7500, 6000, 5000}, 800, 1920);
 
     /* ================================= end GALAXYSPACE =================================*/
 

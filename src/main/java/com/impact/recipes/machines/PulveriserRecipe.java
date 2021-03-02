@@ -457,24 +457,12 @@ public class PulveriserRecipe implements Runnable {
     /* ================================= end CUSTOM RECIPES =================================*/
 /** ================================= start GALAXYSPACE =================================*/
     GT_Values.RA
-        .addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "ceresglowstone", 1L, 0),
+        .addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "dungeonglowstone", 1L, 0),
             new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 0)},
             new int[]{10000}, 300, 2);
-    GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "ioglowstone", 1L, 1),
+    GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "dungeonglowstone", 1L, 1),
         new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 1)},
         new int[]{10000}, 300, 2);
-    GT_Values.RA
-        .addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "enceladusglowstone", 1L, 2),
-            new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 2)},
-            new int[]{10000}, 300, 2);
-    GT_Values.RA
-        .addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "proteusglowstone", 1L, 3),
-            new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 3)},
-            new int[]{10000}, 300, 2);
-    GT_Values.RA
-        .addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "plutoglowstone", 1L, 4),
-            new ItemStack[]{GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 4L, 4)},
-            new int[]{10000}, 300, 2);
     GT_Values.RA
         .addPulveriserRecipe(GT_ModHandler.getModItem("GalaxySpace", "item.UnknowCrystal", 1L),
             new ItemStack[]{
