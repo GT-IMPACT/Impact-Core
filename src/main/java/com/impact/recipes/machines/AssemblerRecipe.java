@@ -2590,7 +2590,7 @@ public class AssemblerRecipe implements Runnable {
     /** ==== START WR-CBE ==== */
     // --- Wireless Transceiver
     GT_Values.RA.addAssemblerRecipe(
-        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 1L),
+        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Birmabright, 1L),
         GT_ModHandler.getModItem("WR-CBE|Core", "retherPearl", 1L, 0),
         GT_ModHandler.getModItem("WR-CBE|Core", "wirelessTransceiver", 1L, 0), 600, 120);
     // --- Blaze Transceiver

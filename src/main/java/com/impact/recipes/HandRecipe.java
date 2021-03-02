@@ -1388,11 +1388,11 @@ public class HandRecipe extends GT_CraftingRecipeLoader implements Runnable {
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.parachute", 1L), tBitMask, new Object[]{"CCC", "W W", "WWW", 'C', GT_ModHandler.getModItem("GalacticraftCore", "item.canvas", 1L), 'W', OrePrefixes.wireFine.get(Materials.Steel)});
     // --- Slabs
     GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftCore", "tile.gcBlockCore", 1L, 4)});
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftCore", "tile.gcBlockCore", 1L, 3)});
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftCore", "tile.moonBlock", 1L, 4)});
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftCore", "tile.moonBlock", 1L, 14)});
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 4)});
-    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 7)});
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 1), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftCore", "tile.gcBlockCore", 1L, 3)});
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 2), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftCore", "tile.moonBlock", 1L, 4)});
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 3), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftCore", "tile.moonBlock", 1L, 14)});
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 4), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 4)});
+    GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "slabGCHalf", 2L, 5), tBitMask, new Object[]{"sB", 'B', GT_ModHandler.getModItem("GalacticraftMars", "tile.mars", 1L, 7)});
     // --- Battery
     GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getModItem("GalacticraftCore", "item.battery", 1L, 100), tBitMask, new Object[]{ItemList.Battery_Hull_LV});
 

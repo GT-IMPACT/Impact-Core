@@ -414,6 +414,9 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
     removeRecipeByOutput(new ItemStack(Blocks.carpet, 1, GT_Values.W), true, false, false);
     removeRecipeByOutput(new ItemStack(Blocks.stained_glass_pane, 1, GT_Values.W), true, false,
         false);
+    removeRecipeByOutput(new ItemStack(Items.enchanted_book, 1, 0), true, false,
+            false);
+
 
     removeRecipeByOutput(GT_ModHandler.getModItem("malisisdoors", "iron_trapdoor", 1L, 0), true,
         false, false);
@@ -630,6 +633,8 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
         true, false, true);
     removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1, 13),
         true, false, true);
+    removeRecipeByOutput(GT_ModHandler.getModItem("ExtraUtilities", "decorativeBlock1", 1, 8),
+            true, false, true);
 
     removeRecipeByOutput(GT_ModHandler.getModItem("ArchitectureCraft", "sawbench", 1, 0), true,
         false, true);
