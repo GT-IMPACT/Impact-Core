@@ -197,7 +197,7 @@ public class Basic_Register {
     Communication_Hatch_Transmitter.set(new GTMTE_SpaceSatellite_Transmitter(ID2++, "impact.machine.communicationhatch.transmitter", "Communication Transmitter").getStackForm(1L));
     Communication_Hatch_Receiver.set(new GTMTE_SpaceSatellite_Receiver(ID2++, "impact.machine.communicationhatch.receiver", "Communication Receiver").getStackForm(1L));
 
-    Parallel_Hatch_Rack.set(new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Computer Rack").getStackForm(1L));
+    Parallel_Hatch_Rack.set(new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack").getStackForm(1L));
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
