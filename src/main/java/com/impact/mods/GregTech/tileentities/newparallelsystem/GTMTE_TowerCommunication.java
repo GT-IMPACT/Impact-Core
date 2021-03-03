@@ -29,6 +29,7 @@ import gregtech.api.util.GT_Utility;
 import java.text.NumberFormat;
 import java.util.HashSet;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -36,6 +37,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_EM implements
@@ -137,6 +139,10 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   }
 
   @Override
+  protected void soundMagic(ResourceLocation activitySound) {
+  }
+
+  @Override
   public IStructureDefinition<GTMTE_TowerCommunication> getStructure_EM() {
     return STRUCTURE_DEFINITION;
   }
@@ -221,6 +227,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
         .addTypeMachine("Communication Tower")
+        .addInfo("Working radius 256 blocks")
         .addSeparator()
         .addController()
         .addOtherStructurePart("Communication Receiver Hatch", "Top")
