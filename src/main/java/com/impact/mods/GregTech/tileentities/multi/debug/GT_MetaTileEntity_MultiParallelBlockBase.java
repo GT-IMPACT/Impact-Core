@@ -20,6 +20,7 @@ import com.impact.util.Utilits;
 import com.impact.util.Vector3i;
 import com.impact.util.Vector3ic;
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -308,7 +309,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       }
     }
     tInputList.add(mInventory[1]);
-    ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
+    ItemStack[] inputs = tInputList.toArray(new ItemStack[tInputList.size()]);
 
     ArrayList<FluidStack> tFluidList = getStoredFluids();
     int tFluidList_sS = tFluidList.size();
@@ -326,31 +327,40 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         }
       }
     }
-    FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
+    FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 
     if (inputs.length > 0 || fluids.length > 0) {
-      long tVoltage = getMaxInputVoltage();
-      byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+      long voltage = getMaxInputVoltage();
+      byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
       GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
-          false, V[tTier], fluids, inputs);
-      if (recipe != null) {
+          false, GT_Values.V[tier], fluids, inputs);
+      if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+
+        if (!needCleanroom(recipe)) {
+          return false;
+        }
+        if (!needSpace(recipe)) {
+          return false;
+        }
+
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        calculateOverclockedNessMulti(recipe.mEUt, recipe.mDuration, 1, tVoltage, this);
+        int EUt = recipe.mEUt;
+        int maxProgresstime = recipe.mDuration;
 
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
-          return false;
+        while (EUt <= gregtech.api.enums.GT_Values.V[tier - 1] && maxProgresstime > 2) {
+          EUt *= 4;
+          maxProgresstime /= 2;
         }
-        if (this.mEUt > 0) {
-          this.mEUt = (-this.mEUt);
+        if (maxProgresstime < 2) {
+          maxProgresstime = 2;
+          EUt = recipe.mEUt * recipe.mDuration / 2;
         }
-        mOutputItems = new ItemStack[recipe.mOutputs.length];
-        for (int i = 0; i < recipe.mOutputs.length; i++) {
-          if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
-            this.mOutputItems[i] = recipe.getOutput(i);
-          }
-        }
+
+        this.mEUt = -EUt;
+        this.mMaxProgresstime = maxProgresstime;
+        this.mOutputItems = recipe.mOutputs;
         this.mOutputFluids = recipe.mFluidOutputs;
         this.updateSlots();
         return true;
