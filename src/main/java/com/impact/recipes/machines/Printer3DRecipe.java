@@ -544,7 +544,7 @@ public class Printer3DRecipe implements Runnable {
 /** ================================= start Gravisuite =================================*/
     GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
             GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, GT_Values.W), ItemList.Transformer_ZPM_LuV.get(1L),
-            GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1, 1),
+            GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1, GT_Values.W),
             GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
             GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 2),
             GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 3),
@@ -560,7 +560,7 @@ public class Printer3DRecipe implements Runnable {
     GT_Values.RA.addBasicLineRecipe(new ItemStack[]{
             GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, GT_Values.W),
             ItemList.Transformer_UV_ZPM.get(1L),
-            GT_ModHandler.getModItem("GraviSuite", "epicLappack", 1, 1),
+            GT_ModHandler.getModItem("GraviSuite", "epicLappack", 1, GT_Values.W),
             GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 8, 1),
             CoreItems2.getRecipe(98, 4), GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 7),
             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
