@@ -945,7 +945,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       //GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sCommunicationTower.get(aFreq)));
       if (Utilits.distanceBetween2D(getBaseMetaTileEntity().getXCoord(),
           Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer))[0],
-          getBaseMetaTileEntity().getZCoord(), Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer))[2]) < 64) {
+          getBaseMetaTileEntity().getZCoord(), Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer))[2]) < 256) {
         setCoord(Impact_API.sCommunicationTower.get(Utilits.inToStringUUID(aFreq, aPlayer)));
         GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Connection successful");
       } else {
