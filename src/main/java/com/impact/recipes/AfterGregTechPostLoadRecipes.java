@@ -37,6 +37,8 @@ public class AfterGregTechPostLoadRecipes implements Runnable {
 
     removeFurnaceSmelting(new ItemStack(Blocks.stone));
 
+    removeFurnaceSmelting(new ItemStack(Blocks.gravel));
+
     //removeRecipeByOutput();
     removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoHelmet", 1, GT_Values.W));
     removeRecipeByOutput(GT_ModHandler.getIC2Item("nanoBodyarmor", 1, GT_Values.W));
