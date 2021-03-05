@@ -261,7 +261,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipeCheckStackSize(true);
+    return impactRecipeCheckStackSize();
   }
 
   @Override

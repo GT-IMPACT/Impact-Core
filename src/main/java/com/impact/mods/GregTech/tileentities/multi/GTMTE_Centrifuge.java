@@ -243,7 +243,7 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipeCheckStackSize(false, true);
+    return impactRecipeWithStackSize();
   }
 
   @Override

@@ -257,7 +257,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     if (getRecipeMap() == GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes) {
       checkRecipeBoxinator();
     }
-    return impactRecipeCheckStackSize(true);
+    return impactRecipeCheckStackSize();
   }
 
   public boolean checkRecipeBoxinator() {

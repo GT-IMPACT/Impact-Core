@@ -210,7 +210,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipeCheckStackSize(false);
+    return impactRecipeWithStackSize();
   }
 
   @Override

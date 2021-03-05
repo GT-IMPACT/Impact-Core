@@ -242,7 +242,7 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipeCheckStackSize(true, true);
+    return impactRecipeCheckStackSize(true);
   }
 
   public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,

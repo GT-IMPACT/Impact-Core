@@ -174,7 +174,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipeCheckStackSize(true, true);
+    return impactRecipeCheckStackSize(true);
   }
 
   @Override

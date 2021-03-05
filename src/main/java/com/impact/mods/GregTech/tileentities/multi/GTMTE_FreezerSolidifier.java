@@ -183,7 +183,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipeCheckStackSize(true);
+    return impactRecipeCheckStackSize();
   }
 
   public int getPollutionPerTick(ItemStack aStack) {
