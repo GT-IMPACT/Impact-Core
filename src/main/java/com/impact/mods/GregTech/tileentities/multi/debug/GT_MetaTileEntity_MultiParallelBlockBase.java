@@ -990,6 +990,26 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     return offset;
   }
 
+  public long getMaxInputVoltage() {
+    long rVoltage = 0;
+    for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.mAmpers;
+      }
+    }
+    for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesTT) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
+      }
+    }
+    for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyTunnelsTT) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
+      }
+    }
+    return rVoltage;
+  }
+
   public int getTierEnergyHatch() {
     int aTier = 0;
     for (GT_MetaTileEntity_Hatch_Energy tEHatch : mEnergyHatches) {
