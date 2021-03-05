@@ -194,7 +194,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mLevel);
+    return impactRecipeCheckStackSize(true);
   }
 
   @Override

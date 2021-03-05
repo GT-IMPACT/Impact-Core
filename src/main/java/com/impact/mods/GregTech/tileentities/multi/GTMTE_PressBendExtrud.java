@@ -166,7 +166,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mParallel);
+    return impactRecipeCheckStackSize(true);
   }
 
   @Override

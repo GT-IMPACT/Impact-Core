@@ -192,7 +192,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mParallel);
+    return impactRecipeCheckStackSize(true);
   }
 
   @Override

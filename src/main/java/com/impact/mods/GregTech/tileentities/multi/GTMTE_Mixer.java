@@ -196,7 +196,7 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mParallel);
+    return impactRecipeCheckStackSize(false);
   }
 
   @Override

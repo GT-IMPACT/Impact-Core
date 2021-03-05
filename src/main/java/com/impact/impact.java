@@ -49,7 +49,7 @@ public class impact {
 
   @Mod.Instance(MODID)
   public static impact instance;
-  public static String ModPackVersion = "1.0.1.0";
+  public static String ModPackVersion = "1.0.1.1";
   public static Config mConfig;
   public static FMLEventChannel channel;
   public static IRecipeAdder I_RA;

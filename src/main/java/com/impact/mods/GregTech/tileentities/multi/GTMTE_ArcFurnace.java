@@ -235,7 +235,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mParallel);
+    return impactRecipeCheckStackSize(true);
   }
 
   public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,

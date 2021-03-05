@@ -73,22 +73,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     super(aName);
   }
 
-  public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
-    long rVoltage = 0L;
-    long rAmperage = 0L;
-
-    for (GT_MetaTileEntity_Hatch_Energy tHatch : base.mEnergyHatches) {
-      if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-        if (rVoltage == 0 || rVoltage > tHatch.getBaseMetaTileEntity().getInputVoltage()) {
-          rVoltage = tHatch.getBaseMetaTileEntity().getInputVoltage();
-        }
-        rAmperage += tHatch.getBaseMetaTileEntity().getInputAmperage();
-      }
-    }
-
-    return rVoltage * rAmperage;
-  }
-
   public static void calculateOverclockedNessMulti(@Nonnegative int aEUt,
       @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
       GT_MetaTileEntity_MultiParallelBlockBase base) {
@@ -458,7 +442,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     return false;
   }
 
-  public boolean impactRecipe(ItemStack itemStack, int aParallel, boolean aChance) {
+  public boolean impactRecipeCheckStackSize(boolean dontCheckStackSize, boolean aChance) {
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
       stopMachine();
       return false;
@@ -496,7 +480,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 
         tRecipe = getRecipeMap()
-            .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
+            .findRecipe(this.getBaseMetaTileEntity(), false, dontCheckStackSize, V[tTier], tFluids, tInputs);
 
         if (tRecipe != null) {
 
@@ -666,7 +650,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     return isNotSpace;
   }
 
-  public boolean impactRecipe(ItemStack itemStack, int aParallel) {
+  public boolean impactRecipeCheckStackSize(boolean dontCheckStackSize) {
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
       stopMachine();
       return false;
@@ -700,7 +684,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         long nominalV = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
         GT_Recipe tRecipe = getRecipeMap()
-            .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
+            .findRecipe(this.getBaseMetaTileEntity(), false, dontCheckStackSize, V[tTier], tFluids, tInputs);
         if (tRecipe != null) {
           if (!needCleanroom(tRecipe)) {
             return false;

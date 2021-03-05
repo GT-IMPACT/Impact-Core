@@ -225,7 +225,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mParallel, true);
+    return impactRecipeCheckStackSize(true, true);
   }
 
   @Override

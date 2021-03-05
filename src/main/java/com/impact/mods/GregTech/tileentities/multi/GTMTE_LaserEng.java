@@ -289,7 +289,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    return impactRecipe(itemStack, mParallel);
+    return impactRecipeCheckStackSize(true);
   }
 
   @Override
