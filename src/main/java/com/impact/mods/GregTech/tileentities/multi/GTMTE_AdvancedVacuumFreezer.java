@@ -102,7 +102,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 
   public boolean checkRecipe(ItemStack itemStack) {
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
-      stopMachine();
       return false;
     }
     for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {

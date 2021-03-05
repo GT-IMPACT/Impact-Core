@@ -444,7 +444,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
   public boolean impactRecipeCheckStackSize(boolean aChance) {
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
-      stopMachine();
       return false;
     }
     ArrayList<ItemStack> tInputList = null;
@@ -652,7 +651,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
   public boolean impactRecipeWithStackSize() {
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
-      stopMachine();
       return false;
     }
     ArrayList<ItemStack> tInputList;
@@ -805,7 +803,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
   public boolean impactRecipeCheckStackSize() {
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
-      stopMachine();
       return false;
     }
     ArrayList<ItemStack> tInputList;
@@ -1231,7 +1228,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       }
       setParallel(maxParallel);
       if (getRecipeCheckParallel() || !mIsConnect) {
-        stopMachine();
+        getBaseMetaTileEntity().disableWorking();
       }
     } else {
       setParallel(1);
