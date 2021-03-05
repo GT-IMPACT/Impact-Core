@@ -63,8 +63,8 @@ task getTT(type: Download) {
     onlyIf {
         !file("libs/TecTech-1.7.10-3.8.7-impact-00664c47-dev.jar").exists()
     }
-    src "http://gtimpact.space:8080/job/TECTECH/lastSuccessfulBuild/artifact/build/libs/TecTech-1.7.10-3.8.7-impact-00664c47-dev.jar"
-    dest file("libs/TecTech-1.7.10-3.8.7-impact-00664c47-dev.jar")
+    src "http://gtimpact.space:8080/job/TECTECH/lastSuccessfulBuild/artifact/build/libs/TecTech-1.7.10-3.8.7-impact-1750d99d-dev.jar"
+    dest file("libs/TecTech-1.7.10-3.8.7-impact-1750d99d-dev.jar")
     mustRunAfter "deobfBinJar"
     mustRunAfter "repackMinecraft"
 }
