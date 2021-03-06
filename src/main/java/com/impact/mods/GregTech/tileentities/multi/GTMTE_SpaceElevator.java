@@ -321,7 +321,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
     this.mMaxProgresstime = 1;
-    this.mEUt = 1920;
+    this.mEUt = -1920;
     this.mEfficiencyIncrease = 10000;
     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
     return this.mEfficiency >= 10000;
