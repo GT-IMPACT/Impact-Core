@@ -314,7 +314,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     FluidStack[] fluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 
     if (inputs.length > 0 || fluids.length > 0) {
-      long voltage = getMaxInputVoltage();
+      long voltage = getMaxInputVoltageVanila();
       byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
       GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
           false, GT_Values.V[tier], fluids, inputs);
@@ -380,7 +380,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
       }
       if (tInputList.size() > 0 || tFluidList.size() > 0) {
-        long nominalV = getMaxInputVoltage();
+        long nominalV = getMaxInputVoltageVanila();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
         GT_Recipe tRecipe;
         tRecipe = getRecipeMap()
@@ -985,6 +985,26 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       offset.z = y;
     }
     return offset;
+  }
+
+  public long getMaxInputVoltageVanila() {
+    long rVoltage = 0;
+    for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+      }
+    }
+    for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesTT) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
+      }
+    }
+    for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyTunnelsTT) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
+      }
+    }
+    return rVoltage;
   }
 
   public long getMaxInputVoltage() {
