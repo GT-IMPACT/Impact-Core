@@ -1248,7 +1248,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       }
       setParallel(maxParallel);
       if (getRecipeCheckParallel() || !mIsConnect) {
-        getBaseMetaTileEntity().disableWorking();
+        setParallel(1); //todo check future
       }
     } else {
       setParallel(1);
