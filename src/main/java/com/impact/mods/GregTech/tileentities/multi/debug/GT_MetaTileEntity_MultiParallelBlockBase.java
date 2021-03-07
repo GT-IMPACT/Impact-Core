@@ -380,11 +380,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
       }
       if (tInputList.size() > 0 || tFluidList.size() > 0) {
-        long nominalV = getMaxInputVoltageVanila();
+        long nominalV = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
         GT_Recipe tRecipe;
         tRecipe = getRecipeMap()
-            .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
+            .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
 
         if (tRecipe != null) {
 
