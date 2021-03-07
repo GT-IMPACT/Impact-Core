@@ -9,6 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
 import com.impact.mods.GregTech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.GregTech.tileentities.multi.GTMTE_SawMill;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Input;
@@ -336,6 +337,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         while (EUt <= gregtech.api.enums.GT_Values.V[tier - 1] && maxProgresstime > 2) {
           EUt *= 4;
           maxProgresstime /= 2;
+        }
+        if (getBaseMetaTileEntity().getMetaTileEntity() instanceof GTMTE_SawMill) {
+          EUt /= 4;
+          maxProgresstime *= 2;
         }
         if (maxProgresstime < 2) {
           maxProgresstime = 2;
