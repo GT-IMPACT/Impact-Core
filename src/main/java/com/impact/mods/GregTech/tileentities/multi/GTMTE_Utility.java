@@ -14,6 +14,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -254,10 +255,10 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    if (getRecipeMap() == GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes) {
-      checkRecipeBoxinator();
+    if (getRecipeMap() != GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes) {
+      return impactRecipeCheckStackSize();
     }
-    return impactRecipeCheckStackSize();
+    return checkRecipeBoxinator();
   }
 
   public boolean checkRecipeBoxinator() {
@@ -268,7 +269,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
     ArrayList<FluidStack> tFluidList;
     ItemStack[] tInputs;
     FluidStack[] tFluids;
-    for (GTMTE_BoxinatorInputBus tBus : sBoxinatorHatch) {
+    for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
       if (modeBuses == 0) {
         ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
         tBus.mRecipeMap = getRecipeMap();
