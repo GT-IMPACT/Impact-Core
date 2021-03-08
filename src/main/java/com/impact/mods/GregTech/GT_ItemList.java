@@ -70,7 +70,7 @@ public enum GT_ItemList implements IItemContainer {
   Tank_Hatch, Quadruple_Input_Hatch, Nonuple_Input_Hatch,
 
   Parallel_Hatch_IN4, Parallel_Hatch_OUT4, Parallel_Hatch_IN16, Parallel_Hatch_OUT16, Parallel_Hatch_IN64, Parallel_Hatch_OUT64,
-  Parallel_Hatch_IN256, Parallel_Hatch_OUT256,
+  Parallel_Hatch_IN256, Parallel_Hatch_OUT256, Parallel_Hatch_Debug,
 
   Communication_Hatch_Transmitter, Communication_Hatch_Receiver, Parallel_Hatch_Rack,
 

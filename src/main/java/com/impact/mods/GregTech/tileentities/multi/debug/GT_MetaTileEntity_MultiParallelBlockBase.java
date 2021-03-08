@@ -1246,12 +1246,19 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
   public void connectParallelHatches() {
     int maxParallel = 1;
+    boolean isDebug = false;
     if (sParallHatchesIn.size() > 0) { //todo parallel
       for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
         maxParallel = ph.getMaxParallel();
         setRecipeCheckParallel(ph.getTrueRecipe());
+        isDebug = ph.isDebug;
       }
       setParallel(maxParallel);
+      if (isDebug) {
+        setRecipeCheckParallel(true);
+        mIsConnect = true;
+        return;
+      }
       if (getRecipeCheckParallel() || !mIsConnect) {
         setParallel(1); //todo check future
       }
@@ -1262,8 +1269,17 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
   public void connectParallelComputer(IGregTechTileEntity aBaseMetaTileEntity) {
     mIsConnect = false;
+    boolean isDebug = false;
     if (sParallHatchesIn.size() > 0 || aBaseMetaTileEntity
         .getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
+
+      for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
+        isDebug = ph.isDebug;
+      }
+      if (isDebug) {
+        mIsConnect = true;
+        return;
+      }
       tile = aBaseMetaTileEntity.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
       if (tile != null && tile instanceof IGregTechTileEntity) {
         IMetaTileEntity aComTower = ((IGregTechTileEntity) tile).getMetaTileEntity();

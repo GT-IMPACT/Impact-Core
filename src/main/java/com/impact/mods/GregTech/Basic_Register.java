@@ -6,6 +6,7 @@ import static com.impact.mods.GregTech.GT_ItemList.*;
 import com.impact.mods.GregTech.tileentities.basic.*;
 import com.impact.mods.GregTech.tileentities.hatches.*;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ComputerRack;
+import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Debug;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelHatch_Output;
 import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite_Receiver;
@@ -165,7 +166,8 @@ public class Basic_Register {
 
     ID2++; // TODO ID:14566 null
     ID2++; // TODO ID:14567 null
-    ID2++; // TODO ID:14568 null
+    Parallel_Hatch_Debug.set(new GTMTE_ParallelHatch_Debug(ID2++, "impact.machine.parallelhatch.debug", "Debug Parallel Receiver", 8, 256).getStackForm(1L));
+
     ID2++; // ID:14569 GT_MetaTileEntity_Hatch_OutputBus_ME
 
     Creative_Tank.set(new GTMTE_DebugTank(ID2++, "impact.machine.creativetank", "Creative Tank", 5)
