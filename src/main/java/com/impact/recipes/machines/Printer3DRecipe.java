@@ -1286,7 +1286,7 @@ public class Printer3DRecipe implements Runnable {
             GT_ModHandler.getModItem("GalacticraftMars", "item.null", 10L, 3),
             GT_ModHandler.getModItem("GalacticraftCore", "item.rocketFins", 4L, 0),
             GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 2L, 1),
-            GT_ModHandler.getModItem("GalaxySpace", "item.Modules", 2L, 3),
+            GT_ModHandler.getModItem("GalaxySpace", "item.Modules", 1L, 3),
             GT_ModHandler.getModItem("GalacticraftCore", "item.engine", 2L, 0)
         }, GT_ModHandler.getModItem("GalacticraftMars", "item.spaceshipTier2", 1L, 0), null, 120 * 20,
         1920);
