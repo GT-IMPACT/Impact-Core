@@ -46,7 +46,7 @@ public class MixerRecipe implements Runnable {
 
     GT_Values.RA
         .addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 16L),
-            GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NI,
+            GT_Utility.getIntegratedCircuit(1), GT_Values.NI, GT_Values.NI,
             Materials.Helium.getPlasma(2304L), GT_Values.NF, CoreItems.getRecipe(34, 16), 3600,
             122880);
 
