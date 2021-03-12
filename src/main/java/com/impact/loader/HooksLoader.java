@@ -5,7 +5,6 @@ import gloomyfolken.hooklib.minecraft.PrimaryClassTransformer;
 
 public class HooksLoader extends HookLoader {
 
-
   @Override
   public String[] getASMTransformerClass() {
     return new String[]{
@@ -16,5 +15,7 @@ public class HooksLoader extends HookLoader {
   @Override
   public void registerHooks() {
     registerHookContainer("com.impact.events.Hooks");
+    registerHookContainer("com.impact.hooks.FluidInterface_Hook");
+    registerHookContainer("com.impact.hooks.AE2Spatial_Hook");
   }
 }
