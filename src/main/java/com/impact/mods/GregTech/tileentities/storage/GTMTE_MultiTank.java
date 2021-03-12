@@ -20,6 +20,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -131,7 +132,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 
     // If there are no basic I/O hatches, let multi hatches handle it and skip a lot of code!
     if (sMultiHatches.size() > 0 && super.mInputHatches.size() == 0
-        && super.mOutputHatches.size() == 0) {
+        && super.mOutputHatches.size() == 0 && super.mQuadrInputHatches.size() == 0) {
       return true;
     }
 
@@ -168,6 +169,10 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         // Void excess if that is turned on
         if (doVoidExcess) {
           for (GT_MetaTileEntity_Hatch_Input inputHatch : super.mInputHatches) {
+            inputHatch.setDrainableStack(null);
+          }
+
+          for (GTMTE_Multi_Hatch_Input inputHatch : super.mQuadrInputHatches) {
             inputHatch.setDrainableStack(null);
           }
 
