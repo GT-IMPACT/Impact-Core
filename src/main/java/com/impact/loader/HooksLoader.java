@@ -17,5 +17,6 @@ public class HooksLoader extends HookLoader {
     registerHookContainer("com.impact.events.Hooks");
     registerHookContainer("com.impact.hooks.FluidInterface_Hook");
     registerHookContainer("com.impact.hooks.AE2Spatial_Hook");
+    registerHookContainer("com.impact.hooks.EC2Priority_Hook");
   }
 }
