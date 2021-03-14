@@ -9,10 +9,11 @@ import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.core.util.StackUtil;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,14 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
   public int mCountCells = 0;
   public float mTemp = 0;
   public boolean mStartReactor = false;
+  private final List<ItemStack> sDepleted = new ArrayList<ItemStack>() {{
+      add(GT_ModHandler.getIC2Item("reactorDepletedUraniumSimple", 1));
+      add(GT_ModHandler.getIC2Item("reactorDepletedUraniumDual", 1));
+      add(GT_ModHandler.getIC2Item("reactorDepletedUraniumQuad", 1));
+      add(GT_ModHandler.getIC2Item("reactorDepletedMOXSimple", 1));
+      add(GT_ModHandler.getIC2Item("reactorDepletedMOXDual", 1));
+      add(GT_ModHandler.getIC2Item("reactorDepletedMOXQuad", 1));
+    }};
 
   public GTMTE_Reactor_Rod_Hatch(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional, 5, 1, new String[]{
@@ -127,8 +136,17 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
   @Override
   public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
       ItemStack aStack) {
-    if (aStack.getItem() instanceof GT_RadioactiveCellIC_Item) {
-      return ((GT_RadioactiveCellIC_Item) aStack.getItem()).sHeat == 0;
+    return checkItemStack(aStack);
+  }
+
+  private boolean checkItemStack(ItemStack aStack) {
+    if (aStack != null) {
+      if (aStack.getItem() instanceof GT_RadioactiveCellIC_Item) {
+        return ((GT_RadioactiveCellIC_Item) aStack.getItem()).sHeat == 0;
+      }
+      for (ItemStack is : sDepleted) {
+        return aStack.getItem() == is.getItem();
+      }
     }
     return false;
   }
