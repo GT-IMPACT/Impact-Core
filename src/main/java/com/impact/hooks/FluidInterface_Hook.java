@@ -1,8 +1,3 @@
-/**
- * @author Andrey Solodovnikov
- *
- * Код добавлен с разрешения автора
- */
 package com.impact.hooks;
 
 import extracells.tileentity.TileEntityFluidInterface;
@@ -11,7 +6,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+/**
+ * @author Andrey Solodovnikov (https://github.com/AndreySolodovnikov)
+ */
 public class FluidInterface_Hook {
+
   @Hook(injectOnExit = true, isMandatory = true)
   public static void readFromNBT(TileEntityFluidInterface face, NBTTagCompound tag) {
     for (int i = 0; i < face.tanks.length; i++) {

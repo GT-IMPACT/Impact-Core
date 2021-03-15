@@ -1,5 +1,6 @@
 package com.impact.loader;
 
+import cpw.mods.fml.common.Loader;
 import gloomyfolken.hooklib.minecraft.HookLoader;
 import gloomyfolken.hooklib.minecraft.PrimaryClassTransformer;
 
@@ -18,5 +19,6 @@ public class HooksLoader extends HookLoader {
     registerHookContainer("com.impact.hooks.FluidInterface_Hook");
     registerHookContainer("com.impact.hooks.AE2Spatial_Hook");
     registerHookContainer("com.impact.hooks.EC2Priority_Hook");
+    registerHookContainer("com.impact.hooks.OpisPatch_Hook");
   }
 }
