@@ -115,6 +115,7 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
   }
 
   public boolean checkMachineFunction(IGregTechTileEntity thisController) {
+    setMaxTemp(100000);
     this.mWrench = true;
     this.mScrewdriver = true;
     this.mSoftHammer = true;

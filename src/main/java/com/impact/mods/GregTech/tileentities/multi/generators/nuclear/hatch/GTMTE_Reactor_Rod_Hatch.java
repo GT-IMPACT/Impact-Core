@@ -11,6 +11,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import ic2.api.reactor.IReactorComponent;
+import ic2.core.Ic2Items;
+import ic2.core.item.reactor.ItemReactorUranium;
 import ic2.core.util.StackUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,9 +147,13 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
       if (aStack.getItem() instanceof GT_RadioactiveCellIC_Item) {
         return ((GT_RadioactiveCellIC_Item) aStack.getItem()).sHeat == 0;
       }
-      for (ItemStack is : sDepleted) {
-        return aStack.getItem() == is.getItem();
-      }
+      return aStack.getItem().equals(Ic2Items.reactorDepletedUraniumSimple.getItem()) ||
+          aStack.getItem().equals(Ic2Items.reactorDepletedUraniumDual.getItem()) ||
+          aStack.getItem().equals(Ic2Items.reactorDepletedUraniumQuad.getItem()) ||
+          aStack.getItem().equals(Ic2Items.reactorDepletedMOXSimple.getItem()) ||
+          aStack.getItem().equals(Ic2Items.reactorDepletedMOXDual.getItem()) ||
+          aStack.getItem().equals(Ic2Items.reactorDepletedMOXQuad.getItem());
+
     }
     return false;
   }

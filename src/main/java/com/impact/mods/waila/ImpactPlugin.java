@@ -7,6 +7,7 @@ import static mcp.mobius.waila.api.SpecialChars.YELLOW;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.GregTech.tileentities.multi.implement.GTMTE_MBBase;
 import com.impact.mods.GregTech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
@@ -70,6 +71,8 @@ public class ImpactPlugin extends PluginBase {
         ? ((GT_MetaTileEntity_EM_research) tMeta) : null;
     final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication
         ? ((GTMTE_TowerCommunication) tMeta) : null;
+    final GTMTE_NuclearReactorBase reactor = tMeta instanceof GTMTE_NuclearReactorBase
+        ? ((GTMTE_NuclearReactorBase) tMeta) : null;
 
     final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver
         ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
@@ -148,6 +151,18 @@ public class ImpactPlugin extends PluginBase {
         currenttip.add(str);
       }
 
+      if (reactor != null) {
+        int temp = tag.getInteger("reactorTemp");
+        EnumChatFormatting[] color = {
+            EnumChatFormatting.BLUE,
+            EnumChatFormatting.AQUA,
+            EnumChatFormatting.YELLOW,
+            EnumChatFormatting.RED,
+        };
+        String colorTemp = "" + (temp > 75 ? color[3] : temp > 50 ? color[2] : temp > 25 ? color[1] : color[0]) + temp;
+        String str = "Temperature: " + colorTemp + "%";
+        currenttip.add(str);
+      }
     }
   }
 
@@ -169,6 +184,8 @@ public class ImpactPlugin extends PluginBase {
         ? ((GTMTE_MBBase) tMeta) : null;
     final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication
         ? ((GTMTE_TowerCommunication) tMeta) : null;
+    final GTMTE_NuclearReactorBase reactor = tMeta instanceof GTMTE_NuclearReactorBase
+        ? ((GTMTE_NuclearReactorBase) tMeta) : null;
 
     final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver
         ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
@@ -198,6 +215,13 @@ public class ImpactPlugin extends PluginBase {
 
       if (towerCommunication != null) {
         tag.setBoolean("towerCommunicationConnect", towerCommunication.mIsConnect);
+      }
+
+      if (reactor != null) {
+        double tScale = (double) reactor.mCurrentTemp / (double) reactor.mMaxTemp;
+        tScale = tScale <= 0 ? 0 : tScale;
+        int temperature = Math.min(((int) (100 * tScale)), 100);
+        tag.setInteger("reactorTemp",temperature);
       }
 
 

@@ -29,13 +29,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-  final int MAX_TEMP = 999;
   final int RADIATION_DAMAGE = 1;
   final int RADIUS_RADIATION_DAMAGE = 10;
   public ArrayList<GTMTE_Reactor_Rod_Hatch> mRodHatches = new ArrayList<>();
   public boolean mFirstStart = false;
   public long mCurrentTemp = 1;
-  public long mMaxTemp = 1;
+  public long mMaxTemp = 10000;
   public long mCurrentOutput = 1;
   ITexture INDEX_CASE = Textures.BlockIcons.CASING_BLOCKS[12 + 32];
 
@@ -121,14 +120,16 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     super.onPostTick(aBaseMetaTileEntity, aTick);
     long aTemp = 0;
     long aCountCells = 0;
-    long aMaxTemp = 0;
-    int countTime = 20 * 2;
+    int countTime = 20; // 1 sec
     if (!aBaseMetaTileEntity.isActive()) {
-      mCurrentTemp--;
+      mCurrentTemp -= 10;
       if (mCurrentTemp <= 0) {
         mCurrentTemp = 0;
       }
     }
+    int checkRod = 0;
+    float checkHeat = 0;
+    int checkCells = 0;
     if (mRodHatches.size() > 0) {
       for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
         if (rod_hatch.mInventory[0] != null && rod_hatch.mInventory[0]
@@ -138,49 +139,47 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
             if (mEfficiency >= getMaxEfficiency(null)) {
               rod_hatch.setStartReactor(aBaseMetaTileEntity.isActive());
             }
-            int checkRod = Math.max(rod_hatch.mDownRod, 0);
-            float checkHeat = rod_hatch.mDownRod > 0 ? rod_hatch.mTemp : 0;
-            int checkCells = rod_hatch.mDownRod > 0 ? rod_hatch.mCountCells : 0;
-            aCountCells += checkCells;
-            aTemp += (checkHeat * checkRod);
-            aMaxTemp += checkHeat * 10;
+            checkRod = Math.max(rod_hatch.mDownRod, 0);
+            checkHeat = rod_hatch.mDownRod > 0 ? rod_hatch.mTemp : 0;
+            checkCells = rod_hatch.mDownRod > 0 ? rod_hatch.mCountCells : 0;
+            aTemp += (checkHeat * checkRod + checkCells);
           }
         }
       }
     }
-    if (aCountCells == 0 || aTemp == 0 || aMaxTemp == 0) {
-      aCountCells = 1;
-      aTemp = 1;
-      aMaxTemp = mMaxTemp;
+    if (aTemp == 0) {
       if (aTick % countTime == 0) {
-        mCurrentTemp--;
-      }
-    }
-
-    mMaxTemp = aMaxTemp;
-    if (aTick % countTime == 0) {
-      if (mCurrentTemp > aTemp) {
-        mCurrentTemp--;
-      } else if (mCurrentTemp < aTemp) {
-        mCurrentTemp++;
-      }
-    }
-    mCurrentOutput = ((mCurrentTemp * aCountCells) / 4) / 2;
-    if (super.mEfficiency > (getMaxEfficiency(null) / 8) && !depleteInput(
-        Materials.Water.getFluid(mCurrentOutput))) {
-      for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
-
-        rod_hatch.getBaseMetaTileEntity().getWorld().setBlock(
-            rod_hatch.getBaseMetaTileEntity().getXCoord(),
-            rod_hatch.getBaseMetaTileEntity().getYCoord() - 1,
-            rod_hatch.getBaseMetaTileEntity().getZCoord(),
-            Blocks.flowing_lava
-        );
-        if (aTick % 20 * 2 == 0) {
-          rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+        mCurrentTemp -= 10;
+        if (mCurrentTemp <= 0) {
+          mCurrentTemp = 0;
         }
       }
     }
+
+    if (aTick % countTime == 0 && aBaseMetaTileEntity.isActive()) {
+      if (mCurrentTemp <= mMaxTemp) {
+        mCurrentTemp += aTemp;
+      }
+      if (mCurrentTemp > mMaxTemp) {
+        mCurrentTemp = mMaxTemp;
+      }
+    }
+
+    double progress = (double) mCurrentTemp / (double) mMaxTemp;
+
+    long abs = mCurrentOutput = (int) ((aTemp * checkCells + 1) * progress) / 2;
+
+    if (abs < 1) {
+      mCurrentOutput = mCurrentTemp / 160;
+    }
+
+    if (super.mEfficiency > (getMaxEfficiency(null) / 8)
+        && !depleteInput(Materials.Water.getFluid(mCurrentOutput))) {
+      for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
+          rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+      }
+    }
+
     if (super.mEfficiency == getMaxEfficiency(null)) {
       double tTemp = (double) mCurrentTemp / (double) mMaxTemp;
       int checkSteam = (int) (100 * tTemp);
@@ -211,6 +210,10 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     for (GTMTE_Reactor_Rod_Hatch rod : mRodHatches) {
       rod.setRodDown(down);
     }
+  }
+
+  public void setMaxTemp(int maxTemp) {
+    this.mMaxTemp = maxTemp;
   }
 
   public abstract boolean checkMachineFunction(IGregTechTileEntity thisController);
