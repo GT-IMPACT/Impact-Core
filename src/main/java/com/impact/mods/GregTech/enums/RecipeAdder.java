@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.enums;
 
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_RailAssembler;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
 import net.minecraft.item.ItemStack;
 
 public class RecipeAdder implements IRecipeAdder {

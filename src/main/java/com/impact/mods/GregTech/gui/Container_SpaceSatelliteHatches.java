@@ -1,7 +1,7 @@
 package com.impact.mods.GregTech.gui;
 
-import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite_Receiver;
-import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite_Transmitter;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Transmitter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;

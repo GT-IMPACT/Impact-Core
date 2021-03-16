@@ -1,12 +1,52 @@
 package com.impact.mods.GregTech;
 
 import static com.impact.mods.GregTech.GT_ItemList.*;
-import com.impact.mods.GregTech.tileentities.multi.*;
-import com.impact.mods.GregTech.tileentities.multi.generators.*;
-import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_ParallelComputer;
-import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_SpaceSatellite;
-import com.impact.mods.GregTech.tileentities.newparallelsystem.GTMTE_TowerCommunication;
-import com.impact.mods.GregTech.tileentities.storage.*;
+
+import com.impact.mods.GregTech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
+import com.impact.mods.GregTech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
+import com.impact.mods.GregTech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorI;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorIII;
+import com.impact.mods.GregTech.tileentities.multi.generators.sofc.GTMTE_SOFC_I;
+import com.impact.mods.GregTech.tileentities.multi.generators.sofc.GTMTE_SOFC_II;
+import com.impact.mods.GregTech.tileentities.multi.generators.sofc.GTMTE_SOFC_III;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_AdvDDDPrinter;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_BlastSmelter;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_CokeOven;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_DDDPrinter;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_Farm;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_HeavyMetalCyclone;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_Pyrolyse;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
+import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_SawMill;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Supply;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_AdvancedVacuumFreezer;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_ArcFurnace;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Assembler;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Brewmenter;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Centrifuge;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Cutting;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Electrolyzer;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Extradifier;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_FreezerSolidifier;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_LaserEng;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Macerator;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Mixer;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_PressBendExtrud;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Siftarator;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Utility;
+import com.impact.mods.GregTech.tileentities.multi.processing.parallel.GTMTE_Wire;
+import com.impact.mods.GregTech.tileentities.multi.units.GTMTE_BasicWaterPump;
+import com.impact.mods.GregTech.tileentities.multi.units.GTMTE_DrillerWater;
+import com.impact.mods.GregTech.tileentities.multi.units.GTMTE_MoonMiner;
+import com.impact.mods.GregTech.tileentities.multi.units.GTMTE_SpaceElevator;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
+import com.impact.mods.GregTech.tileentities.multi.storage.*;
 
 public class Multi_Register {
 
