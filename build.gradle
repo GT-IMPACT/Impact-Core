@@ -32,6 +32,8 @@ import de.undercouch.gradle.tasks.download.Download
 apply plugin: 'forge'
 apply plugin: 'signing'
 
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
 allprojects {
     apply plugin: 'java'
     sourceCompatibility = 1.8
