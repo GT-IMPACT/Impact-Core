@@ -19,19 +19,19 @@ public abstract class IB_Base extends ItemBlock {
       .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
   protected final String mUpgrade1Tooltip = GT_LanguageManager
       .addStringLocalization("gt.upgradeparallel1",
-          "" + EnumChatFormatting.AQUA + " 4" + EnumChatFormatting.GRAY
+          "" + EnumChatFormatting.AQUA + "4" + EnumChatFormatting.GRAY
               + " Parallel Point");
   protected final String mUpgrade2Tooltip = GT_LanguageManager
       .addStringLocalization("gt.upgradeparallel2",
-          "" + EnumChatFormatting.AQUA + " 16" + EnumChatFormatting.GRAY
+          "" + EnumChatFormatting.AQUA + "16" + EnumChatFormatting.GRAY
               + " Parallel Point");
   protected final String mUpgrade3Tooltip = GT_LanguageManager
       .addStringLocalization("gt.upgradeparallel3",
-          "" + EnumChatFormatting.AQUA + " 64" + EnumChatFormatting.GRAY
+          "" + EnumChatFormatting.AQUA + "64" + EnumChatFormatting.GRAY
               + " Parallel Point");
   protected final String mUpgrade4Tooltip = GT_LanguageManager
       .addStringLocalization("gt.upgradeparallel4",
-          "" + EnumChatFormatting.AQUA + " 256" + EnumChatFormatting.GRAY
+          "" + EnumChatFormatting.AQUA + "256" + EnumChatFormatting.GRAY
               + " Parallel Point");
   protected final String mConfiguration3Dprinter3x3 = GT_LanguageManager
       .addStringLocalization("gt.3Dprinter33",
