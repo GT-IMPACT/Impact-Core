@@ -15,6 +15,8 @@ import com.impact.common.item.Core_Items;
 import com.impact.common.item.Core_Items2;
 import com.impact.common.item.FakeCircuits;
 import com.impact.common.item.WoodBrickFormTool;
+import com.impact.common.te.TE_NqTether;
+import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.impact;
 import com.impact.mods.asp.ASP;
 import com.impact.mods.gtscanner.GTScanner;
@@ -33,6 +35,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -105,6 +108,9 @@ public class MainLoader {
         module.init(event);
       }
     }
+
+    GameRegistry.registerTileEntity(TE_SpaceElevatorTether.class, "space_elevator_tether");
+    GameRegistry.registerTileEntity(TE_NqTether.class, "nq_tether");
 
     GTScanner.preInit();
     impact.proxy.preInit();
