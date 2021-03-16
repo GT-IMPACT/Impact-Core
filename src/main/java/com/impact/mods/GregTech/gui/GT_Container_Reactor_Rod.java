@@ -1,6 +1,6 @@
 package com.impact.mods.GregTech.gui;
 
-import com.impact.mods.GregTech.tileentities.hatches.GTMTE_Reactor_Rod_Hatch;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;

@@ -1,7 +1,7 @@
 package com.impact.client.render;
 
 import com.impact.core.Refstrings;
-import com.impact.mods.GregTech.tileentities.multi.GTMTE_SpaceElevator;
+import com.impact.mods.GregTech.tileentities.multi.units.GTMTE_SpaceElevator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

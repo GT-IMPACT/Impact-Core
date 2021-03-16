@@ -14,7 +14,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
-import com.impact.mods.GregTech.tileentities.multi.generators.GTMTE_HugeSteamTurbine;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
