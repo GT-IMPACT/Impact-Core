@@ -1,7 +1,16 @@
 package com.impact.common.block.blocks;
 
+import static com.impact.loader.ItemRegistery.InsideBlock;
+
 import com.impact.common.block.itemblock.IB_InsideBlocks;
+import com.impact.mods.GregTech.blocks.Casing_Helper;
+import com.impact.mods.GregTech.enums.Texture;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -10,6 +19,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class Block_InsideBlocks extends gtUpdateBlockAPI {
 
@@ -18,6 +29,7 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
   private IIcon Chamber;
   private IIcon CycloneSide, CycloneTop;
   private IIcon EmptyRackSides, EmptyRackFront;
+  private IIcon ReactorTop;
 
 
   private Block_InsideBlocks() {
@@ -47,9 +59,14 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
   @Override
   @SuppressWarnings({"unchecked"})
   public void getSubBlocks(Item item, CreativeTabs tab, List l) {
-		for (byte i = 0; i < 3; i++) {
-			l.add(new ItemStack(item, 1, i));
-		}
+    for (byte i = 0; i < 5; i++) {
+      l.add(new ItemStack(item, 1, i));
+    }
+  }
+
+  @Override
+  protected void dropBlockAsItem(World w, int x, int y, int z, ItemStack is) {
+    super.dropBlockAsItem(w, x, y, z, is);
   }
 
   @Override
@@ -61,9 +78,11 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
         return (side < 2) ? CycloneTop : CycloneSide;
       case 2:
         return (side < 2) ? EmptyRackSides : EmptyRackFront;
+      case 3:
+      case 4:
+        return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
       default:
         return null;
     }
   }
-
 }

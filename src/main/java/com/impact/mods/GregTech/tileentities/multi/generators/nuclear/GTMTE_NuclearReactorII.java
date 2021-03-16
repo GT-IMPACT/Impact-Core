@@ -296,6 +296,14 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
       }
     }
 
+    if (mOutputHatches.size() > 12) {
+      checkStructure = false;
+    }
+
+    if (mInputHatches.size() > 3) {
+      checkStructure = false;
+    }
+
     return checkStructure;
   }
 

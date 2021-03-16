@@ -59,7 +59,7 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
         .addSeparator()
         .beginStructureBlock(0, 0, 0)
         .addController()
-        .addNuclearRod("Any top middle casing (max x9)")
+        .addNuclearRod("Any top middle casing (max x25)")
         .addInputHatch("For Water | Any casing (max x6)")
         .addOutputHatch("For Steam / SH Steam | Any casing (max x24)")
         .addCasingInfo("Radiation Proof Casing")
@@ -328,6 +328,14 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
           }
         }
       }
+    }
+
+    if (mOutputHatches.size() > 24) {
+      checkStructure = false;
+    }
+
+    if (mInputHatches.size() > 6) {
+      checkStructure = false;
     }
 
     return checkStructure;

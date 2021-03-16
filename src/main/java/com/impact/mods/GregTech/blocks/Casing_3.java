@@ -1,9 +1,13 @@
 package com.impact.mods.GregTech.blocks;
 
-import static com.impact.mods.GregTech.enums.Texture.Icons.*;
+import static com.impact.loader.ItemRegistery.InsideBlock;
+import static com.impact.mods.GregTech.enums.Texture.Icons.COMPUTER_CASING;
+import static com.impact.mods.GregTech.enums.Texture.Icons.SPACE_SATELLITE_CASING;
+import static com.impact.mods.GregTech.enums.Texture.Icons.TOWER_CASING;
 import static com.impact.util.Utilits.BlockstackMeta;
 
 import com.impact.mods.GregTech.GT_ItemList;
+import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -14,7 +18,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
-import com.impact.mods.GregTech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -77,64 +80,22 @@ public class Casing_3 extends GT_Block_Casings_Abstract {
     if (tMeta != 4) {
       getIcon(aSide, tMeta);
     } else {
-//    if (aSide == 1) { //// TODO: 18.02.2021 need test and refactoring this
-//      TileEntity tTileEntity;
-//      IMetaTileEntity tMetaTileEntity;
-//      int fuck = 2;
-//      for (int x = -2; x <= 2; x++) {
-//        for (int z = -2; z <= 2; z++) {
-//          if (null != (tTileEntity = aWorld
-//              .getTileEntity(xCoord + x + fuck--, Math.max(yCoord - 2, 0), zCoord + z + fuck++)) &&
-//              tTileEntity instanceof IGregTechTileEntity &&
-//              null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-//              &&
-//              tMetaTileEntity instanceof GTMTE_HugeSteamTurbine) {
-//            boolean active = false;
-//            if (((IGregTechTileEntity) tTileEntity).isActive()) {
-//              active = true;
-//            }
-//            //check for direction and placement and apply the texture
-//            switch (((IGregTechTileEntity) tTileEntity).getFrontFacing()) {
-//              case 2:
-//                if (x < 2 && x > -2 && z < 1) {//if invalid position ignore (aka too far away)
-//                  try {
-//                    return getTurbineCasing(tMeta, -x + 1 - z * 3, active);
-//                  } catch (Exception e) {
-//                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-//                  }
-//                }
-//                break;
-//              case 3:
-//                if (x < 2 && x > -2 && z > -1) {
-//                  try {
-//                    return getTurbineCasing(tMeta, -x + 1 + (2 - z) * 3, active);
-//                  } catch (Exception e) {
-//                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-//                  }
-//                }
-//                break;
-//              case 4:
-//                if (z < 2 && z > -2 && x < 1) {
-//                  try {
-//                    return getTurbineCasing(tMeta, -x + (1 - z) * 3, active);
-//                  } catch (Exception e) {
-//                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-//                  }
-//                }
-//                break;
-//              case 5:
-//                if (z < 2 && z > -2 && x > -1) {
-//                  try {
-//                    return getTurbineCasing(tMeta, -x + 2 + (1 - z) * 3, active);
-//                  } catch (Exception e) {
-//                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-//                  }
-//                }
-//            }
-//          }
-//        }
-//      }
-//    }
+      if (aSide == 1) {
+        for (int xi = -2; xi <= 2; xi++) {
+          for (int zi = -2; zi <= 2; zi++) {
+            int metaBlock =  aWorld.getBlockMetadata(xCoord + xi, yCoord - 2, zCoord + zi+ 1);
+            if (aWorld.getBlock(xCoord + xi, yCoord - 2, zCoord + zi+ 1).equals(InsideBlock)) {
+              if (xi < 2 && xi > -2 && zi < 1) {
+                try {
+                  return getTurbineCasing(tMeta, -xi + 1 - zi * 3, metaBlock == 3);
+                } catch (Exception e) {
+                  return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+                }
+              }
+            }
+          }
+        }
+      }
       if ((aSide == 2) || (aSide == 3)) {
         TileEntity tTileEntity;
         IMetaTileEntity tMetaTileEntity;

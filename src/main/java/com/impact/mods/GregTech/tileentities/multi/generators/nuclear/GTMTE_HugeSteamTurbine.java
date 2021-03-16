@@ -1,5 +1,9 @@
 package com.impact.mods.GregTech.tileentities.multi.generators.nuclear;
 
+import static com.impact.loader.ItemRegistery.InsideBlock;
+
+import com.github.technus.tectech.thing.block.QuantumStuffBlock;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.GregTech.blocks.Casing_Helper;
 import com.impact.mods.GregTech.gui.GUI_BASE;
 import com.impact.mods.GregTech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -11,6 +15,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.objects.GT_RenderedTexture;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -31,6 +36,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   final ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[0][16];
   final int CASING_TEXTURE_ID = 16;
   int mStoredFluids = 0;
+  long mOutputSalary = 0;
 
   public GTMTE_HugeSteamTurbine(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -63,13 +69,13 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
     b
         .addInfo("Mega steam turbine!")
         .addInfo("The turbine operates at 100% efficiency")
-        .addInfo("Accepts both steam (2L = 1EU / t)")
-        .addInfo("and superheated steam (1L = 1EU / t)")
+        .addInfo("Accepts both steam (2L = 1 EU/t)")
+        .addInfo("and superheated steam (1L = 1 EU/t)")
         .addSeparator()
         .addController()
         .addDynamoHatch("Any casing back side (max x9")
         .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x15)")
+        .addInputHatch("Any casing (max x20)")
         .addCasingInfo("Huge Turbine Casing and I-Glass")
         .addOtherStructurePart("Steel GearBox Casing", "inside structure")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
@@ -83,7 +89,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   @Override
   public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
       IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Liquid Nq Generator",
+    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Huge Steam Turbine",
         "MultiParallelBlockGUI.png");
   }
 
@@ -116,7 +122,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
         for (z = -1; z >= -6; z--) {
           final Vector3ic offset = rotateOffsetVector(forgeDirection, x, y, z);
           if (x >= -1 && x <= 1 && z <= -1 && z >= -5 && y == 0) {
-            if (x == 0 && z != -5) {
+            if (x == 0 && z > -4) {
               if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
                   == GEARBOX)
                   && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == GEARBOX_META)) {
@@ -140,13 +146,15 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
           }
           IGregTechTileEntity currentTE = thisController
               .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-          if (!addInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+          if (!addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+              && !addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)) {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
                 == CASING)
                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
                 == CASING_META)) {
               aCasingAmount++;
             } else {
+              System.out.println("" + offset.x() + " " +   offset.y() + " " + offset.z());
               formationChecklist = false;
             }
           }
@@ -186,16 +194,24 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
         }
       }
     }
-    System.out.println(aCasingAmount); //TODO del
+
+    if (mInputHatches.size() > 20) {
+      formationChecklist = false;
+    }
+
+    if (formationChecklist) {
+      rotorTopTrigger(false);
+    }
     return formationChecklist;
   }
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
     ArrayList<FluidStack> tFluids = getStoredFluids();
-    int tEU = 0;
+    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
     int totalFlow = 0;
     int countEU = 0;
+    long outEU = 0;
     this.mStoredFluids = 0;
     int countFluid = 0;
     for (FluidStack fluidStack : tFluids) {
@@ -213,26 +229,55 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
         totalFlow += countFluid;
         countEU = 1;
       }
-      tEU = totalFlow / countEU;
+      outEU = totalFlow / countEU;
     }
-    this.mEUt = tEU;
+
+    outEU = mEfficiency < 10000 ? outEU / 2 : outEU;
+
+    mOutputSalary = Math.min(outEU, getMaxOutputVoltage());
+    super.addEnergyOutputMultipleDynamos(mOutputSalary, true);
+
     this.mMaxProgresstime = 1;
     this.mEfficiencyIncrease = 10000;
+    rotorTopTrigger(true);
     return true;
+  }
+
+  private void rotorTopTrigger(boolean shouldExist) {
+    IGregTechTileEntity base = getBaseMetaTileEntity();
+    if (base != null && base.getWorld() != null) {
+      int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 4 + base.getXCoord();
+      int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 4 + base.getYCoord();
+      int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 4 + base.getZCoord();
+      Block block = base.getWorld().getBlock(xDir, yDir, zDir);
+      if (shouldExist) {
+        if (block != null) {
+          base.getWorld().setBlock(xDir, yDir, zDir, InsideBlock, 3, 2);
+        }
+      }
+      if (!base.isAllowedToWork()) {
+        base.getWorld().setBlock(xDir, yDir, zDir, GregTech_API.sBlockCasings2, 3, 2);
+      }
+      if (!shouldExist) {
+        base.getWorld().setBlock(xDir, yDir, zDir, InsideBlock, 4, 2);
+      }
+    }
   }
 
   @Override
   public String[] getInfoData() {
     return new String[]{
-        "Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt)
+        "Steam Input: " + EnumChatFormatting.RED + "" + mStoredFluids + EnumChatFormatting.RESET
+            + " L/s",
+        "Output Energy: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(mOutputSalary)
             + EnumChatFormatting.RESET + " EU/t",
+        "Void Steam: " + EnumChatFormatting.RED + Math.abs(mStoredFluids - mOutputSalary)
+            + EnumChatFormatting.RESET + "L/t",
         "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F
             + EnumChatFormatting.YELLOW + " %",
         "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
             ? EnumChatFormatting.GREEN + "No Problems" + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET),
-        "Steam: " + EnumChatFormatting.RED + "" + mStoredFluids + EnumChatFormatting.RESET
-            + " L/s"
     };
   }
 }

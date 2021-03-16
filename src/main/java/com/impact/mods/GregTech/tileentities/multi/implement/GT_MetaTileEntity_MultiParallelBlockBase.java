@@ -4,6 +4,8 @@ import static com.impact.core.Refstrings.MODID;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.client.gui.GUIHandler;
@@ -25,6 +27,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -1027,6 +1030,26 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyTunnelsTT) {
       if (isValidMetaTileEntity(tHatch)) {
         rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
+      }
+    }
+    return rVoltage;
+  }
+
+  public long getMaxOutputVoltage() {
+    long rVoltage = 0;
+    for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getOutputVoltage() * tHatch.mAmpers;
+      }
+    }
+    for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : mDynamoHatchesTT) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getOutputVoltage() * tHatch.Amperes;
+      }
+    }
+    for (GT_MetaTileEntity_Hatch_DynamoTunnel tHatch : mDynamoTunnelsTT) {
+      if (isValidMetaTileEntity(tHatch)) {
+        rVoltage += tHatch.getBaseMetaTileEntity().getOutputVoltage() * tHatch.Amperes;
       }
     }
     return rVoltage;
