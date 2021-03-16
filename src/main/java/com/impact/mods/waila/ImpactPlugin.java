@@ -9,6 +9,10 @@ import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.mods.GregTech.tileentities.multi.implement.GTMTE_MBBase;
 import com.impact.mods.GregTech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
+import com.impact.mods.GregTech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.GregTech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,6 +27,7 @@ import mcp.mobius.waila.api.IWailaRegistrar;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import tterrag.wailaplugins.api.Plugin;
@@ -49,24 +54,38 @@ public class ImpactPlugin extends PluginBase {
     NBTTagCompound tag = accessor.getNBTData();
     final int side = (byte) accessor.getSide().ordinal();
 
-    final IGregTechTileEntity tBaseMetaTile =
-        tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
-    final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
+    final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity
+        ? ((IGregTechTileEntity) tile) : null;
+    final IMetaTileEntity tMeta = tBaseMetaTile != null
+        ? tBaseMetaTile.getMetaTileEntity() : null;
 
-    final GT_MetaTileEntity_MultiParallelBlockBase MultiParallel =
-        tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase
-            ? ((GT_MetaTileEntity_MultiParallelBlockBase) tMeta) : null;
-    final GTMTE_MBBase multiBlockBaseImpact =
-        tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
+    final GT_MetaTileEntity_MultiParallelBlockBase MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase
+        ? ((GT_MetaTileEntity_MultiParallelBlockBase) tMeta) : null;
+    final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase
+        ? ((GTMTE_MBBase) tMeta) : null;
 
-    final GTMTE_LapPowerStation LapBuffer =
-        tMeta instanceof GTMTE_LapPowerStation ? ((GTMTE_LapPowerStation) tMeta) : null;
-    final GT_MetaTileEntity_EM_research Research =
-        tMeta instanceof GT_MetaTileEntity_EM_research ? ((GT_MetaTileEntity_EM_research) tMeta)
-            : null;
+    final GTMTE_LapPowerStation LapBuffer = tMeta instanceof GTMTE_LapPowerStation
+        ? ((GTMTE_LapPowerStation) tMeta) : null;
+    final GT_MetaTileEntity_EM_research Research = tMeta instanceof GT_MetaTileEntity_EM_research
+        ? ((GT_MetaTileEntity_EM_research) tMeta) : null;
+    final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication
+        ? ((GTMTE_TowerCommunication) tMeta) : null;
+
+    final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver
+        ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
+    final GTMTE_ParallelHatch_Input parallelHatch_input = tMeta instanceof GTMTE_ParallelHatch_Input
+        ? ((GTMTE_ParallelHatch_Input) tMeta) : null;
+    final GTMTE_ParallelHatch_Output parallelHatch_output = tMeta instanceof GTMTE_ParallelHatch_Output
+        ? ((GTMTE_ParallelHatch_Output) tMeta) : null;
+
+
 
     if (tMeta != null) {
       if (MultiParallel != null && tag.getInteger("Parallel") > 1) {
+        String str = tag.getBoolean("connectWithTower")
+            ? EnumChatFormatting.GREEN + "Connection Established"
+            : EnumChatFormatting.RED +  "No Connection";
+        currenttip.add(str);
         currenttip.add(String.format("Parallel Point: %d", tag.getInteger("Parallel")));
       }
 
@@ -98,6 +117,37 @@ public class ImpactPlugin extends PluginBase {
         currenttip.add(String.format("Progress: %d s / %d s", tag.getInteger("progressImpact"),
             tag.getInteger("maxProgressImpact")));
       }
+
+      if (towerReciver != null) {
+        String str = tag.getBoolean("isActiveTowerReciver")
+            ? EnumChatFormatting.GREEN + "Connection Established"
+            : EnumChatFormatting.RED +  "No Connection";
+        currenttip.add(str);
+      }
+
+      if (parallelHatch_input != null) {
+        String str = tag.getBoolean("isParallelIN")
+            ? EnumChatFormatting.GREEN + "Connection Established"
+            : EnumChatFormatting.RED +  "No Connection";
+        currenttip.add(str);
+        currenttip.add("Parallel Point: " + tag.getInteger("ppHatchIn"));
+      }
+
+      if (parallelHatch_output != null) {
+        String str = tag.getBoolean("isParallelOUT")
+            ? EnumChatFormatting.GREEN + "Connection Established"
+            : EnumChatFormatting.RED +  "No Connection";
+        currenttip.add(str);
+        currenttip.add("Parallel Point: " + tag.getInteger("ppHatchOut"));
+      }
+
+      if (towerCommunication != null) {
+        String str = tag.getBoolean("towerCommunicationConnect")
+            ? EnumChatFormatting.GREEN + "Connection Established"
+            : EnumChatFormatting.RED +  "No Connection";
+        currenttip.add(str);
+      }
+
     }
   }
 
@@ -106,23 +156,55 @@ public class ImpactPlugin extends PluginBase {
   protected void getNBTData(TileEntity tile, NBTTagCompound tag, World world, BlockCoord pos) {
 
     final IGregTechTileEntity tBaseMetaTile =
-        tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
-    final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
+        tile instanceof IGregTechTileEntity
+            ? ((IGregTechTileEntity) tile) : null;
+    final IMetaTileEntity tMeta = tBaseMetaTile != null
+        ? tBaseMetaTile.getMetaTileEntity() : null;
 
-    final GT_MetaTileEntity_MultiBlockBase multiBlockBase =
-        tMeta instanceof GT_MetaTileEntity_MultiBlockBase
-            ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
-    final GT_MetaTileEntity_MultiParallelBlockBase MultiParallel =
-        tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase
-            ? ((GT_MetaTileEntity_MultiParallelBlockBase) tMeta) : null;
-    final GTMTE_MBBase multiBlockBaseImpact =
-        tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
+    final GT_MetaTileEntity_MultiBlockBase multiBlockBase = tMeta instanceof GT_MetaTileEntity_MultiBlockBase
+        ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
+    final GT_MetaTileEntity_MultiParallelBlockBase MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase
+        ? ((GT_MetaTileEntity_MultiParallelBlockBase) tMeta) : null;
+    final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase
+        ? ((GTMTE_MBBase) tMeta) : null;
+    final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication
+        ? ((GTMTE_TowerCommunication) tMeta) : null;
+
+    final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver
+        ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
+    final GTMTE_ParallelHatch_Input parallelHatch_input = tMeta instanceof GTMTE_ParallelHatch_Input
+        ? ((GTMTE_ParallelHatch_Input) tMeta) : null;
+    final GTMTE_ParallelHatch_Output parallelHatch_output = tMeta instanceof GTMTE_ParallelHatch_Output
+        ? ((GTMTE_ParallelHatch_Output) tMeta) : null;
 
     if (tMeta != null) {
+
+      if (towerReciver != null) {
+        final boolean isActiveTowerReciver = towerReciver.mIsReceive;
+        tag.setBoolean("isActiveTowerReciver", isActiveTowerReciver);
+      }
+
+      if (parallelHatch_input != null) {
+        final boolean isParallelIN = parallelHatch_input.mTrueRecipe;
+        tag.setBoolean("isParallelIN", isParallelIN);
+        tag.setInteger("ppHatchIn", parallelHatch_input.mMaxParallel);
+      }
+
+      if (parallelHatch_output != null) {
+        final boolean isParallelOUT = parallelHatch_output.mIsTrueRecipe;
+        tag.setBoolean("isParallelOUT", isParallelOUT);
+        tag.setInteger("ppHatchOut", parallelHatch_output.mMaxParallel);
+      }
+
+      if (towerCommunication != null) {
+        tag.setBoolean("towerCommunicationConnect", towerCommunication.mIsConnect);
+      }
+
 
       if (MultiParallel != null) {
         final int Parallel = MultiParallel.mParallel;
         tag.setInteger("Parallel", Parallel);
+        tag.setBoolean("connectWithTower", MultiParallel.mIsConnect);
       }
 
       if (tMeta instanceof GTMTE_LapPowerStation) {
