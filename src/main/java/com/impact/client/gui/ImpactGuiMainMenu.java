@@ -10,11 +10,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -162,32 +162,41 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             this.height - 10 + i * (this.fontRendererObj.FONT_HEIGHT + 1), 16777215);
       }
     }
-
+    String eBug1 = "Latest version: " + EnumChatFormatting.GREEN + ModPackVersion;
     try {
       URL url = new URL("https://gtimpact.space/version");
-
-      InputStream in = url.openStream();
-      BufferedReader br = new BufferedReader(new InputStreamReader(in));
-      StringBuffer buf = new StringBuffer();
-      while (true) {
-        String line = br.readLine();
-        if (line != null) {
-          buf.append(line).append("");
-        } else {
-          break;
+      if (checkConnect(url)) {
+        InputStream in = url.openStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        StringBuffer buf = new StringBuffer();
+        while (true) {
+          String line = br.readLine();
+          if (line != null) {
+            buf.append(line).append("");
+          } else {
+            break;
+          }
         }
+        String content = buf.toString();
+        eBug1 = "Latest version: " + EnumChatFormatting.GREEN + content;
       }
-      String content = buf.toString();
-
-      String eBug1 = "Latest version: " + EnumChatFormatting.GREEN + content;
       drawString(this.fontRendererObj, eBug1,
           this.width - this.fontRendererObj.getStringWidth(eBug1) - 2, this.height - 20, -1);
-    } catch (Exception ignored) {
-      System.out.println("kek");
-    }
+    } catch (Exception ignored) {}
     String eBug2 = "Current version: " + EnumChatFormatting.YELLOW + ModPackVersion;
     drawString(this.fontRendererObj, eBug2,
         this.width - this.fontRendererObj.getStringWidth(eBug2) - 2, this.height - 10, -1);
     super.drawScreen(mouseX, mouseY, partialTicks);
+  }
+
+  private boolean checkConnect(URL url) {
+    try {
+      final URLConnection conn = url.openConnection();
+      conn.connect();
+      conn.getInputStream().close();
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
   }
 }
