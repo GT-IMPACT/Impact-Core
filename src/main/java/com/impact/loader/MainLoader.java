@@ -27,7 +27,6 @@ import com.impact.mods.gregtech.GT_WorldGenRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.railcraft.carts.item.events.Module;
-import com.impact.util.OreDictRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;

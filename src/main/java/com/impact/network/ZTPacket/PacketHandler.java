@@ -1,8 +1,6 @@
-package com.impact.events;
+package com.impact.network.ZTPacket;
 
 import com.impact.impact;
-import com.impact.util.IZTPacket;
-import com.impact.util.ToggleMetaData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
@@ -29,9 +27,9 @@ public class PacketHandler {
     buffer.writeInt(PacketHandler.packetCarrier.indexOf(packet.getClass()));
     try {
       packet.appendData(buffer);
-    } catch (IOException ex) {
+    } catch (IOException ignored) {
     }
-    impact.channel.sendToServer(new FMLProxyPacket(new C17PacketCustomPayload("Impact", buffer)));
+    impact.channel.sendToServer(new FMLProxyPacket(new C17PacketCustomPayload("ImpactZTPacket", buffer)));
   }
 
   @SubscribeEvent

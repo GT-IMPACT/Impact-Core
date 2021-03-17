@@ -20,8 +20,8 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSat
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Transmitter;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.util.Utilits;
-import com.impact.util.Vector3i;
-import com.impact.util.Vector3ic;
+import com.impact.util.vector.Vector3i;
+import com.impact.util.vector.Vector3ic;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

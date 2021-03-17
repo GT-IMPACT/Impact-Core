@@ -1,4 +1,4 @@
-package com.impact.util;
+package com.impact.util.string;
 
 import static com.impact.util.Utilits.impactTag;
 

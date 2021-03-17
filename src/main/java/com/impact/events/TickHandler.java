@@ -3,7 +3,7 @@ package com.impact.events;
 import static com.impact.core.Config.DisableNether;
 import static com.impact.core.Config.DisableTheEnd;
 
-import com.impact.util.PlayerPos;
+import com.impact.util.vector.PlayerPos;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;

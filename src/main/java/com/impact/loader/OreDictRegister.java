@@ -1,4 +1,4 @@
-package com.impact.util;
+package com.impact.loader;
 
 import cpw.mods.fml.common.Loader;
 import gregtech.api.util.GT_ModHandler;

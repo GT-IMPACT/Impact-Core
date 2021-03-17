@@ -1,4 +1,4 @@
-package com.impact.util;
+package com.impact.util.vector;
 
 public interface Vector3ic {
 

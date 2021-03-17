@@ -1,4 +1,4 @@
-package com.impact.util;
+package com.impact.util.vector;
 
 import net.minecraft.entity.Entity;
 

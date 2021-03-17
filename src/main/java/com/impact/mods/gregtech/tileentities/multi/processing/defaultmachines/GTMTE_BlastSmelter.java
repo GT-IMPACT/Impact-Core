@@ -3,8 +3,8 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
-import com.impact.util.Vector3i;
-import com.impact.util.Vector3ic;
+import com.impact.util.vector.Vector3i;
+import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;

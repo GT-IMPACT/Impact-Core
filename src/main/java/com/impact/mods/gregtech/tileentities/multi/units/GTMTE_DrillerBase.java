@@ -15,8 +15,8 @@ import static net.minecraftforge.common.BiomeDictionary.Type.SNOWY;
 import static net.minecraftforge.common.BiomeDictionary.Type.SWAMP;
 import static net.minecraftforge.common.BiomeDictionary.Type.WATER;
 
-import com.impact.util.Vector3i;
-import com.impact.util.Vector3ic;
+import com.impact.util.vector.Vector3i;
+import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;

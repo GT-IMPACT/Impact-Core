@@ -8,7 +8,7 @@ import com.impact.client.gui.GUIHandler;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.Refstrings;
-import com.impact.events.PacketHandler;
+import com.impact.network.ZTPacket.PacketHandler;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;

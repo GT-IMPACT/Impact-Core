@@ -5,8 +5,8 @@ import static com.impact.util.Utilits.invertBoolean;
 
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
-import com.impact.util.MultiFluidHandler;
-import com.impact.util.SingleFluidHandler;
+import com.impact.util.fluid.MultiFluidHandler;
+import com.impact.util.fluid.SingleFluidHandler;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

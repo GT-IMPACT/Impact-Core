@@ -1,4 +1,4 @@
-package com.impact.util;
+package com.impact.network.ZTPacket;
 
 import com.impact.common.block.itemblock.IB_IGlass;
 import io.netty.buffer.ByteBuf;

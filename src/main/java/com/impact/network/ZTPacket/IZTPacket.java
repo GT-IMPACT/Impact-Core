@@ -1,4 +1,4 @@
-package com.impact.util;
+package com.impact.network.ZTPacket;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;

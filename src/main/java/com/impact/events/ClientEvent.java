@@ -2,7 +2,8 @@ package com.impact.events;
 
 import com.impact.client.gui.ImpactGuiMainMenu;
 import com.impact.common.block.itemblock.IB_IGlass;
-import com.impact.util.ToggleMetaData;
+import com.impact.network.ZTPacket.PacketHandler;
+import com.impact.network.ZTPacket.ToggleMetaData;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

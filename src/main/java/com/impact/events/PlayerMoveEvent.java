@@ -1,6 +1,6 @@
 package com.impact.events;
 
-import com.impact.util.PlayerPos;
+import com.impact.util.vector.PlayerPos;
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.player.PlayerEvent;

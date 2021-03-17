@@ -1,29 +1,28 @@
-package com.impact.util;
+package com.impact.util.fluid;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-public class SingleFluidHandler {
+public class MultiFluidHandler {
 
-  public int MAX_DISTINCT_FLUIDS = 1;
+  public int MAX_DISTINCT_FLUIDS = 25;
 
   public List<FluidStack> fluids = new ArrayList<>(MAX_DISTINCT_FLUIDS);
-
   public int capacityPerFluid;
 
   public boolean locked = true;
 
-  public SingleFluidHandler() {
+  public MultiFluidHandler() {
 
   }
 
-  public SingleFluidHandler(int capacityPerFluid, int aFluids) {
+  public MultiFluidHandler(int capacityPerFluid, int aFluids) {
     this.capacityPerFluid = capacityPerFluid;
   }
 
-  public SingleFluidHandler(int capacityPerFluid, List<FluidStack> fluids, int aFluids) {
+  public MultiFluidHandler(int capacityPerFluid, List<FluidStack> fluids, int aFluids) {
     this.capacityPerFluid = capacityPerFluid;
     this.fluids.addAll(fluids);
   }
