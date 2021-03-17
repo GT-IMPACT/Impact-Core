@@ -173,10 +173,6 @@ public class ItemRegistery {
     MarsStone = new Block_Pattern_Space(Material.rock, "MarsStone");
   }
 
-  public static void registerFluidBlocks() {
-    HFluid = new Block_Liquid(Materials.Hydrogen, true);
-  }
-
   public static void NEIHide() {
     hideItem(new ItemStack(decorateBlock[2], 1, 0));
     hideItem(new ItemStack(decorateBlock[2], 1, 1));

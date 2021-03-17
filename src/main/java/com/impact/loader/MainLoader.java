@@ -27,16 +27,12 @@ import com.impact.mods.gregtech.GT_WorldGenRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.railcraft.carts.item.events.Module;
-import com.impact.recipes.AfterGregTechPostLoadRecipes;
-import com.impact.recipes.HandRecipe;
-import com.impact.recipes.machines.*;
 import com.impact.util.OreDictRegister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -56,7 +52,6 @@ public class MainLoader {
   }
 
   public static void Init() {
-    new ItemRegistery();
     ItemRegistery.run();
     INFO("[Init] Item Registery - Loaded");
   }
@@ -157,50 +152,6 @@ public class MainLoader {
     new Basic_Register().run();
     new GT_WorldGenRegister().run();
     new ModLoader().run();
-    new HandRecipe().run();
-    new CentrifugeRecipe().run();
-    new PulveriserRecipe().run();
-    new LaserEngraverRecipe();
-    new FormingPressRecipe().run();
-    new ChemicalBathRecipe().run();
-    new AssemblerRecipe().run();
-    new FreezSolidifierRecipe().run();
-    new Printer3DRecipe().run();
-    new BlastSmelterRecipe().run();
-    new ComponentAssemblerRecipe().run();
-    new CompessorRecipe().run();
-    new AlloySmelterRecipe().run();
-    new MixerRecipe().run();
-    new EBFRecipe().run();
-    new FluidCannerRecipe().run();
-    new CircuitAssemblerRecipe().run();
-    new FarmRecipe().run();
-    new CuttingRecipe().run();
-    new VacuumFreezerRecipe().run();
-    new AssemblyLineRecipe().run();
-    new ForgeHammerRecipe().run();
-    new FluidExtractorRecipe().run();
-    new ExtruderRecipe().run();
-    new ImplosionCompressorRecipe().run();
-    new FluidSolidifierRecipe().run();
-    new AutoclaveRecipe().run();
-    new BreweryRecipe().run();
-    new ExtractorRecipe().run();
-    new ChemicalReactorRecipe().run();
-    new SifterRecipe().run();
-    new LatheRecipe().run();
-    new WiremillRecipe().run();
-    new ElectrolyzerRecipe().run();
-    new WireassemblerRecipe().run();
-    new FusionRecipe().run();
-    new ArcFurnaceRecipe().run();
-    new UnboxingRecipe().run();
-    new CannerRecipe().run();
-    new PackagerRecipe().run();
-    new ThermalCentrifugeRecipe().run();
-
-    addAfterGregTechPostLoadRunner();
-    INFO("[postLoad] After GregTech PostLoad Runner - Loaded");
 
     for (Module module : getModules()) {
       if (module.getIsActive()) {
@@ -219,9 +170,5 @@ public class MainLoader {
         new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0,
             new SpaceStationRecipe(inputMap)));
 
-  }
-
-  public static void addAfterGregTechPostLoadRunner() {
-    GregTech_API.sAfterGTPostload.add(() -> new AfterGregTechPostLoadRecipes().run());
   }
 }
