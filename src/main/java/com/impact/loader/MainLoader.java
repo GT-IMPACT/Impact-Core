@@ -50,8 +50,35 @@ public class MainLoader {
   private MainLoader() {
   }
 
-  public static void Init() {
+  public static void Init(FMLInitializationEvent event) {
     ItemRegistery.run();
+
+    // Register Dimensions in GalacticGregGT5
+    if (Loader.isModLoaded("galacticgreg")) {
+      SpaceDimRegisterer spaceDimReg = new SpaceDimRegisterer();
+      if (spaceDimReg.Init()) {
+        spaceDimReg.Register();
+        INFO("[load] Space Dimension Register - Loaded");
+      }
+      WARNING("[load] Space Dimension Register - Not Loaded");
+    }
+
+    OreDictRegister.register_all();
+    INFO("[load] OreDict Register List - Loaded");
+
+    ASP.load();
+    INFO("[load] Solar Panel 2 - Loaded");
+
+    Block_QuantumStuff.run();
+    INFO("[load] Quantum Stuff registered");
+
+    for (Module module : getModules()) {
+      if (module.getIsActive()) {
+        module.load(event);
+      }
+    }
+
+    impact.proxy.registerRenderInfo();
     INFO("[Init] Item Registery - Loaded");
   }
 
@@ -110,41 +137,7 @@ public class MainLoader {
     impact.proxy.preInit();
   }
 
-  public static void load(FMLInitializationEvent event) {
-
-    // Register Dimensions in GalacticGregGT5
-    if (Loader.isModLoaded("galacticgreg")) {
-      SpaceDimRegisterer spaceDimReg = new SpaceDimRegisterer();
-      if (spaceDimReg.Init()) {
-        spaceDimReg.Register();
-        INFO("[load] Space Dimension Register - Loaded");
-      }
-      WARNING("[load] Space Dimension Register - Not Loaded");
-    }
-
-    OreDictRegister.register_all();
-    INFO("[load] OreDict Register List - Loaded");
-
-    ASP.load();
-    INFO("[load] Solar Panel 2 - Loaded");
-
-    Block_QuantumStuff.run();
-    INFO("[load] Quantum Stuff registered");
-
-    for (Module module : getModules()) {
-      if (module.getIsActive()) {
-        module.load(event);
-      }
-    }
-
-    impact.proxy.registerRenderInfo();
-  }
-
-  public static void onPreLoad() {
-
-  }
-
-  public static void postLoad(FMLPostInitializationEvent event) {
+  public static void postInit(FMLPostInitializationEvent event) {
     new GT_ItemRegister().run();
     new Casing_Helper().run();
     new Multi_Register().run();
@@ -157,9 +150,10 @@ public class MainLoader {
         module.postInit(event);
       }
     }
+    addRecipeSS();
   }
 
-  public static void postInit() {
+  private static void addRecipeSS() {
     final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
     inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 40), 40);
     inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 20), 20);
@@ -168,6 +162,5 @@ public class MainLoader {
     GalacticraftRegistry.registerSpaceStation(
         new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0,
             new SpaceStationRecipe(inputMap)));
-
   }
 }

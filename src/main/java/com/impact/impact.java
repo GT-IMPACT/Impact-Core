@@ -79,8 +79,8 @@ public class impact {
   }
 
   @Mod.EventHandler
-  public void load(FMLInitializationEvent event) {
-    MainLoader.load(event);
+  public void init(FMLInitializationEvent event) {
+    MainLoader.Init(event);
     new GUIHandler();
     INFO("MainLoader LOAD Loaded");
   }
@@ -115,22 +115,7 @@ public class impact {
   }
 
   @Mod.EventHandler
-  public void PostLoad(FMLPostInitializationEvent event) {
-    MainLoader.postLoad(event);
-  }
-
-  @Mod.EventHandler
-  public void postInit(FMLPostInitializationEvent postinit) {
-    MainLoader.postInit();
-  }
-
-  @Mod.EventHandler
-  public void Init(FMLPostInitializationEvent init) {
-    MainLoader.Init();
-  }
-
-  @Mod.EventHandler
-  public void onPreLoad(FMLPreInitializationEvent aEvent) {
-    MainLoader.onPreLoad();
+  public void postInit(FMLPostInitializationEvent event) {
+    MainLoader.postInit(event);
   }
 }
