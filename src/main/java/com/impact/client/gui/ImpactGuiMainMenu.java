@@ -180,14 +180,14 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
       String content = buf.toString();
 
       String eBug1 = "Latest version: " + EnumChatFormatting.GREEN + content;
-      String eBug2 = "Current version: " + EnumChatFormatting.YELLOW + ModPackVersion;
       drawString(this.fontRendererObj, eBug1,
           this.width - this.fontRendererObj.getStringWidth(eBug1) - 2, this.height - 20, -1);
-      drawString(this.fontRendererObj, eBug2,
-          this.width - this.fontRendererObj.getStringWidth(eBug2) - 2, this.height - 10, -1);
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (Exception ignored) {
+      System.out.println("kek");
     }
+    String eBug2 = "Current version: " + EnumChatFormatting.YELLOW + ModPackVersion;
+    drawString(this.fontRendererObj, eBug2,
+        this.width - this.fontRendererObj.getStringWidth(eBug2) - 2, this.height - 10, -1);
     super.drawScreen(mouseX, mouseY, partialTicks);
   }
 }
