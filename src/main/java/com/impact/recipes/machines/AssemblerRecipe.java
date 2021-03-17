@@ -2,7 +2,7 @@ package com.impact.recipes.machines;
 
 import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.loader.ItemRegistery.*;
-import static com.impact.mods.GregTech.GT_ItemList.Casing_Farm;
+import static com.impact.mods.gregtech.GT_ItemList.Casing_Farm;
 import static com.impact.util.Utilits.Blockstack;
 import static com.impact.util.Utilits.simpleMetaStack;
 import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
@@ -10,7 +10,7 @@ import static gregtech.api.util.GT_ModHandler.removeRecipeByOutput;
 import com.impact.common.item.Core_Items;
 import com.impact.common.item.Core_Items2;
 import com.impact.loader.ItemRegistery;
-import com.impact.mods.GregTech.GT_ItemList;
+import com.impact.mods.gregtech.GT_ItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;

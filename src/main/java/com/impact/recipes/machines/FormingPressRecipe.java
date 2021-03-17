@@ -2,7 +2,7 @@ package com.impact.recipes.machines;
 
 import com.impact.common.item.Core_Items;
 import com.impact.common.item.Core_Items2;
-import com.impact.mods.GregTech.GT_ItemList;
+import com.impact.mods.gregtech.GT_ItemList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;

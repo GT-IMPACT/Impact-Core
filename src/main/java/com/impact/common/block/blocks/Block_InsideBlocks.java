@@ -1,16 +1,8 @@
 package com.impact.common.block.blocks;
 
-import static com.impact.loader.ItemRegistery.InsideBlock;
-
 import com.impact.common.block.itemblock.IB_InsideBlocks;
-import com.impact.mods.GregTech.blocks.Casing_Helper;
-import com.impact.mods.GregTech.enums.Texture;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -19,7 +11,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class Block_InsideBlocks extends gtUpdateBlockAPI {

@@ -1,6 +1,6 @@
 package com.impact.core;
 
-import com.impact.mods.GregTech.enums.BiomeOreRegister;
+import com.impact.mods.gregtech.enums.BiomeOreRegister;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

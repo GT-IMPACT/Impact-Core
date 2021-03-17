@@ -10,7 +10,7 @@ import static com.impact.common.item.Core_List_Items.RubberScheme;
 import static com.impact.common.item.Core_List_Items.SpruceScheme;
 
 import com.impact.common.item.Core_Items2;
-import com.impact.mods.GregTech.GT_ItemList;
+import com.impact.mods.gregtech.GT_ItemList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;

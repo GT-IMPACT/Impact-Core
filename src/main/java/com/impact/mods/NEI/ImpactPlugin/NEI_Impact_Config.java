@@ -1,7 +1,7 @@
 package com.impact.mods.nei.impactplugin;
 
 import codechicken.nei.api.IConfigureNEI;
-import com.impact.mods.GregTech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
+import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.util.GT_Recipe;
