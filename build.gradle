@@ -45,8 +45,9 @@ sourceSets {
         java {
             srcDir 'src/main/java'
             srcDir 'GT5.09OFFBEAT/src/main/java'
-            srcDir 'GT5.09OFFBEAT/src/resources'
+            srcDir 'GT5.09OFFBEAT/src/main/resources'
         }
+        output.resourcesDir = output.classesDir
     }
 }
 
