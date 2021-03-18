@@ -86,7 +86,7 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
     b
         .addInfo("Multi-Amperes generator")
         .addInfo("Outputs " + NumberFormat.getNumberInstance().format(EU_PER_TICK)
-            + "EU/t including 16A")
+            + "EU/t = 16A LuV")
         .addSeparator()
         .addController()
         .addDynamoHatch("Any casing back side")
@@ -406,7 +406,7 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
             if (super.depleteInput(liquid)) {
 
               super.mMaxProgresstime = 20; // 1 Second
-              super.mEfficiencyIncrease = 50; // 50 - 0.5% per cycle
+              super.mEfficiencyIncrease = 500; // 500 - 5% per cycle
               if (mEfficiency > 9000) {
                 super.mEUt = EU_PER_TICK; //LuV * 16A
               }
@@ -444,10 +444,7 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
   public String[] getInfoData() {
     return new String[]{
         "Total Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance()
-            .format(super.mEUt * 16) + EnumChatFormatting.RESET + " EU/t",
-        "Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt)
-            + EnumChatFormatting.RESET + " EU/t | Amperes: " + EnumChatFormatting.GREEN + "16"
-            + EnumChatFormatting.RESET + " A",
+            .format(super.mEUt) + EnumChatFormatting.RESET + " EU/t",
         "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F
             + EnumChatFormatting.YELLOW + " %",
         "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())

@@ -159,7 +159,7 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_Multibloc
             if (super.depleteInput(liquid)) {
 
               super.mMaxProgresstime = 20; // 1 Second
-              super.mEfficiencyIncrease = 50; // 50 - 0.5% per cycle
+              super.mEfficiencyIncrease = 500; // 500 - 5% per cycle
               if (mEfficiency > 9000) {
                 super.eAmpereFlow = 64;
                 super.mEUt = EU_PER_TICK / 64;
@@ -179,7 +179,6 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_Multibloc
     quantumStuff(false);
     return false;
   }
-
 
   private void quantumStuff(boolean shouldExist) {
     IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -204,7 +203,7 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_Multibloc
     b
         .addInfo("Multi-Amperes generator")
         .addInfo("Outputs " + NumberFormat.getNumberInstance().format(EU_PER_TICK)
-            + "EU/t including 64A")
+            + "EU/t = 64A ZPM")
         .addSeparator()
         .addController()
         .addDynamoHatch("Any casing")
@@ -225,10 +224,7 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_Multibloc
   public String[] getInfoData() {
     return new String[]{
         "Total Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance()
-            .format(super.mEUt * 64) + EnumChatFormatting.RESET + " EU/t",
-        "Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(super.mEUt)
-            + EnumChatFormatting.RESET + " EU/t | Amperes: " + EnumChatFormatting.GREEN + "64"
-            + EnumChatFormatting.RESET + " A",
+            .format(super.mEUt) + EnumChatFormatting.RESET + " EU/t",
         "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F
             + EnumChatFormatting.YELLOW + " %",
         "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
@@ -265,13 +261,11 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_Multibloc
 
     @Override
     public void run() {
-
       for (int i = 0; i < FUEL_NAME.length; i++) {
         RA.addFuel(FUEL_NAME[i],
             GT_Utility.getFluidForFilledItem(FUEL_NAME[i], true) == null ? GT_Utility
                 .getContainerItem(FUEL_NAME[i], true) : null, FUEL_PER_SECOND[i] * 64, 9);
       }
-
     }
   }
 }
