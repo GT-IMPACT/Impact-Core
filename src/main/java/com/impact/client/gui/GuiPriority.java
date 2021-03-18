@@ -34,6 +34,7 @@ public class GuiPriority extends GuiContainer {
     this.player = player;
   }
 
+  @SuppressWarnings("unchecked")
   public void initGui() {
     super.initGui();
     final int a = AEConfig.instance.priorityByStacksAmounts(0);
