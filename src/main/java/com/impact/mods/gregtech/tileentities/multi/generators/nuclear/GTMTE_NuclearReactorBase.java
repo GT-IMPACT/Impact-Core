@@ -172,14 +172,14 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
       mCurrentOutput = mCurrentTemp / 160;
     }
 
-    if (super.mEfficiency > (getMaxEfficiency(null) / 8)
-        && !depleteInput(Materials.Water.getFluid(mCurrentOutput))) {
-      for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
+      if (aTick % 8 == 0 && super.mEfficiency > (getMaxEfficiency(null) / 8)
+          && !depleteInput(Materials.Water.getFluid(mCurrentOutput))) {
+        for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
           rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+        }
       }
-    }
 
-    if (super.mEfficiency == getMaxEfficiency(null)) {
+    if (aTick % 8 == 0 && super.mEfficiency == getMaxEfficiency(null)) {
       double tTemp = (double) mCurrentTemp / (double) mMaxTemp;
       int checkSteam = (int) (100 * tTemp);
       if (checkSteam < 50) {

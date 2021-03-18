@@ -232,12 +232,17 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
     outEU = mEfficiency < 10000 ? outEU / 2 : outEU;
 
     mOutputSalary = Math.min(outEU, getMaxOutputVoltage());
-    super.addEnergyOutputMultipleDynamos(mOutputSalary, true);
 
-    this.mMaxProgresstime = 1;
+    this.mMaxProgresstime = 8;
     this.mEfficiencyIncrease = 10000;
     rotorTopTrigger(true);
     return true;
+  }
+
+  @Override
+  public boolean onRunningTick(ItemStack aStack) {
+    super.addEnergyOutputMultipleDynamos(mOutputSalary, true);
+    return super.onRunningTick(aStack);
   }
 
   private void rotorTopTrigger(boolean shouldExist) {
