@@ -1,10 +1,132 @@
 package com.impact.mods.gregtech;
 
 import static com.impact.core.impactLog.INFO;
-import static com.impact.mods.gregtech.GT_ItemList.*;
+import static com.impact.mods.gregtech.GT_ItemList.Boxinator_Hatch_Input;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Input_MAX;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Input_OPV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Input_Prim;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Input_UEV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Input_UIV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Input_UMV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Input_UXV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Output_MAX;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Output_OPV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Output_Prim;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Output_UEV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Output_UIV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Output_UMV;
+import static com.impact.mods.gregtech.GT_ItemList.Bus_Output_UXV;
+import static com.impact.mods.gregtech.GT_ItemList.Communication_Hatch_Receiver;
+import static com.impact.mods.gregtech.GT_ItemList.Communication_Hatch_Transmitter;
+import static com.impact.mods.gregtech.GT_ItemList.Creative_Tank;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_EV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_HV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_IV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_LV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_LuV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_MV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_UV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_16A_ZPM;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_EV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_HV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_IV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_LV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_LuV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_MV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_UV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_2A_ZPM;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_EV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_HV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_IV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_LV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_LuV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_MV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_UV;
+import static com.impact.mods.gregtech.GT_ItemList.Diode_4A_ZPM;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherEV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherHV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherIV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherLV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherLuV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherMV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherUEV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherUHV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherULV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherUV;
+import static com.impact.mods.gregtech.GT_ItemList.DustWasherZPM;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Diesel_EV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Diesel_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Gas_Turbine_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Semi_Turbine_EV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Semi_Turbine_HV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Semi_Turbine_LV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Semi_Turbine_MV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Semi_Turbine_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Steam_Turbine_EV;
+import static com.impact.mods.gregtech.GT_ItemList.Generator_Steam_Turbine_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Input_MAX;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Input_OPV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Input_UEV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Input_UIV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Input_UMV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Input_UXV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_MAX;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_OPV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_Prim;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_Pump;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_UEV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_UIV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_UMV;
+import static com.impact.mods.gregtech.GT_ItemList.Hatch_Output_UXV;
+import static com.impact.mods.gregtech.GT_ItemList.Long_Distance_Pipeline_Fluid;
+import static com.impact.mods.gregtech.GT_ItemList.Long_Distance_Pipeline_Item;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_EV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_HV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_IV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_LV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_LuV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_MV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_UEV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_UHV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_ULV_Assembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_UV_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Machine_ZPM_ComponentAssembler;
+import static com.impact.mods.gregtech.GT_ItemList.Nonuple_Input_Hatch;
+import static com.impact.mods.gregtech.GT_ItemList.Nuclear_Hatch_Rod;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_Debug;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_IN16;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_IN256;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_IN4;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_IN64;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_OUT16;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_OUT256;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_OUT4;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_OUT64;
+import static com.impact.mods.gregtech.GT_ItemList.Parallel_Hatch_Rack;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_EV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_HV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_IV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_LV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_LuV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_MV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_ULV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_UV;
+import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_ZPM;
+import static com.impact.mods.gregtech.GT_ItemList.Quadruple_Input_Hatch;
+import static com.impact.mods.gregtech.GT_ItemList.Tank_Hatch;
 
-import com.impact.mods.gregtech.tileentities.basic.*;
-import com.impact.mods.gregtech.tileentities.hatches.*;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_DebugTank;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_SemifluidGenerator;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineFluid;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineItem;
+import com.impact.mods.gregtech.tileentities.hatches.GTMTE_BoxinatorInputBus;
+import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Diode;
+import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
+import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_InputBus;
+import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Debug;
@@ -15,10 +137,18 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSat
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.tileentities.generators.*;
+import gregtech.common.tileentities.generators.GT_MetaTileEntity_DieselGenerator;
+import gregtech.common.tileentities.generators.GT_MetaTileEntity_GasTurbine;
+import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_PortableTank;
 
 public class Basic_Register {
@@ -166,9 +296,16 @@ public class Basic_Register {
         new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.04",
             "EV Semifluid Generator", 4).getStackForm(1L));
 
-    ID2++; // TODO ID:14566 null
-    ID2++; // TODO ID:14567 null
-    Parallel_Hatch_Debug.set(new GTMTE_ParallelHatch_Debug(ID2++, "impact.machine.parallelhatch.debug", "Debug Parallel Receiver", 8, 256).getStackForm(1L));
+    Long_Distance_Pipeline_Fluid.set(
+        new GTMTE_LongDistancePipelineFluid(ID2++, "long.distance.pipeline.fluid",
+            "Long Distance Fluid Pipeline", 1).getStackForm(1L));
+    Long_Distance_Pipeline_Item.set(
+        new GTMTE_LongDistancePipelineItem(ID2++, "long.distance.pipeline.item",
+            "Long Distance Item Pipeline", 1).getStackForm(1L));
+
+    Parallel_Hatch_Debug.set(
+        new GTMTE_ParallelHatch_Debug(ID2++, "impact.machine.parallelhatch.debug",
+            "Debug Parallel Receiver", 8, 256).getStackForm(1L));
 
     ID2++; // ID:14569 GT_MetaTileEntity_Hatch_OutputBus_ME
 
@@ -186,22 +323,43 @@ public class Basic_Register {
         new GTMTE_Reactor_Rod_Hatch(ID2++, "impact.hatch.nuclear.rod", "Nuclear Rod Hatch")
             .getStackForm(1L));
 
-    Parallel_Hatch_IN4.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.4", "Parallel Receiver 4P", 5, 4).getStackForm(1L));
-    Parallel_Hatch_OUT4.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.4", "Parallel Transmitter 4P", 5, 4).getStackForm(1L));
+    Parallel_Hatch_IN4.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.4",
+        "Parallel Receiver 4P", 5, 4).getStackForm(1L));
+    Parallel_Hatch_OUT4.set(
+        new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.4",
+            "Parallel Transmitter 4P", 5, 4).getStackForm(1L));
 
-    Parallel_Hatch_IN16.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.16", "Parallel Receiver 16P", 6, 16).getStackForm(1L));
-    Parallel_Hatch_OUT16.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.16", "Parallel Transmitter 16P", 6, 16).getStackForm(1L));
+    Parallel_Hatch_IN16.set(
+        new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.16",
+            "Parallel Receiver 16P", 6, 16).getStackForm(1L));
+    Parallel_Hatch_OUT16.set(
+        new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.16",
+            "Parallel Transmitter 16P", 6, 16).getStackForm(1L));
 
-    Parallel_Hatch_IN64.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.64", "Parallel Receiver 64P", 7, 64).getStackForm(1L));
-    Parallel_Hatch_OUT64.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.64", "Parallel Transmitter 64P", 7, 64).getStackForm(1L));
+    Parallel_Hatch_IN64.set(
+        new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.64",
+            "Parallel Receiver 64P", 7, 64).getStackForm(1L));
+    Parallel_Hatch_OUT64.set(
+        new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.64",
+            "Parallel Transmitter 64P", 7, 64).getStackForm(1L));
 
-    Parallel_Hatch_IN256.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.256", "Parallel Receiver 256P", 8, 256).getStackForm(1L));
-    Parallel_Hatch_OUT256.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.256", "Parallel Transmitter 256P", 8, 256).getStackForm(1L));
+    Parallel_Hatch_IN256.set(
+        new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.256",
+            "Parallel Receiver 256P", 8, 256).getStackForm(1L));
+    Parallel_Hatch_OUT256.set(
+        new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.256",
+            "Parallel Transmitter 256P", 8, 256).getStackForm(1L));
 
-    Communication_Hatch_Transmitter.set(new GTMTE_SpaceSatellite_Transmitter(ID2++, "impact.machine.communicationhatch.transmitter", "Communication Transmitter").getStackForm(1L));
-    Communication_Hatch_Receiver.set(new GTMTE_SpaceSatellite_Receiver(ID2++, "impact.machine.communicationhatch.receiver", "Communication Receiver").getStackForm(1L));
+    Communication_Hatch_Transmitter.set(
+        new GTMTE_SpaceSatellite_Transmitter(ID2++, "impact.machine.communicationhatch.transmitter",
+            "Communication Transmitter").getStackForm(1L));
+    Communication_Hatch_Receiver.set(
+        new GTMTE_SpaceSatellite_Receiver(ID2++, "impact.machine.communicationhatch.receiver",
+            "Communication Receiver").getStackForm(1L));
 
-    Parallel_Hatch_Rack.set(new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack").getStackForm(1L));
+    Parallel_Hatch_Rack.set(
+        new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack")
+            .getStackForm(1L));
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
