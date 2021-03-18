@@ -104,7 +104,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
     }
 
     if (reachingVoidOrBedrock()) {
-      addOutput(GT_ModHandler.getWater(((1 << this.mtier) * 2) * getWaterInBiomes() * 2));
+      addOutput(GT_ModHandler.getWater((((1 << this.mtier) * 2) * getWaterInBiomes() * 2) * 20));
     }
     if (mEfficiency == 10000) {
       workState = STATE_AT_BOTTOM;
