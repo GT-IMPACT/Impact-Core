@@ -2,7 +2,9 @@ package com.impact.common.block.blocks;
 
 import com.impact.common.block.itemblock.IB_InsideBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -58,6 +60,17 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
   @Override
   protected void dropBlockAsItem(World w, int x, int y, int z, ItemStack is) {
     super.dropBlockAsItem(w, x, y, z, is);
+  }
+
+  @Override
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata,
+      int fortune) {
+    ArrayList<ItemStack> drop = new ArrayList<>();
+    if (metadata == 3 || metadata == 4) {
+      drop.add(ItemList.Casing_Gearbox_Steel.get(1));
+      return drop;
+    }
+    return super.getDrops(world, x, y, z, metadata, fortune);
   }
 
   @Override

@@ -1,7 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
 import static com.impact.loader.ItemRegistery.InsideBlock;
+import static com.impact.loader.ItemRegistery.decorateBlock;
 
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -37,10 +45,12 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 
   public GTMTE_HugeSteamTurbine(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
+    build();
   }
 
   public GTMTE_HugeSteamTurbine(String aName) {
     super(aName);
+    build();
   }
 
   @Override
@@ -57,6 +67,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 
   @Override
   public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+    build();
     return new GTMTE_HugeSteamTurbine(this.mName);
   }
 
@@ -88,6 +99,50 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
       IGregTechTileEntity aBaseMetaTileEntity) {
     return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Huge Steam Turbine",
         "MultiParallelBlockGUI.png");
+  }
+
+  public void build() {
+    registerMetaClass(
+        GTMTE_HugeSteamTurbine.class, new IMultiblockInfoContainer<GTMTE_HugeSteamTurbine>() {
+          //region Structure
+          private final IStructureDefinition<GTMTE_HugeSteamTurbine> definition =
+              StructureDefinition.<GTMTE_HugeSteamTurbine>builder()
+                  .addShape("main", new String[][]{
+                      {"     "," BBB "," B~B "," BBB "},
+                      {"     ","BBBBB","B A B","BBBBB"},
+                      {" BBB ","BBBBB","B A B","BBBBB"},
+                      {"BBBBB","BBBBB","B A B","BBBBB"},
+                      {"BBBBB","BBABB","B A B","BBBBB"},
+                      {"BBBBB","BBBBB","B A B","BBBBB"},
+                      {" BBB ","BBBBB","BBBBB","BBBBB"},
+                      {"     "," CCC "," CCC "," CCC "}
+                  })
+                  .addElement('A', ofBlock(GEARBOX, GEARBOX_META))
+                  .addElement('B', ofBlock(CASING, CASING_META))
+                  .addElement('C', ofBlockHint(decorateBlock[2], 1))
+                  .build();
+          private final String[] desc = new String[]{
+              EnumChatFormatting.RED + "Impact Details:",
+              " - Huge Turbine Casing",
+              " - Steel GearBox Casing",
+              " - " + EnumChatFormatting.RED + "RED" + EnumChatFormatting.RESET + " Dynamo Hatch or Huge Turbine Casing",
+          };
+          //endregion
+
+          @Override
+          public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_HugeSteamTurbine tileEntity,
+              ExtendedFacing aSide) {
+            IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
+                base.getXCoord(), base.getYCoord(), base.getZCoord(),
+                2, 2, 0, hintsOnly);
+          }
+
+          @Override
+          public String[] getDescription(ItemStack stackSize) {
+            return desc;
+          }
+        });
   }
 
   @Override
@@ -151,7 +206,6 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
                 == CASING_META)) {
               aCasingAmount++;
             } else {
-              System.out.println("" + offset.x() + " " +   offset.y() + " " + offset.z());
               formationChecklist = false;
             }
           }
@@ -195,6 +249,18 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
     if (mInputHatches.size() > 20) {
       formationChecklist = false;
     }
+
+    if (mMaintenanceHatches.size() != 1) {
+      formationChecklist = false;
+    }
+
+    if (mDynamoHatches.size() > 9 ||
+        mDynamoHatchesTT.size() > 9 ||
+        mDynamoTunnelsTT.size() > 9) {
+      formationChecklist = false;
+    }
+
+
 
     if (formationChecklist) {
       rotorTopTrigger(false);
