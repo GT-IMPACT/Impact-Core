@@ -1,5 +1,6 @@
 package com.impact.util;
 
+import com.sun.rmi.rmid.ExecPermission;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -274,5 +276,12 @@ public class Utilits {
         (igt.getXCoord() - radius), (igt.getYCoord() - radius),
         (igt.getZCoord() - radius), (igt.getXCoord() + radius),
         (igt.getYCoord() + radius), (igt.getZCoord() + radius));
+  }
+
+  public static void sendChatByTE(IGregTechTileEntity te, String chat) {
+    try {
+      EntityPlayer player = te.getWorld().getPlayerEntityByName(te.getOwnerName());
+      GT_Utility.sendChatToPlayer(player, chat);
+    } catch (Exception ignored){}
   }
 }
