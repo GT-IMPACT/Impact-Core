@@ -284,4 +284,15 @@ public class Utilits {
       GT_Utility.sendChatToPlayer(player, chat);
     } catch (Exception ignored){}
   }
+
+  public static void setBlock(IGregTechTileEntity te, int x, int y, int z, Block block, int meta) {
+    int posX = te.getXCoord() + x;
+    int posY = te.getYCoord() + y;
+    int posZ = te.getZCoord() + z;
+    te.getWorld().setBlock(posX, posY, posZ, block, meta, 3);
+  }
+
+  public static void setBlock(IGregTechTileEntity te, int x, int y, int z, Block block) {
+    setBlock(te, x, y, z, block, 0);
+  }
 }

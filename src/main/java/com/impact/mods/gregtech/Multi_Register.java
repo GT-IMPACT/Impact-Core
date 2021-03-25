@@ -2,51 +2,14 @@ package com.impact.mods.gregtech;
 
 import static com.impact.mods.gregtech.GT_ItemList.*;
 
-import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
-import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
-import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator;
-import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
-import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorI;
-import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
-import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorIII;
-import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_I;
-import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_II;
-import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_III;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_AdvDDDPrinter;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_BlastSmelter;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_CokeOven;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_DDDPrinter;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_Farm;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_HeavyMetalCyclone;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_Pyrolyse;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
-import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_SawMill;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Supply;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedVacuumFreezer;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_ArcFurnace;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Assembler;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Brewmenter;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Centrifuge;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Cutting;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Electrolyzer;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Extradifier;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_FreezerSolidifier;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_LaserEng;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Macerator;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_PressBendExtrud;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Siftarator;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Utility;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Wire;
-import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump;
-import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_DrillerWater;
-import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_MoonMiner;
-import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
+import com.impact.mods.gregtech.tileentities.multi.generators.nq.*;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.*;
+import com.impact.mods.gregtech.tileentities.multi.generators.sofc.*;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
+import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.*;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.*;
+import com.impact.mods.gregtech.tileentities.multi.units.*;
 
 public class Multi_Register {
 
@@ -148,18 +111,38 @@ public class Multi_Register {
     Space_Elevator.set(
         new GTMTE_SpaceElevator(ID++, "impact.multimachine.spaceelevator", "Space Elevator")
             .getStackForm(1L));
-    Nuclear_Reactor_I.set(new GTMTE_NuclearReactorI(ID++, "impact.multis.nuclear1", "Nuclear Reactor I")
-        .getStackForm(1));
-    Nuclear_Reactor_II.set(new GTMTE_NuclearReactorII(ID++, "impact.multis.nuclear2", "Nuclear Reactor II")
-        .getStackForm(1));
-    Nuclear_Reactor_III.set(new GTMTE_NuclearReactorIII(ID++, "impact.multis.nuclear3", "Nuclear Reactor III")
-        .getStackForm(1));
-    Huge_Steam_Turbine.set(new GTMTE_HugeSteamTurbine(ID++, "impact.multis.hugesteamturbine", "Huge Steam Turbine")
-        .getStackForm(1));
+    Nuclear_Reactor_I
+        .set(new GTMTE_NuclearReactorI(ID++, "impact.multis.nuclear1", "Nuclear Reactor I")
+            .getStackForm(1));
+    Nuclear_Reactor_II
+        .set(new GTMTE_NuclearReactorII(ID++, "impact.multis.nuclear2", "Nuclear Reactor II")
+            .getStackForm(1));
+    Nuclear_Reactor_III
+        .set(new GTMTE_NuclearReactorIII(ID++, "impact.multis.nuclear3", "Nuclear Reactor III")
+            .getStackForm(1));
+    Huge_Steam_Turbine.set(
+        new GTMTE_HugeSteamTurbine(ID++, "impact.multis.hugesteamturbine", "Huge Steam Turbine")
+            .getStackForm(1));
 
-    Parallel_Computer.set(new GTMTE_ParallelComputer(ID++, "impact.multis.parallelcomputer", "Parallel Supercomputer").getStackForm(1L));
-    Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "impact.multis.communicationtower", "Communication Tower").getStackForm(1L));
-    Space_Satellite.set(new GTMTE_SpaceSatellite(ID++, "impact.multis.spacesatellite", "Space Satellite").getStackForm(1L));
+    Parallel_Computer.set(
+        new GTMTE_ParallelComputer(ID++, "impact.multis.parallelcomputer", "Parallel Supercomputer")
+            .getStackForm(1L));
+    Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "impact.multis.communicationtower",
+        "Communication Tower").getStackForm(1L));
+    Space_Satellite.set(
+        new GTMTE_SpaceSatellite(ID++, "impact.multis.spacesatellite", "Space Satellite")
+            .getStackForm(1L));
+    Machine_EIF.set(new GTMTE_ElectromagneticInductionFurnace(ID++, "impact.multis.eif",
+        "Electromagnetic Induction Furnace").getStackForm(1L));
+    Machine_ChemicalReactor.set(
+        new GTMTE_MultiChemicalReactor(ID++, "impact.multis.chemicalreactor",
+            "Multi Chemical Reactor").getStackForm(1L));
+    Machine_DistTower.set(
+        new GTMTE_MultiDistillationTower(ID++, "impact.multis.distilltower",
+            "Multi Distillation Tower").getStackForm(1L));
+    Machine_ElectricImplosion.set(
+        new GTMTE_ElectricImplosionCompressor(ID++, "impact.multis.electricimplosion",
+            "Electric Implosion Compressor").getStackForm(1L));
 
     System.out.println("Multi_Register.java | Last ID: " + ID);
 

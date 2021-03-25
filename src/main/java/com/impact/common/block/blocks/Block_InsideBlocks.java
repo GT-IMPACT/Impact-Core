@@ -22,8 +22,7 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
   private IIcon Chamber;
   private IIcon CycloneSide, CycloneTop;
   private IIcon EmptyRackSides, EmptyRackFront;
-  private IIcon ReactorTop;
-
+  private IIcon ElectromagneticChamberSide;
 
   private Block_InsideBlocks() {
     super(Material.iron);
@@ -40,26 +39,23 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
 
   @Override
   public void registerBlockIcons(IIconRegister ir) {
-    Chamber = ir.registerIcon("impact:ChamberInside");
+    Chamber = ir.registerIcon("impact:ChamberInside");//0
 
-    CycloneTop = ir.registerIcon("impact:CycloneTop");
+    CycloneTop = ir.registerIcon("impact:CycloneTop");//1
     CycloneSide = ir.registerIcon("impact:CycloneActive");
 
-    EmptyRackSides = ir.registerIcon("impact:EmptyRackSides");
+    EmptyRackSides = ir.registerIcon("impact:EmptyRackSides");//3
     EmptyRackFront = ir.registerIcon("impact:EmptyRackFront");
+
+    ElectromagneticChamberSide = ir.registerIcon("impact:ElectromagneticChamberSide"); //5
   }
 
   @Override
   @SuppressWarnings({"unchecked"})
   public void getSubBlocks(Item item, CreativeTabs tab, List l) {
-    for (byte i = 0; i < 5; i++) {
+    for (byte i = 0; i < 6; i++) {
       l.add(new ItemStack(item, 1, i));
     }
-  }
-
-  @Override
-  protected void dropBlockAsItem(World w, int x, int y, int z, ItemStack is) {
-    super.dropBlockAsItem(w, x, y, z, is);
   }
 
   @Override
@@ -79,12 +75,14 @@ public class Block_InsideBlocks extends gtUpdateBlockAPI {
       case 0:
         return Chamber;
       case 1:
-        return (side < 2) ? CycloneTop : CycloneSide;
+        return side < 2 ? CycloneTop : CycloneSide;
       case 2:
-        return (side < 2) ? EmptyRackSides : EmptyRackFront;
+        return side < 2 ? EmptyRackSides : EmptyRackFront;
       case 3:
       case 4:
         return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
+      case 5:
+        return side < 2 ? Textures.BlockIcons.MACHINE_COIL_MAGNETIC.getIcon() : ElectromagneticChamberSide;
       default:
         return null;
     }
