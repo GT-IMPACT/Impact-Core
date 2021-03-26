@@ -100,9 +100,9 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
           private final IStructureDefinition<GTMTE_ElectricImplosionCompressor> definition =
               StructureDefinition.<GTMTE_ElectricImplosionCompressor>builder()
                   .addShape("main", new String[][]{
-                      {"BBBBBB ","BBAAAA~","BBBBBBB"},
+                      {"BBBBBB ","BAAAAA~","BBBBBBB"},
                       {"BAAAABB","B    BB","BAAAABB"},
-                      {"BBBBBBB","BBAAAAB","BBBBBBB"}
+                      {"BBBBBBB","BAAAAAB","BBBBBBB"}
                   })
                   .addElement('A', ofBlock(GregTech_API.sBlockCasings1, 15))
                   .addElement('B', ofBlock(CASING, CASING_META))
