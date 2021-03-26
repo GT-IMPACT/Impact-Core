@@ -37,8 +37,8 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
       Textures.BlockIcons.casingTexturePages[3][b + 16] /** 32 */ = new GT_CopiedBlockTexture(this,
           6, b);
     }
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".0.name", "Nuclear Turbine Casing"); //400
+    //GT_LanguageManager
+    //    .addStringLocalization(getUnlocalizedName() + ".0.name", "Nuclear Turbine Casing"); //400
     GT_LanguageManager
         .addStringLocalization(getUnlocalizedName() + ".1.name", "Electromagnetic Casing"); //401
     GT_LanguageManager
@@ -68,7 +68,7 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
     GT_LanguageManager
         .addStringLocalization(getUnlocalizedName() + ".14.name", "Space Elevator Casing"); //413
 
-    GT_ItemList.NukeTurbineCasing.set(BlockstackMeta(this, 0));
+    //GT_ItemList.NukeTurbineCasing.set(BlockstackMeta(this, 0));
     GT_ItemList.ElectromagneticCasing.set(BlockstackMeta(this, 1));
     GT_ItemList.ExtradificationCasing.set(BlockstackMeta(this, 2));
     GT_ItemList.MacerationCasing.set(BlockstackMeta(this, 3));
@@ -90,8 +90,8 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int aSide, int aMeta) {
     switch (aMeta) {
-      case 0:
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+      //case 0:
+      //  return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
       case 1:
         return CASING_ELECTROMAGNETIC.getIcon();
       case 2:
