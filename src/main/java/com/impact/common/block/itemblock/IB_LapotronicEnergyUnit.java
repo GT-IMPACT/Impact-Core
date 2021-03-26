@@ -51,6 +51,12 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
       case 6:
         lines.add("Capacity: 819,200,000 EU");
         break;
+      case 7:
+        lines.add("Capacity: 50,000,000,000 EU");
+        break;
+      case 8:
+        lines.add("Capacity: 500,000,000,000 EU");
+        break;
     }
   }
 }

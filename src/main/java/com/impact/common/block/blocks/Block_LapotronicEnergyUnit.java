@@ -15,18 +15,14 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 
   private static final Block_LapotronicEnergyUnit instance = new Block_LapotronicEnergyUnit();
 
-  private IIcon iconLapoIVSide;
-  private IIcon iconLapoIVTop;
-  private IIcon iconLapoLuVSide;
-  private IIcon iconLapoLuVTop;
-  private IIcon iconLapoZPMSide;
-  private IIcon iconLapoZPMTop;
-  private IIcon iconLapoUVSide;
-  private IIcon iconLapoUVTop;
-  private IIcon iconUltimateSide;
-  private IIcon iconUltimateTop;
-  private IIcon iconRedSide;
-  private IIcon iconRedTop;
+  private IIcon iconLapoIVSide, iconLapoIVTop;
+  private IIcon iconLapoLuVSide, iconLapoLuVTop;
+  private IIcon iconLapoZPMSide, iconLapoZPMTop;
+  private IIcon iconLapoUVSide, iconLapoUVTop;
+  private IIcon iconUltimateSide, iconUltimateTop;
+  private IIcon iconRedSide, iconRedTop;
+  private IIcon iconMyst1Side, iconMyst1Top;
+  private IIcon iconMyst2Side, iconMyst2Top;
 
   private Block_LapotronicEnergyUnit() {
     super(Material.iron);
@@ -57,6 +53,12 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
 
     iconUltimateSide = ir.registerIcon("impact:UltimateEnergyUnit_side");
     iconUltimateTop = ir.registerIcon("impact:UltimateEnergyUnit_top");
+
+    iconMyst1Side = ir.registerIcon("impact:LapotronicEnergyUnit6_side");
+    iconMyst1Top = ir.registerIcon("impact:LapotronicEnergyUnit6_top");
+
+    iconMyst2Side = ir.registerIcon("impact:LapotronicEnergyUnit7_side");
+    iconMyst2Top = ir.registerIcon("impact:LapotronicEnergyUnit7_top");
   }
 
   @Override
@@ -70,6 +72,8 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
     // Ultimate battery
     par3List.add(new ItemStack(par1, 1, 5));
     par3List.add(new ItemStack(par1, 1, 6));
+    par3List.add(new ItemStack(par1, 1, 7));
+    par3List.add(new ItemStack(par1, 1, 8));
   }
 
   @Override
@@ -87,6 +91,10 @@ public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
         return (side < 2) ? iconUltimateTop : iconUltimateSide;
       case 6:
         return (side < 2) ? iconRedTop : iconRedSide;
+      case 7:
+        return (side < 2) ? iconMyst1Top : iconMyst1Side;
+      case 8:
+        return (side < 2) ? iconMyst2Top : iconMyst2Side;
       default:
         return iconUltimateTop;
     }
