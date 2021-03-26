@@ -116,9 +116,11 @@ import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_ULV;
 import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_UV;
 import static com.impact.mods.gregtech.GT_ItemList.Portable_Tank_ZPM;
 import static com.impact.mods.gregtech.GT_ItemList.Quadruple_Input_Hatch;
+import static com.impact.mods.gregtech.GT_ItemList.Regulate_Digital_Chest;
 import static com.impact.mods.gregtech.GT_ItemList.Tank_Hatch;
 
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_DebugTank;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_RegulateDigitalChest;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_SemifluidGenerator;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineFluid;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineItem;
@@ -360,6 +362,11 @@ public class Basic_Register {
     Parallel_Hatch_Rack.set(
         new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack")
             .getStackForm(1L));
+
+    Regulate_Digital_Chest.set(
+        new GTMTE_RegulateDigitalChest(ID2++, "impact.machine.regulatechest", "Regulate Digital Chest", 1)
+            .getStackForm(1L));
+
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
