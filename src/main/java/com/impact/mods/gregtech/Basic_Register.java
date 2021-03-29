@@ -368,7 +368,7 @@ public class Basic_Register {
             .getStackForm(1L));
 
 
-    INFO("Last ID Basic_Register.java: " + ID2);
+    INFO("Last ID Basic_Register.java: " + ID2);//14586
 
     DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
         "impact.basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts",
