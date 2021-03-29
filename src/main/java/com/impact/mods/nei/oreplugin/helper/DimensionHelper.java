@@ -143,7 +143,7 @@ public class DimensionHelper {
             case "Pluto":
             case "Kuiperbelt":
             case "Haumea":
-            case "MakeMake":
+            case "Makemake":
               s = s + " (T7)";
               break;
             case "Deep Dark":
