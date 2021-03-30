@@ -8,7 +8,6 @@ import com.impact.client.gui.GUIHandler;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.Refstrings;
-import com.impact.network.ZTPacket.PacketHandler;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
@@ -30,7 +29,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import java.io.File;
 import java.util.ArrayList;
@@ -80,6 +78,7 @@ public class impact {
 
   @Mod.EventHandler
   public void init(FMLInitializationEvent event) {
+    proxy.init();
     MainLoader.Init(event);
     new GUIHandler();
     INFO("MainLoader LOAD Loaded");
@@ -97,10 +96,7 @@ public class impact {
     CommonProxy.register_event(new impactEvents());
     CommonProxy.register_event(new TickHandler());
 
-    channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Impact");
-    channel.register(new PacketHandler());
-
-    proxy.preload();
+    proxy.preInit();
   }
 
   @Mod.EventHandler
@@ -117,5 +113,6 @@ public class impact {
   @Mod.EventHandler
   public void postInit(FMLPostInitializationEvent event) {
     MainLoader.postInit(event);
+    proxy.postInit();
   }
 }
