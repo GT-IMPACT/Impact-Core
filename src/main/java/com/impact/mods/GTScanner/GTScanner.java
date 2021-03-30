@@ -1,5 +1,6 @@
 package com.impact.mods.gtscanner;
 
+import com.impact.client.key.KeyBindings;
 import com.impact.core.ClientProxy;
 import com.impact.core.CommonProxy;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -44,7 +45,7 @@ public class GTScanner {
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onKeyInput(InputEvent.KeyInputEvent event) {
-    if (ClientProxy.checkOre.isPressed()) {
+    if (KeyBindings.checkOre.isPressed()) {
       SetScan(!this.isScan);
     }
   }

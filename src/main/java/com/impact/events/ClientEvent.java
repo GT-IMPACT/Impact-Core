@@ -1,17 +1,24 @@
 package com.impact.events;
 
 import com.impact.client.gui.ImpactGuiMainMenu;
+import com.impact.client.key.KeyBindings;
 import com.impact.common.block.itemblock.IB_IGlass;
-import com.impact.network.ZTPacket.PacketHandler;
-import com.impact.network.ZTPacket.ToggleMetaData;
+import com.impact.network.ImpactNetwork;
+import com.impact.network.ImpactPacketMetaDataPacket;
+import com.impact.network.ImpactPacketPlacedItem;
+import com.impact.util.Utilits;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.MouseEvent;
@@ -31,14 +38,31 @@ public class ClientEvent {
   @SubscribeEvent
   public void onMouseEvent(final MouseEvent event) {
     final EntityPlayer entityPlayer = Minecraft.getMinecraft().thePlayer;
-    if (Keyboard.isKeyDown(184) || Keyboard.isKeyDown(56) || Keyboard.isKeyDown(157) || Keyboard
-        .isKeyDown(29)) {
+    if (Keyboard.isKeyDown(Keyboard.KEY_RMENU) ||
+        Keyboard.isKeyDown(Keyboard.KEY_LMENU) ||
+        Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) ||
+        Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
       final ItemStack itemStack = entityPlayer.getHeldItem();
       if (itemStack != null && itemStack.getItem() instanceof IB_IGlass) {
         if (event.dwheel != 0) {
-          PacketHandler.sendPacketToServer(new ToggleMetaData(event.dwheel > 0));
+          ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketMetaDataPacket(
+              event.dwheel > 0, entityPlayer));
         }
         event.setCanceled(true);
+      }
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onKeyInput(InputEvent.KeyInputEvent event) {
+    if (KeyBindings.placeItem.isPressed()) {
+      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+      WorldClient world = Minecraft.getMinecraft().theWorld;
+      MovingObjectPosition mop = Utilits.raytraceFromEntity(world, player, 4.5D);
+      if (mop != null) {
+        ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketPlacedItem(
+            (byte) mop.sideHit, mop.blockX, mop.blockY, mop.blockZ, player));
       }
     }
   }

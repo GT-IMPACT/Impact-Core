@@ -27,7 +27,7 @@ public class ImpactNetwork extends MessageToMessageCodec<FMLProxyPacket, ImpactP
     INSTANCE = this;
     this.mChannel = NetworkRegistry.INSTANCE.newChannel("ImpactNetwork", this, new HandlerShared());
     this.mSubChannels = new ImpactPacket[]{
-        new ImpactPacketGTScanner(), new ImpactPacketPriority()
+        new ImpactPacketGTScanner(), new ImpactPacketPriority(), new ImpactPacketMetaDataPacket(), new ImpactPacketPlacedItem()
     };
   }
 

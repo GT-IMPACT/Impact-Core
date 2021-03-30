@@ -20,6 +20,7 @@ import com.impact.common.block.blocks.Block_Sawmill;
 import com.impact.common.block.blocks.Block_SpaceElevatorTether;
 import com.impact.common.block.blocks.Block_UtilBlock;
 import com.impact.common.block.blocks.Core_FakeBlock;
+import com.impact.common.block.blocks.PlacedItem;
 import com.impact.common.block.itemblock.FakeBlocksItem;
 import com.impact.common.item.GT_Pump.GregtechPump;
 import com.impact.core.Refstrings;
@@ -62,6 +63,7 @@ public class ItemRegistery {
   public static Block HCloud, HMetal;
   public static Block HFluid;
   public static Block MarsStone;
+  public static Block placedItem;
 
   public static void run() {
     //Blocks
@@ -171,6 +173,7 @@ public class ItemRegistery {
     HCloud = Block_HCloud.registerBlock();
     HMetal = new Block_Pattern_Space(Material.rock, "HMetal");
     MarsStone = new Block_Pattern_Space(Material.rock, "MarsStone");
+    placedItem = new PlacedItem();
   }
 
   public static void NEIHide() {

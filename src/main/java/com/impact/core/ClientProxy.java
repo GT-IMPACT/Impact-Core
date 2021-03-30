@@ -1,11 +1,14 @@
 package com.impact.core;
 
+import com.impact.client.key.KeyBindings;
+import com.impact.client.render.PlacedItemRenderer;
 import com.impact.client.render.TESR_SETether;
 import com.impact.client.render.TESR_SpaceElevatorTether;
 import com.impact.common.block.QuantumStuffRender;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.te.TE_NqTether;
 import com.impact.common.te.TE_SpaceElevatorTether;
+import com.impact.common.te.TilePlacedItem;
 import com.impact.events.ClientEvent;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -20,7 +23,6 @@ import net.minecraftforge.common.MinecraftForge;
 public class ClientProxy extends CommonProxy {
 
   public static Minecraft mc = FMLClientHandler.instance().getClient();
-  public static KeyBinding checkOre;
 
   public static void register_event(Object obj) {
     FMLCommonHandler.instance().bus().register(obj);
@@ -32,8 +34,8 @@ public class ClientProxy extends CommonProxy {
     Block_QuantumStuff.renderID = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
     ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
-    ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class,
-        new TESR_SpaceElevatorTether());
+    ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SpaceElevatorTether());
+    ClientRegistry.bindTileEntitySpecialRenderer(TilePlacedItem.class, new PlacedItemRenderer());
     register_event(new ClientEvent());
   }
 
@@ -47,11 +49,13 @@ public class ClientProxy extends CommonProxy {
     return FMLClientHandler.instance().getClient().theWorld;
   }
 
-  public void preload() {
+  public void postInit() {
+  }
+
+  public void init() {
   }
 
   public void preInit() {
-    checkOre = new KeyBinding("Scan Ores on/off", 44, "GT Scanner Mod");
-    ClientRegistry.registerKeyBinding(checkOre);
+    KeyBindings.init();
   }
 }

@@ -39,10 +39,10 @@ public class CommonProxy implements IGuiHandler {
   public void preInit() {
   }
 
-  public void load() {
+  public void init() {
   }
 
-  public void preload() {
+  public void postInit() {
   }
 
   public void onServerStarted() {

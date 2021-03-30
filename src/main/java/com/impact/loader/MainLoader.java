@@ -17,6 +17,7 @@ import com.impact.common.item.FakeCircuits;
 import com.impact.common.item.WoodBrickFormTool;
 import com.impact.common.te.TE_NqTether;
 import com.impact.common.te.TE_SpaceElevatorTether;
+import com.impact.common.te.TilePlacedItem;
 import com.impact.impact;
 import com.impact.mods.asp.ASP;
 import com.impact.mods.gtscanner.GTScanner;
@@ -132,9 +133,9 @@ public class MainLoader {
 
     GameRegistry.registerTileEntity(TE_SpaceElevatorTether.class, "space_elevator_tether");
     GameRegistry.registerTileEntity(TE_NqTether.class, "nq_tether");
+    GameRegistry.registerTileEntity(TilePlacedItem.class, "TilePlacedItem");
 
     GTScanner.preInit();
-    impact.proxy.preInit();
   }
 
   public static void postInit(FMLPostInitializationEvent event) {
