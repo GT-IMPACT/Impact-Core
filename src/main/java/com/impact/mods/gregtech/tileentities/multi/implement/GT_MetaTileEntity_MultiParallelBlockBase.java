@@ -1085,6 +1085,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     aNBT.setInteger("mFrequency", this.mFrequency);
     aNBT.setBoolean("mIsReceive", this.mIsConnect);
     aNBT.setInteger("mParallel", this.mParallel);
+    aNBT.setInteger("modeBuses", this.modeBuses);
     super.saveNBTData(aNBT);
   }
 
@@ -1098,6 +1099,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     this.mFrequency = aNBT.getInteger("mFrequency");
     this.mIsConnect = aNBT.getBoolean("mIsReceive");
     this.mParallel = aNBT.getInteger("mParallel");
+    this.modeBuses = aNBT.getInteger("modeBuses");
     super.loadNBTData(aNBT);
   }
 
