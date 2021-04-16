@@ -238,6 +238,9 @@ public enum Core_List_Items {
   AluminiumDualCompressedPlate(176, 1),
   CobblestoneRod(177, 1),
   SandstoneRod(178, 1),
+  BlankGeneSampleRaw(179, 1),
+  GeneticTemplateRaw(180, 1),
+  InfinityCatalyst(181, 1),
 
   WoodenBrickForm1(0, 2),
 
