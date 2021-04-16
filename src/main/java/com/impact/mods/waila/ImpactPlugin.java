@@ -22,6 +22,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.List;
+
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import lombok.SneakyThrows;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaRegistrar;
@@ -81,9 +83,20 @@ public class ImpactPlugin extends PluginBase {
     final GTMTE_ParallelHatch_Output parallelHatch_output = tMeta instanceof GTMTE_ParallelHatch_Output
         ? ((GTMTE_ParallelHatch_Output) tMeta) : null;
 
-
+    final GT_MetaTileEntity_DigitalChestBase chestBase = tMeta instanceof GT_MetaTileEntity_DigitalChestBase
+        ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
 
     if (tMeta != null) {
+
+      if (chestBase != null) {
+        if (!tag.getString("chestBaseItemName").equals("")) {
+          currenttip.add(EnumChatFormatting.GREEN + tag.getString("chestBaseItemName") + ":");
+          currenttip.add(tag.getInteger("chestBaseSizeCurrent") + " / " + tag.getInteger("chestBaseSizeMax"));
+        } else {
+          currenttip.add(EnumChatFormatting.RED + "No item");
+        }
+      }
+
       if (MultiParallel != null && tag.getInteger("Parallel") > 1) {
         String str = tag.getBoolean("connectWithTower")
             ? EnumChatFormatting.GREEN + "Connection Established"
@@ -194,7 +207,19 @@ public class ImpactPlugin extends PluginBase {
     final GTMTE_ParallelHatch_Output parallelHatch_output = tMeta instanceof GTMTE_ParallelHatch_Output
         ? ((GTMTE_ParallelHatch_Output) tMeta) : null;
 
+    final GT_MetaTileEntity_DigitalChestBase chestBase = tMeta instanceof GT_MetaTileEntity_DigitalChestBase
+            ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
+
     if (tMeta != null) {
+
+      if (chestBase != null) {
+        final int stackSizeCurrent = chestBase.getItemCount() > 0 ? chestBase.getItemCount() + 64 : chestBase.getItemCount();
+        final int stackSizeMax = chestBase.getMaxItemCount();
+        final String itemName = chestBase.mInventory[2] != null ? chestBase.mInventory[2].getDisplayName() : "";
+        tag.setInteger("chestBaseSizeCurrent", stackSizeCurrent);
+        tag.setInteger("chestBaseSizeMax", stackSizeMax);
+        tag.setString("chestBaseItemName", itemName);
+      }
 
       if (towerReciver != null) {
         final boolean isActiveTowerReciver = towerReciver.mIsReceive;
