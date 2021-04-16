@@ -1,6 +1,5 @@
 package com.impact.util;
 
-import com.sun.rmi.rmid.ExecPermission;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
