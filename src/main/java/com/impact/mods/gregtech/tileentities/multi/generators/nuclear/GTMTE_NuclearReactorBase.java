@@ -2,11 +2,14 @@ package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
+import static com.impact.util.Utilits.getFluidStack;
+import static net.minecraftforge.fluids.FluidRegistry.*;
 
 import com.impact.mods.gregtech.gui.GT_Container_NuclearReactor;
 import com.impact.mods.gregtech.gui.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.Utilits;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -15,11 +18,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import ic2.core.IC2DamageSource;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +41,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
   public long mMaxTemp = 10000;
   public long mCurrentOutput = 1;
   ITexture INDEX_CASE = Textures.BlockIcons.CASING_BLOCKS[12 + 32];
+
+  public boolean isFastDecay = false;
+  private final int SPEED_DECAY = 5;
 
 
   public GTMTE_NuclearReactorBase(int aID, String aName, String aNameRegional) {
@@ -63,6 +71,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     aNBT.setLong("mMaxTemp", mMaxTemp);
     aNBT.setLong("mCurrentOutput", mCurrentOutput);
     aNBT.setBoolean("mFirstStart", mFirstStart);
+    aNBT.setBoolean("isFastDecay", isFastDecay);
   }
 
   @Override
@@ -72,6 +81,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     this.mMaxTemp = aNBT.getLong("mMaxTemp");
     this.mCurrentOutput = aNBT.getLong("mCurrentOutput");
     this.mFirstStart = aNBT.getBoolean("mFirstStart");
+    this.isFastDecay = aNBT.getBoolean("isFastDecay");
   }
 
   @Override
@@ -93,22 +103,6 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
       this.mMaxProgresstime = 20;
       this.mEUt = 0;
       this.mEfficiencyIncrease = 1000;
-      if ((100F * mCurrentTemp / mMaxTemp) > 50) {
-        List list1 = getBaseMetaTileEntity().getWorld()
-            .getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB
-                .getBoundingBox((getBaseMetaTileEntity().getXCoord() - RADIUS_RADIATION_DAMAGE),
-                    (getBaseMetaTileEntity().getYCoord() - RADIUS_RADIATION_DAMAGE),
-                    (getBaseMetaTileEntity().getZCoord() - RADIUS_RADIATION_DAMAGE),
-                    (getBaseMetaTileEntity().getXCoord() + RADIUS_RADIATION_DAMAGE),
-                    (getBaseMetaTileEntity().getYCoord() + RADIUS_RADIATION_DAMAGE),
-                    (getBaseMetaTileEntity().getZCoord() + RADIUS_RADIATION_DAMAGE)));
-
-        for (Object o : list1) {
-          Entity ent = (Entity) o;
-          ent.attackEntityFrom(IC2DamageSource.radiation,
-              (float) ((int) ((float) getBaseMetaTileEntity().getWorld().rand.nextInt(4) * RADIATION_DAMAGE)));
-        }
-      }
       return true;
     }
     return false;
@@ -142,6 +136,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
             checkHeat = rod_hatch.mDownRod > 0 ? rod_hatch.mTemp : 0;
             checkCells = rod_hatch.mDownRod > 0 ? rod_hatch.mCountCells : 0;
             aTemp += (checkHeat * checkRod + checkCells);
+            if (isFastDecay) {
+              rod_hatch.setFastDecay(SPEED_DECAY);
+            }
           }
         }
       }
@@ -165,30 +162,47 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     }
 
     double progress = (double) mCurrentTemp / (double) mMaxTemp;
-
-    long abs = mCurrentOutput = (int) ((aTemp * checkCells + 1) * progress) / 2;
+    long abs = mCurrentOutput = (int) ((aTemp * checkCells) * (progress + 1)) / 2;
+    long Out = isFastDecay ? mCurrentOutput : mCurrentOutput * 160;
 
     if (abs < 1) {
-      mCurrentOutput = mCurrentTemp / 160;
+      mCurrentOutput = isFastDecay ? 0 : 1;
+      Out = isFastDecay ? 0 : 100;
     }
 
-      if (aTick % 8 == 0 && super.mEfficiency > (getMaxEfficiency(null) / 8)
-          && !depleteInput(Materials.Water.getFluid(mCurrentOutput))) {
+    if (aTick % 8 == 0 && super.mEfficiency > (getMaxEfficiency(null) / (isFastDecay ? 2 : 8))) {
+      if (!isFastDecay && !depleteInput(Materials.Water.getFluid(mCurrentOutput))) {
         for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
           rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
         }
       }
+      if (isFastDecay && !depleteInput(getFluidStack("ic2coolant", (int) mCurrentOutput))) {
+        for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
+          rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+        }
+      }
+    }
 
     if (aTick % 8 == 0 && super.mEfficiency == getMaxEfficiency(null)) {
       double tTemp = (double) mCurrentTemp / (double) mMaxTemp;
-      int checkSteam = (int) (100 * tTemp);
-      if (checkSteam < 50) {
-        addOutput(Materials.Water.getGas(mCurrentOutput * 160));
+      if (!isFastDecay) {
+        int checkSteam = (int) (100 * tTemp);
+        if (checkSteam < 50) {
+          addOutput(Materials.Water.getGas(Out));
+        } else {
+          addOutput(getFluidStack("ic2superheatedsteam", (int) Out));
+        }
       } else {
-        addOutput(FluidRegistry
-            .getFluidStack("ic2superheatedsteam", (int) mCurrentOutput * 160));
+        addOutput(getFluidStack("ic2hotcoolant", (int) Out));
       }
     }
+  }
+
+  @Override
+  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+    isFastDecay = !isFastDecay;
+    GT_Utility.sendChatToPlayer(aPlayer, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
   }
 
   public int[] getRodStatus() {

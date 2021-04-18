@@ -26,6 +26,7 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
   public int mCountCells = 0;
   public float mTemp = 0;
   public boolean mStartReactor = false;
+  public int mSpeedDecay = 1;
   private final List<ItemStack> sDepleted = new ArrayList<ItemStack>() {{
       add(GT_ModHandler.getIC2Item("reactorDepletedUraniumSimple", 1));
       add(GT_ModHandler.getIC2Item("reactorDepletedUraniumDual", 1));
@@ -178,10 +179,9 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
               .getItem();
           NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(is);
           if (radioactiveCellIC_item.sHeat > 0) {
-            mTemp = radioactiveCellIC_item.sHeat * 4 * (radioactiveCellIC_item.sMox ? 4 : 1);
+            mTemp = ((int) radioactiveCellIC_item.sHeat + 1) * (radioactiveCellIC_item.sMox ? 4 : 1);
             mCountCells = radioactiveCellIC_item.numberOfCells;
-            radioactiveCellIC_item
-                .setDamageForStack(is, nbtData.getInteger("advDmg") + mDownRod);
+            radioactiveCellIC_item.setDamageForStack(is, nbtData.getInteger("advDmg") + (mDownRod * mSpeedDecay));
             if (is.getItemDamage() >= is.getMaxDamage() - 1) {
               mInventory[0] = radioactiveCellIC_item.sDepleted.copy();
             }
@@ -190,6 +190,10 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
         mStartReactor = false;
       }
     }
+  }
+
+  public void setFastDecay(int speedDecay) {
+    mSpeedDecay = speedDecay;
   }
 
   public void setRodUp(int up) {

@@ -23,6 +23,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
   public int mTemp;
   public int mMaxTemp;
   public int mCurrFluid;
+  public boolean isFastDecay;
   public int[] mHatchesRodPosition;
 
   public GT_Container_NuclearReactor(InventoryPlayer aInventoryPlayer,
@@ -94,6 +95,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
     this.mTemp = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentTemp;
     this.mCurrFluid = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentOutput;
     this.mHatchesRodPosition = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getRodStatus();
+    this.isFastDecay = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isFastDecay;
 
     for (Object crafter : this.crafters) {
       ICrafting var1 = (ICrafting) crafter;
@@ -103,6 +105,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
       var1.sendProgressBarUpdate(this, 103, mTemp >>> 16);
       var1.sendProgressBarUpdate(this, 104, mCurrFluid & 65535);
       var1.sendProgressBarUpdate(this, 105, mCurrFluid >>> 16);
+      var1.sendProgressBarUpdate(this, 106, isFastDecay ? 1 : 0);
 //      for (int i = 0; i < mHatchesRodPosition.length; i++) {
 //        var1.sendProgressBarUpdate(this, 106 + i, mHatchesRodPosition[i]);
 //      }
@@ -131,6 +134,9 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
         break;
       case 105:
         mCurrFluid = mCurrFluid & 65535 | data << 16;
+        break;
+      case 106:
+        isFastDecay = (data != 0);
         break;
     }
 //    for (int i = 0; i < mHatchesRodPosition.length; i++) {

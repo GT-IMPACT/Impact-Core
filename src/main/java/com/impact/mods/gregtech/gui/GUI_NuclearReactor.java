@@ -25,6 +25,11 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
     fontRendererObj.drawString(mName, 10, 8, 16448255);
 
     if (this.mContainer != null) {
+
+      GT_Container_NuclearReactor container = (GT_Container_NuclearReactor) this.mContainer;
+      fontRendererObj
+              .drawString(container.isFastDecay ? "Fast Decay Mode" : "Default Mode", 10, 70, 16448255);
+
       if (((mContainer).mDisplayErrorCode & 64) != 0) {
         fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 30, 0);
         fontRendererObj.drawString(EnumChatFormatting.RED + "Incomplete Structure", 25, 40, 0);
@@ -69,8 +74,6 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
           fontRendererObj
               .drawString("Progress:" + EnumChatFormatting.RED + " not working", 10, 22, 16448255);
         } else {
-          GT_Container_NuclearReactor container = (GT_Container_NuclearReactor) this.mContainer;
-
           double tScale = (double) container.mTemp / (double) container.mMaxTemp;
           tScale = tScale <= 0 ? 0 : tScale;
           int temperature = Math.min(((int) (100 * tScale)), 100);
@@ -78,7 +81,7 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
               .drawString("Temp: " + temperature + "%", 96, 148, 16448255);
 
           fontRendererObj
-              .drawString("Input Water:", 10, 95, 16448255);
+              .drawString("Input " + (container.isFastDecay ? "Coolant:" : " Water:"), 10, 95, 16448255);
           fontRendererObj
               .drawString(container.mCurrFluid < 0 ? "All Rods UP" : container.mCurrFluid + " L/t", 10, 105, 16448255);
 
@@ -86,9 +89,9 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
 //              .drawString("" + Arrays.toString(container.mHatchesRodPosition) + "", 10, 75, 16448255);
 
           fontRendererObj
-              .drawString(temperature < 50 ? "Output Steam:" : "Output SH Steam:", 10, 120, 16448255);
+              .drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : temperature < 50 ? "Steam:" : "SH Steam:"), 10, 120, 16448255);
           fontRendererObj
-              .drawString((container.mCurrFluid * 160) < 0 ? "All Rods UP" : (container.mCurrFluid * 160) + " L/t", 10, 130, 16448255);
+              .drawString((container.mCurrFluid * (container.isFastDecay ? 1 : 160)) < 0 ? "All Rods UP" : (container.mCurrFluid * (container.isFastDecay ? 1 : 160)) + " L/t", 10, 130, 16448255);
         }
       }
     }
