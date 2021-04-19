@@ -5,6 +5,7 @@ import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
 
 import com.impact.client.gui.GUIHandler;
+import com.impact.command.Command_FixBQ;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.Refstrings;
@@ -22,12 +23,7 @@ import com.impact.mods.railcraft.carts.item.events.Module;
 import com.impact.network.ImpactNetwork;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.relauncher.Side;
 import java.io.File;
@@ -69,6 +65,11 @@ public class impact {
   @Mod.EventHandler
   public void onServerStarted(FMLServerStartedEvent aEvent) {
     proxy.onServerStarted();
+  }
+  
+  @Mod.EventHandler
+  public void onServerStarting(FMLServerStartingEvent aEvent) {
+     aEvent.registerServerCommand(new Command_FixBQ());
   }
 
   @Mod.EventHandler
