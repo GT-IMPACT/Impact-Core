@@ -42,6 +42,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
   public long mCurrentOutput = 1;
   ITexture INDEX_CASE = Textures.BlockIcons.CASING_BLOCKS[12 + 32];
 
+  public boolean isMoxFuel = false;
   public boolean isFastDecay = false;
   private final int SPEED_DECAY = 5;
 
@@ -72,6 +73,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     aNBT.setLong("mCurrentOutput", mCurrentOutput);
     aNBT.setBoolean("mFirstStart", mFirstStart);
     aNBT.setBoolean("isFastDecay", isFastDecay);
+    aNBT.setBoolean("isMoxFuel", isMoxFuel);
   }
 
   @Override
@@ -82,6 +84,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     this.mCurrentOutput = aNBT.getLong("mCurrentOutput");
     this.mFirstStart = aNBT.getBoolean("mFirstStart");
     this.isFastDecay = aNBT.getBoolean("isFastDecay");
+    this.isMoxFuel = aNBT.getBoolean("isMoxFuel");
   }
 
   @Override
@@ -123,6 +126,8 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     int checkRod = 0;
     float checkHeat = 0;
     int checkCells = 0;
+    int checkReallyRod = 0;
+    ArrayList<Boolean> arrayMoxRod = new ArrayList<>();
     if (mRodHatches.size() > 0) {
       for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
         if (rod_hatch.mInventory[0] != null && rod_hatch.mInventory[0]
@@ -132,10 +137,12 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
             if (mEfficiency >= getMaxEfficiency(null)) {
               rod_hatch.setStartReactor(aBaseMetaTileEntity.isActive());
             }
+            checkReallyRod++;
             checkRod = Math.max(rod_hatch.mDownRod, 0);
             checkHeat = rod_hatch.mDownRod > 0 ? rod_hatch.mTemp : 0;
             checkCells = rod_hatch.mDownRod > 0 ? rod_hatch.mCountCells : 0;
             aTemp += (checkHeat * checkRod + checkCells);
+            arrayMoxRod.add(rod_hatch.mIsMox);
             if (isFastDecay) {
               rod_hatch.setFastDecay(SPEED_DECAY);
             }
@@ -160,7 +167,10 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
         mCurrentTemp = mMaxTemp;
       }
     }
-
+    
+    int countMox = (int) arrayMoxRod.stream().filter(b -> b).count();
+    isMoxFuel = countMox != 0 && countMox >= checkReallyRod;
+  
     double progress = (double) mCurrentTemp / (double) mMaxTemp;
     long abs = mCurrentOutput = (int) ((aTemp * checkCells) * (progress + 1)) / 2;
     long Out = isFastDecay ? mCurrentOutput : mCurrentOutput * 160;
@@ -171,12 +181,8 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     }
 
     if (aTick % 8 == 0 && super.mEfficiency > (getMaxEfficiency(null) / (isFastDecay ? 2 : 8))) {
-      if (!isFastDecay && !depleteInput(Materials.Water.getFluid(mCurrentOutput))) {
-        for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
-          rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
-        }
-      }
-      if (isFastDecay && !depleteInput(getFluidStack("ic2coolant", (int) mCurrentOutput))) {
+      if (!depleteInput(isFastDecay ?
+              getFluidStack("ic2coolant", (int) mCurrentOutput) : Materials.Water.getFluid(mCurrentOutput))) {
         for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
           rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
         }
@@ -184,17 +190,8 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
     }
 
     if (aTick % 8 == 0 && super.mEfficiency == getMaxEfficiency(null)) {
-      double tTemp = (double) mCurrentTemp / (double) mMaxTemp;
-      if (!isFastDecay) {
-        int checkSteam = (int) (100 * tTemp);
-        if (checkSteam < 50) {
-          addOutput(Materials.Water.getGas(Out));
-        } else {
-          addOutput(getFluidStack("ic2superheatedsteam", (int) Out));
-        }
-      } else {
-        addOutput(getFluidStack("ic2hotcoolant", (int) Out));
-      }
+      addOutput(isFastDecay ? getFluidStack("ic2hotcoolant", (int) Out) :
+              isMoxFuel ? getFluidStack("ic2superheatedsteam", (int) Out) : Materials.Water.getGas(Out));
     }
   }
 

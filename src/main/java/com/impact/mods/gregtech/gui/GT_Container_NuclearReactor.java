@@ -17,13 +17,12 @@ import net.minecraft.item.ItemStack;
 public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 
   GTMTE_NuclearReactorBase mte;
-  public int mRodDown;
-  public int mRodUpFull;
   public int mRodUp;
   public int mTemp;
   public int mMaxTemp;
   public int mCurrFluid;
   public boolean isFastDecay;
+  public boolean isMoxFuel;
   public int[] mHatchesRodPosition;
 
   public GT_Container_NuclearReactor(InventoryPlayer aInventoryPlayer,
@@ -96,6 +95,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
     this.mCurrFluid = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentOutput;
     this.mHatchesRodPosition = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getRodStatus();
     this.isFastDecay = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isFastDecay;
+    this.isMoxFuel = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isMoxFuel;
 
     for (Object crafter : this.crafters) {
       ICrafting var1 = (ICrafting) crafter;
@@ -106,9 +106,8 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
       var1.sendProgressBarUpdate(this, 104, mCurrFluid & 65535);
       var1.sendProgressBarUpdate(this, 105, mCurrFluid >>> 16);
       var1.sendProgressBarUpdate(this, 106, isFastDecay ? 1 : 0);
-//      for (int i = 0; i < mHatchesRodPosition.length; i++) {
-//        var1.sendProgressBarUpdate(this, 106 + i, mHatchesRodPosition[i]);
-//      }
+      var1.sendProgressBarUpdate(this, 107, isMoxFuel ? 1 : 0);
+
     }
   }
 
@@ -138,12 +137,10 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
       case 106:
         isFastDecay = (data != 0);
         break;
+      case 107:
+        isMoxFuel = (data != 0);
+        break;
     }
-//    for (int i = 0; i < mHatchesRodPosition.length; i++) {
-//      if (id == (106 + i)) {
-//        mHatchesRodPosition[i] = data;
-//      }
-//    }
   }
 
 }

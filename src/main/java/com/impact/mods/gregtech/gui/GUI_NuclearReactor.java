@@ -28,45 +28,12 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
 
       GT_Container_NuclearReactor container = (GT_Container_NuclearReactor) this.mContainer;
       fontRendererObj
-              .drawString(container.isFastDecay ? "Fast Decay Mode" : "Default Mode", 10, 70, 16448255);
+              .drawString(EnumChatFormatting.YELLOW + (container.isFastDecay ? "Fast Decay Mode" : "Default Mode"), 10, 70, 16448255);
 
       if (((mContainer).mDisplayErrorCode & 64) != 0) {
         fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 30, 0);
         fontRendererObj.drawString(EnumChatFormatting.RED + "Incomplete Structure", 25, 40, 0);
         fontRendererObj.drawString(EnumChatFormatting.RED + "==================", 25, 50, 0);
-      } else {
-        if (((this.mContainer).mDisplayErrorCode & 1) != 0) {
-          this.fontRendererObj.drawString(this.trans("132",
-              EnumChatFormatting.WHITE + "Need" + EnumChatFormatting.RED + " Wrench"), 10, 20, 0);
-        }
-
-        if (((this.mContainer).mDisplayErrorCode & 2) != 0) {
-          this.fontRendererObj.drawString(this.trans("133",
-              EnumChatFormatting.WHITE + "Need" + EnumChatFormatting.RED + " Screwdriver"), 10, 29,
-              0);
-        }
-
-        if (((this.mContainer).mDisplayErrorCode & 4) != 0) {
-          this.fontRendererObj.drawString(this.trans("134",
-              EnumChatFormatting.WHITE + "Need" + EnumChatFormatting.RED + " SoftHammer"), 10, 38,
-              0);
-        }
-
-        if (((this.mContainer).mDisplayErrorCode & 8) != 0) {
-          this.fontRendererObj.drawString(this.trans("135",
-              EnumChatFormatting.WHITE + "Need" + EnumChatFormatting.RED + " Hammer"), 10, 47, 0);
-        }
-
-        if (((this.mContainer).mDisplayErrorCode & 16) != 0) {
-          this.fontRendererObj.drawString(this.trans("136",
-              EnumChatFormatting.WHITE + "Need" + EnumChatFormatting.RED + " Soldering"), 10, 56,
-              0);
-        }
-
-        if (((this.mContainer).mDisplayErrorCode & 32) != 0) {
-          this.fontRendererObj.drawString(this.trans("137",
-              EnumChatFormatting.WHITE + "Need" + EnumChatFormatting.RED + " Crowbar"), 10, 65, 0);
-        }
       }
 
       if ((mContainer).mDisplayErrorCode == 0) {
@@ -74,6 +41,12 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
           fontRendererObj
               .drawString("Progress:" + EnumChatFormatting.RED + " not working", 10, 22, 16448255);
         } else {
+          
+          if (container.isMoxFuel) {
+            fontRendererObj
+                    .drawString(EnumChatFormatting.RED + "Mox Fuel", 10, 148, 16448255);
+          }
+          
           double tScale = (double) container.mTemp / (double) container.mMaxTemp;
           tScale = tScale <= 0 ? 0 : tScale;
           int temperature = Math.min(((int) (100 * tScale)), 100);
@@ -84,12 +57,9 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
               .drawString("Input " + (container.isFastDecay ? "Coolant:" : " Water:"), 10, 95, 16448255);
           fontRendererObj
               .drawString(container.mCurrFluid < 0 ? "All Rods UP" : container.mCurrFluid + " L/t", 10, 105, 16448255);
-
-//          fontRendererObj
-//              .drawString("" + Arrays.toString(container.mHatchesRodPosition) + "", 10, 75, 16448255);
-
+          
           fontRendererObj
-              .drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : temperature < 50 ? "Steam:" : "SH Steam:"), 10, 120, 16448255);
+              .drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : container.isMoxFuel ? "SH Steam:" : "Steam:"), 10, 120, 16448255);
           fontRendererObj
               .drawString((container.mCurrFluid * (container.isFastDecay ? 1 : 160)) < 0 ? "All Rods UP" : (container.mCurrFluid * (container.isFastDecay ? 1 : 160)) + " L/t", 10, 130, 16448255);
         }
@@ -121,8 +91,7 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
       }
     }
   }
-
-
+  
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     int x = (this.width - this.xSize) / 2;
