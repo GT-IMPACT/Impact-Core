@@ -170,7 +170,7 @@ public abstract class GTMTE_LongDistancePipelineBase extends
     if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
       return;
     }
-    GT_Mod.GT_FML_LOGGER.info("ScanPipes()");
+    //GT_Mod.GT_FML_LOGGER.info("ScanPipes()");
 
     // Check if we need to scan anything
     final IGregTechTileEntity gtTile = getBaseMetaTileEntity();
@@ -281,7 +281,7 @@ public abstract class GTMTE_LongDistancePipelineBase extends
 
   @Override
   public void onMachineBlockUpdate() {
-    GT_Mod.GT_FML_LOGGER.info("You're dead to me");
+    //GT_Mod.GT_FML_LOGGER.info("You're dead to me");
     mTargetPos = null;
     mSender = null;
   }
