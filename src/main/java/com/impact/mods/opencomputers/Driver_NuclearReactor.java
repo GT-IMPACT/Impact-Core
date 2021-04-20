@@ -159,5 +159,26 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 				return new Object[]{false, "invalid argument"};
 			}
 		}
+		
+		@Callback(doc = "function(active:boolean):boolean -- Set Active Reactor.")
+		public Object[] setActiveReactor(Context context, Arguments args) {
+			try {
+				tile.getMetaTileEntity().getBaseMetaTileEntity().setActive(args.isBoolean(0));
+				((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mFirstStart = args.isBoolean(0);
+				return new Object[]{true};
+			} catch (Throwable e) {
+				return new Object[]{false, "invalid argument"};
+			}
+		}
+		
+		@Callback(doc = "function():boolean -- Get Active Reactor.")
+		public Object[] getActiveReactor(Context context, Arguments args) {
+			try {
+				boolean isActive = tile.getMetaTileEntity().getBaseMetaTileEntity().isActive();
+				return new Object[]{isActive};
+			} catch (Throwable e) {
+				return new Object[]{false, "invalid argument"};
+			}
+		}
 	}
 }
