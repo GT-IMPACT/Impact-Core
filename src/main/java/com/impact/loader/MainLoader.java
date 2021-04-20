@@ -27,6 +27,7 @@ import com.impact.mods.gregtech.GT_ItemRegister;
 import com.impact.mods.gregtech.GT_WorldGenRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.mods.opencomputers.Driver_Register;
 import com.impact.mods.railcraft.carts.item.events.Module;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -78,7 +79,10 @@ public class MainLoader {
         module.load(event);
       }
     }
-
+  
+    Driver_Register.init();
+    INFO("[Init] OpenComputers Integration - Loaded");
+    
     impact.proxy.registerRenderInfo();
     INFO("[Init] Item Registery - Loaded");
   }
