@@ -100,7 +100,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
         .beginStructureBlock(0, 0, 0)
         .addController()
         .addNuclearRod("Any top middle casing (max x1)")
-        .addInputHatch("Any casing (max x1)")
+        .addInputHatch("Any casing (max x2)")
         .addOutputHatch("Any casing (max x6)")
         .addCasingInfo("Radiation Proof Casing")
         .addOtherStructurePart("Steel Pipe Casing", "pipes!")
@@ -126,7 +126,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
-
+    int ID = 0;
     for (x = -2; x <= 2; x++) {
       for (z = 0; z >= -4; z--) {
         if (x == 0 && z == 0) {
@@ -233,7 +233,9 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
         if (x == 0 && z == -2) {
-          if (!checkRodHatches(currentTE, TEXTURE_HATCH)) {
+          if (checkRodHatches(currentTE, TEXTURE_HATCH, ID)) {
+            ID++;
+          } else {
             checkStructure = false;
           }
           continue;
@@ -253,7 +255,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
       checkStructure = false;
     }
 
-    if (mInputHatches.size() > 1) {
+    if (mInputHatches.size() > 2) {
       checkStructure = false;
     }
 

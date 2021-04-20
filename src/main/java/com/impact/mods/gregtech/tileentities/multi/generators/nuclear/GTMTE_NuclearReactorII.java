@@ -124,6 +124,7 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
     this.mCrowbar = true;
     boolean checkStructure = true;
     int x, y, z;
+    int ID = 0;
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -277,7 +278,9 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
         if (x > -2 && x < 2 && z < -1 && z > -5) {
-          if (!checkRodHatches(currentTE, TEXTURE_HATCH)) {
+          if (checkRodHatches(currentTE, TEXTURE_HATCH, ID)) {
+            ID++;
+          } else {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
                 == GENERAL_CASING)
                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == GENERAL_CASING_META)) {

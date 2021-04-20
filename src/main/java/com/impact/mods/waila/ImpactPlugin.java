@@ -8,6 +8,7 @@ import static mcp.mobius.waila.api.SpecialChars.YELLOW;
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
@@ -73,8 +74,11 @@ public class ImpactPlugin extends PluginBase {
         ? ((GT_MetaTileEntity_EM_research) tMeta) : null;
     final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication
         ? ((GTMTE_TowerCommunication) tMeta) : null;
+    
     final GTMTE_NuclearReactorBase reactor = tMeta instanceof GTMTE_NuclearReactorBase
         ? ((GTMTE_NuclearReactorBase) tMeta) : null;
+    final GTMTE_Reactor_Rod_Hatch reactorHatch = tMeta instanceof GTMTE_Reactor_Rod_Hatch
+            ? ((GTMTE_Reactor_Rod_Hatch) tMeta) : null;
 
     final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver
         ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
@@ -87,6 +91,15 @@ public class ImpactPlugin extends PluginBase {
         ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
 
     if (tMeta != null) {
+  
+      if (reactorHatch != null) {
+        currenttip.add("ID: " + tag.getInteger("wIDhatch"));
+        currenttip.add("Level Rod: " + EnumChatFormatting.YELLOW + (tag.getInteger("wDownRod") * 10) + "%");
+        if (!tag.getString("wRodName").isEmpty())
+          currenttip.add(EnumChatFormatting.GREEN + tag.getString("wRodName"));
+        currenttip.add("Speed Decay: " + EnumChatFormatting.RED +
+                (tag.getInteger("wSpeedDecay") * tag.getInteger("wDownRod")) + "d/s");
+      }
 
       if (chestBase != null) {
         if (!tag.getString("chestBaseItemName").equals("")) {
@@ -175,6 +188,10 @@ public class ImpactPlugin extends PluginBase {
         String colorTemp = "" + (temp > 75 ? color[3] : temp > 50 ? color[2] : temp > 25 ? color[1] : color[0]) + temp;
         String str = "Temperature: " + colorTemp + "%";
         currenttip.add(str);
+        if (tag.getBoolean("wMox"))
+          currenttip.add(color[3] + "Mox Fuel");
+        if (tag.getBoolean("wFastDecay"))
+          currenttip.add(color[2] + "Fast Decay Mode");
       }
     }
   }
@@ -197,8 +214,11 @@ public class ImpactPlugin extends PluginBase {
         ? ((GTMTE_MBBase) tMeta) : null;
     final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication
         ? ((GTMTE_TowerCommunication) tMeta) : null;
+    
     final GTMTE_NuclearReactorBase reactor = tMeta instanceof GTMTE_NuclearReactorBase
         ? ((GTMTE_NuclearReactorBase) tMeta) : null;
+    final GTMTE_Reactor_Rod_Hatch reactorHatch = tMeta instanceof GTMTE_Reactor_Rod_Hatch
+            ? ((GTMTE_Reactor_Rod_Hatch) tMeta) : null;
 
     final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver
         ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
@@ -211,6 +231,15 @@ public class ImpactPlugin extends PluginBase {
             ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
 
     if (tMeta != null) {
+      
+      if (reactorHatch != null) {
+        tag.setInteger("wIDhatch", reactorHatch.mIDhatch + 1);
+        tag.setInteger("wDownRod", reactorHatch.mDownRod);
+        if (reactorHatch.mStartReactor)
+          tag.setInteger("wSpeedDecay", reactorHatch.mSpeedDecay);
+          tag.setString("wRodName", reactorHatch.mInventory[0] != null ?
+                  reactorHatch.mInventory[0].getDisplayName() : "");
+      }
 
       if (chestBase != null) {
         final int stackSizeCurrent = chestBase.getItemCount() > 0 ? chestBase.getItemCount() + 64 : chestBase.getItemCount();
@@ -247,6 +276,8 @@ public class ImpactPlugin extends PluginBase {
         tScale = tScale <= 0 ? 0 : tScale;
         int temperature = Math.min(((int) (100 * tScale)), 100);
         tag.setInteger("reactorTemp",temperature);
+        tag.setBoolean("wMox", reactor.isMoxFuel);
+        tag.setBoolean("wFastDecay", reactor.isFastDecay);
       }
 
 

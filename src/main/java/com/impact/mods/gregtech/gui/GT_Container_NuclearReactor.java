@@ -53,34 +53,38 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
     }
     Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
     if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
-      if (aSlotIndex == 0) {
-        if (mte.getBaseMetaTileEntity().isAllowedToWork()) {
-          GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Disabled");
-          mte.setRodUp(10);
-          GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodStatus()));
-          mte.getBaseMetaTileEntity().disableWorking();
-          mte.mFirstStart = false;
-        } else {
-          GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Enabled");
-          GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodStatus()));
-          mte.getBaseMetaTileEntity().enableWorking();
-          mte.mFirstStart = true;
+      try {
+        int rodZero = mte.getRodPosition().length > 0 ? mte.getRodPosition()[0] : 0;
+        if (aSlotIndex == 0) {
+          if (mte.getBaseMetaTileEntity().isAllowedToWork()) {
+            GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Disabled");
+            //mte.setRodPosition(10);
+            GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+            mte.getBaseMetaTileEntity().disableWorking();
+            mte.mFirstStart = false;
+          } else {
+            GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Enabled");
+            GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+            mte.getBaseMetaTileEntity().enableWorking();
+            mte.mFirstStart = true;
+          }
         }
-      }
-      if (aSlotIndex == 1) {
-        mte.setRodUp(1);
-        GT_Utility.sendChatToPlayer(aPlayer, "All Rods Up 10%");
-        GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodStatus()));
-      }
-      if (aSlotIndex == 2) {
-        mte.setRodDown(1);
-        GT_Utility.sendChatToPlayer(aPlayer, "All Rods Down 10%");
-        GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodStatus()));
-      }
-      if (aSlotIndex == 3) {
-        mte.setRodUp(10);
-        GT_Utility.sendChatToPlayer(aPlayer, "All Rods Up Completely");
-        GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodStatus()));
+        if (aSlotIndex == 1) {
+          mte.setRodPosition(rodZero - 1);
+          GT_Utility.sendChatToPlayer(aPlayer, "All Rods Up 10%");
+          GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+        }
+        if (aSlotIndex == 2) {
+          mte.setRodPosition(rodZero + 1);
+          GT_Utility.sendChatToPlayer(aPlayer, "All Rods Down 10%");
+          GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+        }
+        if (aSlotIndex == 3) {
+          mte.setRodPosition(rodZero - 10);
+          GT_Utility.sendChatToPlayer(aPlayer, "All Rods Up Completely");
+          GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+        }
+      } catch (Exception ignored) {
       }
     }
     return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -92,8 +96,8 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
     if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
     this.mMaxTemp = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mMaxTemp;
     this.mTemp = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentTemp;
-    this.mCurrFluid = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentOutput;
-    this.mHatchesRodPosition = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getRodStatus();
+    this.mCurrFluid = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentInput;
+    this.mHatchesRodPosition = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getRodPosition();
     this.isFastDecay = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isFastDecay;
     this.isMoxFuel = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isMoxFuel;
 
