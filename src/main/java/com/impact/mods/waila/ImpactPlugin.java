@@ -290,10 +290,10 @@ public class ImpactPlugin extends PluginBase {
 
       if (tMeta instanceof GTMTE_LapPowerStation) {
         GTMTE_LapPowerStation mte = (GTMTE_LapPowerStation) tMeta;
-        final double Capacity = mte.capacity.doubleValue();
-        final double Stored = mte.stored.doubleValue();
-        final double Input = mte.intputLastTick.doubleValue();
-        final double Output = mte.outputLastTick.doubleValue();
+        final double Capacity = mte.capacity;
+        final double Stored = mte.stored;
+        final double Input = mte.intputLastTick;
+        final double Output = mte.outputLastTick;
 
         tag.setDouble("Capacity", Capacity);
         tag.setDouble("Stored", Stored);

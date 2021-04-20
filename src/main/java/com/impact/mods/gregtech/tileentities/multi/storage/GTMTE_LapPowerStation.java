@@ -54,7 +54,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       + CASING_META];
   private static final int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
-  private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
+  private static final double MAX_LONG = Long.MAX_VALUE;
 
   private final Set<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new HashSet<>();
   private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
@@ -62,11 +62,11 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
   // Count the amount of capacitors of each tier in each slot (translate with meta - 1)
   private final int[] capacitors = new int[8];
-  public BigInteger capacity = BigInteger.ZERO;
-  public BigInteger stored = BigInteger.ZERO;
-  public BigInteger passiveDischargeAmount = BigInteger.ZERO;
-  public BigInteger intputLastTick = BigInteger.ZERO;
-  public BigInteger outputLastTick = BigInteger.ZERO;
+  public double capacity = 0D;
+  public double stored = 0D;
+  public double passiveDischargeAmount = 0D;
+  public double intputLastTick = 0D;
+  public double outputLastTick = 0D;
   private int repairStatusCache = 0;
 
   public GTMTE_LapPowerStation(int aID, String aName, String aNameRegional) {
@@ -193,7 +193,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
     mEnergyTunnelsTT.clear();
     mDynamoTunnelsTT.clear();
     // Temp var for loss calculation
-    BigInteger tempCapacity = BigInteger.ZERO;
+    double tempCapacity = 0D;
 
     // Capacitor base
     for (int Y = 0; Y <= 1; Y++) {
@@ -243,35 +243,34 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
             switch (meta) {
               case 1:
                 c = 250000000L;
-                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-                capacity = capacity.add(BigInteger.valueOf(c));
+                tempCapacity += c;
+                capacity += c;
                 break;
               case 2:
               case 3:
               case 4:
                 c = (long) (100000000L * Math.pow(10, meta - 1));
-                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-                capacity = capacity.add(BigInteger.valueOf(c));
+                tempCapacity += c;
+                capacity += c;
                 break;
               case 5:
-                tempCapacity = tempCapacity
-                    .add(BigInteger.valueOf((long) (100000000L * Math.pow(10, 3))));
-                capacity = capacity.add(MAX_LONG);
+                tempCapacity += (long) (100000000L * Math.pow(10, 3));
+                capacity += MAX_LONG;
                 break;
               case 6:
                 c = 819200000L;
-                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-                capacity = capacity.add(BigInteger.valueOf(c));
+                tempCapacity += c;
+                capacity += c;
                 break;
               case 7:
                 c = 50000000000L;
-                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-                capacity = capacity.add(BigInteger.valueOf(c));
+                tempCapacity += c;
+                capacity += c;
                 break;
               case 8:
                 c = 500000000000L;
-                tempCapacity = tempCapacity.add(BigInteger.valueOf(c));
-                capacity = capacity.add(BigInteger.valueOf(c));
+                tempCapacity += c;
+                capacity += c;
                 break;
             }
             capacitors[meta - 1]++;
@@ -334,31 +333,28 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 //        }
 
     // Calculate total capacity; i = meta - 1
-    capacity = BigInteger.ZERO;
+    capacity = 0D;
     for (int i = 0; i < capacitors.length; i++) {
       if (i == 0) {
         final long c = 250000000;
-        capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+        capacity += c * capacitors[i];
       } else if (i <= 3) {
         final long c = (long) (100000000L * Math.pow(10, i));
-        capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+        capacity += c * capacitors[i];
       } else if (i == 4) {
-        capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i])));
+        capacity += MAX_LONG * capacitors[i];
       } else if (i == 5) {
         final long c = 819200000L;
-        capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+        capacity += c * capacitors[i];
       } else if (i == 6) {
         final long c = 50000000000L;
-        capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+        capacity += c * capacitors[i];
       } else if (i == 7) {
         final long c = 500000000000L;
-        capacity = capacity.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(capacitors[i])));
+        capacity += c * capacitors[i];
       }
     }
-    // Calculate how much energy to void each tick
-    //passiveDischargeAmount = new BigDecimal(tempCapacity).multiply(PASSIVE_DISCHARGE_FACTOR_PER_TICK).toBigInteger();
-    //passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
-    passiveDischargeAmount = BigInteger.ZERO;
+    passiveDischargeAmount = 0D;
     return formationChecklist;
   }
 
@@ -413,8 +409,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   @Override
   public boolean onRunningTick(ItemStack stack) {
     // Reset I/O cache
-    intputLastTick = BigInteger.ZERO;
-    outputLastTick = BigInteger.ZERO;
+    intputLastTick = 0D;
+    outputLastTick = 0D;
 
     // Draw energy from GT hatches
     for (GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
@@ -424,8 +420,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
       if (eHatch.getEUVar() >= power) {
         eHatch.setEUVar(eHatch.getEUVar() - power);
-        stored = stored.add(BigInteger.valueOf(power));
-        intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+        stored += power;
+        intputLastTick += power;
       }
     }
     // Output energy to GT hatches
@@ -436,8 +432,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
       if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
         eDynamo.setEUVar(eDynamo.getEUVar() + power);
-        stored = stored.subtract(BigInteger.valueOf(power));
-        outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
+        stored -= power;
+        outputLastTick += power;
       }
     }
     // Draw energy from TT hatches
@@ -448,8 +444,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
       if (eHatch.getEUVar() >= power) {
         eHatch.setEUVar(eHatch.getEUVar() - power);
-        stored = stored.add(BigInteger.valueOf(power));
-        intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+        stored += power;
+        intputLastTick += power;
       }
     }
     // Output energy to TT hatches
@@ -460,8 +456,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
       if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
         eDynamo.setEUVar(eDynamo.getEUVar() + power);
-        stored = stored.subtract(BigInteger.valueOf(power));
-        outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
+        stored -= power;
+        outputLastTick += power;
       }
     }
     // Draw energy from TT Laser hatches
@@ -473,8 +469,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       final long power = getPowerToDraw(ttLaserWattage);
       if (eHatch.getEUVar() >= power) {
         eHatch.setEUVar(eHatch.getEUVar() - power);
-        stored = stored.add(BigInteger.valueOf(power));
-        intputLastTick = intputLastTick.add(BigInteger.valueOf(power));
+        stored += power;
+        intputLastTick += power;
       }
     }
     // Output energy to TT Laser hatches
@@ -486,33 +482,13 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       final long power = getPowerToPush(ttLaserWattage);
       if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
         eDynamo.setEUVar(eDynamo.getEUVar() + power);
-        stored = stored.subtract(BigInteger.valueOf(power));
-        outputLastTick = outputLastTick.add(BigInteger.valueOf(power));
+        stored -= power;
+        outputLastTick += power;
       }
     }
-    // Loose some energy
-    // Recalculate if the repair status changed
-    if (super.getRepairStatus() != repairStatusCache) {
-      passiveDischargeAmount = recalculateLossWithMaintenance(super.getRepairStatus());
-    }
-    stored = stored.subtract(passiveDischargeAmount);
-    stored = (stored.compareTo(BigInteger.ZERO) <= 0) ? BigInteger.ZERO : stored;
-
     return true;
   }
-
-  /**
-   * To be called whenever the maintenance status changes or the capacity was recalculated
-   *
-   * @param repairStatus This machine's repair status
-   * @return new BigInteger instance for passiveDischargeAmount
-   */
-  private BigInteger recalculateLossWithMaintenance(int repairStatus) {
-    repairStatusCache = repairStatus;
-    return new BigDecimal(passiveDischargeAmount)
-        .multiply(BigDecimal.valueOf(1.0D + 0.2D * repairStatus)).toBigInteger();
-  }
-
+  
   /**
    * Calculate how much EU to draw from an Energy Hatch
    *
@@ -520,10 +496,9 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
    * @return EU amount
    */
   private long getPowerToDraw(long hatchWatts) {
-    final BigInteger remcapActual = capacity.subtract(stored);
-    final BigInteger recampLimited =
-        (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
-    return Math.min(hatchWatts, recampLimited.longValue());
+    final double remcapActual = capacity - stored;
+    final double recampLimited = remcapActual > 0 ? remcapActual : MAX_LONG;
+    return (long) Math.min(hatchWatts, recampLimited);
   }
 
   /**
@@ -533,8 +508,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
    * @return EU amount
    */
   private long getPowerToPush(long hatchWatts) {
-    final BigInteger remStoredLimited = (MAX_LONG.compareTo(stored) > 0) ? stored : MAX_LONG;
-    return Math.min(hatchWatts, remStoredLimited.longValue());
+    final double remStoredLimited = stored > 0 ? stored : MAX_LONG;
+    return (long) Math.min(hatchWatts, remStoredLimited);
   }
 
   @Override
@@ -560,9 +535,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   public void saveNBTData(NBTTagCompound nbt) {
     nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
-    nbt.setByteArray("capacity", capacity.toByteArray());
-    nbt.setByteArray("stored", stored.toByteArray());
-    nbt.setByteArray("passiveDischargeAmount", passiveDischargeAmount.toByteArray());
+    nbt.setDouble("capacity", capacity);
+    nbt.setDouble("stored", stored);
 
     super.saveNBTData(nbt);
   }
@@ -571,10 +545,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   public void loadNBTData(NBTTagCompound nbt) {
     nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
-    capacity = new BigInteger(nbt.getByteArray("capacity"));
-    stored = new BigInteger(nbt.getByteArray("stored"));
-    passiveDischargeAmount = new BigInteger(nbt.getByteArray("passiveDischargeAmount"));
-
+    capacity = nbt.getDouble("capacity");
+    stored = nbt.getDouble("stored");
     super.loadNBTData(nbt);
   }
 
