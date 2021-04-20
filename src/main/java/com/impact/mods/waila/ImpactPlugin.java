@@ -104,7 +104,8 @@ public class ImpactPlugin extends PluginBase {
       if (chestBase != null) {
         if (!tag.getString("chestBaseItemName").equals("")) {
           currenttip.add(EnumChatFormatting.GREEN + tag.getString("chestBaseItemName") + ":");
-          currenttip.add(tag.getInteger("chestBaseSizeCurrent") + " / " + tag.getInteger("chestBaseSizeMax"));
+          currenttip.add( NumberFormat.getNumberInstance().format(tag.getInteger("chestBaseSizeCurrent")) +
+                  " / " + NumberFormat.getNumberInstance().format(tag.getInteger("chestBaseSizeMax")));
         } else {
           currenttip.add(EnumChatFormatting.RED + "No item");
         }
@@ -120,13 +121,13 @@ public class ImpactPlugin extends PluginBase {
 
       if (LapBuffer != null) {
         currenttip.add("Stored: " + GREEN + NumberFormat.getNumberInstance()
-            .format(new BigInteger(tag.getByteArray("Stored"))) + RESET + " EU");
+            .format(tag.getDouble("Stored")) + RESET + " EU");
         currenttip.add("Capacity: " + YELLOW + NumberFormat.getNumberInstance()
-            .format(new BigInteger(tag.getByteArray("Capacity"))) + RESET + " EU");
+            .format(tag.getDouble("Capacity")) + RESET + " EU");
         currenttip.add("Input: " + GREEN + NumberFormat.getNumberInstance()
-            .format(new BigInteger(tag.getByteArray("Input"))) + RESET + " EU/t");
+            .format(tag.getDouble("Input")) + RESET + " EU/t");
         currenttip.add("Output: " + RED + NumberFormat.getNumberInstance()
-            .format(new BigInteger(tag.getByteArray("Output"))) + RESET + " EU/t");
+            .format(tag.getDouble("Output")) + RESET + " EU/t");
       }
 
       if (Research != null) {
@@ -289,15 +290,15 @@ public class ImpactPlugin extends PluginBase {
 
       if (tMeta instanceof GTMTE_LapPowerStation) {
         GTMTE_LapPowerStation mte = (GTMTE_LapPowerStation) tMeta;
-        final BigInteger Capacity = mte.capacity;
-        final BigInteger Stored = mte.stored;
-        final BigInteger Input = mte.intputLastTick;
-        final BigInteger Output = mte.outputLastTick;
+        final double Capacity = mte.capacity.doubleValue();
+        final double Stored = mte.stored.doubleValue();
+        final double Input = mte.intputLastTick.doubleValue();
+        final double Output = mte.outputLastTick.doubleValue();
 
-        tag.setByteArray("Capacity", Capacity.toByteArray());
-        tag.setByteArray("Stored", Stored.toByteArray());
-        tag.setByteArray("Input", Input.toByteArray());
-        tag.setByteArray("Output", Output.toByteArray());
+        tag.setDouble("Capacity", Capacity);
+        tag.setDouble("Stored", Stored);
+        tag.setDouble("Input", Input);
+        tag.setDouble("Output", Output);
       }
 
       if (tMeta instanceof GT_MetaTileEntity_EM_research) {
