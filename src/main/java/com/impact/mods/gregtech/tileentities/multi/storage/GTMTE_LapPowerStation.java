@@ -27,8 +27,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +52,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
       + CASING_META];
   private static final int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
-  private static final double MAX_LONG = Long.MAX_VALUE;
+  private static final long MAX_LONG = Long.MAX_VALUE;
 
   private final Set<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new HashSet<>();
   private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
@@ -62,11 +60,11 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
   // Count the amount of capacitors of each tier in each slot (translate with meta - 1)
   private final int[] capacitors = new int[8];
-  public double capacity = 0D;
-  public double stored = 0D;
-  public double passiveDischargeAmount = 0D;
-  public double intputLastTick = 0D;
-  public double outputLastTick = 0D;
+  public long capacity = 0;
+  public long stored = 0;
+  public long passiveDischargeAmount = 0;
+  public long intputLastTick = 0;
+  public long outputLastTick = 0;
   private int repairStatusCache = 0;
 
   public GTMTE_LapPowerStation(int aID, String aName, String aNameRegional) {
@@ -193,7 +191,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
     mEnergyTunnelsTT.clear();
     mDynamoTunnelsTT.clear();
     // Temp var for loss calculation
-    double tempCapacity = 0D;
+    long tempCapacity = 0;
 
     // Capacitor base
     for (int Y = 0; Y <= 1; Y++) {
@@ -255,7 +253,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
                 break;
               case 5:
                 tempCapacity += (long) (100000000L * Math.pow(10, 3));
-                capacity += MAX_LONG;
+                //capacity += Integer.MAX_VALUE;;
                 break;
               case 6:
                 c = 819200000L;
@@ -333,7 +331,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 //        }
 
     // Calculate total capacity; i = meta - 1
-    capacity = 0D;
+    capacity = 0;
     for (int i = 0; i < capacitors.length; i++) {
       if (i == 0) {
         final long c = 250000000;
@@ -342,7 +340,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
         final long c = (long) (100000000L * Math.pow(10, i));
         capacity += c * capacitors[i];
       } else if (i == 4) {
-        capacity += MAX_LONG * capacitors[i];
+        //capacity = Integer.MAX_VALUE;
       } else if (i == 5) {
         final long c = 819200000L;
         capacity += c * capacitors[i];
@@ -354,7 +352,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
         capacity += c * capacitors[i];
       }
     }
-    passiveDischargeAmount = 0D;
+    long d = capacity;
+    passiveDischargeAmount = 0;
     return formationChecklist;
   }
 
@@ -409,8 +408,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   @Override
   public boolean onRunningTick(ItemStack stack) {
     // Reset I/O cache
-    intputLastTick = 0D;
-    outputLastTick = 0D;
+    intputLastTick = 0;
+    outputLastTick = 0;
 
     // Draw energy from GT hatches
     for (GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
@@ -496,9 +495,9 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
    * @return EU amount
    */
   private long getPowerToDraw(long hatchWatts) {
-    final double remcapActual = capacity - stored;
-    final double recampLimited = remcapActual > 0 ? remcapActual : MAX_LONG;
-    return (long) Math.min(hatchWatts, recampLimited);
+    final long remcapActual = capacity - stored;
+    final long recampLimited = remcapActual > 0 ? remcapActual : 0;
+    return Math.min(hatchWatts, recampLimited);
   }
 
   /**
@@ -508,8 +507,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
    * @return EU amount
    */
   private long getPowerToPush(long hatchWatts) {
-    final double remStoredLimited = stored > 0 ? stored : MAX_LONG;
-    return (long) Math.min(hatchWatts, remStoredLimited);
+    final long remStoredLimited = stored > 0 ? stored : 0;
+    return Math.min(hatchWatts, remStoredLimited);
   }
 
   @Override
@@ -535,8 +534,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   public void saveNBTData(NBTTagCompound nbt) {
     nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
-    nbt.setDouble("capacity", capacity);
-    nbt.setDouble("stored", stored);
+    nbt.setLong("capacity", capacity);
+    nbt.setLong("stored", stored);
 
     super.saveNBTData(nbt);
   }
@@ -545,8 +544,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   public void loadNBTData(NBTTagCompound nbt) {
     nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
-    capacity = nbt.getDouble("capacity");
-    stored = nbt.getDouble("stored");
+    capacity = nbt.getLong("capacity");
+    stored = nbt.getLong("stored");
     super.loadNBTData(nbt);
   }
 

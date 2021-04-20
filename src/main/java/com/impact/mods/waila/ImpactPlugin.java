@@ -121,13 +121,13 @@ public class ImpactPlugin extends PluginBase {
 
       if (LapBuffer != null) {
         currenttip.add("Stored: " + GREEN + NumberFormat.getNumberInstance()
-            .format(tag.getDouble("Stored")) + RESET + " EU");
+            .format(tag.getLong("Stored")) + RESET + " EU");
         currenttip.add("Capacity: " + YELLOW + NumberFormat.getNumberInstance()
-            .format(tag.getDouble("Capacity")) + RESET + " EU");
+            .format(tag.getLong("Capacity")) + RESET + " EU");
         currenttip.add("Input: " + GREEN + NumberFormat.getNumberInstance()
-            .format(tag.getDouble("Input")) + RESET + " EU/t");
+            .format(tag.getLong("Input")) + RESET + " EU/t");
         currenttip.add("Output: " + RED + NumberFormat.getNumberInstance()
-            .format(tag.getDouble("Output")) + RESET + " EU/t");
+            .format(tag.getLong("Output")) + RESET + " EU/t");
       }
 
       if (Research != null) {
@@ -290,15 +290,15 @@ public class ImpactPlugin extends PluginBase {
 
       if (tMeta instanceof GTMTE_LapPowerStation) {
         GTMTE_LapPowerStation mte = (GTMTE_LapPowerStation) tMeta;
-        final double Capacity = mte.capacity;
-        final double Stored = mte.stored;
-        final double Input = mte.intputLastTick;
-        final double Output = mte.outputLastTick;
+        final long Capacity = mte.capacity;
+        final long Stored = mte.stored;
+        final long Input = mte.intputLastTick;
+        final long Output = mte.outputLastTick;
 
-        tag.setDouble("Capacity", Capacity);
-        tag.setDouble("Stored", Stored);
-        tag.setDouble("Input", Input);
-        tag.setDouble("Output", Output);
+        tag.setLong("Capacity", Capacity);
+        tag.setLong("Stored", Stored);
+        tag.setLong("Input", Input);
+        tag.setLong("Output", Output);
       }
 
       if (tMeta instanceof GT_MetaTileEntity_EM_research) {

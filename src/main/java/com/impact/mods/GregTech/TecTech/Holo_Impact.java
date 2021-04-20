@@ -974,7 +974,7 @@ public class Holo_Impact implements Runnable {
                   })
                   .addElement('0', ofBlock(Casing_Helper.sCaseCore2, 8))
                   .addElement('1', ofBlock(IGlassBlock, 0))
-                  .addElement('2', ofBlock(lscLapotronicEnergyUnit, 5))
+                  .addElement('2', ofBlock(lscLapotronicEnergyUnit, 8))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
