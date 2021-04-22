@@ -4,6 +4,7 @@ import com.impact.mods.gregtech.gui.GT_Container_NuclearReactor;
 import com.impact.mods.gregtech.gui.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.Utilits;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -178,18 +179,27 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 			mCurrentInput = a;
 		}
 		
-		if (aTick % 8 == 0
-				&& super.mEfficiency > (getMaxEfficiency(null) / (isFastDecay ? 2 : 8))) {
-			if (aBaseMetaTileEntity.isActive() && !depleteInput(getInputFluid())) {
+		abs = abs <= 0 ? 0 : abs;
+		int temperature = Math.min(((int) (100 * abs)), 100);
+		
+		if (aTick % 8 == 0 && temperature > 0) {
+			if (!depleteInput(getInputFluid())) {
 				for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
-					rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+//					rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+					Utilits.sendChatByTE(aBaseMetaTileEntity, "Бабах");
 				}
 			}
 		}
 		
-		if (aTick % 8 == 0 && super.mEfficiency == getMaxEfficiency(null)) {
+		if (aTick % 8 == 0 && temperature > 0) {
 			addOutput(getOutputFluid());
 		}
+		
+		if (temperature <= 0) {
+			mCurrentInput = 0;
+			mCurrentOutput = 0;
+		}
+		
 	}
 	
 	@Override
