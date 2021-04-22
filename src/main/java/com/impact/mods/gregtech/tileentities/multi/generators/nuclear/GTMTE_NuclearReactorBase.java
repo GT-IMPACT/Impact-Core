@@ -185,8 +185,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 		if (aTick % 8 == 0 && temperature > 0) {
 			if (!depleteInput(getInputFluid())) {
 				for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
-//					rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
-					Utilits.sendChatByTE(aBaseMetaTileEntity, "Бабах");
+					rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
 				}
 			}
 		}
@@ -199,7 +198,6 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 			mCurrentInput = 0;
 			mCurrentOutput = 0;
 		}
-		
 	}
 	
 	@Override
