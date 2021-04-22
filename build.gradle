@@ -81,7 +81,6 @@ task getTT(type: Download) {
     mustRunAfter "repackMinecraft"
 }
 
- //git submodule update --init --recursive --remote
 task submodulesUpdate(type: Exec) {
     description 'Updates (and inits) git submodules'
     commandLine 'git', 'submodule', 'update', '--init', '--recursive','--remote'
