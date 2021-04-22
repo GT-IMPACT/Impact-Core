@@ -242,6 +242,10 @@ public enum Core_List_Items {
   GeneticTemplateRaw(180, 1),
   InfinityCatalyst(181, 1),
   LargeScreen(182, 1),
+  Naquadah(183, 1),
+  NaquadahNuclearFuel(184, 1),
+  NaquadahE(185, 1),
+  NaquadahENuclearFuel(186, 1),
 
   WoodenBrickForm1(0, 2),
 
