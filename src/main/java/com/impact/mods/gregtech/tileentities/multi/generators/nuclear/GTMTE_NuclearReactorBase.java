@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -138,6 +139,8 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 						arrayMoxRod.add(rod_hatch.mIsMox);
 						if (isFastDecay) {
 							rod_hatch.setFastDecay(SPEED_DECAY);
+						} else {
+							rod_hatch.setFastDecay(1);
 						}
 					}
 				}
@@ -175,8 +178,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 			mCurrentInput = a;
 		}
 		
-		if (aTick % 8 == 0 && super.mEfficiency > (getMaxEfficiency(null) / (isFastDecay ? 2 : 8))) {
-			if (!depleteInput(getInputFluid())) {
+		if (aTick % 8 == 0
+				&& super.mEfficiency > (getMaxEfficiency(null) / (isFastDecay ? 2 : 8))) {
+			if (aBaseMetaTileEntity.isActive() && !depleteInput(getInputFluid())) {
 				for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
 					rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
 				}
@@ -257,5 +261,21 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	public boolean machineStructure(IGregTechTileEntity thisController) {
 		mRodHatches.clear();
 		return this.checkMachineFunction(thisController);
+	}
+	
+	@Override
+	public String[] getInfoData() {
+		
+		double tScale = (double) mCurrentTemp / (double) mMaxTemp;
+		tScale = tScale <= 0 ? 0 : tScale;
+		int temperature = Math.min(((int) (100 * tScale)), 100);
+		
+		return new String[]{
+				"Current Temperature: " + EnumChatFormatting.RED + temperature + " %",
+				"Input: " + getInputFluid().getLocalizedName() + EnumChatFormatting.RED
+						+ getInputFluid().amount + EnumChatFormatting.RESET + " L/t",
+				"Output:  " + getOutputFluid().getLocalizedName() + EnumChatFormatting.GREEN + getOutputFluid().amount
+						+ EnumChatFormatting.RESET + " L/t"
+		};
 	}
 }

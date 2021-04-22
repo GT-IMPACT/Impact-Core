@@ -309,20 +309,4 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
 
     return checkStructure;
   }
-
-  @Override
-  public String[] getInfoData() {
-    float temp = 0;
-    for (GTMTE_Reactor_Rod_Hatch rod : mRodHatches) {
-      temp += rod.mTemp * 10F;
-    }
-    return new String[]{
-        "Current Temperature: " + EnumChatFormatting.RED + (int) (100F * mCurrentTemp / temp) + " %",
-        "Input Water: " + EnumChatFormatting.RED
-            + mCurrentOutput + EnumChatFormatting.RESET + " L/t",
-        "Output Steam: " + EnumChatFormatting.GREEN + (int)(mCurrentOutput * 160F)
-            + EnumChatFormatting.RESET + " L/t"
-    };
-  }
-
 }
