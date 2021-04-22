@@ -171,6 +171,19 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 			}
 		}
 		
+		@Callback(doc = "function():number -- Set Active Reactor.")
+		public Object[] getTemperature(Context context, Arguments args) {
+			try {
+				double tScale = (double) ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mCurrentTemp
+						/ (double) ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mMaxTemp;
+				tScale = tScale <= 0 ? 0 : tScale;
+				int temperature = Math.min(((int) (100 * tScale)), 100);
+				return new Object[]{temperature};
+			} catch (Throwable e) {
+				return new Object[]{false, "invalid argument"};
+			}
+		}
+		
 		@Callback(doc = "function():boolean -- Get Active Reactor.")
 		public Object[] getActiveReactor(Context context, Arguments args) {
 			try {
