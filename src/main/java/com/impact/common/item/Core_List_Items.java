@@ -241,6 +241,7 @@ public enum Core_List_Items {
   BlankGeneSampleRaw(179, 1),
   GeneticTemplateRaw(180, 1),
   InfinityCatalyst(181, 1),
+  LargeScreen(182, 1),
 
   WoodenBrickForm1(0, 2),
 
