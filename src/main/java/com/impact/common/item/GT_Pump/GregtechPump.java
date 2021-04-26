@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 import com.impact.common.item.GT_Pump.api.AutoMap;
 import com.impact.core.Refstrings;
+import com.impact.util.ItemNBTHelper;
 import com.impact.util.Utilits;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -724,8 +725,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
       String fluidname = aFluid.getFluid().getName();
       int amount = aFluid.amount;
       if (fluidname != null && fluidname.length() > 0 && amount > 0) {
-        Utilits.setString(aStack, "mFluid", fluidname);
-        Utilits.setInteger(aStack, "mFluidAmount", amount);
+        ItemNBTHelper.setString(aStack, "mFluid", fluidname);
+        ItemNBTHelper.setInteger(aStack, "mFluidAmount", amount);
       }
     }
   }
@@ -739,8 +740,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         .getBoolean("mInit")) {
       String fluidname;
       Integer amount = 0;
-      fluidname = Utilits.getString(container, "mFluid");
-      amount = Utilits.getInteger(container, "mFluidAmount");
+      fluidname = ItemNBTHelper.getString(container, "mFluid");
+      amount = ItemNBTHelper.getInteger(container, "mFluidAmount");
       if (fluidname != null && amount != null && amount > 0) {
         return Utilits.getFluidStack(fluidname, amount);
       } else {

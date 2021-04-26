@@ -1,7 +1,10 @@
 package com.impact.core;
 
 import com.impact.mods.gregtech.enums.BiomeOreRegister;
+import com.impact.util.PositionObject;
+
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,4 +29,9 @@ public class Impact_API {
    * The Space Elevator Frequencies
    */
   public static final Map<String, int[]> sElevatorSpace = new ConcurrentHashMap<>();
+  
+  /**
+   * The Space Elevator Frequencies
+   */
+  public static final Map<String, PositionObject> sAerostat = new LinkedHashMap<>();
 }

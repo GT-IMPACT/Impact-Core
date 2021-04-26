@@ -25,7 +25,7 @@ public enum GT_ItemList implements IItemContainer {
   packEris, packGanymed, packHaumea, packIapetus, packIo, packMakeMake, packMercury, packMoon,
   packOberon, packPhobos, packPluto, packTCetiE, packTitan, packTriton, packVegaB, packVenus, packMars,
   packProteus, packAsteroids, spacebox1, spacebox2, spacebox3, spacebox4, spacebox5, spacebox6, spacebox7,
-  spacebox8,
+  spacebox8, Aerostat,
 
   ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump,
 
@@ -84,7 +84,7 @@ public enum GT_ItemList implements IItemContainer {
   Machine_Siftarator, Machine_DDDPrinter, Machine_AdvDDDPrinter,
   PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
   AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
-  Machine_EIF, Machine_ChemicalReactor, Machine_DistTower, Machine_ElectricImplosion,
+  Machine_EIF, Machine_ChemicalReactor, Machine_DistTower, Machine_ElectricImplosion, ABS,
 
   Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched, Moon_Miner, Rail_Assembler, Space_Elevator,
   Nuclear_Reactor_I, Nuclear_Reactor_II, Nuclear_Reactor_III, Huge_Steam_Turbine,

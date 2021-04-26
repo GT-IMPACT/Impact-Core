@@ -321,6 +321,10 @@ public enum Core_List_Items {
     Arrays.stream(Core_List_Items.values()).filter(e -> e.getOreDictName() != null)
         .forEach(Core_List_Items::registerOreDict);
   }
+  
+  public ItemStack get(int amount) {
+    return getNonOreDictedItemStack(amount);
+  }
 
   public int getMetaID() {
     return metaID;

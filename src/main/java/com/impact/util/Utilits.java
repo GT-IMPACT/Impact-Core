@@ -1,5 +1,7 @@
 package com.impact.util;
 
+import com.impact.client.gui.GUIHandler;
+import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -57,67 +58,7 @@ public class Utilits {
         && GT_OreDictUnificator.getAssociation(itemStack).mMaterial != null
         && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
   }
-
-  public static NBTTagCompound getNBT(ItemStack aStack) {
-    NBTTagCompound rNBT = aStack.getTagCompound();
-    return ((rNBT == null) ? new NBTTagCompound() : rNBT);
-  }
-
-  public static void setBoolean(ItemStack aStack, String aTag, boolean aBoolean) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    tNBT.setBoolean(aTag, aBoolean);
-    GT_Utility.ItemNBT.setNBT(aStack, tNBT);
-  }
-
-  public static boolean getBoolean(ItemStack aStack, String aTag) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    return tNBT.getBoolean(aTag);
-  }
-
-  public static void setInteger(ItemStack aStack, String aTag, int aInt) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    tNBT.setInteger(aTag, aInt);
-    GT_Utility.ItemNBT.setNBT(aStack, tNBT);
-  }
-
-  public static int getInteger(ItemStack aStack, String aTag) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    return tNBT.getInteger(aTag);
-  }
-
-  public static void setLong(ItemStack aStack, String aTag, long aInt) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    tNBT.setLong(aTag, aInt);
-    GT_Utility.ItemNBT.setNBT(aStack, tNBT);
-  }
-
-  public static long getLong(ItemStack aStack, String aTag) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    return tNBT.getLong(aTag);
-  }
-
-  public static void setFloat(ItemStack aStack, String aTag, float aInt) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    tNBT.setFloat(aTag, aInt);
-    GT_Utility.ItemNBT.setNBT(aStack, tNBT);
-  }
-
-  public static float getFloat(ItemStack aStack, String aTag) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    return tNBT.getFloat(aTag);
-  }
-
-  public static void setString(ItemStack aStack, String aTag, String aString) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    tNBT.setString(aTag, aString);
-    GT_Utility.ItemNBT.setNBT(aStack, tNBT);
-  }
-
-  public static String getString(ItemStack aStack, String aTag) {
-    NBTTagCompound tNBT = getNBT(aStack);
-    return tNBT.getString(aTag);
-  }
-
+  
   public static FluidStack getFluidStack(final String fluidName, final int amount) {
     try {
       FluidStack x = FluidRegistry.getFluidStack(fluidName, amount);
@@ -292,7 +233,7 @@ public class Utilits {
     int posX = te.getXCoord() + x;
     int posY = te.getYCoord() + y;
     int posZ = te.getZCoord() + z;
-    te.getWorld().setBlock(posX, posY, posZ, block, meta, 3);
+    te.getWorld().setBlock(posX, posY, posZ, block, meta, 2);
   }
 
   public static void setBlock(IGregTechTileEntity te, int x, int y, int z, Block block) {
@@ -324,4 +265,9 @@ public class Utilits {
     Vec3 vec31 = vec3.addVector((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
     return world.rayTraceBlocks(vec3, vec31);
   }
+  
+  public static void openTileGui(EntityPlayer aPlayer, int idGui, IGregTechTileEntity igt) {
+    aPlayer.openGui(Refstrings.MODID, idGui, igt.getWorld(), igt.getXCoord(), igt.getYCoord(), igt.getZCoord());
+  }
+  
 }

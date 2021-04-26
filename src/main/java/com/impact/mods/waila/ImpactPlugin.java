@@ -16,6 +16,7 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_Parallel
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
+import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -89,8 +90,16 @@ public class ImpactPlugin extends PluginBase {
 
     final GT_MetaTileEntity_DigitalChestBase chestBase = tMeta instanceof GT_MetaTileEntity_DigitalChestBase
         ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
+  
+    final GTMTE_Aerostat aerostat = tMeta instanceof GTMTE_Aerostat
+            ? ((GTMTE_Aerostat) tMeta) : null;
 
     if (tMeta != null) {
+      
+      if (aerostat != null) {
+        if (!tag.getString("aerostatName").isEmpty())
+          currenttip.add("Name Station: " + EnumChatFormatting.GOLD + tag.getString("aerostatName"));
+      }
   
       if (reactorHatch != null) {
         currenttip.add("ID: " + tag.getInteger("wIDhatch"));
@@ -230,8 +239,15 @@ public class ImpactPlugin extends PluginBase {
 
     final GT_MetaTileEntity_DigitalChestBase chestBase = tMeta instanceof GT_MetaTileEntity_DigitalChestBase
             ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
+  
+    final GTMTE_Aerostat aerostat = tMeta instanceof GTMTE_Aerostat
+            ? ((GTMTE_Aerostat) tMeta) : null;
 
     if (tMeta != null) {
+      
+      if (aerostat != null) {
+        tag.setString("aerostatName", aerostat.aerName);
+      }
       
       if (reactorHatch != null) {
         tag.setInteger("wIDhatch", reactorHatch.mIDhatch + 1);

@@ -143,6 +143,9 @@ public class Multi_Register {
     Machine_ElectricImplosion.set(
         new GTMTE_ElectricImplosionCompressor(ID++, "impact.multis.electricimplosion",
             "Electric Implosion Compressor").getStackForm(1L));
+  
+    ABS.set( new GTMTE_Aerostat(ID++, "impact.multis.aerostat", "Aerostat").getStackForm(1L));
+    
 
     System.out.println("Multi_Register.java | Last ID: " + ID);
 

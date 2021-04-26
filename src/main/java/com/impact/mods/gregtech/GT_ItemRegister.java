@@ -1,4 +1,5 @@
 package com.impact.mods.gregtech;
+import com.impact.mods.gregtech.items.Behaviour_Aerostat;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
 
 public class GT_ItemRegister {
@@ -11,6 +12,8 @@ public class GT_ItemRegister {
   }
 
   private void registerItems() {
+    GT_ItemList.Aerostat.set(GT.addItem(6, "Aerostat", "", Behaviour_Aerostat.INSTANCE));
+    
     GT_ItemList.ULVPump.set(GT.addItem(395, "ULV Electric Pump", "640 L/sec"));
     GT_ItemList.ULVMotor.set(GT.addItem(396, "ULV Electric Motor", ""));
     GT_ItemList.ULVPiston.set(GT.addItem(397, "ULV Electric Piston", ""));

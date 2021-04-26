@@ -55,8 +55,8 @@ public class GT_GUIContainerMT_Machine extends GT_GUIContainer {
       if (mouseX < startX || mouseY < startY) {
         return;
       }
-      startY += weight;
-      if (mouseX < (startX += hight)) {
+      startY += hight;
+      if (mouseX < (startX += weight)) {
         if (mouseY < startY) {
           renderText(getTooltipText(strings), renderPosX, renderPosY, fontRendererObj);
         }
