@@ -120,7 +120,7 @@ public class MultiBlockTooltipBuilder {
 
   public MultiBlockTooltipBuilder beginStructureBlock(int w, int h, int l) {
     //sLines.add("Dimensions: " + w + "x" + h + "x" + l + " (WxHxL)");
-    sLines.add(EnumChatFormatting.RED + "[WIP]" + EnumChatFormatting.GRAY + " Coming soon..");
+    sLines.add("Description of the structure in development");
     sLines.add("Structure:");
     return this;
   }
