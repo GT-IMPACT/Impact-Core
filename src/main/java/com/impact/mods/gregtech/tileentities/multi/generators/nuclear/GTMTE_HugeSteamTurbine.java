@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,6 +43,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   final int CASING_TEXTURE_ID = 16;
   int mStoredFluids = 0;
   long mOutputSalary = 0;
+  boolean animation = false;
 
   public GTMTE_HugeSteamTurbine(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -70,7 +72,19 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
     build();
     return new GTMTE_HugeSteamTurbine(this.mName);
   }
-
+  
+  @Override
+  public void saveNBTData(NBTTagCompound aNBT) {
+    super.saveNBTData(aNBT);
+    aNBT.setBoolean("animation", animation);
+  }
+  
+  @Override
+  public void loadNBTData(NBTTagCompound aNBT) {
+    super.loadNBTData(aNBT);
+    animation = aNBT.getBoolean("animation");
+  }
+  
   @Override
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
@@ -264,6 +278,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 
     if (formationChecklist) {
       rotorTopTrigger(false);
+      animation = false;
     }
     return formationChecklist;
   }
@@ -301,7 +316,10 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 
     this.mMaxProgresstime = 8;
     this.mEfficiencyIncrease = 10000;
-    rotorTopTrigger(true);
+    if (!animation) {
+      rotorTopTrigger(true);
+      animation = true;
+    }
     return true;
   }
 

@@ -81,6 +81,11 @@ public class MultiBlockTooltipBuilder {
     iLines.add("Select type machine with Screwdriver click in Controller");
     return this;
   }
+  
+  public MultiBlockTooltipBuilder addScrew(String screw) {
+    iLines.add("Select " + screw + " with Screwdriver click in Controller");
+    return this;
+  }
 
   public MultiBlockTooltipBuilder addSeparatedBus() {
     iLines.add("Select Separated Buses mod with Shift + Screwdriver click in Controller");

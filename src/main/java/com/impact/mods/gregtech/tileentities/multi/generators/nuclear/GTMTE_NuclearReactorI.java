@@ -16,6 +16,7 @@ import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -93,17 +94,20 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
     b
         .addInfo("Radiation!")
         .addTypeMachine("Nuclear Reactor")
-        .addInfo("A nuclear reactor that consumes water produces steam")
-        .addInfo("at temperatures above 50 degrees, it produces superheated steam and")
-        .addInfo("emits radiation within a radius of 10 blocks")
+        .addInfo("Default Mode (default rods): consumes water produces steam")
+        .addInfo("Default Mode (MOX rods): consumes water produces superheated steam, all rods need MOX")
+        .addInfo("Fact Decay Mode (default or MOX rods): consumes coolant produces hot coolant, rods decays speed x5")
+        .addInfo("")
+        .addScrew("reactor mode")
         .addSeparator()
         .beginStructureBlock(0, 0, 0)
         .addController()
         .addNuclearRod("Any top middle casing (max x1)")
-        .addInputHatch("Any casing (max x2)")
-        .addOutputHatch("Any casing (max x6)")
+        .addInputHatch("Any casing (max x1)")
+        .addOutputHatch("For steam / sh steam / hot coolant | Any casing (max x6)")
         .addCasingInfo("Radiation Proof Casing")
         .addOtherStructurePart("Steel Pipe Casing", "pipes!")
+            .addOtherStructurePart("Machine Hull (max x1)", "what? yes, its for AE2 provider")
         .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
@@ -122,6 +126,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
     this.mCrowbar = true;
     boolean checkStructure = true;
     int x, y, z;
+    int mHullCount = 0;
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -138,10 +143,15 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
         final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 0, z);
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+  
+        IMetaTileEntity aMetaTileEntity = currentTE.getMetaTileEntity();
+        
         if (!addToMachineList(currentTE, TEXTURE_HATCH)) {
           if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
               == GENERAL_CASING)
               && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == GENERAL_CASING_META)) {
+          } else if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicHull) {
+            mHullCount++;
           } else {
               checkStructure = false;
           }
@@ -259,6 +269,6 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
       checkStructure = false;
     }
 
-    return checkStructure;
+    return checkStructure && mHullCount < 2;
   }
 }
