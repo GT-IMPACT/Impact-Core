@@ -51,30 +51,28 @@ public class GTMTE_DebugTank extends GT_MetaTileEntity_StorageTank {
 
   public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
     this.OutputFluid = true;
-    FluidStack newFluid = new FluidStack(mFluid.getFluid(), 10000000);
     super.onPostTick(aBaseMetaTileEntity, aTick);
     if (this.getBaseMetaTileEntity().isServerSide()) {
       IFluidHandler tTileEntity = aBaseMetaTileEntity
           .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
       if (tTileEntity != null) {
+        
         if (this.OutputFluid) {
           for (boolean temp = true; temp && mFluid != null; ) {
+            mFluid.amount = 1000000;
             temp = false;
-            FluidStack tDrained = newFluid.copy();
-            if (tDrained != null) {
-              int tFilledAmount = tTileEntity
-                  .fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                      tDrained, false);
-              if (tFilledAmount > 0) {
-                temp = true;
-                tTileEntity.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                    aBaseMetaTileEntity
-                        .drain(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
-                            tFilledAmount, true), true);
-              }
+            FluidStack tDrained = mFluid.copy();
+            int tFilledAmount = tTileEntity
+                .fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                    tDrained, false);
+            if (tFilledAmount > 0) {
+              temp = true;
+              tTileEntity.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                  aBaseMetaTileEntity
+                      .drain(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
+                              tFilledAmount, true), true);
             }
           }
-          mFluid = newFluid;
         }
       }
     }
