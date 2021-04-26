@@ -43,7 +43,6 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   final int CASING_TEXTURE_ID = 16;
   int mStoredFluids = 0;
   long mOutputSalary = 0;
-  boolean animation = false;
 
   public GTMTE_HugeSteamTurbine(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
@@ -71,18 +70,6 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
     build();
     return new GTMTE_HugeSteamTurbine(this.mName);
-  }
-  
-  @Override
-  public void saveNBTData(NBTTagCompound aNBT) {
-    super.saveNBTData(aNBT);
-    aNBT.setBoolean("animation", animation);
-  }
-  
-  @Override
-  public void loadNBTData(NBTTagCompound aNBT) {
-    super.loadNBTData(aNBT);
-    animation = aNBT.getBoolean("animation");
   }
   
   @Override
@@ -273,17 +260,22 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
         mDynamoTunnelsTT.size() > 9) {
       formationChecklist = false;
     }
-
-
-
+    
     if (formationChecklist) {
       rotorTopTrigger(false);
-      animation = false;
     }
     return formationChecklist;
   }
-
-  @Override
+	
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+		if (aTick % 200 == 0) {
+			rotorTopTrigger(aBaseMetaTileEntity.isActive());
+		}
+	}
+	
+	@Override
   public boolean checkRecipe(ItemStack itemStack) {
     ArrayList<FluidStack> tFluids = getStoredFluids();
     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
@@ -316,10 +308,6 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 
     this.mMaxProgresstime = 8;
     this.mEfficiencyIncrease = 10000;
-    if (!animation) {
-      rotorTopTrigger(true);
-      animation = true;
-    }
     return true;
   }
 
