@@ -10,9 +10,11 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.impact.common.block.blocks.Block_InsideBlocks;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -270,7 +272,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-		if (aTick % 200 == 0) {
+		if (mMachine && aTick % 40 == 0) {
 			rotorTopTrigger(aBaseMetaTileEntity.isActive());
 		}
 	}
@@ -301,6 +303,10 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
       }
       outEU = totalFlow / countEU;
     }
+    
+    if (tFluids.isEmpty() || totalFlow == 0) {
+      return false;
+    }
 
     outEU = mEfficiency < 10000 ? outEU / 2 : outEU;
 
@@ -319,22 +325,18 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 
   private void rotorTopTrigger(boolean shouldExist) {
     IGregTechTileEntity base = getBaseMetaTileEntity();
-    if (base != null && base.getWorld() != null) {
-      int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 4 + base.getXCoord();
-      int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 4 + base.getYCoord();
-      int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 4 + base.getZCoord();
-      Block block = base.getWorld().getBlock(xDir, yDir, zDir);
-      if (shouldExist) {
-        if (block != null) {
-          base.getWorld().setBlock(xDir, yDir, zDir, InsideBlock, 3, 2);
-        }
-      }
-      if (!base.isAllowedToWork()) {
-        base.getWorld().setBlock(xDir, yDir, zDir, GregTech_API.sBlockCasings2, 3, 2);
-      }
-      if (!shouldExist) {
-        base.getWorld().setBlock(xDir, yDir, zDir, InsideBlock, 4, 2);
-      }
+  
+    final Vector3ic forgeDirection = new Vector3i(
+            ForgeDirection.getOrientation(base.getBackFacing()).offsetX,
+            ForgeDirection.getOrientation(base.getBackFacing()).offsetY,
+            ForgeDirection.getOrientation(base.getBackFacing()).offsetZ);
+  
+    final Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -4);
+    
+    if (base.isActive()) {
+      Utilits.setBlock(base, offset.x(), offset.y(), offset.z(), InsideBlock, 3);
+    } else {
+        Utilits.setBlock(base, offset.x(), offset.y(), offset.z(), InsideBlock, 4);
     }
   }
 
