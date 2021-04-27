@@ -149,6 +149,11 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
+		
+		if (thisController.getYCoord() < 100) {
+			return false;
+		}
+		
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
