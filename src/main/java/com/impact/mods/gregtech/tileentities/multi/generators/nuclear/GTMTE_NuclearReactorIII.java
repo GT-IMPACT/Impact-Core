@@ -153,17 +153,15 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
         final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 0, z);
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-  
-        IMetaTileEntity aMetaTileEntity = currentTE.getMetaTileEntity();
-        
         if (!addToMachineList(currentTE, TEXTURE_HATCH)) {
-          if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-              == GENERAL_CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == GENERAL_CASING_META)) {
-          } else if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicHull) {
-            mHullCount++;
-          } else {
-            checkStructure = false;
+          if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) != GENERAL_CASING)
+              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != GENERAL_CASING_META)) {
+            IMetaTileEntity aMetaTileEntity = currentTE.getMetaTileEntity();
+            if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicHull) {
+              mHullCount++;
+            } else {
+              checkStructure = false;
+            }
           }
         }
       }
@@ -349,7 +347,11 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
     if (mInputHatches.size() > 6) {
       checkStructure = false;
     }
+  
+    if (mHullCount > 1) {
+      checkStructure = false;
+    }
 
-    return checkStructure && mHullCount < 2;
+    return checkStructure;
   }
 }
