@@ -7,6 +7,7 @@ import static mcp.mobius.waila.api.SpecialChars.YELLOW;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
@@ -35,6 +36,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import tterrag.wailaplugins.api.Plugin;
 import tterrag.wailaplugins.plugins.PluginBase;
 
@@ -93,8 +95,22 @@ public class ImpactPlugin extends PluginBase {
   
     final GTMTE_Aerostat aerostat = tMeta instanceof GTMTE_Aerostat
             ? ((GTMTE_Aerostat) tMeta) : null;
-
+    
+    final GTMTE_LongDistancePipelineBase  pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase
+            ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
+    
     if (tMeta != null) {
+      
+      if (pipeline != null) {
+        final int facing = pipeline.getBaseMetaTileEntity().getFrontFacing();
+        if(side == facing) {
+          currenttip.add(EnumChatFormatting.GOLD + "Pipeline Input" + EnumChatFormatting.RESET);
+        } else if (side == ForgeDirection.OPPOSITES[facing]) {
+          currenttip.add(EnumChatFormatting.BLUE + "Pipeline Output" + EnumChatFormatting.RESET);
+        } else {
+          currenttip.add("Pipeline Side");
+        }
+      }
       
       if (aerostat != null) {
         if (!tag.getString("aerostatName").isEmpty())
