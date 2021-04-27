@@ -3,6 +3,7 @@ package com.impact.mods.opencomputers;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -189,6 +190,17 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 			try {
 				boolean isActive = tile.getMetaTileEntity().getBaseMetaTileEntity().isActive();
 				return new Object[]{isActive};
+			} catch (Throwable e) {
+				return new Object[]{false, "invalid argument"};
+			}
+		}
+		
+		@Callback(doc = "function(rodId:number):tuple -- Get input hatch info.")
+		public Object[] getInputHatchStatus(Context context, Arguments args) {
+			try {
+				int rodID = args.checkInteger(0) - 1;
+				GT_MetaTileEntity_Hatch_Input hatch = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mInputHatches.get(rodID);
+				return new Object[]{hatch.mFluid.getLocalizedName(), hatch.mFluid.amount, hatch.getCapacity()};
 			} catch (Throwable e) {
 				return new Object[]{false, "invalid argument"};
 			}
