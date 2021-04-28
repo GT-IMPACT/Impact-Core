@@ -324,6 +324,9 @@ item.impact_item2.183.name=Naquadah Fuel Part
 item.impact_item2.184.name=Naquadah Nuclear Fuel
 item.impact_item2.185.name=Enriched Naquadah Fuel Part
 item.impact_item2.186.name=Enriched Naquadah Nuclear Fuel
+item.impact_item2.187.name=Thorium Fuel Part
+item.impact_item2.188.name=Thorium Nuclear Fuel
+item.impact_item2.189.name=MOX Thorium Fuel
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 

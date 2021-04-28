@@ -246,6 +246,9 @@ public enum Core_List_Items {
   NaquadahNuclearFuel(184, 1),
   NaquadahE(185, 1),
   NaquadahENuclearFuel(186, 1),
+  ThoriumNuclearPart(187, 1),
+  ThoriumNuclearFuel(188, 1),
+  ThoriumMOXFuel(189, 1),
 
   WoodenBrickForm1(0, 2),
 
