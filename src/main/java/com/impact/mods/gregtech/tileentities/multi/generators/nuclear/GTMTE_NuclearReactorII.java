@@ -1,15 +1,9 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
-import static com.impact.loader.ItemRegistery.decorateBlock;
-
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -22,6 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+
+import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
+import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
 
@@ -128,13 +127,12 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
     this.mCrowbar = true;
     boolean checkStructure = true;
     int x, y, z;
-    int mHullCount = 0;
     int ID = 0;
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
-
+  
     for (x = -3; x <= 3; x++) {
       for (z = 0; z >= -6; z--) {
         if (x == 0 && z == 0) {
@@ -143,19 +141,15 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
         if ((x == -3 || x == 3) && (z == 0 || z == -6)) {
           continue;
         }
-
+      
         final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 0, z);
         IGregTechTileEntity currentTE = thisController
-            .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-        if (!addToMachineList(currentTE, TEXTURE_HATCH)) {
-          if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) != GENERAL_CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != GENERAL_CASING_META)) {
-            IMetaTileEntity aMetaTileEntity = currentTE.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicHull) {
-              mHullCount++;
-            } else {
-              checkStructure = false;
-            }
+                .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+        if (!addToMachineList(currentTE, TEXTURE_HATCH) && !addMachineHull(currentTE)) {
+          if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == GENERAL_CASING)
+                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == GENERAL_CASING_META)) {
+          } else {
+            checkStructure = false;
           }
         }
       }
@@ -314,8 +308,8 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
     if (mInputHatches.size() > 3) {
       checkStructure = false;
     }
-    
-    if (mHullCount > 1) {
+  
+    if (mMachineHull.size() > 1) {
       checkStructure = false;
     }
   

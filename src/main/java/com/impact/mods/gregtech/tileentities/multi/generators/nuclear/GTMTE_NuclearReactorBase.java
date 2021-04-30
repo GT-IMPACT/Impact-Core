@@ -11,6 +11,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
+import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
@@ -31,6 +33,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
  
 	private static final int SPEED_DECAY = 5;
 	public ArrayList<GTMTE_Reactor_Rod_Hatch> mRodHatches = new ArrayList<>();
+	public ArrayList<GT_MetaTileEntity_BasicHull> mMachineHull = new ArrayList<>();
 	public boolean mFirstStart = false;
 	public long mCurrentTemp = 1;
 	public long mMaxTemp = 10000;
@@ -56,6 +59,16 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 					new GT_RenderedTexture(aActive ? REACTOR_OVERLAY_ACTIVE : REACTOR_OVERLAY)};
 		}
 		return new ITexture[]{INDEX_CASE};
+	}
+	
+	public boolean addMachineHull(IGregTechTileEntity aTileEntity) {
+		if (aTileEntity == null) return false;
+		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) return false;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicHull) {
+			return mMachineHull.add((GT_MetaTileEntity_BasicHull) aMetaTileEntity);
+		}
+		return false;
 	}
 	
 	@Override
@@ -268,6 +281,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
 		mRodHatches.clear();
+		mMachineHull.clear();
 		return this.checkMachineFunction(thisController);
 	}
 	

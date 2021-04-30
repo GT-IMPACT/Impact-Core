@@ -126,7 +126,6 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
     this.mCrowbar = true;
     boolean checkStructure = true;
     int x, y, z;
-    int mHullCount = 0;
     final Vector3ic forgeDirection = new Vector3i(
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
         ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -143,15 +142,12 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
         final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 0, z);
         IGregTechTileEntity currentTE = thisController
             .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-        if (!addToMachineList(currentTE, TEXTURE_HATCH)) {
-          if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) != GENERAL_CASING)
-              && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != GENERAL_CASING_META)) {
-            IMetaTileEntity aMetaTileEntity = currentTE.getMetaTileEntity();
-            if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicHull) {
-              mHullCount++;
-            } else {
-              checkStructure = false;
-            }
+  
+        if (!addToMachineList(currentTE, TEXTURE_HATCH) && !addMachineHull(currentTE)) {
+          if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == GENERAL_CASING)
+                  && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == GENERAL_CASING_META)) {
+          } else {
+            checkStructure = false;
           }
         }
       }
@@ -267,7 +263,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
       checkStructure = false;
     }
     
-    if (mHullCount > 1) {
+    if (mMachineHull.size() > 1) {
       checkStructure = false;
     }
 
