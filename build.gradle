@@ -83,6 +83,7 @@ task getTT(type: Download) {
 
 task submodulesUpdate(type: Exec) {
     description 'Updates (and inits) git submodules'
+    //git submodule update --init --recursive --remote
     commandLine 'git', 'submodule', 'update', '--init', '--recursive','--remote'
     group 'Build Setup'
 }

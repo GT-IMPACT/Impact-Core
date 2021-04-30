@@ -145,6 +145,8 @@ public class Multi_Register {
             "Electric Implosion Compressor").getStackForm(1L));
   
     ABS.set( new GTMTE_Aerostat(ID++, "impact.multis.aerostat", "Aerostat").getStackForm(1L));
+  
+    filler.set( new GTMTE_Filler(ID++, "impact.multis.filler", "Filler").getStackForm(1L));
     
 
     System.out.println("Multi_Register.java | Last ID: " + ID);
