@@ -18,6 +18,7 @@ public class Config {
   public static boolean toolTips;
   public static boolean DisableNether;
   public static boolean DisableTheEnd;
+  public static boolean downloadOnlyOnce;
 
   public Config(File file) {
     if (!loadConfig) {
@@ -60,6 +61,11 @@ public class Config {
       cfg = config.get("GENERAL", "Disable The End", false);
       cfg.comment = "Disable The End. [Default: false]";
       DisableTheEnd = cfg.getBoolean(false);
+      General.add(cfg.getName());
+  
+      cfg = config.get("GENERAL", "Download Mods Only Once", true);
+      cfg.comment = "Download Mods Only Once. [Default: true]";
+      downloadOnlyOnce = cfg.getBoolean(true);
       General.add(cfg.getName());
 
       //DEBUG

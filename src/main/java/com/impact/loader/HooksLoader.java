@@ -19,4 +19,9 @@ public class HooksLoader extends HookLoader {
     registerHookContainer("com.impact.hooks.AE2Spatial_Hook");
     registerHookContainer("com.impact.hooks.OpisPatch_Hook");
   }
+  
+  @Override
+  public String getSetupClass() {
+    return "com.impact.loader.DepLoader";
+  }
 }
