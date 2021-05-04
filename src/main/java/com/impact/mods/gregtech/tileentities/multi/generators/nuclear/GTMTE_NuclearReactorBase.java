@@ -290,14 +290,14 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 		
 		double tScale = (double) mCurrentTemp / (double) mMaxTemp;
 		tScale = tScale <= 0 ? 0 : tScale;
-		int temperature = Math.min(((int) (100 * tScale)), 100);
+		float temperature = (float) Math.min(((100 * tScale)), 100);
 		
 		return new String[]{
 				"Current Temperature: " + EnumChatFormatting.RED + temperature + " %",
-				"Input: " + getInputFluid().getLocalizedName() + EnumChatFormatting.RED
-						+ getInputFluid().amount + EnumChatFormatting.RESET + " L/t",
-				"Output:  " + getOutputFluid().getLocalizedName() + EnumChatFormatting.GREEN + getOutputFluid().amount
-						+ EnumChatFormatting.RESET + " L/t"
+				"Input: " + getInputFluid().getLocalizedName() + " " + EnumChatFormatting.RED
+						+ (int) (getInputFluid().amount * 2.5D) + EnumChatFormatting.RESET + " L/s",
+				"Output:  " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN + (int) (getOutputFluid().amount * 2.5D)
+						+ EnumChatFormatting.RESET + " L/s"
 		};
 	}
 }

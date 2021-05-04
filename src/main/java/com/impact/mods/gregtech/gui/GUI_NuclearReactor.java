@@ -56,12 +56,12 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
         fontRendererObj
             .drawString("Input " + (container.isFastDecay ? "Coolant:" : " Water:"), 10, 95, 16448255);
         fontRendererObj
-            .drawString(container.mInput < 0 ? "All Rods UP" : container.mInput + " L/t", 10, 105, 16448255);
+            .drawString(container.mInput < 0 ? "All Rods UP" : (int) (container.mInput * 2.5D) + " L/s", 10, 105, 16448255);
         
         fontRendererObj
             .drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : container.isMoxFuel ? "SH Steam:" : "Steam:"), 10, 120, 16448255);
         fontRendererObj
-            .drawString(container.mOutput < 0 ? "All Rods UP" : (container.mOutput + " L/t"), 10, 130, 16448255);
+            .drawString(container.mOutput < 0 ? "All Rods UP" : ((int) (container.mOutput * 2.5D)+ " L/s"), 10, 130, 16448255);
 
       }
     }
@@ -71,6 +71,7 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
   public void drawScreen(int mouseX, int mouseY, float par3) {
     super.drawScreen(mouseX, mouseY, par3);
     if (mContainer != null) {
+      GT_Container_NuclearReactor container = (GT_Container_NuclearReactor) this.mContainer;
       if (mContainer.mTileEntity != null) {
         getTooltip(mouseX, mouseY, 155, 5, 16, 16, new String[]{
             "Start/Stop machine",
@@ -87,6 +88,12 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
         });
         getTooltip(mouseX, mouseY, 155, 73, 16, 16, new String[]{
             "Up all rods completely"
+        });
+        double tScale = (double) container.mTemp / (double) container.mMaxTemp;
+        tScale = tScale <= 0 ? 0 : tScale;
+        float temperature = (float) Math.min((100 * tScale), 100);
+        getTooltip(mouseX, mouseY, 159, 114, 30, 8, new String[]{
+                "" + temperature + "%"
         });
       }
     }
