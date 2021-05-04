@@ -1,30 +1,17 @@
 package com.impact.client.gui;
 
-import static com.impact.impact.ModPackVersion;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.impact.client.gui.button.ImpactGuiButton;
 import cpw.mods.fml.client.GuiModList;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLanguage;
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiOptions;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSelectWorld;
-import net.minecraft.client.gui.GuiYesNoCallback;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -33,6 +20,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 
+import javax.imageio.ImageIO;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static com.impact.impact.ModPackVersion;
+
 @SideOnly(Side.CLIENT)
 public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
@@ -40,15 +43,14 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
   private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("impact",
       "textures/gui/title/title.png");
 
-  private static final ResourceLocation[] background = new ResourceLocation[]{
-      new ResourceLocation("impact:textures/gui/bg/bg1.png"),
-      new ResourceLocation("impact:textures/gui/bg/bg2.png"),
-      new ResourceLocation("impact:textures/gui/bg/bg3.png"),
-      new ResourceLocation("impact:textures/gui/bg/bg4.png"),
-      new ResourceLocation("impact:textures/gui/bg/bg5.png")
-  };
+  private static ArrayList<ResourceLocation> background = new ArrayList<ResourceLocation>() {{
+    add(new ResourceLocation("impact:textures/gui/bg/bg1.png"));
+  }};
+  
+  private static String pathBG = "/config/IMPACT/bg";
 
   public ImpactGuiMainMenu() {
+    background = parseBG().isEmpty() ? background : parseBG();
   }
 
   public boolean doesGuiPauseGame() {
@@ -123,13 +125,30 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
       logger.error("Couldn't open link", throwable);
     }
   }
+  
+  private ArrayList<ResourceLocation> parseBG() {
+    ArrayList<ResourceLocation> res = new ArrayList<>();
+    try {
+      String basePath = ((File) (FMLInjectionData.data()[6])).getAbsolutePath().replace(File.separatorChar, '/').replace("/.", "");
+      Path externalPath = Paths.get(basePath + pathBG);
+      File[] files = new File(String.valueOf(externalPath)).listFiles();
+      if (files != null) {
+        int count = 1;
+        for (File f : files) {
+          res.add(Minecraft.getMinecraft().getTextureManager().
+                  getDynamicTextureLocation("bg" + count, new DynamicTexture(ImageIO.read(f))));
+          count++;
+        }
+      }
+    } catch (Exception ignored) {}
+    return res;
+  }
 
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
     GL11.glEnable(3008);
 
     long tick = System.currentTimeMillis() / 10000;
-    this.mc.renderEngine.bindTexture(background[(int) (tick % 5)]);
-
+    this.mc.renderEngine.bindTexture(background.get((int) (tick % background.size())));
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();
     tessellator.addVertexWithUV(0.0D, (this.height), this.zLevel, 0.0D, 1.0D);
@@ -139,11 +158,14 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     tessellator.draw();
 
     this.drawGradientRect(0, 0, this.width, this.height, 0xFF000000, 0);
+    
     this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-    drawTexturedModalRect(this.width / 2 - 50, 30, 0, 0, 205, 205);
-
+    //GL11.glPushMatrix();
+    //GL11.glScalef(1.8F, 1.8F, 1.8F);
+    drawTexturedModalRect(this.width / 2 - 125, -50, 0, 0, 250, 250);
+    //GL11.glPopMatrix();
+    
     tessellator.setColorOpaque_I(-1);
     GL11.glPushMatrix();
     GL11.glTranslatef((this.width / 2F + 90F), 70.0F, 0.0F);

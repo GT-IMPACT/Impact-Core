@@ -20,7 +20,7 @@ public class Hooks {
   //-Dfml.coreMods.load=com.impact.loader.HooksLoader
   @Hook
   public static void createDisplay(ForgeHooksClient mc) {
-    Display.setTitle("Impact");
+    Display.setTitle("IMPACT: GREGTECH EDITION");
     ResourceLocation icon = new ResourceLocation("impact", "textures/gui/title/fav.png");
 
     try {
