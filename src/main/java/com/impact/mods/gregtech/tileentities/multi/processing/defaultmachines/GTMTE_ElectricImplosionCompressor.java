@@ -74,7 +74,7 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
         .addInfo("Babah!")
         .addTypeMachine("Implosion Compressor")
         .addInfo("Not used TNT!!!")
-        .addInfo("Not used TNT!!!")
+        .addInfo("Energy consumption: (EU/t) = (NEI Recipe EU/t) * 1000")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
