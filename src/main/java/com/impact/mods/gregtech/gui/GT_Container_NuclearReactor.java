@@ -20,7 +20,8 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
   public int mRodUp;
   public int mTemp;
   public int mMaxTemp;
-  public int mCurrFluid;
+  public int mInput;
+  public int mOutput;
   public boolean isFastDecay;
   public boolean isMoxFuel;
   public int[] mHatchesRodPosition;
@@ -96,7 +97,8 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
     if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
     this.mMaxTemp = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mMaxTemp;
     this.mTemp = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentTemp;
-    this.mCurrFluid = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentInput;
+    this.mInput = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getInputFluid().amount;
+    this.mOutput = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getOutputFluid().amount;
     this.mHatchesRodPosition = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getRodPosition();
     this.isFastDecay = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isFastDecay;
     this.isMoxFuel = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isMoxFuel;
@@ -107,10 +109,12 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
       var1.sendProgressBarUpdate(this, 101, mMaxTemp >>> 16);
       var1.sendProgressBarUpdate(this, 102, mTemp & 65535);
       var1.sendProgressBarUpdate(this, 103, mTemp >>> 16);
-      var1.sendProgressBarUpdate(this, 104, mCurrFluid & 65535);
-      var1.sendProgressBarUpdate(this, 105, mCurrFluid >>> 16);
+      var1.sendProgressBarUpdate(this, 104, mInput & 65535);
+      var1.sendProgressBarUpdate(this, 105, mInput >>> 16);
       var1.sendProgressBarUpdate(this, 106, isFastDecay ? 1 : 0);
       var1.sendProgressBarUpdate(this, 107, isMoxFuel ? 1 : 0);
+      var1.sendProgressBarUpdate(this, 108, mOutput & 65535);
+      var1.sendProgressBarUpdate(this, 109, mOutput >>> 16);
 
     }
   }
@@ -133,16 +137,22 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
         mTemp = mTemp & 65535 | data << 16;
         break;
       case 104:
-        mCurrFluid = mCurrFluid & -65536 | data;
+        mInput = mInput & -65536 | data;
         break;
       case 105:
-        mCurrFluid = mCurrFluid & 65535 | data << 16;
+        mInput = mInput & 65535 | data << 16;
         break;
       case 106:
         isFastDecay = (data != 0);
         break;
       case 107:
         isMoxFuel = (data != 0);
+        break;
+      case 108:
+        mOutput = mOutput & -65536 | data;
+        break;
+      case 109:
+        mOutput = mOutput & 65535 | data << 16;
         break;
     }
   }

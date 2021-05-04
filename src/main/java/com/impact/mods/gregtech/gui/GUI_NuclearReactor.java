@@ -40,29 +40,29 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
         if ((mContainer).mActive == 0) {
           fontRendererObj
               .drawString("Progress:" + EnumChatFormatting.RED + " not working", 10, 22, 16448255);
-        } else {
-          
-          if (container.isMoxFuel) {
-            fontRendererObj
-                    .drawString(EnumChatFormatting.RED + "Mox Fuel", 10, 148, 16448255);
-          }
-          
-          double tScale = (double) container.mTemp / (double) container.mMaxTemp;
-          tScale = tScale <= 0 ? 0 : tScale;
-          int temperature = Math.min(((int) (100 * tScale)), 100);
-          fontRendererObj
-              .drawString("Temp: " + temperature + "%", 96, 148, 16448255);
-
-          fontRendererObj
-              .drawString("Input " + (container.isFastDecay ? "Coolant:" : " Water:"), 10, 95, 16448255);
-          fontRendererObj
-              .drawString(container.mCurrFluid < 0 ? "All Rods UP" : container.mCurrFluid + " L/t", 10, 105, 16448255);
-          
-          fontRendererObj
-              .drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : container.isMoxFuel ? "SH Steam:" : "Steam:"), 10, 120, 16448255);
-          fontRendererObj
-              .drawString((container.mCurrFluid * (container.isFastDecay ? 1 : 160)) < 0 ? "All Rods UP" : (container.mCurrFluid * (container.isFastDecay ? 1 : 160)) + " L/t", 10, 130, 16448255);
         }
+          
+        if (container.isMoxFuel) {
+          fontRendererObj
+                  .drawString(EnumChatFormatting.RED + "Mox Fuel", 10, 148, 16448255);
+        }
+        
+        double tScale = (double) container.mTemp / (double) container.mMaxTemp;
+        tScale = tScale <= 0 ? 0 : tScale;
+        int temperature = Math.min(((int) (100 * tScale)), 100);
+        fontRendererObj
+            .drawString("Temp: " + temperature + "%", 96, 148, 16448255);
+
+        fontRendererObj
+            .drawString("Input " + (container.isFastDecay ? "Coolant:" : " Water:"), 10, 95, 16448255);
+        fontRendererObj
+            .drawString(container.mInput < 0 ? "All Rods UP" : container.mInput + " L/t", 10, 105, 16448255);
+        
+        fontRendererObj
+            .drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : container.isMoxFuel ? "SH Steam:" : "Steam:"), 10, 120, 16448255);
+        fontRendererObj
+            .drawString(container.mOutput < 0 ? "All Rods UP" : (container.mOutput + " L/t"), 10, 130, 16448255);
+
       }
     }
   }
