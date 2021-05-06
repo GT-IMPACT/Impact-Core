@@ -48,9 +48,12 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
   }};
   
   private static String pathBG = "/config/IMPACT/bg";
+  
+  static {
+    background = parseBG().isEmpty() ? background : parseBG();
+  }
 
   public ImpactGuiMainMenu() {
-    background = parseBG().isEmpty() ? background : parseBG();
   }
 
   public boolean doesGuiPauseGame() {
@@ -126,7 +129,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     }
   }
   
-  private ArrayList<ResourceLocation> parseBG() {
+  private static ArrayList<ResourceLocation> parseBG() {
     ArrayList<ResourceLocation> res = new ArrayList<>();
     try {
       String basePath = ((File) (FMLInjectionData.data()[6])).getAbsolutePath().replace(File.separatorChar, '/').replace("/.", "");
