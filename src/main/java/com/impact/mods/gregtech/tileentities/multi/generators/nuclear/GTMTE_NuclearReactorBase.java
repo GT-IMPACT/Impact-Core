@@ -24,6 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
@@ -31,17 +32,18 @@ import static com.impact.util.Utilits.getFluidStack;
 
 public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiParallelBlockBase {
  
-	private static final int SPEED_DECAY = 5;
+	
 	public ArrayList<GTMTE_Reactor_Rod_Hatch> mRodHatches = new ArrayList<>();
 	public ArrayList<GT_MetaTileEntity_BasicHull> mMachineHull = new ArrayList<>();
 	public boolean mFirstStart = false;
-	public long mCurrentTemp = 1;
-	public long mMaxTemp = 10000;
-	public long mCurrentOutput = 1;
-	public long mCurrentInput = 1;
+	public float mCurrentTemp = 1;
+	public double mCurrentOutput = 1;
+	public double mCurrentInput = 1;
 	public boolean isMoxFuel = false;
 	public boolean isFastDecay = false;
 	ITexture INDEX_CASE = Textures.BlockIcons.CASING_BLOCKS[12 + 32];
+	
+	private static final int SPEED_DECAY = 5;
 	
 	public GTMTE_NuclearReactorBase(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -74,10 +76,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setLong("mCurrentTemp", mCurrentTemp);
-		aNBT.setLong("mMaxTemp", mMaxTemp);
-		aNBT.setLong("mCurrentOutput", mCurrentOutput);
-		aNBT.setLong("mCurrentInput", mCurrentInput);
+		aNBT.setFloat("mCurrentTemp", mCurrentTemp);
+		aNBT.setDouble("mCurrentOutput", mCurrentOutput);
+		aNBT.setDouble("mCurrentInput", mCurrentInput);
 		aNBT.setBoolean("mFirstStart", mFirstStart);
 		aNBT.setBoolean("isFastDecay", isFastDecay);
 		aNBT.setBoolean("isMoxFuel", isMoxFuel);
@@ -86,10 +87,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		this.mCurrentTemp = aNBT.getLong("mCurrentTemp");
-		this.mMaxTemp = aNBT.getLong("mMaxTemp");
-		this.mCurrentOutput = aNBT.getLong("mCurrentOutput");
-		this.mCurrentInput = aNBT.getLong("mCurrentInput");
+		this.mCurrentTemp = aNBT.getFloat("mCurrentTemp");
+		this.mCurrentOutput = aNBT.getDouble("mCurrentOutput");
+		this.mCurrentInput = aNBT.getDouble("mCurrentInput");
 		this.mFirstStart = aNBT.getBoolean("mFirstStart");
 		this.isFastDecay = aNBT.getBoolean("isFastDecay");
 		this.isMoxFuel = aNBT.getBoolean("isMoxFuel");
@@ -119,105 +119,99 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 		return false;
 	}
 	
+	public abstract int maxTemperature();
+	public abstract int coefficientReactor();
+	
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-		long aTemp = 0;
-		long aCountCells = 0;
-		int countTime = 20; // 1 sec
-		if (!aBaseMetaTileEntity.isActive()) {
-			mCurrentTemp -= 10;
-			if (mCurrentTemp <= 0) {
-				mCurrentTemp = 0;
-			}
-		}
-		int checkRod = 0;
-		float checkHeat = 0;
-		int checkCells = 0;
-		int checkReallyRod = 0;
-		ArrayList<Boolean> arrayMoxRod = new ArrayList<>();
-		if (mRodHatches.size() > 0) {
+		
+		if (aBaseMetaTileEntity.isServerSide()) {
+			int countTime = 20; // 1 sec
+			int checkReallyRod = 0;
+			float coefficientFuelRods = 0;
+			int levelRods = 0;
+			
+			ArrayList<Boolean> arrayMoxRod = new ArrayList<>();
+			
 			for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
-				if (rod_hatch.mInventory[0] != null && rod_hatch.mInventory[0]
-						.getItem() instanceof GT_RadioactiveCellIC_Item) {
-					if (((GT_RadioactiveCellIC_Item) rod_hatch.mInventory[0]
-							.getItem()).sHeat > 0) {
-						if (mEfficiency >= getMaxEfficiency(null)) {
-							rod_hatch.setStartReactor(aBaseMetaTileEntity.isActive());
-						}
+				if (rod_hatch.mInventory[0] != null &&
+						rod_hatch.mInventory[0].getItem() instanceof GT_RadioactiveCellIC_Item) {
+					if (((GT_RadioactiveCellIC_Item) rod_hatch.mInventory[0].getItem()).sHeat > 0) {
+						
+						rod_hatch.setStartReactor(mEfficiency >= 10000 && aBaseMetaTileEntity.isActive());
 						checkReallyRod++;
-						checkRod = Math.max(rod_hatch.mDownRod, 0);
-						checkHeat = rod_hatch.mDownRod > 0 ? rod_hatch.mTemp : 0;
-						checkCells = rod_hatch.mDownRod > 0 ? rod_hatch.mCountCells : 0;
-						aTemp += (checkHeat * checkRod + checkCells);
+						coefficientFuelRods += rod_hatch.mCoefficientFuelRod;
 						arrayMoxRod.add(rod_hatch.mIsMox);
-						if (isFastDecay) {
-							rod_hatch.setFastDecay(SPEED_DECAY);
-						} else {
-							rod_hatch.setFastDecay(1);
-						}
+						rod_hatch.setFastDecay(isFastDecay ? SPEED_DECAY : 1);
+						levelRods += (rod_hatch.mDownRod > 0) ? 1 : 0;
 					}
 				}
 			}
-		}
-		if (aTemp == 0) {
-			if (aTick % countTime == 0) {
-				mCurrentTemp -= 10;
-				if (mCurrentTemp <= 0) {
-					mCurrentTemp = 0;
+			float x = coefficientFuelRods;
+			if ((levelRods <= 0 || !aBaseMetaTileEntity.isActive()) && aTick % countTime == 0) {
+				mCurrentTemp -= 100;
+				if (mCurrentTemp <= 0) mCurrentTemp = 0;
+			}
+			
+			if (levelRods > 0 && aBaseMetaTileEntity.isActive() && aTick % countTime == 0) {
+				mCurrentTemp += coefficientFuelRods;
+				if (mCurrentTemp > maxTemperature()) mCurrentTemp = maxTemperature();
+			}
+			
+			int countMox = (int) arrayMoxRod.stream().filter(b -> b).count();
+			isMoxFuel = countMox != 0 && countMox >= checkReallyRod;
+			
+			double totalBase = ((double) mCurrentTemp / (double) maxTemperature()) * coefficientReactor() / 4D;
+			
+			double total = (totalBase * coefficientFuelRods) / 400D;
+			
+			if (total <= 0)  total = (totalBase / 400D);
+			
+			total /= 8D;
+			
+			//calculator https://drive.google.com/file/d/1oIsN8srvb0jAJpYMgWyLldbQIrNeTVLi/view?usp=sharing
+			
+			mCurrentInput = isFastDecay ? total / 4D : total;
+			mCurrentOutput = isFastDecay ? total / 4D : total * 160D;
+			
+			double tScale = (double) mCurrentTemp / (double) maxTemperature();
+			tScale = tScale <= 0 ? 0 : tScale;
+			int temperature = (int) Math.min(((100 * tScale)), 100);
+			
+			if (aTick % 8 == 0 && temperature > 0) {
+				if (!depleteInput(getInputFluid())) {
+					for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
+						//rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+					}
 				}
 			}
-		}
-		
-		if (aTick % countTime == 0 && aBaseMetaTileEntity.isActive()) {
-			if (mCurrentTemp <= mMaxTemp) {
-				mCurrentTemp += aTemp;
+			
+			if (aTick % 8 == 0 && temperature > 0) {
+				addOutput(getOutputFluid());
 			}
-			if (mCurrentTemp > mMaxTemp) {
-				mCurrentTemp = mMaxTemp;
+			
+			if (temperature <= 0) {
+				mCurrentInput = 0;
+				mCurrentOutput = 0;
 			}
-		}
-		
-		int countMox = (int) arrayMoxRod.stream().filter(b -> b).count();
-		isMoxFuel = countMox != 0 && countMox >= checkReallyRod;
-		
-		double progress = (double) mCurrentTemp / (double) mMaxTemp;
-		long abs = (int) ((aTemp * checkCells) * (progress + 1)) / 2;
-		mCurrentInput = abs;
-		mCurrentOutput = isFastDecay ? abs : abs * 160;
-		
-		if (abs < 1) {
-			long a = isFastDecay ? 0 : 1;
-			mCurrentOutput = a;
-			mCurrentInput = a;
-		}
-		
-		abs = abs <= 0 ? 0 : abs;
-		int temperature = Math.min(((int) (100 * abs)), 100);
-		
-		if (aTick % 8 == 0 && temperature > 0) {
-			if (!depleteInput(getInputFluid())) {
-				for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
-					rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
-				}
-			}
-		}
-		
-		if (aTick % 8 == 0 && temperature > 0) {
-			addOutput(getOutputFluid());
-		}
-		
-		if (temperature <= 0) {
-			mCurrentInput = 0;
-			mCurrentOutput = 0;
 		}
 	}
 	
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-		isFastDecay = !isFastDecay;
-		GT_Utility.sendChatToPlayer(aPlayer, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
+		if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode) {
+			mCurrentTemp = maxTemperature();
+		} else {
+			if (depleteInput(getFluidStack("ic2coolant", 1))) {
+				isFastDecay = !isFastDecay;
+				GT_Utility.sendChatToPlayer(aPlayer, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
+			} else {
+				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "No coolant!" +
+						EnumChatFormatting.RESET + "Fast Decay Mode cannot be activated");
+			}
+		}
 	}
 	
 	public void setFastDecayMode(boolean isFastDecay) {
@@ -245,17 +239,15 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	}
 	
 	public FluidStack getInputFluid() {
-		return isFastDecay ? getFluidStack("ic2coolant", (int) mCurrentInput) :
-				Materials.Water.getFluid(mCurrentInput);
+		int in = (int) Math.ceil(mCurrentInput * 8D);
+		return isFastDecay ? getFluidStack("ic2coolant", in) :
+				Materials.Water.getFluid(in);
 	}
 	
 	public FluidStack getOutputFluid() {
-		return isFastDecay ? getFluidStack("ic2hotcoolant", (int) mCurrentOutput) : isMoxFuel ?
-				getFluidStack("ic2superheatedsteam", (int) mCurrentOutput) : Materials.Water.getGas(mCurrentOutput);
-	}
-	
-	public void setMaxTemp(int maxTemp) {
-		this.mMaxTemp = maxTemp;
+		int out = (int) Math.ceil(mCurrentOutput * 8D);
+		return isFastDecay ? getFluidStack("ic2hotcoolant", out) : isMoxFuel ?
+				getFluidStack("ic2superheatedsteam", out) : Materials.Water.getGas(out);
 	}
 	
 	public abstract boolean checkMachineFunction(IGregTechTileEntity thisController);
@@ -288,15 +280,16 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	@Override
 	public String[] getInfoData() {
 		
-		double tScale = (double) mCurrentTemp / (double) mMaxTemp;
+		double tScale = (double) mCurrentTemp / (double) maxTemperature();
 		tScale = tScale <= 0 ? 0 : tScale;
 		float temperature = (float) Math.min(((100 * tScale)), 100);
 		
 		return new String[]{
 				"Current Temperature: " + EnumChatFormatting.RED + temperature + " %",
+				"MAX Temperature: " + EnumChatFormatting.RED + maxTemperature() + " %",
 				"Input: " + getInputFluid().getLocalizedName() + " " + EnumChatFormatting.RED
-						+ (int) (getInputFluid().amount * 2.5D) + EnumChatFormatting.RESET + " L/s",
-				"Output:  " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN + (int) (getOutputFluid().amount * 2.5D)
+						+ (int) Math.ceil(mCurrentInput * 20D) + EnumChatFormatting.RESET + " L/s",
+				"Output:  " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN + (int) Math.ceil(mCurrentOutput * 20D)
 						+ EnumChatFormatting.RESET + " L/s"
 		};
 	}

@@ -127,24 +127,28 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 			}
 		}
 		
-		@Callback(doc = "function():string, number -- Get reactor output fluid.")
+		@Callback(doc = "function():string, number -- Get reactor output fluid L/s.")
 		public Object[] getOutputFluid(Context context, Arguments args) {
 			try {
-				FluidStack aFluid = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).getOutputFluid();
-				int aOutput = aFluid.amount;
-				String aName = aFluid.getLocalizedName();
+				GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity());
+				
+				int aOutput = (int) Math.ceil(reactor.mCurrentOutput * 20D);
+				String aName = reactor.getInputFluid().getLocalizedName();
+				
 				return new Object[]{new Object[]{aName, aOutput}};
 			} catch (Throwable e) {
 				return new Object[]{"not found fluid"};
 			}
 		}
 		
-		@Callback(doc = "function():string, number -- Get reactor input fluid.")
+		@Callback(doc = "function():string, number -- Get reactor input fluid L/s.")
 		public Object[] getInputFluid(Context context, Arguments args) {
 			try {
-				FluidStack aFluid = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).getInputFluid();
-				int aInput = aFluid.amount;
-				String aName = aFluid.getLocalizedName();
+				GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity());
+				
+				int aInput = (int) Math.ceil(reactor.mCurrentInput * 20D);
+				String aName = reactor.getInputFluid().getLocalizedName();
+				
 				return new Object[]{new Object[]{aName, aInput}};
 			} catch (Throwable e) {
 				return new Object[]{"not found fluid"};
@@ -176,7 +180,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		public Object[] getTemperature(Context context, Arguments args) {
 			try {
 				double tScale = (double) ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mCurrentTemp
-						/ (double) ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mMaxTemp;
+						/ (double) ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).maxTemperature();
 				tScale = tScale <= 0 ? 0 : tScale;
 				int temperature = Math.min(((int) (100 * tScale)), 100);
 				return new Object[]{temperature};

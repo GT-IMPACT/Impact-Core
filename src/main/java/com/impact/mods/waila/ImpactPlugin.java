@@ -305,7 +305,7 @@ public class ImpactPlugin extends PluginBase {
       }
 
       if (reactor != null) {
-        double tScale = (double) reactor.mCurrentTemp / (double) reactor.mMaxTemp;
+        double tScale = (double) reactor.mCurrentTemp / (double) reactor.maxTemperature();
         tScale = tScale <= 0 ? 0 : tScale;
         int temperature = Math.min(((int) (100 * tScale)), 100);
         tag.setInteger("reactorTemp",temperature);

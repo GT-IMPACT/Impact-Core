@@ -30,7 +30,7 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
   final Block SECOND_CASING = GregTech_API.sBlockCasings2;
   final int SECOND_CASING_META = 13;
   final int TEXTURE_HATCH = 44;
-
+  
   public GTMTE_NuclearReactorIII(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
     build();
@@ -39,6 +39,16 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
   public GTMTE_NuclearReactorIII(String aName) {
     super(aName);
     build();
+  }
+  
+  @Override
+  public int maxTemperature() {
+    return 1_000_000;
+  }
+  
+  @Override
+  public int coefficientReactor() {
+    return 1400;
   }
 
   @Override
@@ -123,7 +133,6 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
 
 
   public boolean checkMachineFunction(IGregTechTileEntity thisController) {
-    setMaxTemp(1000000);
     this.mWrench = true;
     this.mScrewdriver = true;
     this.mSoftHammer = true;

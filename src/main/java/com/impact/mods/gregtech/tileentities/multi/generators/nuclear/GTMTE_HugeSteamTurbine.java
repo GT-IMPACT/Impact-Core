@@ -343,12 +343,12 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   @Override
   public String[] getInfoData() {
     return new String[]{
-        "Steam Input: " + EnumChatFormatting.RED + "" + mStoredFluids + EnumChatFormatting.RESET
+        "Steam Input: " + EnumChatFormatting.RED + "" + (int) (mStoredFluids * 2.5D) + EnumChatFormatting.RESET
             + " L/s",
         "Output Energy: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance().format(mOutputSalary)
             + EnumChatFormatting.RESET + " EU/t",
-        "Void Steam: " + EnumChatFormatting.RED + Math.abs(mStoredFluids - mOutputSalary)
-            + EnumChatFormatting.RESET + "L/t",
+        "Void Steam: " + EnumChatFormatting.RED + (int) (Math.abs(mStoredFluids - mOutputSalary) * 2.5D)
+            + EnumChatFormatting.RESET + " L/s",
         "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F
             + EnumChatFormatting.YELLOW + " %",
         "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())

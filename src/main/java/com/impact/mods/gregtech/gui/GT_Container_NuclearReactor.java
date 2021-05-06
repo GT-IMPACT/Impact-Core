@@ -19,9 +19,9 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
   GTMTE_NuclearReactorBase mte;
   public int mRodUp;
   public int mTemp;
-  public int mMaxTemp;
   public int mInput;
   public int mOutput;
+  public int mMaxTemp;
   public boolean isFastDecay;
   public boolean isMoxFuel;
   public int[] mHatchesRodPosition;
@@ -95,27 +95,27 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
   public void detectAndSendChanges() {
     super.detectAndSendChanges();
     if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
-    this.mMaxTemp = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mMaxTemp;
-    this.mTemp = (int) ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).mCurrentTemp;
-    this.mInput = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getInputFluid().amount;
-    this.mOutput = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getOutputFluid().amount;
-    this.mHatchesRodPosition = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).getRodPosition();
-    this.isFastDecay = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isFastDecay;
-    this.isMoxFuel = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity()).isMoxFuel;
+    GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity());
+    this.mTemp = (int) reactor.mCurrentTemp;
+    this.mMaxTemp = reactor.maxTemperature();
+    this.mInput = (int) Math.ceil(reactor.mCurrentInput * 20D);
+    this.mOutput = (int) Math.ceil(reactor.mCurrentOutput * 20D);
+    this.mHatchesRodPosition = reactor.getRodPosition();
+    this.isFastDecay = reactor.isFastDecay;
+    this.isMoxFuel = reactor.isMoxFuel;
 
     for (Object crafter : this.crafters) {
       ICrafting var1 = (ICrafting) crafter;
-      var1.sendProgressBarUpdate(this, 100, mMaxTemp & 65535);
-      var1.sendProgressBarUpdate(this, 101, mMaxTemp >>> 16);
-      var1.sendProgressBarUpdate(this, 102, mTemp & 65535);
-      var1.sendProgressBarUpdate(this, 103, mTemp >>> 16);
-      var1.sendProgressBarUpdate(this, 104, mInput & 65535);
-      var1.sendProgressBarUpdate(this, 105, mInput >>> 16);
-      var1.sendProgressBarUpdate(this, 106, isFastDecay ? 1 : 0);
-      var1.sendProgressBarUpdate(this, 107, isMoxFuel ? 1 : 0);
-      var1.sendProgressBarUpdate(this, 108, mOutput & 65535);
-      var1.sendProgressBarUpdate(this, 109, mOutput >>> 16);
-
+      var1.sendProgressBarUpdate(this, 100, mTemp & 65535);
+      var1.sendProgressBarUpdate(this, 101, mTemp >>> 16);
+      var1.sendProgressBarUpdate(this, 102, mInput & 65535);
+      var1.sendProgressBarUpdate(this, 103, mInput >>> 16);
+      var1.sendProgressBarUpdate(this, 104, isFastDecay ? 1 : 0);
+      var1.sendProgressBarUpdate(this, 105, isMoxFuel ? 1 : 0);
+      var1.sendProgressBarUpdate(this, 106, mOutput & 65535);
+      var1.sendProgressBarUpdate(this, 107, mOutput >>> 16);
+      var1.sendProgressBarUpdate(this, 108, mMaxTemp & 65535);
+      var1.sendProgressBarUpdate(this, 109, mMaxTemp >>> 16);
     }
   }
 
@@ -125,34 +125,34 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
     super.updateProgressBar(id, data);
     switch (id) {
       case 100:
-        mMaxTemp = mMaxTemp & -65536 | data;
-        break;
-      case 101:
-        mMaxTemp = mMaxTemp & 65535 | data << 16;
-        break;
-      case 102:
         mTemp = mTemp & -65536 | data;
         break;
-      case 103:
+      case 101:
         mTemp = mTemp & 65535 | data << 16;
         break;
-      case 104:
+      case 102:
         mInput = mInput & -65536 | data;
         break;
-      case 105:
+      case 103:
         mInput = mInput & 65535 | data << 16;
         break;
-      case 106:
+      case 104:
         isFastDecay = (data != 0);
         break;
-      case 107:
+      case 105:
         isMoxFuel = (data != 0);
         break;
-      case 108:
+      case 106:
         mOutput = mOutput & -65536 | data;
         break;
-      case 109:
+      case 107:
         mOutput = mOutput & 65535 | data << 16;
+        break;
+      case 108:
+        mMaxTemp = mMaxTemp & -65536 | data;
+        break;
+      case 109:
+        mMaxTemp = mMaxTemp & 65535 | data << 16;
         break;
     }
   }

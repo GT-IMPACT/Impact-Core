@@ -21,8 +21,7 @@ import static gregtech.api.items.GT_RadioactiveCell_Item.getDurabilityOfStack;
 public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 	
 	public int mDownRod = 0;
-	public int mCountCells = 0;
-	public float mTemp = 0;
+	public float mCoefficientFuelRod = 0;
 	public boolean mStartReactor = false;
 	public int mSpeedDecay = 1;
 	public int mIDhatch = 0;
@@ -107,10 +106,9 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setInteger("mDownRod", mDownRod);
-		aNBT.setInteger("mCountCells", mCountCells);
 		aNBT.setInteger("mIDhatch", mIDhatch);
 		aNBT.setInteger("mDurability", mDurability);
-		aNBT.setFloat("mTemp", mTemp);
+		aNBT.setFloat("mCoefficientFuelRod", mCoefficientFuelRod);
 	}
 	
 	@Override
@@ -119,16 +117,14 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 		mDownRod = aNBT.getInteger("mDownRod");
 		mIDhatch = aNBT.getInteger("mIDhatch");
 		mDurability = aNBT.getInteger("mDurability");
-		mCountCells = aNBT.getInteger("mCountCells");
-		mTemp = aNBT.getFloat("mTemp");
+		mCoefficientFuelRod = aNBT.getFloat("mCoefficientFuelRod");
 	}
 	
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
 										float aZ) {
 		GT_Utility.sendChatToPlayer(aPlayer, "mDownRod: " + mDownRod);
-		GT_Utility.sendChatToPlayer(aPlayer, "mTemp: " + mTemp);
-		GT_Utility.sendChatToPlayer(aPlayer, "mCountCells: " + mCountCells);
+		GT_Utility.sendChatToPlayer(aPlayer, "mCoefficientFuelRod: " + mCoefficientFuelRod);
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 	
@@ -170,18 +166,18 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 		ItemStack is = mInventory[0];
 		
 		if (aBaseMetaTileEntity.isServerSide() && aTimer % 20 == 0) {
+			mCoefficientFuelRod = 0;
 			mDurability = 0;
 			if (is != null && is.getItem() instanceof GT_RadioactiveCellIC_Item) {
-				GT_RadioactiveCellIC_Item radioactiveCellIC_item = (GT_RadioactiveCellIC_Item) is.getItem();
-				mDurability = radioactiveCellIC_item.getMaxDamageEx();
+				GT_RadioactiveCellIC_Item rod = (GT_RadioactiveCellIC_Item) is.getItem();
+				mDurability = rod.getMaxDamageEx();
 				if (mStartReactor && mDownRod > 0) {
-					if (radioactiveCellIC_item.sHeat > 0) {
-						mTemp = ((int) radioactiveCellIC_item.sHeat + 1) * (radioactiveCellIC_item.sMox ? 4 : 1);
-						setMoxFuel(radioactiveCellIC_item.sMox);
-						mCountCells = radioactiveCellIC_item.numberOfCells;
-						radioactiveCellIC_item.setDamageForStack(is, getDurabilityOfStack(is) + (mDownRod * mSpeedDecay));
-						if (getDurabilityOfStack(is) >= radioactiveCellIC_item.getMaxDamageEx()) {
-							mInventory[0] = radioactiveCellIC_item.sDepleted.copy();
+					if (rod.sHeat > 0) {
+						mCoefficientFuelRod = ((rod.sHeat + 1) * (rod.sMox ? 4 : 1) * rod.numberOfCells) * mDownRod;
+						setMoxFuel(rod.sMox);
+						rod.setDamageForStack(is, getDurabilityOfStack(is) + (mDownRod * mSpeedDecay));
+						if (getDurabilityOfStack(is) >= rod.getMaxDamageEx()) {
+							mInventory[0] = rod.sDepleted.copy();
 						}
 					}
 					mStartReactor = false;

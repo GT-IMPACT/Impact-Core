@@ -40,7 +40,17 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
     super(aName);
     build();
   }
-
+  
+  @Override
+  public int maxTemperature() {
+    return 10_000;
+  }
+  
+  @Override
+  public int coefficientReactor() {
+    return 200;
+  }
+  
   @Override
   public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
     build();
@@ -117,7 +127,6 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
   }
 
   public boolean checkMachineFunction(IGregTechTileEntity thisController) {
-    setMaxTemp(10000);
     this.mWrench = true;
     this.mScrewdriver = true;
     this.mSoftHammer = true;

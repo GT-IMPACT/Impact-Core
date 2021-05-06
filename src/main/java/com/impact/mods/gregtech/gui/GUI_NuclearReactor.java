@@ -2,10 +2,13 @@ package com.impact.mods.gregtech.gui;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
+
+import java.text.NumberFormat;
 
 
 public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
@@ -56,12 +59,12 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
         fontRendererObj
             .drawString("Input " + (container.isFastDecay ? "Coolant:" : " Water:"), 10, 95, 16448255);
         fontRendererObj
-            .drawString(container.mInput < 0 ? "All Rods UP" : (int) (container.mInput * 2.5D) + " L/s", 10, 105, 16448255);
+            .drawString(container.mInput < 0 ? "All Rods UP" : NumberFormat.getNumberInstance().format(container.mInput)  + " L/s", 10, 105, 16448255);
         
         fontRendererObj
             .drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : container.isMoxFuel ? "SH Steam:" : "Steam:"), 10, 120, 16448255);
         fontRendererObj
-            .drawString(container.mOutput < 0 ? "All Rods UP" : ((int) (container.mOutput * 2.5D)+ " L/s"), 10, 130, 16448255);
+            .drawString(container.mOutput < 0 ? "All Rods UP" : (NumberFormat.getNumberInstance().format(container.mOutput)  + " L/s"), 10, 130, 16448255);
 
       }
     }
