@@ -39,6 +39,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	public double mCurrentInput = 1;
 	public boolean isMoxFuel = false;
 	public boolean isFastDecay = false;
+	public boolean stopTemp = false;
 	ITexture INDEX_CASE = Textures.BlockIcons.CASING_BLOCKS[12 + 32];
 	
 	public GTMTE_NuclearReactorBase(int aID, String aName, String aNameRegional) {
@@ -78,6 +79,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 		aNBT.setBoolean("mFirstStart", mFirstStart);
 		aNBT.setBoolean("isFastDecay", isFastDecay);
 		aNBT.setBoolean("isMoxFuel", isMoxFuel);
+		aNBT.setBoolean("stopTemp", stopTemp);
 	}
 	
 	@Override
@@ -89,6 +91,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 		this.mFirstStart = aNBT.getBoolean("mFirstStart");
 		this.isFastDecay = aNBT.getBoolean("isFastDecay");
 		this.isMoxFuel = aNBT.getBoolean("isMoxFuel");
+		this.stopTemp = aNBT.getBoolean("stopTemp");
 	}
 	
 	@Override
@@ -135,7 +138,6 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 				if (rod_hatch.mInventory[0] != null &&
 						rod_hatch.mInventory[0].getItem() instanceof GT_RadioactiveCellIC_Item) {
 					if (((GT_RadioactiveCellIC_Item) rod_hatch.mInventory[0].getItem()).sHeat > 0) {
-						
 						rod_hatch.setStartReactor(mEfficiency >= 10000 && aBaseMetaTileEntity.isActive());
 						checkReallyRod++;
 						coefficientFuelRods += rod_hatch.mCoefficientFuelRod;
@@ -145,13 +147,13 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 					}
 				}
 			}
-			float x = coefficientFuelRods;
+			
 			if ((levelRods <= 0 || !aBaseMetaTileEntity.isActive()) && aTick % countTime == 0) {
 				mCurrentTemp -= 100;
 				if (mCurrentTemp <= 0) mCurrentTemp = 0;
 			}
 			
-			if (levelRods > 0 && aBaseMetaTileEntity.isActive() && aTick % countTime == 0) {
+			if (levelRods > 0 && aBaseMetaTileEntity.isActive() && !stopTemp && aTick % countTime == 0) {
 				mCurrentTemp += coefficientFuelRods;
 				if (mCurrentTemp > maxTemperature()) mCurrentTemp = maxTemperature();
 			}
@@ -201,11 +203,12 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 		if (aPlayer.isSneaking()) {
 			if (aPlayer.capabilities.isCreativeMode) mCurrentTemp = maxTemperature();
 		} else {
-			if (depleteInput(!isFastDecay ? getFluidStack("ic2coolant", 1) : Materials.Water.getFluid(1))) {
+			if (mCurrentTemp <= 10 && depleteInput(!isFastDecay ? getFluidStack("ic2coolant", 1) : Materials.Water.getFluid(1))) {
 				isFastDecay = !isFastDecay;
 				GT_Utility.sendChatToPlayer(aPlayer, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
 			} else {
-				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + (isFastDecay ? "No Water! " : "No Coolant! ") +
+				GT_Utility.sendChatToPlayer(aPlayer,
+						EnumChatFormatting.RED + (mCurrentTemp > 10 ? "Reactor active! " : isFastDecay ? "No Water! " : "No Coolant! ") +
 						EnumChatFormatting.RESET + (!isFastDecay ? "Fast Decay Mode" : "Default Mode") + " cannot be activated");
 			}
 		}

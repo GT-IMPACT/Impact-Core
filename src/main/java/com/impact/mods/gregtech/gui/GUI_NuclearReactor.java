@@ -83,13 +83,17 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
 						EnumChatFormatting.GREEN + "    Starting",
 				});
 				getTooltip(mouseX, mouseY, 155, 37, 16, 16, new String[]{
-						"Up all rods (10%)"
+						"Up all rods (10%)",
+						
 				});
 				getTooltip(mouseX, mouseY, 155, 55, 16, 16, new String[]{
-						"Down all rods (10%)"
+						"Down all rods (10%)",
+						
+						
 				});
 				getTooltip(mouseX, mouseY, 155, 73, 16, 16, new String[]{
-						"Up all rods completely"
+						"Stop temperature",
+						container.isFastDecay ? EnumChatFormatting.DARK_GRAY + "No usage" : container.stopTemp ? EnumChatFormatting.RED + "Enabled" : EnumChatFormatting.DARK_GRAY + "Disabled"
 				});
 				double tScale = (double) container.mTemp / (double) container.mMaxTemp;
 				tScale = tScale <= 0 ? 0 : tScale;
@@ -107,6 +111,7 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
 		int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 		if (this.mContainer != null) {
+			GT_Container_NuclearReactor container = (GT_Container_NuclearReactor) this.mContainer;
 			if ((mContainer).mDisplayErrorCode == 0) {
 				if ((mContainer).mActive == 0) {
 					drawTexturedModalRect(x + 155, y + 4, 236, 24, 16, 16);
@@ -114,8 +119,15 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
 				} else {
 					drawTexturedModalRect(x + 155, y + 4, 236, 39, 16, 16);
 				}
+				
+				if (container.stopTemp) {
+					drawTexturedModalRect(x + 155, y + 73, 212, 0, 16, 16);
+				} else {
+					drawTexturedModalRect(x + 155, y + 73, 212, 15, 16, 16);
+				}
+				
 				drawTexturedModalRect(x + 141, y + 8, 247, 0, 9, 9);
-				GT_Container_NuclearReactor container = (GT_Container_NuclearReactor) this.mContainer;
+				
 				double tScale = (double) container.mTemp / (double) container.mMaxTemp;
 				drawTexturedModalRect(x + 159, y + 144 - (int) Math.min(30D, tScale * 30D), 228, 30 - (int) Math.min(30D, tScale * 30D), 8, 30);
 			} else {

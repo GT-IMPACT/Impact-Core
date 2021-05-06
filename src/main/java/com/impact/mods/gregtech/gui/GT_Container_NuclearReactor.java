@@ -24,6 +24,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 	public int mMaxTemp;
 	public boolean isFastDecay;
 	public boolean isMoxFuel;
+	public boolean stopTemp;
 	public int[] mHatchesRodPosition;
 	GTMTE_NuclearReactorBase mte;
 	
@@ -61,12 +62,12 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 					if (mte.getBaseMetaTileEntity().isAllowedToWork()) {
 						GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Disabled");
 						//mte.setRodPosition(10);
-						GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+						GT_Utility.sendChatToPlayer(aPlayer, "" + mte.getRodPosition()[0]);
 						mte.getBaseMetaTileEntity().disableWorking();
 						mte.mFirstStart = false;
 					} else {
 						GT_Utility.sendChatToPlayer(aPlayer, "Machine Processing: Enabled");
-						GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+						GT_Utility.sendChatToPlayer(aPlayer, "" + mte.getRodPosition()[0]);
 						mte.getBaseMetaTileEntity().enableWorking();
 						mte.mFirstStart = true;
 					}
@@ -74,17 +75,16 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 				if (aSlotIndex == 1) {
 					mte.setRodPosition(rodZero - 1);
 					GT_Utility.sendChatToPlayer(aPlayer, "All Rods Up 10%");
-					GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+					GT_Utility.sendChatToPlayer(aPlayer, "" + mte.getRodPosition()[0]);
 				}
 				if (aSlotIndex == 2) {
 					mte.setRodPosition(rodZero + 1);
 					GT_Utility.sendChatToPlayer(aPlayer, "All Rods Down 10%");
-					GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+					GT_Utility.sendChatToPlayer(aPlayer, "" + mte.getRodPosition()[0]);
 				}
-				if (aSlotIndex == 3) {
-					mte.setRodPosition(rodZero - 10);
-					GT_Utility.sendChatToPlayer(aPlayer, "All Rods Up Completely");
-					GT_Utility.sendChatToPlayer(aPlayer, "" + Arrays.toString(mte.getRodPosition()));
+				if (aSlotIndex == 3 && !mte.isFastDecay) {
+					mte.stopTemp = !mte.stopTemp;
+					GT_Utility.sendChatToPlayer(aPlayer, "Stop temperature: " + (mte.stopTemp ? "Enabled" : "Disabled"));
 				}
 			} catch (Exception ignored) {
 			}
@@ -104,6 +104,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 		this.mHatchesRodPosition = reactor.getRodPosition();
 		this.isFastDecay = reactor.isFastDecay;
 		this.isMoxFuel = reactor.isMoxFuel;
+		this.stopTemp = reactor.stopTemp;
 		
 		for (Object crafter : this.crafters) {
 			ICrafting var1 = (ICrafting) crafter;
@@ -117,6 +118,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 			var1.sendProgressBarUpdate(this, 107, mOutput >>> 16);
 			var1.sendProgressBarUpdate(this, 108, mMaxTemp & 65535);
 			var1.sendProgressBarUpdate(this, 109, mMaxTemp >>> 16);
+			var1.sendProgressBarUpdate(this, 110, stopTemp ? 1 : 0);
 		}
 	}
 	
@@ -154,6 +156,9 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 				break;
 			case 109:
 				mMaxTemp = mMaxTemp & 65535 | data << 16;
+				break;
+			case 110:
+				stopTemp = (data != 0);
 				break;
 		}
 	}
