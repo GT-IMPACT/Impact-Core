@@ -4,14 +4,12 @@ import com.impact.mods.gregtech.gui.GT_Container_NuclearReactor;
 import com.impact.mods.gregtech.gui.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.Utilits;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
-import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -24,15 +22,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
 import static com.impact.util.Utilits.getFluidStack;
 
 public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiParallelBlockBase {
- 
 	
+	
+	private static final int SPEED_DECAY = 5;
 	public ArrayList<GTMTE_Reactor_Rod_Hatch> mRodHatches = new ArrayList<>();
 	public ArrayList<GT_MetaTileEntity_BasicHull> mMachineHull = new ArrayList<>();
 	public boolean mFirstStart = false;
@@ -42,8 +40,6 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	public boolean isMoxFuel = false;
 	public boolean isFastDecay = false;
 	ITexture INDEX_CASE = Textures.BlockIcons.CASING_BLOCKS[12 + 32];
-	
-	private static final int SPEED_DECAY = 5;
 	
 	public GTMTE_NuclearReactorBase(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -120,6 +116,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	}
 	
 	public abstract int maxTemperature();
+	
 	public abstract int coefficientReactor();
 	
 	@Override
@@ -166,7 +163,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 			
 			double total = (totalBase * coefficientFuelRods) / 400D;
 			
-			if (total <= 0)  total = (totalBase / 400D);
+			if (total <= 0) total = (totalBase / 400D);
 			
 			total /= 8D;
 			
@@ -182,7 +179,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 			if (aTick % 8 == 0 && temperature > 0) {
 				if (!depleteInput(getInputFluid())) {
 					for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
-						//rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+						rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
 					}
 				}
 			}
