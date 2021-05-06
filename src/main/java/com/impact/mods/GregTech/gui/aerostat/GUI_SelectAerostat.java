@@ -3,6 +3,8 @@ package com.impact.mods.gregtech.gui.aerostat;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.gui.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
+import com.impact.util.PositionObject;
+import com.impact.util.Utilits;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,15 +23,20 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
 		mName = aName;
 	}
 	
-	public String getNameLocation(int id, EnumChatFormatting color, boolean bold) {
+	public String getNameLocation(int id, EnumChatFormatting color, boolean general) {
 		Countainer_SelectAerostat container = (Countainer_SelectAerostat) this.mContainer;
+		
+		
 		int idd = 1;
 		for (String name : Impact_API.sAerostat.keySet()) {
 			if (idd == id) {
 				if (color == EnumChatFormatting.RESET) {
 					return name;
 				}
-				return color + "" + (bold ? EnumChatFormatting.BOLD + "> " : "") + name;
+				PositionObject thisPos = new PositionObject(mContainer.mTileEntity);
+				PositionObject newPos = Impact_API.sAerostat.get(name);
+				int distance = Utilits.distanceBetween3D(thisPos.xPos, newPos.xPos, thisPos.yPos, newPos.yPos, thisPos.zPos, newPos.zPos);
+				return color + "" + (general ? EnumChatFormatting.BOLD + "> " + color : "") + name + color + " " + (distance + "m");
 			}
 			idd++;
 		}
@@ -43,8 +50,8 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
 			Countainer_SelectAerostat container = (Countainer_SelectAerostat) this.mContainer;
 			if (mContainer.mTileEntity != null) {
 				getTooltip(mouseX, mouseY, 9, 158 - 60, 60, 14, new String[]{
-						"Gas Amount: " +
-								NumberFormat.getNumberInstance().format(container.curBuffer) + " / " +
+						"Gas Amount: ",
+						NumberFormat.getNumberInstance().format(container.curBuffer) + " / " +
 								NumberFormat.getNumberInstance().format(GTMTE_Aerostat.MAX_BUFFER) + " L"
 				});
 			}
@@ -54,14 +61,15 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		this.fontRendererObj.drawString(mName, 33, 8, 16448255);
 		Countainer_SelectAerostat container = (Countainer_SelectAerostat) this.mContainer;
+		
 		if (container.idLocation > 0) {
-			this.fontRendererObj.drawString("Station Select:", 33, 40, 16448255);
-			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 5, EnumChatFormatting.DARK_GRAY, false), 33, 50, 16448255);
-			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 4, EnumChatFormatting.DARK_GRAY, false), 33, 60, 16448255);
-			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 3, EnumChatFormatting.DARK_GRAY, false), 33, 70, 16448255);
-			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 2, EnumChatFormatting.DARK_GRAY, false), 33, 80, 16448255);
-			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 1, EnumChatFormatting.DARK_GRAY, false), 33, 90, 16448255);
-			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 0, EnumChatFormatting.GOLD, true), 33, 100, 16448255);
+			this.fontRendererObj.drawString("Station Select:", 33, 20, 16448255);
+			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 5, EnumChatFormatting.DARK_GRAY, false), 33, 50 - 10, 16448255);
+			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 4, EnumChatFormatting.DARK_GRAY, false), 33, 60 - 10, 16448255);
+			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 3, EnumChatFormatting.DARK_GRAY, false), 33, 70 - 10, 16448255);
+			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 2, EnumChatFormatting.DARK_GRAY, false), 33, 80 - 10, 16448255);
+			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 1, EnumChatFormatting.DARK_GRAY, false), 33, 90 - 10, 16448255);
+			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 0, EnumChatFormatting.GOLD, true), 33, 100 - 5, 16448255);
 			this.fontRendererObj.drawString(getNameLocation(container.idLocation - 1, EnumChatFormatting.DARK_GRAY, false), 33, 110, 16448255);
 			this.fontRendererObj.drawString(getNameLocation(container.idLocation - 2, EnumChatFormatting.DARK_GRAY, false), 33, 120, 16448255);
 			this.fontRendererObj.drawString(getNameLocation(container.idLocation - 3, EnumChatFormatting.DARK_GRAY, false), 33, 130, 16448255);

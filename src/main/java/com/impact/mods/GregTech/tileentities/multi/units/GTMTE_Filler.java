@@ -96,15 +96,7 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
 		b
-				.addInfo("Teleportation on Space Satellite")
-				.addTypeMachine("Space Elevator")
-				.addInfo("Setup is done using Laptop")
-				.addInfo("Send a redstone signal to teleport")
-				.addInfo("Passive usage: 1920 EU/t")
-				.addController()
-				.addEnergyHatch("Any casing")
-				.addCasingInfo("Space Elevator Casing")
-				.addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
+				.addInfo("WIP")
 				.signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
@@ -120,22 +112,12 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 					private final IStructureDefinition<GTMTE_Filler> definition =
 							StructureDefinition.<GTMTE_Filler>builder()
 									.addShape("main", new String[][]{
-											{" AAAAA ", " A   A ", " A   A ", " A   A ", " AAAAA ", " AAAAA "},
-											{"AAAAAAA", "AA   AA", "AA   AA", "AA   AA", "AAAAAAA", "AAAAAAA"},
-											{"AA   AA", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA"},
-											{"AA   AA", "       ", "       ", "       ", "AAA~AAA", "AAABAAA"},
-											{"AA   AA", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA"},
-											{"AAAAAAA", "AA   AA", "AA   AA", "AA   AA", "AAAAAAA", "AAAAAAA"},
-											{" AAAAA ", " A   A ", " A   A ", " A   A ", " AAAAA ", " AAAAA "}
-									})
+											{"A"}})
 									.addElement('A', ofBlock(CASING, CASING_META))
 									.addElement('B', ofBlock(SpaceElevatorBlock))
 									.build();
 					private final String[] desc = new String[]{
 							EnumChatFormatting.RED + "Impact Details:",
-							"- Space Elevator Casing",
-							"- Space Elevator Hawser",
-							"- Hatches (any Space Elevator Casing)",
 					};
 					//endregion
 					
