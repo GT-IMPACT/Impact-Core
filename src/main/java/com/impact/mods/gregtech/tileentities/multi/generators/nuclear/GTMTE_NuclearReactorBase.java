@@ -198,15 +198,15 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-		if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode) {
-			mCurrentTemp = maxTemperature();
+		if (aPlayer.isSneaking()) {
+			if (aPlayer.capabilities.isCreativeMode) mCurrentTemp = maxTemperature();
 		} else {
-			if (depleteInput(getFluidStack("ic2coolant", 1))) {
+			if (depleteInput(!isFastDecay ? getFluidStack("ic2coolant", 1) : Materials.Water.getFluid(1))) {
 				isFastDecay = !isFastDecay;
 				GT_Utility.sendChatToPlayer(aPlayer, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
 			} else {
-				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "No coolant!" +
-						EnumChatFormatting.RESET + "Fast Decay Mode cannot be activated");
+				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + (isFastDecay ? "No Water! " : "No Coolant! ") +
+						EnumChatFormatting.RESET + (!isFastDecay ? "Fast Decay Mode" : "Default Mode") + " cannot be activated");
 			}
 		}
 	}
