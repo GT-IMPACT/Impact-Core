@@ -1,6 +1,7 @@
 package com.impact.util;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PositionObject {
 	
@@ -8,6 +9,8 @@ public class PositionObject {
 	public int yPos;
 	public int zPos;
 	public int dPos;
+	public EntityPlayer player;
+	public String playerName;
 	public String nameLocation = "";
 	
 	public PositionObject(IGregTechTileEntity igt) {
@@ -15,6 +18,8 @@ public class PositionObject {
 		yPos = igt.getYCoord();
 		zPos = igt.getZCoord();
 		dPos = igt.getWorld().provider.dimensionId;
+		player = igt.getWorld().getPlayerEntityByName(igt.getOwnerName());
+		playerName = igt.getOwnerName();
 	}
 	
 	public PositionObject(IGregTechTileEntity igt, String name) {
@@ -23,6 +28,8 @@ public class PositionObject {
 		zPos = igt.getZCoord();
 		dPos = igt.getWorld().provider.dimensionId;
 		nameLocation = name;
+		player = igt.getWorld().getPlayerEntityByName(igt.getOwnerName());
+		playerName = igt.getOwnerName();
 	}
 	
 	public void setNameLocation(String aName) {

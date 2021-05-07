@@ -10,6 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.text.NumberFormat;
+import java.util.LinkedHashMap;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
@@ -17,6 +18,8 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
 	
 	public String mName;
 	public String mStationName = "";
+	public String playerName = "";
+	public LinkedHashMap<String, PositionObject> map = new LinkedHashMap<>();
 	
 	public GUI_SelectAerostat(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
 		super(new Countainer_SelectAerostat(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "AerostatSelect.png");
@@ -24,23 +27,32 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
 	}
 	
 	public String getNameLocation(int id, EnumChatFormatting color, boolean general) {
-		Countainer_SelectAerostat container = (Countainer_SelectAerostat) this.mContainer;
-		
-		
 		int idd = 1;
-		for (String name : Impact_API.sAerostat.keySet()) {
+		
+		for (String name : mapPlayer().keySet()) {
 			if (idd == id) {
 				if (color == EnumChatFormatting.RESET) {
 					return name;
 				}
 				PositionObject thisPos = new PositionObject(mContainer.mTileEntity);
-				PositionObject newPos = Impact_API.sAerostat.get(name);
+				PositionObject newPos = mapPlayer().get(name);
 				int distance = Utilits.distanceBetween3D(thisPos.xPos, newPos.xPos, thisPos.yPos, newPos.yPos, thisPos.zPos, newPos.zPos);
 				return color + "" + (general ? EnumChatFormatting.BOLD + "> " + color : "") + name + color + " " + (distance + "m");
 			}
 			idd++;
 		}
 		return "";
+	}
+	
+	public LinkedHashMap<String, PositionObject> mapPlayer() {
+		LinkedHashMap<String, PositionObject> newMap = new LinkedHashMap<>();
+		for (String name : Impact_API.sAerostat.keySet()) {
+			PositionObject pos = Impact_API.sAerostat.get(name);
+			if (pos.playerName.equals(playerName)) {
+				newMap.put(name, pos);
+			}
+		}
+		return newMap;
 	}
 	
 	@Override
@@ -59,11 +71,15 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
 	}
 	
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRendererObj.drawString(mName, 33, 8, 16448255);
+		//this.fontRendererObj.drawString(mName, 33, 8, 16448255);
 		Countainer_SelectAerostat container = (Countainer_SelectAerostat) this.mContainer;
 		
+		this.fontRendererObj.drawString(mName, 33, 8, 16448255);
+		this.fontRendererObj.drawString("Owner: " + EnumChatFormatting.GREEN + playerName, 33, 18, 16448255);
+		
 		if (container.idLocation > 0) {
-			this.fontRendererObj.drawString("Station Select:", 33, 20, 16448255);
+			this.fontRendererObj.drawString("Station Select:", 33, 28, 16448255);
+			
 			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 5, EnumChatFormatting.DARK_GRAY, false), 33, 50 - 10, 16448255);
 			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 4, EnumChatFormatting.DARK_GRAY, false), 33, 60 - 10, 16448255);
 			this.fontRendererObj.drawString(getNameLocation(container.idLocation + 3, EnumChatFormatting.DARK_GRAY, false), 33, 70 - 10, 16448255);

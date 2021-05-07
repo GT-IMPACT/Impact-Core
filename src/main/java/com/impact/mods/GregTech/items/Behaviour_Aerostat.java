@@ -2,6 +2,8 @@ package com.impact.mods.gregtech.items;
 
 import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
+import com.impact.network.ImpactNetwork;
+import com.impact.network.ImpactPacketStringGui;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -31,6 +33,7 @@ public class Behaviour_Aerostat extends Behaviour_None {
 			if (aerostat instanceof GTMTE_Aerostat && ((GTMTE_Aerostat) aerostat).mMachine) {
 				if (!aPlayer.isSneaking()) {
 					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
+					ImpactNetwork.INSTANCE.sendToPlayer(new ImpactPacketStringGui(((GTMTE_Aerostat) aerostat).playerName, aPlayer), (EntityPlayerMP) aPlayer);
 				} else {
 					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
 				}

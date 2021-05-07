@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.gui.aerostat;
 
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
+import com.impact.util.PositionObject;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -14,11 +15,15 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 	
 	public int idLocation = 1;
 	public int curID = 1;
 	public int curBuffer = 0;
+	public String playerName = "";
 	
 	public Countainer_SelectAerostat(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity, false);
@@ -45,9 +50,9 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 					if (!aerostat.aerName.equals("")) {
 						if (aSlotIndex == 0) {
 							if (aShifthold == 1) {
-								aerostat.aerID = Impact_API.sAerostat.size();
+								aerostat.aerID = aerostat.mapPlayer().size();
 							} else {
-								aerostat.aerID += (aerostat.aerID + 1 > Impact_API.sAerostat.size()) ? 0 : 1;
+								aerostat.aerID += (aerostat.aerID + 1 > aerostat.mapPlayer().size()) ? 0 : 1;
 							}
 							return null;
 						} else if (aSlotIndex == 1) {
@@ -67,6 +72,8 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 		}
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
+	
+
 	
 	@Override
 	public void detectAndSendChanges() {
