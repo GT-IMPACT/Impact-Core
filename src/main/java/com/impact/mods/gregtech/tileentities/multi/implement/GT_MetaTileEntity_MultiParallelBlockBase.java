@@ -406,6 +406,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
           boolean found_Recipe = false;
+          ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
           int processed = 0;
           while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
               && processed < 1) {
@@ -423,6 +424,40 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
               break;
             }
           }
+  
+          for (int f = 0; f < tOut.length; f++) {
+            if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
+              for (int g = 0; g < processed; g++) {
+                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
+                        .getOutputChance(f)) {
+                  tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
+                }
+              }
+            }
+          }
+          tOut = clean(tOut);
+          List<ItemStack> overStacks = new ArrayList<ItemStack>();
+          for (ItemStack stack : tOut) {
+            while (stack.getMaxStackSize() < stack.stackSize) {
+              ItemStack tmp = stack.copy();
+              tmp.stackSize = tmp.getMaxStackSize();
+              stack.stackSize = stack.stackSize - stack.getMaxStackSize();
+              overStacks.add(tmp);
+            }
+          }
+          if (overStacks.size() > 0) {
+            ItemStack[] tmp = new ItemStack[overStacks.size()];
+            tmp = overStacks.toArray(tmp);
+            tOut = ArrayUtils.addAll(tOut, tmp);
+          }
+          List<ItemStack> tSList = new ArrayList<ItemStack>();
+          for (ItemStack tS : tOut) {
+            if (tS.stackSize > 0) {
+              tSList.add(tS);
+            }
+          }
+          tOut = tSList.toArray(new ItemStack[tSList.size()]);
+          
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
@@ -437,8 +472,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             if (this.mEUt > 0) {
               this.mEUt = (-this.mEUt);
             }
-            this.mOutputItems = new ItemStack[outputItems.size()];
-            this.mOutputItems = outputItems.toArray(this.mOutputItems);
+            this.mOutputItems = tOut;
             this.mOutputFluids = new FluidStack[outputFluids.size()];
             this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
             this.updateSlots();
