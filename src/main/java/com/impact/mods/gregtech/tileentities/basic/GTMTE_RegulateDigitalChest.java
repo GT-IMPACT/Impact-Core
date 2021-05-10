@@ -1,9 +1,9 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import com.impact.util.Utilits;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,8 +12,10 @@ import net.minecraft.nbt.NBTTagCompound;
 public class GTMTE_RegulateDigitalChest extends GT_MetaTileEntity_DigitalChestBase {
 
   public int mItemCount = 0;
-  public int mMaxItemCount = 0;
+  public int mMaxItemCount = 64;
   public ItemStack mItemStack = null;
+  
+  public static final int MAX_COUNT = 4_000_000;
 
   public GTMTE_RegulateDigitalChest(int aID, String aName, String aNameRegional, int aTier) {
     super(aID, aName, aNameRegional, aTier);
@@ -68,16 +70,11 @@ public class GTMTE_RegulateDigitalChest extends GT_MetaTileEntity_DigitalChestBa
   public int getMaxItemCount() {
     return mMaxItemCount;
   }
-
+  
   @Override
   public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-    if (aPlayer.isSneaking()) {
-      mMaxItemCount += 16;
-    } else {
-      mMaxItemCount += 4;
-    }
-    GT_Utility.sendChatToPlayer(aPlayer, "Max Amount Items: " + mMaxItemCount );
+    Utilits.openTileGui(aPlayer, 6, getBaseMetaTileEntity());
   }
 
   @Override

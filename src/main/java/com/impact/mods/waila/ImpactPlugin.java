@@ -275,7 +275,7 @@ public class ImpactPlugin extends PluginBase {
       }
 
       if (chestBase != null) {
-        final int stackSizeCurrent = chestBase.getItemCount() > 0 ? chestBase.getItemCount() + 64 : chestBase.getItemCount();
+        final int stackSizeCurrent = chestBase.getItemCount();
         final int stackSizeMax = chestBase.getMaxItemCount();
         final String itemName = chestBase.mInventory[2] != null ? chestBase.mInventory[2].getDisplayName() : "";
         tag.setInteger("chestBaseSizeCurrent", stackSizeCurrent);
