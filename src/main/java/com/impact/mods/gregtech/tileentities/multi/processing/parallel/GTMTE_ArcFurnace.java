@@ -230,7 +230,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public int getPollutionPerTick(ItemStack aStack) {
-    return 50 * this.mParallel;
+    return 50 * mCheckParallelCurrent;
   }
 
   @Override

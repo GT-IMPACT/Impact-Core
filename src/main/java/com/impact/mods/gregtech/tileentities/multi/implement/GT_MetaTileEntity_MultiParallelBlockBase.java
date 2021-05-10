@@ -55,6 +55,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   public final HashSet<GTMTE_ComputerRack> sComputerRack = new HashSet<>();
   public boolean mRecipeCheckParallel = false;
   public int mParallel = 0;
+  public int mCheckParallelCurrent = 0;
   public int modeBuses = 0;
   public byte mMode = -1;
   public int mFrequency = -1;
@@ -276,6 +277,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   }
 
   public boolean impactRecipe() {
+    mCheckParallelCurrent = 0;
     ArrayList<ItemStack> tInputList = getStoredInputs();
     int tInputList_sS = tInputList.size();
     for (int i = 0; i < tInputList_sS - 1; i++) {
@@ -364,6 +366,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   }
 
   public boolean impactRecipe(ItemStack itemStack) {
+    mCheckParallelCurrent = 0;
     ArrayList<ItemStack> tInputList = null;
     ArrayList<FluidStack> tFluidList = null;
     ItemStack[] tInputs = null;
@@ -410,10 +413,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
           boolean found_Recipe = false;
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-          int processed = 0;
           while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
-                  && processed < 1) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+                  && mCheckParallelCurrent < 1) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                     .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -422,7 +424,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
               for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
-              ++processed;
+              ++mCheckParallelCurrent;
             } else {
               break;
             }
@@ -430,7 +432,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         
           for (int f = 0; f < tOut.length; f++) {
             if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-              for (int g = 0; g < processed; g++) {
+              for (int g = 0; g < mCheckParallelCurrent; g++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                         .getOutputChance(f)) {
                   tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -464,7 +466,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
           
             calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
           
@@ -526,10 +528,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
           boolean found_Recipe = false;
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-          int processed = 0;
           while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
-              && processed < 1) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+              && mCheckParallelCurrent < 1) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -538,7 +539,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
               for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
-              ++processed;
+              ++mCheckParallelCurrent;
             } else {
               break;
             }
@@ -546,7 +547,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   
           for (int f = 0; f < tOut.length; f++) {
             if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-              for (int g = 0; g < processed; g++) {
+              for (int g = 0; g < mCheckParallelCurrent; g++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                         .getOutputChance(f)) {
                   tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -580,7 +581,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
 
             calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 
@@ -607,6 +608,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
       return false;
     }
+    mCheckParallelCurrent = 0;
     ArrayList<ItemStack> tInputList = null;
     ArrayList<FluidStack> tFluidList = null;
     ItemStack[] tInputs = null;
@@ -656,12 +658,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
         
           boolean found_Recipe = false;
-          int processed = 0;
         
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
         
-          while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < mParallel) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+          while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                     .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -675,7 +676,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
             
-              ++processed;
+              ++mCheckParallelCurrent;
             
             } else {
               break;
@@ -685,7 +686,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (aChance) {
             for (int f = 0; f < tOut.length; f++) {
               if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-                for (int g = 0; g < processed; g++) {
+                for (int g = 0; g < mCheckParallelCurrent; g++) {
                   if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                           .getOutputChance(f)) {
                     tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -730,7 +731,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
           
             if (actualEUT > Integer.MAX_VALUE) {
               byte divider = 0;
@@ -830,12 +831,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
 
           boolean found_Recipe = false;
-          int processed = 0;
 
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
 
-          while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < mParallel) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+          while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -849,7 +849,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
 
-              ++processed;
+              ++mCheckParallelCurrent;
 
             } else {
               break;
@@ -859,7 +859,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (aChance) {
             for (int f = 0; f < tOut.length; f++) {
               if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-                for (int g = 0; g < processed; g++) {
+                for (int g = 0; g < mCheckParallelCurrent; g++) {
                   if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                       .getOutputChance(f)) {
                     tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -904,7 +904,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
 
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
 
             if (actualEUT > Integer.MAX_VALUE) {
               byte divider = 0;
@@ -989,6 +989,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
       return false;
     }
+    mCheckParallelCurrent = 0;
     ArrayList<ItemStack> tInputList;
     ArrayList<FluidStack> tFluidList;
     ItemStack[] tInputs;
@@ -1030,10 +1031,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
           boolean found_Recipe = false;
-          int processed = 0;
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-          while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < mParallel) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+          while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                     .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -1045,14 +1045,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
               for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
-              ++processed;
+              ++mCheckParallelCurrent;
             } else {
               break;
             }
           }
           for (int f = 0; f < tOut.length; f++) {
             if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-              for (int g = 0; g < processed; g++) {
+              for (int g = 0; g < mCheckParallelCurrent; g++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                         .getOutputChance(f)) {
                   tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -1085,7 +1085,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
           
             if (actualEUT > Integer.MAX_VALUE) {
               byte divider = 0;
@@ -1172,10 +1172,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
           boolean found_Recipe = false;
-          int processed = 0;
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-          while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < mParallel) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+          while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -1187,14 +1186,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
               for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
-              ++processed;
+              ++mCheckParallelCurrent;
             } else {
               break;
             }
           }
           for (int f = 0; f < tOut.length; f++) {
             if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-              for (int g = 0; g < processed; g++) {
+              for (int g = 0; g < mCheckParallelCurrent; g++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                     .getOutputChance(f)) {
                   tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -1227,7 +1226,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
 
             if (actualEUT > Integer.MAX_VALUE) {
               byte divider = 0;
@@ -1285,6 +1284,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
       return false;
     }
+    mCheckParallelCurrent = 0;
     ArrayList<ItemStack> tInputList;
     ArrayList<FluidStack> tFluidList;
     ItemStack[] tInputs;
@@ -1326,10 +1326,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
           boolean found_Recipe = false;
-          int processed = 0;
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-          while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < mParallel) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+          while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                     .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -1341,14 +1340,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
               for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
-              ++processed;
+              ++mCheckParallelCurrent;
             } else {
               break;
             }
           }
           for (int f = 0; f < tOut.length; f++) {
             if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-              for (int g = 0; g < processed; g++) {
+              for (int g = 0; g < mCheckParallelCurrent; g++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                         .getOutputChance(f)) {
                   tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -1381,7 +1380,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
           
             if (actualEUT > Integer.MAX_VALUE) {
               byte divider = 0;
@@ -1468,10 +1467,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
           ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
           boolean found_Recipe = false;
-          int processed = 0;
           ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-          while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < mParallel) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+          while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -1483,14 +1481,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
               for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 outputFluids.add(tRecipe.getFluidOutput(i));
               }
-              ++processed;
+              ++mCheckParallelCurrent;
             } else {
               break;
             }
           }
           for (int f = 0; f < tOut.length; f++) {
             if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-              for (int g = 0; g < processed; g++) {
+              for (int g = 0; g < mCheckParallelCurrent; g++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                     .getOutputChance(f)) {
                   tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -1523,7 +1521,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
 
             if (actualEUT > Integer.MAX_VALUE) {
               byte divider = 0;
@@ -1701,6 +1699,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     aNBT.setBoolean("mIsReceive", this.mIsConnect);
     aNBT.setInteger("mParallel", this.mParallel);
     aNBT.setInteger("modeBuses", this.modeBuses);
+    aNBT.setInteger("mCheckParallelCurrent", this.mCheckParallelCurrent);
     super.saveNBTData(aNBT);
   }
 
@@ -1715,6 +1714,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     this.mIsConnect = aNBT.getBoolean("mIsReceive");
     this.mParallel = aNBT.getInteger("mParallel");
     this.modeBuses = aNBT.getInteger("modeBuses");
+    this.mCheckParallelCurrent = aNBT.getInteger("mCheckParallelCurrent");
     super.loadNBTData(aNBT);
   }
 

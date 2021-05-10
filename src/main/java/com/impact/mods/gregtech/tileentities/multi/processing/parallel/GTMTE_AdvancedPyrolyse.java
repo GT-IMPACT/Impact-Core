@@ -129,12 +129,11 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
 
         boolean found_Recipe = false;
-        int processed = 0;
 
         ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
 
-        while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < xPar) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+        while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < xPar) {
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
                 found_Recipe = true;
                 for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -148,13 +147,13 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                     outputFluids.add(tRecipe.getFluidOutput(i));
                 }
 
-                ++processed;
+                ++mCheckParallelCurrent;
 
             } else {
                 break;
             }
         }
-        mParallelPoint = processed;
+        mParallelPoint = mCheckParallelCurrent;
 
         tOut = clean(tOut);
 
@@ -192,7 +191,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
           this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
           this.mEfficiencyIncrease = 10000;
 
-          this.mEUt = (tRecipe.mEUt) * processed * tierHatch() / 2;
+          this.mEUt = (tRecipe.mEUt) * mCheckParallelCurrent * tierHatch() / 2;
 
             if (this.mEUt > 0) {
                 this.mEUt = (-this.mEUt);
@@ -383,6 +382,6 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
   @Override
   public int getPollutionPerTick(ItemStack aStack) {
-    return 5 * mParallel;
+    return 5 * mCheckParallelCurrent;
   }
 }

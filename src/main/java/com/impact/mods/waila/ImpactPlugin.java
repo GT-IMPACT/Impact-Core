@@ -141,7 +141,7 @@ public class ImpactPlugin extends PluginBase {
             ? EnumChatFormatting.GREEN + "Connection Established"
             : EnumChatFormatting.RED +  "No Connection";
         currenttip.add(str);
-        currenttip.add(String.format("Parallel Point: %d", tag.getInteger("Parallel")));
+        currenttip.add(String.format("Parallel Point: %d/%d", tag.getInteger("currentParallel"), tag.getInteger("Parallel")));
       }
 
       if (LapBuffer != null) {
@@ -317,6 +317,7 @@ public class ImpactPlugin extends PluginBase {
       if (MultiParallel != null) {
         final int Parallel = MultiParallel.mParallel;
         tag.setInteger("Parallel", Parallel);
+        tag.setInteger("currentParallel", MultiParallel.mCheckParallelCurrent);
         tag.setBoolean("connectWithTower", MultiParallel.mIsConnect);
       }
 
