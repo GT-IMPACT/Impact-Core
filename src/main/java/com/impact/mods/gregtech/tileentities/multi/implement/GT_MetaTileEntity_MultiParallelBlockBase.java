@@ -345,6 +345,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           maxProgresstime = 2;
           EUt = recipe.mEUt * recipe.mDuration / 2;
         }
+  
+        for (int i = 0; i < recipe.mOutputs.length; i++) {
+          if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
+            this.mOutputItems[i] = recipe.getOutput(i);
+          }
+        }
 
         this.mEUt = -EUt;
         this.mMaxProgresstime = maxProgresstime;
