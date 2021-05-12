@@ -171,8 +171,8 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 			
 			//calculator https://drive.google.com/file/d/1oIsN8srvb0jAJpYMgWyLldbQIrNeTVLi/view?usp=sharing
 			
-			mCurrentInput = isFastDecay ? total / 4D : total;
-			mCurrentOutput = isFastDecay ? total / 4D : total * 160D;
+			mCurrentInput = (isFastDecay ? total / 4D : total) * 8;
+			mCurrentOutput = (isFastDecay ? total / 4D : total * 160D) * 8;
 			
 			double tScale = (double) mCurrentTemp / (double) maxTemperature();
 			tScale = tScale <= 0 ? 0 : tScale;
@@ -239,13 +239,13 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	}
 	
 	public FluidStack getInputFluid() {
-		int in = (int) Math.ceil(mCurrentInput * 8D);
+		int in = (int) Math.ceil(mCurrentInput);
 		return isFastDecay ? getFluidStack("ic2coolant", in) :
 				Materials.Water.getFluid(in);
 	}
 	
 	public FluidStack getOutputFluid() {
-		int out = (int) Math.ceil(mCurrentOutput * 8D);
+		int out = (int) Math.ceil(mCurrentOutput);
 		return isFastDecay ? getFluidStack("ic2hotcoolant", out) : isMoxFuel ?
 				getFluidStack("ic2superheatedsteam", out) : Materials.Water.getGas(out);
 	}
@@ -288,9 +288,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 				"Current Temperature: " + EnumChatFormatting.RED + temperature + " %",
 				"MAX Temperature: " + EnumChatFormatting.RED + maxTemperature() + " %",
 				"Input: " + getInputFluid().getLocalizedName() + " " + EnumChatFormatting.RED
-						+ (int) Math.ceil(mCurrentInput * 20D) + EnumChatFormatting.RESET + " L/s",
-				"Output:  " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN + (int) Math.ceil(mCurrentOutput * 20D)
-						+ EnumChatFormatting.RESET + " L/s"
+						+ (int) Math.ceil(mCurrentInput) + EnumChatFormatting.RESET + " L/t",
+				"Output:  " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN + (int) Math.ceil(mCurrentOutput)
+						+ EnumChatFormatting.RESET + " L/t"
 		};
 	}
 }

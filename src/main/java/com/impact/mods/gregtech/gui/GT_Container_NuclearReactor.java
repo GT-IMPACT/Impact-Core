@@ -99,8 +99,8 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 		GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity());
 		this.mTemp = (int) reactor.mCurrentTemp;
 		this.mMaxTemp = reactor.maxTemperature();
-		this.mInput = (int) Math.ceil(reactor.mCurrentInput * 20D);
-		this.mOutput = (int) Math.ceil(reactor.mCurrentOutput * 20D);
+		this.mInput = (int) Math.ceil(reactor.mCurrentInput);
+		this.mOutput = (int) Math.ceil(reactor.mCurrentOutput);
 		this.mHatchesRodPosition = reactor.getRodPosition();
 		this.isFastDecay = reactor.isFastDecay;
 		this.isMoxFuel = reactor.isMoxFuel;
