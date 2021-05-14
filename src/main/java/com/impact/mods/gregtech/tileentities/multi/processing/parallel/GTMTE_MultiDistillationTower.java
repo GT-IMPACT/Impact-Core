@@ -156,6 +156,7 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
   }
 
   public boolean checkRecipe(ItemStack itemStack) {
+    mCheckParallelCurrent = 0;
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
       return false;
     }
@@ -179,10 +180,9 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
         ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
         ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
         boolean found_Recipe = false;
-        int processed = 0;
         ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-        while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < mParallel) {
-          if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+        while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+          if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
               .isRecipeInputEqual(true, tFluids, tInputs)) {
             found_Recipe = true;
             for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -194,14 +194,14 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
             for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
               outputFluids.add(tRecipe.getFluidOutput(i));
             }
-            ++processed;
+            ++mCheckParallelCurrent;
           } else {
             break;
           }
         }
         for (int f = 0; f < tOut.length; f++) {
           if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-            for (int g = 0; g < processed; g++) {
+            for (int g = 0; g < mCheckParallelCurrent; g++) {
               if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
                   .getOutputChance(f)) {
                 tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
@@ -234,7 +234,7 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
         if (found_Recipe) {
           this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
           this.mEfficiencyIncrease = 10000;
-          long actualEUT = (long) (tRecipe.mEUt) * processed;
+          long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
 
           if (actualEUT > Integer.MAX_VALUE) {
             byte divider = 0;
@@ -276,7 +276,7 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
           }
           this.mOutputItems = tOut;
           for (FluidStack fs : outputFluids) {
-            fs.amount *= processed;
+            fs.amount *= mCheckParallelCurrent;
           }
           this.mOutputFluids = new FluidStack[outputFluids.size()];
           this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);

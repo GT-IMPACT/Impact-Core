@@ -101,6 +101,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
   }
 
   public boolean checkRecipe(ItemStack itemStack) {
+    mCheckParallelCurrent = 0;
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
       return false;
     }
@@ -140,16 +141,15 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
           boolean found_Recipe = false;
-          int processed = 0;
           while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
-              && processed < mParallel) { //THIS PARALLEL
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+              && mCheckParallelCurrent < mParallel) { //THIS PARALLEL
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                 outputItems.add(tRecipe.getOutput(i));
               }
-              ++processed;
+              ++mCheckParallelCurrent;
             } else {
               break;
             }
@@ -157,7 +157,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
           if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
+            long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
             if (actualEUT > Integer.MAX_VALUE) {
               byte divider = 0;
               while (actualEUT > Integer.MAX_VALUE) {
