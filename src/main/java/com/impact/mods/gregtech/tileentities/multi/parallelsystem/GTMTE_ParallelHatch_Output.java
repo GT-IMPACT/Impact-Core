@@ -166,7 +166,7 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
                       EnumChatFormatting.GREEN + "Successful connection");
                   GT_Utility.sendChatToPlayer(aPlayer,
                       "X: " + this.mTargetX + " Y: " + this.mTargetY + " Z: " + this.mTargetZ);
-                  GT_Utility.sendChatToPlayer(aPlayer, "Current Parallel Point: " + 4);
+                  GT_Utility.sendChatToPlayer(aPlayer, "Current Parallel Point: " + mMaxParallel);
                 } else {
                   GT_Utility.sendChatToPlayer(aPlayer,
                       EnumChatFormatting.RED + "Connection error, try again");
