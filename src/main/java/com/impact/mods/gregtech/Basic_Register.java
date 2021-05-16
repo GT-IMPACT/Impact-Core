@@ -294,122 +294,55 @@ public class Basic_Register {
             'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M',
             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
             GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
-    DustWasherLuV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13041,
-        "impact.basicmachine.dustwasher.tier.06", "LuV Dust Washer", 6, "Washed your Dusts",
-        GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 7, 0, 1, "Autoclave.png", "", false,
-        false, 0, "DUSTWASHER",
-        new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-            'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
-    DustWasherZPM.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13042,
-        "impact.basicmachine.dustwasher.tier.07", "ZPM Dust Washer", 7, "Washed your Dusts",
-        GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 8, 0, 1, "Autoclave.png", "", false,
-        false, 0, "DUSTWASHER",
-        new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-            'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
-    DustWasherUV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13043,
-        "impact.basicmachine.dustwasher.tier.08", "UV Dust Washer", 8, "Washed your Dusts",
-        GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 8, 0, 1, "Autoclave.png", "", false,
-        false, 0, "DUSTWASHER",
-        new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-            'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
-    DustWasherUHV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13044,
-        "impact.basicmachine.dustwasher.tier.09", "UHV Dust Washer", 9, "Washed your Dusts",
-        GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 8, 0, 1, "Autoclave.png", "", false,
-        false, 0, "DUSTWASHER",
-        new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-            'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
-    DustWasherUEV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13045,
-        "impact.basicmachine.dustwasher.tier.10", "UEV Dust Washer", 10, "Washed your Dusts",
-        GT_Recipe.GT_Recipe_Map.sDustWashRecipes, 1, 1, 8000 * 8, 0, 1, "Autoclave.png", "", false,
-        false, 0, "DUSTWASHER",
-        new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE,
-            'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
-            GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}).getStackForm(1L));
 
     if (GT_Mod.gregtechproxy.mComponentAssembler) {
       Machine_LV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13010,
-          "impact.basicmachine.componentassembler.tier.01", "Basic Component Assembling Machine", 1,
+          "impact.basicmachine.componentassembler.tier.01", "LV Component Assembler", 1,
           "Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000,
           0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
           "COMPONENTASSEMBLER", null).getStackForm(1L));
       Machine_MV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13011,
-          "impact.basicmachine.componentassembler.tier.02", "Advanced Component Assembling Machine",
+          "impact.basicmachine.componentassembler.tier.02", "MV Component Assembler",
           2, "Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1,
           24000, 0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
           "COMPONENTASSEMBLER", null).getStackForm(1L));
       Machine_HV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13012,
           "impact.basicmachine.componentassembler.tier.03",
-          "Advanced Component Assembling Machine II", 3, "Components, Assemble!",
+          "HV Component Assembler", 3, "Components, Assemble!",
           GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 32000, 0, 1, "Assembler.png",
           GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null)
           .getStackForm(1L));
       Machine_EV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13013,
           "impact.basicmachine.componentassembler.tier.04",
-          "Advanced Component Assembling Machine III", 4, "Components, Assemble!",
+          "EV Component Assembler", 4, "Components, Assemble!",
           GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 48000, 0, 1, "Assembler.png",
           GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null)
           .getStackForm(1L));
       Machine_IV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13014,
           "impact.basicmachine.componentassembler.tier.05",
-          "Advanced Component Assembling Machine IV", 5, "Components, Assemble!",
+          "IV Component Assembler", 5, "Components, Assemble!",
           GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 64000, 0, 1, "Assembler.png",
           GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null)
           .getStackForm(1L));
-      Machine_LuV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13015,
-          "impact.basicmachine.componentassembler.tier.06", "Extreme Component Assembling Machine",
-          6, "Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1,
-          64000, 0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
-          "COMPONENTASSEMBLER", null).getStackForm(1L));
-      Machine_ZPM_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13016,
-          "impact.basicmachine.componentassembler.tier.07",
-          "Extreme Component Assembling Machine II", 7, "Components, Assemble!",
-          GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 64000, 0, 1, "Assembler.png",
-          GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null)
-          .getStackForm(1L));
-      Machine_UV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13017,
-          "impact.basicmachine.componentassembler.tier.08",
-          "Extreme Component Assembling Machine III", 8, "Components, Assemble!",
-          GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 64000, 0, 1, "Assembler.png",
-          GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null)
-          .getStackForm(1L));
-      Machine_UHV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13018,
-          "impact.basicmachine.componentassembler.tier.09", "Epic Component Assembling Machine", 9,
-          "Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 64000,
-          0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
-          "COMPONENTASSEMBLER", null).getStackForm(1L));
-      Machine_UEV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13019,
-          "impact.basicmachine.componentassembler.tier.10", "Epic Component Assembling Machine II",
-          10, "Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1,
-          64000, 0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
-          "COMPONENTASSEMBLER", null).getStackForm(1L));
     }
 
     Machine_ULV_Assembler.set(
         new GT_MetaTileEntity_BasicMachine_GT_Recipe(13032, "impact.basicmachine.assembler.tier.00",
-            "Primitive Assembler", 0, "Avengers, Assemble!",
+            "ULV Assembler", 0, "Avengers, Assemble!",
             GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 3, 1, 8000, 0, 1, "Assembler0.png",
             GregTech_API.sSoundList.get(204), false, false, 0, "ASSEMBLER", null).getStackForm(1L));
     Generator_Steam_Turbine_ULV.set(
         new GT_MetaTileEntity_SteamTurbine(13025, "impact.basicgenerator.steamturbine.tier.00",
-            "First Steam Turbine", 0).getStackForm(1L));
+            "ULV Steam Turbine", 0).getStackForm(1L));
     Generator_Diesel_ULV.set(
         new GT_MetaTileEntity_DieselGenerator(13026, "impact.basicgenerator.diesel.tier.00",
-            "First Combustion Generator", 0).getStackForm(1L));
+            "ULV Combustion Generator", 0).getStackForm(1L));
     Generator_Gas_Turbine_ULV.set(
         new GT_MetaTileEntity_GasTurbine(13027, "impact.basicgenerator.gasturbine.tier.00",
-            "First Gas Turbine", 0).getStackForm(1L));
+            "ULV Gas Turbine", 0).getStackForm(1L));
     Generator_Semi_Turbine_ULV.set(
         new GTMTE_SemifluidGenerator(13028, "impact.basicgenerator.semifluid.tier.00",
-            "First Semifluid Generator", 0).getStackForm(1L));
+            "ULV Semifluid Generator", 0).getStackForm(1L));
 
     Hatch_Output_Prim.set(
         new GT_MetaTileEntity_Primitive_Hatch_Output(14013, "impact.primitive.hatchoutput",
@@ -424,13 +357,13 @@ public class Basic_Register {
 
     Generator_Semi_Turbine_LV.set(
         new GTMTE_SemifluidGenerator(13029, "impact.basicgenerator.semifluid.tier.01",
-            "Basic Semifluid Generator", 1).getStackForm(1L));
+            "LV Semifluid Generator", 1).getStackForm(1L));
     Generator_Semi_Turbine_MV.set(
         new GTMTE_SemifluidGenerator(13030, "impact.basicgenerator.semifluid.tier.02",
-            "Advanced Semifluid Generator", 2).getStackForm(1L));
+            "MV Semifluid Generator", 2).getStackForm(1L));
     Generator_Semi_Turbine_HV.set(
         new GTMTE_SemifluidGenerator(13031, "impact.basicgenerator.semifluid.tier.03",
-            "Turbo Semifluid Generator", 3).getStackForm(1L));
+            "HV Semifluid Generator", 3).getStackForm(1L));
 
     Hatch_Input_UEV.set(
         new GT_MetaTileEntity_Hatch_Input(12250, "impact.hatch.input.tier.10", "Input Hatch (UEV)",
