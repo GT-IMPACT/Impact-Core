@@ -14,6 +14,8 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.Utilits;
+import com.impact.util.multis.OverclockCalculate;
+import com.impact.util.multis.WorldProperties;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -178,11 +180,11 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
             .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
 
         if (tRecipe != null) {
-
-          if (!needCleanroom(tRecipe)) {
+  
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
 
@@ -210,8 +212,8 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
             long actualEUT = (long) (tRecipe.mEUt * 1000) * processed;
-
-            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+  
+            OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
                 && this.mEUt == Integer.MAX_VALUE - 1) {

@@ -20,6 +20,8 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSat
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Transmitter;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.util.Utilits;
+import com.impact.util.multis.OverclockCalculate;
+import com.impact.util.multis.WorldProperties;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.GT_Mod;
@@ -75,156 +77,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     super(aName);
   }
 
-  public static void calculateOverclockedNessMulti(@Nonnegative int aEUt,
-      @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
-      GT_MetaTileEntity_MultiParallelBlockBase base) {
-    byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-    if (mTier == 0) {
-      //Long time calculation
-      long xMaxProgresstime = ((long) aDuration) << 1;
-      if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-        //make impossible if too long
-        base.mEUt = Integer.MAX_VALUE - 1;
-        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-      } else {
-        base.mEUt = aEUt >> 2;
-        base.mMaxProgresstime = (int) xMaxProgresstime;
-      }
-    } else {
-      //Long EUt calculation
-      long xEUt = aEUt;
-      //Isnt too low EUt check?
-      long tempEUt = Math.max(xEUt, V[1]);
-
-      base.mMaxProgresstime = aDuration;
-
-      while (tempEUt <= V[mTier - 1] * mAmperage) {
-        tempEUt <<= 2;//this actually controls overclocking
-        //xEUt *= 4;//this is effect of everclocking
-        base.mMaxProgresstime >>= 1;//this is effect of overclocking
-        xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1
-            : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
-      }
-
-      while (xEUt > maxInputVoltage) {
-        //downclock one notch until we are good again, we have overshot.
-        xEUt >>= 2;
-        base.mMaxProgresstime <<= 1;
-      }
-
-      if (xEUt > Integer.MAX_VALUE - 1) {
-        base.mEUt = Integer.MAX_VALUE - 1;
-        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-      } else {
-        base.mEUt = (int) xEUt;
-        if (base.mEUt == 0) {
-          base.mEUt = 1;
-        }
-        if (base.mMaxProgresstime <= 0) {
-          base.mMaxProgresstime = 1;//set time to 1 tick
-        }
-      }
-    }
-  }
-
-  //TODO: 20.02.2021 Future
-  public static void calculateOverclockedNew(@Nonnegative int aEUt,
-      @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage,
-      GT_MetaTileEntity_MultiParallelBlockBase base) {
-    byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-    if (mTier == 0) {
-      //Long time calculation
-      long xMaxProgresstime = ((long) aDuration) << 1;
-      if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-        //make impossible if too long
-        base.mEUt = Integer.MAX_VALUE - 1;
-        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-      } else {
-        base.mEUt = aEUt >> 2;
-        base.mMaxProgresstime = (int) xMaxProgresstime;
-      }
-    } else {
-      //Long EUt calculation
-      long xEUt = aEUt;
-      //Isnt too low EUt check?
-      long tempEUt = Math.max(xEUt, V[1]);
-      base.mMaxProgresstime = aDuration;
-      while (tempEUt <= V[mTier - 1] * mAmperage) {
-        tempEUt = (tempEUt << 2) * 3 / 2;
-//        tempEUt <<= 2; //bit shift to 2 / example: 480 << 2 = 1920
-//        tempEUt *= 3; //1920 * 4 = 7680  | 1920 * 3 = 5760
-        base.mMaxProgresstime >>= 2; //this is effect of overclocking
-        xEUt = base.mMaxProgresstime <= 0 ? (xEUt >> 2) * 3 / 2 : (xEUt << 2) * 3 / 2;
-        //U know, if the time is less than 1 tick make the machine use less power
-      }
-      while (xEUt > maxInputVoltage) {
-        //downclock one notch until we are good again, we have overshot.
-        xEUt = (xEUt << 2) * 3 / 2;
-        base.mMaxProgresstime <<= 2;
-      }
-      if (xEUt > Integer.MAX_VALUE - 1) {
-        base.mEUt = Integer.MAX_VALUE - 1;
-        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-      } else {
-        base.mEUt = (int) xEUt;
-        if (base.mEUt == 0) {
-          base.mEUt = 1;
-        }
-        if (base.mMaxProgresstime <= 0) {
-          base.mMaxProgresstime = 1;
-        }
-      }
-    }
-  }
-
-  public static void calculateOverclockedNessMultiPefectOC(int aEUt, int aDuration, int mAmperage,
-      long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
-    byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-    if (mTier == 0) {
-      //Long time calculation
-      long xMaxProgresstime = ((long) aDuration) << 1;
-      if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-        //make impossible if too long
-        base.mEUt = Integer.MAX_VALUE - 1;
-        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-      } else {
-        base.mEUt = aEUt >> 2;
-        base.mMaxProgresstime = (int) xMaxProgresstime;
-      }
-    } else {
-      long xEUt = aEUt;
-      //Isnt too low EUt check?
-      long tempEUt = Math.max(xEUt, V[1]);
-
-      base.mMaxProgresstime = aDuration;
-
-      while (tempEUt <= V[mTier - 1] * mAmperage) {
-        tempEUt <<= 1;//this actually controls overclocking
-        //this is effect of overclocking
-        xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1
-            : xEUt << 1;//U know, if the time is less than 1 tick make the machine use less power
-      }
-
-      while (xEUt > maxInputVoltage) {
-        //downclock one notch until we are good again, we have overshot.
-        xEUt >>= 1;
-        base.mMaxProgresstime <<= 1;
-      }
-      if (xEUt > Integer.MAX_VALUE - 1) {
-        base.mEUt = Integer.MAX_VALUE - 1;
-        base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-      } else {
-        base.mEUt = (int) xEUt;
-        if (base.mEUt == 0) {
-          base.mEUt = 1;
-        }
-        if (base.mMaxProgresstime <= 0) {
-          base.mMaxProgresstime = 1;//set time to 1 tick
-        }
-      }
-    }
-  }
-
+  
   public static ItemStack[] clean(final ItemStack[] v) {
     List<ItemStack> list = new ArrayList<ItemStack>(Arrays.asList(v));
     list.removeAll(Collections.singleton(null));
@@ -244,7 +97,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         if (modeBuses > 1) {
           modeBuses = 0;
         }
-
         GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
       }
     }
@@ -322,10 +174,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           false, GT_Values.V[tier], fluids, inputs);
       if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
 
-        if (!needCleanroom(recipe)) {
+        if (!WorldProperties.needCleanroom(recipe, this)) {
           return false;
         }
-        if (!needSpace(recipe)) {
+        if (!WorldProperties.needSpace(recipe, this)) {
           return false;
         }
         
@@ -394,11 +246,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
       
         if (tRecipe != null) {
-        
-          if (!needCleanroom(tRecipe)) {
+  
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
         
@@ -427,7 +279,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             this.mEfficiencyIncrease = 10000;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
           
-            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+            OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
           
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
                     && this.mEUt == Integer.MAX_VALUE - 1) {
@@ -476,11 +328,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
       
         if (tRecipe != null) {
-        
-          if (!needCleanroom(tRecipe)) {
+  
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
         
@@ -509,7 +361,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             this.mEfficiencyIncrease = 10000;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
           
-            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+            OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
           
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
                     && this.mEUt == Integer.MAX_VALUE - 1) {
@@ -573,11 +425,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
       
         if (tRecipe != null) {
-        
-          if (!needCleanroom(tRecipe)) {
+  
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
         
@@ -666,10 +518,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 actualEUT = actualEUT / 2;
                 divider++;
               }
-              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+              OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                       tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+              OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                       this);
             }
           
@@ -746,11 +598,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
 
         if (tRecipe != null) {
-
-          if (!needCleanroom(tRecipe)) {
+  
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
 
@@ -839,10 +691,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 actualEUT = actualEUT / 2;
                 divider++;
               }
-              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+              OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                   tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+              OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                   this);
             }
 
@@ -889,28 +741,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     return false;
   }
 
-  private ArrayList<ItemStack> separateBus() {
-    return null;
-  }
-
-  public boolean needCleanroom(GT_Recipe tRecipe) {
-    boolean isNotCleanroom = true;
-    if (tRecipe.mSpecialValue == -200 && (mCleanroom == null
-        || mCleanroom.mEfficiency == 0)) {
-      isNotCleanroom = false;
-    }
-    return isNotCleanroom;
-  }
-
-  public boolean needSpace(GT_Recipe tRecipe) {
-    boolean isNotSpace = true;
-    if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100)
-        && !isValidForLowGravity(tRecipe,
-        getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
-      isNotSpace = false;
-    }
-    return isNotSpace;
-  }
 
   public boolean impactRecipeWithStackSize() {
     if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
@@ -949,10 +779,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         GT_Recipe tRecipe = getRecipeMap()
                 .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
         if (tRecipe != null) {
-          if (!needCleanroom(tRecipe)) {
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
@@ -1020,10 +850,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 actualEUT = actualEUT / 2;
                 divider++;
               }
-              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+              OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                       tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+              OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                       this);
             }
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
@@ -1090,10 +920,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         GT_Recipe tRecipe = getRecipeMap()
             .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
         if (tRecipe != null) {
-          if (!needCleanroom(tRecipe)) {
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
@@ -1161,10 +991,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 actualEUT = actualEUT / 2;
                 divider++;
               }
-              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+              OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                   tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+              OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                   this);
             }
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
@@ -1244,10 +1074,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         GT_Recipe tRecipe = getRecipeMap()
                 .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
         if (tRecipe != null) {
-          if (!needCleanroom(tRecipe)) {
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
@@ -1315,10 +1145,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 actualEUT = actualEUT / 2;
                 divider++;
               }
-              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+              OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                       tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+              OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                       this);
             }
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
@@ -1385,10 +1215,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         GT_Recipe tRecipe = getRecipeMap()
             .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
         if (tRecipe != null) {
-          if (!needCleanroom(tRecipe)) {
+          if (!WorldProperties.needCleanroom(tRecipe, this)) {
             return false;
           }
-          if (!needSpace(tRecipe)) {
+          if (!WorldProperties.needSpace(tRecipe, this)) {
             return false;
           }
           ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
@@ -1456,10 +1286,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
                 actualEUT = actualEUT / 2;
                 divider++;
               }
-              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+              OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                   tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+              OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                   this);
             }
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1

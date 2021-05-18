@@ -13,6 +13,8 @@ import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.Utilits;
+import com.impact.util.multis.OverclockCalculate;
+import com.impact.util.multis.WorldProperties;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -172,10 +174,10 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
       GT_Recipe tRecipe = getRecipeMap()
           .findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
       if (tRecipe != null) {
-        if (!needCleanroom(tRecipe)) {
+        if (!WorldProperties.needCleanroom(tRecipe, this)) {
           return false;
         }
-        if (!needSpace(tRecipe)) {
+        if (!WorldProperties.needSpace(tRecipe, this)) {
           return false;
         }
         ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
@@ -243,10 +245,10 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
               actualEUT = actualEUT / 2;
               divider++;
             }
-            calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+            OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                 tRecipe.mDuration * (divider * 2), 1, nominalV, this);
           } else {
-            calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+            OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                 this);
           }
           if (this.mMaxProgresstime == Integer.MAX_VALUE - 1

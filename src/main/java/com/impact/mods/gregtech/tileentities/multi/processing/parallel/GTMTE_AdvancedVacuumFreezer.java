@@ -6,6 +6,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Basi
 
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -164,10 +165,10 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 actualEUT = actualEUT / 2;
                 divider++;
               }
-              calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
+              OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
                   tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-              calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
+              OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                   this);
             }
             //In case recipe is too OP for that machine
