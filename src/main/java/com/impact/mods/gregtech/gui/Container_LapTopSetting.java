@@ -44,47 +44,31 @@ public class Container_LapTopSetting extends GT_ContainerMetaTile_Machine {
     Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
     if ((tSlot != null) && (this.mTileEntity.getMetaTileEntity() != null)) {
 
-      if (this.mTileEntity
-          .getMetaTileEntity() instanceof GT_MetaTileEntity_MultiParallelBlockBase) {
-        int aFrequency = ((GT_MetaTileEntity_MultiParallelBlockBase) this.mTileEntity
-            .getMetaTileEntity()).mFrequency;
+      if (mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiParallelBlockBase) {
+        GT_MetaTileEntity_MultiParallelBlockBase base = (GT_MetaTileEntity_MultiParallelBlockBase) mTileEntity.getMetaTileEntity();
+        int aFrequency = base.mFrequency;
         if (aSlotIndex == 0) {
-          ((GT_MetaTileEntity_MultiParallelBlockBase) this.mTileEntity
-              .getMetaTileEntity()).mFrequency += (aShifthold == 1 ? 10 : 1);
+          base.mFrequency += (aShifthold == 1 ? 10 : 1);
           return null;
         } else if (aSlotIndex == 1) {
-          ((GT_MetaTileEntity_MultiParallelBlockBase) this.mTileEntity
-              .getMetaTileEntity()).mFrequency -= (aShifthold == 1 ? 10 : 1);
-          if (aFrequency < 0) {
-            ((GT_MetaTileEntity_MultiParallelBlockBase) this.mTileEntity
-                .getMetaTileEntity()).mFrequency = 0;
-          }
+          base.mFrequency -= (aShifthold == 1 ? aFrequency - 10 < 0 ? 0 : 10 : aFrequency - 1 < 0 ? 0 : 1);
           return null;
         } else if (aSlotIndex == 2) {
-          ((GT_MetaTileEntity_MultiParallelBlockBase) this.mTileEntity.getMetaTileEntity())
-              .getFrequency(((GT_MetaTileEntity_MultiParallelBlockBase) this.mTileEntity
-                  .getMetaTileEntity()).mFrequency, aPlayer);
+          base.getFrequency(base.mFrequency, aPlayer);
         }
       }
 
-      if (this.mTileEntity.getMetaTileEntity() instanceof GTMTE_TowerCommunication) {
-        int aFrequency = ((GTMTE_TowerCommunication) this.mTileEntity
-            .getMetaTileEntity()).mFrequency;
+      if (mTileEntity.getMetaTileEntity() instanceof GTMTE_TowerCommunication) {
+        GTMTE_TowerCommunication tower = (GTMTE_TowerCommunication) mTileEntity.getMetaTileEntity();
+        int aFrequency = tower.mFrequency;
         if (aSlotIndex == 0) {
-          ((GTMTE_TowerCommunication) this.mTileEntity.getMetaTileEntity()).mFrequency += (
-              aShifthold == 1 ? 10 : 1);
+          tower.mFrequency += (aShifthold == 1 ? 10 : 1);
           return null;
         } else if (aSlotIndex == 1) {
-          ((GTMTE_TowerCommunication) this.mTileEntity.getMetaTileEntity()).mFrequency -= (
-              aShifthold == 1 ? 10 : 1);
-          if (aFrequency < 0) {
-            ((GTMTE_TowerCommunication) this.mTileEntity.getMetaTileEntity()).mFrequency = 0;
-          }
+          tower.mFrequency -= (aShifthold == 1 ? aFrequency - 10 < 0 ? 0 : 10 : aFrequency - 1 < 0 ? 0 : 1);
           return null;
         } else if (aSlotIndex == 2) {
-          ((GTMTE_TowerCommunication) this.mTileEntity.getMetaTileEntity()).setFrequency(
-              ((GTMTE_TowerCommunication) this.mTileEntity.getMetaTileEntity()).mFrequency,
-              aPlayer);
+          tower.setFrequency(tower.mFrequency, aPlayer);
         }
       }
     }

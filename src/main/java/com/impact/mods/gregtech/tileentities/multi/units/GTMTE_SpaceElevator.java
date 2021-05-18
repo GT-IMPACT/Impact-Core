@@ -14,6 +14,7 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.PositionObject;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.Utilits;
 import com.impact.util.vector.Vector3i;
@@ -28,6 +29,8 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import java.util.List;
+
+import javafx.geometry.Pos;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -209,16 +212,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
     mCrowbar = true; //todo Пересмотреть мейнтенанс
     return formationChecklist;
   }
-
-  public void teleportInventory(TileEntity tTile) {
-    if (mInventory[0] != null) {
-      if (tTile instanceof IInventory) {
-        GT_Utility.moveOneItemStack(this, tTile, (byte) 0, (byte) 0,
-            null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-      }
-    }
-  }
-
+  
   public boolean checkCurrentDimension(int dim) {
     return dim == getBaseMetaTileEntity().getWorld().provider.dimensionId;
   }
@@ -237,22 +231,19 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
         }
         if (getBaseMetaTileEntity().getRedstone() && (!checkCurrentDimension(this.mTargetD) &&
             (!GT_Utility.moveEntityToDimensionAtCoords(tEntity,
-                this.mTargetD, this.mTargetX + 0.5D,
-                this.mTargetY + 1, this.mTargetZ + 0.5D)))) {
+                this.mTargetD, this.mTargetX + 0.5D, this.mTargetY + 1, this.mTargetZ + 0.5D)))) {
           isConnect = false;
         }
       }
     }
   }
 
-  public void connect(TileEntity tTile) {
-    if (tTile instanceof IGregTechTileEntity) {
-      MetaTileEntity mte = (MetaTileEntity) ((IGregTechTileEntity) tTile).getMetaTileEntity();
-      if (mte instanceof GTMTE_SpaceElevator) {
-        ((GTMTE_SpaceElevator) mte).setCoord(new int[]{getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(),
-            getBaseMetaTileEntity().getZCoord(), getBaseMetaTileEntity().getWorld().provider.dimensionId});
-        this.isConnect = true;
-      }
+  public void connect(IGregTechTileEntity tTile) {
+    if (tTile.getMetaTileEntity() instanceof GTMTE_SpaceElevator) {
+      GTMTE_SpaceElevator space = (GTMTE_SpaceElevator) tTile.getMetaTileEntity();
+      PositionObject pos = new PositionObject(tTile);
+      space.setCoord(pos);
+      this.isConnect = true;
     }
   }
 
@@ -261,21 +252,20 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
     super.onPostTick(aBaseMetaTileEntity, aTick);
     if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isActive()) {
       if (aTick % 20 * 3 == 0) {
-        TileEntity tTile = null;
+        IGregTechTileEntity tTile = null;
         if (this.mTargetD == getBaseMetaTileEntity().getWorld().provider.dimensionId) {
-          tTile = getBaseMetaTileEntity()
-              .getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+          tTile = getBaseMetaTileEntity().getIGregTechTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
         } else {
           World tWorld = DimensionManager.getWorld(this.mTargetD);
-          if (tWorld != null) {
-            tTile = tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
-          }
+          TileEntity te = tWorld != null ? tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ) : null;
+          tTile = te instanceof IGregTechTileEntity ? (IGregTechTileEntity) te : null;
         }
-        connect(tTile);
-        if (this.isConnect) {
-          teleportInventory(tTile);
-          teleportEntity();
-          this.isConnect = false;
+        if (tTile != null) {
+          connect(tTile);
+          if (this.isConnect) {
+            teleportEntity();
+            this.isConnect = false;
+          }
         }
       }
     }
@@ -286,12 +276,14 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
   }
 
   public void getFrequency(EntityPlayer aPlayer) {
-    if (Impact_API.sElevatorSpace.get(Utilits.inToStringUUID(1, aPlayer)) != null) {
-      GT_Utility.sendChatToPlayer(aPlayer, "Load Position");
-      setCoord(Impact_API.sElevatorSpace.get(Utilits.inToStringUUID(1, aPlayer)));
-    } else {
+    int[] coords = Impact_API.sElevatorSpace.get(Utilits.inToStringUUID(1, aPlayer));
+    if (coords == null) {
       GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Failed Load Position");
+      return;
     }
+    PositionObject pos = new PositionObject(coords);
+    GT_Utility.sendChatToPlayer(aPlayer, "Load Position");
+    setCoord(pos);
   }
 
   public void setFrequency(EntityPlayer aPlayer) {
@@ -328,10 +320,5 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
   @Override
   public int getPollutionPerTick(ItemStack aStack) {
     return 0;
-  }
-
-
-  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
-      float aZ) {
   }
 }

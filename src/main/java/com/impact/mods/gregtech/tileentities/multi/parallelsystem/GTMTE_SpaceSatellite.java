@@ -105,7 +105,6 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
             return desc;
           }
         });
-
   }
 
   @Override
@@ -138,28 +137,20 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
   }
 
   @Override
-  public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-    super.onPostTick(aBaseMetaTileEntity, aTick);
-    if (aBaseMetaTileEntity.isServerSide()) {
+  public void onPostTick(IGregTechTileEntity iAm, long aTick) {
+    super.onPostTick(iAm, aTick);
+    boolean active;
+    if (iAm.isServerSide()) {
       if (aTick % 20 == 0) {
-        aBaseMetaTileEntity.setActive(true);
+        iAm.setActive(true);
         for (GTMTE_SpaceSatellite_Transmitter th : sCommunTransmitter) {
-          if (aBaseMetaTileEntity.isActive()) {
-            th.getBaseMetaTileEntity().setActive(true);
-            th.setIsTransmit(true);
-          } else {
-            th.getBaseMetaTileEntity().setActive(false);
-            th.setIsTransmit(false);
-          }
+          active = iAm.isActive();
+          th.getBaseMetaTileEntity().setActive(active);
+          th.setIsTransmit(active);
         }
       }
-      if (aTick % 20 * 60 == 0) {
-        this.mWrench = true;
-        this.mScrewdriver = true;
-        this.mSoftHammer = true;
-        this.mHardHammer = true;
-        this.mSolderingTool = true;
-        this.mCrowbar = true;
+      if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
+        mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
       }
     }
   }

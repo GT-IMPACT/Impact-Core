@@ -13,6 +13,9 @@ public class PositionObject {
 	public String playerName = "";
 	public String nameLocation = "";
 	
+	/**
+	 * @param igt - IGregTechTileEntity
+	 */
 	public PositionObject(IGregTechTileEntity igt) {
 		xPos = igt.getXCoord();
 		yPos = igt.getYCoord();
@@ -22,12 +25,32 @@ public class PositionObject {
 		playerName = igt.getOwnerName();
 	}
 	
+	/**
+	 * @param x - x Position
+	 * @param y - y Position
+	 * @param z - z Position
+	 */
 	public PositionObject(int x, int y, int z) {
 		xPos = x;
 		yPos = y;
 		zPos = z;
 	}
 	
+	/**
+	 * only 4 coords!
+	 * @param coords - x, y, z, d Position
+	 */
+	public PositionObject(int[] coords) {
+		xPos = coords[0];
+		yPos = coords[1];
+		zPos = coords[2];
+		dPos = coords[3];
+	}
+	
+	/**
+	 * @param igt - IGregTechTileEntity
+	 * @param name - Name Position
+	 */
 	public PositionObject(IGregTechTileEntity igt, String name) {
 		xPos = igt.getXCoord();
 		yPos = igt.getYCoord();
@@ -38,6 +61,9 @@ public class PositionObject {
 		playerName = igt.getOwnerName();
 	}
 	
+	/**
+	 * @param obj - PositionObject copy method
+	 */
 	private PositionObject(PositionObject obj) {
 		xPos = obj.xPos;
 		yPos = obj.yPos;
@@ -48,27 +74,57 @@ public class PositionObject {
 		nameLocation = obj.nameLocation;
 	}
 	
+	/**
+	 * @return Integer Array with coords
+	 */
+	public int[] getCoords() {
+		return new int[] {xPos, yPos, zPos, dPos};
+	}
+	
+	/**
+	 * @return PositionObject copy
+	 */
+	public PositionObject copy() {
+		return new PositionObject(this);
+	}
+	
+	/**
+	 * @param obj1 - PositionObject source
+	 * @param obj2 - PositionObject target
+	 * @return boolean
+	 */
 	public static boolean checkComparePosition(PositionObject obj1, PositionObject obj2) {
 		if (obj1 == null || obj2 == null) return false;
 		return obj1.xPos == obj2.xPos && obj1.yPos == obj2.yPos && obj1.zPos == obj2.zPos;
 	}
 	
+	/**
+	 * @param obj1 - PositionObject source
+	 * @param obj2 - PositionObject target
+	 * @return boolean
+	 */
 	public static boolean checkComparePositionWithDim(PositionObject obj1, PositionObject obj2) {
 		if (obj1 == null || obj2 == null) return false;
 		return obj1.dPos == obj2.dPos && checkComparePosition(obj1, obj2);
 	}
 	
+	/**
+	 * @param obj1 - PositionObject source
+	 * @param obj2 - PositionObject target
+	 * @return boolean
+	 */
 	public static boolean checkComparePositionOnlyDim(PositionObject obj1, PositionObject obj2) {
 		if (obj1 == null || obj2 == null) return false;
 		return obj1.dPos == obj2.dPos;
 	}
 	
+	/**
+	 * @param igt - IGregTechTileEntity
+	 * @param obj - PositionObject source
+	 * @return IGregTechTileEntity
+	 */
 	public static IGregTechTileEntity getIGregTechTileEntity(IGregTechTileEntity igt, PositionObject obj) {
 		if (obj == null) return null;
 		return igt.getIGregTechTileEntity(obj.xPos, obj.yPos, obj.zPos);
-	}
-	
-	public PositionObject copy() {
-		return new PositionObject(this);
 	}
 }

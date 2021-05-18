@@ -235,8 +235,6 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
 		aNBT.setInteger("mTargetX", mTargetX);
 		aNBT.setInteger("mTargetY", mTargetY);
 		aNBT.setInteger("mTargetZ", mTargetZ);
-		aNBT.setString("machineName", machineName);
-		aNBT.setString("machineAddress", address);
 	}
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
@@ -245,7 +243,5 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch {
 		mTargetX = aNBT.getInteger("mTargetX");
 		mTargetY = aNBT.getInteger("mTargetY");
 		mTargetZ = aNBT.getInteger("mTargetZ");
-		machineName = aNBT.getString("machineName");
-		address = aNBT.getString("machineAddress");
 	}
 }

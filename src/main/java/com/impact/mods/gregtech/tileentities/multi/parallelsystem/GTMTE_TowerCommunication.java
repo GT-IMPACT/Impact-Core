@@ -15,6 +15,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.util.PositionObject;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.Utilits;
 import gregtech.api.GregTech_API;
@@ -25,6 +26,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,27 +57,13 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   private static final IStructureDefinition<GTMTE_TowerCommunication> STRUCTURE_DEFINITION =
       StructureDefinition.<GTMTE_TowerCommunication>builder()
           .addShape("main", new String[][]{
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
-                  "       ", "       ", "       ", "       ", "       ", "       ", "       ",
-                  " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"},
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
-                  "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ",
-                  "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
-              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ",
-                  "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ",
-                  "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
-              {"   E   ", "   E   ", "   E   ", "   E   ", "  DED  ", "   E   ", "       ",
-                  "       ", "       ", " E   E ", "       ", "       ", "       ", "       ",
-                  "E     E", "       ", "       ", " AA~AA ", " AAAAA "},
-              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ",
-                  "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ",
-                  "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
-                  "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ",
-                  "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
-              {"       ", "       ", "       ", "       ", "       ", "       ", "       ",
-                  "       ", "       ", "       ", "       ", "       ", "       ", "       ",
-                  " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"}
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"},
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ", "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
+              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ", "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ", "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
+              {"   E   ", "   E   ", "   E   ", "   E   ", "  DED  ", "   E   ", "       ", "       ", "       ", " E   E ", "       ", "       ", "       ", "       ", "E     E", "       ", "       ", " AA~AA ", " AAAAA "},
+              {"       ", "       ", "       ", "       ", "   D   ", "  E E  ", "  E E  ", "  E E  ", "  E E  ", " EE EE ", " E   E ", "       ", "       ", "       ", "E     E", "       ", "       ", " AAAAA ", " AAAAA "},
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ", "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
+              {"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"}
           })
           .addElement('A', ofChain(
               ofHatchAdder(GTMTE_TowerCommunication::addClassicToMachineList, CASING_TEXTURE_ID,
@@ -104,9 +93,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   public int mTargetZ = 0;
   public int mTargetD = 0;
   public boolean mIsConnect = false;
-  public TileEntity tile = null;
-
-
+  
   public GTMTE_TowerCommunication(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional);
   }
@@ -191,31 +178,23 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   }
 
   @Override
-  public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-    super.onPostTick(aBaseMetaTileEntity, aTick);
-
-    if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
-      aBaseMetaTileEntity.setActive(true);
-      if (aBaseMetaTileEntity.isActive()) {
+  public void onPostTick(IGregTechTileEntity iAm, long aTick) {
+    super.onPostTick(iAm, aTick);
+    if (iAm.isServerSide() && aTick % 20 == 0) {
+      this.mIsConnect = false;
+      iAm.setActive(true);
+      if (iAm.isActive()) {
+        ArrayList<Boolean> checker = new ArrayList<>();
+        boolean active = false;
         for (GTMTE_SpaceSatellite_Receiver ph : sCommunReceiver) {
-          if (ph.getBaseMetaTileEntity().isActive()) {
-            this.mIsConnect = ph.getIsReceive();
-          } else {
-            this.mIsConnect = false;
-          }
+          checker.add(ph.getIsReceive());
+          active = ph.getBaseMetaTileEntity().isActive();
         }
+        if (active) this.mIsConnect = checker.stream().filter(b -> b).count() == 4;
       }
     }
-
-    if (aBaseMetaTileEntity.isServerSide()) {
-      if (aTick % 20 * 60 == 0) {
-        this.mWrench = true;
-        this.mScrewdriver = true;
-        this.mSoftHammer = true;
-        this.mHardHammer = true;
-        this.mSolderingTool = true;
-        this.mCrowbar = true;
-      }
+    if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
+      mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
     }
   }
 
@@ -258,25 +237,24 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
   @Override
   public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
+    IGregTechTileEntity iAm = getBaseMetaTileEntity();
+    PositionObject pos = new PositionObject(iAm);
     if (!aPlayer.isSneaking()) {
-      aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, this.getBaseMetaTileEntity().getWorld(),
-          this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
-          this.getBaseMetaTileEntity().getZCoord());
+      aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, iAm.getWorld(), pos.xPos, pos.yPos, pos.zPos);
     }
   }
 
   public void setFrequency(int aFreq, EntityPlayer aPlayer) {
     mFrequency = aFreq;
-    Impact_API.sCommunicationTower.put(Utilits.inToStringUUID(aFreq, aPlayer),
-        Utilits.getCoordsBaseMTE(getBaseMetaTileEntity()));
+    Impact_API.sCommunicationTower.put(Utilits.inToStringUUID(aFreq, aPlayer), new PositionObject(getBaseMetaTileEntity()).getCoords());
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + aFreq);
   }
 
-  public void setCoord(int[] coords) {
-    this.mTargetX = coords[0];
-    this.mTargetY = coords[1];
-    this.mTargetZ = coords[2];
-    this.mTargetD = coords[3];
+  public void setCoord(PositionObject pos) {
+    this.mTargetX = pos.xPos;
+    this.mTargetY = pos.yPos;
+    this.mTargetZ = pos.zPos;
+    this.mTargetD = pos.dPos;
   }
 
   @Override
@@ -300,5 +278,4 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
     this.mFrequency = aNBT.getInteger("mFrequency");
     this.mIsConnect = aNBT.getBoolean("mIsReceive");
   }
-
 }

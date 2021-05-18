@@ -165,22 +165,16 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         rack.getBaseMetaTileEntity().setActive(isActive);
       }
       setMaxCapacityPP(maxCur);
-      int cur = 0;
       for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
-        if ((getCurrentCapacityPP() - ph.getMaxParallel()) >= 0) {
-          if (ph.getBaseMetaTileEntity().isAllowedToWork()) {
-            cur += ph.getMaxParallel();
-          }
-          if ((getCurrentCapacityPP() - ph.getMaxParallel()) < 0) {
-            ph.getBaseMetaTileEntity().setActive(isActive);
-          }
+        boolean checkSum = mCurrentCapacityPP - ph.mMaxParallel >= 0;
+        if (checkSum && ph.getBaseMetaTileEntity().isAllowedToWork()) {
+          mCurrentCapacityPP -= ph.mMaxParallel;
         }
+        ph.mIsTrueRecipe = checkSum;
       }
-      mCurrentCapacityPP = cur;
     }
   }
-
-
+  
   public void connect(IGregTechTileEntity aBaseMetaTileEntity) {
     boolean isActive = false;
     for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {

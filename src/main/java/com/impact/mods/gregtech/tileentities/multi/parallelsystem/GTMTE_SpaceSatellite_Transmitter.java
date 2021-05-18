@@ -7,6 +7,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.gui.Container_SpaceSatelliteHatches;
 import com.impact.mods.gregtech.gui.GUI_SpaceSatelliteHathes;
+import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -121,8 +122,7 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
   }
 
   @Override
-  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
-      float aZ) {
+  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     if (getBaseMetaTileEntity().isServerSide()) {
       GT_Utility.sendChatToPlayer(aPlayer, "Check: " + mIsTransmit);
@@ -138,16 +138,10 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch {
   }
 
   public void setFrequency(int freq, EntityPlayer aPlayer) {
-    Impact_API.sSpaceSatellite.put(Utilits.inToStringUUID(freq, aPlayer),
-        Utilits.getCoordsBaseMTE(getBaseMetaTileEntity()));
+    Impact_API.sSpaceSatellite.put(Utilits.inToStringUUID(freq, aPlayer), new PositionObject(getBaseMetaTileEntity()).getCoords());
     GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + EnumChatFormatting.YELLOW + freq);
   }
-
-  @Override
-  public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-    super.onPostTick(aBaseMetaTileEntity, aTick);
-  }
-
+  
   public void saveNBTData(NBTTagCompound aNBT) {
     super.saveNBTData(aNBT);
     aNBT.setBoolean("mIsTransmit", this.mIsTransmit);

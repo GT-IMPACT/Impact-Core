@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.gui.Container_SpaceSatelliteHatches;
 import com.impact.mods.gregtech.gui.GUI_SpaceSatelliteHathes;
+import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -11,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import javafx.geometry.Pos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +35,7 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
   public int mTargetY = 0;
   public int mTargetZ = 0;
   public int mTargetD = 0;
-  public TileEntity tTile = null;
+  public IGregTechTileEntity tTile = null;
   public boolean mIsReceive;
   public int mFrequency;
 
@@ -79,22 +81,7 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
   public boolean isSimpleMachine() {
     return true;
   }
-
-//    @Override
-//    public boolean isElectric() {
-//        return false;
-//    }
-//
-//    @Override
-//    public void doExplosion(long aExplosionPower) {
-//
-//    }
-//
-//    @Override
-//    public float getExplosionResistance(byte aSide) {
-//        return super.getExplosionResistance(aSide);
-//    }
-
+  
   @Override
   public boolean isFacingValid(byte aFacing) {
     return true;
@@ -130,7 +117,6 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
     if (aBaseMetaTileEntity.isClientSide()) return true;
     if (aSide == aBaseMetaTileEntity.getFrontFacing())
       GT_Utility.sendChatToPlayer(aPlayer, "Connection only with Laptop!");
-
     return true;
   }
 
@@ -139,57 +125,41 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
     super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
     if (getBaseMetaTileEntity().isServerSide()) {
       getBaseMetaTileEntity().openGUI(aPlayer);
-      //getFrequency(mFrequency, aPlayer);
     }
   }
 
   public void getFrequency(int freq, EntityPlayer aPlayer) {
-    if (Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer)) != null) {
-      GT_Utility.sendChatToPlayer(aPlayer, "Coords: " + Arrays.toString(Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer))));
-      setCoord(Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer)));
-    } else GT_Utility.sendChatToPlayer(aPlayer, "Frequency not found");
+    int[] coords = Impact_API.sSpaceSatellite.get(Utilits.inToStringUUID(freq, aPlayer));
+    if (coords != null) setCoord(new PositionObject(coords));
   }
-
+  
   @Override
-  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-    super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-    if (getBaseMetaTileEntity().isServerSide()) {
-    }
-  }
-
-  @Override
-  public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-    super.onPostTick(aBaseMetaTileEntity, aTick);
-    if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
-
+  public void onPostTick(IGregTechTileEntity iAm, long aTick) {
+    super.onPostTick(iAm, aTick);
+    if (iAm.isServerSide() && aTick % 20 == 0) {
+      boolean active = false;
       if (this.mTargetD == getBaseMetaTileEntity().getWorld().provider.dimensionId) {
-        tTile = getBaseMetaTileEntity().getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
+        tTile = iAm.getIGregTechTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
       } else {
         World tWorld = DimensionManager.getWorld(this.mTargetD);
-        if (tWorld != null) {
-          tTile = tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
-        }
+        TileEntity te = tWorld != null ? tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ) : null;
+        tTile = te instanceof IGregTechTileEntity ? (IGregTechTileEntity) te : null;
       }
-      if (tTile != null && tTile instanceof IGregTechTileEntity) {
-        IMetaTileEntity aTransmitter = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-        if (aTransmitter instanceof GTMTE_SpaceSatellite_Transmitter) {
-          setIsReceive(((GTMTE_SpaceSatellite_Transmitter) aTransmitter).mIsTransmit);
-          aTransmitter.getBaseMetaTileEntity().setActive(true);
-          aBaseMetaTileEntity.setActive(true);
-          if (mFrequency != ((GTMTE_SpaceSatellite_Transmitter) aTransmitter).mFrequency) {
-            aBaseMetaTileEntity.setActive(false);
-            setIsReceive(false);
-          }
-        } else aBaseMetaTileEntity.setActive(false);
-      } else aBaseMetaTileEntity.setActive(false);
+      if (tTile != null && tTile.getMetaTileEntity() instanceof GTMTE_SpaceSatellite_Transmitter) {
+        GTMTE_SpaceSatellite_Transmitter transmitter = (GTMTE_SpaceSatellite_Transmitter) tTile.getMetaTileEntity();
+        setIsReceive(transmitter.mIsTransmit);
+        active = mFrequency == transmitter.mFrequency;
+        transmitter.getBaseMetaTileEntity().setActive(active);
+      }
+      iAm.setActive(active);
     }
   }
 
-  public void setCoord(int[] coords) {
-    this.mTargetX = coords[0];
-    this.mTargetY = coords[1];
-    this.mTargetZ = coords[2];
-    this.mTargetD = coords[3];
+  public void setCoord(PositionObject pos) {
+    this.mTargetX = pos.xPos;
+    this.mTargetY = pos.yPos;
+    this.mTargetZ = pos.zPos;
+    this.mTargetD = pos.dPos;
   }
 
   public void saveNBTData(NBTTagCompound aNBT) {
@@ -219,5 +189,4 @@ public class GTMTE_SpaceSatellite_Receiver extends GT_MetaTileEntity_Hatch {
   public void setIsReceive(boolean IsReceive) {
     mIsReceive = IsReceive;
   }
-
 }
