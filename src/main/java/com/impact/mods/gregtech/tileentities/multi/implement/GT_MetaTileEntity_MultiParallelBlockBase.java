@@ -40,7 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import javax.annotation.Nonnegative;
 
-import javafx.geometry.Pos;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;

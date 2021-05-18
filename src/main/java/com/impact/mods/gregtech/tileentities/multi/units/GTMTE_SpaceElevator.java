@@ -30,7 +30,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import java.util.List;
 
-import javafx.geometry.Pos;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -237,6 +237,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
       }
     }
   }
+  
+  //TODO СЛОМАЛОСЬ
 
   public void connect(IGregTechTileEntity tTile) {
     if (tTile.getMetaTileEntity() instanceof GTMTE_SpaceElevator) {
