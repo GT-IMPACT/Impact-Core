@@ -181,6 +181,8 @@ public class ImpactPlugin extends PluginBase {
       }
 
       if (parallelHatch_input != null) {
+        currenttip.add(tag.getString("ppInMachineName"));
+        currenttip.add("Address: " + EnumChatFormatting.YELLOW + tag.getString("ppInMachineAddress"));
         String str = tag.getBoolean("isParallelIN")
             ? EnumChatFormatting.GREEN + "Connection Established"
             : EnumChatFormatting.RED +  "No Connection";
@@ -189,6 +191,8 @@ public class ImpactPlugin extends PluginBase {
       }
 
       if (parallelHatch_output != null) {
+        currenttip.add(tag.getString("ppOutMachineName"));
+        currenttip.add("Address: " + EnumChatFormatting.YELLOW + tag.getString("ppOutMachineAddress"));
         String str = tag.getBoolean("isParallelOUT")
             ? EnumChatFormatting.GREEN + "Connection Established"
             : EnumChatFormatting.RED +  "No Connection";
@@ -292,12 +296,16 @@ public class ImpactPlugin extends PluginBase {
         final boolean isParallelIN = parallelHatch_input.mTrueRecipe;
         tag.setBoolean("isParallelIN", isParallelIN);
         tag.setInteger("ppHatchIn", parallelHatch_input.mMaxParallel);
+        tag.setString("ppInMachineName", parallelHatch_input.machineName);
+        tag.setString("ppInMachineAddress", parallelHatch_input.address);
       }
 
       if (parallelHatch_output != null) {
         final boolean isParallelOUT = parallelHatch_output.mIsTrueRecipe;
         tag.setBoolean("isParallelOUT", isParallelOUT);
         tag.setInteger("ppHatchOut", parallelHatch_output.mMaxParallel);
+        tag.setString("ppOutMachineName", parallelHatch_output.machineName);
+        tag.setString("ppOutMachineAddress", parallelHatch_output.address);
       }
 
       if (towerCommunication != null) {

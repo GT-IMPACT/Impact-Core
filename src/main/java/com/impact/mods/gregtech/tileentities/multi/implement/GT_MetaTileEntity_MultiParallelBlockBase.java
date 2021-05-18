@@ -1819,6 +1819,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
         maxParallel = ph.getMaxParallel();
         setRecipeCheckParallel(ph.getTrueRecipe());
         isDebug = ph.isDebug;
+        ph.machineName = getLocalName();
       }
       setParallel(maxParallel);
       if (isDebug) {
