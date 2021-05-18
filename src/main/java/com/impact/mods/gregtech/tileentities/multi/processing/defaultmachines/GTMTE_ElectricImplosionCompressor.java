@@ -220,8 +220,12 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
             if (this.mEUt > 0) {
               this.mEUt = (-this.mEUt);
             }
-            this.mOutputItems = new ItemStack[outputItems.size()];
-            this.mOutputItems = outputItems.toArray(this.mOutputItems);
+            mOutputItems = new ItemStack[tRecipe.mOutputs.length];
+            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+              if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
+                this.mOutputItems[i] = tRecipe.getOutput(i);
+              }
+            }
             this.mOutputFluids = new FluidStack[outputFluids.size()];
             this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
             this.updateSlots();
