@@ -2,7 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.units;
 
 import static gregtech.api.enums.GT_Values.VN;
 
-import com.impact.util.string.MultiBlockTooltipBuilder;
+import com.impact.libs.tooltip.MultiBlockTooltipBuilder;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;

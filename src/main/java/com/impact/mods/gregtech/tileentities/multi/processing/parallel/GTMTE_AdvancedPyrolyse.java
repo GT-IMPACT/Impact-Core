@@ -5,7 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.string.MultiBlockTooltipBuilder;
+import com.impact.libs.tooltip.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
