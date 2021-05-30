@@ -16,7 +16,7 @@ import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.GUI_BASE;
-import com.impact.libs.tooltip.MultiBlockTooltipBuilder;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;

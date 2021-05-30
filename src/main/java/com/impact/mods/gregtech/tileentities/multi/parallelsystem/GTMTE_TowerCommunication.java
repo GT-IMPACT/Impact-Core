@@ -16,7 +16,7 @@ import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.util.PositionObject;
-import com.impact.libs.tooltip.MultiBlockTooltipBuilder;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.Utilits;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;

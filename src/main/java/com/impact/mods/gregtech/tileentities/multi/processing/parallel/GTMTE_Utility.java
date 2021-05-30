@@ -9,7 +9,7 @@ import com.impact.mods.gregtech.tileentities.hatches.GTMTE_BoxinatorInputBus;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.multis.WorldProperties;
-import com.impact.libs.tooltip.MultiBlockTooltipBuilder;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.Textures;

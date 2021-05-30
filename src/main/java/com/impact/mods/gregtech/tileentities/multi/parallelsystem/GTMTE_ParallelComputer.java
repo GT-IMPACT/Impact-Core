@@ -16,7 +16,7 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.Container_SuperParallelComputer;
 import com.impact.mods.gregtech.gui.GUI_SuperParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.libs.tooltip.MultiBlockTooltipBuilder;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.Textures;
