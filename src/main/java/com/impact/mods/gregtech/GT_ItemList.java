@@ -46,7 +46,7 @@ public enum GT_ItemList implements IItemContainer {
   Generator_Semi_Turbine_MV, Generator_Semi_Turbine_HV, Generator_Steam_Turbine_EV, Generator_Diesel_EV, Generator_Gas_Turbine_EV,
   Generator_Semi_Turbine_EV, Generator_Steam_Turbine_IV, Generator_Diesel_IV, Generator_Gas_Turbine_IV, Generator_Semi_Turbine_IV,
 
-  Water_Tank, Creative_Tank, Regulate_Digital_Chest,
+  Water_Tank, Creative_Tank, Regulate_Digital_Chest, Regulate_One_Stack_Chest,
 
   //HATCHES
   Hatch_Output_Prim, Bus_Input_Prim, Bus_Output_Prim, Hatch_Output_Pump,

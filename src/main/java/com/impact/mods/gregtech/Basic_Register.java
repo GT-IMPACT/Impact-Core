@@ -3,11 +3,7 @@ package com.impact.mods.gregtech;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.*;
 
-import com.impact.mods.gregtech.tileentities.basic.GTMTE_DebugTank;
-import com.impact.mods.gregtech.tileentities.basic.GTMTE_RegulateDigitalChest;
-import com.impact.mods.gregtech.tileentities.basic.GTMTE_SemifluidGenerator;
-import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineFluid;
-import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineItem;
+import com.impact.mods.gregtech.tileentities.basic.*;
 import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
@@ -238,14 +234,17 @@ public class Basic_Register {
         new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack")
             .getStackForm(1L));
 
-    Regulate_Digital_Chest.set(
-        new GTMTE_RegulateDigitalChest(ID2++, "impact.machine.regulatechest", "Regulate Digital Chest", 1)
-            .getStackForm(1L));
+    Regulate_Digital_Chest.set(new GTMTE_RegulateDigitalChest(ID2++, "impact.machine.regulatechest",
+            "Regulate Digital Chest", 1).getStackForm(1L));
   
-    BusHatch_Input.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input", "Input Item/Fluid Bus", 3).getStackForm(1L));
+    BusHatch_Input.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input",
+            "Input Item/Fluid Bus", 3).getStackForm(1L));
+  
+    Regulate_One_Stack_Chest.set(new GTMTE_OneStackRegulateChest(ID2++, "impact.machine.onestackregulatechest",
+            "One Stack Regulate Chest", 1).getStackForm(1L));
 
 
-    INFO("Last ID Basic_Register.java: " + ID2);//14586
+    INFO("Last ID Basic_Register.java: " + ID2);//14587
 
     DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
         "impact.basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts",
