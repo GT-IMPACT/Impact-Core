@@ -207,17 +207,15 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         super.addOutput(tempStack);
 
       } else {
-        final Iterator<FluidStack> storageIterator = mfh.getFluids().iterator();
-        while (storageIterator.hasNext()) {
-          FluidStack storedFluid = storageIterator.next();
+        for (FluidStack storedFluid : mfh.getFluids()) {
           // Sum available output capacity
           int possibleOutput = 0;
           for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
             if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName()
-                .equals(storedFluid.getUnlocalizedName())) {
+                    .equals(storedFluid.getUnlocalizedName())) {
               possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
             } else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName()
-                .equals(storedFluid.getUnlocalizedName())) {
+                    .equals(storedFluid.getUnlocalizedName())) {
               possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
             } else if (outputHatch.getFluid() == null) {
               possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
