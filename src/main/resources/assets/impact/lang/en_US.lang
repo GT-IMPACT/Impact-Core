@@ -467,3 +467,38 @@ waila.multis.progress=Progress
 waila.reactor.temp=Temperature
 waila.reactor.mox=Mox Fuel
 waila.reactor.fastdecay=Fast Decay Mode
+
+#GregTech module
+tooltip.max=max
+tooltip.min=min
+tooltip.select=Select
+tooltip.hold=Hold
+tooltip.left_shift=LSHIFT
+tooltip.left_ctrl=LCTRL
+tooltip.to_more_info=to more info
+tooltip.pollution=Pollution
+tooltip.per_second=per second
+tooltip.at_least=at least
+tooltip.structure=Structure
+tooltip.to_structure=to structure
+tooltip.blueprint=Use Blueprint TecTech
+tooltip.screw_type=Select type machine with Screwdriver click in Controller
+tooltip.screw_type_different=with Screwdriver click in Controller
+tooltip.separated_bus=Select Separated Buses mod with Shift + Screwdriver click in Controller
+tooltip.begin_structure_block=Description of the structure in development
+tooltip.hatch.parallel=Parallel Hatch
+tooltip.hatch.energy=Energy Hatch
+tooltip.hatch.dynamo=Dynamo Hatch
+tooltip.hatch.muffler=Muffler Hatch
+tooltip.hatch.maintenance=Maintenance Hatch
+tooltip.hatch.io=I/O Hatch
+tooltip.hatch.bus.in=Input Bus
+tooltip.hatch.bus.out=Output Bus
+tooltip.hatch.in=Input Hatch
+tooltip.hatch.out=Output Hatch
+tooltip.hatch.nuclear=Nuclear Rod Hatch
+tooltip.parallel.point=Parallel Point
+tooltip.parallel.point.basic=basic
+
+
+

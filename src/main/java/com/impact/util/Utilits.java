@@ -1,6 +1,5 @@
 package com.impact.util;
 
-import com.impact.client.gui.GUIHandler;
 import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,6 +25,8 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 public class Utilits {
 
   public static boolean invertBoolean(final boolean booleans) {
@@ -33,6 +34,10 @@ public class Utilits {
       return false;
     }
     return true;
+  }
+  
+  public static String translate(String text) {
+    return translateToLocal(text);
   }
 
   public static String translateGTItemStack(ItemStack itemStack) {
