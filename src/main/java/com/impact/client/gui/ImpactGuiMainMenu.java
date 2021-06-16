@@ -40,6 +40,8 @@ import static com.impact.impact.ModPackVersion;
 public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
   private static final Logger logger = LogManager.getLogger();
+  private static String version = "";
+  private static final String webSiteVersionHref = "https://gtimpact.space/version";
   private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("impact",
       "textures/gui/title/title.png");
 
@@ -187,23 +189,14 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             this.height - 10 + i * (this.fontRendererObj.FONT_HEIGHT + 1), 16777215);
       }
     }
-    String eBug1 = "Latest version: " + EnumChatFormatting.GREEN + ModPackVersion;
-    try {
-      URL url = new URL("https://gtimpact.space/version");
-      if (checkConnect(url)) {
-        InputStream in = url.openStream();
+    
+    String eBug1 = "Latest version: " + EnumChatFormatting.GREEN + (version.isEmpty() ? ModPackVersion : version);
+    try(InputStream in = new URL(webSiteVersionHref).openStream()) {
+      if (version.isEmpty() && checkConnect(new URL(webSiteVersionHref))) {
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        StringBuffer buf = new StringBuffer();
-        while (true) {
-          String line = br.readLine();
-          if (line != null) {
-            buf.append(line).append("");
-          } else {
-            break;
-          }
-        }
-        String content = buf.toString();
-        eBug1 = "Latest version: " + EnumChatFormatting.GREEN + content;
+        version = br.readLine();
+        System.out.println(version);
+        eBug1 = "Latest version: " + EnumChatFormatting.GREEN + version;
       }
       drawString(this.fontRendererObj, eBug1,
           this.width - this.fontRendererObj.getStringWidth(eBug1) - 2, this.height - 20, -1);
@@ -213,7 +206,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         this.width - this.fontRendererObj.getStringWidth(eBug2) - 2, this.height - 10, -1);
     super.drawScreen(mouseX, mouseY, partialTicks);
   }
-
+  
   private boolean checkConnect(URL url) {
     try {
       final URLConnection conn = url.openConnection();
