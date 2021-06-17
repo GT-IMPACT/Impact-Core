@@ -67,20 +67,21 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addTypeMachine("Heavy Metal Cyclone")
-        .addInfo("Centrifuge for heavy materials")
+        
+        .addInfo("hmc.info.0")
+        .addTypeMachine("hmc.name")
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x3)")
-        .addInputHatch("Any casing (max x6)")
-        .addOutputBus("Any casing (max x1)")
-        .addOutputHatch("Any casing (max x1)")
-        .addCasingInfo("Cyclone Casing")
-        .addOtherStructurePart("Cyclone Chamber Casing", "inside structure")
-        .addOtherStructurePart("I-Glass", "glass for structure")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("hmc.hatches")
+        .addMaintenanceHatch("hmc.hatches")
+        .addInputBus("hmc.hatch.bus.in")
+        .addInputHatch("hmc.hatch.in")
+        .addOutputBus("hmc.hatches")
+        .addOutputHatch("hmc.hatches")
+        .addCasingInfo("hmc.case")
+        .addOtherStructurePart("hmc.other.0", "hmc.other.1")
+        .addOtherStructurePart("hmc.other.2", "hmc.other.3")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

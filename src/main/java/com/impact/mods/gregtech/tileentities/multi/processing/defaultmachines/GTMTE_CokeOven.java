@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.gui.GUI_CokeOven;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -13,11 +14,15 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 public class GTMTE_CokeOven extends GTMTE_MBBase {
 
@@ -34,15 +39,22 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
   }
 
   public String[] getDescription() {
-    return new String[]{
-        "Controller Block for the Coke Oven",
-        "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
-        "1x Primitive Input Bus (Any casing)",
-        "1x Primitive Output Bus (Any casing)",
-        "1x Primitive Output Hatch (Any casing)",
-        "Coke Oven Bricks for the rest",
-        "Pollution per second: 25"
-    };
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    b
+            .addTypeMachine("coke_oven.name")
+            .addPollution(25)
+            .addSeparator()
+            .addController()
+            .addCasingInfo("coke_oven.case")
+            .addOtherStructurePart("coke_oven.hatch.bus.in", "x1")
+            .addOtherStructurePart("coke_oven.hatch.bus.out", "x1")
+            .addOtherStructurePart("coke_oven.hatch.out", "x1")
+            .signAndFinalize();
+    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+      return b.getInformation();
+    } else {
+      return b.getStructureInformation();
+    }
   }
 
   public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,

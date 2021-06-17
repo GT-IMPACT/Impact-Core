@@ -84,19 +84,19 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Multi battery buffer!")
-        .addInfo("Very big battery")
+        .addInfo("lsc.info.0")
+        .addInfo("lsc.info.1")
+        .addTypeMachine("lsc.name")
         .addSeparator()
         .beginStructureBlock(5, 4, 5)
         .addController()
-        .addDynamoHatch("Instead of any casing")
-        .addEnergyHatch("Instead of any casing")
-        .addOtherStructurePart("Lapotronic Capacitor Base", "5x2x5 base (at least 17x)")
-        .addOtherStructurePart("Lapotronic Capacitor, Ultimate Capacitor",
-            "Center 3x(1-15)x3 above base (9-135 blocks)")
-        .addOtherStructurePart("I-Glass", "41-265x, Encase capacitor pillar")
-        .addMaintenanceHatch("Instead of any casing")
-        .signAndFinalize("IMPACT");
+        .addDynamoHatch("lsc.hatches")
+        .addEnergyHatch("lsc.hatches")
+        .addMaintenanceHatch("lsc.hatches")
+        .addOtherStructurePart("tooltip.lsc.other.0", "tooltip.lsc.other.1")
+        .addOtherStructurePart("tooltip.lsc.other.2", "tooltip.lsc.other.3")
+        .addOtherStructurePart("tooltip.lsc.other.4", "tooltip.lsc.other.5")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

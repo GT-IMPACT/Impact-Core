@@ -37,7 +37,7 @@ public class Utilits {
   }
   
   public static String translate(String text) {
-    return translateToLocal(text);
+    return translateToLocal("tooltip." + text);
   }
 
   public static String translateGTItemStack(ItemStack itemStack) {

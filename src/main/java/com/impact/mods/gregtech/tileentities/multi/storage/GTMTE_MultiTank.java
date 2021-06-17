@@ -75,22 +75,22 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
   @Override
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-    b.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-        .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-        .addInfo("Right-Click to the controller with a screwdriver will turn on excess voiding.")
-        .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
-        .addInfo("If the integrity of Tank Storage is broken, the fluids are removed.")
+    b.addInfo("multi_tank.info.0")
+        .addTypeMachine("multi_tank.name")
+        .addInfo("multi_tank.info.1")
+        .addInfo("multi_tank.info.2")
+        .addInfo("multi_tank.info.3")
+        .addInfo("multi_tank.info.4")
         .addSeparator()
-        .addInfo("Note on hatch locking:")
         .addSeparator()
-        .beginStructureBlock(5, 9, 5, true)
+        .beginStructureBlock(5, 9, 5)
         .addController()
-        .addOtherStructurePart("Inner 3x7x3 tube", "Tank Storage Block")
-        .addOtherStructurePart("Outer 5x1&9x5 Casing", "Chemical Casing")
-        .addOtherStructurePart("Outer 5x7x5 glass shell", "I-Glass")
-        .addOtherStructurePart("I/O Tank Hatch", "Instead of any casing or glass (not angle)")
-        .addInfo("I/O Tank Hatch for information and used EC2, OC systems")
-        .signAndFinalize(EnumChatFormatting.RED + "Impact");
+        .addOtherStructurePart("multi_tank.other.0", "multi_tank.other.1")
+        .addOtherStructurePart("multi_tank.other.2", "multi_tank.other.3")
+        .addOtherStructurePart("multi_tank.other.4", "multi_tank.other.5")
+        .addOtherStructurePart("multi_tank.other.6", "multi_tank.other.7")
+        .addInfo("multi_tank.info.5")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

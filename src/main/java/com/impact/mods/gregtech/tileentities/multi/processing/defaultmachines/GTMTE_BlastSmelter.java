@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
@@ -26,6 +27,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -45,19 +47,31 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
   public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
     return new GTMTE_BlastSmelter(this.mName);
   }
-
+  
+  @Override
   public String[] getDescription() {
-    return new String[]{
-        "Controller Block for the Blast Smelter",
-        "Size(WxHxD): 5x4x5 (Hollow), Controller (Front middle bottom)",
-        "Heating Coils (Two middle Layers, hollow)",
-        "1x Input Hatch/Bus (Any layer casing)",
-        "1x Output Hatch/Bus (Any layer casing)",
-        "1x Energy Hatch (Any layer casing)",
-        "1x Maintenance Hatch (Any layer casing)",
-        "1x Muffler Hatch (Any layer casing)",
-        "HSLA Casings for the rest",
-        "Causes " + 20 * getPollutionPerTick(null) + " Pollution per second"};
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    b
+            .addTypeMachine("blast_smelter.name")
+            .addPollution(20*getPollutionPerTick(null))
+            .addSeparatedBus()
+            .addSeparator()
+            .addController()
+            .addEnergyHatch("blast_smelter.hatches")
+            .addMaintenanceHatch("blast_smelter.hatches")
+            .addMuffler("blast_smelter.hatches")
+            .addInputBus("blast_smelter.hatches")
+            .addOutputBus("blast_smelter.hatches")
+            .addOutputHatch("blast_smelter.hatches")
+            .addInputHatch("blast_smelter.hatches")
+            .addCasingInfo("blast_smelter.case")
+            .addOtherStructurePart("blast_smelter.other.0", "blast_smelter.other.1")
+            .signAndFinalize();
+    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+      return b.getInformation();
+    } else {
+      return b.getStructureInformation();
+    }
   }
 
   public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,

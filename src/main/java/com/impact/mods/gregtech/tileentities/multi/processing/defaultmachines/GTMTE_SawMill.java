@@ -64,18 +64,17 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Nooo! Do not saw me..")
-        .addTypeMachine("Saw Mill")
-        .addScrew()
+        .addInfo("saw_mill.info.1")
+        .addTypeMachine("saw_mill.name")
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addInputBus("Any casing (max 1)")
-        .addOutputBus("Any casing (max x1)")
-        .addInputHatch("Any casing (max x1)")
-        .addCasingInfo("Wooden Casing")
-        .addOtherStructurePart("Saw Mill Conveyor", "Bottom middle")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("saw_mill.hatches")
+        .addInputBus("saw_mill.hatches")
+        .addOutputBus("saw_mill.hatches")
+        .addInputHatch("saw_mill.hatches")
+        .addCasingInfo("saw_mill.case")
+        .addOtherStructurePart("saw_mill.other.0", "saw_mill.other.1")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

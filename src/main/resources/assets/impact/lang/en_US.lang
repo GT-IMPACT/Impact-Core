@@ -469,6 +469,7 @@ waila.reactor.mox=Mox Fuel
 waila.reactor.fastdecay=Fast Decay Mode
 
 #GregTech module
+tooltip.impact.name=IMPACT
 tooltip.max=max
 tooltip.min=min
 tooltip.select=Select
@@ -499,6 +500,126 @@ tooltip.hatch.out=Output Hatch
 tooltip.hatch.nuclear=Nuclear Rod Hatch
 tooltip.parallel.point=Parallel Point
 tooltip.parallel.point.basic=basic
-
-
-
+#Coke Oven
+tooltip.coke_oven.name=Coke Oven
+tooltip.coke_oven.case=Coke Oven Bricks
+tooltip.coke_oven.hatch.bus.in=Primitive Input Bus
+tooltip.coke_oven.hatch.bus.out=Primitive Output Bus
+tooltip.coke_oven.hatch.out=Primitive Output Hatch
+#Saw Mill
+tooltip.saw_mill.info.1=Nooo! Do not saw me..
+tooltip.saw_mill.name=Saw Mill
+tooltip.saw_mill.hatches=Any casing (max x1)
+tooltip.saw_mill.case=Wooden Casing
+tooltip.saw_mill.other.0=Saw Mill Conveyor
+tooltip.saw_mill.other.1=Bottom middle
+#Pyrolyse Oven
+tooltip.pyrolyse_oven.name=Pyrolyse Oven
+tooltip.pyrolyse_oven.info.0=Converts hydrocarbons into gases, wood tar and solid fuels
+tooltip.pyrolyse_oven.info.1=The process emits gases throughout the entire time (60s):
+tooltip.pyrolyse_oven.info.2=for 7s - CO, for 14s - H, for 21s - CH₄, for 28s - CO₂
+tooltip.pyrolyse_oven.info.3=and 35s - solid fuels and wood tar
+tooltip.pyrolyse_oven.hatches=Any Solid Steel casing (max x1)
+tooltip.pyrolyse_oven.case=Solid Steel Casing
+tooltip.pyrolyse_oven.other.0=Steel Pipe Casing
+tooltip.pyrolyse_oven.other.1=Middle line
+tooltip.pyrolyse_oven.other.2=Steel Frame
+tooltip.pyrolyse_oven.other.3=Bottom angles
+#Adv. Pyrolyse Oven
+tooltip.adv_pyrolyse_oven.info.0=Input/output of products depends of energy hatch, time does not change
+tooltip.adv_pyrolyse_oven.info.1=LV - 2x, MV - 4x, HV - 6x .. Tier * 2
+tooltip.adv_pyrolyse_oven.info.2=Energy consumption: (EU/t) = (NEI Recipe EU/t) * (number of concurrent recipes) * (Energy Hatch tier / 2)
+tooltip.adv_pyrolyse_oven.pollution=x tier energy hatch
+tooltip.adv_pyrolyse_oven.hatches=Any HSLA casing (max x1)
+tooltip.adv_pyrolyse_oven.case=HSLA Casing
+tooltip.adv_pyrolyse_oven.other.0=HSLA Frame
+tooltip.adv_pyrolyse_oven.other.1=Bottom angles
+#Rail Assembler
+tooltip.rail_assembler.name=Rail Assembler
+tooltip.rail_assembler.hatches=Any casing (max x1)
+tooltip.rail_assembler.hatch.bus.in=Any casing (max x5)
+tooltip.rail_assembler.case=Rail Assembler Casing
+#3D Printer 3x3
+tooltip.ddd_printer.info.0=Assembler components
+tooltip.ddd_printer.name=3D Printer 3x3
+tooltip.ddd_printer.hatches=Any casing (max x1)
+tooltip.ddd_printer.hatch.bus.in=Any casing (max x15)
+tooltip.ddd_printer.case=3D Printer Casing
+tooltip.ddd_printer.other.0=I-Glass
+tooltip.ddd_printer.other.1=it is glass
+tooltip.ddd_printer.other.2=Configuration Casing 3x3
+tooltip.ddd_printer.other.3=core structure
+#3D Printer 4x4
+tooltip.dddd_printer.name=3D Printer 4x4
+tooltip.dddd_printer.other.0=Configuration Casing 4x4
+#Blast Smelter
+tooltip.blast_smelter.name=Blast Smelter
+tooltip.blast_smelter.hatches=Any layer casing (max x1)
+tooltip.blast_smelter.case=HSLA Casings
+tooltip.blast_smelter.other.0=Heating Coils
+tooltip.blast_smelter.other.1=Two middle Layers, hollow
+#Heavy Metal Cyclone
+tooltip.hmc.info.0=Centrifuge for heavy materials
+tooltip.hmc.name=Heavy Metal Cyclone
+tooltip.hmc.hatches=Any casing (max x1)
+tooltip.hmc.hatch.bus.in=Any casing (max x3)
+tooltip.hmc.hatch.in=Any casing (max x6)
+tooltip.hmc.case=Cyclone Casing
+tooltip.hmc.other.0=Cyclone Chamber Casing
+tooltip.hmc.other.1=inside structure
+tooltip.hmc.other.2=I-Glass
+tooltip.hmc.other.3=glass for structure
+#Adv. Implosion Compressor
+tooltip.aic.info.0=Babah!
+tooltip.aic.info.1=Not used TNT!!!
+tooltip.aic.info.2=Energy consumption: (EU/t) = (NEI Recipe EU/t) * 1000
+tooltip.aic.name=Implosion Compressor
+tooltip.aic.hatches=Any casing (max x1)
+tooltip.aic.hatch.bus.in=Any casing (max x5)
+tooltip.aic.hatch.bus.out=Any casing (max x3)
+tooltip.aic.case=Solid Steel Machine Casing
+tooltip.aic.other.0=Superconductor Coil
+tooltip.aic.other.1=inside
+#Large Super Capacitor
+tooltip.lsc.info.0=Multi battery buffer!
+tooltip.lsc.info.1=Very big battery
+tooltip.lsc.name=Large Super Capacitor
+tooltip.lsc.hatches=Instead of any casing
+tooltip.lsc.case=Solid Steel Machine Casing
+tooltip.lsc.other.0=Lapotronic Capacitor Base
+tooltip.lsc.other.1=5x2x5 base (at least 17x)
+tooltip.lsc.other.2=SLapotronic Capacitor, Ultimate Capacitor
+tooltip.lsc.other.3=Center 3x(1-15)x3 above base (9-135 blocks)
+tooltip.lsc.other.4=I-Glass
+tooltip.lsc.other.5=41-265x, Encase capacitor pillar
+#Multi-Tank
+tooltip.multi_tank.info.0=High-Tech fluid tank that can hold up to 25 different fluids!
+tooltip.multi_tank.info.1=Has 1/25th of the total capacity as capacity for each fluid.
+tooltip.multi_tank.info.2=Right-Click to the controller with a screwdriver will turn on excess voiding.
+tooltip.multi_tank.info.3=Fluid storage amount and running cost depends on the storage field blocks used.
+tooltip.multi_tank.info.4=If the integrity of Tank Storage is broken, the fluids are removed.
+tooltip.multi_tank.info.5=I/O Tank Hatch for information and used EC2, OC systems
+tooltip.multi_tank.name=Multi-Tank
+tooltip.multi_tank.other.0=Inner 3x7x3 tube
+tooltip.multi_tank.other.1=Tank Storage Block
+tooltip.multi_tank.other.2=Outer 5x1&9x5 Casing
+tooltip.multi_tank.other.3=Chemical Casing
+tooltip.multi_tank.other.4=Outer 5x7x5 glass shell
+tooltip.multi_tank.other.5=I-Glass
+tooltip.multi_tank.other.6=I/O Tank Hatch
+tooltip.multi_tank.other.7=Instead of any casing or glass (not angle)
+#Single-Tank
+tooltip.single_tank.info.0=High-Tech fluid tank!
+tooltip.single_tank.info.1=Right-Click the controller with a screwdriver will turn on excess voiding.
+tooltip.single_tank.info.2=Fluid storage amount and running cost depends on the storage field blocks used.
+tooltip.single_tank.info.3=If the integrity of Tank Storage is broken, the fluids are removed.
+tooltip.single_tank.info.4=I/O Tank Hatch for information and used EC2, OC systems
+tooltip.single_tank.name=Single-Tank
+tooltip.single_tank.other.0=Inner 1x5x1 tube
+tooltip.single_tank.other.1=Tank Storage Block
+tooltip.single_tank.other.2=Outer 3x1&7x3 Casing
+tooltip.single_tank.other.3=Chemical Casing
+tooltip.single_tank.other.4=Outer 3x5x3 glass shell
+tooltip.single_tank.other.5=I-Glass
+tooltip.single_tank.other.6=I/O Tank Hatch
+tooltip.single_tank.other.7=Instead of any casing or glass

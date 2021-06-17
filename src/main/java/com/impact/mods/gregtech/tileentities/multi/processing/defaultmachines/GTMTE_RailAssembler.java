@@ -72,16 +72,14 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("")
-        .addTypeMachine("Rail Assembler")
-        .addSeparator()
+        .addTypeMachine("rail_assembler.name")
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x5)")
-        .addOutputBus("Any casing (max x1)")
-        .addCasingInfo("Rail Assembler Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("rail_assembler.hatches")
+        .addMaintenanceHatch("rail_assembler.hatches")
+        .addInputBus("rail_assembler.hatch.bus.in")
+        .addOutputBus("rail_assembler.hatches")
+        .addCasingInfo("rail_assembler.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

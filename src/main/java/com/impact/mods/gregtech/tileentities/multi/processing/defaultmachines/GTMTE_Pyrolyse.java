@@ -62,24 +62,24 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addTypeMachine("Pyrolyse oven")
-        .addInfo("Converts hydrocarbons into gases, wood tar and solid fuels")
-        .addInfo("The process emits gases throughout the entire time (60s):")
-        .addInfo("for 7s - CO, for 14s - H\u2082, for 21s - CH\u2084, for 28s - CO\u2082 ")
-        .addInfo("and 35s - solid fuels and wood tar")
+        .addTypeMachine("pyrolyse_oven.name")
+        .addInfo("pyrolyse_oven.info.0")
+        .addInfo("pyrolyse_oven.info.1")
+        .addInfo("pyrolyse_oven.info.2")
+        .addInfo("pyrolyse_oven.info.3")
         .addPollution(100)
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any Solid Steel casing")
-        .addMaintenanceHatch("Any Solid Steel casing")
-        .addMuffler("Any Solid Steel casing")
-        .addInputBus("Any Solid Steel casing (max x1)")
-        .addOutputBus("Any Solid Steel casing (max x1)")
-        .addOutputHatch("Any Solid Steel casing (max x1)")
-        .addCasingInfo("Solid Steel Casing")
-        .addOtherStructurePart("Steel Pipe Casing", "Middle line")
-        .addOtherStructurePart("Steel Frame", "Bottom angles")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("pyrolyse_oven.hatches")
+        .addMaintenanceHatch("pyrolyse_oven.hatches")
+        .addMuffler("pyrolyse_oven.hatches")
+        .addInputBus("pyrolyse_oven.hatches")
+        .addOutputBus("pyrolyse_oven.hatches")
+        .addOutputHatch("pyrolyse_oven.hatches")
+        .addCasingInfo("pyrolyse_oven.case")
+        .addOtherStructurePart("pyrolyse_oven.other.0", "pyrolyse_oven.other.1")
+        .addOtherStructurePart("pyrolyse_oven.other.2", "pyrolyse_oven.other.3")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

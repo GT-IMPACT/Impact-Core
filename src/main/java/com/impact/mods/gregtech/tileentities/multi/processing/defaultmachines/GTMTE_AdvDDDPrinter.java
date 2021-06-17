@@ -63,20 +63,20 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Assembler machines")
-        .addTypeMachine("4x4 Crafting")
+        .addInfo("ddd_printer.info.0")
+        .addTypeMachine("dddd_printer.name")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x30)")
-        .addOutputBus("Any casing (max x1)")
-        .addCasingInfo("3D Printed Casing")
-        .addOtherStructurePart("I-Glass", "it is glass")
-        .addOtherStructurePart("Configuration Casing 4x4", "core structure")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("ddd_printer.hatches")
+        .addMaintenanceHatch("ddd_printer.hatches")
+        .addInputBus("ddd_printer.hatch.bus.in")
+        .addOutputBus("ddd_printer.hatches")
+        .addCasingInfo("ddd_printer.case")
+        .addOtherStructurePart("ddd_printer.other.0", "ddd_printer.other.1")
+        .addOtherStructurePart("dddd_printer.other.0", "ddd_printer.other.3")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {
