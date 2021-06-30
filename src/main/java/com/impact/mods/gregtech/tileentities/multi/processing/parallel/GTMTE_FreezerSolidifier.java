@@ -38,20 +38,20 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mfs.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Freezer Solidification")
+        .addTypeMachine("mfs.name")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x2)")
-        .addInputHatch("Any casing (max x2)")
-        .addOutputBus("Any casing (max x1)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Frost Proof Machine Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputBus("any_case", 2)
+        .addInputHatch("any_case", 2)
+        .addOutputBus("any_case", 1)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mfs.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

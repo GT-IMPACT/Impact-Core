@@ -58,21 +58,21 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mss.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Electromagnetic Separator, Sifter")
+        .addTypeMachine("mss.name")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addMuffler("Any casing")
-        .addInputBus("Any casing (max x8)")
-        .addOutputBus("Any casing (max x1)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Electromagnetic Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addMuffler("any_case", 1)
+        .addInputBus("any_case", 8)
+        .addOutputBus("any_case", 1)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mss.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

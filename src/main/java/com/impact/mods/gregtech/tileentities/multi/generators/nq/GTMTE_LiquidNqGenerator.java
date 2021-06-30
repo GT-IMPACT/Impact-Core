@@ -4,6 +4,7 @@ import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfo
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
+import static com.impact.util.Utilits.translate;
 import static gregtech.api.enums.GT_Values.RA;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
@@ -84,18 +85,18 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Multi-Amperes generator")
-        .addInfo("Outputs " + NumberFormat.getNumberInstance().format(EU_PER_TICK)
-            + "EU/t = 16A LuV")
-        .addSeparator()
-        .addController()
-        .addDynamoHatch("Any casing back side")
-        .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x3)")
-        .addCasingInfo("Naquadah Base Casing and I-Glass")
-        .addOtherStructurePart("Naquadah Chamber Casing", "inside structure")
-        .addOtherStructurePart("Tether Core", "for contain core naqahdah")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+            .addInfo("nq2.info.0")
+            .addTypeMachine("nq1.name")
+            .addInfo(translate("nq1.info.1") + " " + NumberFormat.getNumberInstance().format(EU_PER_TICK) + translate("nq3.info.2"), true)
+            .addSeparator()
+            .addController()
+            .addDynamoHatch("any_case")
+            .addMaintenanceHatch("any_case")
+            .addInputHatch("any_case", 3)
+            .addCasingInfo("nq1.case")
+            .addOtherStructurePart("nq1.other.0", "nq1.other.1")
+            .addOtherStructurePart("nq1.other.2", "nq1.other.3")
+            .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

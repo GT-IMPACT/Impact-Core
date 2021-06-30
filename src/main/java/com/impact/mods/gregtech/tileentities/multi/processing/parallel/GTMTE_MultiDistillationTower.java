@@ -124,21 +124,21 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("OMG!? Where Bart`s Big Tower?")
+        .addInfo("mdt.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Multi Distillation Tower")
+        .addTypeMachine("mdt.name")
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x9)")
-        .addOutputHatch("Any casing (max x66)")
-        .addInputBus("Any casing (max x4)")
-        .addOutputBus("Any casing (max x1)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Clean Stainless Steel Machine Casing")
-        .addOtherStructurePart("Kanthal Coil", "inside the hollow")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputHatch("any_case", 9)
+        .addOutputHatch("any_case", 66)
+        .addInputBus("any_case", 4)
+        .addOutputBus("any_case", 1)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mdt.case")
+        .addOtherStructurePart("mdt.other.0", "mdt.other.1")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

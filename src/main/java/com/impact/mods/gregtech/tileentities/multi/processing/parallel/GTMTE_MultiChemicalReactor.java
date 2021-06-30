@@ -125,21 +125,21 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Very big chemical, all right!")
+        .addInfo("mcr.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Multi Chemical Reactor")
+        .addTypeMachine("mcr.name")
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x16)")
-        .addOutputHatch("Any casing (max x8)")
-        .addInputBus("Any casing (max x8)")
-        .addOutputBus("Any casing (max x3)")
-        .addParallelHatch("Any casing (max x1)")
-        .addOtherStructurePart("PTFE Pipe Machine Casing", "inside the hollow")
-        .addCasingInfo("Chemically Inert Machine Casings")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputHatch("any_case", 16)
+        .addOutputHatch("any_case", 8)
+        .addInputBus("any_case", 8)
+        .addOutputBus("any_case", 3)
+        .addParallelHatch("any_case", 1)
+        .addOtherStructurePart("mcr.other.0", "mcr.other.1")
+        .addCasingInfo("mcr.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

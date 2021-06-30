@@ -61,23 +61,23 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mbf.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Brewery, Fermenter")
+        .addTypeMachine("mbf.name")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x3)")
-        .addOutputBus("Any casing (max x1)")
-        .addInputHatch("Any casing (max x3)")
-        .addOutputHatch("Any casing (max x3)")
-        .addMuffler("Any casing (max x1)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Brewmenter Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputBus("any_case", 3)
+        .addOutputBus("any_case", 1)
+        .addInputHatch("any_case", 3)
+        .addOutputHatch("any_case", 3)
+        .addMuffler("any_case", 1)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mbf.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

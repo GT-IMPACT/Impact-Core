@@ -79,25 +79,26 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Drilling water from ground")
-        .addInfo("Water output depends on the hatch")
-        .addInfo("Pump Hatch: Biome Coefficient * 1")
-        .addInfo("ULV Output Hatch: Biome Coefficient * 2")
-        .addInfo("LV Output Hatch: Biome Coefficient * 3")
+        .addInfo("bwp.info.0")
+        .addTypeMachine("bwp.name")
+        .addInfo("bwp.info.1")
+        .addInfo("bwp.info.2")
+        .addInfo("bwp.info.3")
+        .addInfo("bwp.info.4")
         .addSeparator()
-        .addinfoB("Biome Coefficient:")
-        .addinfoBTab("Ocean, River - 1000 L/s")
-        .addinfoBTab("Taiga - 175 L/s")
-        .addinfoBTab("Jungle - 350 L/s")
-        .addinfoBTab("Swampland - 800 L/s")
-        .addinfoBTab("Snow, Iceland - 300 L/s")
-        .addinfoBTab("Beach - 170 L/s")
-        .addinfoBTab("Plans, Forest - 250 L/s")
-        .addinfoBTab("Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
+        .addinfoB("bwp.info.5")
+        .addinfoBTab("bwp.info.6")
+        .addinfoBTab("bwp.info.7")
+        .addinfoBTab("bwp.info.8")
+        .addinfoBTab("bwp.info.9")
+        .addinfoBTab("bwp.info.10")
+        .addinfoBTab("bwp.info.11")
+        .addinfoBTab("bwp.info.12")
+        .addinfoBTab("bwp.info.13")
         .addSeparator()
         .addController()
-        .addCasingInfo("Primitive Pump Deck and Wood Frame Box")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT", true);
+        .addCasingInfo("bwp.case")
+        .signAndFinalize(true);
     if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
       return b.getControlInfo();
     }

@@ -59,22 +59,22 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mmi.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Mixer")
+        .addTypeMachine("mmi.name")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x8)")
-        .addInputHatch("Any casing (max x3)")
-        .addOutputBus("Any casing (max x1)")
-        .addOutputHatch("Any casing (max x3)")
-        .addMuffler("Any casing (max x1)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Mixing Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputBus("any_case", 8)
+        .addInputHatch("any_case", 3)
+        .addOutputBus("any_case", 1)
+        .addOutputHatch("any_case", 3)
+        .addMuffler("any_case", 1)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mmi.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

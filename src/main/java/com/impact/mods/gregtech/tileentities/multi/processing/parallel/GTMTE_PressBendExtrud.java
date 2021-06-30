@@ -58,22 +58,22 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mpb.info.0")
         .addParallelInfo(1, 256)
         .addPollution(200, 12800)
-        .addTypeMachine("Extruder, Bender, Presser")
+        .addTypeMachine("mpb.name")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x20)")
-        .addOutputBus("Any casing (max x3)")
-        .addMuffler("Any casing")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("PBE Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputBus("any_case", 20)
+        .addOutputBus("any_case", 3)
+        .addMuffler("any_case", 1)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mpb.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

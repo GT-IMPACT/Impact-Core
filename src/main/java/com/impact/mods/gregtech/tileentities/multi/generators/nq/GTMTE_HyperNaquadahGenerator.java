@@ -5,6 +5,7 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.of
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHatchAdder;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.onElementPass;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static com.impact.util.Utilits.translate;
 import static gregtech.api.enums.GT_Values.RA;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
@@ -193,18 +194,18 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Multi-Amperes generator")
-        .addInfo("Outputs " + NumberFormat.getNumberInstance().format(EU_PER_TICK)
-            + "EU/t = 256A UV")
+        .addInfo("nq2.info.0")
+        .addTypeMachine("nq1.name")
+        .addInfo(translate("nq1.info.1") + " " + NumberFormat.getNumberInstance().format(EU_PER_TICK) + translate("nq1.info.2"), true)
         .addSeparator()
         .addController()
-        .addDynamoHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x3)")
-        .addCasingInfo("Naquadah Base Casing")
-        .addOtherStructurePart("Naquadah Chamber Casing", "inside structure")
-        .addOtherStructurePart("Tether Core", "for contain core naqahdah")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addDynamoHatch("any_case")
+        .addMaintenanceHatch("any_case")
+        .addInputHatch("any_case", 3)
+        .addCasingInfo("nq1.case")
+        .addOtherStructurePart("nq1.other.0", "nq1.other.1")
+        .addOtherStructurePart("nq1.other.2", "nq1.other.3")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

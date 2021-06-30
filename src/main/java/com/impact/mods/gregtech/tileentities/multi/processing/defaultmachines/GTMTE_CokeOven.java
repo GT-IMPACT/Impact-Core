@@ -46,9 +46,9 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
             .addSeparator()
             .addController()
             .addCasingInfo("coke_oven.case")
-            .addOtherStructurePart("coke_oven.hatch.bus.in", "x1")
-            .addOtherStructurePart("coke_oven.hatch.bus.out", "x1")
-            .addOtherStructurePart("coke_oven.hatch.out", "x1")
+            .addOtherStructurePart("coke_oven.hatch.bus.in", "any_case")
+            .addOtherStructurePart("coke_oven.hatch.bus.out", "any_case")
+            .addOtherStructurePart("coke_oven.hatch.out", "any_case")
             .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

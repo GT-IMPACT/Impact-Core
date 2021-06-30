@@ -78,18 +78,19 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Mega steam turbine!")
-        .addInfo("The turbine operates at 100% efficiency")
-        .addInfo("Accepts both steam (2L = 1 EU/t)")
-        .addInfo("and superheated steam (1L = 1 EU/t)")
+        .addInfo("htg.info.0")
+        .addTypeMachine("htg.name")
+        .addInfo("htg.info.1")
+        .addInfo("htg.info.2")
+        .addInfo("htg.info.3")
         .addSeparator()
         .addController()
-        .addDynamoHatch("Any casing back side (max x9")
-        .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x20)")
-        .addCasingInfo("Huge Turbine Casing and I-Glass")
-        .addOtherStructurePart("Steel GearBox Casing", "inside structure")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addDynamoHatch("htf.dynamo", 9)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputHatch("any_case", 20)
+        .addCasingInfo("htg.case")
+        .addOtherStructurePart("htg.other.0", "htg.other.1")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

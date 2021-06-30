@@ -236,24 +236,25 @@ public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-    b
-        .addInfo("Digging rock on the moon, it's simple")
-        .addTypeMachine("Block Digger")
-        .addSeparator()
-        .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addOutputBus("Any casing (max x1)")
-        .addInputHatch("Any casing (max x1)")
-        .addOtherStructurePart("Block of Digger (x1)", "to the very center from below")
-        .addCasingInfo("Moon Miner Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
-    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-      return b.getInformation();
-    } else {
-      return b.getStructureInformation();
-    }
+//    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+//    b
+//        .addInfo("Digging rock on the moon, it's simple")
+//        .addTypeMachine("Block Digger")
+//        .addSeparator()
+//        .addController()
+//        .addEnergyHatch("Any casing")
+//        .addMaintenanceHatch("Any casing")
+//        .addOutputBus("Any casing (max x1)")
+//        .addInputHatch("Any casing (max x1)")
+//        .addOtherStructurePart("Block of Digger (x1)", "to the very center from below")
+//        .addCasingInfo("Moon Miner Casing")
+//        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+//    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+//      return b.getInformation();
+//    } else {
+//      return b.getStructureInformation();
+//    }
+    return null;
   }
 
   @Override

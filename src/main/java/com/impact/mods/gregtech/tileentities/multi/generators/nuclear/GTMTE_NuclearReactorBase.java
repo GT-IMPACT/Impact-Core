@@ -4,6 +4,7 @@ import com.impact.mods.gregtech.gui.GT_Container_NuclearReactor;
 import com.impact.mods.gregtech.gui.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,9 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	
 	
 	private static final int SPEED_DECAY = 5;
+	private final int[] AMOUNT_NUCLEAR_HATCHES = {1, 9, 25};
+	private final int[] AMOUNT_INPUT_HATCHES = {1, 3, 6};
+	private final int[] AMOUNT_OUTPUT_HATCHES = {6, 12, 24};
 	public ArrayList<GTMTE_Reactor_Rod_Hatch> mRodHatches = new ArrayList<>();
 	public ArrayList<GT_MetaTileEntity_BasicHull> mMachineHull = new ArrayList<>();
 	public boolean mFirstStart = false;
@@ -58,6 +63,35 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 					new GT_RenderedTexture(aActive ? REACTOR_OVERLAY_ACTIVE : REACTOR_OVERLAY)};
 		}
 		return new ITexture[]{INDEX_CASE};
+	}
+	
+	abstract int tierReactor();
+	
+	@Override
+	public String[] getDescription() {
+		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+		b
+				.addInfo("nur.info.0")
+				.addTypeMachine("nur.name")
+				.addInfo("nur.info.1")
+				.addInfo("nur.info.2")
+				.addInfo("nur.info.3")
+				.addScrew("nur.screw")
+				.addSeparator()
+				.beginStructureBlock(0, 0, 0)
+				.addController()
+				.addNuclearRod("nur.reactor_hatch", AMOUNT_NUCLEAR_HATCHES[tierReactor() - 1])
+				.addInputHatch("in_hatch", AMOUNT_INPUT_HATCHES[tierReactor() - 1])
+				.addOutputHatch("nur.out_hatch", AMOUNT_OUTPUT_HATCHES[tierReactor() - 1])
+				.addCasingInfo("nur.case")
+				.addOtherStructurePart("nur.other.0", "nur.other.1")
+				.addOtherStructurePart("nur.other.2", "nur.other.3")
+				.signAndFinalize();
+		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			return b.getInformation();
+		} else {
+			return b.getStructureInformation();
+		}
 	}
 	
 	public boolean addMachineHull(IGregTechTileEntity aTileEntity) {

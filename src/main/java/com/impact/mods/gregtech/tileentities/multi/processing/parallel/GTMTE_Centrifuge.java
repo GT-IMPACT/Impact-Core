@@ -60,24 +60,24 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mct.info.0")
         .addParallelInfo(1, 256)
         .addPollution(200, 12800)
-        .addTypeMachine("Centrifuge, Thermal Centrifuge")
+        .addTypeMachine("mct.name")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addMuffler("Any casing")
-        .addInputBus("Any casing (max x6)")
-        .addOutputBus("Any casing (max x3)")
-        .addOutputHatch("Any casing (max x6)")
-        .addInputHatch("Any casing (max x6)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Centrifuge Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addMuffler("any_case", 1)
+        .addInputBus("any_case", 6)
+        .addOutputBus("any_case", 3)
+        .addOutputHatch("any_case", 6)
+        .addInputHatch("any_case", 6)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mct.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

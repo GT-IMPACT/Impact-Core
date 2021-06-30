@@ -70,23 +70,23 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mut.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Compressor, Extractor, Canning,")
-        .addTypeMachine("Packager, Recycler, Hammer,")
-        .addTypeMachine("Lathe, Polarizer")
+        .addTypeMachine("mut.name.0")
+        .addTypeMachine("mut.name.1")
+        .addTypeMachine("mut.name.2")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addMuffler("Any casing")
-        .addInputBus("Any casing (max x6)")
-        .addOutputBus("Any casing (max x3)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Utility Machine Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addMuffler("any_case", 1)
+        .addInputBus("any_case", 6)
+        .addOutputBus("any_case", 3)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mut.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

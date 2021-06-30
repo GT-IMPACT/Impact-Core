@@ -40,6 +40,11 @@ public class MultiBlockTooltipBuilder {
     iLines.add(translate(info));
     return this;
   }
+  
+  public MultiBlockTooltipBuilder addInfo(String info, boolean notTrans) {
+    iLines.add(info);
+    return this;
+  }
 
   /**
    * Add a separator line like this:<br> -------------------------------
@@ -62,8 +67,8 @@ public class MultiBlockTooltipBuilder {
   
   public MultiBlockTooltipBuilder addPollution(int Min, int Max) {
     iLines.add(translate("pollution") + ": " +
-            translate("min") + Min + ", " +
-            translate("max") + Max);
+            translate("min") + " " + Min + ", " +
+            translate("max") + " " + Max);
     return this;
   }
   
@@ -113,6 +118,11 @@ public class MultiBlockTooltipBuilder {
     return this;
   }
   
+  public MultiBlockTooltipBuilder addParallelHatch(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("parallel.hatch") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
+    return this;
+  }
+  
   public MultiBlockTooltipBuilder addinfoB(String info) {
     cLines.add(translate(info));
     return this;
@@ -145,8 +155,18 @@ public class MultiBlockTooltipBuilder {
     return this;
   }
   
+  public MultiBlockTooltipBuilder addEnergyHatch(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.energy") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
+    return this;
+  }
+  
   public MultiBlockTooltipBuilder addDynamoHatch(String info) {
     sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.dynamo") + ": " + EnumChatFormatting.GRAY + translate(info));
+    return this;
+  }
+  
+  public MultiBlockTooltipBuilder addDynamoHatch(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.dynamo") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
     return this;
   }
   
@@ -155,13 +175,28 @@ public class MultiBlockTooltipBuilder {
     return this;
   }
   
+  public MultiBlockTooltipBuilder addMuffler(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.muffler") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
+    return this;
+  }
+  
   public MultiBlockTooltipBuilder addMaintenanceHatch(String info) {
     sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.maintenance") + ": " + EnumChatFormatting.GRAY + translate(info));
     return this;
   }
   
+  public MultiBlockTooltipBuilder addMaintenanceHatch(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.maintenance") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
+    return this;
+  }
+  
   public MultiBlockTooltipBuilder addIOHatches(String info) {
     sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.io") + ": " + EnumChatFormatting.GRAY + translate(info));
+    return this;
+  }
+  
+  public MultiBlockTooltipBuilder addIOHatches(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.io") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
     return this;
   }
 
@@ -170,8 +205,18 @@ public class MultiBlockTooltipBuilder {
     return this;
   }
   
+  public MultiBlockTooltipBuilder addInputBus(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.bus.in") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
+    return this;
+  }
+  
   public MultiBlockTooltipBuilder addNuclearRod(String info) {
     sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.nuclear") + ": " + EnumChatFormatting.GRAY + translate(info));
+    return this;
+  }
+  
+  public MultiBlockTooltipBuilder addNuclearRod(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.nuclear") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
     return this;
   }
 
@@ -180,13 +225,28 @@ public class MultiBlockTooltipBuilder {
     return this;
   }
   
+  public MultiBlockTooltipBuilder addInputHatch(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.in") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
+    return this;
+  }
+  
   public MultiBlockTooltipBuilder addOutputBus(String info) {
     sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.bus.out") + ": " + EnumChatFormatting.GRAY + translate(info));
+    return this;
+  }
+  
+  public MultiBlockTooltipBuilder addOutputBus(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.bus.out") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
     return this;
   }
 
   public MultiBlockTooltipBuilder addOutputHatch(String info) {
     sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.out") + ": " + EnumChatFormatting.GRAY + translate(info));
+    return this;
+  }
+  
+  public MultiBlockTooltipBuilder addOutputHatch(String info, int amount) {
+    sLines.add(TAB + EnumChatFormatting.GREEN + translate("hatch.out") + ": " + EnumChatFormatting.GRAY + translate(info) + " (" + translate("max") + " x" + amount + ")");
     return this;
   }
 
@@ -224,7 +284,7 @@ public class MultiBlockTooltipBuilder {
     sLines.toArray(sArray);
   }
   
-  public void signAndFinalize(String author, boolean ctrl) {
+  public void signAndFinalize(boolean ctrl) {
     iLines.add(translate("hold") + " " + EnumChatFormatting.DARK_BLUE +
             EnumChatFormatting.BOLD + "[" + translate("left_shift") + "]" +
             EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " " + translate("to_structure"));

@@ -41,6 +41,11 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
   }
   
   @Override
+  int tierReactor() {
+    return 2;
+  }
+  
+  @Override
   public int maxTemperature() {
     return 100_000;
   }
@@ -55,35 +60,7 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase {
     build();
     return new GTMTE_NuclearReactorII(super.mName);
   }
-
-  @Override
-  public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-    b
-        .addInfo("Radiation!")
-        .addTypeMachine("Nuclear Reactor")
-        .addInfo("Default Mode (default rods): consumes water produces steam")
-        .addInfo("Default Mode (MOX rods): consumes water produces superheated steam, all rods needed MOX")
-        .addInfo("Fact Decay Mode (default or MOX rods): consumes coolant produces hot coolant, rods decays speed x5")
-        .addInfo("")
-        .addScrew("reactor mode")
-        .addSeparator()
-        .beginStructureBlock(0, 0, 0)
-        .addController()
-        .addNuclearRod("Any top middle casing (max x9)")
-        .addInputHatch("Any casing (max x3)")
-        .addOutputHatch("For steam / sh steam / hot coolant | Any casing (max x12)")
-        .addCasingInfo("Radiation Proof Casing")
-        .addOtherStructurePart("Steel Pipe Casing", "pipes!")
-        .addOtherStructurePart("Machine Hull (max x1)", "what? yes, its for AE2 provider")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
-    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-      return b.getInformation();
-    } else {
-      return b.getStructureInformation();
-    }
-  }
-
+  
   public void build() {
     registerMetaClass(
         GTMTE_NuclearReactorII.class, new IMultiblockInfoContainer<GTMTE_NuclearReactorII>() {

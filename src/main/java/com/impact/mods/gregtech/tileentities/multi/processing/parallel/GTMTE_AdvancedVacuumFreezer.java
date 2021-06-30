@@ -66,23 +66,23 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("Speed Freeez!")
+        .addInfo("avf.info.0")
         .addParallelInfo(1, 256)
-        .addInfo("Super Coolant is required for operation: 50 per second")
-        .addInfo("At the output, get Hot Coolant: 25 per second")
-        .addTypeMachine("Vacuum Freezer")
+        .addInfo("avf.info.1")
+        .addInfo("avf.info.2")
+        .addTypeMachine("avf.name")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputHatch("Any casing (max x1)")
-        .addOutputHatch("Any casing (max x1)")
-        .addInputBus("Any casing (max x8)")
-        .addOutputBus("Any casing (max x1)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Frost Proof Machine Casing and IC2 Coolant fluid")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case")
+        .addMaintenanceHatch("any_case")
+        .addInputHatch("any_case", 1)
+        .addOutputHatch("any_case", 1)
+        .addInputBus("any_case", 8)
+        .addOutputBus("any_case", 1)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

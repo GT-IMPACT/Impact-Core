@@ -83,23 +83,24 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-		b
-				.addInfo("Teleportation on Space Satellite")
-				.addTypeMachine("Space Elevator")
-				.addInfo("Setup is done using Laptop")
-				.addInfo("Send a redstone signal to teleport")
-				.addInfo("Passive usage: 1920 EU/t")
-				.addController()
-				.addEnergyHatch("Any casing")
-				.addCasingInfo("Space Elevator Casing")
-				.addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
-				.signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+//		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+//		b
+//				.addInfo("Teleportation on Space Satellite")
+//				.addTypeMachine("Space Elevator")
+//				.addInfo("Setup is done using Laptop")
+//				.addInfo("Send a redstone signal to teleport")
+//				.addInfo("Passive usage: 1920 EU/t")
+//				.addController()
+//				.addEnergyHatch("Any casing")
+//				.addCasingInfo("Space Elevator Casing")
+//				.addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
+//				.signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+//		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+//			return b.getInformation();
+//		} else {
+//			return b.getStructureInformation();
+//		}
+		return null;
 	}
 	
 	public void holo() {

@@ -60,22 +60,22 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mes.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Fluid Extractor, Fluid Solidifier, Fluid Heater")
+        .addTypeMachine("mes.name")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addInputBus("Any casing (max x6)")
-        .addOutputBus("Any casing (max x6)")
-        .addOutputHatch("Any casing (max x6)")
-        .addInputHatch("Any casing (max x6)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Extradification Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addInputBus("any_case", 6)
+        .addOutputBus("any_case", 6)
+        .addOutputHatch("any_case", 6)
+        .addInputHatch("any_case", 6)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mes.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

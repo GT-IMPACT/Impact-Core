@@ -59,22 +59,22 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-        .addInfo("One-block machine analog")
+        .addInfo("mel.info.0")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Electrolyzer")
+        .addTypeMachine("mcu.name")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addMuffler("Any casing")
-        .addInputBus("Any casing (max x6)")
-        .addOutputBus("Any casing (max x3)")
-        .addOutputHatch("Any casing (max x6)")
-        .addInputHatch("Any casing (max x6)")
-        .addParallelHatch("Any casing (max x1)")
-        .addCasingInfo("Electrolyzer Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch("any_case", 4)
+        .addMaintenanceHatch("any_case", 1)
+        .addMuffler("any_case", 1)
+        .addInputBus("any_case", 6)
+        .addOutputBus("any_case", 3)
+        .addOutputHatch("any_case", 6)
+        .addInputHatch("any_case", 6)
+        .addParallelHatch("any_case", 1)
+        .addCasingInfo("mel.case")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

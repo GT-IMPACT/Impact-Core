@@ -42,6 +42,11 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
   }
   
   @Override
+  int tierReactor() {
+    return 3;
+  }
+  
+  @Override
   public int maxTemperature() {
     return 1_000_000;
   }
@@ -55,34 +60,6 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
   public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
     build();
     return new GTMTE_NuclearReactorIII(super.mName);
-  }
-
-  @Override
-  public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-    b
-        .addInfo("Radiation!")
-        .addTypeMachine("Nuclear Reactor")
-        .addInfo("Default Mode (default rods): consumes water produces steam")
-        .addInfo("Default Mode (MOX rods): consumes water produces superheated steam, all rods need MOX")
-        .addInfo("Fact Decay Mode (default or MOX rods): consumes coolant produces hot coolant, rods decays speed x5")
-        .addInfo("")
-        .addScrew("reactor mode")
-        .addSeparator()
-        .beginStructureBlock(0, 0, 0)
-        .addController()
-        .addNuclearRod("Any top middle casing (max x25)")
-        .addInputHatch("For water / coolant | Any casing (max x6)")
-        .addOutputHatch("For steam / sh steam / hot coolant | Any casing (max x24)")
-        .addCasingInfo("Radiation Proof Casing")
-        .addOtherStructurePart("Steel Pipe Casing", "pipes!")
-            .addOtherStructurePart("Machine Hull (max x1)", "what? yes, its for AE2 provider")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
-    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-      return b.getInformation();
-    } else {
-      return b.getStructureInformation();
-    }
   }
 
   public void build() {
@@ -129,9 +106,7 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase {
       }
     });
   }
-
-
-
+  
   public boolean checkMachineFunction(IGregTechTileEntity thisController) {
     this.mWrench = true;
     this.mScrewdriver = true;
