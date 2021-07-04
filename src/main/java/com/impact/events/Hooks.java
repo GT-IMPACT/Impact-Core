@@ -48,14 +48,4 @@ public class Hooks {
     bytebuffer.flip();
     return bytebuffer;
   }
-
-  @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-  public static void setHarvestLevel(BlockQuartz block, String toolClass, int level) {
-    block.setHarvestLevel(toolClass, 0);
-  }
-
-  @Hook(injectOnExit = true, returnCondition = ReturnCondition.ALWAYS)
-  public static void setHarvestLevel(BlockObsidian block, String toolClass, int level) {
-    block.setHarvestLevel(toolClass, 3);
-  }
 }
