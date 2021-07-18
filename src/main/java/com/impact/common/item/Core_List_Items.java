@@ -249,6 +249,8 @@ public enum Core_List_Items {
   ThoriumNuclearPart(187, 1),
   ThoriumNuclearFuel(188, 1),
   ThoriumMOXFuel(189, 1),
+  OrbCasingI(190, 1),
+  OrbCasingII(191, 1),
 
   WoodenBrickForm1(0, 2),
 
