@@ -133,13 +133,13 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
         int processed = 0;
         while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < xPar) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+            if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
                 found_Recipe = true;
                 for (int h = 0; h < tRecipe.mOutputs.length; h++) {
                     if (tRecipe.getOutput(h) != null) {
                         tOut[h] = tRecipe.getOutput(h).copy();
-                        tOut[h].stackSize = 0;
+                        tOut[h].stackSize = 5 * mParallelPoint;
                     }
                 }
 
@@ -174,7 +174,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
           tOut = ArrayUtils.addAll(tOut, tmp);
         }
 
-        List<ItemStack> tSList = new ArrayList<ItemStack>();
+        List<ItemStack> tSList = new ArrayList<>();
 
         for (ItemStack tS : tOut) {
             if (tS.stackSize > 0) {
@@ -239,10 +239,6 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         break;
       case 28 * 20:
         addOutput(Materials.CarbonDioxide.getGas(216L * mParallelPoint));
-        break;
-      case 35 * 20:
-        addOutput(
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5L * mParallelPoint));
         break;
     }
     return super.onRunningTick(aStack);
