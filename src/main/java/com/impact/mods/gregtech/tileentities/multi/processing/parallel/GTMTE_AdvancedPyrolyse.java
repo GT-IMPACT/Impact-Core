@@ -157,16 +157,14 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
         tOut = clean(tOut);
 
-        List<ItemStack> overStacks = new ArrayList<ItemStack>();
+        List<ItemStack> overStacks = new ArrayList<>();
 
-        for (int f = 0; f < tOut.length; f++) {
-          while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-            if (tOut[f] != null) {
-              ItemStack tmp = tOut[f].copy();
-              tmp.stackSize = tmp.getMaxStackSize();
-              tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-              overStacks.add(tmp);
-            }
+        for (ItemStack stack : tOut) {
+          while (stack.getMaxStackSize() < stack.stackSize) {
+            ItemStack tmp = stack.copy();
+            tmp.stackSize = tmp.getMaxStackSize();
+            stack.stackSize = stack.stackSize - stack.getMaxStackSize();
+            overStacks.add(tmp);
           }
         }
 
