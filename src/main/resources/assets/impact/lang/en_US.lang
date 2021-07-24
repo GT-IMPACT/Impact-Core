@@ -327,6 +327,8 @@ item.impact_item2.186.name=Enriched Naquadah Nuclear Fuel
 item.impact_item2.187.name=Thorium Fuel Part
 item.impact_item2.188.name=Thorium Nuclear Fuel
 item.impact_item2.189.name=MOX Thorium Fuel
+item.impact_item2.190.name=Orb Housing MK I
+item.impact_item2.191.name=Orb Housing MK II
 
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 
@@ -482,7 +484,10 @@ tooltip.per_second=per second
 tooltip.at_least=at least
 tooltip.structure=Structure
 tooltip.to_structure=to structure
-tooltip.blueprint=Use Blueprint TecTech
+tooltip.blueprint.0=Follow the
+tooltip.tec=Tec
+tooltip.tech=Tech
+tooltip.blueprint.1=blueprint to build the main structure
 tooltip.screw_type=Select type machine with Screwdriver click in Controller
 tooltip.screw_type_different=with Screwdriver click in Controller
 tooltip.separated_bus=Select Separated Buses mod with Shift + Screwdriver click in Controller

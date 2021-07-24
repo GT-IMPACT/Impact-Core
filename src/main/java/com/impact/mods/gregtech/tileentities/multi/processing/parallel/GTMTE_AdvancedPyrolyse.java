@@ -133,13 +133,13 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
         int processed = 0;
         while ((tFluidList.size() > 0 || tInputList.size() > 0) && processed < xPar) {
-            if ((tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe
+            if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
                 found_Recipe = true;
                 for (int h = 0; h < tRecipe.mOutputs.length; h++) {
                     if (tRecipe.getOutput(h) != null) {
                         tOut[h] = tRecipe.getOutput(h).copy();
-                        tOut[h].stackSize = 0;
+                        tOut[h].stackSize = 5 * mParallelPoint;
                     }
                 }
 
@@ -157,16 +157,14 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
         tOut = clean(tOut);
 
-        List<ItemStack> overStacks = new ArrayList<ItemStack>();
+        List<ItemStack> overStacks = new ArrayList<>();
 
-        for (int f = 0; f < tOut.length; f++) {
-          while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-            if (tOut[f] != null) {
-              ItemStack tmp = tOut[f].copy();
-              tmp.stackSize = tmp.getMaxStackSize();
-              tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-              overStacks.add(tmp);
-            }
+        for (ItemStack stack : tOut) {
+          while (stack.getMaxStackSize() < stack.stackSize) {
+            ItemStack tmp = stack.copy();
+            tmp.stackSize = tmp.getMaxStackSize();
+            stack.stackSize = stack.stackSize - stack.getMaxStackSize();
+            overStacks.add(tmp);
           }
         }
 
@@ -176,7 +174,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
           tOut = ArrayUtils.addAll(tOut, tmp);
         }
 
-        List<ItemStack> tSList = new ArrayList<ItemStack>();
+        List<ItemStack> tSList = new ArrayList<>();
 
         for (ItemStack tS : tOut) {
             if (tS.stackSize > 0) {
@@ -241,10 +239,6 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         break;
       case 28 * 20:
         addOutput(Materials.CarbonDioxide.getGas(216L * mParallelPoint));
-        break;
-      case 35 * 20:
-        addOutput(
-            GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 5L * mParallelPoint));
         break;
     }
     return super.onRunningTick(aStack);

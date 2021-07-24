@@ -14,6 +14,10 @@ import net.minecraft.item.ItemStack;
 
 public class PluginGT5SmallOreStat extends PluginGT5Base {
 
+  public String getOverlayIdentifier() {
+    return "impact.oreplugin.small";
+  }
+
   @Override
   public void drawExtras(int recipe) {
     CachedOreSmallRecipe crecipe = (CachedOreSmallRecipe) this.arecipes.get(recipe);

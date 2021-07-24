@@ -141,7 +141,7 @@ public class MultiBlockTooltipBuilder {
   }
   
   public MultiBlockTooltipBuilder addController() {
-    sLines.add(TAB + EnumChatFormatting.YELLOW + translate("blueprint"));
+    sLines.add(TAB + EnumChatFormatting.YELLOW + translate("blueprint.0") + EnumChatFormatting.DARK_BLUE + " " + translate("tec") + EnumChatFormatting.BLUE + translate("tech") + " " + EnumChatFormatting.YELLOW + translate("blueprint.1"));
     return this;
   }
   

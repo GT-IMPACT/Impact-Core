@@ -35,6 +35,10 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         .trim();
   }
 
+  public String getOverlayIdentifier() {
+    return "impact.oreplugin.normal";
+  }
+
   public static String[] get_Cnames(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
 
     String[] splt = coustomVeinRenamer(oreLayer).split("\\s");
