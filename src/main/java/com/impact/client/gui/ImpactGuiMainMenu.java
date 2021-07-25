@@ -3,6 +3,7 @@ package com.impact.client.gui;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.impact.client.gui.button.ImpactGuiButton;
+import com.impact.util.Utilits;
 import cpw.mods.fml.client.GuiModList;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.impact.impact.ModPackVersion;
+import static com.impact.util.Utilits.translate;
 
 @SideOnly(Side.CLIENT)
 public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
@@ -79,11 +81,11 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         I18n.format("menu.quit")));
 
     this.buttonList.add(new ImpactGuiButton(20, xButtons - 25 - 5, yButtons + 84 + 42 - 25, 50, 20,
-        I18n.format("Website")));
+        I18n.format(translate("menu.website"))));
     this.buttonList.add(new ImpactGuiButton(21, xButtons + 25, yButtons + 84 + 42 - 25, 50, 20,
-        I18n.format("Discord")));
+        I18n.format(translate("menu.discord"))));
     this.buttonList.add(new ImpactGuiButton(22, xButtons + 75 + 5, yButtons + 84 + 42 - 25, 50, 20,
-        I18n.format("GitHub")));
+        I18n.format(translate("menu.github"))));
   }
 
   protected void actionPerformed(GuiButton b) {
@@ -190,20 +192,20 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
       }
     }
     
-    String eBug1 = "Latest version: " + EnumChatFormatting.GREEN + (version.isEmpty() ? ModPackVersion : version);
+    String eBug1 = translate("latest_version") + ": " + EnumChatFormatting.GREEN + (version.isEmpty() ? ModPackVersion : version);
     try(InputStream in = new URL(webSiteVersionHref).openStream()) {
       if (version.isEmpty() && checkConnect(new URL(webSiteVersionHref))) {
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         version = br.readLine();
         System.out.println(version);
-        eBug1 = "Latest version: " + EnumChatFormatting.GREEN + version;
+        eBug1 = translate("latest_version") + ": " + EnumChatFormatting.GREEN + version;
       }
       drawString(this.fontRendererObj, eBug1,
-          this.width - this.fontRendererObj.getStringWidth(eBug1) - 2, this.height - 20, -1);
+          this.width - this.fontRendererObj.getStringWidth(eBug1) - 10, this.height - 20, -1);
     } catch (Exception ignored) {}
-    String eBug2 = "Current version: " + EnumChatFormatting.YELLOW + ModPackVersion;
+    String eBug2 = translate("current_version") + ": " + EnumChatFormatting.YELLOW + ModPackVersion;
     drawString(this.fontRendererObj, eBug2,
-        this.width - this.fontRendererObj.getStringWidth(eBug2) - 2, this.height - 10, -1);
+        this.width - this.fontRendererObj.getStringWidth(eBug2) - 10, this.height - 10, -1);
     super.drawScreen(mouseX, mouseY, partialTicks);
   }
   

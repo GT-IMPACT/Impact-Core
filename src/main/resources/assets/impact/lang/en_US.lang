@@ -848,3 +848,11 @@ tooltip.htg.other.1=inside structure
 
 tooltip.impact_details=Impact Details
 tooltip.any_case=Any casing
+tooltip.latest_version=Latest version
+tooltip.current_version=Current version
+tooltip.welcome.0=Welcome to IMPACT
+tooltip.welcome.1=Please bring comments to
+tooltip.menu.website=Website
+tooltip.menu.discord=Discord
+tooltip.menu.github=GitHub
+
