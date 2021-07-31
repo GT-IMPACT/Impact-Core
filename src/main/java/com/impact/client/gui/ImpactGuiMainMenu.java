@@ -193,30 +193,29 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     }
     
     String eBug1 = translate("latest_version") + ": " + EnumChatFormatting.GREEN + (version.isEmpty() ? ModPackVersion : version);
-    try(InputStream in = new URL(webSiteVersionHref).openStream()) {
-      if (version.isEmpty() && checkConnect(new URL(webSiteVersionHref))) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        version = br.readLine();
-        System.out.println(version);
-        eBug1 = translate("latest_version") + ": " + EnumChatFormatting.GREEN + version;
-      }
-      drawString(this.fontRendererObj, eBug1,
-          this.width - this.fontRendererObj.getStringWidth(eBug1) - 10, this.height - 20, -1);
-    } catch (Exception ignored) {}
+//    try(InputStream in = new URL(webSiteVersionHref).openStream()) {
+//      if (version.isEmpty() && checkConnect(new URL(webSiteVersionHref))) {
+//        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+//        version = br.readLine();
+//        System.out.println(version);
+//        eBug1 = translate("latest_version") + ": " + EnumChatFormatting.GREEN + version;
+//      }
+//      drawString(this.fontRendererObj, eBug1,
+//          this.width - this.fontRendererObj.getStringWidth(eBug1) - 10, this.height - 20, -1);
+//    } catch (Exception ignored) {}
     String eBug2 = translate("current_version") + ": " + EnumChatFormatting.YELLOW + ModPackVersion;
-    drawString(this.fontRendererObj, eBug2,
-        this.width - this.fontRendererObj.getStringWidth(eBug2) - 10, this.height - 10, -1);
+    drawString(this.fontRendererObj, eBug2, this.width - this.fontRendererObj.getStringWidth(eBug2) - 10, this.height - 10, -1);
     super.drawScreen(mouseX, mouseY, partialTicks);
   }
   
-  private boolean checkConnect(URL url) {
-    try {
-      final URLConnection conn = url.openConnection();
-      conn.connect();
-      conn.getInputStream().close();
-      return true;
-    } catch (Exception e) {
-      return false;
-    }
-  }
+//  private boolean checkConnect(URL url) {
+//    try {
+//      final URLConnection conn = url.openConnection();
+//      conn.connect();
+//      conn.getInputStream().close();
+//      return true;
+//    } catch (Exception e) {
+//      return false;
+//    }
+//  }
 }
