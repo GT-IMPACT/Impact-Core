@@ -99,6 +99,6 @@ public class ClientEvent {
 			return;
 		} catch (Exception ignored) {
 		}
-		System.out.println("No detect cheats");
+
 	}
 }
