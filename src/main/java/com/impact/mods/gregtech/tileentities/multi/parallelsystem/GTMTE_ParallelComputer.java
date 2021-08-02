@@ -3,10 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
-import static com.mojang.realmsclient.gui.ChatFormatting.GREEN;
-import static com.mojang.realmsclient.gui.ChatFormatting.RED;
-import static com.mojang.realmsclient.gui.ChatFormatting.RESET;
-import static com.mojang.realmsclient.gui.ChatFormatting.YELLOW;
+import static net.minecraft.util.EnumChatFormatting.*;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
@@ -28,7 +25,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
@@ -96,7 +92,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                   .addElement('B', ofBlock(InsideBlock, 2))
                   .build();
           private final String[] desc = new String[]{
-              EnumChatFormatting.RED + "Impact Details:",
+              RED + "Impact Details:",
               "It's minimal length structure",
               " - Computer Casing",
               " - Empty Rack Casing (inside)"
@@ -342,6 +338,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
   public int getPollutionPerTick(ItemStack aStack) {
     return 0;
   }
+
 
   public String[] getInfoData() {
     return new String[]{
