@@ -3,6 +3,7 @@ package com.impact.events;
 import com.impact.client.gui.ImpactGuiMainMenu;
 import com.impact.client.key.KeyBindings;
 import com.impact.common.block.itemblock.IB_IGlass;
+import com.impact.core.Config;
 import com.impact.network.ImpactNetwork;
 import com.impact.network.ImpactPacketMetaDataPacket;
 import com.impact.network.ImpactPacketPlacedItem;
@@ -29,7 +30,7 @@ public class ClientEvent {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onGuiOpenEvent(GuiOpenEvent event) {
-		if (event.gui instanceof GuiMainMenu) {
+		if (Config.mainMenu && event.gui instanceof GuiMainMenu) {
 			event.gui = new ImpactGuiMainMenu();
 		}
 	}
