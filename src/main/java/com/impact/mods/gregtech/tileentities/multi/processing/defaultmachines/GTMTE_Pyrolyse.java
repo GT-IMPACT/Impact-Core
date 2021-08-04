@@ -96,7 +96,7 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public boolean checkRecipe(ItemStack itemStack) {
-    if (depleteInput(Core_Items1.getRecipe(39, 40))) {
+    if (depleteInput(Core_Items1.getRecipe(39, 42))) {
       this.mEfficiency = 10000;
       this.mEfficiencyIncrease = 10000;
 
