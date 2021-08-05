@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch;
 
+import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.GT_Container_Reactor_Rod;
 import com.impact.mods.gregtech.gui.GT_GUIContainer_Reactor_Rod;
 import gregtech.api.enums.Textures;
@@ -47,13 +48,13 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER)};
+				new GT_RenderedTexture(Texture.Icons.OVERLAY_REACTOR_HATCH_ACTIVE)};
 	}
 	
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER)};
+				new GT_RenderedTexture(Texture.Icons.OVERLAY_REACTOR_HATCH_INACTIVE)};
 	}
 	
 	@Override
@@ -170,6 +171,7 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 			mDurability = 0;
 			if (is != null && is.getItem() instanceof GT_RadioactiveCellIC_Item) {
 				GT_RadioactiveCellIC_Item rod = (GT_RadioactiveCellIC_Item) is.getItem();
+				aBaseMetaTileEntity.setActive(true);
 				mDurability = rod.getMaxDamageEx();
 				if (mStartReactor && mDownRod > 0) {
 					if (rod.sHeat > 0) {
@@ -182,7 +184,8 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 					}
 					mStartReactor = false;
 				}
-			}
+			} else
+			aBaseMetaTileEntity.setActive(false);
 		}
 	}
 	
