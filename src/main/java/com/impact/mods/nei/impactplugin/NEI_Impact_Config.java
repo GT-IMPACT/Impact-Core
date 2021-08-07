@@ -1,6 +1,7 @@
 package com.impact.mods.nei.impactplugin;
 
 import codechicken.nei.api.IConfigureNEI;
+import com.github.vfyjxf.nee.processor.RecipeProcessor;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
@@ -23,6 +24,8 @@ public class NEI_Impact_Config implements IConfigureNEI {
 
   @Override
   public void loadConfig() {
+    RecipeProcessor.init();
+
     sIsAdded = false;
 
     if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
