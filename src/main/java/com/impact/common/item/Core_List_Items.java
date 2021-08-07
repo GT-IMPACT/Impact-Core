@@ -57,6 +57,8 @@ public enum Core_List_Items {
   YSZCeramic(45, 1),
   GDCCeramic(46, 1),
   LSFCCeramic(47, 1),
+  Zircon(48, 1),
+  ZirconiumChloride(49, 1),
 
   //MetaItems1
   SchematicsTier1(0, 1),

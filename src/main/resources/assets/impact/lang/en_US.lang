@@ -135,6 +135,8 @@ item.impact_item.44.name=LSCF Ceramic Dust
 item.impact_item.45.name=YSZ Ceramic
 item.impact_item.46.name=GDC Ceramic
 item.impact_item.47.name=LSCF Ceramic
+item.impact_item.48.name=Zircon Dust
+item.impact_item.49.name=Zirconium Chloride Dust
 
 #MetaItems.01
 item.impact_item2.0.name=Schematics Rocket Tier 1 Chip
