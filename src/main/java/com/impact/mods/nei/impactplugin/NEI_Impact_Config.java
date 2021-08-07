@@ -24,7 +24,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
 
   @Override
   public void loadConfig() {
-    RecipeProcessor.init();
+    RecipeProcessorLoader.init();
 
     sIsAdded = false;
 
