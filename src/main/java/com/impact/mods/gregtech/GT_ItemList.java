@@ -48,6 +48,8 @@ public enum GT_ItemList implements IItemContainer {
 
   Water_Tank, Creative_Tank, Regulate_Digital_Chest, Regulate_One_Stack_Chest,
 
+  Drying_Oven_LV, Drying_Oven_MV, Drying_Oven_HV, Drying_Oven_EV, Drying_Oven_IV,
+
   //HATCHES
   Hatch_Output_Prim, Bus_Input_Prim, Bus_Output_Prim, Hatch_Output_Pump,
 

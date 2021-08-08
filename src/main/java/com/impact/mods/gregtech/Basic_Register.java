@@ -15,6 +15,7 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSat
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.*;
@@ -25,6 +26,8 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_PortableTank;
 
 public class Basic_Register {
+
+  private final static boolean aBoolConst_0 = false;
 
   public void run() {
     registerMachines();
@@ -243,6 +246,41 @@ public class Basic_Register {
     Regulate_One_Stack_Chest.set(new GTMTE_OneStackRegulateChest(ID2++, "impact.machine.onestackregulatechest",
             "One Stack Regulate Chest", 1).getStackForm(1L));
 
+    Drying_Oven_LV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(ID2++, "basicmachine.dryingoven.tier.01", "LV Drying Oven", 1,
+            "Sterilisation and drying of all kinds of materials", GT_RecipeMaps.sDryingOven, 1, 2, 0,
+            0, 1, "DryingOven.png", GregTech_API.sSoundList.get(207), false, false, 0, "ELECTRIC_FURNACE",
+            new Object[] {
+                    "I I", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE
+                    // TODO: 08.08.2021 @Spartak1997
+            }).getStackForm(1L));
+    Drying_Oven_MV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(ID2++, "basicmachine.dryingoven.tier.02", "MV Drying Oven", 2,
+            "Sterilisation and drying of all kinds of materials", GT_RecipeMaps.sDryingOven, 1, 2, 0,
+            0, 1, "DryingOven.png", GregTech_API.sSoundList.get(207), false, false, 0, "ELECTRIC_FURNACE",
+            new Object[] {
+                    "I I", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE
+                    // TODO: 08.08.2021 @Spartak1997
+            }).getStackForm(1L));
+    Drying_Oven_HV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(ID2++, "basicmachine.dryingoven.tier.03", "HV Drying Oven", 3,
+            "Sterilisation and drying of all kinds of materials", GT_RecipeMaps.sDryingOven, 1, 2, 0,
+            0, 1, "DryingOven.png", GregTech_API.sSoundList.get(207), false, false, 0, "ELECTRIC_FURNACE",
+            new Object[] {
+                    "I I", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE
+                    // TODO: 08.08.2021 @Spartak1997
+            }).getStackForm(1L));
+    Drying_Oven_EV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(ID2++, "basicmachine.dryingoven.tier.04", "EV Drying Oven", 4,
+            "Sterilisation and drying of all kinds of materials", GT_RecipeMaps.sDryingOven, 1, 2, 0,
+            0, 1, "DryingOven.png", GregTech_API.sSoundList.get(207), false, false, 0, "ELECTRIC_FURNACE",
+            new Object[] {
+                    "I I", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE
+                    // TODO: 08.08.2021 @Spartak1997
+            }).getStackForm(1L));
+    Drying_Oven_IV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(ID2++, "basicmachine.dryingoven.tier.05", "IV Drying Oven", 5,
+            "Sterilisation and drying of all kinds of materials", GT_RecipeMaps.sDryingOven, 1, 2, 0,
+            0, 1, "DryingOven.png", GregTech_API.sSoundList.get(207), false, false, 0, "ELECTRIC_FURNACE",
+            new Object[] {
+                    "I I", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE
+                    // TODO: 08.08.2021 @Spartak1997
+            }).getStackForm(1L));
 
     INFO("Last ID Basic_Register.java: " + ID2);//14587
 

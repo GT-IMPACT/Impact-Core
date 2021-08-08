@@ -676,7 +676,7 @@ tooltip.avf.name=Vacuum Freezer
 tooltip.avf.case=Frost Proof Machine Casing and IC2 Coolant fluid
 #Multis Arc Furnace
 tooltip.maf.info.0=Multis Arr..!
-tooltip.maf.name=Arc Furnace, Alloy Smelter
+tooltip.maf.name=Arc Furnace, Alloy Smelter, Drying Oven
 tooltip.maf.case=Arc Casing
 #Multis Assembler
 tooltip.mas.info.0=Multis, Assemble!
