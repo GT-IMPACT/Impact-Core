@@ -109,6 +109,8 @@ public enum GT_ItemList implements IItemContainer {
 
   filler,
 
+  Parametric_Diffuser, Photon_Stabilizer, Photon_Containment,
+
   end;
   private ItemStack mStack;
   private boolean mHasNotBeenSet = true;
