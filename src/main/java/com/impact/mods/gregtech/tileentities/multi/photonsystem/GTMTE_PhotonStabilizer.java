@@ -34,10 +34,10 @@ import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    public static Block CASING = Casing_Helper.sCasePage8_3;
-    public static byte CASING_META = 7;
-    public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
-    public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
+    public static Block CASING = Casing_Helper.sCaseCore2;
+    public static byte CASING_META = 15;
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
+    int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
     public int mPhotonsSummary = 0;
     public boolean mPhotonsBeam = false;
@@ -96,8 +96,8 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                                             {"AA AA","ABBBA","AA AA"},
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
-                                    .addElement('B', ofBlock(ItemRegistery.IGlassBlock, 1))
-                                    .addElement('D', ofBlock(ItemRegistery.IGlassBlock, 15))
+                                    .addElement('B', ofBlock(ItemRegistery.photonSystem, 0))
+                                    .addElement('D', ofBlock(ItemRegistery.IGlassBlock, 14))
                                     .build();
                     private final String[] desc = new String[]{
                             RED + "Impact Details:",
@@ -275,8 +275,8 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 if (x == 0 && y != 1) continue;
 
                 if (y == 1 && x >= -1 && x <= 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -306,8 +306,8 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 if (y == 1 && x >= -1 && x <= 1) continue;
 
                 if (y != 1 && x >= -1 && x <= 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -344,8 +344,8 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 if (x == 0 && y != 1) continue;
 
                 if (y == 1 && x >= -1 && x <= 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
                     }

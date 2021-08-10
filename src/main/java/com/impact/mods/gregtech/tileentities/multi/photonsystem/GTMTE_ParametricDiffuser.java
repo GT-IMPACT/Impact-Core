@@ -32,10 +32,10 @@ import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    public static Block CASING = Casing_Helper.sCasePage8_3;
-    public static byte CASING_META = 7;
-    public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
-    public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
+    public static Block CASING = Casing_Helper.sCaseCore2;
+    public static byte CASING_META = 15;
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
+    int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
     public int mPhotonsGenerate = 0;
     public boolean checkStabilizer = true;
@@ -90,14 +90,13 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                                     .addShape("main", new String[][]{
                                             {"     A   A","     AAAAA","     AAAAA","          "},
                                             {"      AAA ","AAAAAAAAAA","~AFFFCCCCA","AAAAAAAAAA"},
-                                            {"      AAA ","AAFFFCCCCA","BD       F","AACCCCCCCA"},
+                                            {"      AAA ","AAFFFCCCCA","AD       F","AACCCCCCCA"},
                                             {"      AAA ","AAAAAAAAAA","AAFFFCCCCA","AAAAAAAAAA"},
                                             {"     A   A","     AAAAA","     AAAAA","          "}
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
-                                    .addElement('B', ofBlock(ItemRegistery.IGlassBlock, 1))
-                                    .addElement('C', ofBlock(ItemRegistery.IGlassBlock, 4))
-                                    .addElement('D', ofBlock(ItemRegistery.IGlassBlock, 15))
+                                    .addElement('C', ofBlock(ItemRegistery.photonSystem, 0))
+                                    .addElement('D', ofBlock(ItemRegistery.photonTransducer, 0))
                                     .addElement('F', ofBlock(ItemRegistery.IGlassBlock, 14))
                                     .build();
                     private final String[] desc = new String[]{
@@ -187,18 +186,18 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
     @Override
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
-
         if (iAm.isServerSide() && aTick % 20 == 0) {
-
+            final Vector3ic forgeDirection = new Vector3i(
+                    ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
+                    ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
+                    ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
+            );
             doCheckStabilizer(iAm);
 
             if (!checkStabilizer && iAm.isActive()) {
-                final Vector3ic forgeDirection = new Vector3i(
-                        ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
-                        ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
-                        ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
-                );
-                Vector3ic  offsetX = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, 0);
+
+                Vector3ic offsetX = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, 0);
+
                 IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offsetX.x(), offsetX.y(), offsetX.z());
 
                 if (currentTE != null) {
@@ -209,9 +208,14 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                             Random random = new Random();
                             mPhotonsGenerate = random.nextInt(200);
                             mPhotonStabilizer.setPhotons(mPhotonsGenerate);
+
+                            Vector3ic offsetCheckBlock = rotateOffsetVector(forgeDirection, 1, 0, -1);
+                            impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z());
+
+                            impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), offsetX.x(), offsetX.y(), offsetX.z());
                             addBound(iAm);
                             if (mPhotonStabilizer.mPhotonsSummary >= 100000) {
-                                iAm.setActive(false);
+                                mPhotonStabilizer.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
                             }
                         }
                     }
@@ -240,6 +244,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
             for (; rangeToStabilizer < 30; rangeToStabilizer++) {
 
                 offsetX = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, 0);
+
                 currentTE = iAm.getIGregTechTileEntityOffset(offsetX.x(), offsetX.y(), offsetX.z());
 
                 if (currentTE != null) {
@@ -275,8 +280,8 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
                 if (y == 1 && (x >= 2 && x <= 8)) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -317,8 +322,8 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 }
 
                 if (x >= 5 && x <= 8 && y >= 0 && y <= 2) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -337,8 +342,8 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
                 // todo начинка
                 if (x == 1 && y == 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 15)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonTransducer)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -376,8 +381,8 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 }
 
                 if (x >= 5 && x <= 8 && y == 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
                     }

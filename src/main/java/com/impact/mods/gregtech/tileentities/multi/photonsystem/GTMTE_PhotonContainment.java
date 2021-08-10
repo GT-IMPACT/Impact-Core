@@ -31,10 +31,10 @@ import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    public static Block CASING = Casing_Helper.sCasePage8_3;
-    public static byte CASING_META = 7;
-    public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
-    public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
+    public static Block CASING = Casing_Helper.sCaseCore2;
+    public static byte CASING_META = 15;
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
+    int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
     public int mPhotonsStable = 0;
 

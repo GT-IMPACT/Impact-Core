@@ -1,11 +1,14 @@
 package com.impact.core;
 
+import com.impact.client.render.fx.FXLightningBolt;
 import com.impact.client.render.BlockHint;
 import com.impact.command.Command_FixBQ;
+import com.impact.util.files.JsonWorld;
 import com.impact.util.files.JsonWorld;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -69,19 +72,25 @@ public class CommonProxy implements IGuiHandler {
         return null;
     }
 
-  public void onServerStarted() {
-    Impact_API.sSpaceSatellite.clear();
-    Impact_API.sElevatorSpace.clear();
-    Impact_API.sCommunicationTower.clear();
-    Impact_API.sAerostat.clear();
-    JsonWorld.load();
-  }
+    public void nodeBolt(World worldObj, float x, float y, float z, Entity targetedEntity) {
+    }
 
-  public void onServerStopping() {
-    JsonWorld.save();
-    Impact_API.sSpaceSatellite.clear();
-    Impact_API.sElevatorSpace.clear();
-    Impact_API.sCommunicationTower.clear();
-    Impact_API.sAerostat.clear();
-  }
+    public void nodeBolt(World world, int tX, int tY, int tZ, int tXN, int tYN, int tZN) {
+    }
+
+    public void onServerStarted() {
+        Impact_API.sSpaceSatellite.clear();
+        Impact_API.sElevatorSpace.clear();
+        Impact_API.sCommunicationTower.clear();
+        Impact_API.sAerostat.clear();
+        JsonWorld.load();
+    }
+
+    public void onServerStopping() {
+      JsonWorld.save();
+      Impact_API.sSpaceSatellite.clear();
+      Impact_API.sElevatorSpace.clear();
+      Impact_API.sCommunicationTower.clear();
+      Impact_API.sAerostat.clear();
+    }
 }
