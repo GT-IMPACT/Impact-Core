@@ -97,7 +97,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
                                     .addElement('B', ofBlock(ItemRegistery.photonSystem, 0))
-                                    .addElement('D', ofBlock(ItemRegistery.IGlassBlock, 14))
+                                    .addElement('D', ofBlock(ItemRegistery.IGlassBlock))
                                     .build();
                     private final String[] desc = new String[]{
                             RED + "Impact Details:",
@@ -171,15 +171,14 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
         if (iAm.isActive()) {
 
-            Color color = new Color(0x05FFFF);
+            //Color color = new Color(0x05FFFF);
 
             Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);
-            Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, mRangeToContainer, 0, -1);
+            Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, mRangeToContainer-1, 0, -1);
 
             impact.proxy.beam(iAm.getWorld(), offset.x() + x + 0.5D, offset.y() + y + 0.5D, offset.z() + z + 0.5D,
                     offsetToStabilizer.x() + x + 0.5D, offsetToStabilizer.y() + y + 0.5D, offsetToStabilizer.z() + z + 0.5D,
                     1, 0x770ED0, false, 1, 20 * 5);
-
         }
     }
 
@@ -188,16 +187,25 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
         super.onPostTick(iAm, aTick);
 
         if (iAm.isServerSide() && aTick % 20*5 == 0) {
-
+            final Vector3ic forgeDirection = new Vector3i(
+                    ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
+                    ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
+                    ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
+            );
             doCheckContainer(iAm);
 
+            if (iAm.isActive()) {
+                Vector3ic offsetCheckBlock = rotateOffsetVector(forgeDirection, 0, 2, -1);
+                impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(),
+                        offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
+                impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(),
+                        offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
+            }
+
             if (!mCheckContainer && iAm.isActive()) {
+
                 if (mPhotonsSummary >= 1000) {
-                    final Vector3ic forgeDirection = new Vector3i(
-                            ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
-                            ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
-                            ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
-                    );
+
                     Vector3ic offsetX = rotateOffsetVector(forgeDirection, mRangeToContainer, 0, 1);
                     IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offsetX.x(), offsetX.y(), offsetX.z());
 
@@ -214,6 +222,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                     } else {
                         mPhotonContainment = null;
                         mCheckContainer = true;
+                        mRangeToContainer = 0;
                     }
                 }
             }
@@ -247,10 +256,12 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                         mCheckContainer = false;
                         break;
                     }
-                } else {
-                    mPhotonContainment = null;
-                    mCheckContainer = true;
                 }
+            }
+            if (currentTE == null) {
+                mPhotonContainment = null;
+                mCheckContainer = true;
+                mRangeToContainer = 0;
             }
         }
     }

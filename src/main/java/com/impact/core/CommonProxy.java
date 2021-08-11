@@ -78,6 +78,9 @@ public class CommonProxy implements IGuiHandler {
     public void nodeBolt(World world, int tX, int tY, int tZ, int tXN, int tYN, int tZN) {
     }
 
+    public void nodeBolt(World world, int tX, int tY, int tZ, int tXN, int tYN, int tZN, int duration, float multi, int speed) {
+    }
+
     public void onServerStarted() {
         Impact_API.sSpaceSatellite.clear();
         Impact_API.sElevatorSpace.clear();

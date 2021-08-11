@@ -131,7 +131,16 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void nodeBolt(World world, int tX, int tY, int tZ, int tXN, int tYN, int tZN) {
         FXLightningBolt bolt =  new FXLightningBolt(world, tX + 0.5F, tY + 0.5F, tZ + 0.5F,
-                tX + tXN + 0.5F, tY + tYN + 0.5F, tZ + tZN + 0.5F, world.rand.nextLong(), 20, 0.3F, 7);
+                tX + tXN + 0.5F, tY + tYN + 0.5F, tZ + tZN + 0.5F, world.rand.nextLong(), 5, 10F, 1);
+        bolt.defaultFractal();
+        bolt.setType(0);
+        bolt.finalizeBolt();
+    }
+
+    @Override
+    public void nodeBolt(World world, int tX, int tY, int tZ, int tXN, int tYN, int tZN, int duration, float multi, int speed) {
+        FXLightningBolt bolt =  new FXLightningBolt(world, tX + 0.5F, tY + 0.5F, tZ + 0.5F,
+                tX + tXN + 0.5F, tY + tYN + 0.5F, tZ + tZN + 0.5F, world.rand.nextLong(), duration, multi, speed);
         bolt.defaultFractal();
         bolt.setType(0);
         bolt.finalizeBolt();

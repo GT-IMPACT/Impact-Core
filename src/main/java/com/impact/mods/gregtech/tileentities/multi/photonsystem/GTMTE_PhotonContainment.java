@@ -8,6 +8,7 @@ import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -16,6 +17,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,13 +26,26 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
+import java.util.HashSet;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBlockBase {
+
+    public static final GT_Recipe.GT_Recipe_Map sPhotonContainer = new GT_Recipe.GT_Recipe_Map(
+            new HashSet<>(1000),
+            "impact.recipe.photoncontainer",
+            "Photon Containment",
+            null,
+            RES_PATH_GUI + "basic/PhotonContainment",
+            1, 1, 1, 0,
+            1, E, 1, E, false, false
+    );
 
     public static Block CASING = Casing_Helper.sCaseCore2;
     public static byte CASING_META = 15;
@@ -90,10 +106,10 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                                             {"      A","AAAAAFA","A    AA"}
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
-                                    .addElement('B', ofBlock(ItemRegistery.IGlassBlock, 1))
-                                    .addElement('C', ofBlock(ItemRegistery.IGlassBlock, 4))
-                                    .addElement('D', ofBlock(ItemRegistery.IGlassBlock, 15))
-                                    .addElement('F', ofBlock(ItemRegistery.IGlassBlock, 14))
+                                    .addElement('B', ofBlock(ItemRegistery.photonSystem, 0))
+                                    .addElement('C', ofBlock(ItemRegistery.photonTransducer, 0))
+                                    .addElement('D', ofBlock(ItemRegistery.IGlassBlock))
+                                    .addElement('F', ofBlockHint(ItemRegistery.decorateBlock[2], 1))
                                     .build();
                     private final String[] desc = new String[]{
                             RED + "Impact Details:",
@@ -165,103 +181,127 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
 
         boolean formationChecklist = true;
 
-//        for (int x = -2; x <= 2; x++) {
-//            for (int y = 0; y < 2; y++) {
-//
-//                final Vector3ic offset = rotateOffsetVector(forgeDirection, x, -1, -y);
-//                IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-//
-//                if (x == 0 && y != 1) continue;
-//
-//                if (y == 1 && x >= -1 && x <= 1) {
-//                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-//                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
-//                    } else {
-//                        formationChecklist = false;
-//                    }
-//                    continue;
-//                }
-//
-//                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-//                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-//                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
-//                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-//                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-//                    } else {
-//                        formationChecklist = false;
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (int x = -2; x <= 2; x++) {
-//            for (int y = 0; y < 2; y++) {
-//
-//                final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 0, -y);
-//                IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-//
-//                if (x == 0 && y == 0) continue;
-//
-//                if (y == 1 && x >= -1 && x <= 1) continue;
-//
-//                if (y != 1 && x >= -1 && x <= 1) {
-//                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-//                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
-//                    } else {
-//                        formationChecklist = false;
-//                    }
-//                    continue;
-//                }
-//
-//                if (y == 1) {
-//                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-//                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 14)) {
-//                    } else {
-//                        formationChecklist = false;
-//                    }
-//                    continue;
-//                }
-//
-//                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-//                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-//                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
-//                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-//                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-//                    } else {
-//                        formationChecklist = false;
-//                    }
-//                }
-//            }
-//        }
-//
-//        for (int x = -2; x <= 2; x++) {
-//            for (int y = 0; y < 2; y++) {
-//
-//                final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 1, -y);
-//                IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-//
-//                if (x == 0 && y != 1) continue;
-//
-//                if (y == 1 && x >= -1 && x <= 1) {
-//                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-//                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 4)) {
-//                    } else {
-//                        formationChecklist = false;
-//                    }
-//                    continue;
-//                }
-//
-//                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-//                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-//                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
-//                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-//                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-//                    } else {
-//                        formationChecklist = false;
-//                    }
-//                }
-//            }
-//        }
+        for (int x = -5; x <= 1; x++) {
+            for (int y = 0; y <= 4; y++) {
+
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, x, -1, -y);
+                IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+                if (x >= -4 && x <= -1 && !(y >= 1 && y <= 3)) continue;
+
+                if (x >= -4 && x <= -1 && y == 2) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                    continue;
+                }
+
+                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                }
+            }
+        }
+
+        for (int x = -5; x <= 1; x++) {
+            for (int y = 0; y <= 4; y++) {
+
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 0, -y);
+                IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+                if (x == 0 && y == 0) continue;
+                if (x >= -4 && x <= -2 && y == 2) continue;
+                if (x == 0 && y <= 3) continue;
+
+                if (x == -1 && y == 2) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonTransducer)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                    continue;
+                }
+
+                if (x >= -4 && x <= -1 && y >= 1 && y <= 3) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                    continue;
+                }
+
+                if (x == -5 && y == 2) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                    continue;
+                }
+
+                if (x == 1 && y >= 1 && y <= 3) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                    continue;
+                }
+
+                if (x == 0) {
+                    if (super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    } else {
+
+                        formationChecklist = false;
+                    }
+                    continue;
+                }
+
+                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                }
+            }
+        }
+
+        for (int x = -5; x <= 1; x++) {
+            for (int y = 0; y <= 4; y++) {
+
+                final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 1, -y);
+                IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+
+                if (x <= 0 && !(y >= 1 && y <= 3)) continue;
+
+                if (x >= -4 && x <= -1 && y == 2) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                    continue;
+                }
+
+                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                    } else {
+                        formationChecklist = false;
+                    }
+                }
+            }
+        }
 
         return formationChecklist;
     }

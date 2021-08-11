@@ -11,19 +11,21 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_M
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
 import java.util.Random;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
@@ -34,13 +36,13 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
     public static Block CASING = Casing_Helper.sCaseCore2;
     public static byte CASING_META = 15;
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-    int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
-
     public int mPhotonsGenerate = 0;
     public boolean checkStabilizer = true;
     public int rangeToStabilizer = 0;
+    public int mPeakBeamPhotons = 1;
     public GTMTE_PhotonStabilizer mPhotonStabilizer;
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
+    int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
     //region Register
     public GTMTE_ParametricDiffuser(int aID, String aName, String aNameRegional) {
@@ -88,16 +90,16 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                     private final IStructureDefinition<GTMTE_ParametricDiffuser> definition =
                             StructureDefinition.<GTMTE_ParametricDiffuser>builder()
                                     .addShape("main", new String[][]{
-                                            {"     A   A","     AAAAA","     AAAAA","          "},
-                                            {"      AAA ","AAAAAAAAAA","~AFFFCCCCA","AAAAAAAAAA"},
-                                            {"      AAA ","AAFFFCCCCA","AD       F","AACCCCCCCA"},
-                                            {"      AAA ","AAAAAAAAAA","AAFFFCCCCA","AAAAAAAAAA"},
-                                            {"     A   A","     AAAAA","     AAAAA","          "}
+                                            {"     A   A", "     AAAAA", "     AAAAA", "          "},
+                                            {"      AAA ", "AAAAAAAAAA", "~AFFFCCCCA", "AAAAAAAAAA"},
+                                            {"      AAA ", "AAFFFCCCCA", "AD       F", "AACCCCCCCA"},
+                                            {"      AAA ", "AAAAAAAAAA", "AAFFFCCCCA", "AAAAAAAAAA"},
+                                            {"     A   A", "     AAAAA", "     AAAAA", "          "}
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
                                     .addElement('C', ofBlock(ItemRegistery.photonSystem, 0))
                                     .addElement('D', ofBlock(ItemRegistery.photonTransducer, 0))
-                                    .addElement('F', ofBlock(ItemRegistery.IGlassBlock, 14))
+                                    .addElement('F', ofBlock(ItemRegistery.IGlassBlock))
                                     .build();
                     private final String[] desc = new String[]{
                             RED + "Impact Details:",
@@ -142,20 +144,20 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-//        ItemStack gem = mInputBusses.get(0).mInventory[0];
-//        int[] idOreDict = OreDictionary.getOreIDs(gem);
-//        for (int id : idOreDict) {
-//            if (OreDictionary.getOreName(id).startsWith("Exquisite")) {
-//                this.mMaxProgresstime = 20;
-//                this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-//                this.mEfficiencyIncrease = 10000;
-////        this.mEUt = 8192;
-////        this.mEUt = -this.mEUt;
-//                return true;
-//            }
-//        }
-        this.mMaxProgresstime = 20;
-        return true;
+        ItemStack gem = mInputBusses.get(0).mInventory[0];
+        int[] idOreDict = OreDictionary.getOreIDs(gem);
+        for (int id : idOreDict) {
+            if (OreDictionary.getOreName(id).startsWith("gemExquisite")) {
+                this.mMaxProgresstime = 20;
+                this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                this.mEfficiencyIncrease = 10000;
+                int tier = GT_Utility.getTier(getMaxInputVoltage());
+                this.mPeakBeamPhotons = mEfficiency < 10000 ? 0 : tier > 6 ? tier - 5 : 0;
+                this.mEUt = -(int) getMaxInputVoltage();
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addBound(IGregTechTileEntity iAm) {
@@ -171,8 +173,6 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
         if (iAm.isActive()) {
 
-            Color color = new Color(0xFFFFFF);
-
             Vector3ic offset = rotateOffsetVector(forgeDirection, 1, 0, -1);
             Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, -1);
 
@@ -186,6 +186,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
     @Override
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
+
         if (iAm.isServerSide() && aTick % 20 == 0) {
             final Vector3ic forgeDirection = new Vector3i(
                     ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
@@ -206,14 +207,11 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                         checkStabilizer = false;
                         if (currentTE.isActive()) {
                             Random random = new Random();
-                            mPhotonsGenerate = random.nextInt(200);
+                            mPhotonsGenerate = random.nextInt(200) * mPeakBeamPhotons;
                             mPhotonStabilizer.setPhotons(mPhotonsGenerate);
-
-                            Vector3ic offsetCheckBlock = rotateOffsetVector(forgeDirection, 1, 0, -1);
-                            impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z());
-
-                            impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), offsetX.x(), offsetX.y(), offsetX.z());
                             addBound(iAm);
+                            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(210),
+                                    100, 1.0F, iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord());
                             if (mPhotonStabilizer.mPhotonsSummary >= 100000) {
                                 mPhotonStabilizer.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
                             }
@@ -273,7 +271,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ);
         boolean formationChecklist = true;
 
-        for (int x = 0 ; x <= 9; x++) {
+        for (int x = 0; x <= 9; x++) {
             for (int y = 0; y <= 2; y++) {
 
                 final Vector3ic offset = rotateOffsetVector(forgeDirection, x, -1, -y);
@@ -290,7 +288,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                         && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
@@ -300,7 +298,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
             }
         }
 
-        for (int x = 0 ; x <= 9; x++) {
+        for (int x = 0; x <= 9; x++) {
             for (int y = -1; y <= 3; y++) {
 
                 if (x == 0 && y == 0) continue;
@@ -313,8 +311,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 if (!(y >= 0 && y <= 2) && !(x >= 5)) continue;
 
                 if (x >= 2 && x <= 4) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 14)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -332,8 +329,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
                 // todo нос
                 if (x == 9 && y == 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 14)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -352,7 +348,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                         && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
@@ -362,7 +358,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
             }
         }
 
-        for (int x = 0 ; x <= 9; x++) {
+        for (int x = 0; x <= 9; x++) {
             for (int y = -1; y <= 3; y++) {
 
                 final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 1, -y);
@@ -372,8 +368,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 if (y == 3 && !(x >= 5)) continue;
 
                 if (x >= 2 && x <= 4 && y == 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 14)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -391,7 +386,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                         && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
@@ -401,7 +396,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
             }
         }
 
-        for (int x = 5 ; x <= 9; x++) {
+        for (int x = 5; x <= 9; x++) {
             for (int y = -1; y <= 3; y++) {
 
                 final Vector3ic offset = rotateOffsetVector(forgeDirection, x, 2, -y);
@@ -415,7 +410,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                         && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
@@ -439,6 +434,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
         super.saveNBTData(aNBT);
         aNBT.setInteger("mPhotonsGenerate", mPhotonsGenerate);
         aNBT.setInteger("rangeToStabilizer", rangeToStabilizer);
+        aNBT.setInteger("mPeakBeamPhotons", mPeakBeamPhotons);
         aNBT.setBoolean("checkStabilizer", checkStabilizer);
     }
 
@@ -447,6 +443,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
         super.loadNBTData(aNBT);
         mPhotonsGenerate = aNBT.getInteger("mPhotonsGenerate");
         rangeToStabilizer = aNBT.getInteger("rangeToStabilizer");
+        mPeakBeamPhotons = aNBT.getInteger("mPeakBeamPhotons");
         checkStabilizer = aNBT.getBoolean("checkStabilizer");
     }
 
