@@ -253,6 +253,8 @@ public enum Core_List_Items {
   ThoriumMOXFuel(189, 1),
   OrbCasingI(190, 1),
   OrbCasingII(191, 1),
+  RTRMFoil(192, 1),
+  PGFoil(193, 1),
 
   WoodenBrickForm1(0, 2),
 
