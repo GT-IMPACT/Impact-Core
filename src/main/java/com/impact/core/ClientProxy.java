@@ -122,9 +122,9 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void nodeBolt(World worldObj, float x, float y, float z, Entity targetedEntity) {
-        FXLightningBolt bolt = new FXLightningBolt(worldObj, x, y, z, targetedEntity.posX, targetedEntity.posY, targetedEntity.posZ, worldObj.rand.nextLong(), 10, 4.0F, 5);
+        FXLightningBolt bolt = new FXLightningBolt(worldObj, x, y, z, targetedEntity.posX, targetedEntity.posY+1, targetedEntity.posZ, worldObj.rand.nextLong(), 5, 1.0F, 8);
         bolt.defaultFractal();
-        bolt.setType(3);
+        bolt.setType(0);
         bolt.finalizeBolt();
     }
 

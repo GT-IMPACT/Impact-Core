@@ -40,6 +40,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -72,7 +73,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
   public GT_MetaTileEntity_MultiParallelBlockBase(final String aName) {
     super(aName);
   }
-  
+
   public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
     return aMetaTileEntity.getBaseMetaTileEntity() != null
         && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileEntity() == aMetaTileEntity
@@ -867,7 +868,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
           if (found_Recipe) {
             if (calcEfficiency(nominalV, tRecipe, tOut)) return false;
             this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
-          
+
             this.updateSlots();
             return true;
           }

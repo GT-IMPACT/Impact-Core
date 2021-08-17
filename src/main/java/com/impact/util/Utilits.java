@@ -1,6 +1,7 @@
 package com.impact.util;
 
 import com.impact.core.Refstrings;
+import com.impact.register.SSBodies;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -53,7 +54,7 @@ public class Utilits {
     }
 
     public static String translate(String text) {
-        return translateToLocal("tooltip." + text);
+        return  translateToLocal("tooltip." + text);
     }
 
     public static String translateGTItemStack(ItemStack itemStack) {
@@ -236,6 +237,14 @@ public class Utilits {
         return DimensionManager.getProvider(idDim).getClass().getName().contains(nameDim);
     }
 
+    public static boolean isLowGravity(int idDim) {
+        return idDim == SSBodies.dimensionIDOrbitEarth;
+    }
+
+    public static boolean isLowGravity(IGregTechTileEntity iAm) {
+        return iAm.getWorld().provider.dimensionId == SSBodies.dimensionIDOrbitEarth;
+    }
+
     public static AxisAlignedBB setBoxAABB(IGregTechTileEntity igt, double radius) {
         return AxisAlignedBB.getBoundingBox(
                 (igt.getXCoord() - radius), (igt.getYCoord() - radius),
@@ -249,17 +258,6 @@ public class Utilits {
             GT_Utility.sendChatToPlayer(player, chat);
         } catch (Exception ignored) {
         }
-    }
-
-    public static void setBlock(IGregTechTileEntity te, int x, int y, int z, Block block, int meta) {
-        int posX = te.getXCoord() + x;
-        int posY = te.getYCoord() + y;
-        int posZ = te.getZCoord() + z;
-        te.getWorld().setBlock(posX, posY, posZ, block, meta, 2);
-    }
-
-    public static void setBlock(IGregTechTileEntity te, int x, int y, int z, Block block) {
-        setBlock(te, x, y, z, block, 0);
     }
 
     public static MovingObjectPosition raytraceFromEntity(World world, Entity player, double range) {

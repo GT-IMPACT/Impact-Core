@@ -9,6 +9,7 @@ import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
+import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -17,7 +18,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import mods.railcraft.client.particles.EntityTuningFX;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
+import java.util.List;
 import java.util.Random;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
@@ -186,7 +191,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
 
-        if (iAm.isServerSide() && aTick % 20*5 == 0) {
+        if (iAm.isServerSide() && aTick % 20 * 5 == 0) {
             final Vector3ic forgeDirection = new Vector3i(
                     ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
                     ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
@@ -200,6 +205,14 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                         offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
                 impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(),
                         offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
+
+                for (Object o : iAm.getWorld().playerEntities) {
+                    if (o instanceof EntityPlayer) {
+                        EntityPlayer player1 = (EntityPlayer) o;
+                        if (Utilits.distanceBetween3D(iAm.getXCoord(), (int) player1.posX, iAm.getYCoord(), (int) player1.posY, iAm.getZCoord(), (int) player1.posZ) < 8)
+                            impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), player1);
+                    }
+                }
             }
 
             if (!mCheckContainer && iAm.isActive()) {
@@ -234,7 +247,6 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     public void doCheckContainer(IGregTechTileEntity iAm) {
-
         if (mMachine && mCheckContainer) {
 
             final Vector3ic forgeDirection = new Vector3i(
@@ -268,7 +280,9 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
-        mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
+        if (!Utilits.isLowGravity(iAm)) {
+            return false;
+        }
         //region Structure
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
@@ -288,6 +302,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 if (y == 1 && x >= -1 && x <= 1) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
+
                     } else {
                         formationChecklist = false;
                     }
@@ -295,8 +310,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 }
 
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
@@ -326,8 +340,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 }
 
                 if (y == 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)
-                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 14)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
                     } else {
                         formationChecklist = false;
                     }
@@ -335,8 +348,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 }
 
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
@@ -364,8 +376,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 }
 
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                        && !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
                     } else {
