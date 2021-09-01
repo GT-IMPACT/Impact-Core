@@ -153,7 +153,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 int tier = GT_Utility.getTier(getMaxInputVoltage());
-                this.mPeakBeamPhotons = mEfficiency < 10000 ? 0 : tier > 6 ? tier - 5 : 0;
+                this.mPeakBeamPhotons = mEfficiency < 10000 ? 0 : tier >= 4 ? tier - 3 : 0;
                 this.mEUt = -(int) getMaxInputVoltage();
                 return true;
             }
@@ -217,7 +217,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                             mPhotonStabilizer.setPhotons(mPhotonsGenerate);
                             addBound(iAm);
                             if (mPhotonStabilizer.mPhotonsSummary >= 100000) {
-                                // mPhotonStabilizer.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+//                                 mPhotonStabilizer.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
                             }
                         }
                     }
@@ -267,9 +267,9 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
-        if (!Utilits.isLowGravity(iAm)) {
-            return false;
-        }
+//        if (!Utilits.isLowGravity(iAm)) {
+//            return false;
+//        }
         //region Structure
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,

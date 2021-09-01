@@ -11,6 +11,7 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_Parallel
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
+import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_PhotonContainment;
 import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_PhotonStabilizer;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
@@ -97,6 +98,9 @@ public class ImpactPlugin extends PluginBase {
 
 		final GTMTE_PhotonStabilizer photonStabilizer = tMeta instanceof GTMTE_PhotonStabilizer
 				? ((GTMTE_PhotonStabilizer) tMeta) : null;
+
+		final GTMTE_PhotonContainment photonContainment = tMeta instanceof GTMTE_PhotonContainment
+				? ((GTMTE_PhotonContainment) tMeta) : null;
 		
 		final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase
 				? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
@@ -125,6 +129,10 @@ public class ImpactPlugin extends PluginBase {
 
 			if (photonStabilizer != null) {
 				currenttip.add(tag.getInteger("photonsSummary") + "");
+			}
+
+			if (photonContainment != null) {
+				currenttip.add(tag.getInteger("mPhotonsStable") + "");
 			}
 			
 			if (aerostat != null) {
@@ -278,6 +286,9 @@ public class ImpactPlugin extends PluginBase {
 
 		final GTMTE_PhotonStabilizer photonStabilizer = tMeta instanceof GTMTE_PhotonStabilizer
 				? ((GTMTE_PhotonStabilizer) tMeta) : null;
+
+		final GTMTE_PhotonContainment photonContainment = tMeta instanceof GTMTE_PhotonContainment
+				? ((GTMTE_PhotonContainment) tMeta) : null;
 		
 		final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch
 				? ((GT_MetaTileEntity_Hatch) tMeta) : null;
@@ -286,6 +297,10 @@ public class ImpactPlugin extends PluginBase {
 
 			if (photonStabilizer != null) {
 				tag.setInteger("photonsSummary", photonStabilizer.mPhotonsSummary);
+			}
+
+			if (photonContainment != null) {
+				tag.setInteger("mPhotonsStable", photonContainment.mPhotonsStable);
 			}
 			
 			if (hatch != null) {

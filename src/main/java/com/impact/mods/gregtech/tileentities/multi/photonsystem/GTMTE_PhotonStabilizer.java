@@ -13,6 +13,7 @@ import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -147,18 +148,8 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-//        ItemStack gem = mInputBusses.get(0).mInventory[0];
-//        int[] idOreDict = OreDictionary.getOreIDs(gem);
-//        for (int id : idOreDict) {
-//            if (OreDictionary.getOreName(id).startsWith("Exquisite")) {
-//                this.mMaxProgresstime = 20;
-//                this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-//                this.mEfficiencyIncrease = 10000;
-////        this.mEUt = 8192;
-////        this.mEUt = -this.mEUt;
-//                return true;
-//            }
-//        }
+
+        this.mEUt = -(int) GT_Values.V[4];
         this.mMaxProgresstime = 40;
         return true;
     }
@@ -176,14 +167,12 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
         if (iAm.isActive()) {
 
-            //Color color = new Color(0x05FFFF);
-
             Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);
             Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, mRangeToContainer-1, 0, -1);
 
             impact.proxy.beam(iAm.getWorld(), offset.x() + x + 0.5D, offset.y() + y + 0.5D, offset.z() + z + 0.5D,
                     offsetToStabilizer.x() + x + 0.5D, offsetToStabilizer.y() + y + 0.5D, offsetToStabilizer.z() + z + 0.5D,
-                    1, 0x770ED0, false, 1, 20 * 5);
+                    1, 0x770ED0, false, 1, 20 * 2);
         }
     }
 
@@ -227,9 +216,11 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                             mPhotonContainment = (GTMTE_PhotonContainment) currentTE.getMetaTileEntity();
                             mCheckContainer = false;
                             if (currentTE.isActive()) {
-                                mPhotonContainment.setPhotons(1000);
-                                addBound(iAm);
-                                mPhotonsSummary -= 1000;
+                                if (mPhotonContainment.mPhotonsStable <= 99_900) {
+                                    mPhotonContainment.setPhotons(1000);
+                                    addBound(iAm);
+                                    mPhotonsSummary -= 1000;
+                                }
                             }
                         }
                     } else {
@@ -280,9 +271,10 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
-        if (!Utilits.isLowGravity(iAm)) {
-            return false;
-        }
+
+//        if (!Utilits.isLowGravity(iAm)) {
+//            return false;
+//        }
         //region Structure
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,

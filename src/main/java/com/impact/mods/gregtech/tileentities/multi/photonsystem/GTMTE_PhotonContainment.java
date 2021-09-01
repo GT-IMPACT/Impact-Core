@@ -13,6 +13,7 @@ import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -160,6 +161,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        this.mEUt = -(int) GT_Values.V[4];
         this.mMaxProgresstime = 20;
         return true;
     }
@@ -176,7 +178,6 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                     for (ItemStack is : bus.mInventory) {
                         if (GT_Utility.areStacksEqual(is, Core_Items3.getInstance().get(0, 1))) {
                             amount += is.stackSize;
-
                         }
                     }
                 }
@@ -207,9 +208,9 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
-        if (!Utilits.isLowGravity(iAm)) {
-            return false;
-        }
+//        if (!Utilits.isLowGravity(iAm)) {
+//            return false;
+//        }
         //region Structure
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
