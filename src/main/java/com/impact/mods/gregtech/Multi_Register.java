@@ -13,6 +13,7 @@ import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_II
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
+import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_MESystemProvider;
 import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_ParametricDiffuser;
 import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_PhotonContainment;
 import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_PhotonStabilizer;
@@ -195,6 +196,9 @@ public class Multi_Register {
         Photon_Containment.set(
                 new GTMTE_PhotonContainment(ID++, "impact.multis.photoncontainment",
                         "Photon Containment").getStackForm(1));
+        ME_System_Provider.set(
+                new GTMTE_MESystemProvider(ID++, "impact.multis.mesystemprovider",
+                        "ME System Provider").getStackForm(1));
 
 
         System.out.println("Multi_Register.java | Last ID: " + ID);

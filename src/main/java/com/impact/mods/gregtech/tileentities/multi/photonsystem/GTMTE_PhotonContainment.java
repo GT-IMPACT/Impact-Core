@@ -43,16 +43,6 @@ import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    public static final GT_Recipe.GT_Recipe_Map sPhotonContainer = new GT_Recipe.GT_Recipe_Map(
-            new HashSet<>(1000),
-            "impact.recipe.photoncontainer",
-            "Photon Containment",
-            null,
-            RES_PATH_GUI + "basic/PhotonContainment",
-            1, 1, 1, 0,
-            1, E, 1, E, false, false
-    );
-
     public static Block CASING = Casing_Helper.sCaseCore2;
     public static byte CASING_META = 15;
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
