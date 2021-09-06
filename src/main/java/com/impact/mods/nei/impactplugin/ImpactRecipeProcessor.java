@@ -53,6 +53,11 @@ public class ImpactRecipeProcessor implements IRecipeProcessor {
     }
 
     @Override
+    public String getRecipeProcessorId() {
+        return "ImpactProcessor";
+    }
+
+    @Override
     public List<PositionedStack> getRecipeInput(IRecipeHandler recipe, int recipeIndex, String identifier) {
         if (printer3DClz.isInstance(recipe)
                 || pyroClz.isInstance(recipe)
