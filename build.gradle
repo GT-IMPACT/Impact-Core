@@ -44,8 +44,6 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-//            srcDir 'GT5.09OFFBEAT/src/main/java'
-//            srcDir 'GT5.09OFFBEAT/src/main/resources'
         }
     }
 }
@@ -80,19 +78,6 @@ task getTT(type: Download) {
     mustRunAfter "deobfBinJar"
     mustRunAfter "repackMinecraft"
 }
-
-task submodulesUpdate(type: Exec) {
-    description 'Updates (and inits) git submodules'
-    //git submodule update --init --recursive --remote
-    commandLine 'git', 'submodule', 'update', '--init', '--recursive','--remote'
-    group 'Build Setup'
-}
-
-tasks.setupCIWorkspace.dependsOn submodulesUpdate
-tasks.setupDevWorkspace.dependsOn submodulesUpdate
-tasks.setupDecompWorkspace.dependsOn submodulesUpdate
-tasks.compileJava.dependsOn submodulesUpdate
-tasks.sourceMainJava.dependsOn submodulesUpdate
 
 tasks.setupCIWorkspace.dependsOn getTT
 tasks.setupDevWorkspace.dependsOn getTT
