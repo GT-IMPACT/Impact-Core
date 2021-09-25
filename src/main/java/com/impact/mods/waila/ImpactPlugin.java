@@ -16,6 +16,7 @@ import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import lombok.SneakyThrows;
@@ -96,7 +97,16 @@ public class ImpactPlugin extends PluginBase {
 		final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase
 				? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
 		
+		final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch
+				? ((GT_MetaTileEntity_Hatch) tMeta) : null;
+		
 		if (tMeta != null) {
+			
+			if (hatch != null) {
+				if (tag.getInteger("hatchId") > 0) {
+					currenttip.add(EnumChatFormatting.GOLD + "ID: " + tag.getInteger("hatchId") + EnumChatFormatting.RESET);
+				}
+			}
 			
 			if (pipeline != null) {
 				final int facing = pipeline.getBaseMetaTileEntity().getFrontFacing();
@@ -258,7 +268,14 @@ public class ImpactPlugin extends PluginBase {
 		final GTMTE_Aerostat aerostat = tMeta instanceof GTMTE_Aerostat
 				? ((GTMTE_Aerostat) tMeta) : null;
 		
+		final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch
+				? ((GT_MetaTileEntity_Hatch) tMeta) : null;
+		
 		if (tMeta != null) {
+			
+			if (hatch != null) {
+				tag.setInteger("hatchId", hatch.idHatch);
+			}
 			
 			if (aerostat != null) {
 				tag.setString("aerostatName", aerostat.aerName);
