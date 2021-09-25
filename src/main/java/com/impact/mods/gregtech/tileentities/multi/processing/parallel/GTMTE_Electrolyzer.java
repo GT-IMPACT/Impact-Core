@@ -68,7 +68,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
         .addEnergyHatch("any_case", 4)
         .addMaintenanceHatch("any_case", 1)
         .addMuffler("any_case", 1)
-        .addInputBus("any_case", 6)
+        .addInputBus("any_case", 9)
         .addOutputBus("any_case", 3)
         .addOutputHatch("any_case", 6)
         .addInputHatch("any_case", 6)
@@ -161,7 +161,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
       }
     }
 
-    if (this.mInputBusses.size() > 6) {
+    if (this.mInputBusses.size() > 9) {
       formationChecklist = false;
     }
     if (this.mInputHatches.size() > 6) {
