@@ -20,6 +20,7 @@ import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.common.te.TilePlacedItem;
 import com.impact.impact;
 import com.impact.mods.asp.ASP;
+import com.impact.mods.gregtech.items.load.GTMG_Tool_WorkRadius;
 import com.impact.mods.gtscanner.GTScanner;
 import com.impact.mods.galacticraft.gg.SpaceDimRegisterer;
 import com.impact.mods.gregtech.Basic_Register;
@@ -79,7 +80,9 @@ public class MainLoader {
         module.load(event);
       }
     }
-  
+    new GTMG_Tool_WorkRadius.ProccessToolHead();
+    new GTMG_Tool_WorkRadius();
+
     Driver_Register.init();
     INFO("[Init] OpenComputers Integration - Loaded");
     
