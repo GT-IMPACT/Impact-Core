@@ -1,8 +1,7 @@
-package com.impact.mods.gregtech.items.load;
+package com.impact.mods.gregtech.items.tools;
 
-import com.impact.mods.gregtech.items.Behaviour_ForgeHammer;
-import com.impact.mods.gregtech.items.Behaviour_LumberAxe;
-import com.impact.mods.gregtech.items.IImpact_Tools;
+import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_ForgeHammer;
+import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_LumberAxe;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -22,7 +21,7 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
     public static Map<Integer, IImpact_Tools> ITool;
 
     public static final int FORGE_HAMMER = 0;
-    public static final int LUMBER_AXE = 4;
+    public static final int LUMBER_AXE = 2;
 
     public GTMG_Tool_WorkRadius() {
         super("impact.metatool.01");
@@ -49,6 +48,7 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         return super.onBlockStartBreak(stack, x, y, z, player);
     }
 
+    //todo remove this
     public static class ProccessToolHead implements IOreRecipeRegistrator {
         public ProccessToolHead() {
             OrePrefixes.toolHeadHammer.add(this);

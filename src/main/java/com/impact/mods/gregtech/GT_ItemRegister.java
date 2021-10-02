@@ -1,5 +1,5 @@
 package com.impact.mods.gregtech;
-import com.impact.mods.gregtech.items.Behaviour_Aerostat;
+import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_Aerostat;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
 
 public class GT_ItemRegister {

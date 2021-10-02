@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.items;
+package com.impact.mods.gregtech.items.tools;
 
 import gregtech.api.interfaces.IToolStats;
 import net.minecraft.entity.player.EntityPlayer;

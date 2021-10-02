@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.items;
+package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;

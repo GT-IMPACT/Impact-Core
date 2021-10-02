@@ -1,11 +1,11 @@
-package com.impact.mods.gregtech.items;
+package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.mods.gregtech.enums.Texture;
+import com.impact.mods.gregtech.items.tools.IImpact_Tools;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.tools.GT_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

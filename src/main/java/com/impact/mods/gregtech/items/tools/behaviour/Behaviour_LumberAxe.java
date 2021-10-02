@@ -1,7 +1,8 @@
-package com.impact.mods.gregtech.items;
+package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.google.common.collect.Lists;
 import com.impact.mods.gregtech.enums.Texture;
+import com.impact.mods.gregtech.items.tools.IImpact_Tools;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -10,7 +11,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.tools.GT_Tool;
 import mantle.player.PlayerUtils;
 import net.minecraft.block.Block;
