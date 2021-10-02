@@ -403,67 +403,67 @@ public class Basic_Register {
             "HV Semifluid Generator", 3).getStackForm(1L));
 
     Hatch_Input_UEV.set(
-        new GT_MetaTileEntity_Hatch_Input(12250, "impact.hatch.input.tier.10", "Input Hatch (UEV)",
+        new GT_MetaTileEntity_Hatch_Input(12250, "impact.hatch.input.tier.10", "UEV Input Hatch",
             10).getStackForm(1L));
     Hatch_Input_UIV.set(
-        new GT_MetaTileEntity_Hatch_Input(12251, "impact.hatch.input.tier.11", "Input Hatch (UIV)",
+        new GT_MetaTileEntity_Hatch_Input(12251, "impact.hatch.input.tier.11", "UIV Input Hatch",
             11).getStackForm(1L));
     Hatch_Input_UMV.set(
-        new GT_MetaTileEntity_Hatch_Input(12252, "impact.hatch.input.tier.12", "Input Hatch (UMV)",
+        new GT_MetaTileEntity_Hatch_Input(12252, "impact.hatch.input.tier.12", "UMV Input Hatch",
             12).getStackForm(1L));
     Hatch_Input_UXV.set(
-        new GT_MetaTileEntity_Hatch_Input(12253, "impact.hatch.input.tier.13", "Input Hatch (UXV)",
+        new GT_MetaTileEntity_Hatch_Input(12253, "impact.hatch.input.tier.13", "UXV Input Hatch",
             13).getStackForm(1L));
     Hatch_Input_OPV.set(
-        new GT_MetaTileEntity_Hatch_Input(12254, "impact.hatch.input.tier.14", "Input Hatch (OpV)",
+        new GT_MetaTileEntity_Hatch_Input(12254, "impact.hatch.input.tier.14", "OpV Input Hatch",
             14).getStackForm(1L));
     Hatch_Input_MAX.set(
-        new GT_MetaTileEntity_Hatch_Input(12255, "impact.hatch.input.tier.15", "Input Hatch (MAX)",
+        new GT_MetaTileEntity_Hatch_Input(12255, "impact.hatch.input.tier.15", "MAX Input Hatch",
             15).getStackForm(1L));
 
     Hatch_Output_UEV.set(new GT_MetaTileEntity_Hatch_Output(12256, "impact.hatch.output.tier.10",
-        "Output Hatch (UEV)", 10).getStackForm(1L));
+        "UEV Output Hatch", 10).getStackForm(1L));
     Hatch_Output_UIV.set(new GT_MetaTileEntity_Hatch_Output(12257, "impact.hatch.output.tier.11",
-        "Output Hatch (UIV)", 11).getStackForm(1L));
+        "UIV Output Hatch", 11).getStackForm(1L));
     Hatch_Output_UMV.set(new GT_MetaTileEntity_Hatch_Output(12258, "impact.hatch.output.tier.12",
-        "Output Hatch (UMV)", 12).getStackForm(1L));
+        "UMV Output Hatch", 12).getStackForm(1L));
     Hatch_Output_UXV.set(new GT_MetaTileEntity_Hatch_Output(12259, "impact.hatch.output.tier.13",
-        "Output Hatch (UXV)", 13).getStackForm(1L));
+        "UXV Output Hatch", 13).getStackForm(1L));
     Hatch_Output_OPV.set(new GT_MetaTileEntity_Hatch_Output(12260, "impact.hatch.output.tier.14",
-        "Output Hatch (OpV)", 14).getStackForm(1L));
+        "OpV Output Hatch", 14).getStackForm(1L));
     Hatch_Output_MAX.set(new GT_MetaTileEntity_Hatch_Output(12261, "impact.hatch.output.tier.15",
-        "Output Hatch (MAX)", 15).getStackForm(1L));
+        "MAX Output Hatch", 15).getStackForm(1L));
 
     Bus_Input_UEV.set(
-        new GT_MetaTileEntity_Hatch_InputBus(12262, "impact.bus.input.tier.10", "Input Bus (UEV)",
+        new GT_MetaTileEntity_Hatch_InputBus(12262, "impact.bus.input.tier.10", "UEV Input Bus",
             10).getStackForm(1L));
     Bus_Input_UIV.set(
-        new GT_MetaTileEntity_Hatch_InputBus(12263, "impact.bus.input.tier.11", "Input Bus (UIV)",
+        new GT_MetaTileEntity_Hatch_InputBus(12263, "impact.bus.input.tier.11", "UIV Input Bus",
             11).getStackForm(1L));
     Bus_Input_UMV.set(
-        new GT_MetaTileEntity_Hatch_InputBus(12264, "impact.bus.input.tier.12", "Input Bus (UMV)",
+        new GT_MetaTileEntity_Hatch_InputBus(12264, "impact.bus.input.tier.12", "UMV Input Bus",
             12).getStackForm(1L));
     Bus_Input_UXV.set(
-        new GT_MetaTileEntity_Hatch_InputBus(12265, "impact.bus.input.tier.13", "Input Bus (UXV)",
+        new GT_MetaTileEntity_Hatch_InputBus(12265, "impact.bus.input.tier.13", "UXV Input Bus",
             13).getStackForm(1L));
     Bus_Input_OPV.set(
-        new GT_MetaTileEntity_Hatch_InputBus(12266, "impact.bus.input.tier.14", "Input Bus (OpV)",
+        new GT_MetaTileEntity_Hatch_InputBus(12266, "impact.bus.input.tier.14", "OpV Input Bus",
             14).getStackForm(1L));
     Bus_Input_MAX.set(
-        new GT_MetaTileEntity_Hatch_InputBus(12267, "impact.bus.input.tier.15", "Input Bus (MAX)",
+        new GT_MetaTileEntity_Hatch_InputBus(12267, "impact.bus.input.tier.15", "MAX Input Bus",
             15).getStackForm(1L));
 
     Bus_Output_UEV.set(new GT_MetaTileEntity_Hatch_OutputBus(12268, "impact.bus.output.tier.10",
-        "Output Bus (UEV)", 10).getStackForm(1L));
+        "UEV Output Bus", 10).getStackForm(1L));
     Bus_Output_UIV.set(new GT_MetaTileEntity_Hatch_OutputBus(12269, "impact.bus.output.tier.11",
-        "Output Bus (UIV)", 11).getStackForm(1L));
+        "UIV Output Bus", 11).getStackForm(1L));
     Bus_Output_UMV.set(new GT_MetaTileEntity_Hatch_OutputBus(12270, "impact.bus.output.tier.12",
-        "Output Bus (UMV)", 12).getStackForm(1L));
+        "UMV Output Bus", 12).getStackForm(1L));
     Bus_Output_UXV.set(new GT_MetaTileEntity_Hatch_OutputBus(12271, "impact.bus.output.tier.13",
-        "Output Bus (UXV)", 13).getStackForm(1L));
+        "UXV Output Bus", 13).getStackForm(1L));
     Bus_Output_OPV.set(new GT_MetaTileEntity_Hatch_OutputBus(12272, "impact.bus.output.tier.14",
-        "Output Bus (OpV)", 14).getStackForm(1L));
+        "OpV Output Bus", 14).getStackForm(1L));
     Bus_Output_MAX.set(new GT_MetaTileEntity_Hatch_OutputBus(12273, "impact.bus.output.tier.15",
-        "Output Bus (MAX)", 15).getStackForm(1L));
+        "MAX Output Bus", 15).getStackForm(1L));
   }
 }
