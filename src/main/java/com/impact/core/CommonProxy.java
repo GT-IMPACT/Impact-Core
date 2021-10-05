@@ -2,6 +2,7 @@ package com.impact.core;
 
 import com.impact.client.render.BlockHint;
 import com.impact.command.Command_FixBQ;
+import com.impact.util.files.JsonWorld;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
@@ -65,9 +66,11 @@ public class CommonProxy implements IGuiHandler {
     Impact_API.sElevatorSpace.clear();
     Impact_API.sCommunicationTower.clear();
     Impact_API.sAerostat.clear();
+    JsonWorld.load();
   }
 
   public void onServerStopping() {
+    JsonWorld.save();
     Impact_API.sSpaceSatellite.clear();
     Impact_API.sElevatorSpace.clear();
     Impact_API.sCommunicationTower.clear();

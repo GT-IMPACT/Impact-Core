@@ -1,14 +1,11 @@
 package com.impact;
 
-import static com.impact.core.Config.csv;
-import static com.impact.core.Refstrings.MODID;
-import static com.impact.core.impactLog.INFO;
-
 import com.impact.client.gui.GUIHandler;
 import com.impact.command.Command_FixBQ;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.Refstrings;
+import com.impact.core.SaveManager;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
@@ -26,8 +23,13 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.relauncher.Side;
+
 import java.io.File;
 import java.util.ArrayList;
+
+import static com.impact.core.Config.csv;
+import static com.impact.core.Refstrings.MODID;
+import static com.impact.core.impactLog.INFO;
 
 @Mod(
     modid = MODID,
@@ -66,7 +68,7 @@ public class impact {
   public void onServerStarted(FMLServerStartedEvent aEvent) {
     proxy.onServerStarted();
   }
-  
+
   @Mod.EventHandler
   public void onServerStarting(FMLServerStartingEvent aEvent) {
      aEvent.registerServerCommand(new Command_FixBQ());
@@ -75,6 +77,7 @@ public class impact {
   @Mod.EventHandler
   public void onServerStopping(FMLServerStoppingEvent aEvent) {
     proxy.onServerStopping();
+    SaveManager.get().onServerStopping();
   }
 
   @Mod.EventHandler
@@ -115,5 +118,15 @@ public class impact {
   public void postInit(FMLPostInitializationEvent event) {
     MainLoader.postInit(event);
     proxy.postInit();
+  }
+
+  @Mod.EventHandler
+  public void serverAboutToStart(final FMLServerAboutToStartEvent event) {
+    SaveManager.onServerAboutToStart();
+  }
+
+  @Mod.EventHandler
+  private void serverStopped(final FMLServerStoppedEvent event) {
+    SaveManager.get().onServerStopped();
   }
 }
