@@ -220,7 +220,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 				}
 			}
 			
-			if (aTick % 8 == 0 && temperature > 0) {
+			if (temperature > 0) {
 				addOutput(getOutputFluid());
 			}
 			
