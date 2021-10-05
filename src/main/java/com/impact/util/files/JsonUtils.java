@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class JsonUtils {
 
-    public static void parseMapToJson(Map map, String pathFile, String nameFile) {
+    public static <K,V> void parseMapToJson(Map<K,V> map, String pathFile, String nameFile) {
         try {
             Gson gson = new Gson();
-            Type gsonType = new TypeToken<Map>(){}.getType();
+            Type gsonType = new TypeToken<Map<K,V> >(){}.getType();
             String gsonString = gson.toJson(map, gsonType);
             FileWriter file = new FileWriter(pathFile + "\\" + nameFile + ".json");
             file.write(gsonString);
@@ -25,17 +25,18 @@ public class JsonUtils {
         }
     }
 
-    public static Map parseJsonToMapStringAndArrayInt(Map map, String pathFile, String nameFile) {
+    public static <K,V> void parseJsonToMap(Map<K,V> map, String pathFile, String nameFile) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(pathFile + "\\" + nameFile + ".json"));
+            FileReader fr = new FileReader(pathFile + "\\" + nameFile + ".json");
+            BufferedReader br = new BufferedReader(fr);
             Gson gson = new Gson();
-            Type gsonType = new TypeToken<Map>(){}.getType();
+            Type gsonType = new TypeToken<Map<K,V>>(){}.getType();
             map.clear();
             map.putAll(gson.fromJson(br, gsonType));
+            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return map;
     }
 
 }

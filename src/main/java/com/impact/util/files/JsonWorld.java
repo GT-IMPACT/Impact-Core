@@ -25,7 +25,7 @@ public class JsonWorld {
     //region CommunicationTowers
     private static void loadCommunicationTowers() {
         File json = SaveManager.get().parallelSystemDirectory;
-        JsonUtils.parseJsonToMapStringAndArrayInt(sCommunicationTower, json.getPath(), COMMUNICATION_TOWERS);
+        JsonUtils.parseJsonToMap(sCommunicationTower, json.getPath(), COMMUNICATION_TOWERS);
     }
 
     private static void saveCommunicationTowers() {
@@ -39,7 +39,7 @@ public class JsonWorld {
     //region SpaceSatellites
     private static void loadSpaceSatellite() {
         File json = SaveManager.get().parallelSystemDirectory;
-        JsonUtils.parseJsonToMapStringAndArrayInt(sSpaceSatellite, json.getPath(), SPACE_SATELLITES);
+        JsonUtils.parseJsonToMap(sSpaceSatellite, json.getPath(), SPACE_SATELLITES);
     }
 
     private static void saveSpaceSatellite() {
