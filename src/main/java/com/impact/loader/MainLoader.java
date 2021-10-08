@@ -83,8 +83,10 @@ public class MainLoader {
     new GTMG_Tool_WorkRadius.ProccessToolHead();
     new GTMG_Tool_WorkRadius();
 
-    Driver_Register.init();
-    INFO("[Init] OpenComputers Integration - Loaded");
+    if (Loader.isModLoaded("OpenComputers")) {
+      Driver_Register.init();
+      INFO("[Init] OpenComputers Integration - Loaded");
+    }
     
     impact.proxy.registerRenderInfo();
     INFO("[Init] Item Registery - Loaded");
@@ -158,7 +160,9 @@ public class MainLoader {
         module.postInit(event);
       }
     }
-    addRecipeSS();
+    if (Loader.isModLoaded("GalacticraftCore")) {
+      addRecipeSS();
+    }
   }
 
   private static void addRecipeSS() {

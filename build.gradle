@@ -65,24 +65,18 @@ minecraft {
 
 repositories {}
 
+ configurations {
+     mods
+     provided
+     embedded
+     compile.extendsFrom provided, embedded
+ }
+
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    provided fileTree(dir: 'run/', include:'*.jar')
+    compileOnly fileTree(dir: 'notRun/', include:'*.jar')
 }
 
-task getTT(type: Download) {
-    onlyIf {
-        !file("libs/TecTech-1.7.10-3.8.7-impact-dev.jar").exists()
-    }
-    src "http://gtimpact.space:8080/job/TECTECH/lastSuccessfulBuild/artifact/build/libs/TecTech-1.7.10-3.8.7-impact-dev.jar"
-    dest file("libs/TecTech-1.7.10-3.8.7-impact-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
-}
-
-tasks.setupCIWorkspace.dependsOn getTT
-tasks.setupDevWorkspace.dependsOn getTT
-tasks.setupDecompWorkspace.dependsOn getTT
-tasks.compileJava.dependsOn getTT
 
 processResources
 {
