@@ -4,6 +4,8 @@ import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfo
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
+import static com.impact.util.recipe.RecipeHelper.calcTimeParallel;
+import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
 import static gregtech.api.enums.GT_Values.V;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
@@ -165,8 +167,8 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
     }
     ArrayList<ItemStack> tInputList = this.getStoredInputs();
     ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-    ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
-    FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+    ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
+    FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
 
     if (tInputList.size() > 0 || tFluidList.size() > 0) {
       long nominalV = getMaxInputVoltage();
@@ -185,7 +187,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
         boolean found_Recipe = false;
         ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
         while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
-          if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
+          if ((tRecipe.mEUt * (mCheckParallelCurrent + 1L)) < nominalV && tRecipe
               .isRecipeInputEqual(true, tFluids, tInputs)) {
             found_Recipe = true;
             for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -202,38 +204,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
             break;
           }
         }
-        for (int f = 0; f < tOut.length; f++) {
-          if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-            for (int g = 0; g < mCheckParallelCurrent; g++) {
-              if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe
-                  .getOutputChance(f)) {
-                tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
-              }
-            }
-          }
-        }
-        tOut = clean(tOut);
-        List<ItemStack> overStacks = new ArrayList<ItemStack>();
-        for (ItemStack stack : tOut) {
-          while (stack.getMaxStackSize() < stack.stackSize) {
-            ItemStack tmp = stack.copy();
-            tmp.stackSize = tmp.getMaxStackSize();
-            stack.stackSize = stack.stackSize - stack.getMaxStackSize();
-            overStacks.add(tmp);
-          }
-        }
-        if (overStacks.size() > 0) {
-          ItemStack[] tmp = new ItemStack[overStacks.size()];
-          tmp = overStacks.toArray(tmp);
-          tOut = ArrayUtils.addAll(tOut, tmp);
-        }
-        List<ItemStack> tSList = new ArrayList<ItemStack>();
-        for (ItemStack tS : tOut) {
-          if (tS.stackSize > 0) {
-            tSList.add(tS);
-          }
-        }
-        tOut = tSList.toArray(new ItemStack[tSList.size()]);
+        tOut = resizeItemStackSizeChance(tOut, tRecipe, this);
         if (found_Recipe) {
           this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
           this.mEfficiencyIncrease = 10000;
@@ -245,42 +216,15 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
               actualEUT = actualEUT / 2;
               divider++;
             }
-            OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)),
-                tRecipe.mDuration * (divider * 2), 1, nominalV, this);
+            OverclockCalculate.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, nominalV, this);
           } else {
-            OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
-                this);
+            OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
           }
-          if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
-              && this.mEUt == Integer.MAX_VALUE - 1) {
-            return false;
-          }
-          if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
-          }
-          int TimeProgress;
-          switch (mParallel) {
-            default:
-              TimeProgress = this.mMaxProgresstime;
-              break;
-            case 16:
-              TimeProgress = this.mMaxProgresstime / 2;
-              break;
-            case 64:
-              TimeProgress = this.mMaxProgresstime / 3;
-              break;
-            case 256:
-              TimeProgress = this.mMaxProgresstime / 4;
-              break;
-          }
-          this.mMaxProgresstime = TimeProgress;
-          if (this.mMaxProgresstime < 1) {
-            this.mMaxProgresstime = 1;
-          }
+          if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+          this.mEUt = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
+          this.mMaxProgresstime = calcTimeParallel(this);
           this.mOutputItems = tOut;
-          this.mOutputFluids = new FluidStack[outputFluids.size()];
-          this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
-
+          this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
           this.updateSlots();
           return true;
         }

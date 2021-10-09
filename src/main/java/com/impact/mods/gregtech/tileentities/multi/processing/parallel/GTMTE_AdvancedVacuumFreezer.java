@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import static com.impact.util.Utilits.getFluidStack;
+import static com.impact.util.recipe.RecipeHelper.calcTimeParallel;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
@@ -107,7 +108,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
       return false;
     }
     for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-      ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+      ArrayList<ItemStack> tBusItems = new ArrayList<>();
       tBus.mRecipeMap = getRecipeMap();
       if (isValidMetaTileEntity(tBus)) {
         for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
@@ -117,7 +118,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
         }
       }
       ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-      FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+      FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
       ArrayList<ItemStack> tInputList = this.getStoredInputs();
       ItemStack[] tInputs = tBusItems.toArray(new ItemStack[]{});
       if (tInputList.size() > 0) {
@@ -144,7 +145,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
           boolean found_Recipe = false;
           while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
               && mCheckParallelCurrent < mParallel) { //THIS PARALLEL
-            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1)) < nominalV && tRecipe
+            if ((tRecipe.mEUt * (mCheckParallelCurrent + 1L)) < nominalV && tRecipe
                 .isRecipeInputEqual(true, tFluids, tInputs)) {
               found_Recipe = true;
               for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -171,32 +172,11 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
               OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
                   this);
             }
-            //In case recipe is too OP for that machine
-            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1
-                && this.mEUt == Integer.MAX_VALUE - 1) {
-              return false;
-            }
-            if (this.mEUt > 0) {
-              this.mEUt = (-this.mEUt);
-            }
-            int TimeProgress;
-            switch (mParallel) {
-              default:
-                TimeProgress = this.mMaxProgresstime;
-                break;
-              case 16:
-                TimeProgress = this.mMaxProgresstime / 2;
-                break;
-              case 64:
-                TimeProgress = this.mMaxProgresstime / 3;
-                break;
-              case 256:
-                TimeProgress = this.mMaxProgresstime / 4;
-            }
+            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+            this.mEUt = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
 
-            this.mMaxProgresstime = Math.max(1, TimeProgress);
-            this.mOutputItems = new ItemStack[outputItems.size()];
-            this.mOutputItems = outputItems.toArray(this.mOutputItems);
+            this.mMaxProgresstime = calcTimeParallel(this);
+            this.mOutputItems = outputItems.toArray(new ItemStack[0]);
             this.updateSlots();
             return true;
           }

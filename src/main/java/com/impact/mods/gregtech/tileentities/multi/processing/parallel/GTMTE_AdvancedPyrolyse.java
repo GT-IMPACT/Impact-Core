@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import static com.impact.util.Utilits.isB;
+import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
 import static gregtech.api.enums.GT_Values.V;
 
 import com.impact.mods.gregtech.gui.GUI_BASE;
@@ -111,8 +112,8 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
     ArrayList<ItemStack> tInputList = getStoredInputs();
     ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-    ItemStack[] tInputs = tInputList.toArray(new ItemStack[]{});
-    FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+    ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
+    FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
 
     if (tInputList.size() > 0 || tFluidList.size() > 0) {
 
@@ -125,8 +126,8 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
           .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
 
       if (tRecipe != null) {
-        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
-        ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+        ArrayList<ItemStack> outputItems = new ArrayList<>();
+        ArrayList<FluidStack> outputFluids = new ArrayList<>();
 
         boolean found_Recipe = false;
 
@@ -155,34 +156,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         }
         mParallelPoint = processed;
 
-        tOut = clean(tOut);
-
-        List<ItemStack> overStacks = new ArrayList<>();
-
-        for (ItemStack stack : tOut) {
-          while (stack.getMaxStackSize() < stack.stackSize) {
-            ItemStack tmp = stack.copy();
-            tmp.stackSize = tmp.getMaxStackSize();
-            stack.stackSize = stack.stackSize - stack.getMaxStackSize();
-            overStacks.add(tmp);
-          }
-        }
-
-        if (overStacks.size() > 0) {
-          ItemStack[] tmp = new ItemStack[overStacks.size()];
-          tmp = overStacks.toArray(tmp);
-          tOut = ArrayUtils.addAll(tOut, tmp);
-        }
-
-        List<ItemStack> tSList = new ArrayList<>();
-
-        for (ItemStack tS : tOut) {
-            if (tS.stackSize > 0) {
-                tSList.add(tS);
-            }
-        }
-
-        tOut = tSList.toArray(new ItemStack[tSList.size()]);
+        tOut = resizeItemStackSizeChance(tOut, tRecipe, this, false);
 
         if (found_Recipe) {
 
@@ -191,15 +165,12 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
           this.mEUt = (tRecipe.mEUt) * processed * tierHatch() / 2;
 
-            if (this.mEUt > 0) {
-                this.mEUt = (-this.mEUt);
-            }
+          this.mEUt = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
 
           this.mMaxProgresstime = tRecipe.mDuration;
 
           this.mOutputItems = tOut;
-          this.mOutputFluids = new FluidStack[outputFluids.size()];
-          this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
+          this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
 
           this.updateSlots();
           return true;
