@@ -151,7 +151,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 
   public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
       IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Electrom. Induction Furn.",
+    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
         "MultiParallelBlockGUI.png", "");
   }
 
