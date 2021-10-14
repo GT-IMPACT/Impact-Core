@@ -1,5 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.photonsystem;
 
+import appeng.tile.crafting.TileCraftingStorageTile;
+import appeng.tile.crafting.TileCraftingTile;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -9,6 +11,9 @@ import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.mods.gregtech.tileentities.hatches.GTMTE_AE_Connector;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.Utilits;
 import com.impact.util.multis.OverclockCalculate;
@@ -27,23 +32,34 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.ME_CASING;
+import static com.impact.util.vector.Structure.getIGTE;
+import static com.impact.util.vector.Structure.getTE;
 import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlockBase {
 
-    public static Block CASING = Casing_Helper.sCaseCore2;
-    public static byte CASING_META = 15;
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-    int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+    public static Block CASING = Casing_Helper.sCaseCore3;
+    public static int CASING_META = ME_CASING.getMeta();
+    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
+    int CASING_TEXTURE_ID = ME_CASING.getIDCasing();
 
+    public TileCraftingTile AE_CPU_UNIT = null;
+    public TileCraftingStorageTile AE_CPU_CRAFT = null;
+
+    private List<GTMTE_AE_Connector> aeConnectors = new ArrayList<>();
+
+    private int mSpeedUp = 0;
     public int mPhotonsSummary = 0;
 
     //region Register
@@ -54,7 +70,6 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 
     public GTMTE_MESystemProvider(String aName) {
         super(aName);
-        run();
     }
 
     @Override
@@ -74,14 +89,12 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-//        return new GUI_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-        return false;
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-//        return new Container_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, this);
-        return false;
+        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     public void run() {
@@ -153,77 +166,59 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
     public boolean checkRecipe(ItemStack aStack) {
         ArrayList<ItemStack> tInputList;
         ItemStack[] tInputs;
-        if (mInputBusses.size() > 1) {
-            for (int countBus = 1; countBus < mInputBusses.size(); countBus++) {
-                if (modeBuses == 0) {
 
-                    ArrayList<ItemStack> tBusItems = new ArrayList<>();
-                    mInputBusses.get(countBus).mRecipeMap = getRecipeMap();
-                    if (isValidMetaTileEntity(mInputBusses.get(countBus))) {
-                        for (int i = mInputBusses.get(countBus).getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                            if (mInputBusses.get(countBus).getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                                tBusItems.add(mInputBusses.get(countBus).getBaseMetaTileEntity().getStackInSlot(i));
-                            }
+        if (!checkAE()) {
+            return false;
+        }
+
+
+        tInputList = this.getStoredInputs();
+        tInputs = tInputList.toArray(new ItemStack[0]);
+
+        if (tInputList.size() > 0) {
+            long nominalV = getMaxInputVoltage();
+            byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
+            GT_Recipe tRecipe;
+            tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], null, tInputs);
+            int x = 0;
+            if (tRecipe != null && (mPhotonsSummary - tRecipe.mSpecialValue >= 0)) {
+
+                ArrayList<ItemStack> outputItems = new ArrayList<>();
+                boolean found_Recipe = false;
+                int processed = 0;
+                while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < 1) {
+                    if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
+                        found_Recipe = true;
+
+                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                            outputItems.add(tRecipe.getOutput(i));
                         }
+                        ++processed;
+                    } else {
+                        break;
                     }
-                    tInputList = this.getStoredInputs();
-                    tInputs = tBusItems.toArray(new ItemStack[]{});
-                } else {
-                    tInputList = this.getStoredInputs();
-                    tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
                 }
-                if (tInputList.size() > 0) {
-                    long nominalV = getMaxInputVoltage();
-                    byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-                    GT_Recipe tRecipe;
-                    tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], null, tInputs);
-                    int x = 0;
-                    if (tRecipe != null && (mPhotonsSummary - tRecipe.mSpecialValue >= 0)) {
+                if (found_Recipe) {
+                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                    this.mEfficiencyIncrease = 10000;
+                    long actualEUT = (long) (tRecipe.mEUt) * processed;
+                    mPhotonsSummary -= tRecipe.mSpecialValue * processed;
 
+                    OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 
-                        ArrayList<ItemStack> outputItems = new ArrayList<>();
-                        boolean found_Recipe = false;
-                        int processed = 0;
-                        while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < 1) {
-                            if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
-                                found_Recipe = true;
+                    this.mMaxProgresstime = this.mMaxProgresstime / this.mSpeedUp;
+                    if (this.mMaxProgresstime < 1) this.mMaxProgresstime = 1;
+                    if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+                    if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-                                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                                    outputItems.add(tRecipe.getOutput(i));
-                                }
-                                ++processed;
-                            } else {
-                                break;
-                            }
-                        }
-                        if (found_Recipe) {
-                            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-                            this.mEfficiencyIncrease = 10000;
-                            long actualEUT = (long) (tRecipe.mEUt) * processed;
-                            mPhotonsSummary -= tRecipe.mSpecialValue * processed;
-
-                            OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
-
-                            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {
-                                return false;
-                            }
-                            if (this.mEUt > 0) {
-                                this.mEUt = (-this.mEUt);
-                            }
-                            this.mOutputItems = new ItemStack[outputItems.size()];
-                            this.mOutputItems = outputItems.toArray(this.mOutputItems);
-                            Utilits.sendChatByTE(getBaseMetaTileEntity(), "Производится: " + mOutputItems[0].getDisplayName());
-                            Utilits.sendChatByTE(getBaseMetaTileEntity(), "Буфер фотонов: " + mPhotonsSummary + " | Фотонов потрачено: " + tRecipe.mSpecialValue);
-                            this.updateSlots();
-                            return true;
-                        }
-                    }
+                    this.mOutputItems = outputItems.toArray(new ItemStack[0]);
+                    this.updateSlots();
+                    return true;
                 }
             }
         }
         return false;
     }
-
 
     @Override
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
@@ -231,6 +226,9 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
         int amount = 0;
         if (iAm.isServerSide() && aTick % 40 == 0) {
 
+            if (aeConnectors.size() > 0) {
+                aeConnectors.get(0).getBaseMetaTileEntity().setActive(AE_CPU_CRAFT != null && AE_CPU_CRAFT.isPowered());
+            }
             if (mInputBusses.size() > 0) {
                 if (mInputBusses.get(0).mInventory.length > 0) {
                     for (ItemStack is : mInputBusses.get(0).mInventory) {
@@ -251,10 +249,8 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
-
-//        if (!Utilits.isLowGravity(iAm)) {
-//            return false;
-//        }
+        aeConnectors.clear();
+        mSpeedUp = 0;
         //region Structure
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
@@ -265,38 +261,121 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 
         Vector3ic offset;
         IGregTechTileEntity currentTE;
+        int x,y,z;
 
-        for (int x = 0; x <= 5; x++) {
-            offset = rotateOffsetVector(forgeDirection, x, 0, 0);
-            currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+        for (z = -1; z <= 0; z++) {
+            for (y = -1; y <= 1; y++) {
 
-            if (x==0) continue;
+                if (z == 0 && y == 0) continue;
 
-            if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-                    && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-                    && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-                    && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                        && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-                } else {
-                    formationChecklist = false;
+                offset = rotateOffsetVector(forgeDirection, 0, y, z);
+                currentTE = getIGTE(iAm, offset);
+
+                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                            && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                    } else {
+                        //setBlock(iAm, offset, CASING, CASING_META);
+                        formationChecklist = false;
+                    }
+                }
+            }
+        }
+        for (x = -5; x <= -1; x++) {
+            for (z = -2; z <= 1; z++) {
+                for (y = -1; y <= 2; y++) {
+                    offset = rotateOffsetVector(forgeDirection, x, y, z);
+                    currentTE = getIGTE(iAm, offset);
+                    if (x != -5 && x != -1 && y != -1) {
+                        if (z != -2 && z != 1 && y != 2) {
+                            if (x == -3) {
+                                TileEntity aeCPU = getTE(iAm, offset);
+                                if (aeCPU instanceof TileCraftingStorageTile) {
+                                    AE_CPU_CRAFT = (TileCraftingStorageTile) aeCPU;
+                                    int bytes = AE_CPU_CRAFT.getStorageBytes() / 1024;
+                                    int preSpeedUp = bytes == 64 ? 4 : bytes == 16 ? 3 : bytes == 4 ? 2 : 1;
+                                    if (mSpeedUp == 0) {
+                                        mSpeedUp = preSpeedUp;
+                                    } else if (mSpeedUp > preSpeedUp) {
+                                        mSpeedUp = preSpeedUp;
+                                    }
+                                } else {
+                                    formationChecklist = false;
+                                }
+                                continue;
+                            } else {
+                                TileEntity aeCPU = getTE(iAm, offset);
+                                if (aeCPU instanceof TileCraftingTile) {
+                                    AE_CPU_UNIT = (TileCraftingTile) aeCPU;
+                                } else {
+                                    formationChecklist = false;
+                                }
+                                continue;
+                            }
+                        } else {
+                            if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
+                            } else if (!addAEConnectors(currentTE, CASING_TEXTURE_ID)) {
+                                formationChecklist = false;
+                            }
+                            continue;
+                        }
+                    }
+
+                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+                        if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
+                                && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
+                        } else {
+                            formationChecklist = false;
+                        }
+                    }
                 }
             }
         }
 
+        if (aeConnectors.size() != 1) return false;
+
         return formationChecklist;
+    }
+
+    public boolean checkAE() {
+        return AE_CPU_CRAFT != null && AE_CPU_CRAFT.isPowered();
+    }
+
+    public boolean addAEConnectors(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        } else {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity == null) {
+                return false;
+            } else if (aMetaTileEntity instanceof GTMTE_AE_Connector) {
+                ((GTMTE_AE_Connector) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return aeConnectors.add(((GTMTE_AE_Connector) aMetaTileEntity));
+            } else {
+                return false;
+            }
+        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mPhotonsSummary", mPhotonsSummary);
+        aNBT.setInteger("mSpeedUp", mSpeedUp);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mPhotonsSummary = aNBT.getInteger("mPhotonsSummary");
+        mSpeedUp = aNBT.getInteger("mSpeedUp");
     }
 
     public String[] getInfoData() {

@@ -2,13 +2,15 @@ package com.impact.util.vector;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 
 import java.util.ArrayList;
 
 public class Structure {
 
     public static boolean doCheck(boolean checker, IGregTechTileEntity iAm, Vector3ic offset, Block block, int meta) {
-        if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) != block) && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != meta)) checker = false;
+        if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) != block) && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != meta))
+            checker = false;
         return checker;
     }
 
@@ -40,10 +42,18 @@ public class Structure {
     }
 
     public static void setBlock(IGregTechTileEntity te, Vector3ic offset, Block block, int meta) {
-        te.getWorld().setBlock(offset.x(), offset.y(), offset.z(), block, meta, 2);
+        setBlock(te, offset.x(), offset.y(), offset.z(), block, meta);
     }
 
     public static void setBlock(IGregTechTileEntity te, int x, int y, int z, Block block) {
         setBlock(te, x, y, z, block, 0);
+    }
+
+    public static IGregTechTileEntity getIGTE(IGregTechTileEntity iAm, Vector3ic offset) {
+        return iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+    }
+
+    public static TileEntity getTE(IGregTechTileEntity iAm, Vector3ic offset) {
+        return iAm.getTileEntityOffset(offset.x(), offset.y(), offset.z());
     }
 }

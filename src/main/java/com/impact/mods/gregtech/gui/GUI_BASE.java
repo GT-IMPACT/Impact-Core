@@ -14,23 +14,25 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
   public String mMode;
   String mName = "";
 
-  public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
-      String aTextureFile, String aModeString) {
+  public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aModeString) {
     super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity),
-        RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay"
-            : aTextureFile));
+        RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
     mName = aName;
     mMode = aModeString;
   }
 
+  public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
+    super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/MultiParallelBlockGUI.png");
+    mName = aName;
+    mMode = "";
+  }
+
   public GUI_BASE(String aName, String aTextureFile, GT_Container_MultiParallelMachine aContainer) {
-    super(aContainer, RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay"
-        : aTextureFile));
+    super(aContainer, RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
     mName = aName;
   }
 
-  public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
-      String aTextureFile) {
+  public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
     super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity),
         RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay"
             : aTextureFile));
@@ -42,8 +44,7 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
     if (extendBaseGui) {
       if ((mContainer).mDisplayErrorCode == 0) {
         if ((mContainer).mActive == 0) {
-          fontRendererObj
-              .drawString("Progress:" + EnumChatFormatting.RED + " not working", 10, 22, 16448255);
+          fontRendererObj.drawString("Progress:" + EnumChatFormatting.RED + " not working", 10, 22, 16448255);
         } else {
           double tScale =
               ((double) this.mContainer.mProgressTime / (double) this.mContainer.mMaxProgressTime)
@@ -52,10 +53,8 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
             fontRendererObj.drawString(
                 "Progress: " + EnumChatFormatting.GREEN + this.mContainer.mProgressTime / 20
                     + EnumChatFormatting.WHITE + " / " + EnumChatFormatting.YELLOW
-                    + this.mContainer.mMaxProgressTime / 20 + EnumChatFormatting.WHITE + " sec", 10,
-                22, 16448255);
-            fontRendererObj
-                .drawString(GT_Utility.formatNumbers((int) tScale) + "%", 71, 56, 16448255);
+                    + this.mContainer.mMaxProgressTime / 20 + EnumChatFormatting.WHITE + " sec", 10, 22, 16448255);
+            fontRendererObj.drawString(GT_Utility.formatNumbers((int) tScale) + "%", 71, 56, 16448255);
           }
         }
       }

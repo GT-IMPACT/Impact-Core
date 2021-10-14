@@ -1,14 +1,10 @@
 package com.impact.mods.gregtech.gui.photonsystem;
 
 import com.impact.mods.gregtech.gui.GT_GUIContainerMT_Machine;
-import com.sun.org.apache.xpath.internal.operations.Gt;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
-
-
-import java.awt.*;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 

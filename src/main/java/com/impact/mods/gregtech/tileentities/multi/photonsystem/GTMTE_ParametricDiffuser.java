@@ -173,17 +173,20 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
         );
 
         if (iAm.isActive()) {
+            try {
+                Vector3ic offset = rotateOffsetVector(forgeDirection, 1, 0, -1);
+                Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, -1);
+                double kek = 0.5d;
 
-            Vector3ic offset = rotateOffsetVector(forgeDirection, 1, 0, -1);
-            Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, -1);
-            double kek = 0.5d;
-
-            impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
-                    offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek,
-                    0, 0x770ED0, false, 1.3f, 20);
-            impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
-                    offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek,
-                    0, 0x770ED0, true, 1.3f, 20);
+                impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
+                        offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek,
+                        0, 0x770ED0, false, 1.3f, 20);
+                impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
+                        offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek,
+                        0, 0x770ED0, true, 1.3f, 20);
+            } catch (Exception e) {
+                Utilits.sendChatByTE(iAm, e.toString());
+            }
         }
     }
 
@@ -216,8 +219,8 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                             Utilits.sendChatByTE(iAm, "" + mPhotonsGenerate);
                             mPhotonStabilizer.setPhotons(mPhotonsGenerate);
                             addBound(iAm);
-                            if (mPhotonStabilizer.mPhotonsSummary >= 100000) {
-//                                 mPhotonStabilizer.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
+                            if (mPhotonStabilizer.mPhotonsSummary > 100_000) {
+                                mPhotonStabilizer.mPhotonsSummary = 100_000;
                             }
                         }
                     }

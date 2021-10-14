@@ -282,6 +282,8 @@ public class Basic_Register {
 			'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 
 			'W', OrePrefixes.cableGt01.get(Materials.Platinum)}).getStackForm(1L));
 
+    AE_Hatch_Connector.set(new GTMTE_AE_Connector(ID2++, "impact.basic.meconnector", "ME Connector").getStackForm(1L));
+
     INFO("Last ID Basic_Register.java: " + ID2);//14587
 
     DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,

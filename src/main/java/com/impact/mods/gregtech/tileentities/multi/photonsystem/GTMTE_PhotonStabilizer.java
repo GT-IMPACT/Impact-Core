@@ -7,6 +7,8 @@ import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
 import com.impact.util.Utilits;
@@ -80,14 +82,12 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-//        return new GUI_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-        return false;
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-//        return new Container_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, this);
-        return false;
+        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     public void run() {
@@ -216,6 +216,9 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                             mPhotonContainment = (GTMTE_PhotonContainment) currentTE.getMetaTileEntity();
                             mCheckContainer = false;
                             if (currentTE.isActive()) {
+                                if (mPhotonsSummary > 90_000) {
+                                    this.mEUt = -((int) GT_Values.V[4] * 2);
+                                }
                                 if (mPhotonContainment.mPhotonsStable <= 99_900) {
                                     mPhotonContainment.setPhotons(1000);
                                     addBound(iAm);

@@ -78,6 +78,8 @@ public enum GT_ItemList implements IItemContainer {
 
   Nuclear_Hatch_Rod, Boxinator_Hatch_Input, BusHatch_Input,
 
+  AE_Hatch_Connector,
+
   //MULTI
   Machine_CokeOven, Machine_Multi_Farm, Multi_Tank, Single_Tank, SOFC_Low, SOFC_Medium, SOFC_Huge,
 
@@ -100,7 +102,7 @@ public enum GT_ItemList implements IItemContainer {
 
   NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
   DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, NqCasing, CycloneCasing, MoonMinerCasing, RailAssemblerCasing,
-  SpaceElevatorCasing, LabSafeLGCasing,
+  SpaceElevatorCasing, LabSafeLGCasing, MECasing,
 
   Casing_Farm, Huge_Casing_Turbine, Space_Satellite_Casing, Tower_Casing, Computer_Casing,
 

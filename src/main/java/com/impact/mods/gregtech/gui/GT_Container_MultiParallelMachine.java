@@ -14,14 +14,12 @@ public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Mach
 
   GT_MetaTileEntity_MultiBlockBase mte;
 
-  public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer,
-      IGregTechTileEntity aTileEntity) {
+  public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
     super(aInventoryPlayer, aTileEntity);
     mte = (GT_MetaTileEntity_MultiBlockBase) mTileEntity.getMetaTileEntity();
   }
 
-  public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer,
-      IGregTechTileEntity aTileEntity, GT_MetaTileEntity_MultiBlockBase base) {
+  public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, GT_MetaTileEntity_MultiBlockBase base) {
     super(aInventoryPlayer, aTileEntity);
     mte = base;
   }

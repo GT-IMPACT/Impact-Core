@@ -12,7 +12,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.tools.GT_Tool;
-import mantle.player.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -143,7 +142,7 @@ public class Behaviour_LumberAxe extends GT_Tool implements IToolStats, IImpact_
                 try {
                     FMLCommonHandler.instance().bus().register(chopper);
                 } catch (LinkageError l) {
-                    PlayerUtils.sendChatMessage(player, "Well, that's embarrassing, you missed!");
+//                    PlayerUtils.sendChatMessage(player, "Well, that's embarrassing, you missed!");
                 }
                 // custom block breaking code, don't call vanilla code
                 return true;

@@ -8,6 +8,8 @@ import com.impact.common.item.Core_Items3;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -79,14 +81,12 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-//        return new GUI_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-        return false;
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-//        return new Container_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, this);
-        return false;
+        return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     public void run() {
