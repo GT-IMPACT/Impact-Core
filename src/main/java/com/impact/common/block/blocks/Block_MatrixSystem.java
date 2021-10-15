@@ -32,7 +32,7 @@ public class Block_MatrixSystem extends gtUpdateBlockAPI {
 
   @Override
   public void registerBlockIcons(IIconRegister ir) {
-    iconMatrixReflector = ir.registerIcon("impact:matrixsystem/MatrixReflector.png");
+    iconMatrixReflector = ir.registerIcon("impact:matrixsystem/MatrixReflector");
   }
 
   @Override

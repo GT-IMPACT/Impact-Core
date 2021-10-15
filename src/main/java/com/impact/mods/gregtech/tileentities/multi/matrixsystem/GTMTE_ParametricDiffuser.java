@@ -33,6 +33,7 @@ import java.util.Random;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.LAB_SAFELG_CASING;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlockBase {
@@ -124,17 +125,14 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
     @Override
     public String[] getDescription() {
-        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_parametric");
         b
-                .addTypeMachine("psc.name")//Parametric Diffuser
+                .addTypeMachine("name", "Matrix Particles Parametric Diffuser")
                 .addSeparator()
                 .addController()
-                .addEnergyHatch("psc.hatches")
-                .addMaintenanceHatch("psc.hatches")
-                .addOtherStructurePart("psc.other.0", "psc.other.1")
-                .addOtherStructurePart("psc.other.2", "psc.other.3")
-                .addOtherStructurePart("psc.other.4", "psc.other.5")
-                .addCasingInfo("psc.case")
+                .addEnergyHatch()
+                .addMaintenanceHatch()
+                .addCasingInfo(LAB_SAFELG_CASING.getItemContainer())
                 .signAndFinalize();
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();

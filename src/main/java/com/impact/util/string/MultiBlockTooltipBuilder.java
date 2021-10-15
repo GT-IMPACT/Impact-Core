@@ -138,7 +138,7 @@ public class MultiBlockTooltipBuilder {
     }
 
     public MultiBlockTooltipBuilder addSingleAnalog() {
-        iLines.add(TAB + transNot("single_analog", "One-block machine analog"));
+        iLines.add(transNot("single_analog", "One-block machine analog"));
         return this;
     }
 
