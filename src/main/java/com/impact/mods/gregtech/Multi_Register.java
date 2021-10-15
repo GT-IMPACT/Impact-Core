@@ -13,10 +13,10 @@ import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_II
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
-import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_MESystemProvider;
-import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_ParametricDiffuser;
-import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_PhotonContainment;
-import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_PhotonStabilizer;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MESystemProvider;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_ParametricDiffuser;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.*;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
@@ -190,12 +190,12 @@ public class Multi_Register {
         Parametric_Diffuser.set(
                 new GTMTE_ParametricDiffuser(ID++, "impact.multis.parametricdiffuser",
                         "Parametric Diffuser").getStackForm(1));
-        Photon_Stabilizer.set(
-                new GTMTE_PhotonStabilizer(ID++, "impact.multis.photonstabilizer",
-                        "Photon Stabilizer").getStackForm(1));
-        Photon_Containment.set(
-                new GTMTE_PhotonContainment(ID++, "impact.multis.photoncontainment",
-                        "Photon Containment").getStackForm(1));
+        Matrix_Stabilizer.set(
+                new GTMTE_MPStabilizer(ID++, "impact.multis.matrixstabilizer",
+                        "Matrix Particles Stabilizer").getStackForm(1));
+        Matrix_Containment.set(
+                new GTMTE_MPContainment(ID++, "impact.multis.matrixcontainment",
+                        "Matrix Particles Containment").getStackForm(1));
         ME_System_Provider.set(
                 new GTMTE_MESystemProvider(ID++, "impact.multis.mesystemprovider",
                         "ME System Provider").getStackForm(1));

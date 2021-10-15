@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.multi.photonsystem;
+package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
@@ -7,8 +7,8 @@ import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.gui.photonsystem.GT_Container_ParametricDiffuser;
-import com.impact.mods.gregtech.gui.photonsystem.GUI_ParametricDiffuser;
+import com.impact.mods.gregtech.gui.matrixsystem.GT_Container_ParametricDiffuser;
+import com.impact.mods.gregtech.gui.matrixsystem.GUI_ParametricDiffuser;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -39,11 +39,11 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 
     public static Block CASING = Casing_Helper.sCaseCore2;
     public static byte CASING_META = 15;
-    public int mPhotonsGenerate = 0;
+    public int mMPGenerate = 0;
     public boolean checkStabilizer = true;
     public int rangeToStabilizer = 0;
-    public int mPeakBeamPhotons = 1;
-    public GTMTE_PhotonStabilizer mPhotonStabilizer;
+    public int mPeakBeamMP = 1;
+    public GTMTE_MPStabilizer mMPStabilizer;
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
     int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
@@ -98,8 +98,8 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                                             {"     A   A", "     AAAAA", "     AAAAA", "          "}
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
-                                    .addElement('C', ofBlock(ItemRegistery.photonSystem, 0))
-                                    .addElement('D', ofBlock(ItemRegistery.photonTransducer, 0))
+                                    .addElement('C', ofBlock(ItemRegistery.MPSystem, 0))
+                                    .addElement('D', ofBlock(ItemRegistery.MPTransducer, 0))
                                     .addElement('F', ofBlock(ItemRegistery.IGlassBlock))
                                     .build();
                     private final String[] desc = new String[]{
@@ -153,7 +153,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 int tier = GT_Utility.getTier(getMaxInputVoltage());
-                this.mPeakBeamPhotons = mEfficiency < 10000 ? 0 : tier >= 4 ? tier - 3 : 0;
+                this.mPeakBeamMP = mEfficiency < 10000 ? 0 : tier >= 4 ? tier - 3 : 0;
                 this.mEUt = -(int) getMaxInputVoltage();
                 return true;
             }
@@ -195,7 +195,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
         super.onPostTick(iAm, aTick);
 
         if (iAm.isServerSide() && aTick % 20 == 0) {
-            mPhotonsGenerate = 0;
+            mMPGenerate = 0;
             final Vector3ic forgeDirection = new Vector3i(
                     ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
                     ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
@@ -210,22 +210,22 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offsetX.x(), offsetX.y(), offsetX.z());
 
                 if (currentTE != null) {
-                    if (currentTE.getMetaTileEntity() instanceof GTMTE_PhotonStabilizer) {
-                        mPhotonStabilizer = (GTMTE_PhotonStabilizer) currentTE.getMetaTileEntity();
+                    if (currentTE.getMetaTileEntity() instanceof GTMTE_MPStabilizer) {
+                        mMPStabilizer = (GTMTE_MPStabilizer) currentTE.getMetaTileEntity();
                         checkStabilizer = false;
                         if (currentTE.isActive()) {
                             Random random = new Random();
-                            mPhotonsGenerate = random.nextInt(200) * mPeakBeamPhotons;
-                            Utilits.sendChatByTE(iAm, "" + mPhotonsGenerate);
-                            mPhotonStabilizer.setPhotons(mPhotonsGenerate);
+                            mMPGenerate = random.nextInt(200) * mPeakBeamMP;
+                            Utilits.sendChatByTE(iAm, "" + mMPGenerate);
+                            mMPStabilizer.setMP(mMPGenerate);
                             addBound(iAm);
-                            if (mPhotonStabilizer.mPhotonsSummary > 100_000) {
-                                mPhotonStabilizer.mPhotonsSummary = 100_000;
+                            if (mMPStabilizer.mMPSummary > 100_000) {
+                                mMPStabilizer.mMPSummary = 100_000;
                             }
                         }
                     }
                 } else {
-                    mPhotonStabilizer = null;
+                    mMPStabilizer = null;
                     checkStabilizer = true;
                     rangeToStabilizer = 0;
                 }
@@ -253,15 +253,15 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 currentTE = iAm.getIGregTechTileEntityOffset(offsetX.x(), offsetX.y(), offsetX.z());
 
                 if (currentTE != null) {
-                    if (currentTE.getMetaTileEntity() instanceof GTMTE_PhotonStabilizer) {
-                        mPhotonStabilizer = (GTMTE_PhotonStabilizer) currentTE.getMetaTileEntity();
+                    if (currentTE.getMetaTileEntity() instanceof GTMTE_MPStabilizer) {
+                        mMPStabilizer = (GTMTE_MPStabilizer) currentTE.getMetaTileEntity();
                         checkStabilizer = false;
                         break;
                     }
                 }
             }
             if (currentTE == null) {
-                mPhotonStabilizer = null;
+                mMPStabilizer = null;
                 checkStabilizer = true;
                 rangeToStabilizer = 0;
             }
@@ -287,7 +287,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 
                 if (y == 1 && (x >= 2 && x <= 8)) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) != ItemRegistery.photonSystem)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) != ItemRegistery.MPSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != 0)) {
                         formationChecklist = false;
                     }
@@ -314,7 +314,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                     continue;
                 }
                 if (x >= 5 && x <= 8 && y >= 0 && y <= 2) {
-                    formationChecklist = Structure.doCheck(formationChecklist, iAm, offset, ItemRegistery.photonSystem, 0);
+                    formationChecklist = Structure.doCheck(formationChecklist, iAm, offset, ItemRegistery.MPSystem, 0);
                     continue;
                 }
                 // todo нос
@@ -324,7 +324,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                 }
                 // todo начинка
                 if (x == 1 && y == 1) {
-                    formationChecklist = Structure.doCheck(formationChecklist, iAm, offset, ItemRegistery.photonTransducer, 0);
+                    formationChecklist = Structure.doCheck(formationChecklist, iAm, offset, ItemRegistery.MPTransducer, 0);
                     continue;
                 }
                 formationChecklist = isFormationChecklist(iAm, formationChecklist, offset, currentTE);
@@ -345,7 +345,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                     continue;
                 }
                 if (x >= 5 && x <= 8 && y == 1) {
-                    formationChecklist = Structure.doCheck(formationChecklist, iAm, offset, ItemRegistery.photonSystem, 0);
+                    formationChecklist = Structure.doCheck(formationChecklist, iAm, offset, ItemRegistery.MPSystem, 0);
                     continue;
                 }
                 formationChecklist = isFormationChecklist(iAm, formationChecklist, offset, currentTE);
@@ -386,18 +386,18 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mPhotonsGenerate", mPhotonsGenerate);
+        aNBT.setInteger("mMPGenerate", mMPGenerate);
         aNBT.setInteger("rangeToStabilizer", rangeToStabilizer);
-        aNBT.setInteger("mPeakBeamPhotons", mPeakBeamPhotons);
+        aNBT.setInteger("mPeakBeamMP", mPeakBeamMP);
         aNBT.setBoolean("checkStabilizer", checkStabilizer);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mPhotonsGenerate = aNBT.getInteger("mPhotonsGenerate");
+        mMPGenerate = aNBT.getInteger("mMPGenerate");
         rangeToStabilizer = aNBT.getInteger("rangeToStabilizer");
-        mPeakBeamPhotons = aNBT.getInteger("mPeakBeamPhotons");
+        mPeakBeamMP = aNBT.getInteger("mPeakBeamMP");
         checkStabilizer = aNBT.getBoolean("checkStabilizer");
     }
 

@@ -111,7 +111,7 @@ public enum GT_ItemList implements IItemContainer {
 
   filler,
 
-  Parametric_Diffuser, Photon_Stabilizer, Photon_Containment, ME_System_Provider,
+  Parametric_Diffuser, Matrix_Stabilizer, Matrix_Containment, ME_System_Provider,
 
   end;
   private ItemStack mStack;

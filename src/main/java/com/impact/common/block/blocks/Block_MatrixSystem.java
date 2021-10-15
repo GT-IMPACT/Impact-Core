@@ -1,6 +1,5 @@
 package com.impact.common.block.blocks;
 
-import com.impact.common.block.itemblock.IB_Ceramic;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -12,18 +11,18 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class Block_PhotonSystem extends gtUpdateBlockAPI {
+public class Block_MatrixSystem extends gtUpdateBlockAPI {
 
-  private static final Block_PhotonSystem instance = new Block_PhotonSystem();
+  private static final Block_MatrixSystem instance = new Block_MatrixSystem();
 
-  private IIcon iconPhotonReflector;
+  private IIcon iconMatrixReflector;
 
-  private Block_PhotonSystem() {
+  private Block_MatrixSystem() {
     super(Material.iron);
   }
 
   public static Block registerBlock() {
-    final String blockName = "impact_photon_system";
+    final String blockName = "impact_matrix_system";
     instance.setBlockName(blockName);
     instance.setHardness(5.0f);
     instance.setResistance(6.0f);
@@ -33,7 +32,7 @@ public class Block_PhotonSystem extends gtUpdateBlockAPI {
 
   @Override
   public void registerBlockIcons(IIconRegister ir) {
-    iconPhotonReflector = ir.registerIcon("impact:photonsystem/PhotonReflector");
+    iconMatrixReflector = ir.registerIcon("impact:matrixsystem/MatrixReflector.png");
   }
 
   @Override
@@ -48,7 +47,7 @@ public class Block_PhotonSystem extends gtUpdateBlockAPI {
   public IIcon getIcon(int side, int meta) {
     switch (meta) {
       case 0:
-        return iconPhotonReflector;
+        return iconMatrixReflector;
       default:
         return null;
     }

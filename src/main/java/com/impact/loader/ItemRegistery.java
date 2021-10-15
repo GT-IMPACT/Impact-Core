@@ -11,7 +11,6 @@ import com.impact.common.item.GT_Pump.GregtechPump;
 import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -49,7 +48,7 @@ public class ItemRegistery {
   public static Block HFluid;
   public static Block MarsStone;
   public static Block placedItem;
-  public static Block photonSystem, photonTransducer;
+  public static Block MPSystem, MPTransducer;
 
   public static void run() {
     //Blocks
@@ -160,8 +159,8 @@ public class ItemRegistery {
     HMetal = new Block_Pattern_Space(Material.rock, "HMetal");
     MarsStone = new Block_Pattern_Space(Material.rock, "MarsStone");
     placedItem = new PlacedItem();
-    photonSystem = Block_PhotonSystem.registerBlock();
-    photonTransducer = Block_PhotonTransducer.registerBlock();
+    MPSystem = Block_MatrixSystem.registerBlock();
+    MPTransducer = Block_MatrixTransducer.registerBlock();
   }
 
   public static void NEIHide() {

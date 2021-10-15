@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.multi.photonsystem;
+package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
@@ -11,7 +11,6 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -22,44 +21,38 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
-import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static net.minecraft.util.EnumChatFormatting.*;
 
-public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     public static Block CASING = Casing_Helper.sCaseCore2;
     public static byte CASING_META = 15;
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
     int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
-    public int mPhotonsStable = 0;
+    public int mMPStable = 0;
     public ArrayList<Vector3ic> vectors = new ArrayList<>();
 
     //region Register
-    public GTMTE_PhotonContainment(int aID, String aName, String aNameRegional) {
+    public GTMTE_MPContainment(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         run();
     }
 
-    public GTMTE_PhotonContainment(String aName) {
+    public GTMTE_MPContainment(String aName) {
         super(aName);
         run();
     }
@@ -67,7 +60,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         run();
-        return new GTMTE_PhotonContainment(this.mName);
+        return new GTMTE_MPContainment(this.mName);
     }
     //endregion
 
@@ -90,11 +83,11 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
     }
 
     public void run() {
-        registerMetaClass(GTMTE_PhotonContainment.class,
-                new IMultiblockInfoContainer<GTMTE_PhotonContainment>() {
+        registerMetaClass(GTMTE_MPContainment.class,
+                new IMultiblockInfoContainer<GTMTE_MPContainment>() {
                     //region Structure
-                    private final IStructureDefinition<GTMTE_PhotonContainment> definition =
-                            StructureDefinition.<GTMTE_PhotonContainment>builder()
+                    private final IStructureDefinition<GTMTE_MPContainment> definition =
+                            StructureDefinition.<GTMTE_MPContainment>builder()
                                     .addShape("main", new String[][]{
                                             {"      A","AAAAA~A","A    AA"},
                                             {"AAAAAAA","ABBBB D","AAAAAAA"},
@@ -103,8 +96,8 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                                             {"      A","AAAAAFA","A    AA"}
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
-                                    .addElement('B', ofBlock(ItemRegistery.photonSystem, 0))
-                                    .addElement('C', ofBlock(ItemRegistery.photonTransducer, 0))
+                                    .addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
+                                    .addElement('C', ofBlock(ItemRegistery.MPTransducer, 0))
                                     .addElement('D', ofBlock(ItemRegistery.IGlassBlock))
                                     .addElement('F', ofBlockHint(ItemRegistery.decorateBlock[2], 1))
                                     .build();
@@ -114,7 +107,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
 
                     //endregion
                     @Override
-                    public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_PhotonContainment tileEntity, ExtendedFacing aSide) {
+                    public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MPContainment tileEntity, ExtendedFacing aSide) {
                         IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                         definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                                 base.getXCoord(), base.getYCoord(), base.getZCoord(),
@@ -161,7 +154,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
         super.onPostTick(iAm, aTick);
 
         if (iAm.isServerSide() && iAm.isActive() && aTick % 20 == 0) {
-            mPhotonsStable = Math.min(mPhotonsStable, 100_000);
+            mMPStable = Math.min(mMPStable, 100_000);
             int amount = 0;
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (bus.mInventory.length > 0) {
@@ -173,8 +166,8 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                 }
             }
             for (int i = 0; i < amount; i++) {
-                if (mPhotonsStable >= 1000 && depleteInput(Core_Items3.getInstance().get(0, 1))) {
-                    mPhotonsStable -= 1000;
+                if (mMPStable >= 1000 && depleteInput(Core_Items3.getInstance().get(0, 1))) {
+                    mMPStable -= 1000;
                     addOutput(Core_Items3.getInstance().get(1, 1));
                     Vector3ic core = vectors.get(0);
 
@@ -192,8 +185,8 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
         }
     }
 
-    public void setPhotons(int amount) {
-        mPhotonsStable += amount;
+    public void setMP(int amount) {
+        mMPStable += amount;
     }
 
     @Override
@@ -219,7 +212,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                 if (x >= -4 && x <= -1 && !(y >= 1 && y <= 3)) continue;
 
                 if (x >= -4 && x <= -1 && y == 2) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.MPSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
@@ -250,7 +243,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                 if (x == 0 && y <= 3) continue;
 
                 if (x == -1 && y == 2) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonTransducer)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.MPTransducer)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                         vectors.add(new Vector3i(iAm.getXCoord() + offset.x(), iAm.getYCoord() + offset.y(), iAm.getZCoord() + offset.z()));
                     } else {
@@ -260,7 +253,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                 }
 
                 if (x >= -4 && x <= -1 && y >= 1 && y <= 3) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.MPSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
@@ -314,7 +307,7 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
                 if (x <= 0 && !(y >= 1 && y <= 3)) continue;
 
                 if (x >= -4 && x <= -1 && y == 2) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.MPSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
@@ -339,13 +332,13 @@ public class GTMTE_PhotonContainment extends GT_MetaTileEntity_MultiParallelBloc
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mPhotonsSummary", mPhotonsStable);
+        aNBT.setInteger("mMPStable", mMPStable);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mPhotonsStable = aNBT.getInteger("mPhotonsSummary");
+        mMPStable = aNBT.getInteger("mMPStable");
     }
 
     public String[] getInfoData() {

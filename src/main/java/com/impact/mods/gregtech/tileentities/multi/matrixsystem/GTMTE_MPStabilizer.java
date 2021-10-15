@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.multi.photonsystem;
+package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
@@ -10,7 +10,6 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -21,54 +20,46 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import mods.railcraft.client.particles.EntityTuningFX;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
-
-import java.util.List;
-import java.util.Random;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static net.minecraft.util.EnumChatFormatting.*;
 
-public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     public static Block CASING = Casing_Helper.sCaseCore2;
     public static byte CASING_META = 15;
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
     int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
-    public int mPhotonsSummary = 0;
-    public boolean mPhotonsBeam = false;
+    public int mMPSummary = 0;
+    public boolean mMPBeam = false;
 
     public int mRangeToContainer = 0;
     public boolean mCheckContainer = true;
-    public GTMTE_PhotonContainment mPhotonContainment;
+    public GTMTE_MPContainment mMPContainment;
 
     //region Register
-    public GTMTE_PhotonStabilizer(int aID, String aName, String aNameRegional) {
+    public GTMTE_MPStabilizer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         run();
     }
 
-    public GTMTE_PhotonStabilizer(String aName) {
+    public GTMTE_MPStabilizer(String aName) {
         super(aName);
         run();
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        run();
-        return new GTMTE_PhotonStabilizer(this.mName);
+        return new GTMTE_MPStabilizer(this.mName);
     }
     //endregion
 
@@ -91,18 +82,18 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     public void run() {
-        registerMetaClass(GTMTE_PhotonStabilizer.class,
-                new IMultiblockInfoContainer<GTMTE_PhotonStabilizer>() {
+        registerMetaClass(GTMTE_MPStabilizer.class,
+                new IMultiblockInfoContainer<GTMTE_MPStabilizer>() {
                     //region Structure
-                    private final IStructureDefinition<GTMTE_PhotonStabilizer> definition =
-                            StructureDefinition.<GTMTE_PhotonStabilizer>builder()
+                    private final IStructureDefinition<GTMTE_MPStabilizer> definition =
+                            StructureDefinition.<GTMTE_MPStabilizer>builder()
                                     .addShape("main", new String[][]{
                                             {"AA AA","AB~BA","AA AA"},
                                             {"ABBBA","D   D","ABBBA"},
                                             {"AA AA","ABBBA","AA AA"},
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
-                                    .addElement('B', ofBlock(ItemRegistery.photonSystem, 0))
+                                    .addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
                                     .addElement('D', ofBlock(ItemRegistery.IGlassBlock))
                                     .build();
                     private final String[] desc = new String[]{
@@ -111,7 +102,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
                     //endregion
                     @Override
-                    public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_PhotonStabilizer tileEntity, ExtendedFacing aSide) {
+                    public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MPStabilizer tileEntity, ExtendedFacing aSide) {
                         IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                         definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                                 base.getXCoord(), base.getYCoord(), base.getZCoord(),
@@ -206,28 +197,28 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
 
             if (!mCheckContainer && iAm.isActive()) {
 
-                if (mPhotonsSummary >= 1000) {
+                if (mMPSummary >= 1000) {
 
                     Vector3ic offsetX = rotateOffsetVector(forgeDirection, mRangeToContainer, 0, 1);
                     IGregTechTileEntity currentTE = iAm.getIGregTechTileEntityOffset(offsetX.x(), offsetX.y(), offsetX.z());
 
                     if (currentTE != null) {
-                        if (currentTE.getMetaTileEntity() instanceof GTMTE_PhotonContainment) {
-                            mPhotonContainment = (GTMTE_PhotonContainment) currentTE.getMetaTileEntity();
+                        if (currentTE.getMetaTileEntity() instanceof GTMTE_MPContainment) {
+                            mMPContainment = (GTMTE_MPContainment) currentTE.getMetaTileEntity();
                             mCheckContainer = false;
                             if (currentTE.isActive()) {
-                                if (mPhotonsSummary > 90_000) {
+                                if (mMPSummary > 90_000) {
                                     this.mEUt = -((int) GT_Values.V[4] * 2);
                                 }
-                                if (mPhotonContainment.mPhotonsStable <= 99_900) {
-                                    mPhotonContainment.setPhotons(1000);
+                                if (mMPContainment.mMPStable <= 99_900) {
+                                    mMPContainment.setMP(1000);
                                     addBound(iAm);
-                                    mPhotonsSummary -= 1000;
+                                    mMPSummary -= 1000;
                                 }
                             }
                         }
                     } else {
-                        mPhotonContainment = null;
+                        mMPContainment = null;
                         mCheckContainer = true;
                         mRangeToContainer = 0;
                     }
@@ -236,8 +227,8 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
         }
     }
 
-    public void setPhotons(int amount) {
-        mPhotonsSummary += amount;
+    public void setMP(int amount) {
+        mMPSummary += amount;
     }
 
     public void doCheckContainer(IGregTechTileEntity iAm) {
@@ -257,15 +248,15 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 offsetX = rotateOffsetVector(forgeDirection, mRangeToContainer, 0, 1);
                 currentTE = iAm.getIGregTechTileEntityOffset(offsetX.x(), offsetX.y(), offsetX.z());
                 if (currentTE != null) {
-                    if (currentTE.getMetaTileEntity() instanceof GTMTE_PhotonContainment) {
-                        mPhotonContainment = (GTMTE_PhotonContainment) currentTE.getMetaTileEntity();
+                    if (currentTE.getMetaTileEntity() instanceof GTMTE_MPContainment) {
+                        mMPContainment = (GTMTE_MPContainment) currentTE.getMetaTileEntity();
                         mCheckContainer = false;
                         break;
                     }
                 }
             }
             if (currentTE == null) {
-                mPhotonContainment = null;
+                mMPContainment = null;
                 mCheckContainer = true;
                 mRangeToContainer = 0;
             }
@@ -295,7 +286,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 if (x == 0 && y != 1) continue;
 
                 if (y == 1 && x >= -1 && x <= 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.MPSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
 
                     } else {
@@ -326,7 +317,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 if (y == 1 && x >= -1 && x <= 1) continue;
 
                 if (y != 1 && x >= -1 && x <= 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.MPSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
@@ -362,7 +353,7 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
                 if (x == 0 && y != 1) continue;
 
                 if (y == 1 && x >= -1 && x <= 1) {
-                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.photonSystem)
+                    if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.MPSystem)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 0)) {
                     } else {
                         formationChecklist = false;
@@ -387,18 +378,18 @@ public class GTMTE_PhotonStabilizer extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mPhotonsSummary", mPhotonsSummary);
+        aNBT.setInteger("mMPSummary", mMPSummary);
         aNBT.setInteger("mRangeToContainer", mRangeToContainer);
-        aNBT.setBoolean("mPhotonsBeam", mPhotonsBeam);
+        aNBT.setBoolean("mMPBeam", mMPBeam);
         aNBT.setBoolean("mCheckContainer", mCheckContainer);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mPhotonsSummary = aNBT.getInteger("mPhotonsSummary");
+        mMPSummary = aNBT.getInteger("mMPSummary");
         mRangeToContainer = aNBT.getInteger("mRangeToContainer");
-        mPhotonsBeam = aNBT.getBoolean("mPhotonsBeam");
+        mMPBeam = aNBT.getBoolean("mMPBeam");
         mCheckContainer = aNBT.getBoolean("mCheckContainer");
     }
 

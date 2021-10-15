@@ -1,6 +1,5 @@
 package com.impact.common.block.blocks;
 
-import com.impact.common.block.itemblock.IB_InsideBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,18 +16,18 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class Block_PhotonTransducer extends gtUpdateBlockAPI {
+public class Block_MatrixTransducer extends gtUpdateBlockAPI {
 
-  private static final Block_PhotonTransducer instance = new Block_PhotonTransducer();
+  private static final Block_MatrixTransducer instance = new Block_MatrixTransducer();
 
   private IIcon iconGlass10;
 
-  private Block_PhotonTransducer() {
+  private Block_MatrixTransducer() {
     super(Material.iron);
   }
 
   public static Block registerBlock() {
-    final String blockName = "impact_photon_transducer";
+    final String blockName = "impact_matrix_transducer";
     instance.setBlockName(blockName);
     instance.setHardness(5.0f);
     instance.setResistance(6.0f);
@@ -128,6 +127,5 @@ public class Block_PhotonTransducer extends gtUpdateBlockAPI {
   public void setBlockBoundsForItemRender() {
     this.setBlockBounds(0.200F, 0.200F, 0.200F, 0.800F, 0.800F, 0.800F);
   }
-
 
 }

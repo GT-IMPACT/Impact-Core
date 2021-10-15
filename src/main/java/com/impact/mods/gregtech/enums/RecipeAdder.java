@@ -21,16 +21,16 @@ public class RecipeAdder implements IRecipeAdder {
     }
 
     @Override
-    public boolean addPhotonContainer(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, int photonsAmount) {
-        GT_RecipeMaps.sPhotonContainer.addRecipe(true, aInputs, aOutputs, null,
-                null, null, null, aDuration, aEUt, photonsAmount);
+    public boolean addMPContainer(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, int aMPAmount) {
+        GT_RecipeMaps.sMPContainer.addRecipe(true, aInputs, aOutputs, null,
+                null, null, null, aDuration, aEUt, aMPAmount);
         return true;
     }
 
     @Override
-    public boolean addMESPRecipes(ItemStack[] aInputs, ItemStack aOutput, int aDuration, int aEUt, int photonsAmount) {
+    public boolean addMESPRecipes(ItemStack[] aInputs, ItemStack aOutput, int aDuration, int aEUt, int aMPAmount) {
         GT_RecipeMaps.sMESystemProvider.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null,
-                null, null, null, aDuration, aEUt, photonsAmount);
+                null, null, null, aDuration, aEUt, aMPAmount);
         return true;
     }
 }

@@ -1,6 +1,6 @@
-package com.impact.mods.gregtech.gui.photonsystem;
+package com.impact.mods.gregtech.gui.matrixsystem;
 
-import com.impact.mods.gregtech.tileentities.multi.photonsystem.GTMTE_ParametricDiffuser;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_ParametricDiffuser;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -16,8 +16,8 @@ import net.minecraft.item.ItemStack;
 public class GT_Container_ParametricDiffuser extends GT_ContainerMetaTile_Machine {
 
 	public boolean checkStabilizer;
-	public int mPeakBeamPhotons;
-	public int mPhotonsGenerate;
+	public int mPeakBeamMP;
+	public int mMPGenerate;
 
 	public GT_Container_ParametricDiffuser(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity, false);
@@ -56,16 +56,16 @@ public class GT_Container_ParametricDiffuser extends GT_ContainerMetaTile_Machin
 		super.detectAndSendChanges();
 		if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
 		GTMTE_ParametricDiffuser diffuser = ((GTMTE_ParametricDiffuser) mTileEntity.getMetaTileEntity());
-		mPeakBeamPhotons = diffuser.mPeakBeamPhotons;
-		mPhotonsGenerate = diffuser.mPhotonsGenerate;
-		checkStabilizer = diffuser.mPhotonStabilizer != null && diffuser.mPhotonStabilizer.getBaseMetaTileEntity().isActive();
+		mPeakBeamMP = diffuser.mPeakBeamMP;
+		mMPGenerate = diffuser.mMPGenerate;
+		checkStabilizer = diffuser.mMPStabilizer != null && diffuser.mMPStabilizer.getBaseMetaTileEntity().isActive();
 		
 		for (Object crafter : this.crafters) {
 			ICrafting var1 = (ICrafting) crafter;
-			var1.sendProgressBarUpdate(this, 100, mPeakBeamPhotons & 65535);
-			var1.sendProgressBarUpdate(this, 101, mPeakBeamPhotons >>> 16);
-			var1.sendProgressBarUpdate(this, 102, mPhotonsGenerate & 65535);
-			var1.sendProgressBarUpdate(this, 103, mPhotonsGenerate >>> 16);
+			var1.sendProgressBarUpdate(this, 100, mPeakBeamMP & 65535);
+			var1.sendProgressBarUpdate(this, 101, mPeakBeamMP >>> 16);
+			var1.sendProgressBarUpdate(this, 102, mMPGenerate & 65535);
+			var1.sendProgressBarUpdate(this, 103, mMPGenerate >>> 16);
 			var1.sendProgressBarUpdate(this, 104, checkStabilizer ? 1 : 0);
 		}
 	}
@@ -76,15 +76,15 @@ public class GT_Container_ParametricDiffuser extends GT_ContainerMetaTile_Machin
 		super.updateProgressBar(id, data);
 		switch (id) {
 			case 100:
-				mPeakBeamPhotons = mPeakBeamPhotons & -65536 | data;
+				mPeakBeamMP = mPeakBeamMP & -65536 | data;
 				break;
 			case 101:
-				mPeakBeamPhotons = mPeakBeamPhotons & 65535 | data << 16;
+				mPeakBeamMP = mPeakBeamMP & 65535 | data << 16;
 			case 102:
-				mPhotonsGenerate = mPhotonsGenerate & -65536 | data;
+				mMPGenerate = mMPGenerate & -65536 | data;
 				break;
 			case 103:
-				mPhotonsGenerate = mPhotonsGenerate & 65535 | data << 16;
+				mMPGenerate = mMPGenerate & 65535 | data << 16;
 			case 104:
 				checkStabilizer = (data != 0);
 				break;

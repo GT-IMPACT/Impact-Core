@@ -11,7 +11,7 @@ public class GT_RecipeMaps {
 
     public static final GT_Recipe.GT_Recipe_Map sDryingOven;
     public static final GT_Recipe.GT_Recipe_Map sMESystemProvider;
-    public static final GT_Recipe.GT_Recipe_Map sPhotonContainer;
+    public static final GT_Recipe.GT_Recipe_Map sMPContainer;
 
     static {
         sDryingOven = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
@@ -22,8 +22,9 @@ public class GT_RecipeMaps {
                 "impact.recipe.mesystemprovider", "ME System Provider", null, RES_PATH_GUI + "basic/RailAssembler",
                 9, 1, 1, 0, 1, E, 1, E,
                 true, false);
-        sPhotonContainer = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
-                "impact.recipe.photoncontainer", "Photon Containment", null, RES_PATH_GUI + "basic/PhotonContainment",
+        sMPContainer = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
+                "impact.recipe.matrixcontainer", "Matrix Pr. Containment", null, RES_PATH_GUI + "basic" +
+                "/MatrixContainment",
                 1, 1, 1, 0, 1, E, 1, E,
                 false, false);
     }

@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.multi.photonsystem;
+package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 import appeng.tile.crafting.TileCraftingStorageTile;
 import appeng.tile.crafting.TileCraftingTile;
@@ -15,7 +15,6 @@ import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.hatches.GTMTE_AE_Connector;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.Utilits;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -54,13 +53,13 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
     ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
     int CASING_TEXTURE_ID = ME_CASING.getIDCasing();
 
-    public TileCraftingTile AE_CPU_UNIT = null;
-    public TileCraftingStorageTile AE_CPU_CRAFT = null;
+    public List<TileCraftingTile> AE_CPU_UNIT = new ArrayList<>();
+    public List<TileCraftingStorageTile> AE_CPU_CRAFT = new ArrayList<>();
 
-    private List<GTMTE_AE_Connector> aeConnectors = new ArrayList<>();
+    private final List<GTMTE_AE_Connector> aeConnectors = new ArrayList<>();
 
-    private int mSpeedUp = 0;
-    public int mPhotonsSummary = 0;
+    public int mSpeedUp = 0;
+    public int mMatrixParticlesSummary = 0;
 
     //region Register
     public GTMTE_MESystemProvider(int aID, String aName, String aNameRegional) {
@@ -113,7 +112,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                                             {"AA AA", "ABBBA", "AA AA"},
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
-                                    .addElement('B', ofBlock(ItemRegistery.photonSystem, 0))
+                                    .addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
                                     .addElement('D', ofBlock(ItemRegistery.IGlassBlock))
                                     .build();
                     private final String[] desc = new String[]{
@@ -171,7 +170,6 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
             return false;
         }
 
-
         tInputList = this.getStoredInputs();
         tInputs = tInputList.toArray(new ItemStack[0]);
 
@@ -181,7 +179,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
             GT_Recipe tRecipe;
             tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], null, tInputs);
             int x = 0;
-            if (tRecipe != null && (mPhotonsSummary - tRecipe.mSpecialValue >= 0)) {
+            if (tRecipe != null && (mMatrixParticlesSummary - tRecipe.mSpecialValue >= 0)) {
 
                 ArrayList<ItemStack> outputItems = new ArrayList<>();
                 boolean found_Recipe = false;
@@ -202,7 +200,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     long actualEUT = (long) (tRecipe.mEUt) * processed;
-                    mPhotonsSummary -= tRecipe.mSpecialValue * processed;
+                    mMatrixParticlesSummary -= tRecipe.mSpecialValue * processed;
 
                     OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 
@@ -227,8 +225,13 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
         if (iAm.isServerSide() && aTick % 40 == 0) {
 
             if (aeConnectors.size() > 0) {
-                aeConnectors.get(0).getBaseMetaTileEntity().setActive(AE_CPU_CRAFT != null && AE_CPU_CRAFT.isPowered());
+                int checker = 0;
+                for (TileCraftingStorageTile te : AE_CPU_CRAFT) {
+                    if (te != null && te.isPowered()) checker++;
+                }
+                aeConnectors.get(0).getBaseMetaTileEntity().setActive(checker == 4);
             }
+
             if (mInputBusses.size() > 0) {
                 if (mInputBusses.get(0).mInventory.length > 0) {
                     for (ItemStack is : mInputBusses.get(0).mInventory) {
@@ -238,8 +241,8 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                     }
                 }
                 for (int i = 0; i < amount; i++) {
-                    if (mPhotonsSummary <= 99_900 && depleteInput(Core_Items3.getInstance().get(1, 1))) {
-                        mPhotonsSummary += 1000;
+                    if (mMatrixParticlesSummary <= 99_900 && depleteInput(Core_Items3.getInstance().get(1, 1))) {
+                        mMatrixParticlesSummary += 1000;
                         addOutput(Core_Items3.getInstance().get(0, 1));
                     } else break;
                 }
@@ -250,7 +253,9 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
         aeConnectors.clear();
-        mSpeedUp = 0;
+        AE_CPU_UNIT.clear();
+        AE_CPU_CRAFT.clear();
+        mSpeedUp = 1;
         //region Structure
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
@@ -294,10 +299,11 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                             if (x == -3) {
                                 TileEntity aeCPU = getTE(iAm, offset);
                                 if (aeCPU instanceof TileCraftingStorageTile) {
-                                    AE_CPU_CRAFT = (TileCraftingStorageTile) aeCPU;
-                                    int bytes = AE_CPU_CRAFT.getStorageBytes() / 1024;
+                                    TileCraftingStorageTile craft = (TileCraftingStorageTile) aeCPU;
+                                    AE_CPU_CRAFT.add(craft);
+                                    int bytes = craft.getStorageBytes() / 1024;
                                     int preSpeedUp = bytes == 64 ? 4 : bytes == 16 ? 3 : bytes == 4 ? 2 : 1;
-                                    if (mSpeedUp == 0) {
+                                    if (mSpeedUp == 1) {
                                         mSpeedUp = preSpeedUp;
                                     } else if (mSpeedUp > preSpeedUp) {
                                         mSpeedUp = preSpeedUp;
@@ -309,7 +315,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                             } else {
                                 TileEntity aeCPU = getTE(iAm, offset);
                                 if (aeCPU instanceof TileCraftingTile) {
-                                    AE_CPU_UNIT = (TileCraftingTile) aeCPU;
+                                    AE_CPU_UNIT.add((TileCraftingTile) aeCPU);
                                 } else {
                                     formationChecklist = false;
                                 }
@@ -339,13 +345,30 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
             }
         }
 
-        if (aeConnectors.size() != 1) return false;
+        if (AE_CPU_UNIT.size() != 8) formationChecklist = false;
+        if (AE_CPU_CRAFT.size() != 4) formationChecklist = false;
+        if (aeConnectors.size() != 1) formationChecklist = false;
+
+        for (TileCraftingTile te : AE_CPU_UNIT) {
+            try {
+                te.updateStatus(null);
+                te.setBigAccelerator(formationChecklist, mSpeedUp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!formationChecklist) mSpeedUp = 1;
 
         return formationChecklist;
     }
 
     public boolean checkAE() {
-        return AE_CPU_CRAFT != null && AE_CPU_CRAFT.isPowered();
+        int checker = 0;
+        for (TileCraftingTile te : AE_CPU_CRAFT) {
+            if (te.isPowered()) checker++;
+        }
+        return checker == 4;
     }
 
     public boolean addAEConnectors(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -367,14 +390,14 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mPhotonsSummary", mPhotonsSummary);
+        aNBT.setInteger("mMatrixParticlesSummary", mMatrixParticlesSummary);
         aNBT.setInteger("mSpeedUp", mSpeedUp);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mPhotonsSummary = aNBT.getInteger("mPhotonsSummary");
+        mMatrixParticlesSummary = aNBT.getInteger("mMatrixParticlesSummary");
         mSpeedUp = aNBT.getInteger("mSpeedUp");
     }
 

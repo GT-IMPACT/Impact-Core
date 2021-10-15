@@ -268,8 +268,8 @@ public enum Core_List_Items {
     FakeUHVCircuit(6, 3),
     FakeUEVCircuit(7, 3),
 
-    PhotonBufferEmpty(0, 4),
-    PhotonBufferFull(1, 4),
+    MPBufferEmpty(0, 4),
+    MPBufferFull(1, 4),
 
     ;
 

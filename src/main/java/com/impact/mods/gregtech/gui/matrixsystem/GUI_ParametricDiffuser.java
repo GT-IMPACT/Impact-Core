@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.gui.photonsystem;
+package com.impact.mods.gregtech.gui.matrixsystem;
 
 import com.impact.mods.gregtech.gui.GT_GUIContainerMT_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,13 +36,13 @@ public class GUI_ParametricDiffuser extends GT_GUIContainerMT_Machine {
 				if ((mContainer).mActive == 0) {
 					fontRendererObj.drawString("Progress:" + EnumChatFormatting.RED + " not working", 8, 22, 16448255);
 				}
-				fontRendererObj.drawString("Generated Photons (M):", 8, 42, 16448255);
-				fontRendererObj.drawString("" + EnumChatFormatting.GREEN + container.mPhotonsGenerate, 8, 52, 16448255);
+				fontRendererObj.drawString("Generated MP:", 8, 42, 16448255);
+				fontRendererObj.drawString("" + EnumChatFormatting.GREEN + container.mMPGenerate, 8, 52, 16448255);
 
-				fontRendererObj.drawString("Photon Stabilizer:", 8, 72, 16448255);
+				fontRendererObj.drawString("MP Stabilizer:", 8, 72, 16448255);
 				fontRendererObj.drawString("" + (container.checkStabilizer ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"), 8, 82, 16448255);
 //				new Color(0x050303);
-				fontRendererObj.drawString("Photon Beam", 6, 118, 0x050303);
+				fontRendererObj.drawString("MP Beam", 6, 118, 0x050303);
 				fontRendererObj.drawString("Beam Power", 6, 141, 0x050303);
 
 			}
@@ -78,10 +78,10 @@ public class GUI_ParametricDiffuser extends GT_GUIContainerMT_Machine {
 				} else {
 					drawTexturedModalRect(x + 155, y + 4, 236, 39, 16, 16);
 				}
-				double tScale = (double) container.mPhotonsGenerate / (double) (200 * container.mPeakBeamPhotons);
+				double tScale = (double) container.mMPGenerate / (double) (200 * container.mPeakBeamMP);
 				drawTexturedModalRect(x + 7, y + 129, 1, 240, Math.min(144, (int) (tScale * 144)), 7);
 
-				tScale = (double) container.mPeakBeamPhotons / 10D;
+				tScale = (double) container.mPeakBeamMP / 10D;
 				drawTexturedModalRect(x + 7, y + 152, 1, 240, Math.min(144, (int) (tScale * 144)), 7);
 			}
 		}
