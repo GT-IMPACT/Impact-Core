@@ -57,20 +57,20 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_laser");
     b
-        .addInfo("mle.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mle.name")
+        .addTypeMachine("name", "Laser Engraver")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputBus("any_case", 16)
-        .addOutputBus("any_case", 1)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mle.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputBus(16)
+        .addOutputBus(1)
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Engraver Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

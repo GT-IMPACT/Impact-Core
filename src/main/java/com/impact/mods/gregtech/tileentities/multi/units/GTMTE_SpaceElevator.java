@@ -41,7 +41,6 @@ import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfo
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
 import static com.impact.util.Utilits.isValidDim;
-import static com.impact.util.Utilits.translate;
 
 public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
@@ -84,17 +83,18 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_elevator");
 		b
-				.addInfo("space_elevator.info.0")
-				.addTypeMachine("space_elevator.name")
-				.addInfo("space_elevator.info.1")
-				.addInfo("space_elevator.info.2")
-				.addInfo("space_elevator.info.3")
+				.addInfo("info.0", "Teleportation on Space Satellite")
+				.addTypeMachine("name", "Space Elevator")
+				.addInfo("info.1", "Setup is done using Laptop")
+				.addInfo("info.2", "Send a redstone signal to teleport")
+				.addInfo("info.3", "Passive usage: 1920 EU/t")
 				.addController()
-				.addEnergyHatch("space_elevator.hatches")
-				.addCasingInfo("space_elevator.case")
-				.addOtherStructurePart("space_elevator.other.0", "space_elevator.other.1")
+				.addEnergyHatch()
+				.addCasingInfo("case", "Space Elevator Casing")
+				.addOtherStructurePart("other.0", "Space Elevator Hawser",
+						"other.1", "Center below Controller")
 				.signAndFinalize();
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
@@ -122,10 +122,10 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 									.addElement('B', ofBlock(SpaceElevatorBlock))
 									.build();
 					private final String[] desc = new String[]{
-							EnumChatFormatting.RED + translate("impact_details") + ":",
-							translate("space_elevator.case"),
-							translate("space_elevator.other.0"),
-							translate("space_elevator.hatches"),
+							EnumChatFormatting.RED + "Impact Details:",
+							"- Space Elevator Casing",
+							"- Space Elevator Hawser",
+							"- Hatches (any Space Elevator Casing)",
 					};
 					//endregion
 					
@@ -286,17 +286,17 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	public void getFrequency(EntityPlayer aPlayer) {
 		int[] coords = Impact_API.sElevatorSpace.get(Utilits.inToStringUUID(1, aPlayer));
 		if (coords == null) {
-			GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + translate("space_elevator.chat.0"));
+			GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Failed Load Position");
 			return;
 		}
 		PositionObject pos = new PositionObject(coords);
-		GT_Utility.sendChatToPlayer(aPlayer, translate("space_elevator.chat.1"));
+		GT_Utility.sendChatToPlayer(aPlayer, "Load Position");
 		setCoord(pos);
 	}
 	
 	public void setFrequency(EntityPlayer aPlayer) {
 		Impact_API.sElevatorSpace.put(Utilits.inToStringUUID(1, aPlayer), getCoords());
-		GT_Utility.sendChatToPlayer(aPlayer, translate("space_elevator.chat.2"));
+		GT_Utility.sendChatToPlayer(aPlayer, "Save Position");
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContain
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -26,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -87,17 +89,28 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 
   @Override
   public String[] getDescription() {
-    return new String[]{
-        "Controller Block for the Multiblock Farm",
-        "Industrial Tree producer",
-        "Size(WxHxD): 5x5x5, Controller (Bottom center)",
-        "3x1x3 of Farm Casings (At the center of the bottom layer)",
-        "3x1x3 of Reinforced Glass (At the center of the Top layer)",
-        "1x Input Hatch/Bus (Any bottom layer casing)",
-        "1x Output Hatch/Bus (Any bottom layer casing)",
-        "1x Maintenance Hatch (Any bottom layer casing)",
-        "1x Energy Hatch (Any bottom layer casing)",
-        "Solid Steel Casings for the rest"};
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("wood_farm");
+    b
+            .addInfo("info.0", "Industrial Wood producer")
+            .addTypeMachine("name", "Wood Farm")
+            .addScrew()
+            .addSeparator()
+            .addController()
+            .addEnergyHatch()
+            .addMaintenanceHatch()
+            .addInputBus()
+            .addInputHatch()
+            .addOutputBus()
+            .addOutputHatch()
+            .addCasingInfo("case", "Solid Steel Casings")
+            .addOtherStructurePart("other.0", "Farm Casings", "other.1", "At the center of the bottom layer")
+            .addOtherStructurePart("other.2", "Reinforced Glass", "other.3", "At the center of the Top layer")
+            .signAndFinalize();
+    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+      return b.getInformation();
+    } else {
+      return b.getStructureInformation();
+    }
   }
 
   public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,

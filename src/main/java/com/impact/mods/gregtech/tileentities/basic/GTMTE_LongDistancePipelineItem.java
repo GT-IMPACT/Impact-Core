@@ -4,6 +4,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_ITEM
 import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_ITEM_FRONT;
 import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_ITEM_SIDE;
 
+import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,7 +41,7 @@ public class GTMTE_LongDistancePipelineItem extends GTMTE_LongDistancePipelineBa
 
   public GTMTE_LongDistancePipelineItem(int aID, String aName, String aNameRegional,
       int aTier) {
-    super(aID, aName, aNameRegional, aTier, "Sends Items over long distances");
+    super(aID, aName, aNameRegional, aTier, Language.transDesc("pipeline.item", "Sends Items over long distances"));
   }
 
   public GTMTE_LongDistancePipelineItem(String aName, int aTier, String aDescription,

@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.hatches;
 
+import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_1by1;
 import gregtech.api.gui.GT_GUIContainer_1by1;
@@ -27,8 +28,9 @@ public class GT_MetaTileEntity_Primitive_InputBus extends GT_MetaTileEntity_Hatc
   public GT_MetaTileEntity_Primitive_InputBus(int aID, String aName, String aNameRegional,
       int aTier) {
     super(aID, aName, aNameRegional, aTier, getSlots(aTier), new String[]{
-        "Primitive Item Input for Coke Oven",
-        "Capacity: 1 stack"});
+            Language.transDesc("basic.hatch.primitive.item.in.0",  "Primitive Item Input for Coke Oven"),
+            Language.transDesc("basic.hatch.primitive.item.in.1", "Capacity: 1 stack")
+    });
   }
 
   public GT_MetaTileEntity_Primitive_InputBus(String aName, int aTier, String aDescription,

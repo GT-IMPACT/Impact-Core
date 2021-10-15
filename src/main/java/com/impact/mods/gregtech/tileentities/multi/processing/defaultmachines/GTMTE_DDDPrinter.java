@@ -61,21 +61,21 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("ddd_printer");
     b
-        .addInfo("ddd_printer.info.0")
-        .addTypeMachine("ddd_printer.name")
+        .addInfo("info.0", "Assembler machines")
+        .addTypeMachine("name", "3x3 Crafting")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("ddd_printer.hatches")
-        .addMaintenanceHatch("ddd_printer.hatches")
-        .addInputBus("ddd_printer.hatch.bus.in")
-        .addOutputBus("ddd_printer.hatches")
-        .addCasingInfo("ddd_printer.case")
-        .addOtherStructurePart("ddd_printer.other.0", "ddd_printer.other.1")
-        .addOtherStructurePart("ddd_printer.other.2", "ddd_printer.other.3")
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addInputBus(30)
+        .addOutputBus()
+        .addCasingInfo("case", "3D Printed Casing")
+        .addOtherStructurePart("other.0", "I-Glass", "other.1", "it is glass")
+        .addOtherStructurePart("other.2", "Configuration Casing 3x3", "other.3", "core structure")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

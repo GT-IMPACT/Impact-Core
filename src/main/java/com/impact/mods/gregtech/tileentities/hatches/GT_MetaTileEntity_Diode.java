@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.hatches;
 
+import com.impact.util.Language;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -17,8 +18,7 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
   public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier,
       long aAmper) {
-    super(aID, aName, aNameRegional, aTier,
-        "A Simple diode that will allow Energy Flow in only one direction");
+    super(aID, aName, aNameRegional, aTier, Language.transDesc("basic.hatch.diode.0", "A Simple diode that will allow Energy Flow in only one direction"));
     this.maxAmps = aAmper;
     this.aAmps = aAmper;
   }
@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
   @SuppressWarnings("deprecation")
   public String[] getDescription() {
     return new String[]{this.mDescription,
-        "Use a Screwdriver to configuration the Amperes",
+            Language.transDesc("basic.hatch.diode.1", "Use a Screwdriver to configuration the Amperes")
     };
   }
 

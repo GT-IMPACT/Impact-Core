@@ -82,20 +82,20 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("lsc");
     b
-        .addInfo("lsc.info.0")
-        .addInfo("lsc.info.1")
-        .addTypeMachine("lsc.name")
+        .addInfo("info.0", "Multi battery buffer!")
+        .addInfo("info.1", "Very big battery")
+        .addTypeMachine("name", "Battery Buffer")
         .addSeparator()
         .beginStructureBlock(5, 4, 5)
         .addController()
-        .addDynamoHatch("lsc.hatches")
-        .addEnergyHatch("lsc.hatches")
-        .addMaintenanceHatch("lsc.hatches")
-        .addOtherStructurePart("tooltip.lsc.other.0", "tooltip.lsc.other.1")
-        .addOtherStructurePart("tooltip.lsc.other.2", "tooltip.lsc.other.3")
-        .addOtherStructurePart("tooltip.lsc.other.4", "tooltip.lsc.other.5")
+        .addDynamoHatch()
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addOtherStructurePart("other.0", "Lapotronic Capacitor Base", "other.1", "5x2x5 base (at least 17x)")
+        .addOtherStructurePart("other.2", "Capacitors", "other.3", "Center 3x(1-15)x3 above base (9-135 blocks)")
+        .addOtherStructurePart("other.4", "I-Glass", "other.5", "41-265x, Encase capacitor pillar")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

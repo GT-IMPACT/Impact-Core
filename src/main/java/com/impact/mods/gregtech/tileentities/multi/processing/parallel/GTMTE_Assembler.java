@@ -60,22 +60,22 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_assembler");
     b
-        .addInfo("mas.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mas.name")
+        .addTypeMachine("name", "Assembler, Circuit Assembler, Component Assembler")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputBus("any_case", 15)
-        .addInputHatch("any_case", 6)
-        .addOutputBus("any_case", 3)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mas.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputBus(15)
+        .addInputHatch(6)
+        .addOutputBus(3)
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Assembler Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

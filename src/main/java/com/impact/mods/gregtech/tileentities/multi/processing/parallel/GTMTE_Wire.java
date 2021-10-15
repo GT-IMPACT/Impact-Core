@@ -58,22 +58,22 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_wire");
     b
-        .addInfo("mwr.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mwr.name")
+        .addTypeMachine("name", "WireMill, Wire Assembler")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputBus("any_case", 6)
-        .addOutputBus("any_case", 3)
-        .addInputHatch("any_case", 3)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mwr.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputBus(6)
+        .addOutputBus(3)
+        .addInputHatch(3)
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Wire Factory Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

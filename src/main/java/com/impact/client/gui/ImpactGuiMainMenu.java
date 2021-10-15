@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.impact.impact.ModPackVersion;
-import static com.impact.util.Utilits.translate;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 @SideOnly(Side.CLIENT)
 public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
@@ -81,11 +81,11 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         I18n.format("menu.quit")));
 
     this.buttonList.add(new ImpactGuiButton(20, xButtons - 25 - 5, yButtons + 84 + 42 - 25, 50, 20,
-        I18n.format(translate("menu.website"))));
+        I18n.format(translateToLocal("menu.website"))));
     this.buttonList.add(new ImpactGuiButton(21, xButtons + 25, yButtons + 84 + 42 - 25, 50, 20,
-        I18n.format(translate("menu.discord"))));
+        I18n.format(translateToLocal("menu.discord"))));
     this.buttonList.add(new ImpactGuiButton(22, xButtons + 75 + 5, yButtons + 84 + 42 - 25, 50, 20,
-        I18n.format(translate("menu.github"))));
+        I18n.format(translateToLocal("menu.github"))));
   }
 
   protected void actionPerformed(GuiButton b) {
@@ -192,7 +192,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
       }
     }
     
-    String eBug1 = translate("latest_version") + ": " + EnumChatFormatting.GREEN + (version.isEmpty() ? ModPackVersion : version);
+    String eBug1 = translateToLocal("latest_version") + ": " + EnumChatFormatting.GREEN + (version.isEmpty() ? ModPackVersion : version);
 //    try(InputStream in = new URL(webSiteVersionHref).openStream()) {
 //      if (version.isEmpty() && checkConnect(new URL(webSiteVersionHref))) {
 //        BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -203,7 +203,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 //      drawString(this.fontRendererObj, eBug1,
 //          this.width - this.fontRendererObj.getStringWidth(eBug1) - 10, this.height - 20, -1);
 //    } catch (Exception ignored) {}
-    String eBug2 = translate("current_version") + ": " + EnumChatFormatting.YELLOW + ModPackVersion;
+    String eBug2 = translateToLocal("current_version") + ": " + EnumChatFormatting.YELLOW + ModPackVersion;
     drawString(this.fontRendererObj, eBug2, this.width - this.fontRendererObj.getStringWidth(eBug2) - 10, this.height - 10, -1);
     super.drawScreen(mouseX, mouseY, partialTicks);
   }

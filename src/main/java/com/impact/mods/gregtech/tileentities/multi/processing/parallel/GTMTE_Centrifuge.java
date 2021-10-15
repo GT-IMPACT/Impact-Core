@@ -58,25 +58,25 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_centrifuge");
     b
-        .addInfo("mct.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
         .addPollution(200, 12800)
-        .addTypeMachine("mct.name")
+        .addTypeMachine("name", "Centrifuge, Thermal Centrifuge")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addMuffler("any_case", 1)
-        .addInputBus("any_case", 6)
-        .addOutputBus("any_case", 3)
-        .addOutputHatch("any_case", 6)
-        .addInputHatch("any_case", 6)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mct.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addMuffler()
+        .addInputBus(6)
+        .addOutputBus(3)
+        .addOutputHatch(6)
+        .addInputHatch(6)
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Centrifuge Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

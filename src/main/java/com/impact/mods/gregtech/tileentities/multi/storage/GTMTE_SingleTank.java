@@ -73,21 +73,21 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-    b.addInfo("single_tank.info.0")
-    .addTypeMachine("single_tank.name")
-        .addInfo("single_tank.info.1")
-        .addInfo("single_tank.info.2")
-        .addInfo("single_tank.info.3")
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("single_tank");
+    b.addInfo("info.0", "High-Tech fluid tank!")
+    .addTypeMachine("name", "Fluid Tank")
+        .addInfo("info.1", "Right-Click the controller with a screwdriver will turn on excess voiding.")
+        .addInfo("info.2", "Fluid storage amount and running cost depends on the storage field blocks used.")
+        .addInfo("info.3", "If the integrity of Tank Storage is broken, the fluids are removed.")
         .addSeparator()
         .addSeparator()
         .beginStructureBlock(3, 7, 3)
         .addController()
-        .addOtherStructurePart("single_tank.other.0", "single_tank.other.1")
-        .addOtherStructurePart("single_tank.other.2", "single_tank.other.3")
-        .addOtherStructurePart("single_tank.other.4", "single_tank.other.5")
-        .addOtherStructurePart("single_tank.other.6", "single_tank.other.7")
-        .addInfo("single_tank.info.4")
+        .addOtherStructurePart("other.0", "Inner 1x5x1 tube", "other.1", "Tank Storage Block")
+        .addOtherStructurePart("other.2", "Outer 3x1&7x3 Casing", "other.3", "Chemical Casing")
+        .addOtherStructurePart("other.4", "Outer 3x5x3 glass shell", "other.5", "I-Glass")
+        .addOtherStructurePart("other.6", "I/O Tank Hatch", "other.7", "Instead of any casing or glass")
+        .addInfo("info.4", "I/O Tank Hatch for information and used EC2, OC systems")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

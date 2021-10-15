@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.hatches;
 
+import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_1by1;
 import gregtech.api.gui.GT_GUIContainer_1by1;
@@ -23,8 +24,10 @@ public class GT_MetaTileEntity_Primitive_OutputBus extends GT_MetaTileEntity_Hat
   public GT_MetaTileEntity_Primitive_OutputBus(int aID, String aName, String aNameRegional,
       int aTier) {
     super(aID, aName, aNameRegional, aTier, getSlots(aTier),
-        new String[]{"Primitive Item Output for Coke Oven",
-            "Capacity: 1 stack"});
+            new String[]{
+                    Language.transDesc("basic.hatch.primitive.item.out.0",  "Primitive Item Output for Coke Oven"),
+                    Language.transDesc("basic.hatch.primitive.item.out.1", "Capacity: 1 stack")
+            });
   }
 
   public GT_MetaTileEntity_Primitive_OutputBus(String aName, int aTier, String aDescription,

@@ -109,14 +109,15 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sps");
     b
-        .addTypeMachine("sps.name")
-        .addInfo(disableSpaceStationCreation ? "sps.info.0" : "sps.info.1")
+        .addTypeMachine("name", "Space Satellite")
+        .addInfo(disableSpaceStationCreation ? "info.0" : "info.1",
+                disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required")
         .addController()
-        .addEnergyHatch("any_case")
-        .addOtherStructurePart("sps.other.0", "any_case")
-        .addCasingInfo("sps.case")
+        .addEnergyHatch()
+        .addOtherStructurePartAny("other.0", "Communication Transmitter")
+        .addCasingInfo("case", "Space Satellite Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

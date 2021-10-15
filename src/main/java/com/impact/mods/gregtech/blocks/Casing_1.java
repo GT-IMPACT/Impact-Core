@@ -17,13 +17,14 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.CASING_SUPPLY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.CASING_UTILITY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.CASING_WIRE;
 import static com.impact.util.Utilits.BlockstackMeta;
+import static gregtech.api.util.GT_LanguageManager.addStringLocalization;
 
 import com.impact.mods.gregtech.GT_ItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
+
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 import net.minecraft.util.IIcon;
@@ -37,38 +38,23 @@ public class Casing_1 extends GT_Block_Casings_Abstract {
       Textures.BlockIcons.casingTexturePages[3][b] /** 16 */ = new GT_CopiedBlockTexture(this, 6,
           b);
     }
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".0.name", "Parallel CPU T1");  // 0   384
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".1.name", "Parallel CPU T2");  // 1   385
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".2.name", "Parallel CPU T3");  // 2   386
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".3.name", "Parallel CPU T4");  // 3   387
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".4.name", "PBE Casing");  // 4   388
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".5.name", "Engraver Casing");  // 5   389
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".6.name", "Assembler Casing");  // 6   390
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".7.name", "Centrifuge Casing");  // 7   391
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".8.name", "Electrolyzer Casing");  // 8   392
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".9.name", "Wire Factory Casing");  // 9   393
-    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name",
-        "Supply Production Casing");  // 10  394
-    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name",
-        "Utility Machine Casing");  // 11  395
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".12.name", "Brewmenter Casing");  // 12  396
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".13.name", "Arc Casing");  // 13  397
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".14.name", "Cutting Casing");  // 14  398
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".15.name", "Mixing Casing");  // 15  399
+    
+    addStringLocalization(getUnlocalizedName() + ".0.name", "Parallel CPU T1");  // 0   384
+    addStringLocalization(getUnlocalizedName() + ".1.name", "Parallel CPU T2");  // 1   385
+    addStringLocalization(getUnlocalizedName() + ".2.name", "Parallel CPU T3");  // 2   386
+    addStringLocalization(getUnlocalizedName() + ".3.name", "Parallel CPU T4");  // 3   387
+    addStringLocalization(getUnlocalizedName() + ".4.name", "PBE Casing");  // 4   388
+    addStringLocalization(getUnlocalizedName() + ".5.name", "Engraver Casing");  // 5   389
+    addStringLocalization(getUnlocalizedName() + ".6.name", "Assembler Casing");  // 6   390
+    addStringLocalization(getUnlocalizedName() + ".7.name", "Centrifuge Casing");  // 7   391
+    addStringLocalization(getUnlocalizedName() + ".8.name", "Electrolyzer Casing");  // 8   392
+    addStringLocalization(getUnlocalizedName() + ".9.name", "Wire Factory Casing");  // 9   393
+    addStringLocalization(getUnlocalizedName() + ".10.name", "Supply Production Casing");  // 10  394
+    addStringLocalization(getUnlocalizedName() + ".11.name", "Utility Machine Casing");  // 11  395
+    addStringLocalization(getUnlocalizedName() + ".12.name", "Brewmenter Casing");  // 12  396
+    addStringLocalization(getUnlocalizedName() + ".13.name", "Arc Casing");  // 13  397
+    addStringLocalization(getUnlocalizedName() + ".14.name", "Cutting Casing");  // 14  398
+    addStringLocalization(getUnlocalizedName() + ".15.name", "Mixing Casing");  // 15  399
 
     GT_ItemList.UpgradeCasingT1.set(BlockstackMeta(this, 0));
     GT_ItemList.UpgradeCasingT2.set(BlockstackMeta(this, 1));

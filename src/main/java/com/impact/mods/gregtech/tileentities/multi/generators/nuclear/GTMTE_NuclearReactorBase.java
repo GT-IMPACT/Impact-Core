@@ -69,23 +69,23 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	
 	@Override
 	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("nur" + tierReactor());
 		b
-				.addInfo("nur.info.0")
-				.addTypeMachine("nur.name")
-				.addInfo("nur.info.1")
-				.addInfo("nur.info.2")
-				.addInfo("nur.info.3")
-				.addScrew("nur.screw")
+				.addInfo("info.0", "Radiation!")
+				.addTypeSteam()
+				.addInfo("info.1", "Default Mode (default rods): consumes water produces steam")
+				.addInfo("info.2", "Default Mode (MOX rods): consumes water produces superheated steam, all rods need MOX")
+				.addInfo("info.3", "Fact Decay Mode (default or MOX rods): consumes coolant produces hot coolant, rods decays speed x5")
+				.addScrew("screw", "reactor mode")
 				.addSeparator()
 				.beginStructureBlock(0, 0, 0)
 				.addController()
-				.addNuclearRod("nur.reactor_hatch", AMOUNT_NUCLEAR_HATCHES[tierReactor() - 1])
-				.addInputHatch("in_hatch", AMOUNT_INPUT_HATCHES[tierReactor() - 1])
-				.addOutputHatch("nur.out_hatch", AMOUNT_OUTPUT_HATCHES[tierReactor() - 1])
-				.addCasingInfo("nur.case")
-				.addOtherStructurePart("nur.other.0", "nur.other.1")
-				.addOtherStructurePart("nur.other.2", "nur.other.3")
+				.addNuclearRod("nc.hatch", "Any top middle casing", AMOUNT_NUCLEAR_HATCHES[tierReactor() - 1])
+				.addInputHatch(AMOUNT_INPUT_HATCHES[tierReactor() - 1])
+				.addOutputHatch(AMOUNT_OUTPUT_HATCHES[tierReactor() - 1])
+				.addCasingInfo("case", "Radiation Proof Casing")
+				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "pipes!")
+				.addOtherStructurePart("other.2", "Machine Hull (max x1)", "other.3", "what? yes, its for AE2 provider")
 				.signAndFinalize();
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();

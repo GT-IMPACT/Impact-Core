@@ -65,22 +65,22 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("heavy_metal_cyclone");
     b
         
-        .addInfo("hmc.info.0")
-        .addTypeMachine("hmc.name")
+        .addInfo("info.0", "Centrifuge for heavy materials")
+        .addTypeMachine("name", "Heavy Metal Cyclone")
         .addSeparator()
         .addController()
-        .addEnergyHatch("hmc.hatches")
-        .addMaintenanceHatch("hmc.hatches")
-        .addInputBus("hmc.hatch.bus.in")
-        .addInputHatch("hmc.hatch.in")
-        .addOutputBus("hmc.hatches")
-        .addOutputHatch("hmc.hatches")
-        .addCasingInfo("hmc.case")
-        .addOtherStructurePart("hmc.other.0", "hmc.other.1")
-        .addOtherStructurePart("hmc.other.2", "hmc.other.3")
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addInputBus(3)
+        .addInputHatch(6)
+        .addOutputBus(1)
+        .addOutputHatch(1)
+        .addCasingInfo("case", "Cyclone Casing")
+        .addOtherStructurePart("other.0", "Cyclone Chamber Casing", "other.1", "inside structure")
+        .addOtherStructurePart("other.2", "I-Glass", "other.3", "glass for structure")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

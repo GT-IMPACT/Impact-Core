@@ -4,6 +4,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_FLUI
 import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_FLUID_FRONT;
 import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_FLUID_SIDE;
 
+import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,7 +42,7 @@ public class GTMTE_LongDistancePipelineFluid extends GTMTE_LongDistancePipelineB
 
   public GTMTE_LongDistancePipelineFluid(int aID, String aName, String aNameRegional,
       int aTier) {
-    super(aID, aName, aNameRegional, aTier, "Sends fluids over long distances");
+    super(aID, aName, aNameRegional, aTier,Language.transDesc("pipeline.fluid", "Sends fluids over long distances"));
   }
 
   public GTMTE_LongDistancePipelineFluid(String aName, int aTier, String aDescription,

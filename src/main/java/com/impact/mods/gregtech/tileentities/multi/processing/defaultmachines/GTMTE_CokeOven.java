@@ -39,16 +39,16 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
   }
 
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("coke_oven");
     b
-            .addTypeMachine("coke_oven.name")
+            .addTypeMachine("name", "Coke Oven")
             .addPollution(25)
             .addSeparator()
             .addController()
-            .addCasingInfo("coke_oven.case")
-            .addOtherStructurePart("coke_oven.hatch.bus.in", "any_case")
-            .addOtherStructurePart("coke_oven.hatch.bus.out", "any_case")
-            .addOtherStructurePart("coke_oven.hatch.out", "any_case")
+            .addCasingInfo("case", "Coke Oven Bricks")
+            .addOtherStructurePartAny("hatch.bus.in", "Primitive Input Bus")
+            .addOtherStructurePartAny("hatch.bus.out", "Primitive Output Bus")
+            .addOtherStructurePartAny("hatch.out", "Primitive Output Hatch")
             .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

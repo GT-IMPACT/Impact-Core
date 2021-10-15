@@ -74,22 +74,22 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-    b.addInfo("multi_tank.info.0")
-        .addTypeMachine("multi_tank.name")
-        .addInfo("multi_tank.info.1")
-        .addInfo("multi_tank.info.2")
-        .addInfo("multi_tank.info.3")
-        .addInfo("multi_tank.info.4")
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_tank");
+    b.addInfo("info.0", "High-Tech fluid tank that can hold up to 25 different fluids!")
+        .addTypeMachine("name", "Fluid Tank")
+        .addInfo("info.1", "Has 1/25th of the total capacity as capacity for each fluid.")
+        .addInfo("info.2", "Right-Click to the controller with a screwdriver will turn on excess voiding.")
+        .addInfo("info.3", "Fluid storage amount and running cost depends on the storage field blocks used.")
+        .addInfo("info.4", "If the integrity of Tank Storage is broken, the fluids are removed.")
         .addSeparator()
         .addSeparator()
         .beginStructureBlock(5, 9, 5)
         .addController()
-        .addOtherStructurePart("multi_tank.other.0", "multi_tank.other.1")
-        .addOtherStructurePart("multi_tank.other.2", "multi_tank.other.3")
-        .addOtherStructurePart("multi_tank.other.4", "multi_tank.other.5")
-        .addOtherStructurePart("multi_tank.other.6", "multi_tank.other.7")
-        .addInfo("multi_tank.info.5")
+        .addOtherStructurePart("other.0", "Inner 3x7x3 tube", "other.1", "Tank Storage Block")
+        .addOtherStructurePart("other.2", "Outer 5x1&9x5 Casing", "other.3", "Chemical Casing")
+        .addOtherStructurePart("other.4", "Outer 5x7x5 glass shell", "other.5", "I-Glass")
+        .addOtherStructurePart("other.6", "I/O Tank Hatch", "other.7", "Instead of any casing or glass (not angle)")
+        .addInfo("info.5", "I/O Tank Hatch for information and used EC2, OC systems")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

@@ -7,8 +7,8 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.on
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
-import static com.impact.util.Utilits.translate;
 import static gregtech.api.enums.GT_Values.RA;
+import static java.text.NumberFormat.getNumberInstance;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -19,6 +19,7 @@ import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.util.Language;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -202,17 +203,17 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_Multibloc
   public String[] getDescription() {
     final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
     b
-            .addInfo("nq2.info.0")
-            .addTypeMachine("nq1.name")
-            .addInfo(translate("nq1.info.1") + " " + NumberFormat.getNumberInstance().format(EU_PER_TICK) + translate("nq2.info.2"), true)
+            .addMultiAmpGen()
+            .addTypeGenerator()
+            .addInfo(Language.langGetEUTick(getNumberInstance().format(EU_PER_TICK)), true)
             .addSeparator()
             .addController()
-            .addDynamoHatch("any_case")
-            .addMaintenanceHatch("any_case")
-            .addInputHatch("any_case", 3)
-            .addCasingInfo("nq1.case")
-            .addOtherStructurePart("nq1.other.0", "nq1.other.1")
-            .addOtherStructurePart("nq1.other.2", "nq1.other.3")
+            .addDynamoHatch()
+            .addMaintenanceHatch()
+            .addInputHatch(3)
+            .addCasingInfo("case", "Naquadah Base Casing and I-Glass")
+            .addOtherStructurePart("other.0", "Naquadah Chamber Casing", "other.1", "inside structure")
+            .addOtherStructurePart("other.2", "Tether Core", "other.3", "for contain core Nq")
             .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

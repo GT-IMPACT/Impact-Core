@@ -60,25 +60,25 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("pyrolyse_oven");
     b
-        .addTypeMachine("pyrolyse_oven.name")
-        .addInfo("pyrolyse_oven.info.0")
-        .addInfo("pyrolyse_oven.info.1")
-        .addInfo("pyrolyse_oven.info.2")
-        .addInfo("pyrolyse_oven.info.3")
+        .addTypeMachine("name", "Pyrolyse oven")
+        .addInfo("info.0", "Converts hydrocarbons into gases, wood tar and solid fuels")
+        .addInfo("info.1", "The process emits gases throughout the entire time (60s):")
+        .addInfo("info.2", "for 7s - CO, for 14s - H\u2082, for 21s - CH\u2084, for 28s - CO\u2082")
+        .addInfo("info.3", "and 35s - solid fuels and wood tar")
         .addPollution(100)
         .addSeparator()
         .addController()
-        .addEnergyHatch("pyrolyse_oven.hatches")
-        .addMaintenanceHatch("pyrolyse_oven.hatches")
-        .addMuffler("pyrolyse_oven.hatches")
-        .addInputBus("pyrolyse_oven.hatches")
-        .addOutputBus("pyrolyse_oven.hatches")
-        .addOutputHatch("pyrolyse_oven.hatches")
-        .addCasingInfo("pyrolyse_oven.case")
-        .addOtherStructurePart("pyrolyse_oven.other.0", "pyrolyse_oven.other.1")
-        .addOtherStructurePart("pyrolyse_oven.other.2", "pyrolyse_oven.other.3")
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addMuffler()
+        .addInputBus(1)
+        .addOutputBus(1)
+        .addOutputHatch(1)
+        .addCasingInfo("case", "Solid Steel Casing")
+        .addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "Middle line")
+        .addOtherStructurePart("other.2", "Steel Frame", "other.3", "Bottom angles")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

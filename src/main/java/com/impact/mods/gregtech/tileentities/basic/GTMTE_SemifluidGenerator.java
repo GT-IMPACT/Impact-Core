@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import com.impact.util.Language;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Textures;
@@ -19,9 +20,11 @@ public class GTMTE_SemifluidGenerator
 
   public GTMTE_SemifluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
     super(aID, aName, aNameRegional, aTier, new String[]{
-        "Requires Creosote",
-        "Causes " + (int) (20 * BASE_POLLUTION * Math.pow(2, aTier - 1))
-            + " Pollution per second"});
+            Language.transDesc("basic.generator.semifluid.0", "Requires Creosote"),
+            String.format(
+                    Language.transDesc("basic.generator.semifluid.1", "Causes %s Pollution per second"),
+                    (int) (20 * BASE_POLLUTION * Math.pow(2, aTier - 1))
+            )});
     onConfigLoad();
   }
 

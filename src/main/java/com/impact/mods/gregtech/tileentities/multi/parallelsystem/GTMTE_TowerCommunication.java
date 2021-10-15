@@ -200,15 +200,15 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("ttc");
     b
-        .addTypeMachine("ttc.name")
-        .addInfo("ttc.info.0")
+        .addTypeMachine("name", "Communication Tower")
+        .addInfo("info.0", "Working radius 256 blocks")
         .addSeparator()
         .addController()
-        .addOtherStructurePart("ttc.other.0", "ttc.other.1")
-        .addOtherStructurePart("ttc.other.2", "ttc.other.3")
-        .addCasingInfo("ttc.case")
+        .addOtherStructurePart("other.0", "Communication Receiver Hatch", "other.1", "Top")
+        .addOtherStructurePart("other.2", "Any blocks", "other.3", "Arbitrary structure")
+        .addCasingInfo("case", "Tower Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

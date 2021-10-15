@@ -1,7 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.sofc;
 
 import static com.impact.loader.ItemRegistery.CeramicBlock;
-import static com.impact.util.Utilits.translate;
 
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -42,8 +41,8 @@ abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
   public final int[] EU_PER_TICK = new int[]{2048, 8192, 32768};
   public final int[] STEAM_PER_SEC = new int[]{18000, 36000, 72000};
 
-  public final String[] CASING_STRING = new String[]{"sfc.case.0", "sfc.case.1", "sfc.case.2"};
-  public final String[] CERAMIC_STRING = new String[]{"sfc.other.0.0", "sfc.other.0.1", "sfc.other.0.2"};
+  public final String[] CASING_STRING = new String[]{"Clean Stainless Steel Casing", "Stable Titanium Machine Casing", "Robust Tungstensteel Machine Casing"};
+  public final String[] CERAMIC_STRING = new String[]{"YSZ Ceramic Unit", "GDC Ceramic Unit", "LSCF Ceramic Unit"};
   public int fuelConsumption = 0;
 
   public GTMTE_SOFC(int aID, String aName, String aNameRegional) {
@@ -58,24 +57,23 @@ abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sofc" + getTier());
     b
-        .addInfo("sfc.info.0")
-        .addTypeMachine("sfc.name")
-        .addInfo("tooltip.sfc.info.1")
-        .addInfo("tooltip.sfc.info.2")
-        .addInfo(translate("sfc.info.3") + " " + EU_PER_TICK[getTier()] + translate("sfc.info.4") + "  " + (getTier() == 0 ?
-            STEAM_PER_SEC[getTier()] + " " + translate("sfc.info.5") : STEAM_PER_SEC[getTier()] + " " + translate("sfc.info.6")), true)
-        .addInfo(translate("sfc.info.7") + " " + OXYGEN_PER_SEC[getTier()] + translate("sfc.info.8"), true)
+        .addInfo("info.0", "Oxidizes gas fuels to generate electricity without polluting the environment")
+        .addTypeGenerator()
+        .addTypeSteam()
+        .addInfo("info.1", "Steam production requires the SOFC to heat up completely first")
+        .addInfo("info.2", "Additionally requires Oxygen gas")
+        .addInfo("info.3", "Outputs Energy and Steam or SH Steam")
         .addSeparator()
         .beginStructureBlock(3, 3, 5)
         .addController()
-        .addDynamoHatch("sfc.dynamo")
-        .addOtherStructurePart(CERAMIC_STRING[getTier()], "sfc.other.0.info")
-        .addOtherStructurePart("sfc.other.2", "sfc.other.3")
-        .addCasingInfo(CASING_STRING[getTier()])
-        .addMaintenanceHatch("sfc.maint")
-        .addIOHatches("sfc.iohatch")
+        .addDynamoHatch()
+        .addCasingInfo("case", CASING_STRING[getTier()])
+        .addOtherStructurePart("other.0", CERAMIC_STRING[getTier()], "other.1", "3x, Center 1x1x3")
+        .addOtherStructurePart("other.2", "Reinforced Glass", "other.3", "6x, touching the electrolyte units on the horizontal sides")
+        .addMaintenanceHatch()
+        .addIOHatches()
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

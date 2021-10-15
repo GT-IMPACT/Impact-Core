@@ -55,21 +55,21 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_macerator");
     b
-        .addInfo("mmc.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mmc.name")
+        .addTypeMachine("name", "Macerator")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputBus("any_case", 8)
-        .addOutputBus("any_case", 1)
-        .addMuffler("any_case", 1)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mmc.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputBus(8)
+        .addOutputBus(1)
+        .addMuffler()
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Maceration Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

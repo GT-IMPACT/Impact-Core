@@ -117,17 +117,17 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("psc");
     b
-        .addTypeMachine("psc.name")
+        .addTypeMachine("name", "Super Parallel Computer")
         .addSeparator()
         .addController()
-        .addEnergyHatch("psc.hatches")
-        .addMaintenanceHatch("psc.hatches")
-        .addOtherStructurePart("psc.other.0", "psc.other.1")
-        .addOtherStructurePart("psc.other.2", "psc.other.3")
-        .addOtherStructurePart("psc.other.4", "psc.other.5")
-        .addCasingInfo("psc.case")
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addOtherStructurePart("psc.other.0", "Computer Rack", "psc.other.1", "Empty Rack Casing, Right Side")
+        .addOtherStructurePart("psc.other.2", "Parallel Hatch Out", "psc.other.3", "Empty Rack Casing, Left Side")
+        .addOtherStructurePart("psc.other.4", "Empty Rack Casing", "psc.other.5", "inside")
+        .addCasingInfo("psc.case", "Computer Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

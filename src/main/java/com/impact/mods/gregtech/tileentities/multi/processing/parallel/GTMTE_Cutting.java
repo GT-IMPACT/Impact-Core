@@ -57,22 +57,22 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_cutting");
     b
-        .addInfo("mcu.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mcu.name")
+        .addTypeMachine("name", "Cutting Machine")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputBus("any_case", 16)
-        .addInputHatch("any_case", 3)
-        .addOutputBus("any_case", 1)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mcu.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputBus(16)
+        .addInputHatch(3)
+        .addOutputBus(1)
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Cutting Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

@@ -69,24 +69,24 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_utility");
     b
-        .addInfo("mut.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mut.name.0")
-        .addTypeMachine("mut.name.1")
-        .addTypeMachine("mut.name.2")
+        .addTypeMachine("name.0", "Compressor, Extractor, Canning,")
+        .addTypeMachine("name.1", "Packager, Recycler, Hammer,")
+        .addTypeMachine("name.2", "Lathe, Polarizer")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addMuffler("any_case", 1)
-        .addInputBus("any_case", 6)
-        .addOutputBus("any_case", 3)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mut.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addMuffler()
+        .addInputBus(6)
+        .addOutputBus(3)
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Utility Machine Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

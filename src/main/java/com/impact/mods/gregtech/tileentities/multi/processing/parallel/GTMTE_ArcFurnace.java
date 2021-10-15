@@ -57,25 +57,25 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
 
     @Override
     public String[] getDescription() {
-        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_furnace");
         b
-                .addInfo("maf.info.0")
+                .addSingleAnalog()
                 .addParallelInfo(1, 256)
                 .addPollution(200, 12800)
-                .addTypeMachine("maf.name")
+                .addTypeMachine("name", "Arc Furnace, Alloy Smelter")
                 .addScrew()
                 .addSeparatedBus()
                 .addSeparator()
                 .addController()
-                .addEnergyHatch("any_case", 4)
-                .addMaintenanceHatch("any_case", 1)
-                .addInputBus("any_case", 6)
-                .addOutputBus("any_case", 1)
-                .addInputHatch("any_case", 3)
-                .addOutputHatch("any_case", 1)
-                .addMuffler("any_case", 1)
-                .addParallelHatch("any_case", 1)
-                .addCasingInfo("maf.case")
+                .addEnergyHatch(4)
+                .addMaintenanceHatch()
+                .addInputBus(6)
+                .addOutputBus(1)
+                .addInputHatch(3)
+                .addOutputHatch(1)
+                .addMuffler()
+                .addParallelHatch()
+                .addCasingInfo("case", "Arc Casing")
                 .signAndFinalize();
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return b.getInformation();

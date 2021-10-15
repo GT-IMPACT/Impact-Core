@@ -59,24 +59,24 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("brewmenter");
     b
-        .addInfo("mbf.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mbf.name")
+        .addTypeMachine("name", "Brewery, Fermenter")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputBus("any_case", 3)
-        .addOutputBus("any_case", 1)
-        .addInputHatch("any_case", 3)
-        .addOutputHatch("any_case", 3)
-        .addMuffler("any_case", 1)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mbf.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputBus(3)
+        .addOutputBus(1)
+        .addInputHatch(3)
+        .addOutputHatch(3)
+        .addMuffler()
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Brewmenter Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

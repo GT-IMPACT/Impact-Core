@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,11 +20,10 @@ public class GTMTE_DebugTank extends GT_MetaTileEntity_StorageTank {
 
   public boolean OutputFluid = false;
 
-
   public GTMTE_DebugTank(int aID, String aName, String aNameRegional, int aTier) {
     super(aID, aName, aNameRegional, aTier, 3,
-        "Creative Tank for tests" +
-        "/nFill this through a Universal Cell or other Tank and get infinite fluid");
+            Language.transDesc("debug.tank", "Creative Tank for tests" +
+                    "/nFill this through a Universal Cell or other Tank and get infinite fluid"));
   }
 
   public GTMTE_DebugTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

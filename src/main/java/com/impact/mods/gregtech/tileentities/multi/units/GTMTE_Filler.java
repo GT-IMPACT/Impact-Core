@@ -96,7 +96,6 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
 		b
-				.addInfo("WIP")
 				.signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();

@@ -50,22 +50,22 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
   
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("blast_smelter");
     b
-            .addTypeMachine("blast_smelter.name")
-            .addPollution(20*getPollutionPerTick(null))
+            .addTypeMachine("name", "")
+            .addPollution(20 * getPollutionPerTick(null))
             .addSeparatedBus()
             .addSeparator()
             .addController()
-            .addEnergyHatch("blast_smelter.hatches")
-            .addMaintenanceHatch("blast_smelter.hatches")
-            .addMuffler("blast_smelter.hatches")
-            .addInputBus("blast_smelter.hatches")
-            .addOutputBus("blast_smelter.hatches")
-            .addOutputHatch("blast_smelter.hatches")
-            .addInputHatch("blast_smelter.hatches")
-            .addCasingInfo("blast_smelter.case")
-            .addOtherStructurePart("blast_smelter.other.0", "blast_smelter.other.1")
+            .addEnergyHatch()
+            .addMaintenanceHatch()
+            .addMuffler()
+            .addInputBus()
+            .addOutputBus()
+            .addOutputHatch()
+            .addInputHatch()
+            .addCasingInfo("case", "HSLA Casings")
+            .addOtherStructurePart("other.0", "Heating Coils", "other.1", "Two middle Layers, hollow")
             .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

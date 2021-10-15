@@ -5,8 +5,8 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.of
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHatchAdder;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.onElementPass;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
-import static com.impact.util.Utilits.translate;
 import static gregtech.api.enums.GT_Values.RA;
+import static java.text.NumberFormat.getNumberInstance;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -17,6 +17,7 @@ import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.util.Language;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -192,19 +193,19 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("nq1");
     b
-        .addInfo("nq2.info.0")
-        .addTypeMachine("nq1.name")
-        .addInfo(translate("nq1.info.1") + " " + NumberFormat.getNumberInstance().format(EU_PER_TICK) + translate("nq1.info.2"), true)
+        .addMultiAmpGen()
+        .addTypeGenerator()
+        .addInfo(Language.langGetEUTick(getNumberInstance().format(EU_PER_TICK)), true)
         .addSeparator()
         .addController()
-        .addDynamoHatch("any_case")
-        .addMaintenanceHatch("any_case")
-        .addInputHatch("any_case", 3)
-        .addCasingInfo("nq1.case")
-        .addOtherStructurePart("nq1.other.0", "nq1.other.1")
-        .addOtherStructurePart("nq1.other.2", "nq1.other.3")
+        .addDynamoHatch()
+        .addMaintenanceHatch()
+        .addInputHatch(3)
+        .addCasingInfo("case", "Naquadah Base Casing")
+        .addOtherStructurePart("other.0", "Naquadah Chamber Casing", "other.1", "inside structure")
+        .addOtherStructurePart("other.2", "Tether Core", "other.3", "for contain core Nq")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
@@ -217,7 +218,7 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
   public String[] getInfoData() {
 
     return new String[]{
-        "Total Output: " + EnumChatFormatting.GREEN + NumberFormat.getNumberInstance()
+        "Total Output: " + EnumChatFormatting.GREEN + getNumberInstance()
             .format(super.mEUt) + EnumChatFormatting.RESET + " EU/t",
         "Efficiency: " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F
             + EnumChatFormatting.YELLOW + " %",

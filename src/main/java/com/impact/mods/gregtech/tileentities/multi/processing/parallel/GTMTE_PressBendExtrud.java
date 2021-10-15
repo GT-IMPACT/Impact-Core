@@ -56,23 +56,23 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_pbe");
     b
-        .addInfo("mpb.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
         .addPollution(200, 12800)
-        .addTypeMachine("mpb.name")
+        .addTypeMachine("name", "Extruder, Bender, Presser")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputBus("any_case", 20)
-        .addOutputBus("any_case", 3)
-        .addMuffler("any_case", 1)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mpb.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputBus(20)
+        .addOutputBus(3)
+        .addMuffler()
+        .addParallelHatch(1)
+        .addCasingInfo("case", "PBE Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

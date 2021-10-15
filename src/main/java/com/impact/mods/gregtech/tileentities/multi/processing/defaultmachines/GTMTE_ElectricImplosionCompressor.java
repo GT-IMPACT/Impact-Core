@@ -71,23 +71,23 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("aic");
     b
-        .addInfo("aic.info.0")
-        .addTypeMachine("aic.name")
-        .addInfo("aic.info.1")
-        .addInfo("aic.info.2")
+        .addInfo("info.0", "Babah!")
+        .addTypeMachine("name", "Implosion Compressor")
+        .addInfo("info.1", "Not used TNT!!!")
+        .addInfo("info.2", "Energy consumption: (EU/t) = (NEI Recipe EU/t) * 1000")
         .addScrew()
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("aic.hatches")
-        .addMaintenanceHatch("aic.hatches")
-        .addMuffler("aic.hatches")
-        .addInputBus("aic.hatch.bus.in")
-        .addOutputBus("aic.hatch.bus.out")
-        .addCasingInfo("aic.case")
-        .addOtherStructurePart("aic.other.0", "aic.other.1")
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addMuffler()
+        .addInputBus(5)
+        .addOutputBus(3)
+        .addCasingInfo("case", "Solid Steel Machine Casing")
+        .addOtherStructurePart("other.0", "Superconductor Coil", "other.1", "inside")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

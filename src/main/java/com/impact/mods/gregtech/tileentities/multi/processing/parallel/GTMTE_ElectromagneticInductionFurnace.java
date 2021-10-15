@@ -117,26 +117,26 @@ public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_Mul
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_eif");
     b
-        .addInfo("Hey, its not EBF ha-ha!")
+        .addInfo("info.0","Hey, its not EBF ha-ha!")
         .addParallelInfo(1, 256)
-        .addTypeMachine("Electric Blast Furnace")
+        .addTypeMachine("name", "Electric Blast Furnace")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("Any casing")
-        .addMaintenanceHatch("Any casing")
-        .addMuffler("Any casing")
-        .addInputHatch("Any casing (max x1)")
-        .addOutputHatch("Any casing (max x1)")
-        .addInputBus("Any casing (max x8)")
-        .addOutputBus("Any casing (max x1)")
-        .addParallelHatch("Any casing (max x1)")
-        .addOtherStructurePart("Electromagnetic Chamber", "middle center")
-        .addOtherStructurePart("Magnetic Coil", "middle outside")
-        .addCasingInfo("Heat Proof Machine Casing")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addMuffler()
+        .addInputHatch(3)
+        .addOutputHatch(3)
+        .addInputBus(8)
+        .addOutputBus(3)
+        .addParallelHatch()
+        .addOtherStructurePart("other.0", "Electromagnetic Chamber","other.1", "middle center")
+        .addOtherStructurePart("other.2", "Magnetic Coil", "other.3", "middle outside")
+        .addCasingInfo("case", "Heat Proof Machine Casing")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {

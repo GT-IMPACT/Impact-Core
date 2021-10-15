@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.hatches;
 
+import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -29,8 +30,13 @@ public class GT_MetaTileEntity_Primitive_Hatch_Output extends GT_MetaTileEntity_
   public GT_MetaTileEntity_Primitive_Hatch_Output(int aID, String aName, String aNameRegional,
       int aTier, int aType) {
     super(aID, aName, aNameRegional, aTier, 3, new String[]{
-        "Primitive Fluid Output" + (aType == 0 ? " for Coke Oven" : " for Water Pump"),
-        "Capacity: " + 1000 + "L"});
+            Language.transDesc("", ""),
+            Language.transDesc("basic.hatch.primitive.fluid.out.0",
+                    String.format("Primitive Fluid Output %s for ", aType == 0
+                            ? Language.translate("multi.name.coke_oven","Coke Oven")
+                            : Language.translate("multi.name.water_pump","Water Pump"))
+            ),
+            Language.transDesc("basic.hatch.primitive.fluid.out.1", String.format("Capacity: %s L", 1000))});
     this.mTypeHatch = aType;
   }
 

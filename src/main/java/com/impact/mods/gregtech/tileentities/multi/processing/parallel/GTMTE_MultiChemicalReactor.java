@@ -125,22 +125,22 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_chemical_reactor");
     b
-        .addInfo("mcr.info.0")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mcr.name")
+        .addTypeMachine("name", "Chemical Reactor")
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputHatch("any_case", 16)
-        .addOutputHatch("any_case", 8)
-        .addInputBus("any_case", 8)
-        .addOutputBus("any_case", 3)
-        .addParallelHatch("any_case", 1)
-        .addOtherStructurePart("mcr.other.0", "mcr.other.1")
-        .addCasingInfo("mcr.case")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputHatch(16)
+        .addOutputHatch(8)
+        .addInputBus(8)
+        .addOutputBus(3)
+        .addParallelHatch(1)
+        .addOtherStructurePart("other.0", "PTFE Pipe Machine Casing", "mcr.other.1", "inside the hollow")
+        .addCasingInfo("case", "Chemically Inert Machine Casings")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

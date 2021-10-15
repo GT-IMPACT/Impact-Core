@@ -69,32 +69,32 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        build();
-        return new GTMTE_HugeSteamTurbine(this.mName);
+      build();
+      return new GTMTE_HugeSteamTurbine(this.mName);
     }
-
+  
     @Override
     public String[] getDescription() {
-        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-        b
-                .addInfo("htg.info.0")
-                .addTypeMachine("htg.name")
-                .addInfo("htg.info.1")
-                .addInfo("htg.info.2")
-                .addInfo("htg.info.3")
-                .addSeparator()
-                .addController()
-                .addDynamoHatch("htf.dynamo", 9)
-                .addMaintenanceHatch("any_case", 1)
-                .addInputHatch("any_case", 20)
-                .addCasingInfo("htg.case")
-                .addOtherStructurePart("htg.other.0", "htg.other.1")
-                .signAndFinalize();
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return b.getInformation();
-        } else {
-            return b.getStructureInformation();
-        }
+      final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("htg");
+      b
+          .addInfo("info.0", "Mega steam turbine!")
+          .addTypeGenerator()
+          .addInfo("info.1", "The turbine operates at 100% efficiency")
+          .addInfo("info.2", "Accepts both steam (2L = 1 EU/t)")
+          .addInfo("info.3", "and superheated steam (1L = 1 EU/t)")
+          .addSeparator()
+          .addController()
+          .addDynamoHatch("dynamo", "Any casing back side", 9)
+          .addMaintenanceHatch()
+          .addInputHatch(20)
+          .addCasingInfo("case", "Huge Turbine Casing")
+          .addOtherStructurePart("htg.other.0", "Steel GearBox Casing", "htg.other.1", "inside structure")
+          .signAndFinalize();
+      if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        return b.getInformation();
+      } else {
+        return b.getStructureInformation();
+      }
     }
 
     @Override

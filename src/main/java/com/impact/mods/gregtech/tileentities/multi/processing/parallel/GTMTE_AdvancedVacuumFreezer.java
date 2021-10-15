@@ -65,24 +65,24 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_vac_freezer");
     b
-        .addInfo("avf.info.0")
+        .addInfo("info.0", "Speed Freeez!")
         .addParallelInfo(1, 256)
-        .addInfo("avf.info.1")
-        .addInfo("avf.info.2")
-        .addTypeMachine("avf.name")
+        .addInfo("info.1", "Super Coolant is required for operation: 50 per second")
+        .addInfo("info.2", "At the output, get Hot Coolant: 25 per second")
+        .addTypeMachine("name", "Vacuum Freezer")
         .addSeparatedBus()
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case")
-        .addMaintenanceHatch("any_case")
-        .addInputHatch("any_case", 1)
-        .addOutputHatch("any_case", 1)
-        .addInputBus("any_case", 8)
-        .addOutputBus("any_case", 1)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("")
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addInputHatch(1)
+        .addOutputHatch(1)
+        .addInputBus(8)
+        .addOutputBus(1)
+        .addParallelHatch()
+        .addCasingInfo("case", "Frost Proof Machine Casing and IC2 Coolant fluid")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

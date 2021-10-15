@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.basic;
 
 import com.impact.mods.gregtech.gui.regulatechest.Container_OneStackRegulateChest;
 import com.impact.mods.gregtech.gui.regulatechest.GUI_OneStackRegulateChest;
+import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,9 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GTMTE_OneStackRegulateChest extends GT_MetaTileEntity_TieredMachineBlock {
-	
+
 	public GTMTE_OneStackRegulateChest(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 27, "This Chest stores 27 stacks by 1 type");
+		super(aID, aName, aNameRegional, aTier, 27, Language.transDesc("regulate.oneStackChest", "This Chest stores 27 stacks by 1 type"));
 	}
 	
 	public GTMTE_OneStackRegulateChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

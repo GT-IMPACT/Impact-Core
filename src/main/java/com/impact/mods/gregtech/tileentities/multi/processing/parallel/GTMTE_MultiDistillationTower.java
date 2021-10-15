@@ -124,22 +124,23 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_distill");
     b
-        .addInfo("mdt.info.0")
+        .addInfo("info.0", "OMG!? Where Bart`s Big Tower?")
+        .addSingleAnalog()
         .addParallelInfo(1, 256)
-        .addTypeMachine("mdt.name")
+        .addTypeMachine("name", "Multi Distillation Tower")
         .addSeparator()
         .addController()
-        .addEnergyHatch("any_case", 4)
-        .addMaintenanceHatch("any_case", 1)
-        .addInputHatch("any_case", 9)
-        .addOutputHatch("any_case", 66)
-        .addInputBus("any_case", 4)
-        .addOutputBus("any_case", 1)
-        .addParallelHatch("any_case", 1)
-        .addCasingInfo("mdt.case")
-        .addOtherStructurePart("mdt.other.0", "mdt.other.1")
+        .addEnergyHatch(4)
+        .addMaintenanceHatch()
+        .addInputHatch(9)
+        .addOutputHatch(66)
+        .addInputBus(4)
+        .addOutputBus(1)
+        .addParallelHatch(1)
+        .addCasingInfo("case", "Clean Stainless Steel Machine Casing")
+        .addOtherStructurePart("other.0", "Kanthal Coil", "other.1", "inside the hollow")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

@@ -1,6 +1,7 @@
 package com.impact.events;
 
 
+import com.impact.util.Language;
 import com.impact.util.Utilits;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -41,8 +42,8 @@ public class impactEvents {
   public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
     event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
     event.player.addChatMessage(new ChatComponentText(" "));
-    event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BOLD + Utilits.translate("welcome.0")));
-    event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + Utilits.translate("welcome.1") + " " + EnumChatFormatting.AQUA + "https://discord.gg/bMf2qvd"));
+    event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BOLD + Language.translate("welcome.0", "Welcome to IMPACT")));
+    event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + Language.translate("welcome.1", "Please bring comments to") + " " + EnumChatFormatting.AQUA + "https://discord.gg/bMf2qvd"));
     event.player.addChatMessage(new ChatComponentText(" "));
     event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
   }

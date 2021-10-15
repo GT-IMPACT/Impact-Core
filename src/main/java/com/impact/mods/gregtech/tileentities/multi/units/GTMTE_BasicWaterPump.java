@@ -64,9 +64,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
       final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
     return aSide == aFacing
         ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
-        aActive
-            ? Textures.BlockIcons.OVERLAY_PUMP
-            : Textures.BlockIcons.OVERLAY_PUMP)}
+            Textures.BlockIcons.OVERLAY_PUMP)}
         : new ITexture[]{INDEX_CASE};
   }
 
@@ -77,27 +75,27 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("primitive_pump");
     b
-        .addInfo("bwp.info.0")
-        .addTypeMachine("bwp.name")
-        .addInfo("bwp.info.1")
-        .addInfo("bwp.info.2")
-        .addInfo("bwp.info.3")
-        .addInfo("bwp.info.4")
+        .addInfo("info.0", "Drilling water from ground")
+        .addTypeMachine("name", "Water Pump")
+        .addInfo("info.1", "Water output depends on the hatch")
+        .addInfo("info.2", "Pump Hatch: Biome Coefficient * 1")
+        .addInfo("info.3", "ULV Output Hatch: Biome Coefficient * 2")
+        .addInfo("info.4", "LV Output Hatch: Biome Coefficient * 3")
         .addSeparator()
-        .addinfoB("bwp.info.5")
-        .addinfoBTab("bwp.info.6")
-        .addinfoBTab("bwp.info.7")
-        .addinfoBTab("bwp.info.8")
-        .addinfoBTab("bwp.info.9")
-        .addinfoBTab("bwp.info.10")
-        .addinfoBTab("bwp.info.11")
-        .addinfoBTab("bwp.info.12")
-        .addinfoBTab("bwp.info.13")
+        .addinfoB("info.5", "Biome Coefficient:")
+        .addinfoBTab("info.6", "Ocean, River - 1000 L/s")
+        .addinfoBTab("info.7", "Taiga - 175 L/s")
+        .addinfoBTab("info.8", "Jungle - 350 L/s")
+        .addinfoBTab("info.9", "Swampland - 800 L/s")
+        .addinfoBTab("info.10", "Snow, Iceland - 300 L/s")
+        .addinfoBTab("info.11", "Beach - 170 L/s")
+        .addinfoBTab("info.12", "Plans, Forest - 250 L/s")
+        .addinfoBTab("info.13", "Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
         .addSeparator()
         .addController()
-        .addCasingInfo("bwp.case")
+        .addCasingInfo("case", "Primitive Pump Deck and Wood Frame Box")
         .signAndFinalize(true);
     if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
       return b.getControlInfo();

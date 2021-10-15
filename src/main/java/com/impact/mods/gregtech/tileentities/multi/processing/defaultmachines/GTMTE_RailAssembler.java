@@ -70,15 +70,15 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("rail_assembler");
     b
-        .addTypeMachine("rail_assembler.name")
+        .addTypeMachine("name", "Rail Assembler")
         .addController()
-        .addEnergyHatch("rail_assembler.hatches")
-        .addMaintenanceHatch("rail_assembler.hatches")
-        .addInputBus("rail_assembler.hatch.bus.in")
-        .addOutputBus("rail_assembler.hatches")
-        .addCasingInfo("rail_assembler.case")
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addInputBus(5)
+        .addOutputBus(1)
+        .addCasingInfo("case", "Rail Assembler Casing")
         .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();

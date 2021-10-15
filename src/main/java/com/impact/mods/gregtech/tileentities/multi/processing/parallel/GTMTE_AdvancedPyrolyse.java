@@ -69,29 +69,28 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
   @Override
   public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
+    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_pyrolyse_oven");
     b
-        .addTypeMachine("pyrolyse_oven.name")
-        .addInfo("pyrolyse_oven.info.0")
-        .addInfo("pyrolyse_oven.info.1")
-        .addInfo("pyrolyse_oven.info.2")
-        .addInfo("pyrolyse_oven.info.3")
-        .addInfo("adv_pyrolyse_oven.info.0")
-        .addInfo("adv_pyrolyse_oven.info.1")
-        .addInfo("adv_pyrolyse_oven.info.2")
-        .addPollution(100, "adv_pyrolyse_oven.pollution")
+        .addTypeMachine(".name", "Pyrolyse oven")
+        .addInfo("info.0", "Converts hydrocarbons into gases, wood tar and solid fuels")
+        .addInfo("info.1", "The process emits gases throughout the entire time (60s):")
+        .addInfo("info.2", "for 7s - CO, for 14s - H\u2082, for 21s - CH\u2084, for 28s - CO\u2082")
+        .addInfo("info.3", "and 35s - solid fuels and wood tar")
+        .addInfo("info.4", "Input/output of products depends of energy hatch, time does not change")
+        .addInfo("info.5", "LV - 1x, MV - 2x, HV - 3x and etc")
+        .addPollution(100, "info.6", "x tier energy hatch")
         .addSeparator()
         .addController()
-        .addEnergyHatch("adv_pyrolyse_oven.hatches")
-        .addMaintenanceHatch("adv_pyrolyse_oven.hatches")
-        .addMuffler("adv_pyrolyse_oven.hatches")
-        .addInputBus("adv_pyrolyse_oven.hatches")
-        .addOutputBus("adv_pyrolyse_oven.hatches")
-        .addOutputHatch("adv_pyrolyse_oven.hatches")
-        .addCasingInfo("adv_pyrolyse_oven.case")
-        .addOtherStructurePart("pyrolyse_oven.other.0", "pyrolyse_oven.other.1")
-        .addOtherStructurePart("adv_pyrolyse_oven.other.0", "adv_pyrolyse_oven.other.1")
-        .signAndFinalize(": " + EnumChatFormatting.RED + "impact.name");
+        .addEnergyHatch()
+        .addMaintenanceHatch()
+        .addMuffler()
+        .addInputBus()
+        .addOutputBus()
+        .addOutputHatch()
+        .addCasingInfo("case", "HSLA Casing")
+        .addOtherStructurePart("other.0","Steel Pipe Casing", "other.1", "Middle line")
+        .addOtherStructurePart("adv_other.0", "HSLA Frame", "adv_other.1", "Bottom angles")
+        .signAndFinalize();
     if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       return b.getInformation();
     } else {
