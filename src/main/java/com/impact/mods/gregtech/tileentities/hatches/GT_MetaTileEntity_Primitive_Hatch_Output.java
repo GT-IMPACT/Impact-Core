@@ -27,16 +27,13 @@ public class GT_MetaTileEntity_Primitive_Hatch_Output extends GT_MetaTileEntity_
   private int mTypeHatch = 0;
 
 
-  public GT_MetaTileEntity_Primitive_Hatch_Output(int aID, String aName, String aNameRegional,
-      int aTier, int aType) {
+  public GT_MetaTileEntity_Primitive_Hatch_Output(int aID, String aName, String aNameRegional, int aTier, int aType) {
     super(aID, aName, aNameRegional, aTier, 3, new String[]{
-            Language.transDesc("", ""),
-            Language.transDesc("basic.hatch.primitive.fluid.out.0",
-                    String.format("Primitive Fluid Output %s for ", aType == 0
-                            ? Language.translate("multi.name.coke_oven","Coke Oven")
-                            : Language.translate("multi.name.water_pump","Water Pump"))
-            ),
-            Language.transDesc("basic.hatch.primitive.fluid.out.1", String.format("Capacity: %s L", 1000))});
+            String.format(Language.transDesc("basic.hatch.primitive.fluid.out.0", "Primitive Fluid Output %s for "), aType == 0
+                    ? Language.translate("multi.name.coke_oven","Coke Oven")
+                    : Language.translate("multi.name.water_pump","Water Pump")),
+            String.format(Language.transDesc("basic.hatch.primitive.fluid.out.1", "Capacity: %s L"), 1000)
+    });
     this.mTypeHatch = aType;
   }
 
@@ -59,11 +56,10 @@ public class GT_MetaTileEntity_Primitive_Hatch_Output extends GT_MetaTileEntity_
       if (this.mTypeHatch == 0) {
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][53],
             new GT_RenderedTexture(
-                aActive ? Textures.BlockIcons.OVERLAY_PIPE_OUT
-                    : Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+                    Textures.BlockIcons.OVERLAY_PIPE_OUT)};
       }
       return new ITexture[]{Textures.BlockIcons.casingTexturePages[3][23], new GT_RenderedTexture(
-          aActive ? Textures.BlockIcons.OVERLAY_PIPE_OUT : Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+              Textures.BlockIcons.OVERLAY_PIPE_OUT)};
     } else {
       if (this.mTypeHatch == 0) {
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][53]};
