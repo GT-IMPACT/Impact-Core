@@ -85,6 +85,9 @@ tile.impact_coal.10.name=Double Compressed Coal
 tile.impact_coal.11.name=Triple Compressed Coal
 tile.impact_coal.12.name=Quadruple Compressed Coal
 
+tile.impact_matrix_system.name=Matrix Particles Reflector
+tile.impact_matrix_transducer.name=Matrix Transducer
+
 #MetaItems.00
 item.impact_item.0.name=BarnardaE Stone Dust
 item.impact_item.1.name=BarnardaF Stone Dust

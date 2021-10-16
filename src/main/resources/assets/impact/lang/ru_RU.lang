@@ -84,6 +84,9 @@ tile.impact_coal.10.name=Дважды Сжатый Уголь
 tile.impact_coal.11.name=Трижды Сжатый Уголь
 tile.impact_coal.12.name=Четырехкратно Сжатый Уголь
 
+tile.impact_matrix_system.name=Отражатель Матричных Частиц
+tile.impact_matrix_transducer.name=Матричный Преобразователь
+
 #MetaItems.00
 item.impact_item.0.name=Каменная Пыль БарнардаE 
 item.impact_item.1.name=Каменная Пыль БарнардаF 
