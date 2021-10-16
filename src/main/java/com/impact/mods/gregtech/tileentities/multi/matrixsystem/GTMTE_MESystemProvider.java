@@ -106,13 +106,18 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                     private final IStructureDefinition<GTMTE_MESystemProvider> definition =
                             StructureDefinition.<GTMTE_MESystemProvider>builder()
                                     .addShape("main", new String[][]{
-                                            {"AA AA", "AB~BA", "AA AA"},
-                                            {"ABBBA", "D   D", "ABBBA"},
-                                            {"AA AA", "ABBBA", "AA AA"},
+                                            {"ADDDA ","ADDDA ","ADDDA ","AAAAA "},
+                                            {"ADDDA ","AFEFAA","AFEFA~","AAAAAA"},
+                                            {"ADDDA ","AFEFAA","AFEFAA","AAAAAA"},
+                                            {"ADDDA ","ADDDA ","ADDDA ","AAAAA "}
                                     })
                                     .addElement('A', ofBlock(CASING, CASING_META))
                                     .addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
                                     .addElement('D', ofBlock(ItemRegistery.IGlassBlock))
+                                    .addElement('E', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem(
+                                            "appliedenergistics2", "tile.BlockCraftingStorage", 1L, 0).getItem()), 0))
+                                    .addElement('F', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem(
+                                            "appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0).getItem()), 1))
                                     .build();
                     private final String[] desc = new String[]{
                             RED + "Impact Details:",
@@ -124,7 +129,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                         IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
                         definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
                                 base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                                2, 1, 0, hintsOnly);
+                                5, 2, 1, hintsOnly);
                     }
 
                     @Override
