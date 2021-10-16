@@ -211,7 +211,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
                     if (currentTE.getMetaTileEntity() instanceof GTMTE_MPStabilizer) {
                         mMPStabilizer = (GTMTE_MPStabilizer) currentTE.getMetaTileEntity();
                         checkStabilizer = false;
-                        if (currentTE.isActive()) {
+                        if (currentTE.isActive() && mMPStabilizer.mMPSummary < 100_000) {
                             Random random = new Random();
                             mMPGenerate = random.nextInt(200) * mPeakBeamMP;
                             Utilits.sendChatByTE(iAm, "" + mMPGenerate);

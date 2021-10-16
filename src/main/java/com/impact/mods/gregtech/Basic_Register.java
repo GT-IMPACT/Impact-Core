@@ -6,6 +6,8 @@ import static com.impact.mods.gregtech.GT_ItemList.*;
 import com.impact.mods.gregtech.tileentities.basic.*;
 import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_AE_Connector;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_Hatch_MESystemMPChamber;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Debug;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
@@ -15,7 +17,6 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSat
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.*;
@@ -283,8 +284,9 @@ public class Basic_Register {
 			'W', OrePrefixes.cableGt01.get(Materials.Platinum)}).getStackForm(1L));
 
     AE_Hatch_Connector.set(new GTMTE_AE_Connector(ID2++, "impact.basic.meconnector", "ME Connector").getStackForm(1L));
+    MP_Hatch_Chamber.set(new GTMTE_Hatch_MESystemMPChamber(ID2++).getStackForm(1L));
 
-    INFO("Last ID Basic_Register.java: " + ID2);//14587
+    INFO("Last ID Basic_Register.java: " + ID2);
 
     DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
         "impact.basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts",

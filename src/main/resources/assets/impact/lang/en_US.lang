@@ -337,6 +337,9 @@ item.impact_item2.191.name=Orb Housing MK II
 item.impact_item2.192.name=RTRM Graphene Foil
 item.impact_item2.193.name=Polymer-Graphene Foil
 
+item.impact_item3.0.name=Empty Portable Cell with Matrix Particles
+item.impact_item3.1.name=Full Portable Cell with Matrix Particles
+
 item.impact_WoodBrickFormTool.name=Wooden Brick Form
 
 item.impact_fake.0.name=Any MV Circuit

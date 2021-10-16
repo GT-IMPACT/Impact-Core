@@ -78,7 +78,7 @@ public enum GT_ItemList implements IItemContainer {
 
   Nuclear_Hatch_Rod, Boxinator_Hatch_Input, BusHatch_Input,
 
-  AE_Hatch_Connector,
+  AE_Hatch_Connector, MP_Hatch_Chamber,
 
   //MULTI
   Machine_CokeOven, Machine_Multi_Farm, Multi_Tank, Single_Tank, SOFC_Low, SOFC_Medium, SOFC_Huge,

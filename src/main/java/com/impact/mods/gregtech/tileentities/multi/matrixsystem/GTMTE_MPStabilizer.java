@@ -170,6 +170,9 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
         super.onPostTick(iAm, aTick);
 
         if (iAm.isServerSide() && aTick % 20 * 5 == 0) {
+
+            if (!iAm.isActive()) mMPSummary = 0;
+
             final Vector3ic forgeDirection = new Vector3i(
                     ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
                     ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
@@ -205,8 +208,8 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
                             mMPContainment = (GTMTE_MPContainment) currentTE.getMetaTileEntity();
                             mCheckContainer = false;
                             if (currentTE.isActive()) {
-                                if (mMPSummary > 90_000) {
-                                    this.mEUt = -((int) GT_Values.V[4] * 2);
+                                if (mMPSummary >= 100_000) {
+                                    this.mEUt = -((int) GT_Values.V[4] / 4);
                                 }
                                 if (mMPContainment.mMPStable <= 99_900) {
                                     mMPContainment.setMP(1000);

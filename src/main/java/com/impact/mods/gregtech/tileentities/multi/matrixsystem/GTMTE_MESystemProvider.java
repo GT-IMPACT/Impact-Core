@@ -6,14 +6,12 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.impact.common.item.Core_Items3;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.hatches.GTMTE_AE_Connector;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -57,6 +55,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
     public List<TileCraftingStorageTile> AE_CPU_CRAFT = new ArrayList<>();
 
     private final List<GTMTE_AE_Connector> aeConnectors = new ArrayList<>();
+    private final List<GTMTE_Hatch_MESystemMPChamber> mpChambers = new ArrayList<>();
 
     public int mSpeedUp = 0;
     public int mMatrixParticlesSummary = 0;
@@ -229,19 +228,13 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                 aeConnectors.get(0).getBaseMetaTileEntity().setActive(checker == 4);
             }
 
-            if (mInputBusses.size() > 0) {
-                if (mInputBusses.get(0).mInventory.length > 0) {
-                    for (ItemStack is : mInputBusses.get(0).mInventory) {
-                        if (GT_Utility.areStacksEqual(is, Core_Items3.getInstance().get(1, 1))) {
-                            amount += is.stackSize;
-                        }
-                    }
-                }
-                for (int i = 0; i < amount; i++) {
-                    if (mMatrixParticlesSummary <= 99_900 && depleteInput(Core_Items3.getInstance().get(1, 1))) {
+            if (mpChambers.size() > 0) {
+                GTMTE_Hatch_MESystemMPChamber ch = mpChambers.get(0);
+                if (ch.getMPSummary() >= 1000) {
+                    if ((mMatrixParticlesSummary + 1000) <= 99_900) {
                         mMatrixParticlesSummary += 1000;
-                        addOutput(Core_Items3.getInstance().get(0, 1));
-                    } else break;
+                        ch.subMPSummary(1000);
+                    }
                 }
             }
         }
@@ -250,6 +243,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
         aeConnectors.clear();
+        mpChambers.clear();
         AE_CPU_UNIT.clear();
         AE_CPU_CRAFT.clear();
         mSpeedUp = 1;
@@ -276,6 +270,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                 if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
                         && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                         && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+                        && !addMPChambers(currentTE, CASING_TEXTURE_ID)
                         && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                     if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                             && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
@@ -331,6 +326,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
                             && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
+                            && !addMPChambers(currentTE, CASING_TEXTURE_ID)
                             && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
                         if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
                                 && (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
@@ -345,6 +341,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
         if (AE_CPU_UNIT.size() != 8) formationChecklist = false;
         if (AE_CPU_CRAFT.size() != 4) formationChecklist = false;
         if (aeConnectors.size() != 1) formationChecklist = false;
+        if (mpChambers.size() != 1) formationChecklist = false;
 
         for (TileCraftingTile te : AE_CPU_UNIT) {
             try {
@@ -378,6 +375,22 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
             } else if (aMetaTileEntity instanceof GTMTE_AE_Connector) {
                 ((GTMTE_AE_Connector) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return aeConnectors.add(((GTMTE_AE_Connector) aMetaTileEntity));
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public boolean addMPChambers(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        } else {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity == null) {
+                return false;
+            } else if (aMetaTileEntity instanceof GTMTE_Hatch_MESystemMPChamber) {
+                ((GTMTE_Hatch_MESystemMPChamber) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return mpChambers.add(((GTMTE_Hatch_MESystemMPChamber) aMetaTileEntity));
             } else {
                 return false;
             }

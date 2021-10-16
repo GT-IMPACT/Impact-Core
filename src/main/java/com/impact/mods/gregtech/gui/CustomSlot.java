@@ -9,10 +9,11 @@ public class CustomSlot extends Slot {
 
   public CustomSlot(IInventory inventory, int id, int x, int y, int stackLimit) {
     super(inventory, id, x, y);
+    mMaxStacksize = stackLimit;
   }
 
   @Override
   public int getSlotStackLimit() {
-    return 1;
+    return mMaxStacksize;
   }
 }

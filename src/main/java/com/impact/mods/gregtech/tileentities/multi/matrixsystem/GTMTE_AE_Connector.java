@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.hatches;
+package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;

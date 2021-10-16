@@ -151,35 +151,39 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
 
-        if (iAm.isServerSide() && iAm.isActive() && aTick % 20 == 0) {
-            mMPStable = Math.min(mMPStable, 100_000);
-            int amount = 0;
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                if (bus.mInventory.length > 0) {
-                    for (ItemStack is : bus.mInventory) {
-                        if (GT_Utility.areStacksEqual(is, Core_Items3.getInstance().get(0, 1))) {
-                            amount += is.stackSize;
+        if (iAm.isServerSide() && aTick % 20 == 0) {
+
+            if (!iAm.isActive()) mMPStable = 0;
+
+            if (iAm.isActive()) {
+                mMPStable = Math.min(mMPStable, 100_000);
+                int amount = 0;
+                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                    if (bus.mInventory.length > 0) {
+                        for (ItemStack is : bus.mInventory) {
+                            if (GT_Utility.areStacksEqual(is, Core_Items3.getInstance().get(0, 1))) {
+                                amount += is.stackSize;
+                            }
                         }
                     }
                 }
-            }
-            for (int i = 0; i < amount; i++) {
-                if (mMPStable >= 1000 && depleteInput(Core_Items3.getInstance().get(0, 1))) {
-                    mMPStable -= 1000;
-                    addOutput(Core_Items3.getInstance().get(1, 1));
-                    Vector3ic core = vectors.get(0);
+                for (int i = 0; i < amount; i++) {
+                    if (mMPStable >= 1000 && depleteInput(Core_Items3.getInstance().get(0, 1))) {
+                        mMPStable -= 1000;
+                        addOutput(Core_Items3.getInstance().get(1, 1));
+                        Vector3ic core = vectors.get(0);
 
-                    final Vector3ic forgeDirection = new Vector3i(
-                            ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
-                            ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
-                            ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
-                    );
-                    final Vector3ic offset = rotateOffsetVector(forgeDirection, -1, 0, -2);
-                    impact.proxy.nodeBolt(iAm.getWorld(), core.x(), core.y(), core.z(),
-                            offset.x(), offset.y(), offset.z(), 60, 10.0F, 1);
-                } else break;
+                        final Vector3ic forgeDirection = new Vector3i(
+                                ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
+                                ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
+                                ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
+                        );
+                        final Vector3ic offset = rotateOffsetVector(forgeDirection, -1, 0, -2);
+                        impact.proxy.nodeBolt(iAm.getWorld(), core.x(), core.y(), core.z(),
+                                offset.x(), offset.y(), offset.z(), 60, 10.0F, 1);
+                    } else break;
+                }
             }
-//
         }
     }
 
