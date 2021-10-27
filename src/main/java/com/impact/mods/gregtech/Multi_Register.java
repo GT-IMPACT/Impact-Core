@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech;
 
+import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator;
@@ -200,6 +201,8 @@ public class Multi_Register {
                 new GTMTE_MESystemProvider(ID++, "impact.multis.mesystemprovider",
                         "ME System Provider").getStackForm(1));
 
+
+        Wind_Generator.set(new GTMTE_Wind_Generator(ID++, "Wind Generator").getStackForm(1));
 
         System.out.println("Multi_Register.java | Last ID: " + ID);
     }

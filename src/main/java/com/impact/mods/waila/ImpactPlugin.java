@@ -5,6 +5,7 @@ import appeng.tile.crafting.TileCraftingTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
+import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
@@ -23,6 +24,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import lombok.SneakyThrows;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -80,8 +82,14 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
         final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch ? ((GT_MetaTileEntity_Hatch) tMeta) : null;
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
+        final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
 
         if (tMeta != null) {
+
+            if (wind_generator != null) {
+                currenttip.add("Generation: " + tag.getInteger("wind_generator.mOutputSalary") + "EU/t");
+                currenttip.add("Capacity: " + GT_Utility.formatNumbers(tag.getInteger("wind_generator.mCapacity")) + " / 1,000,000 EU");
+            }
 
             if (meSystemProvider != null) {
                 currenttip.add("Acceleration ME CPU and OC: " + tag.getInteger("mSpeedUp"));
@@ -256,8 +264,14 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_MPContainment tMatrixContainment = tMeta instanceof GTMTE_MPContainment ? ((GTMTE_MPContainment) tMeta) : null;
         final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch ? ((GT_MetaTileEntity_Hatch) tMeta) : null;
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
+        final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
 
         if (tMeta != null) {
+
+            if (wind_generator != null) {
+                tag.setInteger("wind_generator.mOutputSalary", wind_generator.mOutputSalary);
+                tag.setInteger("wind_generator.mCapacity", wind_generator.mCapacity);
+            }
 
             if (meSystemProvider != null) {
                 tag.setInteger("mSpeedUp", meSystemProvider.mSpeedUp);

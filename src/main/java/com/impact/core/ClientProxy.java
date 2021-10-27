@@ -9,10 +9,12 @@ import com.impact.client.render.fx.FXBeam;
 import com.impact.client.render.fx.FXBeamBore;
 import com.impact.client.render.fx.FXBeamWand;
 import com.impact.client.render.fx.FXLightningBolt;
+import com.impact.client.render.tesr.TESR_WindMill;
 import com.impact.common.block.QuantumStuffRender;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.te.TE_NqTether;
 import com.impact.common.te.TE_SpaceElevatorTether;
+import com.impact.common.te.TE_WindMill;
 import com.impact.common.te.TilePlacedItem;
 import com.impact.events.ClientEvent;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -44,6 +46,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
         ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SpaceElevatorTether());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePlacedItem.class, new PlacedItemRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TE_WindMill.class, new TESR_WindMill());
         register_event(new ClientEvent());
     }
 

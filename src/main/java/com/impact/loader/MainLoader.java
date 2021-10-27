@@ -6,6 +6,7 @@ import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
 import com.impact.common.te.TE_NqTether;
 import com.impact.common.te.TE_SpaceElevatorTether;
+import com.impact.common.te.TE_WindMill;
 import com.impact.common.te.TilePlacedItem;
 import com.impact.impact;
 import com.impact.mods.asp.ASP;
@@ -114,6 +115,9 @@ public class MainLoader {
         FakeCircuits.getInstance().registerItem();
         INFO("[preInit] Fake Circuits - Loaded");
 
+        KineticRotors.getInstance().registerItem();
+        INFO("[preInit] Kinetic Rotors - Loaded");
+
         registerOreDictNames();
         INFO("[preInit] Meta Items OreDict List - Loaded");
 
@@ -145,6 +149,7 @@ public class MainLoader {
         GameRegistry.registerTileEntity(TE_SpaceElevatorTether.class, "space_elevator_tether");
         GameRegistry.registerTileEntity(TE_NqTether.class, "nq_tether");
         GameRegistry.registerTileEntity(TilePlacedItem.class, "TilePlacedItem");
+        GameRegistry.registerTileEntity(TE_WindMill.class, "TileWindMill");
 
         GTScanner.preInit();
     }

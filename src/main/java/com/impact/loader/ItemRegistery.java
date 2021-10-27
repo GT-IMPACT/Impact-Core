@@ -49,6 +49,7 @@ public class ItemRegistery {
   public static Block MarsStone;
   public static Block placedItem;
   public static Block MPSystem, MPTransducer;
+  public static Block Wind_rotor;
 
   public static void run() {
     //Blocks
@@ -161,6 +162,7 @@ public class ItemRegistery {
     placedItem = new PlacedItem();
     MPSystem = Block_MatrixSystem.registerBlock();
     MPTransducer = Block_MatrixTransducer.registerBlock();
+    Wind_rotor = Block_Wind.registerBlock();
   }
 
   public static void NEIHide() {

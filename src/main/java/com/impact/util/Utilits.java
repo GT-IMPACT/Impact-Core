@@ -288,4 +288,8 @@ public class Utilits {
         aPlayer.openGui(Refstrings.MODID, idGui, igt.getWorld(), igt.getXCoord(), igt.getYCoord(), igt.getZCoord());
     }
 
+    public static int invertNumber(int num, int max) {
+        if (num > max) return 0;
+        return max - num;
+    }
 }

@@ -1001,17 +1001,17 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     int aTier = 0;
     for (GT_MetaTileEntity_Hatch_Energy tEHatch : mEnergyHatches) {
       if (isValidMetaTileEntity(tEHatch)) {
-        aTier = tEHatch.mTier;
+        if (aTier < tEHatch.mTier) aTier = tEHatch.mTier;
       }
     }
     for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesTT) {
       if (isValidMetaTileEntity(tEHatch)) {
-        aTier = tEHatch.mTier;
+        if (aTier < tEHatch.mTier) aTier = tEHatch.mTier;
       }
     }
     for (GT_MetaTileEntity_Hatch_EnergyTunnel tEHatch : mEnergyTunnelsTT) {
       if (isValidMetaTileEntity(tEHatch)) {
-        aTier = tEHatch.mTier;
+        if (aTier < tEHatch.mTier) aTier = tEHatch.mTier;
       }
     }
     return aTier;

@@ -113,6 +113,8 @@ public enum GT_ItemList implements IItemContainer {
 
   Parametric_Diffuser, Matrix_Stabilizer, Matrix_Containment, ME_System_Provider,
 
+  Wind_Generator,
+
   end;
   private ItemStack mStack;
   private boolean mHasNotBeenSet = true;
