@@ -309,7 +309,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     if (this.mInputBusses.size() > 8) {
       formationChecklist = false;
     }
-    if (this.mInputHatches.size() > 1) {
+    if (this.mInputHatches.size() > 3) {
       formationChecklist = false;
     }
     if (this.mOutputBusses.size() > 3) {
