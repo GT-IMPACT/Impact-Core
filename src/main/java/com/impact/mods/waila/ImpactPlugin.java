@@ -5,6 +5,7 @@ import appeng.tile.crafting.TileCraftingTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
@@ -83,11 +84,16 @@ public class ImpactPlugin extends PluginBase {
         final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch ? ((GT_MetaTileEntity_Hatch) tMeta) : null;
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
+        final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
 
         if (tMeta != null) {
 
+            if (solar != null) {
+                currenttip.add("Generation: " + tag.getInteger("solar.mOutputSalary") + "EU/t");
+            }
+
             if (wind_generator != null) {
-                currenttip.add("Generation: " + tag.getInteger("wind_generator.mOutputSalary") + "EU/t");
+                currenttip.add("Generation: " + GT_Utility.formatNumbers(tag.getInteger("wind_generator.mOutputSalary")) + "EU/t");
                 currenttip.add("Capacity: " + GT_Utility.formatNumbers(tag.getInteger("wind_generator.mCapacity")) + " / 1,000,000 EU");
             }
 
@@ -265,8 +271,13 @@ public class ImpactPlugin extends PluginBase {
         final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch ? ((GT_MetaTileEntity_Hatch) tMeta) : null;
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
+        final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
 
         if (tMeta != null) {
+
+            if (solar != null) {
+                tag.setInteger("solar.mOutputSalary", (int) solar.maxEUOutput());
+            }
 
             if (wind_generator != null) {
                 tag.setInteger("wind_generator.mOutputSalary", wind_generator.mOutputSalary);

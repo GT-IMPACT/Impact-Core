@@ -2,6 +2,8 @@ package com.impact.mods.asp.common.te;
 
 import com.impact.mods.asp.common.ContainerAdvSolarPanel;
 import galaxyspace.core.configs.GSConfigDimensions;
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
@@ -21,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -132,6 +135,15 @@ public class TileEntitySolarPanel extends TileEntityBase implements IEnergyTile,
 
     }
 
+    private boolean toGTSolar() {
+        int meta = 14595 + solarType - 1;
+        worldObj.setBlock(xCoord, yCoord, zCoord, GregTech_API.sBlockMachines,
+                GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType(), 2);
+        TileEntity tile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+        ((IGregTechTileEntity) tile).setInitialValuesAsNBT(null, (short) meta);
+        return true;
+    }
+
     public void updateEntity() {
         super.updateEntity();
         if (!this.initialized && this.worldObj != null) {
@@ -146,6 +158,8 @@ public class TileEntitySolarPanel extends TileEntityBase implements IEnergyTile,
                 this.onUnloaded();
                 this.intialize();
             }
+
+            if (toGTSolar()) return;
 
             this.gainFuel();
             if (this.generating > 0) {

@@ -286,6 +286,16 @@ public class Basic_Register {
     AE_Hatch_Connector.set(new GTMTE_AE_Connector(ID2++, "impact.basic.meconnector", "ME Connector").getStackForm(1L));
     MP_Hatch_Chamber.set(new GTMTE_Hatch_MESystemMPChamber(ID2++).getStackForm(1L));
 
+    Solar_ULV.set(new GTMTE_Solar(ID2++, "ULV Solar Panel", 0).getStackForm(1L));
+    Solar_LV.set(new GTMTE_Solar(ID2++, "LV Solar Panel", 1).getStackForm(1L));
+    Solar_MV.set(new GTMTE_Solar(ID2++, "MV Solar Panel", 2).getStackForm(1L));
+    Solar_HV.set(new GTMTE_Solar(ID2++, "HV Solar Panel", 3).getStackForm(1L));
+    Solar_EV.set(new GTMTE_Solar(ID2++, "EV Solar Panel", 4).getStackForm(1L));
+    Solar_IV.set(new GTMTE_Solar(ID2++, "IV Solar Panel", 5).getStackForm(1L));
+    Solar_LuV.set(new GTMTE_Solar(ID2++, "LuV Solar Panel", 6).getStackForm(1L));
+    Solar_ZPM.set(new GTMTE_Solar(ID2++, "ZPM Solar Panel", 7).getStackForm(1L));
+    Solar_UV.set(new GTMTE_Solar(ID2++, "UV Solar Panel", 8).getStackForm(1L));
+
     INFO("Last ID Basic_Register.java: " + ID2);
 
     DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
