@@ -57,13 +57,15 @@ public class ClientEvent {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onKeyInput(InputEvent.KeyInputEvent event) {
-		if (KeyBindings.placeItem.isPressed()) {
-			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-			WorldClient world = Minecraft.getMinecraft().theWorld;
-			MovingObjectPosition mop = Utilits.raytraceFromEntity(world, player, 4.5D);
-			if (mop != null) {
-				ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketPlacedItem(
-						(byte) mop.sideHit, mop.blockX, mop.blockY, mop.blockZ, player));
+		if (Config.placedItems) {
+			if (KeyBindings.placeItem.isPressed()) {
+				EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+				WorldClient world = Minecraft.getMinecraft().theWorld;
+				MovingObjectPosition mop = Utilits.raytraceFromEntity(world, player, 4.5D);
+				if (mop != null) {
+					ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketPlacedItem(
+							(byte) mop.sideHit, mop.blockX, mop.blockY, mop.blockZ, player));
+				}
 			}
 		}
 	}

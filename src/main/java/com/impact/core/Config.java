@@ -20,6 +20,7 @@ public class Config {
   public static boolean DisableTheEnd;
   public static boolean downloadOnlyOnce;
   public static boolean mainMenu;
+  public static boolean placedItems;
 
   public Config(File file) {
     if (!loadConfig) {
@@ -72,6 +73,11 @@ public class Config {
       cfg = config.get("GENERAL", "Enable Impact Main Menu", true);
       cfg.comment = "Enable Impact Main Menu. [Default: true]";
       mainMenu = cfg.getBoolean(true);
+      General.add(cfg.getName());
+
+      cfg = config.get("GENERAL", "Enable Impact Placed Items", true);
+      cfg.comment = "Enable Impact Placed Items. [Default: true]";
+      placedItems = cfg.getBoolean(true);
       General.add(cfg.getName());
 
       //DEBUG
