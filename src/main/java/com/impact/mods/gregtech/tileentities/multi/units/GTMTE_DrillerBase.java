@@ -566,7 +566,7 @@ public abstract class GTMTE_DrillerBase extends GT_MetaTileEntity_MultiBlockBase
     if (this.mEnergyHatches.size() > 4) {
       formationChecklist = false;
     }
-    if (this.mOutputHatches.size() > 1) {
+    if (this.mOutputHatches.size() > 4) {
       formationChecklist = false;
     }
     if (this.mInputBusses.size() > 1) {
@@ -580,7 +580,7 @@ public abstract class GTMTE_DrillerBase extends GT_MetaTileEntity_MultiBlockBase
     int Tier = 0;
     for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
       if (isValidMetaTileEntity(tHatch)) {
-        Tier = tHatch.mTier;
+        Tier = Tier > tHatch.mTier ? tHatch.mTier : Tier;
       }
     }
     return Tier;
@@ -590,7 +590,7 @@ public abstract class GTMTE_DrillerBase extends GT_MetaTileEntity_MultiBlockBase
     int Tier = 0;
     for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
       if (isValidMetaTileEntity(tHatch)) {
-        Tier = tHatch.mTier;
+        Tier = Tier > tHatch.mTier ? tHatch.mTier : Tier;
       }
     }
     return Tier;
