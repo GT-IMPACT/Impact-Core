@@ -655,7 +655,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             }
           }
           if (found_Recipe) {
-            if (calcEfficiency(nominalV, tRecipe, tOut)) return false;
+            calcEfficiency(nominalV, tRecipe, tOut);
             this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
           
             this.updateSlots();
@@ -720,7 +720,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             }
           }
           if (found_Recipe) {
-            if (calcEfficiency(nominalV, tRecipe, tOut)) return false;
+            calcEfficiency(nominalV, tRecipe, tOut);
             this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
 
             this.updateSlots();
@@ -799,7 +799,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             }
           }
           if (found_Recipe) {
-            if (calcEfficiency(nominalV, tRecipe, tOut)) return false;
+            calcEfficiency(nominalV, tRecipe, tOut);
             this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
 
             this.updateSlots();
@@ -866,7 +866,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
             }
           }
           if (found_Recipe) {
-            if (calcEfficiency(nominalV, tRecipe, tOut)) return false;
+            calcEfficiency(nominalV, tRecipe, tOut);
             this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
 
             this.updateSlots();
@@ -878,7 +878,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
     return false;
   }
 
-  private boolean calcEfficiency(long nominalV, GT_Recipe tRecipe, ItemStack[] tOut) {
+  private void calcEfficiency(long nominalV, GT_Recipe tRecipe, ItemStack[] tOut) {
     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
     this.mEfficiencyIncrease = 10000;
     long actualEUT = (long) (tRecipe.mEUt) * mCheckParallelCurrent;
@@ -895,12 +895,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV,
               this);
     }
-    if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return true;
+    if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return;
 
     this.mEUt = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
     this.mMaxProgresstime = calcTimeParallel(this);
-    this.mOutputItems = resizeItemStackSizeChance(tOut, tRecipe, this);
-    return false;
+    mOutputItems = resizeItemStackSizeChance(tOut, tRecipe, this);
   }
 
   public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {

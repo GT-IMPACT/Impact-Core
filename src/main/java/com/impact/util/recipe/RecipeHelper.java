@@ -1,7 +1,6 @@
 package com.impact.util.recipe;
 
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.multis.WorldProperties;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
@@ -50,18 +49,13 @@ public class RecipeHelper {
             tmp = overStacks.toArray(tmp);
             tOut = ArrayUtils.addAll(tOut, tmp);
         }
-        List<ItemStack> tSList = new ArrayList<>();
-        for (ItemStack tS : tOut) {
-            if (tS.stackSize > 0) {
-                tSList.add(tS);
-            }
-        }
-        return tSList.toArray(new ItemStack[tSList.size()]);
+        return removeNull(tOut).clone();
     }
 
     public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase base) {
         return resizeItemStackSizeChance(tOut, tRecipe, base, true);
     }
+
     public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase base, boolean chance) {
         if (chance) {
             for (int f = 0; f < tOut.length; f++) {
@@ -74,15 +68,25 @@ public class RecipeHelper {
                 }
             }
         }
-        tOut = clean(tOut);
-        resizeItemStackSize(tOut);
-        return tOut;
+        return resizeItemStackSize(tOut);
     }
 
-    public static ItemStack[] clean(final ItemStack[] v) {
-        List<ItemStack> list = new ArrayList<>(Arrays.asList(v));
-        list.removeAll(Collections.singleton(null));
-        return list.toArray(new ItemStack[list.size()]);
+    public static ItemStack[] removeNull(ItemStack[] in) {
+        int countNull = 0;
+        for (ItemStack stack : in) {
+            if (stack == null) {
+                countNull++;
+            }
+        }
+        ItemStack[] on = new ItemStack[in.length - countNull];
+        for (int i = 0, j = 0; i < in.length; i++) {
+            if (in[i] != null) {
+                on[j] = in[i];
+                j++;
+            }
+        }
+        return on;
     }
+
 
 }

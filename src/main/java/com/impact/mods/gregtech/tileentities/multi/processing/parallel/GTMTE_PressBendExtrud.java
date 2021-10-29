@@ -171,7 +171,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
   @Override
   public int getPollutionPerTick(ItemStack aStack) {
-    return 50 * mCheckParallelCurrent;
+    return 200;
   }
 
   public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,

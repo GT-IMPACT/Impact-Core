@@ -278,6 +278,6 @@ public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_Mul
 
   @Override
   public int getPollutionPerTick(ItemStack aStack) {
-    return 50 * mCheckParallelCurrent;
+    return 50;
   }
 }
