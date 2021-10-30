@@ -295,6 +295,8 @@ public class Basic_Register {
     Solar_LuV.set(new GTMTE_Solar(ID2++, "LuV Solar Panel", 6).getStackForm(1L));
     Solar_ZPM.set(new GTMTE_Solar(ID2++, "ZPM Solar Panel", 7).getStackForm(1L));
     Solar_UV.set(new GTMTE_Solar(ID2++, "UV Solar Panel", 8).getStackForm(1L));
+  
+    Volumetric_Configurator.set(new GTMTE_VolumetricConfigurator(ID2++, "Volumetric Configurator").getStackForm(1L));
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
