@@ -1,6 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
 import static gregtech.api.enums.GT_Values.VN;
+import static net.minecraftforge.common.BiomeDictionary.Type.OCEAN;
+import static net.minecraftforge.common.BiomeDictionary.Type.WATER;
 
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.ItemList;
@@ -13,6 +15,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.BiomeDictionary;
 import org.lwjgl.input.Keyboard;
 
 public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
@@ -36,9 +39,10 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 		.addTypeMachine("ewp.name", "Water Pump")
         .addInfo("ewp.info.1", "Energy Hatch and Output Hatch must be of the same Tier")
         .addInfo("ewp.info.2", "When drilling it is necessary to consider the Biome Coefficient and tier Hatches")
+        .addInfo("ewp.info.3", "Drilling Salt Water in Ocean")
         .addSeparator()
         .addinfoB("bwp.info.5", "Biome Coefficient:")
-        .addinfoBTab("bwp.info.6", "Ocean, River - 1000 L/s")
+        .addinfoBTab("bwp.info.6", "River - 1000 L/s")
         .addinfoBTab("bwp.info.7", "Taiga - 175 L/s")
         .addinfoBTab("bwp.info.8", "Jungle - 350 L/s")
         .addinfoBTab("bwp.info.9", "Swampland - 800 L/s")
@@ -46,6 +50,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
         .addinfoBTab("bwp.info.11", "Beach - 170 L/s")
         .addinfoBTab("bwp.info.12", "Plans, Forest - 250 L/s")
         .addinfoBTab("bwp.info.13", "Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
+        .addinfoBTab("bwp.info.14", "Ocean (Salt Water) - 20 L/s")
         .addEnergyHatch()
         .addMaintenanceHatch()
         .addInputBus(1)
@@ -105,7 +110,11 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
     }
 
     if (reachingVoidOrBedrock()) {
-      addOutput(GT_ModHandler.getWater((((1 << this.mtier) * 2) * getWaterInBiomes() * 2) * 20));
+      if (BiomeDictionary.isBiomeOfType(getBaseMetaTileEntity().getBiome(), OCEAN)) {
+        addOutput(Materials.SaltWater.getFluid((((1L << this.mtier) * 2L) * 20 * 2) * 20));
+      } else {
+        addOutput(GT_ModHandler.getWater((((1L << this.mtier) * 2L) * getWaterInBiomes() * 2) * 20));
+      }
     }
     if (mEfficiency == 10000) {
       workState = STATE_AT_BOTTOM;
