@@ -27,80 +27,15 @@ import java.util.List;
 import java.util.Map;
 
 public class DepLoader implements IFMLCallHook {
-	private File mcLocation;
 	private static final Logger LOGGER = LogManager.getLogger(DepLoader.class);
+	private File mcLocation;
 	private DownloadProgressDialog dialog = null;
-
-	public static class Dependency {
-		private String url;
-		private String path;
-		private boolean disabled;
-		private transient boolean found;
-
-		public String getUrl() {
-			return url;
-		}
-
-		public void setUrl(String url) {
-			this.url = url;
-		}
-
-		public String getPath() {
-			return path;
-		}
-
-		public void setPath(String path) {
-			this.path = path;
-		}
-
-		public boolean isDisabled() {
-			return disabled;
-		}
-
-		public void setDisabled(boolean disabled) {
-			this.disabled = disabled;
-		}
-
-		public boolean isFound() {
-			return found;
-		}
-
-		public void setFound(boolean found) {
-			this.found = found;
-		}
-	}
-
-	private class Downloader implements Runnable {
-		List<Dependency> deps;
-		Exception e = null;
-
-		Downloader(List<Dependency> deps) {
-			this.deps = deps;
-		}
-
-		@Override
-		public void run() {
-			try {
-				if (deps.size() > 0) {
-					for (Dependency dep : deps) {
-						if (!dep.isDisabled() && !dep.isFound()) {
-							download(dep);
-						}
-						if (Config.downloadOnlyOnce)
-							dep.setDisabled(true);
-					}
-				}
-			} catch (Exception ex) {
-				e = ex;
-			}
-		}
-	}
-
+	
 	@Override
 	public void injectData(Map<String, Object> data) {
 		mcLocation = (File) data.get("mcLocation");
 	}
-
+	
 	@Override
 	public Void call() throws Exception {
 		// get dep info
@@ -119,7 +54,7 @@ public class DepLoader implements IFMLCallHook {
 			return null;
 		}
 		LOGGER.info("Found {} dependencies.", deps.size());
-
+		
 		// check deps
 		boolean downloaded = false;
 		Thread netThread = null;
@@ -139,15 +74,15 @@ public class DepLoader implements IFMLCallHook {
 				LOGGER.info("{} dependencies to download.", count);
 				downloaded = true;
 				dialog.setJobCount(count);
-				SwingUtilities.invokeLater(() ->dialog.setVisible(true));
-
+				SwingUtilities.invokeLater(() -> dialog.setVisible(true));
+				
 				final Downloader downloader = new Downloader(deps);
-
+				
 				netThread = new Thread(downloader);
 				netThread.setDaemon(true);
 				netThread.start();
 				netThread.join();
-
+				
 				if (downloader.e != null) {
 					throw new Exception("Download error", downloader.e);
 				}
@@ -187,7 +122,7 @@ public class DepLoader implements IFMLCallHook {
 		}
 		return null;
 	}
-
+	
 	private void precheck(List<Dependency> deps) {
 		for (Dependency dep : deps) {
 			if (dep.isDisabled()) {
@@ -212,7 +147,7 @@ public class DepLoader implements IFMLCallHook {
 			}
 		}
 	}
-
+	
 	private void download(Dependency dep) throws IOException {
 		final Path downloadTemp = new File(mcLocation, ".__impact_download_temp__").toPath();
 		LOGGER.info("Downloading {} to {}", dep.getUrl(), dep.getPath());
@@ -227,5 +162,70 @@ public class DepLoader implements IFMLCallHook {
 		}
 		Files.move(downloadTemp, target);
 		dialog.progress();
+	}
+	
+	public static class Dependency {
+		private String url;
+		private String path;
+		private boolean disabled;
+		private transient boolean found;
+		
+		public String getUrl() {
+			return url;
+		}
+		
+		public void setUrl(String url) {
+			this.url = url;
+		}
+		
+		public String getPath() {
+			return path;
+		}
+		
+		public void setPath(String path) {
+			this.path = path;
+		}
+		
+		public boolean isDisabled() {
+			return disabled;
+		}
+		
+		public void setDisabled(boolean disabled) {
+			this.disabled = disabled;
+		}
+		
+		public boolean isFound() {
+			return found;
+		}
+		
+		public void setFound(boolean found) {
+			this.found = found;
+		}
+	}
+	
+	private class Downloader implements Runnable {
+		List<Dependency> deps;
+		Exception e = null;
+		
+		Downloader(List<Dependency> deps) {
+			this.deps = deps;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				if (deps.size() > 0) {
+					for (Dependency dep : deps) {
+						if (!dep.isDisabled() && !dep.isFound()) {
+							download(dep);
+						}
+						if (Config.downloadOnlyOnce)
+							dep.setDisabled(true);
+					}
+				}
+			} catch (Exception ex) {
+				e = ex;
+			}
+		}
 	}
 }

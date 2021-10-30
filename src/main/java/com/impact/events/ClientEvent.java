@@ -39,15 +39,12 @@ public class ClientEvent {
 	@SubscribeEvent
 	public void onMouseEvent(final MouseEvent event) {
 		final EntityPlayer entityPlayer = Minecraft.getMinecraft().thePlayer;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RMENU) ||
-				Keyboard.isKeyDown(Keyboard.KEY_LMENU) ||
-				Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) ||
-				Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_RMENU) || Keyboard.isKeyDown(Keyboard.KEY_LMENU) ||
+				Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			final ItemStack itemStack = entityPlayer.getHeldItem();
 			if (itemStack != null && itemStack.getItem() instanceof IB_IGlass) {
 				if (event.dwheel != 0) {
-					ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketMetaDataPacket(
-							event.dwheel > 0, entityPlayer));
+					ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketMetaDataPacket(event.dwheel > 0, entityPlayer));
 				}
 				event.setCanceled(true);
 			}
@@ -63,8 +60,7 @@ public class ClientEvent {
 				WorldClient world = Minecraft.getMinecraft().theWorld;
 				MovingObjectPosition mop = Utilits.raytraceFromEntity(world, player, 4.5D);
 				if (mop != null) {
-					ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketPlacedItem(
-							(byte) mop.sideHit, mop.blockX, mop.blockY, mop.blockZ, player));
+					ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketPlacedItem((byte) mop.sideHit, mop.blockX, mop.blockY, mop.blockZ, player));
 				}
 			}
 		}
@@ -102,6 +98,6 @@ public class ClientEvent {
 			return;
 		} catch (Exception ignored) {
 		}
-
+		
 	}
 }
