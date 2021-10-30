@@ -35,7 +35,7 @@ public class Core_Items3 extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        for (int i = 0; i <= x; i++) {
+        for (int i = 0; i < x; i++) {
             icons[i] = reg.registerIcon(Refstrings.MODID + ":impact_metaitem.03/" + i);
         }
     }
@@ -48,7 +48,7 @@ public class Core_Items3 extends Item {
     @SuppressWarnings({"unchecked"})
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < icons.length; i++) {
+        for (int i = 0; i < x; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }

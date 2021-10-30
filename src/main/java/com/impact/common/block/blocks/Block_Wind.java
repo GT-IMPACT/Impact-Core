@@ -59,7 +59,7 @@ public class Block_Wind extends gtUpdateBlockAPI {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs creativetab, List itemList) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 1; i++) {
             itemList.add(new ItemStack(this, 1, i));
         }
     }
