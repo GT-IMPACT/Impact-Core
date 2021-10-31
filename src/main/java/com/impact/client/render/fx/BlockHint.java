@@ -1,6 +1,5 @@
-package com.impact.client.render;
+package com.impact.client.render.fx;
 
-import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -17,12 +16,11 @@ public class BlockHint extends EntityFX {
 	private IIcon[] icons = new IIcon[6];
 	private short[] mRGBa = Dyes._NULL.mRGBa;
 	
-	public BlockHint(World world){
-		this(world,0,0,0, Blocks.stone,0);
+	public BlockHint(World world) {
+		this(world, 0, 0, 0, Blocks.stone, 0);
 	}
 	
 	/**
-	 *
 	 * @param world
 	 * @param x
 	 * @param y
@@ -32,55 +30,55 @@ public class BlockHint extends EntityFX {
 	public BlockHint(World world, int x, int y, int z, IIcon[] icons) {
 		super(world, x + .25, y + .5, z + .25);
 		particleGravity = 0;
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
-		noClip = true;
-		particleMaxAge = 2;
-		this.icons=icons;
+		prevPosX        = posX;
+		prevPosY        = posY;
+		prevPosZ        = posZ;
+		noClip          = true;
+		particleMaxAge  = 2;
+		this.icons      = icons;
 	}
 	
 	public BlockHint(World world, int x, int y, int z, Block block, int meta) {
-		super(world, x+.25, y+.5, z+.25);
+		super(world, x + .25, y + .5, z + .25);
 		particleGravity = 0;
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
-		noClip = true;
-		particleMaxAge = 2;
+		prevPosX        = posX;
+		prevPosY        = posY;
+		prevPosZ        = posZ;
+		noClip          = true;
+		particleMaxAge  = 2;
 		for (int i = 0; i < 6; i++) {
 			icons[i] = block.getIcon(i, meta);
 		}
 	}
 	
 	public BlockHint(World world, int x, int y, int z, int age, Block block, int meta) {
-		super(world, x+.25, y+.5, z+.25);
+		super(world, x + .25, y + .5, z + .25);
 		particleGravity = 0;
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
-		noClip = true;
-		particleMaxAge = age;
+		prevPosX        = posX;
+		prevPosY        = posY;
+		prevPosZ        = posZ;
+		noClip          = true;
+		particleMaxAge  = age;
 		for (int i = 0; i < 6; i++) {
 			icons[i] = block.getIcon(i, meta);
 		}
 	}
 	
-	public BlockHint(World world, int x, int y, int z, double xx, double yy, double zz,  int age, Block block, int meta) {
-		super(world, x+xx, y+yy, z+zz);
+	public BlockHint(World world, int x, int y, int z, double xx, double yy, double zz, int age, Block block, int meta) {
+		super(world, x + xx, y + yy, z + zz);
 		particleGravity = 0;
-		prevPosX = posX;
-		prevPosY = posY;
-		prevPosZ = posZ;
-		noClip = true;
-		particleMaxAge = age;
+		prevPosX        = posX;
+		prevPosY        = posY;
+		prevPosZ        = posZ;
+		noClip          = true;
+		particleMaxAge  = age;
 		for (int i = 0; i < 6; i++) {
 			icons[i] = block.getIcon(i, meta);
 		}
 	}
 	
-	public BlockHint withColorTint(short[] coloure){
-		this.mRGBa =coloure;
+	public BlockHint withColorTint(short[] coloure) {
+		this.mRGBa = coloure;
 		return this;
 	}
 	
@@ -96,15 +94,15 @@ public class BlockHint extends EntityFX {
 		
 		//var8, var9 - X U
 		//var 10, var 11 - Y V
-		for(int i=0;i<6;i++){
-			if(icons[i]==null) {
+		for (int i = 0; i < 6; i++) {
+			if (icons[i] == null) {
 				continue;
 			}
-			double u=icons[i].getMinU();
-			double U=icons[i].getMaxU();
-			double v=icons[i].getMinV();
-			double V=icons[i].getMaxV();
-			switch (i){//{DOWN, UP, NORTH, SOUTH, WEST, EAST}
+			double u = icons[i].getMinU();
+			double U = icons[i].getMaxU();
+			double v = icons[i].getMinV();
+			double V = icons[i].getMaxV();
+			switch (i) {//{DOWN, UP, NORTH, SOUTH, WEST, EAST}
 				case 0:
 					tes.addVertexWithUV(X, Y, Z + size, u, V);
 					tes.addVertexWithUV(X, Y, Z, u, v);
@@ -154,6 +152,6 @@ public class BlockHint extends EntityFX {
 	
 	@Override
 	public boolean shouldRenderInPass(int pass) {
-		return pass==2;
+		return pass == 2;
 	}
 }

@@ -3,7 +3,6 @@ package com.impact.network;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.impact.client.gui.ContainterPriority;
 import com.impact.common.block.itemblock.IB_IGlass;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

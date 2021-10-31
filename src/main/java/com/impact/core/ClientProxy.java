@@ -1,10 +1,10 @@
 package com.impact.core;
 
 import com.impact.client.key.KeyBindings;
-import com.impact.client.render.BlockHint;
-import com.impact.client.render.PlacedItemRenderer;
-import com.impact.client.render.TESR_SETether;
-import com.impact.client.render.TESR_SpaceElevatorTether;
+import com.impact.client.render.fx.BlockHint;
+import com.impact.client.render.tesr.PlacedItemRenderer;
+import com.impact.client.render.tesr.TESR_SETether;
+import com.impact.client.render.tesr.TESR_SpaceElevatorTether;
 import com.impact.client.render.fx.FXBeam;
 import com.impact.client.render.fx.FXBeamBore;
 import com.impact.client.render.fx.FXBeamWand;

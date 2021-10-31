@@ -15,11 +15,9 @@ public class GuiIntegerBox extends GuiTextField {
 		this.maxValue = maxValue;
 	}
 	
-	
 	public void writeText(String selectedText) {
 		String original = getText();
 		super.writeText(selectedText);
-		
 		try {
 			int i = Integer.parseInt(getText());
 			if (i > maxValue) {
@@ -31,7 +29,6 @@ public class GuiIntegerBox extends GuiTextField {
 			setText(original);
 		}
 	}
-	
 	
 	public void setText(String s) {
 		try {
