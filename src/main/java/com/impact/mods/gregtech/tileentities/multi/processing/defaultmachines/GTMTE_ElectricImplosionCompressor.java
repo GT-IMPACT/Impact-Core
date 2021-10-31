@@ -2,18 +2,14 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
 import static gregtech.api.enums.GT_Values.V;
 
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.Utilits;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.multis.WorldProperties;
 import com.impact.util.string.MultiBlockTooltipBuilder;

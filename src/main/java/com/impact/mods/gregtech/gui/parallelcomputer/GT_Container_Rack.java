@@ -1,5 +1,6 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.parallelcomputer;
 
+import com.impact.mods.gregtech.gui.slot.CustomSlot;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;

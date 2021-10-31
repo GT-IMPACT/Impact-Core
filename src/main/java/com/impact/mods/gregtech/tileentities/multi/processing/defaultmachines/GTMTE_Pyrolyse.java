@@ -3,7 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 import static com.impact.common.item.Core_Items.Core_Items1;
 import static com.impact.util.Utilits.isB;
 
-import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -20,7 +20,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 

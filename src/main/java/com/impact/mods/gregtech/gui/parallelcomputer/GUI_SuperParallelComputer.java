@@ -1,5 +1,6 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.parallelcomputer;
 
+import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;

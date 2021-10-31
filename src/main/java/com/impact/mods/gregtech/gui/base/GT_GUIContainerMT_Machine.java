@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.base;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;

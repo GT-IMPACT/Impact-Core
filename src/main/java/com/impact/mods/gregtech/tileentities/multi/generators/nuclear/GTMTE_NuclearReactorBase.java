@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
-import com.impact.mods.gregtech.gui.GT_Container_NuclearReactor;
-import com.impact.mods.gregtech.gui.GUI_NuclearReactor;
+import com.impact.mods.gregtech.gui.nuclear.GT_Container_NuclearReactor;
+import com.impact.mods.gregtech.gui.nuclear.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;

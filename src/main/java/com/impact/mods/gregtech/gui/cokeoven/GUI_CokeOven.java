@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.cokeoven;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 

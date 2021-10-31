@@ -1,19 +1,14 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
-import com.impact.common.item.Core_Items3;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.GT_Container_Reactor_Rod;
-import com.impact.mods.gregtech.gui.GT_GUIContainer_Reactor_Rod;
 import com.impact.mods.gregtech.gui.matrixsystem.GT_Container_MP_Chamber;
 import com.impact.mods.gregtech.gui.matrixsystem.GT_GUIContainer_MP_Chamber;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static com.impact.common.item.Core_List_Items.MPBufferEmpty;
 import static com.impact.common.item.Core_List_Items.MPBufferFull;
-import static gregtech.api.items.GT_RadioactiveCell_Item.getDurabilityOfStack;
 
 public class GTMTE_Hatch_MESystemMPChamber extends GT_MetaTileEntity_Hatch {
 

@@ -8,8 +8,8 @@ import com.impact.common.item.Core_Items3;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
-import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
-import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.LAB_SAFELG_CASING;
 import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBase {

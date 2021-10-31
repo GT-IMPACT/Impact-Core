@@ -1,28 +1,32 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.laptop;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GUI_SpaceSatelliteHathes extends GT_GUIContainerMetaTile_Machine {
+public class GUI_LapTopSetting extends GT_GUIContainerMetaTile_Machine {
 
   public String mName;
 
-  public GUI_SpaceSatelliteHathes(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
-      String aName) {
-    super(new Container_SpaceSatelliteHatches(aInventoryPlayer, aTileEntity),
+  public GUI_LapTopSetting(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
+      String name) {
+    super(new Container_LapTopSetting(aInventoryPlayer, aTileEntity),
         RES_PATH_GUI + "SpaceSatelliteHatches.png");
-    mName = aName;
+    mName = name;
   }
 
   protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    this.fontRendererObj.drawString(mName, 33, 8, 16448255);
+
     if (this.mContainer != null) {
-      Container_SpaceSatelliteHatches aContainer = (Container_SpaceSatelliteHatches) this.mContainer;
+      Container_LapTopSetting aContainer = (Container_LapTopSetting) this.mContainer;
+      this.fontRendererObj
+          .drawString(GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name"), 33,
+              8, 16448255);
       this.fontRendererObj
           .drawString("Frequency: " + GT_Utility.parseNumberToString(aContainer.mFrequency), 33, 20,
               16448255);

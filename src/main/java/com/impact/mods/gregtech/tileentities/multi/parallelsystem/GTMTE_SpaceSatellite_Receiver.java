@@ -1,8 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import com.impact.core.Impact_API;
-import com.impact.mods.gregtech.gui.Container_SpaceSatelliteHatches;
-import com.impact.mods.gregtech.gui.GUI_SpaceSatelliteHathes;
+import com.impact.mods.gregtech.gui.spacesatellite.Container_SpaceSatelliteHatches;
+import com.impact.mods.gregtech.gui.spacesatellite.GUI_SpaceSatelliteHathes;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
@@ -20,8 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-
-import java.util.Arrays;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_GREEN;
 import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_RED;

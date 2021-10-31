@@ -5,7 +5,7 @@ import static com.impact.util.recipe.RecipeHelper.calcTimeParallel;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
-import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -28,7 +28,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;

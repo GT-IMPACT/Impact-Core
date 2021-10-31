@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.slot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

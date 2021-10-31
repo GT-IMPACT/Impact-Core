@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.base;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 

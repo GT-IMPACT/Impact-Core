@@ -1,5 +1,6 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.parallelcomputer;
 
+import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

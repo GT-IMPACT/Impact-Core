@@ -7,7 +7,7 @@ import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;

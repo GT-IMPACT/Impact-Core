@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.spacesatellite;
 
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Transmitter;

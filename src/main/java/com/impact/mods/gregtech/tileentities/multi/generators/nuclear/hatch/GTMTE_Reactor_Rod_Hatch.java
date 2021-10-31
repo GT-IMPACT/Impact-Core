@@ -1,9 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch;
 
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.GT_Container_Reactor_Rod;
-import com.impact.mods.gregtech.gui.GT_GUIContainer_Reactor_Rod;
-import gregtech.api.enums.Textures;
+import com.impact.mods.gregtech.gui.nuclear.GT_Container_Reactor_Rod;
+import com.impact.mods.gregtech.gui.nuclear.GT_GUIContainer_Reactor_Rod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;

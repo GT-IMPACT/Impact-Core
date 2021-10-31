@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 
-import com.impact.mods.gregtech.gui.GUI_CokeOven;
+import com.impact.mods.gregtech.gui.cokeoven.GUI_CokeOven;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
@@ -14,11 +14,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;

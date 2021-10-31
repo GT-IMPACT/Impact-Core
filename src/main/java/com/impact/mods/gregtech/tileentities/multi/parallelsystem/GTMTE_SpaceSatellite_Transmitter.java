@@ -5,8 +5,8 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_YELLOW;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import com.impact.core.Impact_API;
-import com.impact.mods.gregtech.gui.Container_SpaceSatelliteHatches;
-import com.impact.mods.gregtech.gui.GUI_SpaceSatelliteHathes;
+import com.impact.mods.gregtech.gui.spacesatellite.Container_SpaceSatelliteHatches;
+import com.impact.mods.gregtech.gui.spacesatellite.GUI_SpaceSatelliteHathes;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;

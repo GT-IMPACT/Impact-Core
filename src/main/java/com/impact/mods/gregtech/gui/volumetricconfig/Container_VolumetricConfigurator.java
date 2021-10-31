@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.gui.volumetricconfig;
 
-import com.impact.mods.gregtech.gui.CustomSlot;
+import com.impact.mods.gregtech.gui.slot.CustomSlot;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_VolumetricConfigurator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

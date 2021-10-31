@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.gui.matrixsystem;
 
-import com.impact.mods.gregtech.gui.GT_GUIContainerMT_Machine;
+import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.entity.player.InventoryPlayer;

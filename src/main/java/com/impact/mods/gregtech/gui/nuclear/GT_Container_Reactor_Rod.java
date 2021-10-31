@@ -1,5 +1,6 @@
-package com.impact.mods.gregtech.gui;
+package com.impact.mods.gregtech.gui.nuclear;
 
+import com.impact.mods.gregtech.gui.slot.CustomSlot;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

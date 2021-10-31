@@ -10,7 +10,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
-import com.impact.mods.gregtech.gui.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_SawMill;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
@@ -40,7 +40,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 

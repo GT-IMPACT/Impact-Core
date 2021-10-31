@@ -4,8 +4,8 @@ import static com.github.technus.tectech.util.Util.getUniqueIdentifier;
 import static com.impact.mods.gregtech.GT_ItemList.*;
 import static com.impact.mods.gregtech.enums.Texture.Icons.*;
 
-import com.impact.mods.gregtech.gui.GT_Container_Rack;
-import com.impact.mods.gregtech.gui.GT_GUIContainer_Rack;
+import com.impact.mods.gregtech.gui.parallelcomputer.GT_Container_Rack;
+import com.impact.mods.gregtech.gui.parallelcomputer.GT_GUIContainer_Rack;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

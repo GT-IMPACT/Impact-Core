@@ -7,7 +7,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_FRONT;
 import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_FRONT_ACTIVE;
 
 import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.gui.GUI_BASE;
+import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;

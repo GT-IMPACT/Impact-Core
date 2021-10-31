@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.gui.matrixsystem;
 
-import com.impact.mods.gregtech.gui.CustomSlot;
+import com.impact.mods.gregtech.gui.slot.CustomSlot;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_Hatch_MESystemMPChamber;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
