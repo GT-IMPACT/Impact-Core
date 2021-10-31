@@ -1,14 +1,10 @@
 package com.impact.core;
 
 import com.impact.client.key.KeyBindings;
-import com.impact.client.render.fx.BlockHint;
+import com.impact.client.render.fx.*;
 import com.impact.client.render.tesr.PlacedItemRenderer;
 import com.impact.client.render.tesr.TESR_SETether;
 import com.impact.client.render.tesr.TESR_SpaceElevatorTether;
-import com.impact.client.render.fx.FXBeam;
-import com.impact.client.render.fx.FXBeamBore;
-import com.impact.client.render.fx.FXBeamWand;
-import com.impact.client.render.fx.FXLightningBolt;
 import com.impact.client.render.tesr.TESR_WindMill;
 import com.impact.common.block.QuantumStuffRender;
 import com.impact.common.block.blocks.Block_QuantumStuff;
