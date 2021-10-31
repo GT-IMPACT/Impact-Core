@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.blocks;
+package com.impact.mods.gregtech.blocks.casings;
 
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static com.impact.mods.gregtech.enums.Texture.Icons.COMPUTER_CASING;
@@ -7,6 +7,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_CASING;
 import static com.impact.util.Utilits.BlockstackMeta;
 
 import com.impact.mods.gregtech.GT_ItemList;
+import com.impact.mods.gregtech.blocks.itemblocks.IB_Casing_9;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

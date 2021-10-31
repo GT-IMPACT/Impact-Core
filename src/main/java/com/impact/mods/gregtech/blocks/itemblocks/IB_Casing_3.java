@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.blocks;
+package com.impact.mods.gregtech.blocks.itemblocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

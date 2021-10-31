@@ -1,5 +1,7 @@
-package com.impact.mods.gregtech.blocks;
+package com.impact.mods.gregtech.blocks.casings;
 
+import com.impact.mods.gregtech.blocks.Build_Casing_Helper;
+import com.impact.mods.gregtech.blocks.itemblocks.IB_Casing_3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;

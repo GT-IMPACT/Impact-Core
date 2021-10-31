@@ -1,5 +1,10 @@
 package com.impact.mods.gregtech.blocks;
 
+import com.impact.mods.gregtech.blocks.casings.Casing_1;
+import com.impact.mods.gregtech.blocks.casings.Casing_2;
+import com.impact.mods.gregtech.blocks.casings.Casing_3;
+import com.impact.mods.gregtech.blocks.casings.Casing_9;
+import com.impact.mods.gregtech.blocks.other.GT_Block_LongDistancePipe;
 import net.minecraft.block.Block;
 
 public class Casing_Helper implements Runnable {

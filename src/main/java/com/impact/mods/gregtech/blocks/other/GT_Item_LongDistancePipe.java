@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.blocks;
+package com.impact.mods.gregtech.blocks.other;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_LanguageManager;

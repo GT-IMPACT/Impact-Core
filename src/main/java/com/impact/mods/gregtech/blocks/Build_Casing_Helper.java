@@ -27,7 +27,7 @@ public enum Build_Casing_Helper {
 
     ME_CASING("ME Construction Casing", 3, 3, 0, MECasing),
 
-//    EMPTY("", 0, 0, 0, null)
+    //EMPTY("", 0, 0, 0, null)
     ;
 
     private final String mName;
@@ -45,7 +45,7 @@ public enum Build_Casing_Helper {
         this.iTexture = Textures.BlockIcons.casingTexturePages[pageTexture][meta + (16 * (countBlock))];
     }
 
-    public ITexture getiTexture() {
+    public ITexture getITexture() {
         return iTexture;
     }
 

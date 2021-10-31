@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.blocks;
+package com.impact.mods.gregtech.blocks.other;
 
 import static com.impact.mods.gregtech.GT_ItemList.Long_Distance_Pipeline_Fluid_Pipe;
 import static com.impact.mods.gregtech.GT_ItemList.Long_Distance_Pipeline_Item_Pipe;
@@ -13,7 +13,7 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Machines;
 import java.util.List;
-import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

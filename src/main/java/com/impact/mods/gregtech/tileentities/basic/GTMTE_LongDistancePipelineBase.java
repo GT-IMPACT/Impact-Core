@@ -1,7 +1,6 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
-import com.impact.mods.gregtech.blocks.GT_Block_LongDistancePipe;
-import gregtech.GT_Mod;
+import com.impact.mods.gregtech.blocks.other.GT_Block_LongDistancePipe;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

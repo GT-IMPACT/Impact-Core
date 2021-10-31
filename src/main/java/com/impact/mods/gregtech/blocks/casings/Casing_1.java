@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.blocks;
+package com.impact.mods.gregtech.blocks.casings;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.CASING_ARC;
 import static com.impact.mods.gregtech.enums.Texture.Icons.CASING_ASSEMBLER;
@@ -20,6 +20,7 @@ import static com.impact.util.Utilits.BlockstackMeta;
 import static gregtech.api.util.GT_LanguageManager.addStringLocalization;
 
 import com.impact.mods.gregtech.GT_ItemList;
+import com.impact.mods.gregtech.blocks.itemblocks.IB_Casing_1;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
