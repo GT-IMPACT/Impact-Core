@@ -51,8 +51,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	boolean isConnect = false;
 	
-	public GTMTE_SpaceElevator(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional);
+	public GTMTE_SpaceElevator(int aID, String aNameRegional) {
+		super(aID, "impact.multimachine.spaceelevator", aNameRegional);
 		holo();
 	}
 	
@@ -61,15 +61,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
-								 final byte aFacing,
-								 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == 1
-				? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
-				aActive
-						? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE
-						: Texture.Icons.OVERLAY_SPACE_ELEVATOR)}
-				: new ITexture[]{INDEX_CASE};
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE : Texture.Icons.OVERLAY_SPACE_ELEVATOR)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -93,8 +86,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addController()
 				.addEnergyHatch()
 				.addCasingInfo("case", "Space Elevator Casing")
-				.addOtherStructurePart("other.0", "Space Elevator Hawser",
-						"other.1", "Center below Controller")
+				.addOtherStructurePart("other.0", "Space Elevator Hawser", "other.1", "Center below Controller")
 				.signAndFinalize();
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
@@ -104,7 +96,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	public void holo() {
-		registerMetaClass(GTMTE_SpaceElevator.class,
+		registerMetaClass(
+				GTMTE_SpaceElevator.class,
 				new IMultiblockInfoContainer<GTMTE_SpaceElevator>() {
 					//region Structure
 					private final IStructureDefinition<GTMTE_SpaceElevator> definition =
@@ -130,26 +123,22 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 					//endregion
 					
 					@Override
-					public void construct(ItemStack stackSize, boolean hintsOnly,
-										  GTMTE_SpaceElevator tileEntity, ExtendedFacing aSide) {
+					public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SpaceElevator tileEntity, ExtendedFacing aSide) {
 						IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-						definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-								base.getXCoord(), base.getYCoord(), base.getZCoord(),
-								3, 4, 3, hintsOnly);
+						definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 3, 4, 3, hintsOnly);
 					}
 					
 					@Override
 					public String[] getDescription(ItemStack stackSize) {
 						return desc;
 					}
-				});
+				}
+		);
 	}
 	
 	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-							   IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-				"MultiParallelBlockGUI.png");
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
@@ -157,7 +146,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
+		);
 		
 		boolean formationChecklist = true;
 		
@@ -181,21 +171,18 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 					}
 					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 					if (X == 0 && Y == -1 && Z == 0) {
-						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-								== SpaceElevatorBlock)) {
+						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == SpaceElevatorBlock)) {
 						} else {
 							formationChecklist = false;
 						}
 						continue;
 					}
-					IGregTechTileEntity currentTE = thisController
-							.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+					IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-								&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
-								== CASING_META)) {
+								&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
 						} else {
 							formationChecklist = false;
 						}
@@ -203,12 +190,12 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 				}
 			}
 		}
-		mWrench = true;
-		mScrewdriver = true;
-		mSoftHammer = true;
-		mHardHammer = true;
+		mWrench        = true;
+		mScrewdriver   = true;
+		mSoftHammer    = true;
+		mHardHammer    = true;
 		mSolderingTool = true;
-		mCrowbar = true; //todo Пересмотреть мейнтенанс
+		mCrowbar       = true; //todo Пересмотреть мейнтенанс
 		return formationChecklist;
 	}
 	
@@ -222,8 +209,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	public void teleportEntity() {
 		IGregTechTileEntity iAm = getBaseMetaTileEntity();
-		List entities_in_box = iAm.getWorld().getEntitiesWithinAABB(
-				Entity.class, Utilits.setBoxAABB(iAm, 1.5));
+		List entities_in_box = iAm.getWorld().getEntitiesWithinAABB(Entity.class, Utilits.setBoxAABB(iAm, 1.5));
 		for (Object tObject : entities_in_box) {
 			if (((tObject instanceof Entity)) && (!((Entity) tObject).isDead)) {
 				Entity tEntity = (Entity) tObject;
@@ -233,8 +219,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 				if (tEntity.riddenByEntity != null) {
 					tEntity.riddenByEntity.mountEntity(null);
 				}
-				if (iAm.getRedstone() && (checkCurrentDimension(mTargetD) || (!isDimensionalTeleportAvailable()) ||
-						(!GT_Utility.moveEntityToDimensionAtCoords(tEntity, mTargetD, mTargetX + 0.5D, mTargetY + 1.5D, mTargetZ + 0.5D)))) {
+				if (iAm.getRedstone() && (checkCurrentDimension(mTargetD) || (!isDimensionalTeleportAvailable()) || (!GT_Utility.moveEntityToDimensionAtCoords(tEntity, mTargetD, mTargetX + 0.5D, mTargetY + 1.5D, mTargetZ + 0.5D)))) {
 					if ((tEntity instanceof EntityLivingBase)) {
 						((EntityLivingBase) tEntity).setPositionAndUpdate(mTargetX + 0.5D, mTargetY + 1.5D, mTargetZ + 0.5D);
 					} else {
@@ -306,7 +291,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 		if (ItemList.Tool_NoteBook.getItem() == tCurrentItem.getItem()) {
 			int dimId = getBaseMetaTileEntity().getWorld().provider.dimensionId;
 			if (isValidDim(dimId, "Orbit") || isValidDim(dimId, "Space") ||
-				isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation")) {
+					isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation")) {
 				getFrequency(aPlayer);
 			}
 			if (dimId == 0) {
@@ -318,10 +303,10 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		this.mMaxProgresstime = 1;
-		this.mEUt = -1920;
+		this.mMaxProgresstime    = 1;
+		this.mEUt                = -1920;
 		this.mEfficiencyIncrease = 10000;
-		this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+		this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 		return this.mEfficiency >= 10000;
 	}
 	

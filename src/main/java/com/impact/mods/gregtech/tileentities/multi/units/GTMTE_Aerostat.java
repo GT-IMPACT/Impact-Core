@@ -10,7 +10,6 @@ import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
-import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.Materials;
@@ -27,10 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 
 import java.util.LinkedHashMap;
-import java.util.UUID;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
@@ -51,8 +48,8 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	
-	public GTMTE_Aerostat(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional);
+	public GTMTE_Aerostat(int aID, String aNameRegional) {
+		super(aID, "impact.multis.aerostat", aNameRegional);
 		holo();
 	}
 	
@@ -61,15 +58,8 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
-								 final byte aFacing,
-								 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == 1
-				? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
-				aActive
-						? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE
-						: Texture.Icons.OVERLAY_SPACE_ELEVATOR)}
-				: new ITexture[]{INDEX_CASE};
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE : Texture.Icons.OVERLAY_SPACE_ELEVATOR)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -83,23 +73,6 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public String[] getDescription() {
-//		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-//		b
-//				.addInfo("Teleportation on Space Satellite")
-//				.addTypeMachine("Space Elevator")
-//				.addInfo("Setup is done using Laptop")
-//				.addInfo("Send a redstone signal to teleport")
-//				.addInfo("Passive usage: 1920 EU/t")
-//				.addController()
-//				.addEnergyHatch("Any casing")
-//				.addCasingInfo("Space Elevator Casing")
-//				.addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
-//				.signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
-//		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-//			return b.getInformation();
-//		} else {
-//			return b.getStructureInformation();
-//		}
 		return null;
 	}
 	
@@ -125,13 +98,9 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 			//endregion
 			
 			@Override
-			public void construct(ItemStack stackSize,
-								  boolean hintsOnly, GTMTE_Aerostat tileEntity, ExtendedFacing aSide) {
+			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Aerostat tileEntity, ExtendedFacing aSide) {
 				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main",
-						base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(),
-						1, 0, 1, hintsOnly
-				);
+				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 1, 0, 1, hintsOnly);
 			}
 			
 			@Override
@@ -161,7 +130,8 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
+		);
 		
 		boolean formationChecklist = true;
 		
@@ -171,29 +141,26 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 					continue;
 				}
 				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 0, Z);
-				IGregTechTileEntity currentTE = thisController
-						.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+				IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 				
 				//Utilits.setBlock(thisController, offset.x(), offset.y(), offset.z(), CASING, CASING_META);
 				
 				if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
-							== CASING_META)) {
+					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
 					} else {
 						formationChecklist = false;
 					}
 				}
 			}
 		}
-		mWrench = true;
-		mScrewdriver = true;
-		mSoftHammer = true;
-		mHardHammer = true;
+		mWrench        = true;
+		mScrewdriver   = true;
+		mSoftHammer    = true;
+		mHardHammer    = true;
 		mSolderingTool = true;
-		mCrowbar = true; //todo Пересмотреть мейнтенанс
+		mCrowbar       = true; //todo Пересмотреть мейнтенанс
 		return formationChecklist;
 	}
 	
@@ -208,7 +175,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 			if (!isFullBuffer && depleteInput(Materials.Gas.getGas(100))) {
 				curBuffer += 100;
 				if (curBuffer + 100 > MAX_BUFFER) {
-					curBuffer = MAX_BUFFER;
+					curBuffer    = MAX_BUFFER;
 					isFullBuffer = true;
 				}
 			}
@@ -226,7 +193,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 		if (checkLocation == null) {
 			Impact_API.sAerostat.remove(aerName);
 			aerName = name;
-			aerID = 1;
+			aerID   = 1;
 			Utilits.sendChatByTE(getBaseMetaTileEntity(), "Set location name: \"" + aerName + "\"");
 			Impact_API.sAerostat.put(aerName, thisLocation);
 			int id = 1;
@@ -289,11 +256,11 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		curID = aNBT.getInteger("curID");
-		curBuffer = aNBT.getInteger("curBuffer");
-		aerID = aNBT.getInteger("aerID");
-		firstOpen = aNBT.getBoolean("firstOpen");
-		aerName = aNBT.getString("aerName");
+		curID      = aNBT.getInteger("curID");
+		curBuffer  = aNBT.getInteger("curBuffer");
+		aerID      = aNBT.getInteger("aerID");
+		firstOpen  = aNBT.getBoolean("firstOpen");
+		aerName    = aNBT.getString("aerName");
 		playerName = aNBT.getString("playerName");
 	}
 	
@@ -302,8 +269,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (aPlayer.capabilities.isCreativeMode) {
 			for (String name : Impact_API.sAerostat.keySet()) {
-				GT_Utility.sendChatToPlayer(aPlayer, "Name: " + EnumChatFormatting.RED + name + EnumChatFormatting.RESET +
-						" | Owner: " + EnumChatFormatting.GREEN + Impact_API.sAerostat.get(name).playerName);
+				GT_Utility.sendChatToPlayer(aPlayer, "Name: " + EnumChatFormatting.RED + name + EnumChatFormatting.RESET + " | Owner: " + EnumChatFormatting.GREEN + Impact_API.sAerostat.get(name).playerName);
 			}
 		}
 	}

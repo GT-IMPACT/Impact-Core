@@ -37,8 +37,8 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
   ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
   int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 
-  public GTMTE_AdvDDDPrinter(int aID, String aName, String aNameRegional) {
-    super(aID, aName, aNameRegional);
+  public GTMTE_AdvDDDPrinter(int aID, String aNameRegional) {
+    super(aID, "impact.multimachine.advdddprinter", aNameRegional);
     holo();
   }
 
@@ -47,11 +47,8 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
   }
 
   @Override
-  public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
-      final byte aFacing,
-      final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-    return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ?
-        Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+  public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+    return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
   }
 
   @Override
@@ -113,12 +110,9 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
           //endregion
 
           @Override
-          public void construct(ItemStack stackSize, boolean hintsOnly,
-              GTMTE_AdvDDDPrinter tileEntity, ExtendedFacing aSide) {
+          public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_AdvDDDPrinter tileEntity, ExtendedFacing aSide) {
             IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-                base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                0, 1, 0, hintsOnly);
+            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 0, 1, 0, hintsOnly);
           }
 
           @Override
@@ -129,10 +123,8 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
   }
 
   @Override
-  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-      IGregTechTileEntity aBaseMetaTileEntity) {
-    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-        "MultiParallelBlockGUI.png", "4x4 Crafting");
+  public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+    return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", "4x4 Crafting");
   }
 
   @Override
@@ -164,10 +156,8 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
             }
           final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
 
-          if ((X == 1 || X == 2 || X == 3 || X == 4) && (Z == -1 || Z == -2 || Z == -3 || Z == -4)
-              && Y == 0) {
-            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z())
-                == Casing_Helper.sCaseCore2)
+          if ((X == 1 || X == 2 || X == 3 || X == 4) && (Z == -1 || Z == -2 || Z == -3 || Z == -4) && Y == 0) {
+            if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == Casing_Helper.sCaseCore2)
                 && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 6)) {
             } else {
               formationChecklist = false;
@@ -192,16 +182,14 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
             continue;
           }
 
-          IGregTechTileEntity currentTE = thisController
-              .getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+          IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
           if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
               && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
             if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
-                == CASING_META)) {
+                && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
               minCasingAmount--;
             } else {
               formationChecklist = false;
@@ -232,10 +220,8 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
     return 0;
   }
 
-  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
-      float aZ) {
+  public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-    if (aPlayer.isSneaking())
-      ScrewClick(aSide, aPlayer, aX, aY, aZ);
+    if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
   }
 }

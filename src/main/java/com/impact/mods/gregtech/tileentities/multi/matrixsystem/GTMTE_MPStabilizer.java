@@ -47,8 +47,8 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
     public GTMTE_MPContainment mMPContainment;
 
     //region Register
-    public GTMTE_MPStabilizer(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public GTMTE_MPStabilizer(int aID, String aNameRegional) {
+        super(aID, "impact.multis.matrixstabilizer", aNameRegional);
         run();
     }
 
@@ -64,11 +64,8 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
     //endregion
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide,
-                                 final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{INDEX_CASE,
-                new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)}
-                : new ITexture[]{INDEX_CASE};
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
     }
 
     @Override
@@ -82,8 +79,7 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
     }
 
     public void run() {
-        registerMetaClass(GTMTE_MPStabilizer.class,
-                new IMultiblockInfoContainer<GTMTE_MPStabilizer>() {
+        registerMetaClass(GTMTE_MPStabilizer.class, new IMultiblockInfoContainer<GTMTE_MPStabilizer>() {
                     //region Structure
                     private final IStructureDefinition<GTMTE_MPStabilizer> definition =
                             StructureDefinition.<GTMTE_MPStabilizer>builder()
@@ -104,9 +100,7 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
                     @Override
                     public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MPStabilizer tileEntity, ExtendedFacing aSide) {
                         IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-                        definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-                                base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                                2, 1, 0, hintsOnly);
+                        definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 2, 1, 0, hintsOnly);
                     }
 
                     @Override
@@ -158,9 +152,7 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
             Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);
             Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, mRangeToContainer-1, 0, -1);
 
-            impact.proxy.beam(iAm.getWorld(), offset.x() + x + 0.5D, offset.y() + y + 0.5D, offset.z() + z + 0.5D,
-                    offsetToStabilizer.x() + x + 0.5D, offsetToStabilizer.y() + y + 0.5D, offsetToStabilizer.z() + z + 0.5D,
-                    1, 0x770ED0, false, 1, 20 * 2);
+            impact.proxy.beam(iAm.getWorld(), offset.x() + x + 0.5D, offset.y() + y + 0.5D, offset.z() + z + 0.5D, offsetToStabilizer.x() + x + 0.5D, offsetToStabilizer.y() + y + 0.5D, offsetToStabilizer.z() + z + 0.5D, 1, 0x770ED0, false, 1, 20 * 2);
         }
     }
 
@@ -181,16 +173,15 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
 
             if (iAm.isActive()) {
                 Vector3ic offsetCheckBlock = rotateOffsetVector(forgeDirection, 0, 2, -1);
-                impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(),
-                        offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
-                impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(),
-                        offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
+                impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
+                impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), offsetCheckBlock.x(), offsetCheckBlock.y(), offsetCheckBlock.z(), 5, 10F, 1);
 
                 for (Object o : iAm.getWorld().playerEntities) {
                     if (o instanceof EntityPlayer) {
                         EntityPlayer player1 = (EntityPlayer) o;
-                        if (Utilits.distanceBetween3D(iAm.getXCoord(), (int) player1.posX, iAm.getYCoord(), (int) player1.posY, iAm.getZCoord(), (int) player1.posZ) < 8)
+                        if (Utilits.distanceBetween3D(iAm.getXCoord(), (int) player1.posX, iAm.getYCoord(), (int) player1.posY, iAm.getZCoord(), (int) player1.posZ) < 8) {
                             impact.proxy.nodeBolt(iAm.getWorld(), iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord(), player1);
+                        }
                     }
                 }
             }
@@ -266,9 +257,9 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
 
-//        if (!Utilits.isLowGravity(iAm)) {
-//            return false;
-//        }
+        if (!Utilits.isLowGravity(iAm)) {
+            return false;
+        }
         //region Structure
         final Vector3ic forgeDirection = new Vector3i(
                 ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,

@@ -53,8 +53,8 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	private int curX, curY, curZ;
 	private boolean isVoidDrop = false;
 	
-	public GTMTE_Filler(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional);
+	public GTMTE_Filler(int aID, String aNameRegional) {
+		super(aID, "impact.multis.filler", aNameRegional);
 		holo();
 	}
 	
@@ -64,12 +64,7 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing
-				? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(
-				aActive
-						? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE
-						: Texture.Icons.OVERLAY_SPACE_ELEVATOR)}
-				: new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE : Texture.Icons.OVERLAY_SPACE_ELEVATOR)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -84,8 +79,7 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	@Override
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder();
-		b
-				.signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
+		b.signAndFinalize(": " + EnumChatFormatting.RED + "IMPACT");
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
 		} else {
@@ -94,42 +88,36 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	public void holo() {
-		registerMetaClass(GTMTE_Filler.class,
-				new IMultiblockInfoContainer<GTMTE_Filler>() {
-					//region Structure
-					private final IStructureDefinition<GTMTE_Filler> definition =
-							StructureDefinition.<GTMTE_Filler>builder()
-									.addShape("main", new String[][]{
-											{"A"}})
-									.addElement('A', ofBlock(CASING, CASING_META))
-									.addElement('B', ofBlock(SpaceElevatorBlock))
-									.build();
-					private final String[] desc = new String[]{
-							EnumChatFormatting.RED + "Impact Details:",
-					};
-					//endregion
-					
-					@Override
-					public void construct(ItemStack stackSize, boolean hintsOnly,
-										  GTMTE_Filler tileEntity, ExtendedFacing aSide) {
-						IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-						definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-								base.getXCoord(), base.getYCoord(), base.getZCoord(),
-								3, 4, 3, hintsOnly);
-					}
-					
-					@Override
-					public String[] getDescription(ItemStack stackSize) {
-						return desc;
-					}
-				});
+		registerMetaClass(GTMTE_Filler.class, new IMultiblockInfoContainer<GTMTE_Filler>() {
+			//region Structure
+			private final IStructureDefinition<GTMTE_Filler> definition =
+					StructureDefinition.<GTMTE_Filler>builder()
+							.addShape("main", new String[][]{
+									{"A"}})
+							.addElement('A', ofBlock(CASING, CASING_META))
+							.addElement('B', ofBlock(SpaceElevatorBlock))
+							.build();
+			private final String[] desc = new String[]{
+					EnumChatFormatting.RED + "Impact Details:",
+			};
+			//endregion
+			
+			@Override
+			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Filler tileEntity, ExtendedFacing aSide) {
+				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 3, 4, 3, hintsOnly);
+			}
+			
+			@Override
+			public String[] getDescription(ItemStack stackSize) {
+				return desc;
+			}
+		});
 	}
 	
 	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-							   IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-				"MultiParallelBlockGUI.png");
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
@@ -165,7 +153,8 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
+				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
+		);
 		
 		boolean formationChecklist = true;
 		
@@ -175,25 +164,23 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 			}
 			final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 0, 0);
 			
-			IGregTechTileEntity currentTE = thisController
-					.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
+			IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 			if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 					&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
 					&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 				if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-						&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z())
-						== CASING_META)) {
+						&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
 				}/* else {
 					formationChecklist = false;
 				}*/
 			}
 		}
-		mWrench = true;
-		mScrewdriver = true;
-		mSoftHammer = true;
-		mHardHammer = true;
+		mWrench        = true;
+		mScrewdriver   = true;
+		mSoftHammer    = true;
+		mHardHammer    = true;
 		mSolderingTool = true;
-		mCrowbar = true; //todo Пересмотреть мейнтенанс
+		mCrowbar       = true; //todo Пересмотреть мейнтенанс
 		return formationChecklist;
 	}
 	
@@ -341,10 +328,10 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		mMaxProgresstime = 2;
-		this.mEUt = 0;
+		mMaxProgresstime         = 2;
+		this.mEUt                = 0;
 		this.mEfficiencyIncrease = 10000;
-		this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+		this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 		return this.mEfficiency >= 10000;
 	}
 	

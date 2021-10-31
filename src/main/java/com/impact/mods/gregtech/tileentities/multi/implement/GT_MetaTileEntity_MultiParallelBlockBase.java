@@ -68,6 +68,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase extends
       final String aNameRegional) {
     super(aID, aName, aNameRegional);
   }
+  
+  public ItemStack get() {
+    return getStackForm(1L);
+  }
 
   public GT_MetaTileEntity_MultiParallelBlockBase(final String aName) {
     super(aName);
