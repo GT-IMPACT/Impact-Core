@@ -66,6 +66,10 @@ public class Structure {
     public static IGregTechTileEntity getIGTE(IGregTechTileEntity iAm, Vector3ic offset) {
         return iAm.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
     }
+    
+    public static IGregTechTileEntity getIGTEno(IGregTechTileEntity iAm, Vector3ic offset) {
+        return iAm.getIGregTechTileEntity(offset.x(), offset.y(), offset.z());
+    }
 
     public static TileEntity getTE(IGregTechTileEntity iAm, Vector3ic offset) {
         return iAm.getTileEntityOffset(offset.x(), offset.y(), offset.z());

@@ -11,19 +11,21 @@ import net.minecraft.entity.player.EntityPlayer;
 public class ImpactPacketStringGui extends ImpactPacket {
 
     private int dimID, playerID;
-    private String mOwnerName;
+    private String mOwnerName, stationName;
 
     public ImpactPacketStringGui() {
     }
 
-    public ImpactPacketStringGui(String OwnerName, int dimID, int playerID) {
+    public ImpactPacketStringGui(String OwnerName, String stationName, int dimID, int playerID) {
         this.mOwnerName = OwnerName;
+        this.stationName = stationName;
         this.dimID = dimID;
         this.playerID = playerID;
     }
 
-    public ImpactPacketStringGui(String OwnerName, EntityPlayer p) {
+    public ImpactPacketStringGui(String OwnerName, String stationName,  EntityPlayer p) {
         this.mOwnerName = OwnerName;
+        this.stationName = stationName;
         this.dimID = p.worldObj.provider.dimensionId;
         this.playerID = p.getEntityId();
     }
@@ -37,6 +39,7 @@ public class ImpactPacketStringGui extends ImpactPacket {
     public byte[] encode() {
         ByteArrayDataOutput tOut = ByteStreams.newDataOutput(10);
         tOut.writeUTF(mOwnerName);
+        tOut.writeUTF(stationName);
         tOut.writeInt(dimID);
         tOut.writeInt(playerID);
         return tOut.toByteArray();
@@ -44,7 +47,7 @@ public class ImpactPacketStringGui extends ImpactPacket {
 
     @Override
     public ImpactPacket decode(ByteArrayDataInput aData) {
-        return new ImpactPacketStringGui(aData.readUTF(), aData.readInt(), aData.readInt());
+        return new ImpactPacketStringGui(aData.readUTF(), aData.readUTF(), aData.readInt(), aData.readInt());
     }
 
     @Override
@@ -52,6 +55,7 @@ public class ImpactPacketStringGui extends ImpactPacket {
         if (Minecraft.getMinecraft().currentScreen instanceof GUI_SelectAerostat) {
             GUI_SelectAerostat gui = (GUI_SelectAerostat) Minecraft.getMinecraft().currentScreen;
             gui.playerName = mOwnerName;
+            gui.mStationName = stationName;
         }
     }
 }

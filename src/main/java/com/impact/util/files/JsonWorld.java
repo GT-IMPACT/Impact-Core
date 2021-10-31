@@ -4,22 +4,24 @@ import com.impact.core.SaveManager;
 
 import java.io.File;
 
-import static com.impact.core.Impact_API.sCommunicationTower;
-import static com.impact.core.Impact_API.sSpaceSatellite;
+import static com.impact.core.Impact_API.*;
 
 public class JsonWorld {
 
     private final static String COMMUNICATION_TOWERS = "CommunicationTowers";
     private final static String SPACE_SATELLITES = "SpaceSatellites";
+    private final static String AERO_STATES = "AeroStates";
 
     public static void save() {
         saveCommunicationTowers();
         saveSpaceSatellite();
+        saveAeroState();
     }
 
     public static void load() {
         loadCommunicationTowers();
         loadSpaceSatellite();
+        loadAeroState();
     }
 
     //region CommunicationTowers
@@ -46,6 +48,20 @@ public class JsonWorld {
         if (!sSpaceSatellite.isEmpty()) {
             File json = SaveManager.get().parallelSystemDirectory;
             JsonUtils.parseMapToJson(sSpaceSatellite, json.getPath(), SPACE_SATELLITES);
+        }
+    }
+    //endregion
+    
+    //region SpaceSatellites
+    private static void loadAeroState() {
+        File json = SaveManager.get().aerostateSystemDirectory;
+        JsonUtils.parseJsonToMap(sAerostat, json.getPath(), AERO_STATES);
+    }
+    
+    private static void saveAeroState() {
+        if (!sAerostat.isEmpty()) {
+            File json = SaveManager.get().aerostateSystemDirectory;
+            JsonUtils.parseMapToJson(sAerostat, json.getPath(), AERO_STATES);
         }
     }
     //endregion

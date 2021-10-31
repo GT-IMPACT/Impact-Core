@@ -2,6 +2,8 @@ package com.impact.mods.gregtech.gui.aerostat;
 
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
+import com.impact.network.ImpactNetwork;
+import com.impact.network.ImpactPacketStringArray;
 import com.impact.util.PositionObject;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,20 +12,22 @@ import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 	
 	public int idLocation = 1;
-	public int curID = 1;
 	public int curBuffer = 0;
 	public String playerName = "";
+	public int timer = 20;
 	
 	public Countainer_SelectAerostat(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity, false);
@@ -36,6 +40,8 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 		addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 8, 55, false, false, 1));
 	}
 	
+	
+	
 	@Override
 	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
 		if (aSlotIndex < 0) {
@@ -47,19 +53,20 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 				IMetaTileEntity imte = this.mTileEntity.getMetaTileEntity();
 				if (imte instanceof GTMTE_Aerostat) {
 					GTMTE_Aerostat aerostat = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity());
+					int size = GTMTE_Aerostat.getRadiusAeroStates(aerostat.playerName, mTileEntity).size();
 					if (!aerostat.aerName.equals("")) {
 						if (aSlotIndex == 0) {
 							if (aShifthold == 1) {
-								aerostat.aerID = aerostat.mapPlayer().size();
+								aerostat.curID = size;
 							} else {
-								aerostat.aerID += (aerostat.aerID + 1 > aerostat.mapPlayer().size()) ? 0 : 1;
+								aerostat.curID += (aerostat.curID + 1 > size) ? 0 : 1;
 							}
 							return null;
 						} else if (aSlotIndex == 1) {
 							if (aShifthold == 1) {
-								aerostat.aerID = 1;
+								aerostat.curID = 1;
 							} else {
-								aerostat.aerID -= (aerostat.aerID - 1 < 1) ? 0 : 1;
+								aerostat.curID -= (aerostat.curID - 1 < 1) ? 0 : 1;
 							}
 							return null;
 						} else if (aSlotIndex == 2) {
@@ -81,16 +88,17 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 		if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
 			return;
 		}
-		idLocation = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).aerID;
-		curID = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curID;
+		
+		timer = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).timer;
+		idLocation = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curID;
 		curBuffer = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curBuffer;
 		
 		for (Object crafter : this.crafters) {
 			ICrafting var1 = (ICrafting) crafter;
 			var1.sendProgressBarUpdate(this, 100, this.idLocation & 0xFFFF);
 			var1.sendProgressBarUpdate(this, 101, this.idLocation >>> 16);
-			var1.sendProgressBarUpdate(this, 102, this.curID & 0xFFFF);
-			var1.sendProgressBarUpdate(this, 103, this.curID >>> 16);
+			var1.sendProgressBarUpdate(this, 102, this.timer & 0xFFFF);
+			var1.sendProgressBarUpdate(this, 103, this.timer >>> 16);
 			var1.sendProgressBarUpdate(this, 104, this.curBuffer & 0xFFFF);
 			var1.sendProgressBarUpdate(this, 105, this.curBuffer >>> 16);
 		}
@@ -107,10 +115,10 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 				this.idLocation = (this.idLocation & 0xFFFF | par2 << 16);
 				break;
 			case 102:
-				this.curID = (this.curID & 0xFFFF0000 | par2);
+				this.timer = (this.timer & 0xFFFF0000 | par2);
 				break;
 			case 103:
-				this.curID = (this.curID & 0xFFFF | par2 << 16);
+				this.timer = (this.timer & 0xFFFF | par2 << 16);
 				break;
 			case 104:
 				this.curBuffer = (this.curBuffer & 0xFFFF0000 | par2);

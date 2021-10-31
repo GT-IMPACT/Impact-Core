@@ -8,10 +8,14 @@ import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.network.ImpactNetwork;
+import com.impact.network.ImpactPacketStringArray;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
+import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -27,7 +31,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.LinkedHashMap;
+import java.util.*;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
@@ -36,7 +40,7 @@ import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
 public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	public final static int MAX_BUFFER = 50_000;
-	public int aerID = 0;
+	public int timer = 20;
 	public int curID = 0;
 	public boolean firstOpen = true;
 	public boolean isFullBuffer = false;
@@ -123,9 +127,9 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
 		
-		if (thisController.getYCoord() < 100) {
-			return false;
-		}
+//		if (thisController.getYCoord() < 100) {
+//			return false;
+//		}
 		
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -182,61 +186,64 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 		}
 	}
 	
+	public static List<GTMTE_Aerostat> getRadiusAeroStates(String owner, IGregTechTileEntity te) {
+		List<GTMTE_Aerostat> as = new ArrayList<>();
+		for (String name : Impact_API.sAerostat.keySet()) {
+			PositionObject location = new PositionObject(Impact_API.sAerostat.get(name));
+			PositionObject thisPos = new PositionObject(te);
+			IGregTechTileEntity teTarget = Structure.getIGTEno(te, location.toVec3());
+			if (teTarget.getMetaTileEntity() instanceof GTMTE_Aerostat) {
+				GTMTE_Aerostat gtmte_aerostat = (GTMTE_Aerostat) teTarget.getMetaTileEntity();
+				if (gtmte_aerostat.playerName.equals(owner)) {
+					int distance = Utilits.distanceBetween3D(thisPos.xPos, location.xPos, thisPos.yPos, location.yPos, thisPos.zPos, location.zPos);
+					if (distance >= 16 && distance <= 256) {
+						as.add(gtmte_aerostat);
+					}
+				}
+			}
+		}
+		return as;
+	}
+	
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 		return mMachine && super.onRightclick(aBaseMetaTileEntity, aPlayer);
 	}
 	
 	public void setLocationName(String name) {
-		PositionObject thisLocation = new PositionObject(getBaseMetaTileEntity());
-		PositionObject checkLocation = Impact_API.sAerostat.get(name);
-		if (checkLocation == null) {
-			Impact_API.sAerostat.remove(aerName);
-			aerName = name;
-			aerID   = 1;
-			Utilits.sendChatByTE(getBaseMetaTileEntity(), "Set location name: \"" + aerName + "\"");
-			Impact_API.sAerostat.put(aerName, thisLocation);
-			int id = 1;
-			for (String names : Impact_API.sAerostat.keySet()) {
-				if (names.equals(aerName)) {
-					curID = id;
-				}
-				id++;
+		try {
+			PositionObject thisLocation = new PositionObject(getBaseMetaTileEntity());
+			if (!Impact_API.sAerostat.containsKey(name)) {
+				Impact_API.sAerostat.remove(aerName);
+				aerName = name;
+				Utilits.sendChatByTE(getBaseMetaTileEntity(), "Set location name: \"" + aerName + "\"");
+				Impact_API.sAerostat.put(aerName, thisLocation.getCoords());
+				curID = 1;
+			} else {
+				Utilits.sendChatByTE(getBaseMetaTileEntity(), "Такое название уже используется!");
 			}
-		} else {
-			Utilits.sendChatByTE(getBaseMetaTileEntity(), "Такое название уже используется!");
+		} catch (Exception e) {
+			Utilits.sendChatByTE(getBaseMetaTileEntity(), "CRASH!");
 		}
 	}
 	
 	@Override
-	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-		super.onFirstTick(aBaseMetaTileEntity);
-		if (aBaseMetaTileEntity.isServerSide()) {
-			if (!aBaseMetaTileEntity.getOwnerName().isEmpty()) {
-				playerName = aBaseMetaTileEntity.getOwnerName();
+	public void onFirstTick(IGregTechTileEntity te) {
+		super.onFirstTick(te);
+		if (te.isServerSide()) {
+			if (!te.getOwnerName().isEmpty()) {
+				playerName = te.getOwnerName();
 			}
-			
 			if (!aerName.isEmpty()) {
 				setLocationName(aerName);
 			}
 		}
 	}
 	
-	public LinkedHashMap<String, PositionObject> mapPlayer() {
-		LinkedHashMap<String, PositionObject> newMap = new LinkedHashMap<>();
-		for (String name : Impact_API.sAerostat.keySet()) {
-			PositionObject pos = Impact_API.sAerostat.get(name);
-			if (pos.playerName.equals(playerName)) {
-				newMap.put(name, pos);
-			}
-		}
-		return newMap;
-	}
-	
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setInteger("aerID", aerID);
+		aNBT.setInteger("timer", timer);
 		aNBT.setInteger("curBuffer", curBuffer);
 		aNBT.setInteger("curID", curID);
 		aNBT.setString("aerName", aerName);
@@ -247,7 +254,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	@Override
 	public void inValidate() {
 		Impact_API.sAerostat.remove(aerName);
-		if (!aerName.equals("")) {
+		if (!aerName.equals("")) { // TODO: 31.10.2021 debug
 			Utilits.sendChatByTE(getBaseMetaTileEntity(), "Remove Station: \"" + aerName + "\"");
 		}
 		super.inValidate();
@@ -256,9 +263,9 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
+		timer      = aNBT.getInteger("timer");
 		curID      = aNBT.getInteger("curID");
 		curBuffer  = aNBT.getInteger("curBuffer");
-		aerID      = aNBT.getInteger("aerID");
 		firstOpen  = aNBT.getBoolean("firstOpen");
 		aerName    = aNBT.getString("aerName");
 		playerName = aNBT.getString("playerName");
@@ -269,7 +276,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (aPlayer.capabilities.isCreativeMode) {
 			for (String name : Impact_API.sAerostat.keySet()) {
-				GT_Utility.sendChatToPlayer(aPlayer, "Name: " + EnumChatFormatting.RED + name + EnumChatFormatting.RESET + " | Owner: " + EnumChatFormatting.GREEN + Impact_API.sAerostat.get(name).playerName);
+				GT_Utility.sendChatToPlayer(aPlayer, "Name: " + EnumChatFormatting.RED + name);
 			}
 		}
 	}
@@ -280,13 +287,14 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	public void toTravel(EntityPlayer aPlayer) {
+
 		int id = 1;
-		for (String name : Impact_API.sAerostat.keySet()) {
-			if (id == aerID) {
+		for (GTMTE_Aerostat aerostat : getRadiusAeroStates(playerName, getBaseMetaTileEntity())) {
+			if (id == curID) {
 				PositionObject thisPos = new PositionObject(getBaseMetaTileEntity());
-				PositionObject newPos = Impact_API.sAerostat.get(name);
+				PositionObject newPos = new PositionObject(aerostat.getBaseMetaTileEntity());
 				int distance = Utilits.distanceBetween3D(thisPos.xPos, newPos.xPos, thisPos.yPos, newPos.yPos, thisPos.zPos, newPos.zPos);
-				if (distance > 16 && thisPos.dPos == newPos.dPos) {
+				if (distance >= 16 && thisPos.dPos == newPos.dPos) {
 					if (curBuffer - distance * 100 > 0) {
 						curBuffer -= distance * 100;
 						aPlayer.setPositionAndUpdate(newPos.xPos + 0.5D, newPos.yPos + 1, newPos.zPos + 0.5D);

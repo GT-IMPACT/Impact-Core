@@ -1,5 +1,7 @@
 package com.impact.util;
 
+import com.impact.util.vector.Vector3i;
+import com.impact.util.vector.Vector3ic;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -72,6 +74,10 @@ public class PositionObject {
 		player = obj.player;
 		playerName = obj.playerName;
 		nameLocation = obj.nameLocation;
+	}
+	
+	public Vector3ic toVec3() {
+		return new Vector3i(xPos, yPos, zPos);
 	}
 	
 	/**

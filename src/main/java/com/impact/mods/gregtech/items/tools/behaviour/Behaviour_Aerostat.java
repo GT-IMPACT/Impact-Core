@@ -1,8 +1,10 @@
 package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
+import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.network.ImpactNetwork;
+import com.impact.network.ImpactPacketStringArray;
 import com.impact.network.ImpactPacketStringGui;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.IItemBehaviour;
@@ -17,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Behaviour_Aerostat extends Behaviour_None {
@@ -31,9 +35,13 @@ public class Behaviour_Aerostat extends Behaviour_None {
 			IGregTechTileEntity gte = (IGregTechTileEntity) te;
 			IMetaTileEntity aerostat = gte.getMetaTileEntity();
 			if (aerostat instanceof GTMTE_Aerostat && ((GTMTE_Aerostat) aerostat).mMachine) {
+				GTMTE_Aerostat as = (GTMTE_Aerostat) aerostat;
 				if (!aPlayer.isSneaking()) {
 					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
-					ImpactNetwork.INSTANCE.sendToPlayer(new ImpactPacketStringGui(((GTMTE_Aerostat) aerostat).playerName, aPlayer), (EntityPlayerMP) aPlayer);
+					List<String> names = new ArrayList<>();
+					GTMTE_Aerostat.getRadiusAeroStates(as.playerName, gte).forEach(a -> names.add(a.aerName));
+					ImpactNetwork.INSTANCE.sendToPlayer(new ImpactPacketStringGui(as.playerName, as.aerName, aPlayer), (EntityPlayerMP) aPlayer);
+					ImpactNetwork.INSTANCE.sendToPlayer(new ImpactPacketStringArray(names), (EntityPlayerMP) aPlayer);
 				} else {
 					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
 				}

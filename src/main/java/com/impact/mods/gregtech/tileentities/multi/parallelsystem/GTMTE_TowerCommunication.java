@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
+import static com.impact.core.Impact_API.sCommunicationTower;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
@@ -222,7 +223,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 	
 	public void setFrequency(int aFreq, EntityPlayer aPlayer) {
 		mFrequency = aFreq;
-		Impact_API.sCommunicationTower.put(Utilits.inToStringUUID(aFreq, aPlayer), new PositionObject(getBaseMetaTileEntity()).getCoords());
+		sCommunicationTower.put(Utilits.inToStringUUID(aFreq, aPlayer), new PositionObject(getBaseMetaTileEntity()).getCoords());
 		GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + aFreq);
 	}
 	
