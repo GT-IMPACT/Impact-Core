@@ -12,7 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class GUI_BASE extends GT_GUIContainerMT_Machine {
 
   public String mMode;
-  String mName = "";
+  public String mName = "";
 
   public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aModeString) {
     super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity),
