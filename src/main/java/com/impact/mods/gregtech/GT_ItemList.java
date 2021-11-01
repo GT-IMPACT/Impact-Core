@@ -110,7 +110,7 @@ public enum GT_ItemList implements IItemContainer {
 
   Casing_Farm, Huge_Casing_Turbine, Space_Satellite_Casing, Tower_Casing, Computer_Casing,
 
-  Long_Distance_Pipeline_Fluid, Long_Distance_Pipeline_Item,
+  Long_Distance_Pipeline_Fluid, Long_Distance_Pipeline_Item, Long_Distance_Pipeline_Energy,
   Long_Distance_Pipeline_Fluid_Pipe, Long_Distance_Pipeline_Item_Pipe,
 
   filler,

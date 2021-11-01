@@ -297,6 +297,10 @@ public class Basic_Register {
     Solar_UV.set(new GTMTE_Solar(ID2++, "UV Solar Panel", 8).getStackForm(1L));
   
     Volumetric_Configurator.set(new GTMTE_VolumetricConfigurator(ID2++, "Volumetric Configurator").getStackForm(1L));
+  
+    Long_Distance_Pipeline_Item.set(
+            new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy",
+                    "Long Distance Energy Pipeline", 1).getStackForm(1L));
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
