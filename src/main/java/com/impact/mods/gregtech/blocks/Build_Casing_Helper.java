@@ -19,13 +19,14 @@ public enum Build_Casing_Helper {
     LSCC_CASING("Lapotronic Super Capacitor Casing", 3, 2, 8, LSCC),
     SAW_CASING("Wooden Casing", 3, 2, 9, SawCase),
     NQ_CASING("Naquadah Base Casing", 3, 2, 10, NqCasing),
-    CYCLONE_CASING("Cyclone Casing", 3, 2, 1, CycloneCasing),
+    CYCLONE_CASING("Cyclone Casing", 3, 2, 11, CycloneCasing),
     MOON_MINER_CASING("Moon Miner Casing", 3, 2, 12, MoonMinerCasing),
     RAILASSEMBLER_CASING("Rail Assembler Casing", 3, 2, 13, RailAssemblerCasing),
     SPACE_ELEVATOR_CASING("Space Elevator Casing", 3, 2, 14, SpaceElevatorCasing),
     LAB_SAFELG_CASING("Lab-Safe Low Gravity Casing", 3, 2, 15, LabSafeLGCasing),
 
     ME_CASING("ME Construction Casing", 3, 3, 0, MECasing),
+    AEROSTATE_PLATFORM("Aerostate Platform Casing", 3, 3, 1, AerostateCasing),
 
     //EMPTY("", 0, 0, 0, null)
     ;

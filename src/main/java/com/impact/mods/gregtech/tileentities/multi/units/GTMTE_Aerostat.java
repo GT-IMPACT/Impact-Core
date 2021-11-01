@@ -36,6 +36,8 @@ import java.util.*;
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
+import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.AEROSTATE_PLATFORM;
+import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.ME_CASING;
 
 public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
@@ -47,10 +49,10 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	public int curBuffer = 0;
 	public String playerName = "";
 	public String aerName = "";
-	Block CASING = Casing_Helper.sCaseCore2;
-	byte CASING_META = 14;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	Block CASING = Casing_Helper.sCaseCore3;
+	int CASING_META = AEROSTATE_PLATFORM.getMeta();
+	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
+	int CASING_TEXTURE_ID = AEROSTATE_PLATFORM.getIDCasing();
 	
 	public GTMTE_Aerostat(int aID, String aNameRegional) {
 		super(aID, "impact.multis.aerostat", aNameRegional);
@@ -63,7 +65,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE : Texture.Icons.OVERLAY_SPACE_ELEVATOR)} : new ITexture[]{INDEX_CASE};
+		return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(Texture.Icons.PLATFORM_AEROSTATE_OVERLAY)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override

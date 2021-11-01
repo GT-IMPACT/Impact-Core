@@ -10,15 +10,16 @@ import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 import net.minecraft.util.IIcon;
 
+import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.AEROSTATE_PLATFORM;
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.ME_CASING;
-import static com.impact.mods.gregtech.enums.Texture.Icons.CASING_ME;
+import static com.impact.mods.gregtech.enums.Texture.Icons.*;
 import static com.impact.util.Utilits.BlockstackMeta;
 import static gregtech.api.util.GT_LanguageManager.addStringLocalization;
 
 public class Casing_3 extends GT_Block_Casings_Abstract {
 
     private static final Build_Casing_Helper[] casing_helpers = {
-            ME_CASING,
+            ME_CASING, AEROSTATE_PLATFORM
     };
 
     public Casing_3() {
@@ -38,6 +39,8 @@ public class Casing_3 extends GT_Block_Casings_Abstract {
         switch (aMeta) {
             case 0:
                 return CASING_ME.getIcon();
+            case 1:
+                return aSide == 1? PLATFORM_AEROSTATE_TOP.getIcon() : PLATFORM_AEROSTATE_SIDE.getIcon();
             default:
                 return null;
         }
