@@ -1,8 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import bloodasp.galacticgreg.GT_TileEntity_Ores_Space;
 import buildcraft.api.core.IAreaProvider;
 import buildcraft.core.Box;
-import buildcraft.core.lib.utils.Utils;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -14,6 +14,7 @@ import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
+import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.Loader;
@@ -23,9 +24,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -35,6 +38,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
@@ -49,7 +53,8 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	boolean isConnect = false;
 	
-	private int endX, endY, endZ;
+	private int xMax, yMax, zMax;
+	private int xMin, yMin, zMin;
 	private int curX, curY, curZ;
 	private boolean isVoidDrop = false;
 	
@@ -127,9 +132,13 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 		aNBT.setInteger("curY", curY);
 		aNBT.setInteger("curZ", curZ);
 		
-		aNBT.setInteger("endX", endX);
-		aNBT.setInteger("endY", endY);
-		aNBT.setInteger("endZ", endZ);
+		aNBT.setInteger("xMin", xMin);
+		aNBT.setInteger("yMin", yMin);
+		aNBT.setInteger("zMin", zMin);
+		
+		aNBT.setInteger("xMax", xMax);
+		aNBT.setInteger("yMax", yMax);
+		aNBT.setInteger("zMax", zMax);
 		
 		aNBT.setBoolean("isVoidDrop", isVoidDrop);
 	}
@@ -141,9 +150,13 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 		curY = aNBT.getInteger("curY");
 		curZ = aNBT.getInteger("curZ");
 		
-		endX = aNBT.getInteger("endX");
-		endY = aNBT.getInteger("endY");
-		endZ = aNBT.getInteger("endZ");
+		xMin = aNBT.getInteger("xMin");
+		yMin = aNBT.getInteger("yMin");
+		zMin = aNBT.getInteger("zMin");
+		
+		xMax = aNBT.getInteger("xMax");
+		yMax = aNBT.getInteger("yMax");
+		zMax = aNBT.getInteger("zMax");
 		
 		isVoidDrop = aNBT.getBoolean("isVoidDrop");
 	}
@@ -186,66 +199,55 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	
 	private ArrayList<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
-		final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
-		return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 0);
+		ArrayList<ItemStack> is = new ArrayList<>();
+		
+		TileEntity te = getBaseMetaTileEntity().getTileEntity(posX, posY, posZ);
+		if (te instanceof GT_TileEntity_Ores) {
+			return is;
+		}
+		Block block = getBaseMetaTileEntity().getBlock(posX, posY, posZ);
+		if (block != null) {
+			final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
+			is.addAll(block.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 0));
+		}
+		return is;
 	}
 	
 	public void mineBlock(int x, int y, int z) {
 		IGregTechTileEntity iAm = getBaseMetaTileEntity();
-		x = iAm.getXCoord() + x;
-		y = iAm.getYCoord() + y;
-		z = iAm.getZCoord() + z;
+		ArrayList<ItemStack> drops = getBlockDrops(null, x, y, z);
+		impact.proxy.hint_particle(iAm.getWorld(), x, y, z, decorateBlock[2], 1, 18);
 		
-		ArrayList<ItemStack> drops = getBlockDrops(iAm.getBlock(x, y, z), x, y, z);
-		//iAm.getWorld().setBlock(x, y, z, decorateBlock[2], 1, 2);
-		impact.proxy.hint_particle(iAm.getWorld(), x, y, z, UtilBlock, 2, 2);
+		if (iAm.getBlock(x, y, z) == Blocks.bedrock) return;
+		
 		if (isVoidDrop) {
-			iAm.getWorld().setBlockToAir(x, y, z);
-		}
-		
-		if (!isVoidDrop && !drops.isEmpty()) {
-			iAm.getWorld().setBlockToAir(x, y, z);
-		}
-		
-		for (ItemStack drop : drops) {
-			addOutput(drop);
+			iAm.getWorld().setBlock(x, y, z, Blocks.air, 0, 2);
+			for (ItemStack drop : drops) {
+				addOutput(drop);
+			}
+		} else {
+			TileEntity te = iAm.getTileEntity(x, y, z);
+			if (te == null || te instanceof GT_TileEntity_Ores) {
+				iAm.getWorld().setBlock(x, y, z, Blocks.air, 0, 2);
+			}
 		}
 	}
 	
 	public void addBound(World w, int x, int y, int z) {
-		IGregTechTileEntity iAm = getBaseMetaTileEntity();
-		
-		final Vector3ic forgeDirection = new Vector3i(
-				ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
-				ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
-		);
 		
 		int age = 20 * 5;
 		
-		Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
+		impact.proxy.hint_particle(w, xMin, yMin, zMin, decorateBlock[2], 2, age); // x0 y0 z0 green
+		impact.proxy.hint_particle(w, xMax, yMax, zMax, decorateBlock[2], 3, age); // x1 y1 z1 blue
 		
-		offset = rotateOffsetVector(forgeDirection, 0, 0, -endZ);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
+		impact.proxy.hint_particle(w, xMax, yMin, zMin, decorateBlock[2], 1, age); // x1 y0 z0
+		impact.proxy.hint_particle(w, xMin, yMax, zMin, decorateBlock[2], 1, age); // x0 y1 z0
+		impact.proxy.hint_particle(w, xMin, yMin, zMax, decorateBlock[2], 1, age); // x0 y0 z1
 		
-		offset = rotateOffsetVector(forgeDirection, endX, 0, -1);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
+		impact.proxy.hint_particle(w, xMax, yMin, zMax, decorateBlock[2], 1, age); // x1 y0 z1
+		impact.proxy.hint_particle(w, xMin, yMax, zMax, decorateBlock[2], 1, age); // x0 y1 z1
+		impact.proxy.hint_particle(w, xMax, yMax, zMin, decorateBlock[2], 1, age); // x1 y1 z0
 		
-		offset = rotateOffsetVector(forgeDirection, endX, 0, -endZ);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
-		
-		offset = rotateOffsetVector(forgeDirection, 0, endY, -1);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
-		
-		offset = rotateOffsetVector(forgeDirection, 0, endY, -endZ);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
-		
-		offset = rotateOffsetVector(forgeDirection, endX, endY, -1);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
-		
-		offset = rotateOffsetVector(forgeDirection, endX, endY, -endZ);
-		impact.proxy.hint_particle(w, offset.x() + x, offset.y() + y, offset.z() + z, decorateBlock[2], 1, age);
 		
 	}
 	
@@ -261,26 +263,38 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 			if (aTick == 1 || aTick % (20 * 5) == 0) {
 				addBound(w, x, y, z);
 			}
-			if (iAm.isActive() && aTick % 2 == 0) {
-				curX--;
-				if (curX < 0) {
-					curX = endX;
-					curZ++;
-					if (curZ >= 0) {
-						curZ = -endZ;
-						curY--;
-						if (curY < 0) {
-							curY = endY;
-						}
+			if (iAm.isActive() && aTick % 20 == 0) {
+				
+				if (curY == yMin && curX == xMin && curZ == zMin) {
+					return;
+				}
+				
+//				curX--;
+//				if (curX < xMin) {
+//					curX = xMax;
+//					curZ--;
+//					if (curZ < zMin) {
+//						curZ = zMax;
+//						curY--;
+//						if (curY < yMin) {
+//							curY = yMax;
+//						}
+//					}
+//				}
+				
+				
+				if (curY < yMin) {
+					curY = yMax;
+				}
+				
+				if (curY == 0 && curX == 0 && curZ == 0) return;
+				
+				for (curX = xMax; curX >= xMin; --curX) {
+					for (curZ = zMax; curZ >= zMin; --curZ) {
+						mineBlock(curX, curY, curZ);
 					}
 				}
-				final Vector3ic forgeDirection = new Vector3i(
-						ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
-						ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
-						ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
-				);
-				Vector3ic offset = rotateOffsetVector(forgeDirection, curX, curY, curZ);
-				mineBlock(offset.x(), offset.y(), offset.z());
+				curY--;
 			}
 		}
 	}
@@ -289,34 +303,28 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	public void onFirstTick(IGregTechTileEntity iAm) {
 		super.onFirstTick(iAm);
 		if (iAm.isServerSide()) {
-			Vector3ic forgeDirection = new Vector3i(
-					ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,
-					ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
-					ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
-			);
-			Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);
-			World w = iAm.getWorld();
 			
-			endX = 5;
-			endY = 5;
-			endZ = 5;
-			
-			TileEntity te = w.getTileEntity(offset.x() + iAm.getXCoord(), offset.y() + iAm.getYCoord(), offset.z() + iAm.getZCoord());
-			
+			TileEntity te = iAm.getTileEntityAtSide(iAm.getBackFacing());
 			
 			if (Loader.isModLoaded("BuildCraft|Core") && te instanceof IAreaProvider) {
-				IAreaProvider a = Utils.getNearbyAreaProvider(w, iAm.getXCoord(), iAm.getYCoord(), iAm.getZCoord());
-				if (a != null) {
-					Box box = new Box();
-					box.initialize(a);
-					a.removeFromWorld();
-					
-					endX = box.sizeX() - 1;
-					endY = box.sizeY() - 1;
-					endZ = box.sizeZ();
-					
-					Utilits.sendChatByTE(iAm, " " + endX + " " + endY + " " + endZ);
-				}
+				IAreaProvider mark = (IAreaProvider) te;
+				Box box = new Box();
+				box.initialize(mark);
+				mark.removeFromWorld();
+				
+				xMax = box.xMax;
+				yMax = box.yMax;
+				zMax = box.zMax;
+				
+				xMin = box.xMin;
+				yMin = box.yMin;
+				zMin = box.zMin;
+				
+				curX = xMax;
+				curY = yMax;
+				curZ = zMax;
+//				int v = (xMax - xMin + 1) * (yMax - yMin + 1) * (zMax - zMin + 1);
+//				mEUt = -(v * 10);
 			}
 		}
 	}
@@ -324,6 +332,9 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	@Override
 	public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
+		curX = xMax;
+		curY = yMax;
+		curZ = zMax;
 	}
 	
 	@Override
