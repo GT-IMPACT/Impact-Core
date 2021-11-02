@@ -1,10 +1,12 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import com.impact.mods.gregtech.enums.Texture;
 import com.impact.util.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 
 import static gregtech.api.enums.GT_Values.V;
@@ -45,13 +47,16 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 			IGregTechTileEntity teTarget = tTile.getIGregTechTileEntityAtSide(tTile.getBackFacing());
 			if (teDest != null && teTarget != null) {
 				long tEU = V[mTier];
+				long tAmp = 1;
 				if (teDest.inputEnergyFrom(te.getFrontFacing()) && teTarget.outputsEnergyTo(tTile.getBackFacing())) {
-					if (teTarget.getStoredEU() < teTarget.getEUCapacity() && teDest.drainEnergyUnits((byte) 6, tEU, 1)) {
-						teTarget.injectEnergyUnits((byte) 6, tEU, 1);
+					if (teTarget.getStoredEU() < teTarget.getEUCapacity()) {
+						tAmp = teTarget.injectEnergyUnits((byte) 6, tEU, teDest.getOutputAmperage());
+						teDest.drainEnergyUnits((byte) 6, tEU, tAmp);
 					}
 				} else if (teDest.outputsEnergyTo(tTile.getFrontFacing()) && teTarget.inputEnergyFrom(te.getBackFacing())) {
-					if (teDest.getStoredEU() < teDest.getEUCapacity() && teTarget.drainEnergyUnits((byte) 6, tEU, 1)) {
-						teDest.injectEnergyUnits((byte) 6, tEU, 1);
+					if (teDest.getStoredEU() < teDest.getEUCapacity()) {
+						tAmp = teDest.injectEnergyUnits((byte) 6, tEU, teTarget.getOutputAmperage());
+						teTarget.drainEnergyUnits((byte) 6, tEU, tAmp);
 					}
 				}
 			}
@@ -59,7 +64,7 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 	}
 	
 	public int getPipeMeta() {
-		return 1;
+		return mTier + 1;
 	}
 	
 	@Override
@@ -74,7 +79,7 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 		} else if (aSide == GT_Utility.getOppositeSide(aFacing)) {
 			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]};
 		} else {
-			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Texture.Icons.OVERLAY_PIPELINE_ENERGY_SIDE)};
 		}
 	}
 }

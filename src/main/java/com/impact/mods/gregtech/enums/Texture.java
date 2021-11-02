@@ -4,6 +4,8 @@ import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -40,8 +42,10 @@ public class Texture {
     REACTOR_OVERLAY, REACTOR_OVERLAY_ACTIVE,
 
     LONG_DISTANCE_PIPE_FLUID, LONG_DISTANCE_PIPE_ITEM,
+    TLDPE_LV, TLDPE_MV, TLDPE_HV, TLDPE_EV, TLDPE_IV,
+    
     OVERLAY_PIPELINE_FLUID_BACK, OVERLAY_PIPELINE_FLUID_FRONT, OVERLAY_PIPELINE_FLUID_SIDE,
-    OVERLAY_PIPELINE_ITEM_BACK, OVERLAY_PIPELINE_ITEM_FRONT, OVERLAY_PIPELINE_ITEM_SIDE,
+    OVERLAY_PIPELINE_ITEM_BACK, OVERLAY_PIPELINE_ITEM_FRONT, OVERLAY_PIPELINE_ITEM_SIDE, OVERLAY_PIPELINE_ENERGY_SIDE,
 
     FORGE_HAMMER_HEAD, FORGE_HAMMER_HANDLE, LUMBER_AXE_HEAD, LUMBER_AXE_HANDLE,
 
@@ -65,8 +69,7 @@ public class Texture {
         Test = new IIconContainer[]{
 
         };
-
-
+    
     protected IIcon mIcon;
 
     Icons() {

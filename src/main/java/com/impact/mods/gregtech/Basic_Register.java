@@ -298,9 +298,11 @@ public class Basic_Register {
   
     Volumetric_Configurator.set(new GTMTE_VolumetricConfigurator(ID2++, "Volumetric Configurator").getStackForm(1L));
   
-    Long_Distance_Pipeline_Item.set(
-            new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy",
-                    "Long Distance Energy Pipeline", 1).getStackForm(1L));
+    LDPE_LV.set(new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy.0", "Long Distance Energy Pipeline LV", 1).getStackForm(1L));
+    LDPE_MV.set(new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy.1", "Long Distance Energy Pipeline MV", 2).getStackForm(1L));
+    LDPE_HV.set(new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy.2", "Long Distance Energy Pipeline HV", 3).getStackForm(1L));
+    LDPE_EV.set(new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy.3", "Long Distance Energy Pipeline EV", 4).getStackForm(1L));
+    LDPE_IV.set(new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy.4", "Long Distance Energy Pipeline IV", 5).getStackForm(1L));
 
     INFO("Last ID Basic_Register.java: " + ID2);
 
