@@ -91,7 +91,7 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
             te.increaseStoredEnergyUnits(maxEUStore() - te.getStoredEU(), false);
         }
     }
-
+    
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -123,11 +123,12 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
     @Override
     public void onFirstTick(IGregTechTileEntity te) {
         super.onFirstTick(te);
+        te.setFrontFacing((byte) 2);
         World w = te.getWorld();
         this.noSunWorld = w.provider.hasNoSky;
         this.wetBiome = w.getWorldChunkManager().getBiomeGenAt(te.getXCoord(), te.getZCoord()).getIntRainfall() > 0;
     }
-
+    
     public ITexture[] getFront(byte aColor) {
         return new ITexture[]{super.getFront(aColor)[0], Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
     }

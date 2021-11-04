@@ -137,8 +137,7 @@ public class TileEntitySolarPanel extends TileEntityBase implements IEnergyTile,
 
     private boolean toGTSolar() {
         int meta = 14595 + solarType - 1;
-        worldObj.setBlock(xCoord, yCoord, zCoord, GregTech_API.sBlockMachines,
-                GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType(), 2);
+        worldObj.setBlock(xCoord, yCoord, zCoord, GregTech_API.sBlockMachines, GregTech_API.METATILEENTITIES[meta].getTileEntityBaseType(), 3);
         TileEntity tile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
         ((IGregTechTileEntity) tile).setInitialValuesAsNBT(null, (short) meta);
         return true;
