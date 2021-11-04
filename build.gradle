@@ -75,6 +75,7 @@ repositories {}
 dependencies {
     provided fileTree(dir: 'run/', include:'*.jar')
     compileOnly fileTree(dir: 'notRun/', include:'*.jar')
+    compileOnly "io.gitlab.hohserg.elegant.networking:annotation-processor:3.10"
 }
 
 

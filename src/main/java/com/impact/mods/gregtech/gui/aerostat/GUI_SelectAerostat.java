@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech.gui.aerostat;
 
-import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
+import com.impact.network.toclient.lists.string.StringListPacket;
+import com.impact.network.toclient.primitives.string.StringArrayPacket;
 import com.impact.util.PositionObject;
-import com.impact.util.Utilits;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,7 +17,7 @@ import java.util.List;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static net.minecraft.util.EnumChatFormatting.*;
 
-public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
+public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements StringArrayPacket, StringListPacket {
 	
 	public String mName;
 	public String mStationName = "";
@@ -96,5 +96,16 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine {
 		Countainer_SelectAerostat container = (Countainer_SelectAerostat) mContainer;
 		double tScale = (double) container.curBuffer / (double) GTMTE_Aerostat.MAX_BUFFER;
 		drawTexturedModalRect(x + 9, y + 158 - (int) Math.min(60D, tScale * 60D), 242, 60 - (int) Math.min(60D, tScale * 60D), 14, 60);
+	}
+	
+	@Override
+	public final void updateFields(String... array) {
+		this.playerName = array[0];
+		this.mStationName = array[1];
+	}
+	
+	@Override
+	public void updateField(List<String> obj) {
+		this.names = obj;
 	}
 }

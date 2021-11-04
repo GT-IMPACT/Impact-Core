@@ -1,11 +1,9 @@
 package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
-import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
-import com.impact.network.ImpactNetwork;
-import com.impact.network.ImpactPacketStringArray;
-import com.impact.network.ImpactPacketStringGui;
+import com.impact.network.toclient.lists.string.StringList_Packet;
+import com.impact.network.toclient.primitives.string.StringArray_Packet;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -20,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Behaviour_Aerostat extends Behaviour_None {
@@ -40,8 +37,10 @@ public class Behaviour_Aerostat extends Behaviour_None {
 					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
 					List<String> names = new ArrayList<>();
 					GTMTE_Aerostat.getRadiusAeroStates(as.playerName, gte).forEach(a -> names.add(a.aerName));
-					ImpactNetwork.INSTANCE.sendToPlayer(new ImpactPacketStringGui(as.playerName, as.aerName, aPlayer), (EntityPlayerMP) aPlayer);
-					ImpactNetwork.INSTANCE.sendToPlayer(new ImpactPacketStringArray(names), (EntityPlayerMP) aPlayer);
+
+					new StringArray_Packet(as.playerName, as.aerName).sendToPlayer((EntityPlayerMP) aPlayer);
+					new StringList_Packet(names).sendToPlayer((EntityPlayerMP) aPlayer);
+				
 				} else {
 					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
 				}

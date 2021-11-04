@@ -29,6 +29,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
@@ -174,11 +176,10 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide() && mMachine) {
-			
 			if (aTick % 20 == 0 && curBuffer < MAX_BUFFER - 100) {
 				isFullBuffer = false;
 			}
-			if (!isFullBuffer && depleteInput(Materials.Gas.getGas(100))) {
+			if (!isFullBuffer && depleteInput(Materials.NatruralGas.getGas(100))) {
 				curBuffer += 100;
 				if (curBuffer + 100 > MAX_BUFFER) {
 					curBuffer    = MAX_BUFFER;
