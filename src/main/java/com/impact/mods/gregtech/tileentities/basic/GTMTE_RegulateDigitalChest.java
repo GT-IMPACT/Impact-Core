@@ -74,7 +74,7 @@ public class GTMTE_RegulateDigitalChest extends GT_MetaTileEntity_DigitalChestBa
   @Override
   public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
     super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-    Utilits.openTileGui(aPlayer, 6, getBaseMetaTileEntity());
+    Utilits.openGui(aPlayer, 6, getBaseMetaTileEntity());
   }
 
   @Override

@@ -9,6 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.awt.*;
+
 public class CommonProxy implements IGuiHandler {
 	
 	public static void register_event(Object obj) {
@@ -54,7 +56,16 @@ public class CommonProxy implements IGuiHandler {
 	public void hint_particle(World w, int x, int y, int z, Block block, int meta, int age) {
 	}
 	
-	public void hint_particle(World w, int x, int y, int z, double xx, double yy, double zz, Block block, int meta, int age) {
+	public void remove_hint_particle(World w, int x, int y, int z) {
+	}
+	
+	public void hint_particle(World w, int x, int y, int z, int xx, int yy, int zz, Block block, int meta, int age) {
+	}
+	
+	public void hint_particleMega(World w, int x, int y, int z, int xx, int yy, int zz, Color color, int age) {
+	}
+	
+	public void hint_particleMega(World w, int x, int y, int z, Color color, int age) {
 	}
 	
 	public void beam(World worldObj, double sx, double sy, double sz, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, int age) {

@@ -2,6 +2,7 @@ package com.impact.util;
 
 import com.impact.core.Refstrings;
 import com.impact.register.SSBodies;
+import com.impact.util.vector.Vector3i;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -284,7 +285,11 @@ public class Utilits {
         return world.rayTraceBlocks(vec3, vec31);
     }
 
-    public static void openTileGui(EntityPlayer aPlayer, int idGui, IGregTechTileEntity igt) {
+    public static void openGui(EntityPlayer aPlayer, int idGui, World w) {
+        aPlayer.openGui(Refstrings.MODID, idGui, w, 0, 0, 0);
+    }
+    
+    public static void openGui(EntityPlayer aPlayer, int idGui, IGregTechTileEntity igt) {
         aPlayer.openGui(Refstrings.MODID, idGui, igt.getWorld(), igt.getXCoord(), igt.getYCoord(), igt.getZCoord());
     }
 

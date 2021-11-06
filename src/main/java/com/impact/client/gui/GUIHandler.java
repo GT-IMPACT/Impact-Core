@@ -107,8 +107,8 @@ public class GUIHandler implements IGuiHandler {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
 					return new GUI_ValueRegulateChest(player.inventory, gte);
 				}
-				INFO("GUIHandler Client - Loaded");
 		}
+		INFO("GUIHandler Client - Loaded");
 		return null;
 	}
 }

@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.gui.base;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -36,6 +37,12 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
     super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity),
         RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay"
             : aTextureFile));
+    mName = aName;
+    mMode = "";
+  }
+  
+  public GUI_BASE(String aName, String aTextureFile, GT_ContainerMetaTile_Machine c) {
+    super(c, RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
     mName = aName;
     mMode = "";
   }

@@ -4,6 +4,7 @@ import com.impact.common.block.blocks.*;
 import com.impact.common.block.itemblock.FakeBlocksItem;
 import com.impact.common.item.GT_Pump.GregtechPump;
 import com.impact.core.Refstrings;
+import com.impact.mods.gregtech.items.tools.ConstructionLaser;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
@@ -13,6 +14,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.core.impactLog.INFO;
+import static com.impact.mods.gregtech.GT_ItemList.ConstructionLaser;
 import static com.impact.util.Utilits.BlockstackMeta;
 import static gregtech.api.enums.GT_Values.W;
 
@@ -113,6 +115,8 @@ public class ItemRegistery {
 		GTPump.registerPumpType(1, "MV Hand Pump", 100000, 1);
 		GTPump.registerPumpType(2, "HV Hand Pump", 400000, 2);
 		GTPump.registerPumpType(3, "EV Hand Pump", 1600000, 3);
+		
+		ConstructionLaser.set(new ConstructionLaser("Construction Laser"));
 	}
 	
 	public static void registerBlocks() {

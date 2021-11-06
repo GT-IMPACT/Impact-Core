@@ -30,8 +30,7 @@ public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Mach
   }
 
   @Override
-  public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold,
-      EntityPlayer aPlayer) {
+  public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
     if (aSlotIndex < 0 || aSlotIndex > 2) {
       return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }

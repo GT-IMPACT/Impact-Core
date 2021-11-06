@@ -34,7 +34,7 @@ public class Behaviour_Aerostat extends Behaviour_None {
 			if (aerostat instanceof GTMTE_Aerostat && ((GTMTE_Aerostat) aerostat).mMachine) {
 				GTMTE_Aerostat as = (GTMTE_Aerostat) aerostat;
 				if (!aPlayer.isSneaking()) {
-					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
+					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
 					List<String> names = new ArrayList<>();
 					GTMTE_Aerostat.getRadiusAeroStates(as.playerName, gte).forEach(a -> names.add(a.aerName));
 
@@ -42,7 +42,7 @@ public class Behaviour_Aerostat extends Behaviour_None {
 					new StringList_Packet(names).sendToPlayer((EntityPlayerMP) aPlayer);
 				
 				} else {
-					Utilits.openTileGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
+					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
 				}
 			}
 			return true;

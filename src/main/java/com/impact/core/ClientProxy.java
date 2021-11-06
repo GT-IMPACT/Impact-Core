@@ -19,12 +19,15 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
+import java.lang.reflect.Field;
+import java.util.List;
 
 public class ClientProxy extends CommonProxy {
 	
@@ -57,8 +60,39 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void hint_particle(World w, int x, int y, int z, double xx, double yy, double zz, Block block, int meta, int age) {
-		Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(w, x, y, z, xx, yy, zz, age, block, meta));
+	public void remove_hint_particle(World w, int x, int y, int z) {
+		try {
+			Field cls = Minecraft.getMinecraft().effectRenderer.getClass().getDeclaredField("fxLayers");
+			cls.setAccessible(true);
+			List[] fxs = (List[]) cls.get(Minecraft.getMinecraft().effectRenderer);
+			for (Object obj : fxs[1]) {
+				EntityFX fx = (EntityFX) obj;
+				if (fx.posX == x + 0.25D && fx.posY == y + 0.5D && fx.posZ == z + 0.25D) {
+					fx.setDead();
+					return;
+				} else if (fx.posX == x && fx.posY == y && fx.posZ == z) {
+					fx.setDead();
+					return;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void hint_particle(World w, int x, int y, int z, int xx, int yy, int zz, Block block, int meta, int age) {
+		Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHintMega(w, x, y, z).setMax(xx, yy, zz).setAge(age));
+	}
+	
+	@Override
+	public void hint_particleMega(World w, int x, int y, int z, int xx, int yy, int zz, Color color, int age) {
+		Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHintMega(w, x, y, z).setMax(xx, yy, zz).setAge(age).setColor(color));
+	}
+	
+	@Override
+	public void hint_particleMega(World w, int x, int y, int z, Color color, int age) {
+		Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHintMega(w, x, y, z).setAge(age).setColor(color));
 	}
 	
 	@Override
