@@ -8,6 +8,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_Utility.getOppositeSide;
@@ -15,7 +19,7 @@ import static gregtech.api.util.GT_Utility.getOppositeSide;
 public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipelineBase {
 	
 	public GTMTE_LongDistancePipelineEnergy(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, Language.transDesc("pipeline.energy", "Sends Energy over long distances"));
+		super(aID, aName, aNameRegional, aTier, Language.transDesc("pipeline.energy.0", "Sends Energy over long distances"));
 	}
 	
 	public GTMTE_LongDistancePipelineEnergy(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -48,7 +52,7 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 			IGregTechTileEntity out = outTE.getIGregTechTileEntityAtSide(outTE.getBackFacing());
 			
 			if (in != null && out != null) {
-				long tEU = V[mTier];
+				long tEU = V[mTier] - Math.min(V[mTier], mDistance / 16);
 				if (inTE.getFrontFacing() == getOppositeSide(in.getFrontFacing()) && outTE.getBackFacing() != getOppositeSide(out.getFrontFacing())) {
 					if (in.isUniversalEnergyStored(tEU)) {
 						long tAmp = out.injectEnergyUnits((byte) 6, tEU, in.getOutputAmperage());
@@ -59,6 +63,14 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 				}
 			}
 		}
+	}
+	
+	@Override
+	public String[] getDescription() {
+		return new String[] {
+//			Language.transDesc("pipeline.energy.1", "Amperage: Unlimited"),
+//			Language.transDesc("pipeline.energy.2", "Loss: 0.125 EU / block"),
+		};
 	}
 	
 	public int getPipeMeta() {

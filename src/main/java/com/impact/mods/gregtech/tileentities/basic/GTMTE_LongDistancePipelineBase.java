@@ -46,6 +46,7 @@ public abstract class GTMTE_LongDistancePipelineBase extends
 
   protected GTMTE_LongDistancePipelineBase mTarget = null, mSender = null;
   protected ChunkCoordinates mTargetPos = null;
+  protected long mDistance = 0;
 
   public GTMTE_LongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier,
       String aDescription) {
@@ -65,12 +66,16 @@ public abstract class GTMTE_LongDistancePipelineBase extends
       aNBT.setInteger("target.x", mTargetPos.posX);
       aNBT.setInteger("target.y", mTargetPos.posY);
       aNBT.setInteger("target.z", mTargetPos.posZ);
+      aNBT.setLong("mDistance", mDistance);
     }
   }
 
   @Override
   public void loadNBTData(NBTTagCompound aNBT) {
     super.loadNBTData(aNBT);
+    if (aNBT.hasKey("mDistance")) {
+      mDistance = aNBT.getInteger("mDistance");
+    }
     if (aNBT.hasKey("target")) {
       mTargetPos = new ChunkCoordinates(
           aNBT.getInteger("target.x"),
@@ -185,6 +190,7 @@ public abstract class GTMTE_LongDistancePipelineBase extends
     mTargetPos = getCoords();
     mTarget = this;
     mSender = null;
+    mDistance = 0;
 
     // Start scanning from the output side
     Block aBlock = gtTile.getBlockAtSide(gtTile.getBackFacing());
@@ -201,12 +207,14 @@ public abstract class GTMTE_LongDistancePipelineBase extends
       Queue<ChunkCoordinates>
           tQueue = new LinkedList<>(
           Collections.singletonList(getFacingOffset(gtTile, gtTile.getBackFacing())));
-
+      mDistance = -1;
       while (!tQueue.isEmpty()) {
+        
         final ChunkCoordinates aCoords = tQueue.poll();
 
         if (world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ) == aBlock
             && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == aMetaData) {
+          mDistance++;
           // We've got another pipe/wire block
           // TODO: Make sure it's the right type of pipe/wire via meta 
           ChunkCoordinates tCoords;
