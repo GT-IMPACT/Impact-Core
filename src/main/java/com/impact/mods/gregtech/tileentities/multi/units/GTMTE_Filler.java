@@ -263,7 +263,7 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	private void setBoxCoords(Box box) {
 		if (box == null) {
-			isDone = false;
+			isDone = true;
 			return;
 		}
 		xMax   = box.xMax;
@@ -275,7 +275,7 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 		curX   = xMax;
 		curY   = yMax;
 		curZ   = zMax;
-		isDone = true;
+		isDone = false;
 	}
 	
 	@SuppressWarnings("unchecked")
