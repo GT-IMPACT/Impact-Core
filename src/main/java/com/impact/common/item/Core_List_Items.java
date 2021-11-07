@@ -256,6 +256,7 @@ public enum Core_List_Items {
     OrbCasingII(191, 1),
     RTRMFoil(192, 1),
     PGFoil(193, 1),
+    NANDArray(194, 1),
 
     WoodenBrickForm1(0, 2),
 
