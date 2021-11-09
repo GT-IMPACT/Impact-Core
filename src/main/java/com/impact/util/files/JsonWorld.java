@@ -31,10 +31,8 @@ public class JsonWorld {
     }
 
     private static void saveCommunicationTowers() {
-        if (!sCommunicationTower.isEmpty()) {
-            File json = SaveManager.get().parallelSystemDirectory;
-            JsonUtils.parseMapToJson(sCommunicationTower, json.getPath(), COMMUNICATION_TOWERS);
-        }
+        File json = SaveManager.get().parallelSystemDirectory;
+        JsonUtils.parseMapToJson(sCommunicationTower, json.getPath(), COMMUNICATION_TOWERS);
     }
     //endregion
 
@@ -45,10 +43,8 @@ public class JsonWorld {
     }
 
     private static void saveSpaceSatellite() {
-        if (!sSpaceSatellite.isEmpty()) {
-            File json = SaveManager.get().parallelSystemDirectory;
-            JsonUtils.parseMapToJson(sSpaceSatellite, json.getPath(), SPACE_SATELLITES);
-        }
+        File json = SaveManager.get().parallelSystemDirectory;
+        JsonUtils.parseMapToJson(sSpaceSatellite, json.getPath(), SPACE_SATELLITES);
     }
     //endregion
     
@@ -59,10 +55,8 @@ public class JsonWorld {
     }
     
     private static void saveAeroState() {
-        if (!sAerostat.isEmpty()) {
-            File json = SaveManager.get().aerostateSystemDirectory;
-            JsonUtils.parseMapToJson(sAerostat, json.getPath(), AERO_STATES);
-        }
+        File json = SaveManager.get().aerostateSystemDirectory;
+        JsonUtils.parseMapToJson(sAerostat, json.getPath(), AERO_STATES);
     }
     //endregion
 }
