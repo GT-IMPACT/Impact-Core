@@ -83,6 +83,28 @@ public enum GT_ItemList implements IItemContainer {
   Solar_ULV, Solar_LV, Solar_MV, Solar_HV, Solar_EV, Solar_IV, Solar_LuV, Solar_ZPM, Solar_UV,
   
   Volumetric_Configurator,
+  
+  EnergyMulti4_IV,  EnergyMulti16_IV,  EnergyMulti64_IV,
+  EnergyMulti4_LuV, EnergyMulti16_LuV, EnergyMulti64_LuV,
+  EnergyMulti4_ZPM, EnergyMulti16_ZPM, EnergyMulti64_ZPM,
+  EnergyMulti4_UV,  EnergyMulti16_UV,  EnergyMulti64_UV,
+  EnergyMulti4_UHV, EnergyMulti16_UHV, EnergyMulti64_UHV,
+  EnergyMulti4_UEV, EnergyMulti16_UEV, EnergyMulti64_UEV,
+  EnergyMulti4_UIV, EnergyMulti16_UIV, EnergyMulti64_UIV,
+  EnergyMulti4_UMV, EnergyMulti16_UMV, EnergyMulti64_UMV,
+  EnergyMulti4_UXV, EnergyMulti16_UXV, EnergyMulti64_UXV,
+  
+  
+  DynamoMulti2_EV,
+  DynamoMulti2_IV,  DynamoMulti4_IV,   DynamoMulti16_IV,  DynamoMulti64_IV,
+  DynamoMulti2_LuV, DynamoMulti4_LuV,  DynamoMulti16_LuV, DynamoMulti64_LuV,
+  DynamoMulti2_ZPM, DynamoMulti4_ZPM,  DynamoMulti16_ZPM, DynamoMulti64_ZPM,
+  DynamoMulti2_UHV, DynamoMulti2_UV,   DynamoMulti4_UV,   DynamoMulti16_UV,  DynamoMulti64_UV,
+  DynamoMulti4_UHV, DynamoMulti16_UHV, DynamoMulti64_UHV,
+  DynamoMulti4_UEV, DynamoMulti16_UEV, DynamoMulti64_UEV,
+  DynamoMulti4_UIV, DynamoMulti16_UIV, DynamoMulti64_UIV,
+  DynamoMulti4_UMV, DynamoMulti16_UMV, DynamoMulti64_UMV,
+  DynamoMulti4_UXV, DynamoMulti16_UXV, DynamoMulti64_UXV,
 
   //MULTI
   Machine_CokeOven, Machine_Multi_Farm, Multi_Tank, Single_Tank, SOFC_Low, SOFC_Medium, SOFC_Huge,

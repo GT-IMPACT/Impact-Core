@@ -414,7 +414,7 @@ public class GTMTE_LiquidNqGenerator extends GT_MetaTileEntity_MultiParallelBloc
 	private void quantumStuff(boolean shouldExist) {
 		IGregTechTileEntity base = getBaseMetaTileEntity();
 		if (base != null && base.getWorld() != null) {
-			Vector3ic vec = Structure.goBuild(base, 0, 3, -3);
+			Vector3ic vec = Structure.goBuild(base, 0, 0, -3);
 			Block block = Structure.getBlock(base, vec);
 			if (shouldExist) {
 				if (block != null) {

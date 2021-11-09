@@ -1,8 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -13,10 +11,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -51,8 +46,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 	
 	private static final long MAX_LONG = Long.MAX_VALUE;
 	
-	private final Set<GT_MetaTileEntity_Hatch_EnergyMulti> mEnergyHatchesTT = new HashSet<>();
-	private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
 	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
@@ -173,8 +166,8 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 		// Reset capacitor counts
 		Arrays.fill(capacitors, 0);
 		// Clear TT hatches
-		mEnergyHatchesTT.clear();
-		mDynamoHatchesTT.clear();
+		mEnergyHatchesMulti.clear();
+		mDynamoHatchesMulti.clear();
 		mEnergyTunnelsTT.clear();
 		mDynamoTunnelsTT.clear();
 		// Temp var for loss calculation
@@ -356,7 +349,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 			} else if (mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
 				// Add TT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mEnergyHatchesTT.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
+				return mEnergyHatchesMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
 			} else {
 				return false;
 			}
@@ -380,7 +373,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 			} else if (mte instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
 				// Add TT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mDynamoHatchesTT.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
+				return mDynamoHatchesMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) mte);
 			} else {
 				return false;
 			}
@@ -418,7 +411,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		// Draw energy from TT hatches
-		for (GT_MetaTileEntity_Hatch_EnergyMulti eHatch : mEnergyHatchesTT) {
+		for (GT_MetaTileEntity_Hatch_EnergyMulti eHatch : mEnergyHatchesMulti) {
 			if (eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
 			}
@@ -430,7 +423,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		// Output energy to TT hatches
-		for (GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesTT) {
+		for (GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesMulti) {
 			if (eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
 			}

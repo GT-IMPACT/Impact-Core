@@ -6,6 +6,7 @@ import static gregtech.api.enums.GT_Values.VN;
 import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
 import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_InputBus;
 import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
+import com.impact.util.multis.EnergyHelper;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -534,12 +535,6 @@ public abstract class GTMTE_MBBase extends MetaTileEntity {
         if (aFirstVoltageFound == -1) {
           aFirstVoltageFound = aVoltage;
         } else {
-          /**
-           * Calcualtes overclocked ness using long integers
-           * @param aEUt          - recipe EUt
-           * @param aDuration     - recipe Duration
-           * @param mAmperage     - should be 1 ?
-           */
           //Long time calculation
           if (aFirstVoltageFound != aVoltage) {
             aFoundMixedDynamos = true;
@@ -553,32 +548,10 @@ public abstract class GTMTE_MBBase extends MetaTileEntity {
       explodeMultiblock();
       return false;
     }
-
-    long leftToInject;
-    //Long EUt calculation
-    long aVoltage;
-    //Isnt too low EUt check?
-    int aAmpsToInject;
-    int aRemainder;
-    int ampsOnCurrentHatch;
     //xEUt *= 4;//this is effect of everclocking
     for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
-      if (isValidMetaTileEntity(aDynamo)) {
-        leftToInject = aEU - injected;
-        aVoltage = aDynamo.maxEUOutput();
-        aAmpsToInject = (int) (leftToInject / aVoltage);
-        aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
-        ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-        for (int i = 0; i < ampsOnCurrentHatch; i++) {
-          aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
-        }
-        injected += aVoltage * ampsOnCurrentHatch;
-        if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
-          aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
-          injected += aRemainder;
-        }
-      }
-    }
+		injected = EnergyHelper.getInjected(aEU, injected, isValidMetaTileEntity(aDynamo), aDynamo.maxEUOutput(), aDynamo.maxAmperesOut(), aDynamo.getBaseMetaTileEntity());
+	}
     return injected > 0;
   }
 

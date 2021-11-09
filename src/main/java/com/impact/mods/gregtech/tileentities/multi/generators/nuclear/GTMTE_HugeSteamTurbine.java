@@ -210,7 +210,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 			formationChecklist = false;
 		}
 		
-		if (mDynamoHatches.size() > 9 || mDynamoHatchesTT.size() > 9 || mDynamoTunnelsTT.size() > 9) {
+		if (mDynamoHatches.size() > 9 || mDynamoHatchesMulti.size() > 9 || mDynamoTunnelsTT.size() > 9) {
 			formationChecklist = false;
 		}
 		

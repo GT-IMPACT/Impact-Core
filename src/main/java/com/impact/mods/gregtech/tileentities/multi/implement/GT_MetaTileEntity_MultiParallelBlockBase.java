@@ -1,8 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.client.gui.GUIHandler;
 import com.impact.core.Impact_API;
@@ -11,6 +9,7 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_SawMill;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
+import com.impact.util.multis.EnergyHelper;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.multis.WorldProperties;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -22,10 +21,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -64,6 +60,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
 	public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
 	public final HashSet<GTMTE_ComputerRack> sComputerRack = new HashSet<>();
+	
+	public ArrayList<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new ArrayList<>();
+	public ArrayList<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new ArrayList<>();
+	
 	public boolean mRecipeCheckParallel = false;
 	public int mParallel = 0;
 	public int mCheckParallelCurrent = 0;
@@ -76,6 +76,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	public int mTargetD = 0;
 	public boolean mIsConnect = false;
 	public IGregTechTileEntity tile = null;
+	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
+	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 	
 	public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -965,17 +967,112 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
 			}
 		}
-		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesTT) {
+		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesMulti) {
 			if (isValidMetaTileEntity(tHatch)) {
-				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
+				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amp;
 			}
 		}
-		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyTunnelsTT) {
+		for (GT_MetaTileEntity_Hatch_EnergyTunnel tHatch : mEnergyTunnelsTT) {
 			if (isValidMetaTileEntity(tHatch)) {
 				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
 			}
 		}
 		return rVoltage;
+	}
+	
+	@Override
+	public boolean addEnergyOutput(long aEU) {
+		if (aEU <= 0) {
+			return true;
+		}
+		if (mDynamoHatches.size() > 0 || mDynamoHatchesMulti.size() > 0 || mDynamoTunnelsTT.size() > 0) {
+			return addEnergyOutputMultipleDynamos(aEU, true);
+		}
+		return super.addEnergyOutput(aEU);
+	}
+	
+	@Override
+	public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
+		int injected = 0;
+		long totalOutput = 0;
+		long aFirstVoltageFound = -1;
+		boolean aFoundMixedDynamos = false;
+		for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
+			if (aDynamo == null) {
+				return false;
+			}
+			if (isValidMetaTileEntity(aDynamo)) {
+				long aVoltage = aDynamo.maxEUOutput();
+				long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+				// Check against voltage to check when hatch mixing
+				if (aFirstVoltageFound == -1) {
+					aFirstVoltageFound = aVoltage;
+				} else {
+					//Long time calculation
+					if (aFirstVoltageFound != aVoltage) {
+						aFoundMixedDynamos = true;
+					}
+				}
+				totalOutput += aTotal;
+			}
+		}
+		
+		for (GT_MetaTileEntity_Hatch_DynamoMulti aDynamo : mDynamoHatchesMulti) {
+			if (aDynamo == null) {
+				return false;
+			}
+			if (isValidMetaTileEntity(aDynamo)) {
+				long aVoltage = aDynamo.maxEUOutput();
+				long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+				// Check against voltage to check when hatch mixing
+				if (aFirstVoltageFound == -1) {
+					aFirstVoltageFound = aVoltage;
+				} else {
+					//Long time calculation
+					if (aFirstVoltageFound != aVoltage) {
+						aFoundMixedDynamos = true;
+					}
+				}
+				totalOutput += aTotal;
+			}
+		}
+		
+		for (GT_MetaTileEntity_Hatch_DynamoTunnel aDynamo : mDynamoTunnelsTT) {
+			if (aDynamo == null) {
+				return false;
+			}
+			if (isValidMetaTileEntity(aDynamo)) {
+				long aVoltage = aDynamo.maxEUOutput();
+				long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+				// Check against voltage to check when hatch mixing
+				if (aFirstVoltageFound == -1) {
+					aFirstVoltageFound = aVoltage;
+				} else {
+					//Long time calculation
+					if (aFirstVoltageFound != aVoltage) {
+						aFoundMixedDynamos = true;
+					}
+				}
+				totalOutput += aTotal;
+			}
+		}
+		
+		if (totalOutput < aEU || (aFoundMixedDynamos && !aAllowMixedVoltageDynamos)) {
+			explodeMultiblock();
+			return false;
+		}
+		
+		//xEUt *= 4;//this is effect of everclocking
+		for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
+			injected = EnergyHelper.getInjected(aEU, injected, isValidMetaTileEntity(aDynamo), aDynamo.maxEUOutput(), aDynamo.maxAmperesOut(), aDynamo.getBaseMetaTileEntity());
+		}
+		for (GT_MetaTileEntity_Hatch_DynamoMulti aDynamo : mDynamoHatchesMulti) {
+			injected = EnergyHelper.getInjected(aEU, injected, isValidMetaTileEntity(aDynamo), aDynamo.maxEUOutput(), aDynamo.maxAmperesOut(), aDynamo.getBaseMetaTileEntity());
+		}
+		for (GT_MetaTileEntity_Hatch_DynamoTunnel aDynamo : mDynamoTunnelsTT) {
+			injected = EnergyHelper.getInjected(aEU, injected, isValidMetaTileEntity(aDynamo), aDynamo.maxEUOutput(), aDynamo.maxAmperesOut(), aDynamo.getBaseMetaTileEntity());
+		}
+		return injected > 0;
 	}
 	
 	public long getMaxInputVoltage() {
@@ -985,12 +1082,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.mAmpers;
 			}
 		}
-		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesTT) {
+		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesMulti) {
 			if (isValidMetaTileEntity(tHatch)) {
-				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
+				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amp;
 			}
 		}
-		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyTunnelsTT) {
+		for (GT_MetaTileEntity_Hatch_EnergyTunnel tHatch : mEnergyTunnelsTT) {
 			if (isValidMetaTileEntity(tHatch)) {
 				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.Amperes;
 			}
@@ -1005,9 +1102,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				rVoltage += tHatch.getBaseMetaTileEntity().getOutputVoltage() * tHatch.mAmpers;
 			}
 		}
-		for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : mDynamoHatchesTT) {
+		for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : mDynamoHatchesMulti) {
 			if (isValidMetaTileEntity(tHatch)) {
-				rVoltage += tHatch.getBaseMetaTileEntity().getOutputVoltage() * tHatch.Amperes;
+				rVoltage += tHatch.getBaseMetaTileEntity().getOutputVoltage() * tHatch.Amp;
 			}
 		}
 		for (GT_MetaTileEntity_Hatch_DynamoTunnel tHatch : mDynamoTunnelsTT) {
@@ -1025,7 +1122,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				if (aTier < tEHatch.mTier) aTier = tEHatch.mTier;
 			}
 		}
-		for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesTT) {
+		for (GT_MetaTileEntity_Hatch_EnergyMulti tEHatch : mEnergyHatchesMulti) {
 			if (isValidMetaTileEntity(tEHatch)) {
 				if (aTier < tEHatch.mTier) aTier = tEHatch.mTier;
 			}
@@ -1055,6 +1152,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		super.saveNBTData(aNBT);
 	}
 	
+	/*
+	 * NEW PARALLEL SYSTEM TEST
+	 */
+	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		this.mMode                 = aNBT.getByte("mMode");
@@ -1067,9 +1168,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		this.mParallel             = aNBT.getInteger("mParallel");
 		this.modeBuses             = aNBT.getInteger("modeBuses");
 		this.mCheckParallelCurrent = aNBT.getInteger("mCheckParallelCurrent");
-		mExtendedFacing = ExtendedFacing.of(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
+		mExtendedFacing            = ExtendedFacing.of(
+				ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
 				Rotation.byIndex(aNBT.getByte("eRotation")),
-				Flip.byIndex(aNBT.getByte("eFlip")));
+				Flip.byIndex(aNBT.getByte("eFlip"))
+		);
 		super.loadNBTData(aNBT);
 	}
 	
@@ -1080,10 +1183,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		final String[] a = new String[ll.size()];
 		return ll.toArray(a);
 	}
-	
-	/*
-	 * NEW PARALLEL SYSTEM TEST
-	 */
 	
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 0;
@@ -1222,7 +1321,71 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		sComputerRack.clear();
 		sCommunReceiver.clear();
 		sCommunTransmitter.clear();
+		mEnergyTunnelsTT.clear();
 		mDynamoTunnelsTT.clear();
+	}
+	
+	@Override
+	public void explodeMultiblock() {
+		for (MetaTileEntity tTileEntity : mEnergyTunnelsTT) tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
+		for (MetaTileEntity tTileEntity : mDynamoTunnelsTT) tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
+		super.explodeMultiblock();
+	}
+	
+	@Override
+	public boolean drainEnergyInput(long aEU) {
+		for (GT_MetaTileEntity_Hatch_EnergyTunnel tHatch : mEnergyTunnelsTT) {
+			if (isValidMetaTileEntity(tHatch)) {
+				if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false)) return true;
+			}
+		}
+		return super.drainEnergyInput(aEU);
+	}
+	
+	@Override
+	public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		
+		if (aTileEntity == null) return false;
+		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) return false;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
+			((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+		}
+		
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyTunnel)
+			return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity);
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel)
+			return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity);
+		
+		return super.addToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+	
+	@Override
+	public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) return false;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyTunnel) {
+			((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) aMetaTileEntity);
+		}
+		return super.addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+	
+	@Override
+	public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) return false;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
+			((GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) aMetaTileEntity);
+		}
+		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 	
 	@Override
@@ -1325,13 +1488,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		IGregTechTileEntity tTile = getBaseMetaTileEntity();
 		return getCastedStructureDefinition().check(this, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, !mMachine);
 	}
-	
+
 	protected final boolean checkPiece(int horizontalOffset, int verticalOffset, int depthOffset) {
 		return checkPiece("main", horizontalOffset, verticalOffset, depthOffset);
 	}
-	
-	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
-	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 	
 	@Override
 	public ExtendedFacing getExtendedFacing() {
@@ -1345,10 +1505,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			mExtendedFacing = newExtendedFacing;
 			IGregTechTileEntity base = getBaseMetaTileEntity();
 			mMachine = false;
-			mUpdate = 100;
+			mUpdate  = 100;
 			if (getBaseMetaTileEntity().isServerSide()) {
-				ImpactAPI.sendAlignment((IAlignmentProvider) base,
-						new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId, base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
+				ImpactAPI.sendAlignment(
+						(IAlignmentProvider) base,
+						new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId, base.getXCoord(), base.getYCoord(), base.getZCoord(), 512)
+				);
 			} else {
 				base.issueTextureUpdate();
 			}
