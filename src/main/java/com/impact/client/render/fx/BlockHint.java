@@ -28,7 +28,7 @@ public class BlockHint extends EntityFX {
 	 * @param icons DOWN, UP, NORTH, SOUTH, WEST, EAST
 	 */
 	public BlockHint(World world, int x, int y, int z, IIcon[] icons) {
-		super(world, x + .25, y + .5, z + .25);
+		super(world, x + .2, y + .3, z + .2);
 		particleGravity = 0;
 		prevPosX        = posX;
 		prevPosY        = posY;
@@ -39,7 +39,7 @@ public class BlockHint extends EntityFX {
 	}
 	
 	public BlockHint(World world, int x, int y, int z, Block block, int meta) {
-		super(world, x + .25, y + .5, z + .25);
+		super(world, x + .2, y + .3, z + .2);
 		particleGravity = 0;
 		prevPosX        = posX;
 		prevPosY        = posY;
@@ -52,7 +52,7 @@ public class BlockHint extends EntityFX {
 	}
 	
 	public BlockHint(World world, int x, int y, int z, int age, Block block, int meta) {
-		super(world, x + .25, y + .5, z + .25);
+		super(world, x + .2, y + .3, z + .2);
 		particleGravity = 0;
 		prevPosX        = posX;
 		prevPosY        = posY;
@@ -84,20 +84,28 @@ public class BlockHint extends EntityFX {
 	
 	@Override
 	public void renderParticle(Tessellator tes, float subTickTime, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
-		float size = .5f;
+		float size = .6f;
 		float X = (float) (prevPosX + (posX - prevPosX) * (double) subTickTime - EntityFX.interpPosX);
-		float Y = (float) (prevPosY + (posY - prevPosY) * (double) subTickTime - EntityFX.interpPosY) - size / 2;
+		float Y = (float) (prevPosY + (posY - prevPosY) * (double) subTickTime - EntityFX.interpPosY) - .3f / 2;
 		float Z = (float) (prevPosZ + (posZ - prevPosZ) * (double) subTickTime - EntityFX.interpPosZ);
-		GL11.glDisable(GL11.GL_CULL_FACE);
-		GL11.glDepthMask(false);
-		tes.setColorRGBA((int) (mRGBa[0] * .9F), (int) (mRGBa[1] * .95F), (int) (mRGBa[2] * 1F), 192);
 		
-		//var8, var9 - X U
-		//var 10, var 11 - Y V
+		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+		tes.setColorRGBA((int) (mRGBa[0] * .9F), (int) (mRGBa[1] * .95F), (int) (mRGBa[2] * 1F), 255);
+		box(tes, X, Y, Z);
+		
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glPopMatrix();
+	}
+	
+	private void box(Tessellator tes, float X, float Y, float Z) {
+		float size = .6f;
 		for (int i = 0; i < 6; i++) {
 			if (icons[i] == null) {
 				continue;
 			}
+			
 			double u = icons[i].getMinU();
 			double U = icons[i].getMaxU();
 			double v = icons[i].getMinV();
@@ -140,9 +148,8 @@ public class BlockHint extends EntityFX {
 					tes.addVertexWithUV(X + size, Y, Z + size, u, V);
 					break;
 			}
+			
 		}
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glDepthMask(true);
 	}
 	
 	@Override

@@ -19,15 +19,30 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Mixer> {
 	
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 15;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_Mixer> definition =
+			StructureDefinition.<GTMTE_Mixer>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"000", ".1.", ".1.", "0.0",},
+							{"000", "1.1", "1.1", "000",},
+							{"000", ".1.", ".1.", "000",},
+							{"000", "000", "000", "000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 15))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Mixer(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.mixer", aNameRegional);
@@ -38,18 +53,18 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 3, 0);
 	}
 	
 	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_Mixer(this.mName);
+	public IStructureDefinition<GTMTE_Mixer> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_mixer");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_mixer");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -67,11 +82,17 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Maceration Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
+	}
+	
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	}
+	
+	@Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GTMTE_Mixer(this.mName);
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
@@ -27,19 +23,34 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.Random;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.LAB_SAFELG_CASING;
 import static net.minecraft.util.EnumChatFormatting.*;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
 
-public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ParametricDiffuser> {
 	
 	public static Block CASING = Casing_Helper.sCaseCore2;
 	public static byte CASING_META = 15;
+	static IStructureDefinition<GTMTE_ParametricDiffuser> definition =
+			StructureDefinition.<GTMTE_ParametricDiffuser>builder()
+					.addShape("main", new String[][]{
+							{"     A   A", "     AAAAA", "     AAAAA", "          "},
+							{"      AAA ", "AAAAAAAAAA", "~AFFFCCCCA", "AAAAAAAAAA"},
+							{"      AAA ", "AAFFFCCCCA", "AD       F", "AACCCCCCCA"},
+							{"      AAA ", "AAAAAAAAAA", "AAFFFCCCCA", "AAAAAAAAAA"},
+							{"     A   A", "     AAAAA", "     AAAAA", "          "}
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.addElement('C', ofBlock(ItemRegistery.MPSystem, 0))
+					.addElement('D', ofBlock(ItemRegistery.MPTransducer, 0))
+					.addElement('F', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
+					.build();
 	public int mMPGenerate = 0;
 	public boolean checkStabilizer = true;
 	public int rangeToStabilizer = 0;
@@ -51,17 +62,14 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 	//region Register
 	public GTMTE_ParametricDiffuser(int aID, String aNameRegional) {
 		super(aID, "impact.multis.parametricdiffuser", aNameRegional);
-		run();
 	}
 	
 	public GTMTE_ParametricDiffuser(String aName) {
 		super(aName);
-		run();
 	}
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		run();
 		checkStabilizer = true;
 		return new GTMTE_ParametricDiffuser(this.mName);
 	}
@@ -82,44 +90,19 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 		return new GT_Container_ParametricDiffuser(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
-	public void run() {
-		registerMetaClass(GTMTE_ParametricDiffuser.class, new IMultiblockInfoContainer<GTMTE_ParametricDiffuser>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_ParametricDiffuser> definition =
-					StructureDefinition.<GTMTE_ParametricDiffuser>builder()
-							.addShape("main", new String[][]{
-									{"     A   A", "     AAAAA", "     AAAAA", "          "},
-									{"      AAA ", "AAAAAAAAAA", "~AFFFCCCCA", "AAAAAAAAAA"},
-									{"      AAA ", "AAFFFCCCCA", "AD       F", "AACCCCCCCA"},
-									{"      AAA ", "AAAAAAAAAA", "AAFFFCCCCA", "AAAAAAAAAA"},
-									{"     A   A", "     AAAAA", "     AAAAA", "          "}
-							})
-							.addElement('A', ofBlock(CASING, CASING_META))
-							.addElement('C', ofBlock(ItemRegistery.MPSystem, 0))
-							.addElement('D', ofBlock(ItemRegistery.MPTransducer, 0))
-							.addElement('F', ofBlock(ItemRegistery.IGlassBlock))
-							.build();
-			private final String[] desc = new String[]{
-					RED + "Impact Details:",
-			};
-			
-			//endregion
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_ParametricDiffuser tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 0, 2, 1, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 0, 2, 1);
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_parametric");
+	public IStructureDefinition<GTMTE_ParametricDiffuser> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_parametric");
 		b
 				.addTypeMachine("name", "Matrix Particles Parametric Diffuser")
 				.addSeparator()
@@ -128,11 +111,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 				.addMaintenanceHatch()
 				.addCasingInfo(LAB_SAFELG_CASING.getItemContainer())
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override
@@ -257,9 +236,9 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity iAm) {
-        if (!Utilits.isLowGravity(iAm)) {
-            return false;
-        }
+		if (!Utilits.isLowGravity(iAm)) {
+			return false;
+		}
 		//region Structure
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX,

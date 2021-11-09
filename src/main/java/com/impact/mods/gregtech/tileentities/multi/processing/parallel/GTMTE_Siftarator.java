@@ -20,14 +20,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
+import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+
+public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Siftarator> {
 	
 	public static String mModed;
 	Block CASING = Casing_Helper.sCaseCore2;
 	byte CASING_META = 1;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static IStructureDefinition<GTMTE_Siftarator> definition =
+			StructureDefinition.<GTMTE_Siftarator>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"000..", ".0...", "000.0", "0.000", "000.0",},
+							{"000..", "000..", "0.000", "0..00", "00000",},
+							{"000..", ".0...", "000.0", "00000", "000.0",},
+					})
+					.addElement('0', ofBlock(sCaseCore2, 1))
+					.build();
 	
 	public GTMTE_Siftarator(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.siftarator", aNameRegional);
@@ -38,18 +54,18 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	public IStructureDefinition<GTMTE_Siftarator> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_Siftarator(this.mName);
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 3, 0);
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_siftarator");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_siftarator");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -66,11 +82,17 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Electromagnetic Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
+	}
+	
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	}
+	
+	@Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GTMTE_Siftarator(this.mName);
 	}
 	
 	@Override

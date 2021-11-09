@@ -22,14 +22,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
 
-public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Wind_Generator> {
 	
 	public static int MAX_CAPACITY = 1_000_000;
+	static IStructureDefinition<GTMTE_Wind_Generator> definition =
+			StructureDefinition.<GTMTE_Wind_Generator>builder()
+					.addShape("main", new String[][]{
+							{"~"},
+					}).build();
 	public int speedRotor = 10;
 	public TE_WindMill wind = null;
 	public int mOutputSalary = 0;
@@ -58,6 +64,16 @@ public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBa
 			}
 		}
 		return formationChecklist;
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Wind_Generator> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 0, 0, 0);
 	}
 	
 	@Override
@@ -223,13 +239,9 @@ public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBa
 	}
 	
 	@Override
-	public String[] getDescription() {
+	protected MultiBlockTooltipBuilder createTooltip() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("wind_generator");
 		b.addTypeGenerator().signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 }

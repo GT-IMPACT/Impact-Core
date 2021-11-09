@@ -25,19 +25,38 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.ImpactAPI;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 
 import static com.impact.util.Utilits.getFluidStack;
 import static com.impact.util.recipe.RecipeHelper.calcTimeParallel;
+import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockHint;
 
-public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedVacuumFreezer> {
 	
 	Block CASING = GregTech_API.sBlockCasings2;
 	byte CASING_META = 1;
 	byte CASING_TEXTURE_ID = 17;
+	static IStructureDefinition<GTMTE_AdvancedVacuumFreezer> definition =
+			StructureDefinition.<GTMTE_AdvancedVacuumFreezer>builder()
+					.addShapeOldApi("main", new String[][]{
+							
+							{".000.", ".000.", ".0.0.", ".000.",},
+							{".010.", ".010.", "00100", "00000",},
+							{".010.", "00100", "00100", "00000",},
+							{".010.", "00000", "00000", "00000",},
+							{".000.", ".000.", ".000.", ".000.",},
+					})
+					.addElement('0', ofBlock(sBlockCasings2, 1))
+					.addElement('1', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+					.build();
 	
 	public GTMTE_AdvancedVacuumFreezer(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.advvf", aNameRegional);
@@ -48,18 +67,18 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 	}
 	
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 2, 0);
 	}
 	
 	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_AdvancedVacuumFreezer(this.mName);
+	public IStructureDefinition<GTMTE_AdvancedVacuumFreezer> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_vac_freezer");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_vac_freezer");
 		b
 				.addInfo("info.0", "Speed Freeez!")
 				.addParallelInfo(1, 256)
@@ -78,11 +97,17 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 				.addParallelHatch()
 				.addCasingInfo("case", "Frost Proof Machine Casing and IC2 Coolant fluid")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
+	}
+	
+	@Override
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+		return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
+	}
+	
+	@Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GTMTE_AdvancedVacuumFreezer(this.mName);
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

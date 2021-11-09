@@ -1,16 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nq;
 
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.github.technus.tectech.thing.block.QuantumStuffBlock;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
+import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.Language;
 import com.impact.util.string.MultiBlockTooltipBuilder;
+import com.impact.util.vector.Structure;
+import com.impact.util.vector.Vector3i;
+import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -18,6 +17,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -27,26 +27,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.enums.GT_Values.RA;
 import static java.text.NumberFormat.getNumberInstance;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-	
-	private static final String[] description = new String[]{
-			EnumChatFormatting.RED + "Impact Details:",
-			"- Naquadah Base Casing",
-			"- I-Glass (any glass)",
-			"- Tether Core",
-			"- Hatches (any Casing)",
-			"- Dynamo (any Casing)",
-	};
+public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_HyperNaquadahGenerator> {
 	
 	private static final IStructureDefinition<GTMTE_HyperNaquadahGenerator> STRUCTURE_DEFINITION =
 			StructureDefinition.<GTMTE_HyperNaquadahGenerator>builder()
@@ -58,7 +51,7 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 					.addElement('A', ofBlock(sCaseCore2, 10))
 					.addElement('B', ofBlock(Block_NqTether.INSTANCE, 0))
 					.addElement('C', ofChain(
-							ofHatchAdder(GTMTE_HyperNaquadahGenerator::addClassicToMachineList, 410, sCaseCore2, 10),
+							ofHatchAdder(GTMTE_HyperNaquadahGenerator::addToMachineList, 410, sCaseCore2, 10),
 							onElementPass(t -> t.casingCount++, ofBlock(sCaseCore2, 10))
 					))
 					.build();
@@ -83,7 +76,7 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 	}
 	
 	@Override
-	public IStructureDefinition<GTMTE_HyperNaquadahGenerator> getStructure_EM() {
+	public IStructureDefinition<GTMTE_HyperNaquadahGenerator> getStructureDefinition() {
 		return STRUCTURE_DEFINITION;
 	}
 	
@@ -108,13 +101,15 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 	}
 	
 	@Override
-	public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+	public boolean machineStructure(IGregTechTileEntity iGregTechTileEntity) {
 		casingCount = 0;
-		return structureCheck_EM("main", 7, 13, 0) && casingCount >= 5;
+		boolean check = checkPiece(7, 13, 0);
+		if (casingCount < 5) check = false;
+		return check;
 	}
 	
 	@Override
-	public boolean checkRecipe_EM(ItemStack itemStack) {
+	public boolean checkRecipe(ItemStack itemStack) {
 		final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
 		Collection<GT_Recipe> recipeList = GT_Recipe.GT_Recipe_Map.sHyperGenerator.mRecipeList;
 		if ((storedFluids.size() > 0 && recipeList != null)) {
@@ -128,11 +123,9 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 							super.mMaxProgresstime    = 20; // 1 Second
 							super.mEfficiencyIncrease = 500; // 500 - 5% per cycle
 							if (mEfficiency > 9000) {
-								super.eAmpereFlow = 256;
-								super.mEUt        = EU_PER_TICK / 256;
+								super.mEUt = EU_PER_TICK;
 							} else {
-								super.mEUt        = 0;
-								super.eAmpereFlow = 0;
+								super.mEUt = 0;
 							}// UV * 256A
 							quantumStuff(true);
 							return true;
@@ -142,7 +135,6 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 			}
 		}
 		super.mEUt        = 0;
-		super.eAmpereFlow = 0;
 		super.mEfficiency = 0;
 		quantumStuff(false);
 		return false;
@@ -151,23 +143,26 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 	private void quantumStuff(boolean shouldExist) {
 		IGregTechTileEntity base = getBaseMetaTileEntity();
 		if (base != null && base.getWorld() != null) {
-			int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX + base.getXCoord();
-			int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 6 + base.getYCoord();
-			int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ + base.getZCoord();
-			Block block = base.getWorld().getBlock(xDir, yDir, zDir);
+			Vector3ic vec = Structure.goBuild(base, 0, 6, -1);
+			Block block = Structure.getBlock(base, vec);
 			if (shouldExist) {
 				if (block != null) {
-					base.getWorld().setBlock(xDir, yDir + 6, zDir, Block_QuantumStuff.INSTANCE, 0, 2);
+					Structure.setBlock(base, vec, Block_QuantumStuff.INSTANCE, 0);
 				}
 			} else {
-				base.getWorld().setBlock(xDir, yDir + 6, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
+				try {
+					Block qStaff = Block.getBlockFromItem(GT_ModHandler.getModItem("tectech", "tile.quantumStuff", 1).getItem());
+					Structure.setBlock(base, vec, qStaff, 0);
+				} catch (Exception e) {
+					Structure.setBlock(base, vec, Block_QuantumStuff.INSTANCE, 0);
+				}
 			}
 		}
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("nq1");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("nq1");
 		b
 				.addMultiAmpGen()
 				.addTypeGenerator()
@@ -181,11 +176,7 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 				.addOtherStructurePart("other.0", "Naquadah Chamber Casing", "other.1", "inside structure")
 				.addOtherStructurePart("other.2", "Tether Core", "other.3", "for contain core Nq")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override
@@ -201,12 +192,7 @@ public class GTMTE_HyperNaquadahGenerator extends GT_MetaTileEntity_MultiblockBa
 	
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		structureBuild_EM("main", 7, 13, 0, hintsOnly, stackSize);
-	}
-	
-	@Override
-	public String[] getStructureDescription(ItemStack stackSize) {
-		return description;
+		buildPiece(stackSize, hintsOnly, 7, 13, 0);
 	}
 	
 	public static class Runner implements Runnable {

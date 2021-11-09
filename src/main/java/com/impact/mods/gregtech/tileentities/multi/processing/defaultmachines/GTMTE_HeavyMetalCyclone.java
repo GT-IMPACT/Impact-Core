@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -19,18 +15,32 @@ import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_HeavyMetalCyclone> {
 	
+	static IStructureDefinition<GTMTE_HeavyMetalCyclone> definition =
+			StructureDefinition.<GTMTE_HeavyMetalCyclone>builder()
+					.addShape("main", new String[][]{
+							{"       ", "       ", "       ", "       ", "       ", "       ", " AAAAA "},
+							{"  AAA  ", " AAAAA ", "  AAA  ", "  AAA  ", "  A~A  ", " AAAAA ", "AAAAAAA"},
+							{" AAAAA ", " A B A ", " A B A ", " A B A ", " A B A ", " A B A ", "AAAAAAA"},
+							{" AAAAA ", " CB BC ", " CB BC ", " CB BC ", " CB BC ", " AB BA ", "AAAAAAA"},
+							{" AAAAA ", " A B A ", " A B A ", " A B A ", " A B A ", " A B A ", "AAAAAAA"},
+							{"  AAA  ", " AACAA ", "  ACA  ", "  ACA  ", "  ACA  ", " AAAAA ", "AAAAAAA"},
+							{"       ", "       ", "       ", "       ", "       ", "       ", " AAAAA "}
+					})
+					.addElement('A', ofBlock(sCaseCore2, 11))
+					.addElement('B', ofBlock(InsideBlock, 1))
+					.addElement('C', ofBlock(IGlassBlock, 0))
+					.build();
 	Block CASING = Casing_Helper.sCaseCore2;
 	byte CASING_META = 11;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
@@ -38,11 +48,20 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 	
 	public GTMTE_HeavyMetalCyclone(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.heavymetalcyclone", aNameRegional);
-		new build().run();
 	}
- 
+	
 	public GTMTE_HeavyMetalCyclone(String aName) {
 		super(aName);
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 3, 4, 1);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_HeavyMetalCyclone> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
@@ -56,8 +75,8 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("heavy_metal_cyclone");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("heavy_metal_cyclone");
 		b
 				.addInfo("info.0", "Centrifuge for heavy materials")
 				.addTypeMachine("name", "Heavy Metal Cyclone")
@@ -73,11 +92,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 				.addOtherStructurePart("other.0", "Cyclone Chamber Casing", "other.1", "inside structure")
 				.addOtherStructurePart("other.2", "I-Glass", "other.3", "glass for structure")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override
@@ -311,60 +326,5 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		return impactRecipe();
-	}
-	
-	static class build implements Runnable {
-		
-		@Override
-		public void run() {
-			
-			registerMetaClass(
-					GTMTE_HeavyMetalCyclone.class,
-					new IMultiblockInfoContainer<GTMTE_HeavyMetalCyclone>() {
-						//region Structure
-						private final IStructureDefinition<GTMTE_HeavyMetalCyclone> definition =
-								StructureDefinition.<GTMTE_HeavyMetalCyclone>builder()
-										.addShape("main", new String[][]{
-												{"       ", "       ", "       ", "       ", "       ", "       ",
-														" AAAAA "},
-												{"  AAA  ", " AAAAA ", "  AAA  ", "  AAA  ", "  A~A  ", " AAAAA ",
-														"AAAAAAA"},
-												{" AAAAA ", " A B A ", " A B A ", " A B A ", " A B A ", " A B A ",
-														"AAAAAAA"},
-												{" AAAAA ", " CB BC ", " CB BC ", " CB BC ", " CB BC ", " AB BA ",
-														"AAAAAAA"},
-												{" AAAAA ", " A B A ", " A B A ", " A B A ", " A B A ", " A B A ",
-														"AAAAAAA"},
-												{"  AAA  ", " AACAA ", "  ACA  ", "  ACA  ", "  ACA  ", " AAAAA ",
-														"AAAAAAA"},
-												{"       ", "       ", "       ", "       ", "       ", "       ",
-														" AAAAA "}
-										})
-										.addElement('A', ofBlock(sCaseCore2, 11))
-										.addElement('B', ofBlock(InsideBlock, 1))
-										.addElement('C', ofBlock(IGlassBlock, 0))
-										.build();
-						private final String[] desc = new String[]{
-								EnumChatFormatting.RED + "Impact Details:",
-								"- Cyclone Casing",
-								"- Cyclone Chamber Casing",
-								"- I-Glass (any glass)",
-								"- Hatches (any Casing)",
-						};
-						//endregion
-						
-						@Override
-						public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_HeavyMetalCyclone tileEntity, ExtendedFacing aSide) {
-							IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-							definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 3, 4, 1, hintsOnly);
-						}
-						
-						@Override
-						public String[] getDescription(ItemStack stackSize) {
-							return desc;
-						}
-					}
-			);
-		}
 	}
 }

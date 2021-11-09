@@ -7,6 +7,7 @@ import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -18,25 +19,53 @@ import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.ImpactAPI;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.enums.GT_Values.W;
 import static net.minecraftforge.common.BiomeDictionary.Type.*;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_BasicWaterPump> {
 	
 	public ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output> mOutputHatches1 = new ArrayList<>();
 	
 	protected int boimeWater;
-	Block CASING = Casing_Helper.sCaseCore2;
-	byte CASING_META = 7;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
-	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static Block CASING = Casing_Helper.sCaseCore2;
+	static byte CASING_META = 7;
+	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
+	static int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static IStructureDefinition<GTMTE_BasicWaterPump> definition =
+			StructureDefinition.<GTMTE_BasicWaterPump>builder()
+					.addShape("main", new String[][]{
+							{" 1  ", " 1  ", "000 ",},
+							{"1111", "1  1", "0200",},
+							{" 1  ", " 1  ", "0000",},
+					})
+					.addElement('1', ofHintDeferred(() -> new IIcon[]{
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+					}, Materials.Wood.mRGBa))
+					.addElement('0', ofBlock(sCaseCore2, 7))
+					.addElement('2', ofChain(
+							ofHatchAdder(GTMTE_BasicWaterPump::addPrimOutputToMachineList, CASING_TEXTURE_ID, ImpactAPI.BLUE),
+							ofHatchAdder(GTMTE_BasicWaterPump::addOutputToMachineList, CASING_TEXTURE_ID, ImpactAPI.BLUE)
+					))
+					.build();
 	
 	public GTMTE_BasicWaterPump(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.basicwaterpump", aNameRegional);
@@ -87,6 +116,11 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 			return b.getStructureInformation();
 		}
 		return b.getInformation();
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_BasicWaterPump> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
@@ -308,6 +342,11 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 		return formationChecklist;
 	}
 	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		return null;
+	}
+	
 	public int getTierFluidHatch() {
 		int Tier = 0;
 		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
@@ -393,5 +432,10 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 			return mOutputHatches1.add((GT_MetaTileEntity_Primitive_Hatch_Output) aMetaTileEntity);
 		}
 		return false;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 3, 2, 0);
 	}
 }

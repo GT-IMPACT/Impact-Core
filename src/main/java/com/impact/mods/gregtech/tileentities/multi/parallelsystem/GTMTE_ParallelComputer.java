@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.parallelcomputer.Container_SuperParallelComputer;
 import com.impact.mods.gregtech.gui.parallelcomputer.GUI_SuperParallelComputer;
@@ -22,13 +18,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static net.minecraft.util.EnumChatFormatting.*;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ParallelComputer> {
 	
 	public static Block CASING = Casing_Helper.sCasePage8_3;
 	public static byte CASING_META = 7;
@@ -36,21 +33,40 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 	public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
 	public int mMaxCapacityPP = 0;
 	public int mCurrentCapacityPP = 0;
+	static IStructureDefinition<GTMTE_ParallelComputer> definition =
+			StructureDefinition.<GTMTE_ParallelComputer>builder()
+					.addShape("main", new String[][]{
+							{"AA", "AA", "~A", "AA"},
+							{"AA", "BB", "BB", "AA"},
+							{"AA", "BB", "BB", "AA"},
+							{"AA", "AA", "AA", "AA"},
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.addElement('B', ofBlock(InsideBlock, 2))
+					.build();
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 0, 2, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_ParallelComputer> getStructureDefinition() {
+		return definition;
+	}
 	
 	//region Register
 	public GTMTE_ParallelComputer(int aID, String aNameRegional) {
 		super(aID, "impact.multis.parallelcomputer", aNameRegional);
-		run();
 	}
 	
 	public GTMTE_ParallelComputer(String aName) {
 		super(aName);
-		run();
 	}
+	
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		run();
 		return new GTMTE_ParallelComputer(this.mName);
 	}
 	//endregion
@@ -70,44 +86,9 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 		return new Container_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, this);
 	}
 	
-	public void run() {
-		registerMetaClass(GTMTE_ParallelComputer.class, new IMultiblockInfoContainer<GTMTE_ParallelComputer>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_ParallelComputer> definition =
-					StructureDefinition.<GTMTE_ParallelComputer>builder()
-							.addShape("main", new String[][]{
-									{"AA", "AA", "~A", "AA"},
-									{"AA", "BB", "BB", "AA"},
-									{"AA", "BB", "BB", "AA"},
-									{"AA", "AA", "AA", "AA"},
-							})
-							.addElement('A', ofBlock(CASING, CASING_META))
-							.addElement('B', ofBlock(InsideBlock, 2))
-							.build();
-			private final String[] desc = new String[]{
-					RED + "Impact Details:",
-					"It's minimal length structure",
-					" - Computer Casing",
-					" - Empty Rack Casing (inside)"
-			};
-			
-			//endregion
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_ParallelComputer tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 0, 2, 0, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
-	}
-	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("psc");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("psc");
 		b
 				.addTypeMachine("name", "Super Parallel Computer")
 				.addSeparator()
@@ -119,21 +100,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 				.addOtherStructurePart("psc.other.4", "Empty Rack Casing", "psc.other.5", "inside")
 				.addCasingInfo("psc.case", "Computer Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
-	}
-	
-	@Override
-	public boolean checkRecipe(ItemStack aStack) {
-		this.mMaxProgresstime    = 10;
-		this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-		this.mEfficiencyIncrease = 10000;
-		this.mEUt                = 8192 + mMaxCapacityPP;
-		this.mEUt                = -this.mEUt;
-		return true;
+		return b;
 	}
 	
 	@Override
@@ -171,6 +138,16 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 			}
 			ph.setRecipe(isActive);
 		}
+	}
+	
+	@Override
+	public boolean checkRecipe(ItemStack aStack) {
+		this.mMaxProgresstime    = 10;
+		this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+		this.mEfficiencyIncrease = 10000;
+		this.mEUt                = 8192 + mMaxCapacityPP;
+		this.mEUt                = -this.mEUt;
+		return true;
 	}
 	
 	

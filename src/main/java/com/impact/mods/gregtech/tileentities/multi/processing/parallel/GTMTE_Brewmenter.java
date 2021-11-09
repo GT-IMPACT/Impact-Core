@@ -20,10 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Brewmenter> {
 	
 	public static String mModed;
 	Block CASING = Casing_Helper.sCaseCore1;
@@ -31,6 +35,18 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
 	private final int mLevel = 0;
+	static IStructureDefinition<GTMTE_Brewmenter> definition =
+			StructureDefinition.<GTMTE_Brewmenter>builder()
+					.addShapeOldApi("main", new String[][]{
+							{".000.", ".000.", ".000.", ".0.0.",},
+							{"00100", "00.00", "00.00", "00000",},
+							{"01010", "0...0", "0...0", "00000",},
+							{"00100", "00.00", "00.00", "00000",},
+							{".000.", ".000.", ".000.", ".000.",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 12))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Brewmenter(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.brewmenter", aNameRegional);
@@ -51,8 +67,18 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("brewmenter");
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 3, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Brewmenter> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("brewmenter");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -71,11 +97,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Brewmenter Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override

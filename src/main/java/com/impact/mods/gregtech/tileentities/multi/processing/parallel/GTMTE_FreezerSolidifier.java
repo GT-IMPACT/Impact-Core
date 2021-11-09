@@ -18,8 +18,36 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBlockBase {
+import static gregtech.api.GregTech_API.sBlockCasings2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+
+public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_FreezerSolidifier> {
+	
+	static IStructureDefinition<GTMTE_FreezerSolidifier> definition =
+			StructureDefinition.<GTMTE_FreezerSolidifier>builder()
+					.addShapeOldApi("main", new String[][]{
+							{".000.", ".0.0.", ".0.0.", ".000.",},
+							{"00000", "0.0.0", "0.0.0", "00000",},
+							{"00.00", ".0.0.", ".0.0.", "00000",},
+							{"00000", "0.0.0", "0.0.0", "00000",},
+							{".000.", ".0.0.", ".0.0.", ".000.",},
+						
+					})
+					.addElement('0', ofBlock(sBlockCasings2, 1))
+					.build();
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 0, 2);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_FreezerSolidifier> getStructureDefinition() {
+		return definition;
+	}
 	
 	public GTMTE_FreezerSolidifier(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.freezsolidifier", aNameRegional);
@@ -34,8 +62,8 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_freezsolidifier");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_freezsolidifier");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -51,11 +79,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Frost Proof Machine Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {

@@ -1,14 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -28,18 +24,34 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvDDDPrinter> {
 
 
   Block CASING = Casing_Helper.sCaseCore2;
   byte CASING_META = 4;
   ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
   int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+  static IStructureDefinition<GTMTE_AdvDDDPrinter> definition =
+          StructureDefinition.<GTMTE_AdvDDDPrinter>builder()
+                  .addShape("main", new String[][]{
+                        
+                          {"033330", "~33330", "000000",},
+                          {"033330", "022220", "000000",},
+                          {"033330", "022220", "000000",},
+                          {"033330", "022220", "000000",},
+                          {"033330", "022220", "000000",},
+                          {"033330", "033330", "000000",},
+                  })
+                  .addElement('0', ofBlock(sCaseCore2, 4))
+                  .addElement('2', ofBlock(sCaseCore2, 6))
+                  .addElement('3', ofBlock(IGlassBlock, 0))
+                  .build();
 
   public GTMTE_AdvDDDPrinter(int aID, String aNameRegional) {
     super(aID, "impact.multimachine.advdddprinter", aNameRegional);
-    holo();
   }
 
   public GTMTE_AdvDDDPrinter(String aName) {
@@ -55,71 +67,36 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
   public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
     return new GTMTE_AdvDDDPrinter(this.mName);
   }
-
+  
   @Override
-  public String[] getDescription() {
-    final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_ddd_printer");
-    b
-        .addInfo("info.0", "Assembler machines")
-        .addTypeMachine("name", "4x4 Crafting")
-        .addScrew()
-        .addSeparatedBus()
-        .addSeparator()
-        .addController()
-        .addEnergyHatch()
-        .addMaintenanceHatch()
-        .addInputBus(30)
-        .addOutputBus()
-        .addCasingInfo("case", "3D Printed Casing")
-        .addOtherStructurePart("other.0", "I-Glass", "other.1", "it is glass")
-        .addOtherStructurePart("other.2", "Configuration Casing 4x4", "other.3", "core structure")
-        .signAndFinalize();
-    if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-      return b.getInformation();
-    } else {
-      return b.getStructureInformation();
-    }
+  public IStructureDefinition<GTMTE_AdvDDDPrinter> getStructureDefinition() {
+    return definition;
   }
-
-  public void holo() {
-    registerMetaClass(GTMTE_AdvDDDPrinter.class,
-        new IMultiblockInfoContainer<GTMTE_AdvDDDPrinter>() {
-          //region Structure
-          private final IStructureDefinition<GTMTE_AdvDDDPrinter> definition =
-              StructureDefinition.<GTMTE_AdvDDDPrinter>builder()
-                  .addShape("main", new String[][]{
-
-                      {"033330", "~33330", "000000",},
-                      {"033330", "022220", "000000",},
-                      {"033330", "022220", "000000",},
-                      {"033330", "022220", "000000",},
-                      {"033330", "022220", "000000",},
-                      {"033330", "033330", "000000",},
-                  })
-                  .addElement('0', ofBlock(sCaseCore2, 4))
-                  .addElement('2', ofBlock(sCaseCore2, 6))
-                  .addElement('3', ofBlock(IGlassBlock, 0))
-                  .build();
-          private final String[] desc = new String[]{
-              EnumChatFormatting.RED + "Impact Details:",
-              "- 3D Printed Casing",
-              "- I-Glass (any I-Glass)",
-              "- Configuration Casing (4x4)",
-              "- Hatches (any 3D Printed Casing)",
-          };
-          //endregion
-
-          @Override
-          public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_AdvDDDPrinter tileEntity, ExtendedFacing aSide) {
-            IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 0, 1, 0, hintsOnly);
-          }
-
-          @Override
-          public String[] getDescription(ItemStack stackSize) {
-            return desc;
-          }
-        });
+  
+  @Override
+  public void construct(ItemStack itemStack, boolean b) {
+    buildPiece(itemStack, b, 0, 1, 0);
+  }
+  
+  @Override
+  protected MultiBlockTooltipBuilder createTooltip() {
+    MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_ddd_printer");
+    b
+            .addInfo("info.0", "Assembler machines")
+            .addTypeMachine("name", "4x4 Crafting")
+            .addScrew()
+            .addSeparatedBus()
+            .addSeparator()
+            .addController()
+            .addEnergyHatch()
+            .addMaintenanceHatch()
+            .addInputBus(30)
+            .addOutputBus()
+            .addCasingInfo("case", "3D Printed Casing")
+            .addOtherStructurePart("other.0", "I-Glass", "other.1", "it is glass")
+            .addOtherStructurePart("other.2", "Configuration Casing 4x4", "other.3", "core structure")
+            .signAndFinalize();
+    return b;
   }
 
   @Override

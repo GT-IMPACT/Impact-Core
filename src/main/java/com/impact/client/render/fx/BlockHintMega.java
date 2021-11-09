@@ -116,6 +116,7 @@ public class BlockHintMega extends EntityFX {
 		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(x1, y1, z1, x2, y2, z2).expand(0.01D, 0.01D, 0.01D);
 		
 		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		
 		tes.setColorRGBA(color.getRed(), color.getGreen(), color.getBlue(), 50);
@@ -124,6 +125,7 @@ public class BlockHintMega extends EntityFX {
 		tes.setColorRGBA(box.getRed(), box.getGreen(), box.getBlue(), 128);
 		lines(aabb);
 		
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
 	}

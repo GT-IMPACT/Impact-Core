@@ -24,23 +24,38 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
 import static com.impact.util.recipe.RecipeHelper.calcTimeParallel;
 import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
 import static gregtech.api.enums.GT_Values.V;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Utility> {
 	
-	public static String mModed;
+	public String mModed;
 	public final ArrayList<GTMTE_BoxinatorInputBus> sBoxinatorHatch = new ArrayList<>();
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 11;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_Utility> definition =
+			StructureDefinition.<GTMTE_Utility>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"......", "000...", "0.0...", "000000",},
+							{"..0000", "000000", "1.0000", "000000",},
+							{"..0000", "000000", "1.0000", "000000",},
+							{"..0000", "000000", "1.0000", "000000",},
+							{"......", "000...", "000...", "000000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 11))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Utility(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.utility", aNameRegional);
@@ -61,8 +76,18 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_utility");
+	public IStructureDefinition<GTMTE_Utility> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 2, 0);
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_utility");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -81,11 +106,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Utility Machine Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override

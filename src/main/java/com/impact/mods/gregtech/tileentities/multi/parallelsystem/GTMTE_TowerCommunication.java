@@ -1,12 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.impact.client.gui.GUIHandler;
-import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -23,29 +19,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.impact.core.Impact_API.sCommunicationTower;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_EM implements
-		IConstructable {
+public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_TowerCommunication> {
 	
-	private static final String[] description = new String[]{
-			EnumChatFormatting.RED + "Impact Details:",
-			" - Arbitrary structure",
-			" - Communication Tower Casing",
-			" - Communication Receiver (" + EnumChatFormatting.RED + "Red Point" + EnumChatFormatting.RESET + ")",
-	};
 	public static Block CASING = Casing_Helper.sCasePage8_3;
 	public static byte CASING_META = 6;
 	public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
@@ -61,9 +50,19 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 							{"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ", "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  "},
 							{"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " EEEEE ", "EE   EE", "E     E", "E     E", "E     E"}
 					})
-					.addElement('A', ofChain(ofHatchAdder(GTMTE_TowerCommunication::addClassicToMachineList, CASING_TEXTURE_ID, CASING, CASING_META), ofBlock(CASING, CASING_META)))
+					.addElement('A', ofChain(
+							ofHatchAdder(GTMTE_TowerCommunication::addToMachineList, CASING_TEXTURE_ID, CASING, CASING_META),
+							ofBlock(CASING, CASING_META)
+					))
 					.addElement('D', ofHatchAdder(GTMTE_TowerCommunication::addCommunicationHatchToMachineList, CASING_TEXTURE_ID, CASING, CASING_META))
-					.addElement('E', ofHintDeferred(() -> new IIcon[]{Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(), Textures.BlockIcons.FRAMEBOXGT.getIcon(),}, Materials.Steel.mRGBa))
+					.addElement('E', ofHintDeferred(() -> new IIcon[]{
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+					}, Materials.Steel.mRGBa))
 					.build();
 	public static int frameId = 4096 + Materials.Steel.mMetaItemSubID;
 	public static int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
@@ -86,8 +85,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 		super(aName);
 	}
 	
-	public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity,
-													  int aBaseCasingIndex) {
+	public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
 		} else {
@@ -104,15 +102,6 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 				return false;
 			}
 		}
-	}
-	
-	@Override
-	protected void soundMagic(ResourceLocation activitySound) {
-	}
-	
-	@Override
-	public IStructureDefinition<GTMTE_TowerCommunication> getStructure_EM() {
-		return STRUCTURE_DEFINITION;
 	}
 	
 	@Override
@@ -136,11 +125,12 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 	}
 	
 	@Override
-	public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+	public boolean machineStructure(IGregTechTileEntity thisController) {
 		sCommunReceiver.clear();
 		sCommunTransmitter.clear();
+		boolean formationCheckList = checkPiece(3, 17, 3);
 		casingCount = 0;
-		return structureCheck_EM("main", 3, 17, 3);
+		return formationCheckList;
 	}
 	
 	public boolean isFacingValid(byte aFacing) {
@@ -148,7 +138,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 	}
 	
 	@Override
-	public boolean checkRecipe_EM(ItemStack itemStack) {
+	public boolean checkRecipe(ItemStack itemStack) {
 		this.mMaxProgresstime    = 1;
 		this.mEfficiency         = 10000;
 		this.mEfficiencyIncrease = 10000;
@@ -178,8 +168,8 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("ttc");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("ttc");
 		b
 				.addTypeMachine("name", "Communication Tower")
 				.addInfo("info.0", "Working radius 256 blocks")
@@ -189,11 +179,12 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 				.addOtherStructurePart("other.2", "Any blocks", "other.3", "Arbitrary structure")
 				.addCasingInfo("case", "Tower Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_TowerCommunication> getStructureDefinition() {
+		return STRUCTURE_DEFINITION;
 	}
 	
 	@Override
@@ -203,12 +194,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiblockBase_E
 	
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		structureBuild_EM("main", 3, 17, 3, hintsOnly, stackSize);
-	}
-	
-	@Override
-	public String[] getStructureDescription(ItemStack stackSize) {
-		return description;
+		buildPiece(stackSize, hintsOnly, 3, 17, 3);
 	}
 	
 	@Override

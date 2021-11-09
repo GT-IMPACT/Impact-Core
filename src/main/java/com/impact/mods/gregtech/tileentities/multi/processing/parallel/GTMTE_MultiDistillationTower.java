@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.multis.OverclockCalculate;
@@ -29,30 +25,51 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.util.recipe.RecipeHelper.calcTimeParallel;
 import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
 import static gregtech.api.enums.GT_Values.V;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_MultiDistillationTower> {
 	
-	Block CASING = GregTech_API.sBlockCasings4;
-	byte CASING_META = 1;
-	byte CASING_TEXTURE_ID = 49;
-	private short controllerY;
+	static Block CASING = GregTech_API.sBlockCasings4;
+	static byte CASING_META = 1;
+	static byte CASING_TEXTURE_ID = 49;
+	static private short controllerY;
+	static IStructureDefinition<GTMTE_MultiDistillationTower> definition =
+			StructureDefinition.<GTMTE_MultiDistillationTower>builder()
+					.addShape("main", new String[][]{
+							{" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " A~A ",},
+							{"AAAAA", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "AAAAA",},
+							{"AAAAA", "AB BA", "AB BA", "A   A", "A   A", "AB BA", "AB BA", "A   A", "A   A", "AB BA", "AB BA", "AAAAA",},
+							{"AAAAA", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "AAAAA",},
+							{" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ",},
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.addElement('B', ofBlock(GregTech_API.sBlockCasings5, 1))
+					.build();
 	
 	public GTMTE_MultiDistillationTower(int aID, String aNameRegional) {
 		super(aID, "impact.multis.distilltower", aNameRegional);
-		build();
 	}
 	
 	public GTMTE_MultiDistillationTower(String aName) {
 		super(aName);
-		build();
+	}
+	
+	@Override
+	public space.impact.api.multiblocks.structure.IStructureDefinition<GTMTE_MultiDistillationTower> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 11, 0);
 	}
 	
 	@Override
@@ -60,54 +77,14 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 		return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
 	}
 	
-	private void build() {
-		registerMetaClass(
-				GTMTE_MultiDistillationTower.class,
-				new IMultiblockInfoContainer<GTMTE_MultiDistillationTower>() {
-					//region Structure
-					private final IStructureDefinition<GTMTE_MultiDistillationTower> definition =
-							StructureDefinition.<GTMTE_MultiDistillationTower>builder()
-									.addShape("main", new String[][]{
-											{" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " A~A ",},
-											{"AAAAA", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "AAAAA",},
-											{"AAAAA", "AB BA", "AB BA", "A   A", "A   A", "AB BA", "AB BA", "A   A", "A   A", "AB BA", "AB BA", "AAAAA",},
-											{"AAAAA", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "A   A", "A   A", "ABBBA", "ABBBA", "AAAAA",},
-											{" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ", " AAA ",},
-									})
-									.addElement('A', ofBlock(CASING, CASING_META))
-									.addElement('B', ofBlock(GregTech_API.sBlockCasings5, 1))
-									.build();
-					private final String[] desc = new String[]{
-							EnumChatFormatting.RED + "Impact Details:",
-							"It's minimal length structure",
-							" - Clean Stainless Steel Machine Casing",
-							" - Kanthal Coil",
-					};
-					
-					//endregion
-					@Override
-					public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MultiDistillationTower tileEntity, ExtendedFacing aSide) {
-						IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-						definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 2, 11, 0, hintsOnly);
-					}
-					
-					@Override
-					public String[] getDescription(ItemStack stackSize) {
-						return desc;
-					}
-				}
-		);
-	}
-	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		build();
 		return new GTMTE_MultiDistillationTower(this.mName);
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_distill");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_distill");
 		b
 				.addInfo("info.0", "OMG!? Where Bart`s Big Tower?")
 				.addSingleAnalog()
@@ -125,11 +102,7 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 				.addCasingInfo("case", "Clean Stainless Steel Machine Casing")
 				.addOtherStructurePart("other.0", "Kanthal Coil", "other.1", "inside the hollow")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

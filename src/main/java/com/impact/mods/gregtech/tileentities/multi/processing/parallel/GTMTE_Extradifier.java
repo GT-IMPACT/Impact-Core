@@ -20,16 +20,32 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Extradifier> {
 	
 	public static String mModed;
 	Block CASING = Casing_Helper.sCaseCore2;
 	byte CASING_META = 2;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static IStructureDefinition<GTMTE_Extradifier> definition =
+			StructureDefinition.<GTMTE_Extradifier>builder()
+					.addShapeOldApi("main", new String[][]{
+							{".000.", "0...0", "0...0", "0...0", ".0.0.",},
+							{"00100", ".010.", ".010.", ".010.", "00000",},
+							{"01010", ".1.1.", ".1.1.", ".1.1.", "00000",},
+							{"00100", ".010.", ".010.", ".010.", "00000",},
+							{".000.", "0...0", "0...0", "0...0", ".000.",},
+					})
+					.addElement('0', ofBlock(sCaseCore2, 2))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Extradifier(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.extradifier", aNameRegional);
@@ -50,8 +66,18 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_extradifier");
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 4, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Extradifier> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_extradifier");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -69,11 +95,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase 
 				.addParallelHatch()
 				.addCasingInfo("case", "Extradification Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override

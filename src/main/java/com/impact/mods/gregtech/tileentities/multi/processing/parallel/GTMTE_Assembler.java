@@ -20,10 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Assembler> {
 	
 	public static String mModed;
 	public int mLevel = 0;
@@ -31,6 +35,48 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	byte CASING_META = 6;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_Assembler> definition =
+			StructureDefinition.<GTMTE_Assembler>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"01110AAA0", "011100.00", "000000000",},
+							{"011100000", "0.......0", "000000000",},
+							{"000000000", "000000000", "000000000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 6))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_assembler");
+		b
+				.addSingleAnalog()
+				.addParallelInfo(1, 256)
+				.addTypeMachine("name", "Assembler, Circuit Assembler, Component Assembler")
+				.addScrew()
+				.addSeparatedBus()
+				.addSeparator()
+				.addController()
+				.addEnergyHatch(4)
+				.addMaintenanceHatch()
+				.addInputBus(15)
+				.addInputHatch(6)
+				.addOutputBus(3)
+				.addParallelHatch(1)
+				.addCasingInfo("case", "Assembler Casing")
+				.signAndFinalize();
+		return b;
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Assembler> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 6, 1, 0);
+	}
 	
 	public GTMTE_Assembler(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.assembler", aNameRegional);
@@ -50,31 +96,6 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase {
 		return new GTMTE_Assembler(this.mName);
 	}
 	
-	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_assembler");
-		b
-				.addSingleAnalog()
-				.addParallelInfo(1, 256)
-				.addTypeMachine("name", "Assembler, Circuit Assembler, Component Assembler")
-				.addScrew()
-				.addSeparatedBus()
-				.addSeparator()
-				.addController()
-				.addEnergyHatch(4)
-				.addMaintenanceHatch()
-				.addInputBus(15)
-				.addInputHatch(6)
-				.addOutputBus(3)
-				.addParallelHatch(1)
-				.addCasingInfo("case", "Assembler Casing")
-				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
-	}
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

@@ -24,11 +24,9 @@
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath "de.undercouch:gradle-download-task:3.1.2"
     }
 }
 
-import de.undercouch.gradle.tasks.download.Download
 apply plugin: 'forge'
 apply plugin: 'signing'
 
@@ -63,7 +61,9 @@ minecraft {
     runDir = "idea"
 }
 
-repositories {}
+repositories {
+    mavenCentral()
+}
 
  configurations {
      mods
@@ -75,7 +75,7 @@ repositories {}
 dependencies {
     provided fileTree(dir: 'run/', include:'*.jar')
     compileOnly fileTree(dir: 'notRun/', include:'*.jar')
-    compileOnly "io.gitlab.hohserg.elegant.networking:annotation-processor:3.10"
+    compileOnly 'io.gitlab.hohserg.elegant.networking:annotation-processor:3.14'
 }
 
 

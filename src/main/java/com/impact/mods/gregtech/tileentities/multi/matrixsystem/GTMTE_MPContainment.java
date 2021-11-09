@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.common.item.Core_Items3;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
@@ -28,19 +24,33 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
 import static net.minecraft.util.EnumChatFormatting.*;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_MPContainment> {
 	
 	public static Block CASING = Casing_Helper.sCaseCore2;
 	public static byte CASING_META = 15;
+	static IStructureDefinition<GTMTE_MPContainment> definition =
+			StructureDefinition.<GTMTE_MPContainment>builder()
+					.addShape("main", new String[][]{
+							{"      A", "AAAAA~A", "A    AA"},
+							{"AAAAAAA", "ABBBB D", "AAAAAAA"},
+							{"ABBBBAA", "D   C D", "ABBBBAA"},
+							{"AAAAAAA", "ABBBB D", "AAAAAAA"},
+							{"      A", "AAAAAFA", "A    AA"}
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
+					.addElement('C', ofBlock(ItemRegistery.MPTransducer, 0))
+					.addElement('D', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
+					.addElement('F', ofBlockHint(ItemRegistery.decorateBlock[2], 1))
+					.build();
 	public int mMPStable = 0;
 	public ArrayList<Vector3ic> vectors = new ArrayList<>();
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
@@ -49,17 +59,24 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
 	//region Register
 	public GTMTE_MPContainment(int aID, String aNameRegional) {
 		super(aID, "impact.multis.matrixcontainment", aNameRegional);
-		run();
 	}
 	
 	public GTMTE_MPContainment(String aName) {
 		super(aName);
-		run();
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_MPContainment> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 5, 1, 0);
 	}
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		run();
 		return new GTMTE_MPContainment(this.mName);
 	}
 	//endregion
@@ -79,51 +96,9 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
 		return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
-	public void run() {
-		registerMetaClass(
-				GTMTE_MPContainment.class,
-				new IMultiblockInfoContainer<GTMTE_MPContainment>() {
-					//region Structure
-					private final IStructureDefinition<GTMTE_MPContainment> definition =
-							StructureDefinition.<GTMTE_MPContainment>builder()
-									.addShape("main", new String[][]{
-											{"      A", "AAAAA~A", "A    AA"},
-											{"AAAAAAA", "ABBBB D", "AAAAAAA"},
-											{"ABBBBAA", "D   C D", "ABBBBAA"},
-											{"AAAAAAA", "ABBBB D", "AAAAAAA"},
-											{"      A", "AAAAAFA", "A    AA"}
-									})
-									.addElement('A', ofBlock(CASING, CASING_META))
-									.addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
-									.addElement('C', ofBlock(ItemRegistery.MPTransducer, 0))
-									.addElement('D', ofBlock(ItemRegistery.IGlassBlock))
-									.addElement('F', ofBlockHint(ItemRegistery.decorateBlock[2], 1))
-									.build();
-					private final String[] desc = new String[]{
-							RED + "Impact Details:",
-					};
-					
-					//endregion
-					@Override
-					public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MPContainment tileEntity, ExtendedFacing aSide) {
-						IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-						definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-								base.getXCoord(), base.getYCoord(), base.getZCoord(),
-								5, 1, 0, hintsOnly
-						);
-					}
-					
-					@Override
-					public String[] getDescription(ItemStack stackSize) {
-						return desc;
-					}
-				}
-		);
-	}
-	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_container");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_container");
 		b
 				.addTypeMachine("name", "Matrix Particles Containment")
 				.addSeparator()
@@ -132,11 +107,7 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addMaintenanceHatch()
 				.addCasingInfo("case", "Lab-Safe Low Gravity Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override

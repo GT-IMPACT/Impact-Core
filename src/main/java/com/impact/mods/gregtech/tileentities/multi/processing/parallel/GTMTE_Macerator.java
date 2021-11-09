@@ -19,13 +19,27 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase {
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+
+public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Macerator> {
 	
 	Block CASING = Casing_Helper.sCaseCore2;
 	byte CASING_META = 3;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static IStructureDefinition<GTMTE_Macerator> definition =
+			StructureDefinition.<GTMTE_Macerator>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"000", "000", "000", "000", "000", "0.0",},
+							{"000", "0.0", "0.0", "0.0", "0.0", "000",},
+							{"000", "000", "000", "000", "000", "000",},
+					})
+					.addElement('0', ofBlock(sCaseCore2, 3))
+					.build();
 	
 	public GTMTE_Macerator(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.macerator", aNameRegional);
@@ -46,8 +60,18 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_macerator");
+	public IStructureDefinition<GTMTE_Macerator> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 5, 0);
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_macerator");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -63,11 +87,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Maceration Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

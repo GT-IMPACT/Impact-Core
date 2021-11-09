@@ -2,11 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 import appeng.tile.crafting.TileCraftingStorageTile;
 import appeng.tile.crafting.TileCraftingTile;
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
-import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
@@ -32,19 +27,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.ME_CASING;
 import static com.impact.util.vector.Structure.getIGTE;
 import static com.impact.util.vector.Structure.getTE;
 import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.EnumChatFormatting.*;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
 
-public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_MESystemProvider> {
 	
 	public static Block CASING = Casing_Helper.sCaseCore3;
 	public static int CASING_META = ME_CASING.getMeta();
@@ -56,11 +53,23 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	public int mMatrixParticlesSummary = 0;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
 	int CASING_TEXTURE_ID = ME_CASING.getIDCasing();
+	static IStructureDefinition<GTMTE_MESystemProvider> definition =
+			StructureDefinition.<GTMTE_MESystemProvider>builder()
+					.addShape("main", new String[][]{
+							{"ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "},
+							{"ADDDA ", "AFEFAA", "AFEFA~", "AAAAAA"},
+							{"ADDDA ", "AFEFAA", "AFEFAA", "AAAAAA"},
+							{"ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "}
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
+					.addElement('D', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
+					.addElement('E', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 0).getItem()), 0))
+					.addElement('F', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0).getItem()), 1))
+					.build();
 	
-	//region Register
 	public GTMTE_MESystemProvider(int aID, String aNameRegional) {
 		super(aID, "impact.multis.mesystemprovider", aNameRegional);
-		run();
 	}
 	
 	public GTMTE_MESystemProvider(String aName) {
@@ -69,10 +78,8 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		run();
 		return new GTMTE_MESystemProvider(this.mName);
 	}
-	//endregion
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
@@ -89,49 +96,14 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 		return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
-	public void run() {
-		// TODO: 31.10.2021
-		impact.I_RA.addMESPRecipes(new ItemStack[]{GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockInterface", 1L, 0)},
-				GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1L, 440), 20 * 2, 2048, 5
-		);
-		
-		registerMetaClass(GTMTE_MESystemProvider.class, new IMultiblockInfoContainer<GTMTE_MESystemProvider>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_MESystemProvider> definition =
-					StructureDefinition.<GTMTE_MESystemProvider>builder()
-							.addShape("main", new String[][]{
-									{"ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "},
-									{"ADDDA ", "AFEFAA", "AFEFA~", "AAAAAA"},
-									{"ADDDA ", "AFEFAA", "AFEFAA", "AAAAAA"},
-									{"ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "}
-							})
-							.addElement('A', ofBlock(CASING, CASING_META))
-							.addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
-							.addElement('D', ofBlock(ItemRegistery.IGlassBlock))
-							.addElement('E', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 0).getItem()), 0))
-							.addElement('F', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0).getItem()), 1))
-							.build();
-			private final String[] desc = new String[]{
-					RED + "Impact Details:",
-			};
-			
-			//endregion
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MESystemProvider tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 5, 2, 1, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
+	@Override
+	public IStructureDefinition<GTMTE_MESystemProvider> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("me_system_provider");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("me_system_provider");
 		b
 				.addTypeMachine("name", "ME System Provider")
 				.addSeparator()
@@ -140,11 +112,12 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 				.addMaintenanceHatch()
 				.addCasingInfo("case", "ME Construction Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 5, 2, 1);
 	}
 	
 	@Override

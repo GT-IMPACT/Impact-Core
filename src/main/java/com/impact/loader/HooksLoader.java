@@ -19,6 +19,7 @@ public class HooksLoader extends HookLoader {
 		registerHookContainer("com.impact.hooks.AE2Spatial_Hook");
 		registerHookContainer("com.impact.hooks.OpisPatch_Hook");
 		registerHookContainer("com.impact.hooks.IC2Rotors_Hook");
+		registerHookContainer("com.impact.hooks.ImpactAPI_Hook");
 	}
 	
 	@Override

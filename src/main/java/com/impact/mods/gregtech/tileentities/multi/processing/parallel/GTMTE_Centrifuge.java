@@ -20,16 +20,32 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Centrifuge> {
 	
 	public static String mModed;
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 7;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_Centrifuge> definition =
+			StructureDefinition.<GTMTE_Centrifuge>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"00000", ".101.", ".101.", "00.00",},
+							{"00000", "1AAA1", "1AAA1", "00000",},
+							{"00000", "0A.A0", "0A.A0", "00000",},
+							{"00000", "1AAA1", "1AAA1", "00000",},
+							{"00000", ".101.", ".101.", "00000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 7))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Centrifuge(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.centrifuge", aNameRegional);
@@ -50,8 +66,18 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_centrifuge");
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 3, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Centrifuge> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_centrifuge");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -71,13 +97,8 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Centrifuge Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
-	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),

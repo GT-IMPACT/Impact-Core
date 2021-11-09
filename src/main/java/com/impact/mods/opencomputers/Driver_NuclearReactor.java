@@ -28,7 +28,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 	public boolean worksWith(World world, int x, int y, int z, ForgeDirection side) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		return tileEntity instanceof BaseMetaTileEntity
-				&& ((BaseMetaTileEntity) tileEntity).getMetaTileEntity() instanceof GTMTE_NuclearReactorBase;
+				&& ((BaseMetaTileEntity) tileEntity).getMetaTileEntity() instanceof GTMTE_NuclearReactorBase<?>;
 	}
 	
 	@Override
@@ -53,7 +53,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 			try {
 				boolean check = levelRod >= 0 && levelRod <= 10;
 				if (check) {
-					((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).setRodPosition(levelRod);
+					((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).setRodPosition(levelRod);
 				}
 				return new Object[]{check};
 			} catch (Throwable e) {
@@ -68,7 +68,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 			try {
 				boolean check = levelRod >= 0 && levelRod <= 10;
 				if (check) {
-					((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).setSelectRodPosition(rodID, levelRod);
+					((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).setSelectRodPosition(rodID, levelRod);
 				}
 				return new Object[]{check};
 			} catch (Throwable e) {
@@ -79,7 +79,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		@Callback(doc = "function():array -- Get information about all reactor rods.")
 		public Object[] getStatusRod(Context context, Arguments args) {
 			try {
-				return new Object[]{((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).getRodPosition()};
+				return new Object[]{((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).getRodPosition()};
 			} catch (Throwable e) {
 				return new Object[]{new int[]{}, "invalid argument"};
 			}
@@ -89,7 +89,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		public Object[] getSelectStatusRod(Context context, Arguments args) {
 			try {
 				int rodID = args.checkInteger(0) - 1;
-				GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity());
+				GTMTE_NuclearReactorBase<?> reactor = ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity());
 				
 				if (reactor.mRodHatches.size() > rodID) {
 					GTMTE_Reactor_Rod_Hatch hatch = reactor.mRodHatches.get(rodID);
@@ -110,7 +110,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		public Object[] setFastDecayMode(Context context, Arguments args) {
 			boolean changeMode = args.checkBoolean(0);
 			try {
-				((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).setFastDecayMode(changeMode);
+				((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).setFastDecayMode(changeMode);
 				return new Object[]{true};
 			} catch (Throwable e) {
 				return new Object[]{false, "invalid argument"};
@@ -120,7 +120,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		@Callback(doc = "function():boolean -- Check out the fast decay or default reactor mode.")
 		public Object[] getFastDecayMode(Context context, Arguments args) {
 			try {
-				boolean isFastDecay = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).isFastDecay;
+				boolean isFastDecay = ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).isFastDecay;
 				return new Object[]{isFastDecay};
 			} catch (Throwable e) {
 				return new Object[]{false, "invalid argument"};
@@ -130,7 +130,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		@Callback(doc = "function():string, number -- Get reactor output fluid L/s.")
 		public Object[] getOutputFluid(Context context, Arguments args) {
 			try {
-				GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity());
+				GTMTE_NuclearReactorBase<?> reactor = ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity());
 				
 				int aOutput = (int) Math.ceil(reactor.mCurrentOutput * 20D);
 				String aName = reactor.getInputFluid().getLocalizedName();
@@ -144,7 +144,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		@Callback(doc = "function():string, number -- Get reactor input fluid L/s.")
 		public Object[] getInputFluid(Context context, Arguments args) {
 			try {
-				GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity());
+				GTMTE_NuclearReactorBase<?> reactor = ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity());
 				
 				int aInput = (int) Math.ceil(reactor.mCurrentInput * 20D);
 				String aName = reactor.getInputFluid().getLocalizedName();
@@ -158,7 +158,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		@Callback(doc = "function():boolean -- Get MOX Fuel.")
 		public Object[] getMox(Context context, Arguments args) {
 			try {
-				boolean isMox = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).isMoxFuel;
+				boolean isMox = ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).isMoxFuel;
 				return new Object[]{isMox};
 			} catch (Throwable e) {
 				return new Object[]{false, "invalid argument"};
@@ -169,7 +169,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		public Object[] setActiveReactor(Context context, Arguments args) {
 			try {
 				tile.getMetaTileEntity().getBaseMetaTileEntity().setActive(args.isBoolean(0));
-				((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mFirstStart = args.isBoolean(0);
+				((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).mFirstStart = args.isBoolean(0);
 				return new Object[]{true};
 			} catch (Throwable e) {
 				return new Object[]{false, "invalid argument"};
@@ -179,8 +179,8 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		@Callback(doc = "function():number -- Set Active Reactor.")
 		public Object[] getTemperature(Context context, Arguments args) {
 			try {
-				double tScale = (double) ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mCurrentTemp
-						/ (double) ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).maxTemperature();
+				double tScale = (double) ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).mCurrentTemp
+						/ (double) ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).maxTemperature();
 				tScale = tScale <= 0 ? 0 : tScale;
 				int temperature = Math.min(((int) (100 * tScale)), 100);
 				return new Object[]{temperature};
@@ -203,7 +203,7 @@ public class Driver_NuclearReactor extends DriverSidedTileEntity {
 		public Object[] getInputHatchStatus(Context context, Arguments args) {
 			try {
 				int rodID = args.checkInteger(0) - 1;
-				GT_MetaTileEntity_Hatch_Input hatch = ((GTMTE_NuclearReactorBase) tile.getMetaTileEntity()).mInputHatches.get(rodID);
+				GT_MetaTileEntity_Hatch_Input hatch = ((GTMTE_NuclearReactorBase<?>) tile.getMetaTileEntity()).mInputHatches.get(rodID);
 				return new Object[]{hatch.mFluid.getLocalizedName(), hatch.mFluid.amount, hatch.getCapacity()};
 			} catch (Throwable e) {
 				return new Object[]{false, "invalid argument"};

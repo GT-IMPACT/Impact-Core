@@ -19,9 +19,11 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -47,6 +49,13 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TilePlacedItem.class, new PlacedItemRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_WindMill.class, new TESR_WindMill());
 		register_event(new ClientEvent());
+	}
+	
+	public void addClientSideChatMessages(String... messages) {
+		GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
+		for (String s : messages) {
+			chat.printChatMessage(new ChatComponentText(s));
+		}
 	}
 	
 	@Override

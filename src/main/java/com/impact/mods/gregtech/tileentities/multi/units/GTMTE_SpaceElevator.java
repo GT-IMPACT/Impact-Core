@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
@@ -12,8 +8,6 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_M
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
-import com.impact.util.vector.Vector3i;
-import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -32,28 +26,44 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.List;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
 import static com.impact.util.Utilits.isValidDim;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SpaceElevator> {
 	
 	public static String mModed;
-	Block CASING = Casing_Helper.sCaseCore2;
-	byte CASING_META = 14;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static Block CASING = Casing_Helper.sCaseCore2;
+	static int CASING_META = 14;
+	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
+	static int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	private static final IStructureDefinition<GTMTE_SpaceElevator> STRUCTURE_DEFINITION =
+			StructureDefinition.<GTMTE_SpaceElevator>builder()
+					.addShape("main", new String[][]{
+							{" AAAAA ", " A   A ", " A   A ", " A   A ", " AAAAA ", " AAAAA "},
+							{"AAAAAAA", "AA   AA", "AA   AA", "AA   AA", "AAAAAAA", "AAAAAAA"},
+							{"AA   AA", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA"},
+							{"AA   AA", "       ", "       ", "       ", "AAA~AAA", "AAABAAA"},
+							{"AA   AA", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA"},
+							{"AAAAAAA", "AA   AA", "AA   AA", "AA   AA", "AAAAAAA", "AAAAAAA"},
+							{" AAAAA ", " A   A ", " A   A ", " A   A ", " AAAAA ", " AAAAA "}
+					})
+					.addElement('A', ofChain(
+							ofBlock(CASING, CASING_META),
+							ofHatchAdder(GTMTE_SpaceElevator::addEnergyInputToMachineList, CASING_TEXTURE_ID, CASING, CASING_META)
+					))
+					.addElement('B', ofBlockAnyMeta(SpaceElevatorBlock))
+					.build();
 	boolean isConnect = false;
 	
 	public GTMTE_SpaceElevator(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.spaceelevator", aNameRegional);
-		holo();
 	}
 	
 	public GTMTE_SpaceElevator(String aName) {
@@ -75,121 +85,13 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_elevator");
-		b
-				.addInfo("info.0", "Teleportation on Space Satellite")
-				.addTypeMachine("name", "Space Elevator")
-				.addInfo("info.1", "Setup is done using Laptop")
-				.addInfo("info.2", "Send a redstone signal to teleport")
-				.addInfo("info.3", "Passive usage: 1920 EU/t")
-				.addController()
-				.addEnergyHatch()
-				.addCasingInfo("case", "Space Elevator Casing")
-				.addOtherStructurePart("other.0", "Space Elevator Hawser", "other.1", "Center below Controller")
-				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
-	}
-	
-	public void holo() {
-		registerMetaClass(
-				GTMTE_SpaceElevator.class,
-				new IMultiblockInfoContainer<GTMTE_SpaceElevator>() {
-					//region Structure
-					private final IStructureDefinition<GTMTE_SpaceElevator> definition =
-							StructureDefinition.<GTMTE_SpaceElevator>builder()
-									.addShape("main", new String[][]{
-											{" AAAAA ", " A   A ", " A   A ", " A   A ", " AAAAA ", " AAAAA "},
-											{"AAAAAAA", "AA   AA", "AA   AA", "AA   AA", "AAAAAAA", "AAAAAAA"},
-											{"AA   AA", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA"},
-											{"AA   AA", "       ", "       ", "       ", "AAA~AAA", "AAABAAA"},
-											{"AA   AA", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA"},
-											{"AAAAAAA", "AA   AA", "AA   AA", "AA   AA", "AAAAAAA", "AAAAAAA"},
-											{" AAAAA ", " A   A ", " A   A ", " A   A ", " AAAAA ", " AAAAA "}
-									})
-									.addElement('A', ofBlock(CASING, CASING_META))
-									.addElement('B', ofBlock(SpaceElevatorBlock))
-									.build();
-					private final String[] desc = new String[]{
-							EnumChatFormatting.RED + "Impact Details:",
-							"- Space Elevator Casing",
-							"- Space Elevator Hawser",
-							"- Hatches (any Space Elevator Casing)",
-					};
-					//endregion
-					
-					@Override
-					public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SpaceElevator tileEntity, ExtendedFacing aSide) {
-						IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-						definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 3, 4, 3, hintsOnly);
-					}
-					
-					@Override
-					public String[] getDescription(ItemStack stackSize) {
-						return desc;
-					}
-				}
-		);
-	}
-	
-	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-		final Vector3ic forgeDirection = new Vector3i(
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
-		);
-		
-		boolean formationChecklist = true;
-		
-		for (int X = -3; X <= 3; X++) {
-			for (byte Y = -1; Y <= 4; Y++) {
-				for (byte Z = 3; Z >= -3; Z--) {
-					if (X == 0 && Y == 0 && Z == 0) {
-						continue;
-					}
-					if ((X == -3 || X == 3) && (Z == -3 || Z == 3)) {
-						continue;
-					}
-					if ((X == -1 || X == 0 || X == 1) && (Y == 1 || Y == 2 || Y == 3)) {
-						continue;
-					}
-					if ((Z == -1 || Z == 0 || Z == 1) && (Y == 1 || Y == 2 || Y == 3)) {
-						continue;
-					}
-					if ((X == -1 || X == 0 || X == 1) && (Z == -1 || Z == 0 || Z == 1) && Y == 4) {
-						continue;
-					}
-					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-					if (X == 0 && Y == -1 && Z == 0) {
-						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == SpaceElevatorBlock)) {
-						} else {
-							formationChecklist = false;
-						}
-						continue;
-					}
-					IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-					if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-								&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-						} else {
-							formationChecklist = false;
-						}
-					}
-				}
-			}
-		}
+		boolean formationChecklist = checkPiece(1, 3, 0);
 		mWrench        = true;
 		mScrewdriver   = true;
 		mSoftHammer    = true;
@@ -264,6 +166,22 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 		}
 	}
 	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_elevator");
+		b.addInfo("info.0", "Teleportation on Space Satellite")
+				.addTypeMachine("name", "Space Elevator")
+				.addInfo("info.1", "Setup is done using Laptop")
+				.addInfo("info.2", "Send a redstone signal to teleport")
+				.addInfo("info.3", "Passive usage: 1920 EU/t")
+				.addController()
+				.addEnergyHatch()
+				.addCasingInfo("case", "Space Elevator Casing")
+				.addOtherStructurePart("other.0", "Space Elevator Hawser", "other.1", "Center below Controller")
+				.signAndFinalize();
+		return b;
+	}
+	
 	public int[] getCoords() {
 		return Utilits.getCoordsBaseMTE(getBaseMetaTileEntity());
 	}
@@ -311,7 +229,12 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(stackSize, hintsOnly, 3, 4, 3);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_SpaceElevator> getStructureDefinition() {
+		return STRUCTURE_DEFINITION;
 	}
 }

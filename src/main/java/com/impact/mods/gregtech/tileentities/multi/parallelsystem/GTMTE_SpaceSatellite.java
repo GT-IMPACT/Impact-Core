@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -20,36 +16,52 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.util.Utilits.isValidDim;
 import static micdoodle8.mods.galacticraft.core.util.ConfigManagerCore.disableSpaceStationCreation;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SpaceSatellite> {
 	
 	public static Block CASING = Casing_Helper.sCasePage8_3;
 	public static byte CASING_META = 5;
 	public static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[8][CASING_META + 64];
 	public static int CASING_TEXTURE_ID = CASING_META + 64 + 128 * 8;
+	static IStructureDefinition<GTMTE_SpaceSatellite> definition =
+			StructureDefinition.<GTMTE_SpaceSatellite>builder()
+					.addShape("main", new String[][]{
+							{" A A ", " A A ", " A A ", " A A "},
+							{" A A ", "AAAAA", "AA~AA", "AAAAA"},
+							{" A A ", "AAAAA", "AAAAA", "AAAAA"},
+							{" A A ", " A A ", " A A ", " A A "},
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.build();
 	
-	//region Register
 	public GTMTE_SpaceSatellite(int aID, String aNameRegional) {
 		super(aID, "impact.multis.spacesatellite", aNameRegional);
-		run();
 	}
 	
 	public GTMTE_SpaceSatellite(String aName) {
 		super(aName);
-		run();
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 2, 1);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_SpaceSatellite> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		run();
 		return new GTMTE_SpaceSatellite(this.mName);
 	}
-	//endregion
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -66,54 +78,19 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
-	public void run() {
-		registerMetaClass(GTMTE_SpaceSatellite.class, new IMultiblockInfoContainer<GTMTE_SpaceSatellite>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_SpaceSatellite> definition =
-					StructureDefinition.<GTMTE_SpaceSatellite>builder()
-							.addShape("main", new String[][]{
-									{" A A ", " A A ", " A A ", " A A "},
-									{" A A ", "AAAAA", "AA~AA", "AAAAA"},
-									{" A A ", "AAAAA", "AAAAA", "AAAAA"},
-									{" A A ", " A A ", " A A ", " A A "},
-							})
-							.addElement('A', ofBlock(CASING, CASING_META))
-							.build();
-			private final String[] desc = new String[]{
-					EnumChatFormatting.RED + "Impact Details:",
-					"- Space Satellite Casing",
-			};
-			
-			//endregion
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_SpaceSatellite tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 2, 2, 1, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
-	}
-	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sps");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sps");
 		b
 				.addTypeMachine("name", "Space Satellite")
-				.addInfo(disableSpaceStationCreation ? "info.0" : "info.1", disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required")
+				.addInfo(disableSpaceStationCreation ? "info.0" : "info.1",
+						disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required")
 				.addController()
 				.addEnergyHatch()
 				.addOtherStructurePartAny("other.0", "Communication Transmitter")
 				.addCasingInfo("case", "Space Satellite Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override

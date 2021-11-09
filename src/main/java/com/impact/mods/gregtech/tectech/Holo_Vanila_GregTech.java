@@ -1,75 +1,23 @@
 package com.impact.mods.gregtech.tectech;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHintDeferred;
-import static com.impact.loader.ItemRegistery.decorateBlock;
-import static gregtech.api.GregTech_API.sBlockCasings1;
-import static gregtech.api.GregTech_API.sBlockCasings2;
-import static gregtech.api.GregTech_API.sBlockCasings3;
-import static gregtech.api.GregTech_API.sBlockCasings4;
-import static gregtech.api.GregTech_API.sBlockCasings5;
-import static gregtech.api.GregTech_API.sBlockCasings7;
-import static gregtech.api.GregTech_API.sBlockCasings8;
-import static gregtech.api.GregTech_API.sBlockCasingsNH;
-import static gregtech.api.GregTech_API.sBlockReinforced;
-
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_CokeOven;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_AirFilter;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_BrickedBlastFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_BronzeBlastFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ConcreteBackfiller2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DieselEngine;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DieselEngine2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FlotationUnit;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer4;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer5;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_HeatExchanger;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_IndustrialPulverizer;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Bronze;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Steel;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_Titanium;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeBoiler_TungstenSteel;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeChemicalReactor;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Gas;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_HPSteam;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Plasma;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiFurnace;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiblockCentrifuge;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_MultiblockElectrolyzer;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilCracker;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OilDrill3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant1;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant4;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_OreDrillingPlant5;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray2;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray3;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
+import gregtech.common.tileentities.machines.multi.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import space.impact.api.ImpactAPI;
+import space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer;
+import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
+
+import static com.impact.loader.ItemRegistery.decorateBlock;
+import static gregtech.api.GregTech_API.*;
+import static space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer.registerTileClass;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
 
 public class Holo_Vanila_GregTech implements Runnable {
@@ -78,8 +26,8 @@ public class Holo_Vanila_GregTech implements Runnable {
   @Override
   public void run() {
     //FusionComputer1
-    registerMetaClass(GT_MetaTileEntity_FusionComputer1.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_FusionComputer1>() {
+    registerTileClass(GT_MetaTileEntity_FusionComputer1.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_FusionComputer1>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_FusionComputer1> definition =
               StructureDefinition.<GT_MetaTileEntity_FusionComputer1>builder()
@@ -102,9 +50,9 @@ public class Holo_Vanila_GregTech implements Runnable {
                   })
                   .addElement('0', ofBlock(sBlockCasings1, 15))
                   .addElement('1', ofBlock(sBlockCasings1, 6))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 0))
-                  .addElement('3', ofBlockHint(decorateBlock[2], 1))
-                  .addElement('4', ofBlockHint(decorateBlock[2], 3))
+                  .addElement('2', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
+                  .addElement('3', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+                  .addElement('4', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.BLUE))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -134,8 +82,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //FusionComputer2
-    registerMetaClass(GT_MetaTileEntity_FusionComputer2.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_FusionComputer2>() {
+    registerTileClass(GT_MetaTileEntity_FusionComputer2.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_FusionComputer2>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_FusionComputer2> definition =
               StructureDefinition.<GT_MetaTileEntity_FusionComputer2>builder()
@@ -158,9 +106,9 @@ public class Holo_Vanila_GregTech implements Runnable {
                   })
                   .addElement('0', ofBlock(sBlockCasings4, 7))
                   .addElement('1', ofBlock(sBlockCasings4, 6))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 0))
-                  .addElement('3', ofBlockHint(decorateBlock[2], 1))
-                  .addElement('4', ofBlockHint(decorateBlock[2], 3))
+                  .addElement('2', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
+                  .addElement('3', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+                  .addElement('4', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.BLUE))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -191,8 +139,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //FusionComputer3
-    registerMetaClass(GT_MetaTileEntity_FusionComputer3.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_FusionComputer3>() {
+    registerTileClass(GT_MetaTileEntity_FusionComputer3.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_FusionComputer3>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_FusionComputer3> definition =
               StructureDefinition.<GT_MetaTileEntity_FusionComputer3>builder()
@@ -215,9 +163,9 @@ public class Holo_Vanila_GregTech implements Runnable {
                   })
                   .addElement('0', ofBlock(sBlockCasings4, 7))
                   .addElement('1', ofBlock(sBlockCasings4, 8))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 0))
-                  .addElement('3', ofBlockHint(decorateBlock[2], 1))
-                  .addElement('4', ofBlockHint(decorateBlock[2], 3))
+                  .addElement('2', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
+                  .addElement('3', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+                  .addElement('4', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.BLUE))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -248,8 +196,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //FusionComputer4
-    registerMetaClass(GT_MetaTileEntity_FusionComputer4.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_FusionComputer4>() {
+    registerTileClass(GT_MetaTileEntity_FusionComputer4.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_FusionComputer4>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_FusionComputer4> definition =
               StructureDefinition.<GT_MetaTileEntity_FusionComputer4>builder()
@@ -272,9 +220,9 @@ public class Holo_Vanila_GregTech implements Runnable {
                   })
                   .addElement('0', ofBlock(sBlockCasings5, 11))
                   .addElement('1', ofBlock(sBlockCasings5, 9))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 0))
-                  .addElement('3', ofBlockHint(decorateBlock[2], 1))
-                  .addElement('4', ofBlockHint(decorateBlock[2], 3))
+                  .addElement('2', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
+                  .addElement('3', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+                  .addElement('4', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.BLUE))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -305,8 +253,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //FusionComputer5
-    registerMetaClass(GT_MetaTileEntity_FusionComputer5.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_FusionComputer5>() {
+    registerTileClass(GT_MetaTileEntity_FusionComputer5.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_FusionComputer5>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_FusionComputer5> definition =
               StructureDefinition.<GT_MetaTileEntity_FusionComputer5>builder()
@@ -329,9 +277,9 @@ public class Holo_Vanila_GregTech implements Runnable {
                   })
                   .addElement('0', ofBlock(sBlockCasings7, 5))
                   .addElement('1', ofBlock(sBlockCasings5, 10))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 0))
-                  .addElement('3', ofBlockHint(decorateBlock[2], 1))
-                  .addElement('4', ofBlockHint(decorateBlock[2], 3))
+                  .addElement('2', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
+                  .addElement('3', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+                  .addElement('4', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.BLUE))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -362,8 +310,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //BronzeBoiler
-    registerMetaClass(GT_MetaTileEntity_LargeBoiler_Bronze.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeBoiler_Bronze>() {
+    registerTileClass(GT_MetaTileEntity_LargeBoiler_Bronze.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeBoiler_Bronze>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeBoiler_Bronze> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeBoiler_Bronze>builder()
@@ -401,8 +349,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //SteelBoiler
-    registerMetaClass(GT_MetaTileEntity_LargeBoiler_Steel.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeBoiler_Steel>() {
+    registerTileClass(GT_MetaTileEntity_LargeBoiler_Steel.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeBoiler_Steel>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeBoiler_Steel> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeBoiler_Steel>builder()
@@ -440,8 +388,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //TitanBoiler
-    registerMetaClass(GT_MetaTileEntity_LargeBoiler_Titanium.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeBoiler_Titanium>() {
+    registerTileClass(GT_MetaTileEntity_LargeBoiler_Titanium.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeBoiler_Titanium>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeBoiler_Titanium> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeBoiler_Titanium>builder()
@@ -479,8 +427,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //TungstenSteelBoiler
-    registerMetaClass(GT_MetaTileEntity_LargeBoiler_TungstenSteel.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeBoiler_TungstenSteel>() {
+    registerTileClass(GT_MetaTileEntity_LargeBoiler_TungstenSteel.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeBoiler_TungstenSteel>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeBoiler_TungstenSteel> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeBoiler_TungstenSteel>builder()
@@ -518,8 +466,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //ProcessingArray
-    registerMetaClass(GT_MetaTileEntity_ProcessingArray.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_ProcessingArray>() {
+    registerTileClass(GT_MetaTileEntity_ProcessingArray.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_ProcessingArray>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_ProcessingArray> definition =
               StructureDefinition.<GT_MetaTileEntity_ProcessingArray>builder()
@@ -553,8 +501,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //ProcessingArray2
-    registerMetaClass(GT_MetaTileEntity_ProcessingArray2.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_ProcessingArray2>() {
+    registerTileClass(GT_MetaTileEntity_ProcessingArray2.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_ProcessingArray2>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_ProcessingArray2> definition =
               StructureDefinition.<GT_MetaTileEntity_ProcessingArray2>builder()
@@ -588,8 +536,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //ProcessingArray3
-    registerMetaClass(GT_MetaTileEntity_ProcessingArray3.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_ProcessingArray3>() {
+    registerTileClass(GT_MetaTileEntity_ProcessingArray3.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_ProcessingArray3>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_ProcessingArray3> definition =
               StructureDefinition.<GT_MetaTileEntity_ProcessingArray3>builder()
@@ -623,8 +571,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OilCracker
-    registerMetaClass(GT_MetaTileEntity_OilCracker.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OilCracker>() {
+    registerTileClass(GT_MetaTileEntity_OilCracker.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OilCracker>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OilCracker> definition =
               StructureDefinition.<GT_MetaTileEntity_OilCracker>builder()
@@ -660,8 +608,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //PrimitiveBlastFurnace
-    registerMetaClass(GT_MetaTileEntity_BrickedBlastFurnace.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_BrickedBlastFurnace>() {
+    registerTileClass(GT_MetaTileEntity_BrickedBlastFurnace.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_BrickedBlastFurnace>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_BrickedBlastFurnace> definition =
               StructureDefinition.<GT_MetaTileEntity_BrickedBlastFurnace>builder()
@@ -695,8 +643,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //BronzeBlastFurnace
-    registerMetaClass(GT_MetaTileEntity_BronzeBlastFurnace.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_BronzeBlastFurnace>() {
+    registerTileClass(GT_MetaTileEntity_BronzeBlastFurnace.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_BronzeBlastFurnace>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_BronzeBlastFurnace> definition =
               StructureDefinition.<GT_MetaTileEntity_BronzeBlastFurnace>builder()
@@ -731,8 +679,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //ConcreteBackfiller1
-    registerMetaClass(GT_MetaTileEntity_ConcreteBackfiller1.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_ConcreteBackfiller1>() {
+    registerTileClass(GT_MetaTileEntity_ConcreteBackfiller1.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_ConcreteBackfiller1>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_ConcreteBackfiller1> definition =
               StructureDefinition.<GT_MetaTileEntity_ConcreteBackfiller1>builder()
@@ -775,8 +723,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //ConcreteBackfiller2
-    registerMetaClass(GT_MetaTileEntity_ConcreteBackfiller2.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_ConcreteBackfiller2>() {
+    registerTileClass(GT_MetaTileEntity_ConcreteBackfiller2.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_ConcreteBackfiller2>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_ConcreteBackfiller2> definition =
               StructureDefinition.<GT_MetaTileEntity_ConcreteBackfiller2>builder()
@@ -818,8 +766,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OilDrill1
-    registerMetaClass(GT_MetaTileEntity_OilDrill1.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OilDrill1>() {
+    registerTileClass(GT_MetaTileEntity_OilDrill1.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OilDrill1>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OilDrill1> definition =
               StructureDefinition.<GT_MetaTileEntity_OilDrill1>builder()
@@ -861,8 +809,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OilDrill2
-    registerMetaClass(GT_MetaTileEntity_OilDrill2.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OilDrill2>() {
+    registerTileClass(GT_MetaTileEntity_OilDrill2.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OilDrill2>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OilDrill2> definition =
               StructureDefinition.<GT_MetaTileEntity_OilDrill2>builder()
@@ -904,8 +852,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OilDrill3
-    registerMetaClass(GT_MetaTileEntity_OilDrill3.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OilDrill3>() {
+    registerTileClass(GT_MetaTileEntity_OilDrill3.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OilDrill3>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OilDrill3> definition =
               StructureDefinition.<GT_MetaTileEntity_OilDrill3>builder()
@@ -947,8 +895,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OreDrillingPlant1
-    registerMetaClass(GT_MetaTileEntity_OreDrillingPlant1.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OreDrillingPlant1>() {
+    registerTileClass(GT_MetaTileEntity_OreDrillingPlant1.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OreDrillingPlant1>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OreDrillingPlant1> definition =
               StructureDefinition.<GT_MetaTileEntity_OreDrillingPlant1>builder()
@@ -990,8 +938,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OreDrillingPlant2
-    registerMetaClass(GT_MetaTileEntity_OreDrillingPlant2.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OreDrillingPlant2>() {
+    registerTileClass(GT_MetaTileEntity_OreDrillingPlant2.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OreDrillingPlant2>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OreDrillingPlant2> definition =
               StructureDefinition.<GT_MetaTileEntity_OreDrillingPlant2>builder()
@@ -1033,8 +981,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OreDrillingPlant3
-    registerMetaClass(GT_MetaTileEntity_OreDrillingPlant3.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OreDrillingPlant3>() {
+    registerTileClass(GT_MetaTileEntity_OreDrillingPlant3.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OreDrillingPlant3>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OreDrillingPlant3> definition =
               StructureDefinition.<GT_MetaTileEntity_OreDrillingPlant3>builder()
@@ -1076,8 +1024,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OreDrillingPlant4
-    registerMetaClass(GT_MetaTileEntity_OreDrillingPlant4.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OreDrillingPlant4>() {
+    registerTileClass(GT_MetaTileEntity_OreDrillingPlant4.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OreDrillingPlant4>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OreDrillingPlant4> definition =
               StructureDefinition.<GT_MetaTileEntity_OreDrillingPlant4>builder()
@@ -1119,8 +1067,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //OreDrillingPlant5
-    registerMetaClass(GT_MetaTileEntity_OreDrillingPlant5.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_OreDrillingPlant5>() {
+    registerTileClass(GT_MetaTileEntity_OreDrillingPlant5.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_OreDrillingPlant5>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_OreDrillingPlant5> definition =
               StructureDefinition.<GT_MetaTileEntity_OreDrillingPlant5>builder()
@@ -1162,8 +1110,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //SteamTurbine
-    registerMetaClass(GT_MetaTileEntity_LargeTurbine_Steam.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeTurbine_Steam>() {
+    registerTileClass(GT_MetaTileEntity_LargeTurbine_Steam.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeTurbine_Steam>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeTurbine_Steam> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeTurbine_Steam>builder()
@@ -1174,7 +1122,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {"000", "010", "000",},
                   })
                   .addElement('0', ofBlock(sBlockCasings4, 9))
-                  .addElement('1', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('1', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1199,8 +1147,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //GasTurbine
-    registerMetaClass(GT_MetaTileEntity_LargeTurbine_Gas.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeTurbine_Gas>() {
+    registerTileClass(GT_MetaTileEntity_LargeTurbine_Gas.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeTurbine_Gas>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeTurbine_Gas> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeTurbine_Gas>builder()
@@ -1211,7 +1159,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {"000", "010", "000",},
                   })
                   .addElement('0', ofBlock(sBlockCasings4, 10))
-                  .addElement('1', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('1', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1236,8 +1184,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //HPSteamTurbine
-    registerMetaClass(GT_MetaTileEntity_LargeTurbine_HPSteam.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeTurbine_HPSteam>() {
+    registerTileClass(GT_MetaTileEntity_LargeTurbine_HPSteam.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeTurbine_HPSteam>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeTurbine_HPSteam> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeTurbine_HPSteam>builder()
@@ -1248,7 +1196,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {"000", "010", "000",},
                   })
                   .addElement('0', ofBlock(sBlockCasings4, 11))
-                  .addElement('1', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('1', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1273,8 +1221,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //PlasmaTurbine
-    registerMetaClass(GT_MetaTileEntity_LargeTurbine_Plasma.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeTurbine_Plasma>() {
+    registerTileClass(GT_MetaTileEntity_LargeTurbine_Plasma.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeTurbine_Plasma>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeTurbine_Plasma> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeTurbine_Plasma>builder()
@@ -1285,7 +1233,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {"000", "010", "000",},
                   })
                   .addElement('0', ofBlock(sBlockCasings4, 12))
-                  .addElement('1', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('1', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1310,8 +1258,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //Diesel Engine
-    registerMetaClass(GT_MetaTileEntity_DieselEngine.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_DieselEngine>() {
+    registerTileClass(GT_MetaTileEntity_DieselEngine.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_DieselEngine>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_DieselEngine> definition =
               StructureDefinition.<GT_MetaTileEntity_DieselEngine>builder()
@@ -1324,8 +1272,8 @@ public class Holo_Vanila_GregTech implements Runnable {
                   .addElement('0', ofBlock(sBlockCasings4, 13))
                   .addElement('1', ofBlock(sBlockCasings4, 2))
                   .addElement('2', ofBlock(sBlockCasings2, 4))
-                  .addElement('3', ofBlockHint(decorateBlock[2], 0))
-                  .addElement('4', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('3', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
+                  .addElement('4', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1354,8 +1302,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //Diesel Engine 2
-    registerMetaClass(GT_MetaTileEntity_DieselEngine2.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_DieselEngine2>() {
+    registerTileClass(GT_MetaTileEntity_DieselEngine2.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_DieselEngine2>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_DieselEngine2> definition =
               StructureDefinition.<GT_MetaTileEntity_DieselEngine2>builder()
@@ -1368,8 +1316,8 @@ public class Holo_Vanila_GregTech implements Runnable {
                   .addElement('0', ofBlock(sBlockCasings2, 15))
                   .addElement('1', ofBlock(sBlockCasings4, 0))
                   .addElement('2', ofBlock(sBlockCasings7, 1))
-                  .addElement('3', ofBlockHint(decorateBlock[2], 0))
-                  .addElement('4', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('3', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
+                  .addElement('4', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1398,8 +1346,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //MultiFurnace
-    registerMetaClass(GT_MetaTileEntity_MultiFurnace.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_MultiFurnace>() {
+    registerTileClass(GT_MetaTileEntity_MultiFurnace.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_MultiFurnace>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_MultiFurnace> definition =
               StructureDefinition.<GT_MetaTileEntity_MultiFurnace>builder()
@@ -1434,8 +1382,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //LargeChemicalReactor
-    registerMetaClass(GT_MetaTileEntity_LargeChemicalReactor.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_LargeChemicalReactor>() {
+    registerTileClass(GT_MetaTileEntity_LargeChemicalReactor.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_LargeChemicalReactor>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_LargeChemicalReactor> definition =
               StructureDefinition.<GT_MetaTileEntity_LargeChemicalReactor>builder()
@@ -1474,8 +1422,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //Vacuum Freezer
-    registerMetaClass(GT_MetaTileEntity_VacuumFreezer.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_VacuumFreezer>() {
+    registerTileClass(GT_MetaTileEntity_VacuumFreezer.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_VacuumFreezer>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_VacuumFreezer> definition =
               StructureDefinition.<GT_MetaTileEntity_VacuumFreezer>builder()
@@ -1508,8 +1456,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //ImplosionCompressor
-    registerMetaClass(GT_MetaTileEntity_ImplosionCompressor.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_ImplosionCompressor>() {
+    registerTileClass(GT_MetaTileEntity_ImplosionCompressor.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_ImplosionCompressor>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_ImplosionCompressor> definition =
               StructureDefinition.<GT_MetaTileEntity_ImplosionCompressor>builder()
@@ -1542,8 +1490,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //IndustrialPulverizer
-    registerMetaClass(GT_MetaTileEntity_IndustrialPulverizer.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_IndustrialPulverizer>() {
+    registerTileClass(GT_MetaTileEntity_IndustrialPulverizer.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_IndustrialPulverizer>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_IndustrialPulverizer> definition =
               StructureDefinition.<GT_MetaTileEntity_IndustrialPulverizer>builder()
@@ -1580,8 +1528,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //FlotationUnit
-    registerMetaClass(GT_MetaTileEntity_FlotationUnit.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_FlotationUnit>() {
+    registerTileClass(GT_MetaTileEntity_FlotationUnit.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_FlotationUnit>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_FlotationUnit> definition =
               StructureDefinition.<GT_MetaTileEntity_FlotationUnit>builder()
@@ -1618,8 +1566,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //HeatExchanger
-    registerMetaClass(GT_MetaTileEntity_HeatExchanger.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_HeatExchanger>() {
+    registerTileClass(GT_MetaTileEntity_HeatExchanger.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_HeatExchanger>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_HeatExchanger> definition =
               StructureDefinition.<GT_MetaTileEntity_HeatExchanger>builder()
@@ -1654,8 +1602,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //MultiblockCentrifuge
-    registerMetaClass(GT_MetaTileEntity_MultiblockCentrifuge.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_MultiblockCentrifuge>() {
+    registerTileClass(GT_MetaTileEntity_MultiblockCentrifuge.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_MultiblockCentrifuge>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_MultiblockCentrifuge> definition =
               StructureDefinition.<GT_MetaTileEntity_MultiblockCentrifuge>builder()
@@ -1690,8 +1638,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //MultiblockCentrifuge
-    registerMetaClass(GT_MetaTileEntity_MultiblockElectrolyzer.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_MultiblockElectrolyzer>() {
+    registerTileClass(GT_MetaTileEntity_MultiblockElectrolyzer.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_MultiblockElectrolyzer>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_MultiblockElectrolyzer> definition =
               StructureDefinition.<GT_MetaTileEntity_MultiblockElectrolyzer>builder()
@@ -1728,8 +1676,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //AirFilter
-    registerMetaClass(GT_MetaTileEntity_AirFilter.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_AirFilter>() {
+    registerTileClass(GT_MetaTileEntity_AirFilter.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_AirFilter>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_AirFilter> definition =
               StructureDefinition.<GT_MetaTileEntity_AirFilter>builder()
@@ -1740,7 +1688,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                   })
                   .addElement('0', ofBlock(sBlockCasingsNH, 0))
                   .addElement('1', ofBlock(sBlockCasingsNH, 1))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 0))
+                  .addElement('2', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.WHITE))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1766,8 +1714,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //Cleanroom
-    registerMetaClass(GT_MetaTileEntity_Cleanroom.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_Cleanroom>() {
+    registerTileClass(GT_MetaTileEntity_Cleanroom.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_Cleanroom>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_Cleanroom> definition =
               StructureDefinition.<GT_MetaTileEntity_Cleanroom>builder()
@@ -1850,7 +1798,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                   })
                   .addElement('0', ofBlock(sBlockReinforced, 2))
                   .addElement('1', ofBlock(sBlockCasings3, 11))
-                  .addElement('2', ofBlockHint(decorateBlock[2], 1))
+                  .addElement('2', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
                   .build();
           private final String[] desc = new String[]{
               EnumChatFormatting.RED + "Impact Details:",
@@ -1877,8 +1825,8 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //DistillationTower
-    registerMetaClass(GT_MetaTileEntity_DistillationTower.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_DistillationTower>() {
+    registerTileClass(GT_MetaTileEntity_DistillationTower.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_DistillationTower>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_DistillationTower> definition =
               StructureDefinition.<GT_MetaTileEntity_DistillationTower>builder()
@@ -1915,7 +1863,7 @@ public class Holo_Vanila_GregTech implements Runnable {
         });
 
     //Coke Oven
-    registerMetaClass(GTMTE_CokeOven.class, new IMultiblockInfoContainer<GTMTE_CokeOven>() {
+    registerTileClass(GTMTE_CokeOven.class.getCanonicalName(), new IMultiBlockInfoContainer<GTMTE_CokeOven>() {
       //region Structure
       private final IStructureDefinition<GTMTE_CokeOven> definition =
           StructureDefinition.<GTMTE_CokeOven>builder()
@@ -1949,8 +1897,8 @@ public class Holo_Vanila_GregTech implements Runnable {
     });
 
     //EBF
-    registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class,
-        new IMultiblockInfoContainer<GT_MetaTileEntity_ElectricBlastFurnace>() {
+    registerTileClass(GT_MetaTileEntity_ElectricBlastFurnace.class.getCanonicalName(),
+        new IMultiBlockInfoContainer<GT_MetaTileEntity_ElectricBlastFurnace>() {
           //region Structure
           private final IStructureDefinition<GT_MetaTileEntity_ElectricBlastFurnace> definition =
               StructureDefinition.<GT_MetaTileEntity_ElectricBlastFurnace>builder()

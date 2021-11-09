@@ -1,21 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.network.ImpactNetwork;
-import com.impact.network.ImpactPacketStringArray;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -29,21 +23,33 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.ForgeDirection;
+import space.impact.api.ImpactAPI;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.AEROSTATE_PLATFORM;
-import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.ME_CASING;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Aerostat> {
 	
 	public final static int MAX_BUFFER = 50_000;
+	static Block CASING = Casing_Helper.sCaseCore3;
+	static int CASING_META = AEROSTATE_PLATFORM.getMeta();
+	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
+	static int CASING_TEXTURE_ID = AEROSTATE_PLATFORM.getIDCasing();
+	static IStructureDefinition<GTMTE_Aerostat> definition =
+			StructureDefinition.<GTMTE_Aerostat>builder()
+					.addShape("main", new String[][]{
+							{"AAA"},
+							{"A~A"},
+							{"AAA"},
+					})
+					.addElement('A', ofHatchAdderOptional(GTMTE_Aerostat::addInputToMachineList, CASING_TEXTURE_ID, ImpactAPI.RED, CASING, CASING_META))
+					.build();
 	public int timer = 20;
 	public int curID = 0;
 	public boolean firstOpen = true;
@@ -51,18 +57,32 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	public int curBuffer = 0;
 	public String playerName = "";
 	public String aerName = "";
-	Block CASING = Casing_Helper.sCaseCore3;
-	int CASING_META = AEROSTATE_PLATFORM.getMeta();
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
-	int CASING_TEXTURE_ID = AEROSTATE_PLATFORM.getIDCasing();
 	
 	public GTMTE_Aerostat(int aID, String aNameRegional) {
 		super(aID, "impact.multis.aerostat", aNameRegional);
-		holo();
 	}
 	
 	public GTMTE_Aerostat(String aName) {
 		super(aName);
+	}
+	
+	public static List<GTMTE_Aerostat> getRadiusAeroStates(String owner, IGregTechTileEntity te) {
+		List<GTMTE_Aerostat> as = new ArrayList<>();
+		for (String name : Impact_API.sAerostat.keySet()) {
+			PositionObject location = new PositionObject(Impact_API.sAerostat.get(name));
+			PositionObject thisPos = new PositionObject(te);
+			IGregTechTileEntity teTarget = Structure.getIGTEno(te, location.toVec3());
+			if (teTarget.getMetaTileEntity() instanceof GTMTE_Aerostat) {
+				GTMTE_Aerostat gtmte_aerostat = (GTMTE_Aerostat) teTarget.getMetaTileEntity();
+				if (gtmte_aerostat.playerName.equals(owner)) {
+					int distance = Utilits.distanceBetween3D(thisPos.xPos, location.xPos, thisPos.yPos, location.yPos, thisPos.zPos, location.zPos);
+					if (distance >= 16 && distance <= 256) {
+						as.add(gtmte_aerostat);
+					}
+				}
+			}
+		}
+		return as;
 	}
 	
 	@Override
@@ -80,42 +100,8 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		return null;
-	}
-	
-	public void holo() {
-		registerMetaClass(GTMTE_Aerostat.class, new IMultiblockInfoContainer<GTMTE_Aerostat>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_Aerostat> definition =
-					StructureDefinition.<GTMTE_Aerostat>builder()
-							.addShape("main", new String[][]{
-									{"AAA"},
-									{"A~A"},
-									{"AAA"},
-							})
-							.addElement('A', ofBlock(CASING, CASING_META))
-							.addElement('B', ofBlock(SpaceElevatorBlock))
-							.build();
-			private final String[] desc = new String[]{
-					EnumChatFormatting.RED + "Impact Details:",
-					"- Space Elevator Casing",
-					"- Space Elevator Hawser",
-					"- Hatches (any Space Elevator Casing)",
-			};
-			//endregion
-			
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Aerostat tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 1, 0, 1, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
+	public IStructureDefinition<GTMTE_Aerostat> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
@@ -130,7 +116,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-		
+
 //		if (thisController.getYCoord() < 100) {
 //			return false;
 //		}
@@ -189,23 +175,9 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 		}
 	}
 	
-	public static List<GTMTE_Aerostat> getRadiusAeroStates(String owner, IGregTechTileEntity te) {
-		List<GTMTE_Aerostat> as = new ArrayList<>();
-		for (String name : Impact_API.sAerostat.keySet()) {
-			PositionObject location = new PositionObject(Impact_API.sAerostat.get(name));
-			PositionObject thisPos = new PositionObject(te);
-			IGregTechTileEntity teTarget = Structure.getIGTEno(te, location.toVec3());
-			if (teTarget.getMetaTileEntity() instanceof GTMTE_Aerostat) {
-				GTMTE_Aerostat gtmte_aerostat = (GTMTE_Aerostat) teTarget.getMetaTileEntity();
-				if (gtmte_aerostat.playerName.equals(owner)) {
-					int distance = Utilits.distanceBetween3D(thisPos.xPos, location.xPos, thisPos.yPos, location.yPos, thisPos.zPos, location.zPos);
-					if (distance >= 16 && distance <= 256) {
-						as.add(gtmte_aerostat);
-					}
-				}
-			}
-		}
-		return as;
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		return null;
 	}
 	
 	@Override
@@ -290,7 +262,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	public void toTravel(EntityPlayer aPlayer) {
-
+		
 		int id = 1;
 		for (GTMTE_Aerostat aerostat : getRadiusAeroStates(playerName, getBaseMetaTileEntity())) {
 			if (id == curID) {
@@ -317,5 +289,10 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		GT_Utility.sendChatToPlayer(aPlayer, "Owner " + getBaseMetaTileEntity().getOwnerName());
 		GT_Utility.sendChatToPlayer(aPlayer, "NameCustom " + playerName);
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 0, 1);
 	}
 }

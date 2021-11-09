@@ -19,17 +19,30 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Wire> {
 	
-	public static String mModed;
-	Block CASING = Casing_Helper.sCaseCore1;
-	byte CASING_META = 9;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
-	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	public String mModed;
+	static Block CASING = Casing_Helper.sCaseCore1;
+	static byte CASING_META = 9;
+	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
+	static int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_Wire> definition =
+			StructureDefinition.<GTMTE_Wire>builder()
+					.addShapeOldApi("main", new String[][]{
+							{".0110", "..110", ".0000",},
+							{".0110", "00..0", "00000",},
+							{"00110", "00000", "00000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 9))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Wire(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.wire", aNameRegional);
@@ -40,20 +53,15 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 1, 0);
 	}
 	
 	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_Wire(this.mName);
-	}
-	
-	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_wire");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_wire");
 		b
-                .addSingleAnalog()
+				.addSingleAnalog()
 				.addParallelInfo(1, 256)
 				.addTypeMachine("name", "WireMill, Wire Assembler")
 				.addScrew()
@@ -68,12 +76,24 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Wire Factory Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Wire> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	}
+	
+	@Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GTMTE_Wire(this.mName);
+	}
+	
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

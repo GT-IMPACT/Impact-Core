@@ -1,11 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.ItemList;
@@ -22,65 +19,40 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.Random;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.CollisionBlock;
 import static com.impact.util.Utilits.Blockstack;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_MoonMiner> {
 	
 	Block CASING = Casing_Helper.sCaseCore2;
+	private final IStructureDefinition<GTMTE_MoonMiner> definition =
+			StructureDefinition.<GTMTE_MoonMiner>builder()
+					.addShape("main", new String[][]{
+							{"A   A", "A   A", "A   A"},
+							{" AAA ", "AA~AA", "     "},
+							{" AAA ", "AAAAA", "  B  "},
+							{" AAA ", "AAAAA", "     "},
+							{"A   A", "A   A", "A   A"}
+					})
+					.addElement('A', ofBlock(CASING, 12))
+					.addElement('B', ofBlock(CollisionBlock, 0))
+					.build();
 	byte CASING_META = 12;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	
 	public GTMTE_MoonMiner(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.blockminer", aNameRegional);
-		run();
 	}
 	
 	public GTMTE_MoonMiner(String aName) {
 		super(aName);
-		run();
-	}
-	
-	public void run() {
-		registerMetaClass(GTMTE_MoonMiner.class, new IMultiblockInfoContainer<GTMTE_MoonMiner>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_MoonMiner> definition =
-					StructureDefinition.<GTMTE_MoonMiner>builder()
-							.addShape("main", new String[][]{
-									{"A   A", "A   A", "A   A"},
-									{" AAA ", "AA~AA", "     "},
-									{" AAA ", "AAAAA", "  B  "},
-									{" AAA ", "AAAAA", "     "},
-									{"A   A", "A   A", "A   A"}
-							})
-							.addElement('A', ofBlock(CASING, 12))
-							.addElement('B', ofBlock(CollisionBlock, 0))
-							.build();
-			private final String[] desc = new String[]{
-					EnumChatFormatting.RED + "Impact Details:",
-					"- Moon Miner Casing",
-					"- Block of Digger",
-					"- Hatches (any Casing)",
-			};
-			//endregion
-			
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MoonMiner tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 2, 1, 1, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
 	}
 	
 	@Override
@@ -107,6 +79,13 @@ public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
 		if (aTick % 20 == 0 && getBaseMetaTileEntity().isActive()) {
 			addOutput(Blockstack(GCBlocks.blockMoon, (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())) - 1), rand.nextInt(3) + 3));
 		}
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("moon_miner");
+		b.addInfo("dev", EnumChatFormatting.RED + "MultiBlock in dev [WIP]");
+		return b;
 	}
 	
 	@Override
@@ -221,7 +200,6 @@ public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		run();
 		return new GTMTE_MoonMiner(this.mName);
 	}
 	
@@ -231,7 +209,17 @@ public class GTMTE_MoonMiner extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
+	public IStructureDefinition<GTMTE_MoonMiner> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 1, 1);
 	}
 }

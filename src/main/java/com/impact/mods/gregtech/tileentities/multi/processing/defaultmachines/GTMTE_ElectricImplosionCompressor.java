@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.multis.OverclockCalculate;
@@ -25,32 +21,50 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.V;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ElectricImplosionCompressor> {
 	
 	
-	Block CASING = GregTech_API.sBlockCasings2;
-	byte CASING_META = 0;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[0][16 + CASING_META];
-	int CASING_TEXTURE_ID = CASING_META + 16;
+	static Block CASING = GregTech_API.sBlockCasings2;
+	static byte CASING_META = 0;
+	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[0][16 + CASING_META];
+	static int CASING_TEXTURE_ID = CASING_META + 16;
+	static IStructureDefinition<GTMTE_ElectricImplosionCompressor> definition =
+			StructureDefinition.<GTMTE_ElectricImplosionCompressor>builder()
+					.addShape("main", new String[][]{
+							{"BBBBBB ", "BAAAAB~", "BBBBBBB"},
+							{"BAAAABB", "B    BB", "BAAAABB"},
+							{"BBBBBBB", "BAAAABB", "BBBBBBB"}
+					})
+					.addElement('A', ofBlock(GregTech_API.sBlockCasings1, 15))
+					.addElement('B', ofBlock(CASING, CASING_META))
+					.build();
 	
 	public GTMTE_ElectricImplosionCompressor(int aID, String aNameRegional) {
 		super(aID, "impact.multis.electricimplosion", aNameRegional);
-		holo();
 	}
 	
 	public GTMTE_ElectricImplosionCompressor(String aName) {
 		super(aName);
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 6, 1, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_ElectricImplosionCompressor> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
@@ -64,8 +78,8 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("aic");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("aic");
 		b
 				.addInfo("info.0", "Babah!")
 				.addTypeMachine("name", "Implosion Compressor")
@@ -83,44 +97,7 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
 				.addCasingInfo("case", "Solid Steel Machine Casing")
 				.addOtherStructurePart("other.0", "Superconductor Coil", "other.1", "inside")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
-	}
-	
-	public void holo() {
-		registerMetaClass(GTMTE_ElectricImplosionCompressor.class, new IMultiblockInfoContainer<GTMTE_ElectricImplosionCompressor>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_ElectricImplosionCompressor> definition =
-					StructureDefinition.<GTMTE_ElectricImplosionCompressor>builder()
-							.addShape("main", new String[][]{
-									{"BBBBBB ", "BAAAAB~", "BBBBBBB"},
-									{"BAAAABB", "B    BB", "BAAAABB"},
-									{"BBBBBBB", "BAAAABB", "BBBBBBB"}
-							})
-							.addElement('A', ofBlock(GregTech_API.sBlockCasings1, 15))
-							.addElement('B', ofBlock(CASING, CASING_META))
-							.build();
-			private final String[] desc = new String[]{
-					EnumChatFormatting.RED + "Impact Details:",
-					"- Solid Steel Machine Casing",
-					"- Superconductor Coil",
-			};
-			//endregion
-			
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_ElectricImplosionCompressor tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 6, 1, 0, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
+		return b;
 	}
 	
 	@Override

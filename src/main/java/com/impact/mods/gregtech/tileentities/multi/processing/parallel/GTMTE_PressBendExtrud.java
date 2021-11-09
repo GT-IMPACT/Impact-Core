@@ -20,14 +20,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockBase {
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+
+public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_PressBendExtrud> {
 	
 	public static String mModed;
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 4;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_PressBendExtrud> definition =
+			StructureDefinition.<GTMTE_PressBendExtrud>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"000", "0.0", "000",},
+							{"000", "0.0", "000",},
+							{"000", "0.0", "000",},
+							{"000", "0.0", "000",},
+							{"000", "000", "000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 4))
+					.build();
 	
 	public GTMTE_PressBendExtrud(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.pbe", aNameRegional);
@@ -38,18 +54,8 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 	}
 	
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
-	}
-	
-	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_PressBendExtrud(this.mName);
-	}
-	
-	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_pbe");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_pbe");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -67,11 +73,27 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 				.addParallelHatch(1)
 				.addCasingInfo("case", "PBE Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 1, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_PressBendExtrud> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+	}
+	
+	@Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GTMTE_PressBendExtrud(this.mName);
 	}
 	
 	@Override

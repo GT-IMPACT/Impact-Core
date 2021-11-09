@@ -19,15 +19,31 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Electrolyzer> {
 	
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 8;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_Electrolyzer> definition =
+			StructureDefinition.<GTMTE_Electrolyzer>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"000", "000", "0.0", "000",},
+							{"010", "1.1", "000", ".0.",},
+							{"010", "1.1", "000", ".0.",},
+							{"010", "1.1", "000", ".0.",},
+							{"000", "000", "000", "000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 8))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Electrolyzer(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.electrolyzer", aNameRegional);
@@ -48,8 +64,18 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_electrolyze");
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 2, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Electrolyzer> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_electrolyze");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -67,11 +93,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Electrolyzer Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

@@ -20,17 +20,33 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.SawMillBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
 import static com.impact.mods.gregtech.enums.Texture.Icons.*;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SawMill> {
 	
 	public static String mModed;
 	Block CASING = Casing_Helper.sCaseCore2;
 	byte CASING_META = 9;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static IStructureDefinition<GTMTE_SawMill> definition =
+			StructureDefinition.<GTMTE_SawMill>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"0.0", "..0", "010",},
+							{"000", "...", ".1.",},
+							{"0.0", "...", ".1.",},
+							{"000", "...", ".1.",},
+							{"0.0", "0.0", "010",},
+					})
+					.addElement('1', ofBlock(SawMillBlock, 0))
+					.addElement('0', ofBlock(sCaseCore2, 9))
+					.build();
 	
 	public GTMTE_SawMill(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.sawmill", aNameRegional);
@@ -51,8 +67,18 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("saw_mill");
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 0, 1, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_SawMill> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("saw_mill");
 		b
 				.addInfo("info.1", "Nooo! Do not saw me..")
 				.addTypeMachine("name", "Saw Mill")
@@ -65,11 +91,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addCasingInfo("case", "Wooden Casing")
 				.addOtherStructurePart("other.0", "Saw Mill Conveyor", "other.1", "Bottom middle")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override

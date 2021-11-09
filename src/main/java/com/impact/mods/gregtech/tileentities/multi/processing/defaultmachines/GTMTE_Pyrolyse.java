@@ -17,13 +17,19 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.common.item.Core_Items.Core_Items1;
 import static com.impact.util.Utilits.isB;
+import static gregtech.api.GregTech_API.sBlockCasings2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofHintDeferred;
 
-public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Pyrolyse> {
 	
 	Block CASING = GregTech_API.sBlockCasings2;
 	byte CASING_META = 0;
@@ -31,6 +37,24 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
 	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	int frameId = 4096 + Materials.Steel.mMetaItemSubID;
 	int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
+	static IStructureDefinition<GTMTE_Pyrolyse> definition =
+			StructureDefinition.<GTMTE_Pyrolyse>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"000.00000", ".00.00000", "1.1.1...1",},
+							{"000.00000", "02222...0", "....00000",},
+							{"000.00000", "000.00000", "1.1.1...1",},
+					})
+					.addElement('0', ofBlock(sBlockCasings2, 0))
+					.addElement('1', ofHintDeferred(() -> new IIcon[]{
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
+					}, Materials.Steel.mRGBa))
+					.addElement('2', ofBlock(sBlockCasings2, 13))
+					.build();
 	
 	public GTMTE_Pyrolyse(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.pyrolyse", aNameRegional);
@@ -51,8 +75,18 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("pyrolyse_oven");
+	public IStructureDefinition<GTMTE_Pyrolyse> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 0, 1, 0);
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("pyrolyse_oven");
 		b
 				.addTypeMachine("name", "Pyrolyse oven")
 				.addInfo("info.0", "Converts hydrocarbons into gases, wood tar and solid fuels")
@@ -72,11 +106,7 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "Middle line")
 				.addOtherStructurePart("other.2", "Steel Frame", "other.3", "Bottom angles")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override

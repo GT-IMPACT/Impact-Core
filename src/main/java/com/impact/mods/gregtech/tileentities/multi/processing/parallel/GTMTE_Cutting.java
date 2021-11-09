@@ -19,15 +19,29 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Cutting> {
 	
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 14;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_Cutting> definition =
+			StructureDefinition.<GTMTE_Cutting>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"..010", "00010", "00.10", "00000",},
+							{"..010", "000.0", "000.0", "00000",},
+							{"..010", "00010", "00010", "00000",},
+					})
+					.addElement('0', ofBlock(sCaseCore1, 14))
+					.addElement('1', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_Cutting(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.cutting", aNameRegional);
@@ -48,8 +62,18 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_cutting");
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 2, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Cutting> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_cutting");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -66,12 +90,9 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Cutting Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
+
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " Cutting ");

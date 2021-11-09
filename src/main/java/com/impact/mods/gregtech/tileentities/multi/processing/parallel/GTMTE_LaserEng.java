@@ -19,15 +19,35 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
+import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_LaserEng> {
 	
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 5;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
 	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
+	static IStructureDefinition<GTMTE_LaserEng> definition =
+			StructureDefinition.<GTMTE_LaserEng>builder()
+					.addShapeOldApi("main", new String[][]{
+							{"...", "...", "...", "0.0", "000",},
+							{"000", "...", "...", "321", "000",},
+							{"000", ".4.", "...", "321", "000",},
+							{"000", "...", "...", "321", "000",},
+							{"000", "000", "000", "000", "000",},
+						
+					})
+					.addElement('0', ofBlock(sCaseCore1, 5))
+					.addElement('1', ofBlock(IGlassBlock, 11))
+					.addElement('2', ofBlock(IGlassBlock, 13))
+					.addElement('3', ofBlock(IGlassBlock, 14))
+					.addElement('4', ofBlock(IGlassBlock, 0))
+					.build();
 	
 	public GTMTE_LaserEng(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.laserengraver", aNameRegional);
@@ -43,13 +63,23 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 1, 3, 0);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_LaserEng> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GTMTE_LaserEng(this.mName);
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_laser");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_laser");
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
@@ -64,11 +94,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addParallelHatch(1)
 				.addCasingInfo("case", "Engraver Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -20,17 +16,30 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_DDDPrinter> {
 	
+	static IStructureDefinition<GTMTE_DDDPrinter> definition =
+			StructureDefinition.<GTMTE_DDDPrinter>builder()
+					.addShape("main", new String[][]{
+							
+							{"03330", "~3330", "00000",},
+							{"03330", "01110", "00000",},
+							{"03330", "01110", "00000",},
+							{"03330", "01110", "00000",},
+							{"03330", "03330", "00000",},
+					})
+					.addElement('0', ofBlock(sCaseCore2, 4))
+					.addElement('1', ofBlock(sCaseCore2, 5))
+					.addElement('3', ofBlock(IGlassBlock, 0))
+					.build();
 	Block CASING = Casing_Helper.sCaseCore2;
 	byte CASING_META = 4;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
@@ -38,11 +47,20 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 	
 	public GTMTE_DDDPrinter(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.dddprinter", aNameRegional);
-		holo();
 	}
- 
+	
 	public GTMTE_DDDPrinter(String aName) {
 		super(aName);
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 0, 1, 0);
+	}
+	
+	@Override
+	public space.impact.api.multiblocks.structure.IStructureDefinition<GTMTE_DDDPrinter> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override
@@ -56,8 +74,8 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("ddd_printer");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("ddd_printer");
 		b
 				.addInfo("info.0", "Assembler machines")
 				.addTypeMachine("name", "3x3 Crafting")
@@ -73,51 +91,7 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase {
 				.addOtherStructurePart("other.0", "I-Glass", "other.1", "it is glass")
 				.addOtherStructurePart("other.2", "Configuration Casing 3x3", "other.3", "core structure")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
-	}
-	
-	public void holo() {
-		//3D Printer
-		registerMetaClass(GTMTE_DDDPrinter.class, new IMultiblockInfoContainer<GTMTE_DDDPrinter>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_DDDPrinter> definition =
-					StructureDefinition.<GTMTE_DDDPrinter>builder()
-							.addShape("main", new String[][]{
-									
-									{"03330", "~3330", "00000",},
-									{"03330", "01110", "00000",},
-									{"03330", "01110", "00000",},
-									{"03330", "01110", "00000",},
-									{"03330", "03330", "00000",},
-							})
-							.addElement('0', ofBlock(sCaseCore2, 4))
-							.addElement('1', ofBlock(sCaseCore2, 5))
-							.addElement('3', ofBlock(IGlassBlock, 0))
-							.build();
-			private final String[] desc = new String[]{
-					EnumChatFormatting.RED + "Impact Details:",
-					"- 3D Printed Casing",
-					"- I-Glass (any I-Glass)",
-					"- Configuration Casing (3x3)",
-					"- Hatches (any 3D Printed Casing)",
-			};
-			//endregion
-			
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_DDDPrinter tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 0, 1, 0, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
+		return b;
 	}
 	
 	@Override

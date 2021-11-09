@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -23,15 +19,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.HashSet;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_RailAssembler> {
 	
 	public static final GT_Recipe.GT_Recipe_Map sTrackAssemblerRecipes = new GT_Recipe.GT_Recipe_Map(
 			new HashSet<GT_Recipe>(1000),
@@ -42,14 +39,23 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 			6, 1, 0, 0,
 			1, E, 1, E, true, false
 	);
-	Block CASING = Casing_Helper.sCaseCore2;
-	byte CASING_META = 13;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
-	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static Block CASING = Casing_Helper.sCaseCore2;
+	static byte CASING_META = 13;
+	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
+	static int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
+	static IStructureDefinition<GTMTE_RailAssembler> definition =
+			StructureDefinition.<GTMTE_RailAssembler>builder()
+					.addShape("main", new String[][]{
+							{" AA", " AA"},
+							{" AA", " AA"},
+							{" AA", " AA"},
+							{"~AA", "AAA"}
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.build();
 	
 	public GTMTE_RailAssembler(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.railassembler", aNameRegional);
-		holo();
 	}
 	
 	public GTMTE_RailAssembler(String aName) {
@@ -67,8 +73,8 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("rail_assembler");
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("rail_assembler");
 		b
 				.addTypeMachine("name", "Rail Assembler")
 				.addController()
@@ -78,11 +84,7 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addOutputBus(1)
 				.addCasingInfo("case", "Rail Assembler Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	@Override
@@ -148,40 +150,14 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 		return formationChecklist;
 	}
 	
-	public void holo() {
-		registerMetaClass(
-				GTMTE_RailAssembler.class,
-				new IMultiblockInfoContainer<GTMTE_RailAssembler>() {
-					//region Structure
-					private final IStructureDefinition<GTMTE_RailAssembler> definition =
-							StructureDefinition.<GTMTE_RailAssembler>builder()
-									.addShape("main", new String[][]{
-											{" AA", " AA"},
-											{" AA", " AA"},
-											{" AA", " AA"},
-											{"~AA", "AAA"}
-									})
-									.addElement('A', ofBlock(CASING, CASING_META))
-									.build();
-					private final String[] desc = new String[]{
-							EnumChatFormatting.RED + "Impact Details:",
-							"- Rail Assembler Casing",
-							"- Hatches (any Rail Assembler Casing)",
-					};
-					//endregion
-					
-					@Override
-					public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_RailAssembler tileEntity, ExtendedFacing aSide) {
-						IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-						definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 0, 0, 3, hintsOnly);
-					}
-					
-					@Override
-					public String[] getDescription(ItemStack stackSize) {
-						return desc;
-					}
-				}
-		);
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 0, 0, 3);
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_RailAssembler> getStructureDefinition() {
+		return definition;
 	}
 	
 	@Override

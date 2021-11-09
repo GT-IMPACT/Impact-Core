@@ -28,14 +28,13 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 	public int[] mHatchesRodPosition;
 	GTMTE_NuclearReactorBase mte;
 	
-	public GT_Container_NuclearReactor(InventoryPlayer aInventoryPlayer,
-									   IGregTechTileEntity aTileEntity) {
+	public GT_Container_NuclearReactor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity, false);
-		mte = (GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity();
+		mte = (GTMTE_NuclearReactorBase<?>) mTileEntity.getMetaTileEntity();
 	}
 	
 	public GT_Container_NuclearReactor(InventoryPlayer aInventoryPlayer,
-									   IGregTechTileEntity aTileEntity, GTMTE_NuclearReactorBase base) {
+									   IGregTechTileEntity aTileEntity, GTMTE_NuclearReactorBase<?> base) {
 		super(aInventoryPlayer, aTileEntity);
 		mte = base;
 	}
@@ -96,7 +95,7 @@ public class GT_Container_NuclearReactor extends GT_ContainerMetaTile_Machine {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
-		GTMTE_NuclearReactorBase reactor = ((GTMTE_NuclearReactorBase) mTileEntity.getMetaTileEntity());
+		GTMTE_NuclearReactorBase<?> reactor = ((GTMTE_NuclearReactorBase<?>) mTileEntity.getMetaTileEntity());
 		this.mTemp = (int) reactor.mCurrentTemp;
 		this.mMaxTemp = reactor.maxTemperature();
 		this.mInput = (int) Math.ceil(reactor.mCurrentInput);

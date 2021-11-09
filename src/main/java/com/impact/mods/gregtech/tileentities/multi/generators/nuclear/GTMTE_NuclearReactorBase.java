@@ -29,8 +29,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
 import static com.impact.util.Utilits.getFluidStack;
 
-public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiParallelBlockBase {
-	
+public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_NuclearReactorBase<T>> {
 	
 	private static final int SPEED_DECAY = 5;
 	private final int[] AMOUNT_NUCLEAR_HATCHES = {1, 9, 25};
@@ -68,7 +67,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 	abstract int tierReactor();
 	
 	@Override
-	public String[] getDescription() {
+	protected MultiBlockTooltipBuilder createTooltip() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("nur" + tierReactor());
 		b
 				.addInfo("info.0", "Radiation!")
@@ -87,11 +86,7 @@ public abstract class GTMTE_NuclearReactorBase extends GT_MetaTileEntity_MultiPa
 				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "pipes!")
 				.addOtherStructurePart("other.2", "Machine Hull (max x1)", "other.3", "what? yes, its for AE2 provider")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	public boolean addMachineHull(IGregTechTileEntity aTileEntity) {

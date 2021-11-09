@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -23,28 +19,38 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ElectromagneticInductionFurnace> {
 	
-	Block CASING = GregTech_API.sBlockCasings1;
-	int CASING_META = 11;
-	int CASING_TEXTURE_ID = 11;
+	static Block CASING = GregTech_API.sBlockCasings1;
+	static int CASING_META = 11;
+	static int CASING_TEXTURE_ID = 11;
+	static IStructureDefinition<GTMTE_ElectromagneticInductionFurnace> definition =
+			StructureDefinition.<GTMTE_ElectromagneticInductionFurnace>builder()
+					.addShape("main", new String[][]{
+							{" AAA ", "  A  ", "  A  ", "  A  ", " A~A "},
+							{"AAAAA", " BBB ", " CCC ", " BBB ", "AAAAA"},
+							{"AAAAA", "ABBBA", "ACCCA", "ABBBA", "AAAAA"},
+							{"AAAAA", " BBB ", " CCC ", " BBB ", "AAAAA"},
+							{" AAA ", "  A  ", "  A  ", "  A  ", " AAA "},
+					})
+					.addElement('A', ofBlock(CASING, CASING_META))
+					.addElement('B', ofBlock(GregTech_API.sBlockCasings7, 6))
+					.addElement('C', ofBlock(InsideBlock, 5))
+					.build();
 	
 	public GTMTE_ElectromagneticInductionFurnace(int aID, String aNameRegional) {
 		super(aID, "impact.multis.eif", aNameRegional);
-		build();
 	}
 	
 	public GTMTE_ElectromagneticInductionFurnace(String aName) {
 		super(aName);
-		build();
 	}
 	
 	@Override
@@ -54,50 +60,22 @@ public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_Mul
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		build();
 		return new GTMTE_ElectromagneticInductionFurnace(this.mName);
 	}
 	
-	private void build() {
-		registerMetaClass(GTMTE_ElectromagneticInductionFurnace.class, new IMultiblockInfoContainer<GTMTE_ElectromagneticInductionFurnace>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_ElectromagneticInductionFurnace> definition =
-					StructureDefinition.<GTMTE_ElectromagneticInductionFurnace>builder()
-							.addShape("main", new String[][]{
-									{" AAA ", "  A  ", "  A  ", "  A  ", " A~A "},
-									{"AAAAA", " BBB ", " CCC ", " BBB ", "AAAAA"},
-									{"AAAAA", "ABBBA", "ACCCA", "ABBBA", "AAAAA"},
-									{"AAAAA", " BBB ", " CCC ", " BBB ", "AAAAA"},
-									{" AAA ", "  A  ", "  A  ", "  A  ", " AAA "},
-							})
-							.addElement('A', ofBlock(CASING, CASING_META))
-							.addElement('B', ofBlock(GregTech_API.sBlockCasings7, 6))
-							.addElement('C', ofBlock(InsideBlock, 5))
-							.build();
-			private final String[] desc = new String[]{
-					EnumChatFormatting.RED + "Impact Details:",
-					" - Heat Proof Machine Casing",
-					" - Magnetic Coil",
-					" - Electromagnetic Chamber",
-			};
-			
-			//endregion
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_ElectromagneticInductionFurnace tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 2, 4, 0, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 4, 0);
 	}
 	
 	@Override
-	public String[] getDescription() {
-		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_eif");
+	public IStructureDefinition<GTMTE_ElectromagneticInductionFurnace> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_eif");
 		b
 				.addInfo("info.0", "Hey, its not EBF ha-ha!")
 				.addParallelInfo(1, 256)
@@ -117,11 +95,7 @@ public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_Mul
 				.addOtherStructurePart("other.2", "Magnetic Coil", "other.3", "middle outside")
 				.addCasingInfo("case", "Heat Proof Machine Casing")
 				.signAndFinalize();
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getInformation();
-		} else {
-			return b.getStructureInformation();
-		}
+		return b;
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

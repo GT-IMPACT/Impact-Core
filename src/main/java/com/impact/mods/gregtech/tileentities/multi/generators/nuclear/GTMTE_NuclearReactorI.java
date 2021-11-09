@@ -1,9 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
+import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
@@ -11,30 +8,56 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlockHint;
 import static com.impact.loader.ItemRegistery.decorateBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockHint;
 
-public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
+public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase<GTMTE_NuclearReactorI> {
 	
-	final Block GENERAL_CASING = GregTech_API.sBlockCasings3;
-	final int GENERAL_CASING_META = 12;
-	final Block SECOND_CASING = GregTech_API.sBlockCasings2;
-	final int SECOND_CASING_META = 13;
-	final int TEXTURE_HATCH = 44;
+	static final Block GENERAL_CASING = GregTech_API.sBlockCasings3;
+	static final int GENERAL_CASING_META = 12;
+	static final Block SECOND_CASING = GregTech_API.sBlockCasings2;
+	static final int SECOND_CASING_META = 13;
+	static final int TEXTURE_HATCH = 44;
+	static IStructureDefinition<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorI>> definition =
+			StructureDefinition.<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorI>>builder()
+					.addShape("main", new String[][]{
+							{"     ", "  A  ", " AAA ", " A~A "},
+							{" AAA ", " BAB ", "AB BA", "AAAAA"},
+							{" ACA ", "AA AA", "A   A", "AAAAA"},
+							{" AAA ", " BAB ", "AB BA", "AAAAA"},
+							{"     ", "  A  ", " AAA ", " AAA "}
+					})
+					.addElement('A', ofBlock(GENERAL_CASING, GENERAL_CASING_META))
+					.addElement('B', ofBlock(SECOND_CASING, SECOND_CASING_META))
+					.addElement('C', ofBlockHint(decorateBlock[2], 1))
+					.build();
 	
 	public GTMTE_NuclearReactorI(int aID, String aNameRegional) {
 		super(aID, "impact.multis.nuclear1", aNameRegional);
-		build();
 	}
 	
 	public GTMTE_NuclearReactorI(String aName) {
 		super(aName);
-		build();
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorI>> getStructureDefinition() {
+		return definition;
+	}
+	
+	@Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GTMTE_NuclearReactorI(super.mName);
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 2, 3, 0);
 	}
 	
 	@Override
@@ -52,48 +75,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase {
 		return 200;
 	}
 	
-	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		build();
-		return new GTMTE_NuclearReactorI(super.mName);
-	}
-	
-	public void build() {
-		registerMetaClass(GTMTE_NuclearReactorI.class, new IMultiblockInfoContainer<GTMTE_NuclearReactorI>() {
-			//region Structure
-			private final IStructureDefinition<GTMTE_NuclearReactorI> definition =
-					StructureDefinition.<GTMTE_NuclearReactorI>builder()
-							.addShape("main", new String[][]{
-									{"     ", "  A  ", " AAA ", " A~A "},
-									{" AAA ", " BAB ", "AB BA", "AAAAA"},
-									{" ACA ", "AA AA", "A   A", "AAAAA"},
-									{" AAA ", " BAB ", "AB BA", "AAAAA"},
-									{"     ", "  A  ", " AAA ", " AAA "}
-							})
-							.addElement('A', ofBlock(GENERAL_CASING, GENERAL_CASING_META))
-							.addElement('B', ofBlock(SECOND_CASING, SECOND_CASING_META))
-							.addElement('C', ofBlockHint(decorateBlock[2], 1))
-							.build();
-			private final String[] desc = new String[]{
-					EnumChatFormatting.RED + "Impact Details:",
-					" - Radiation Proof Casing",
-					" - Steel Pipe Casing",
-					" - " + EnumChatFormatting.RED + "RED" + EnumChatFormatting.RESET + " Nuclear Rod Hatch or Radiation Proof Casing",
-			};
-			//endregion
-			
-			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_NuclearReactorI tileEntity, ExtendedFacing aSide) {
-				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide, base.getXCoord(), base.getYCoord(), base.getZCoord(), 2, 3, 0, hintsOnly);
-			}
-			
-			@Override
-			public String[] getDescription(ItemStack stackSize) {
-				return desc;
-			}
-		});
-	}
+
 	
 	public boolean checkMachineFunction(IGregTechTileEntity thisController) {
 		this.mWrench        = true;

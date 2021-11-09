@@ -30,12 +30,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
 
 import java.util.ArrayList;
 
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
-public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
+public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Filler> {
 	
 	public static String mModed;
 	public int xMax, yMax, zMax;
@@ -91,6 +92,11 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 		} else {
 			return b.getStructureInformation();
 		}
+	}
+	
+	@Override
+	public IStructureDefinition<GTMTE_Filler> getStructureDefinition() {
+		return null;
 	}
 	
 	@Override
@@ -243,6 +249,13 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	}
 	
 	@Override
+	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("filler");
+		b.addInfo("info.0", "Its not Filler, its DESTROYER!");
+		return b;
+	}
+	
+	@Override
 	public void onFirstTick(IGregTechTileEntity iAm) {
 		super.onFirstTick(iAm);
 		if (iAm.isServerSide()) {
@@ -300,5 +313,10 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase {
 	public boolean isMe(int x, int y, int z) {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
 		return x == te.getXCoord() && y == te.getYCoord() && z == te.getZCoord();
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+	
 	}
 }
