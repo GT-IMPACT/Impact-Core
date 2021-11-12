@@ -24,6 +24,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +38,33 @@ public class Utilits {
         }
         return true;
     }
+    
+    public static Color getColorTier(int aTier) {
+        switch (aTier) {
+            case 0: return new Color(180, 180, 180);
+            case 1: return new Color(220, 220, 220);
+            case 2: return new Color(255, 100, 0);
+            case 3: return new Color(255, 255, 30);
+            case 4: return new Color(128, 128, 128);
+            case 5: return new Color(240, 240, 245);
+            case 6: return new Color(220, 220, 245);
+            case 7: return new Color(200, 200, 245);
+            case 8: return new Color(180, 180, 245);
+            case 9: return new Color(160, 160, 245);
+            case 10: return new Color(140, 140, 245);
+            case 11: return new Color(120, 120, 245);
+            case 12: return new Color(100, 100, 245);
+            case 13: return new Color(80, 80, 245);
+            case 14: return new Color(60, 60, 245);
+            case 15: return new Color(40, 40, 245);
+        }
+        return Color.BLACK;
+    }
+    
+    public static short[] getColorToRGBA(Color c) {
+        return new short[] {(short) c.getRed(), (short) c.getGreen(), (short) c.getBlue(), 0};
+    }
+    
 
     public static void bindTexture(String texture) {
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("impact", texture));

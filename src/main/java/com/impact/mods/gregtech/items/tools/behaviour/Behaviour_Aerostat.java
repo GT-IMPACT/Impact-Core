@@ -2,8 +2,7 @@ package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
-import com.impact.network.toclient.lists.string.StringList_Packet;
-import com.impact.network.toclient.primitives.string.StringArray_Packet;
+import com.impact.network.elegant.ToClient_String;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -37,10 +36,12 @@ public class Behaviour_Aerostat extends Behaviour_None {
 					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
 					List<String> names = new ArrayList<>();
 					GTMTE_Aerostat.getRadiusAeroStates(as.playerName, gte).forEach(a -> names.add(a.aerName));
-
-					new StringArray_Packet(as.playerName, as.aerName).sendToPlayer((EntityPlayerMP) aPlayer);
-					new StringList_Packet(names).sendToPlayer((EntityPlayerMP) aPlayer);
-				
+					List<String> toClient = new ArrayList<>();
+					toClient.add(as.playerName);
+					toClient.add(as.aerName);
+					toClient.addAll(names);
+					String[] pArray = new String[toClient.size()];
+					new ToClient_String(toClient.toArray(pArray)).sendToPlayer((EntityPlayerMP) aPlayer);
 				} else {
 					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
 				}

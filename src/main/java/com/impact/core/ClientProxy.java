@@ -6,6 +6,7 @@ import com.impact.client.render.tesr.PlacedItemRenderer;
 import com.impact.client.render.tesr.TESR_SETether;
 import com.impact.client.render.tesr.TESR_SpaceElevatorTether;
 import com.impact.client.render.tesr.TESR_WindMill;
+import com.impact.common.armor.MaskOfVision;
 import com.impact.common.block.QuantumStuffRender;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.te.TE_NqTether;
@@ -13,6 +14,8 @@ import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.common.te.TE_WindMill;
 import com.impact.common.te.TilePlacedItem;
 import com.impact.events.ClientEvent;
+import com.impact.util.vector.Vector3i;
+import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -23,6 +26,8 @@ import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +35,8 @@ import net.minecraftforge.common.MinecraftForge;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.List;
+
+import static com.impact.loader.ItemRegistery.maskVision;
 
 public class ClientProxy extends CommonProxy {
 	
@@ -114,6 +121,13 @@ public class ClientProxy extends CommonProxy {
 		beamcon.setReverse(reverse);
 		beamcon.setPulse(false);
 		FMLClientHandler.instance().getClient().effectRenderer.addEffect(beamcon);
+	}
+	
+	@Override
+	public void beam(World worldObj, Vector3ic vec1, Vector3ic vec2, int type, int color, boolean reverse, float endmod, int age) {
+		ItemStack is = Minecraft.getMinecraft().thePlayer.getCurrentArmor(3);
+		if (is == null || !(is.getItem() instanceof MaskOfVision)) return;
+		beam(worldObj, vec1.x() + 0.5d, vec1.y() + 0.5d, vec1.z() + 0.5d, vec2.x() + 0.5d, vec2.y() + 0.5d, vec2.z() + 0.5d, type, color, reverse, endmod, age);
 	}
 	
 	@Override

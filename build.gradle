@@ -101,12 +101,11 @@ processResources
 }
 
 jar {
-		manifest {
-		attributes 'FMLCorePlugin': 'com.impact.loader.HooksLoader'
-		attributes 'FMLCorePluginContainsFMLMod': 'true'
+    manifest {
+        attributes 'FMLCorePlugin': 'com.impact.loader.HooksLoader'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 }
-
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource

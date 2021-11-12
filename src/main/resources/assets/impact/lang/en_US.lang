@@ -352,6 +352,8 @@ item.impact_fake.5.name=Any UV Circuit
 item.impact_fake.6.name=Any UHV Circuit
 item.impact_fake.7.name=Any UEV Circuit
 
+item.mask_of_vision.name=Mask L. (LASER TECHNOLOGY)
+
 tile.impact_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
 tile.impact_lapotronicenergyunit_block.1.name=Lapotronic Capacitor (IV)
 tile.impact_lapotronicenergyunit_block.2.name=Lapotronic Capacitor (LuV)

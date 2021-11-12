@@ -349,6 +349,8 @@ item.impact_fake.5.name=Любая UV Схема
 item.impact_fake.6.name=Любая UHV Схема
 item.impact_fake.7.name=Любая UEV Схема
 
+item.mask_of_vision.name=Маска Л. (LASER TECHNOLOGY)
+
 tile.impact_lapotronicenergyunit_block.0.name=Лапотроновый Корпус Суперконденсатора
 tile.impact_lapotronicenergyunit_block.1.name=Лапотроновый Конденсатор (IV)
 tile.impact_lapotronicenergyunit_block.2.name=Лапотроновый Конденсатор (LuV)

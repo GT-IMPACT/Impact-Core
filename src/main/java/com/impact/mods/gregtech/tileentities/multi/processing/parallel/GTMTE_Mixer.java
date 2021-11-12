@@ -68,7 +68,7 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
-				.addTypeMachine("name", "Macerator")
+				.addTypeMachine("name", "Mixer")
 				.addSeparatedBus()
 				.addSeparator()
 				.addController()
@@ -80,7 +80,7 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_
 				.addOutputHatch(3)
 				.addMuffler()
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Maceration Casing")
+				.addCasingInfo("case", "Mixing Casing")
 				.signAndFinalize();
 		return b;
 	}

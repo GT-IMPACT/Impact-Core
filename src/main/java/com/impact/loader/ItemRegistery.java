@@ -1,5 +1,6 @@
 package com.impact.loader;
 
+import com.impact.common.armor.MaskOfVision;
 import com.impact.common.block.blocks.*;
 import com.impact.common.block.itemblock.FakeBlocksItem;
 import com.impact.common.item.GT_Pump.GregtechPump;
@@ -9,6 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -36,6 +38,7 @@ public class ItemRegistery {
 	public static Block lscLapotronicEnergyUnit, SawMillBlock, IGlassBlock, CoalBlock, UtilBlock,
 			NqTetherBlock, InsideBlock, FluidTankBlock, CeramicBlock, CollisionBlock,
 			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, Wind_rotor;
+	public static Item maskVision;
 	
 	public static void run() {
 		NEIHide();
@@ -136,6 +139,7 @@ public class ItemRegistery {
 		MPSystem                = Block_MatrixSystem.registerBlock();
 		MPTransducer            = Block_MatrixTransducer.registerBlock();
 		Wind_rotor              = Block_Wind.registerBlock();
+		maskVision              = MaskOfVision.registerItem();
 		INFO("[Init] Item Registery Blocks - Loaded");
 	}
 	

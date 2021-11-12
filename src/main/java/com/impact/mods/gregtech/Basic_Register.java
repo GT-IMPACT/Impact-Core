@@ -1,7 +1,11 @@
 package com.impact.mods.gregtech;
 
+import com.github.technus.tectech.util.CommonValues;
 import com.impact.mods.gregtech.tileentities.basic.*;
 import com.impact.mods.gregtech.tileentities.hatches.*;
+import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
+import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
+import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Reflector;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_AE_Connector;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_Hatch_MESystemMPChamber;
@@ -21,6 +25,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_PortableTank;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.*;
 import static com.impact.mods.gregtech.GT_ItemList.EnergyMulti64_UXV;
+import static gregtech.api.enums.GT_Values.V;
 
 public class Basic_Register {
 	
@@ -172,8 +177,165 @@ public class Basic_Register {
 		LDPE_EV.set(new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy.3", "Long Distance Energy Pipeline EV", 4).getStackForm(1L));
 		LDPE_IV.set(new GTMTE_LongDistancePipelineEnergy(ID2++, "long.distance.pipeline.energy.4", "Long Distance Energy Pipeline IV", 5).getStackForm(1L));
 		
-		INFO("Last ID Basic_Register.java: " + ID2);
+		Laser_reflector_IV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "IV Laser Reflector", 5, 256).getStackForm(1));
+		Laser_reflector_LuV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "LuV Laser Reflector", 6, 256).getStackForm(1));
+		Laser_reflector_ZPM.set(new GTMTE_LaserEnergy_Reflector(ID2++, "ZPM Laser Reflector", 7, 256).getStackForm(1));
+		Laser_reflector_UV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "UV Laser Reflector", 8, 256).getStackForm(1));
+		Laser_reflector_UHV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "UHV Laser Reflector", 9, 256).getStackForm(1));
+		Laser_reflector_UEV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "UEV Laser Reflector", 10, 256).getStackForm(1));
+		Laser_reflector_UIV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "UIV Laser Reflector", 11, 256).getStackForm(1));
+		Laser_reflector_UMV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "UMV Laser Reflector", 12, 256).getStackForm(1));
+		Laser_reflector_UXV.set(new GTMTE_LaserEnergy_Reflector(ID2++, "UXV Laser Reflector", 13, 256).getStackForm(1));
 		
+		EnergyTunnel1_IV.set(new GTMTE_LaserEnergy_In(ID2++, "IV 256 A/t Laser Target (Input) Hatch", 5, 256).getStackForm(1L));
+		EnergyTunnel2_IV.set(new GTMTE_LaserEnergy_In(ID2++, "IV 1024 A/t Laser Target (Input) Hatch", 5, 1024).getStackForm(1L));
+		EnergyTunnel3_IV.set(new GTMTE_LaserEnergy_In(ID2++, "IV 4096 A/t Laser Target (Input) Hatch", 5, 4096).getStackForm(1L));
+		EnergyTunnel4_IV.set(new GTMTE_LaserEnergy_In(ID2++, "IV 16384 A/t Laser Target (Input) Hatch", 5, 16384).getStackForm(1L));
+		EnergyTunnel5_IV.set(new GTMTE_LaserEnergy_In(ID2++, "IV 65536 A/t Laser Target (Input) Hatch", 5, 65536).getStackForm(1L));
+		EnergyTunnel6_IV.set(new GTMTE_LaserEnergy_In(ID2++, "IV 262144 A/t Laser Target (Input) Hatch", 5, 262144).getStackForm(1L));
+		EnergyTunnel7_IV.set(new GTMTE_LaserEnergy_In(ID2++, "IV 1048576 A/t Laser Target (Input) Hatch", 5, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_LuV.set(new GTMTE_LaserEnergy_In(ID2++, "LuV 256 A/t Laser Target (Input) Hatch", 6, 256).getStackForm(1L));
+		EnergyTunnel2_LuV.set(new GTMTE_LaserEnergy_In(ID2++, "LuV 1024 A/t Laser Target (Input) Hatch", 6, 1024).getStackForm(1L));
+		EnergyTunnel3_LuV.set(new GTMTE_LaserEnergy_In(ID2++, "LuV 4096 A/t Laser Target (Input) Hatch", 6, 4096).getStackForm(1L));
+		EnergyTunnel4_LuV.set(new GTMTE_LaserEnergy_In(ID2++, "LuV 16384 A/t Laser Target (Input) Hatch", 6, 16384).getStackForm(1L));
+		EnergyTunnel5_LuV.set(new GTMTE_LaserEnergy_In(ID2++, "LuV 65536 A/t Laser Target (Input) Hatch", 6, 65536).getStackForm(1L));
+		EnergyTunnel6_LuV.set(new GTMTE_LaserEnergy_In(ID2++, "LuV 262144 A/t Laser Target (Input) Hatch", 6, 262144).getStackForm(1L));
+		EnergyTunnel7_LuV.set(new GTMTE_LaserEnergy_In(ID2++, "LuV 1048576 A/t Laser Target (Input) Hatch", 6, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_ZPM.set(new GTMTE_LaserEnergy_In(ID2++, "ZPM 256 A/t Laser Target (Input) Hatch", 7, 256).getStackForm(1L));
+		EnergyTunnel2_ZPM.set(new GTMTE_LaserEnergy_In(ID2++, "ZPM 1024 A/t Laser Target (Input) Hatch", 7, 1024).getStackForm(1L));
+		EnergyTunnel3_ZPM.set(new GTMTE_LaserEnergy_In(ID2++, "ZPM 4096 A/t Laser Target (Input) Hatch", 7, 4096).getStackForm(1L));
+		EnergyTunnel4_ZPM.set(new GTMTE_LaserEnergy_In(ID2++, "ZPM 16384 A/t Laser Target (Input) Hatch", 7, 16384).getStackForm(1L));
+		EnergyTunnel5_ZPM.set(new GTMTE_LaserEnergy_In(ID2++, "ZPM 65536 A/t Laser Target (Input) Hatch", 7, 65536).getStackForm(1L));
+		EnergyTunnel6_ZPM.set(new GTMTE_LaserEnergy_In(ID2++, "ZPM 262144 A/t Laser Target (Input) Hatch", 7, 262144).getStackForm(1L));
+		EnergyTunnel7_ZPM.set(new GTMTE_LaserEnergy_In(ID2++, "ZPM 1048576 A/t Laser Target (Input) Hatch", 7, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_UV .set(new GTMTE_LaserEnergy_In(ID2++, "UV 256 A/t Laser Target (Input) Hatch", 8, 256).getStackForm(1L));
+		EnergyTunnel2_UV .set(new GTMTE_LaserEnergy_In(ID2++, "UV 1024 A/t Laser Target (Input) Hatch", 8, 1024).getStackForm(1L));
+		EnergyTunnel3_UV .set(new GTMTE_LaserEnergy_In(ID2++, "UV 4096 A/t Laser Target (Input) Hatch", 8, 4096).getStackForm(1L));
+		EnergyTunnel4_UV .set(new GTMTE_LaserEnergy_In(ID2++, "UV 16384 A/t Laser Target (Input) Hatch", 8, 16384).getStackForm(1L));
+		EnergyTunnel5_UV .set(new GTMTE_LaserEnergy_In(ID2++, "UV 65536 A/t Laser Target (Input) Hatch", 8, 65536).getStackForm(1L));
+		EnergyTunnel6_UV .set(new GTMTE_LaserEnergy_In(ID2++, "UV 262144 A/t Laser Target (Input) Hatch", 8, 262144).getStackForm(1L));
+		EnergyTunnel7_UV .set(new GTMTE_LaserEnergy_In(ID2++, "UV 1048576 A/t Laser Target (Input) Hatch", 8, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_UHV.set(new GTMTE_LaserEnergy_In(ID2++, "UHV 256 A/t Laser Target (Input) Hatch", 9, 256).getStackForm(1L));
+		EnergyTunnel2_UHV.set(new GTMTE_LaserEnergy_In(ID2++, "UHV 1024 A/t Laser Target (Input) Hatch", 9, 1024).getStackForm(1L));
+		EnergyTunnel3_UHV.set(new GTMTE_LaserEnergy_In(ID2++, "UHV 4096 A/t Laser Target (Input) Hatch", 9, 4096).getStackForm(1L));
+		EnergyTunnel4_UHV.set(new GTMTE_LaserEnergy_In(ID2++, "UHV 16384 A/t Laser Target (Input) Hatch", 9, 16384).getStackForm(1L));
+		EnergyTunnel5_UHV.set(new GTMTE_LaserEnergy_In(ID2++, "UHV 65536 A/t Laser Target (Input) Hatch", 9, 65536).getStackForm(1L));
+		EnergyTunnel6_UHV.set(new GTMTE_LaserEnergy_In(ID2++, "UHV 262144 A/t Laser Target (Input) Hatch", 9, 262144).getStackForm(1L));
+		EnergyTunnel7_UHV.set(new GTMTE_LaserEnergy_In(ID2++, "UHV 1048576 A/t Laser Target (Input) Hatch", 9, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_UEV.set(new GTMTE_LaserEnergy_In(ID2++, "UEV 256 A/t Laser Target (Input) Hatch", 10, 256).getStackForm(1L));
+		EnergyTunnel2_UEV.set(new GTMTE_LaserEnergy_In(ID2++, "UEV 1024 A/t Laser Target (Input) Hatch", 10, 1024).getStackForm(1L));
+		EnergyTunnel3_UEV.set(new GTMTE_LaserEnergy_In(ID2++, "UEV 4096 A/t Laser Target (Input) Hatch", 10, 4096).getStackForm(1L));
+		EnergyTunnel4_UEV.set(new GTMTE_LaserEnergy_In(ID2++, "UEV 16384 A/t Laser Target (Input) Hatch", 10, 16384).getStackForm(1L));
+		EnergyTunnel5_UEV.set(new GTMTE_LaserEnergy_In(ID2++, "UEV 65536 A/t Laser Target (Input) Hatch", 10, 65536).getStackForm(1L));
+		EnergyTunnel6_UEV.set(new GTMTE_LaserEnergy_In(ID2++, "UEV 262144 A/t Laser Target (Input) Hatch", 10, 262144).getStackForm(1L));
+		EnergyTunnel7_UEV.set(new GTMTE_LaserEnergy_In(ID2++, "UEV 1048576 A/t Laser Target (Input) Hatch", 10, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_UIV.set(new GTMTE_LaserEnergy_In(ID2++, "UIV 256 A/t Laser Target (Input) Hatch", 11, 256).getStackForm(1L));
+		EnergyTunnel2_UIV.set(new GTMTE_LaserEnergy_In(ID2++, "UIV 1024 A/t Laser Target (Input) Hatch", 11, 1024).getStackForm(1L));
+		EnergyTunnel3_UIV.set(new GTMTE_LaserEnergy_In(ID2++, "UIV 4096 A/t Laser Target (Input) Hatch", 11, 4096).getStackForm(1L));
+		EnergyTunnel4_UIV.set(new GTMTE_LaserEnergy_In(ID2++, "UIV 16384 A/t Laser Target (Input) Hatch", 11, 16384).getStackForm(1L));
+		EnergyTunnel5_UIV.set(new GTMTE_LaserEnergy_In(ID2++, "UIV 65536 A/t Laser Target (Input) Hatch", 11, 65536).getStackForm(1L));
+		EnergyTunnel6_UIV.set(new GTMTE_LaserEnergy_In(ID2++, "UIV 262144 A/t Laser Target (Input) Hatch", 11, 262144).getStackForm(1L));
+		EnergyTunnel7_UIV.set(new GTMTE_LaserEnergy_In(ID2++, "UIV 1048576 A/t Laser Target (Input) Hatch", 11, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_UMV.set(new GTMTE_LaserEnergy_In(ID2++, "UMV 256 A/t Laser Target (Input) Hatch", 12, 256).getStackForm(1L));
+		EnergyTunnel2_UMV.set(new GTMTE_LaserEnergy_In(ID2++, "UMV 1024 A/t Laser Target (Input) Hatch", 12, 1024).getStackForm(1L));
+		EnergyTunnel3_UMV.set(new GTMTE_LaserEnergy_In(ID2++, "UMV 4096 A/t Laser Target (Input) Hatch", 12, 4096).getStackForm(1L));
+		EnergyTunnel4_UMV.set(new GTMTE_LaserEnergy_In(ID2++, "UMV 16384 A/t Laser Target (Input) Hatch", 12, 16384).getStackForm(1L));
+		EnergyTunnel5_UMV.set(new GTMTE_LaserEnergy_In(ID2++, "UMV 65536 A/t Laser Target (Input) Hatch", 12, 65536).getStackForm(1L));
+		EnergyTunnel6_UMV.set(new GTMTE_LaserEnergy_In(ID2++, "UMV 262144 A/t Laser Target (Input) Hatch", 12, 262144).getStackForm(1L));
+		EnergyTunnel7_UMV.set(new GTMTE_LaserEnergy_In(ID2++, "UMV 1048576 A/t Laser Target (Input) Hatch", 12, 1048576).getStackForm(1L));
+		
+		EnergyTunnel1_UXV.set(new GTMTE_LaserEnergy_In(ID2++, "UXV 256 A/t Laser Target (Input) Hatch", 13, 256).getStackForm(1L));
+		EnergyTunnel2_UXV.set(new GTMTE_LaserEnergy_In(ID2++, "UXV 1024 A/t Laser Target (Input) Hatch", 13, 1024).getStackForm(1L));
+		EnergyTunnel3_UXV.set(new GTMTE_LaserEnergy_In(ID2++, "UXV 4096 A/t Laser Target (Input) Hatch", 13, 4096).getStackForm(1L));
+		EnergyTunnel4_UXV.set(new GTMTE_LaserEnergy_In(ID2++, "UXV 16384 A/t Laser Target (Input) Hatch", 13, 16384).getStackForm(1L));
+		EnergyTunnel5_UXV.set(new GTMTE_LaserEnergy_In(ID2++, "UXV 65536 A/t Laser Target (Input) Hatch", 13, 65536).getStackForm(1L));
+		EnergyTunnel6_UXV.set(new GTMTE_LaserEnergy_In(ID2++, "UXV 262144 A/t Laser Target (Input) Hatch", 13, 262144).getStackForm(1L));
+		EnergyTunnel7_UXV.set(new GTMTE_LaserEnergy_In(ID2++, "UXV 1048576 A/t Laser Target (Input) Hatch", 13, 1048576).getStackForm(1L));
+		
+		EnergyTunnel9001 .set(new GTMTE_LaserEnergy_In(ID2++, "Legendary Laser Target (Input) Hatch", 13, (int) V[13]).getStackForm(1L));
+		
+		DynamoTunnel1_IV .set(new GTMTE_LaserEnergy_Out(ID2++,  "IV 256 A/t Laser Source (Output) Hatch", 5, 256).getStackForm(1L));
+		DynamoTunnel2_IV .set(new GTMTE_LaserEnergy_Out(ID2++,  "IV 1024 A/t Laser Source (Output) Hatch", 5, 1024).getStackForm(1L));
+		DynamoTunnel3_IV .set(new GTMTE_LaserEnergy_Out(ID2++,  "IV 4096 A/t Laser Source (Output) Hatch", 5, 4096).getStackForm(1L));
+		DynamoTunnel4_IV .set(new GTMTE_LaserEnergy_Out(ID2++,  "IV 16384 A/t Laser Source (Output) Hatch", 5, 16384).getStackForm(1L));
+		DynamoTunnel5_IV .set(new GTMTE_LaserEnergy_Out(ID2++,  "IV 65536 A/t Laser Source (Output) Hatch", 5, 65536).getStackForm(1L));
+		DynamoTunnel6_IV .set(new GTMTE_LaserEnergy_Out(ID2++,  "IV 262144 A/t Laser Source (Output) Hatch", 5, 262144).getStackForm(1L));
+		DynamoTunnel7_IV .set(new GTMTE_LaserEnergy_Out(ID2++,  "IV 1048576 A/t Laser Source (Output) Hatch", 5, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_LuV.set(new GTMTE_LaserEnergy_Out(ID2++,  "LuV 256 A/t Laser Source (Output) Hatch", 6, 256).getStackForm(1L));
+		DynamoTunnel2_LuV.set(new GTMTE_LaserEnergy_Out(ID2++,  "LuV 1024 A/t Laser Source (Output) Hatch", 6, 1024).getStackForm(1L));
+		DynamoTunnel3_LuV.set(new GTMTE_LaserEnergy_Out(ID2++,  "LuV 4096 A/t Laser Source (Output) Hatch", 6, 4096).getStackForm(1L));
+		DynamoTunnel4_LuV.set(new GTMTE_LaserEnergy_Out(ID2++,  "LuV 16384 A/t Laser Source (Output) Hatch", 6, 16384).getStackForm(1L));
+		DynamoTunnel5_LuV.set(new GTMTE_LaserEnergy_Out(ID2++,  "LuV 65536 A/t Laser Source (Output) Hatch", 6, 65536).getStackForm(1L));
+		DynamoTunnel6_LuV.set(new GTMTE_LaserEnergy_Out(ID2++,  "LuV 262144 A/t Laser Source (Output) Hatch", 6, 262144).getStackForm(1L));
+		DynamoTunnel7_LuV.set(new GTMTE_LaserEnergy_Out(ID2++,  "LuV 1048576 A/t Laser Source (Output) Hatch", 6, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_ZPM.set(new GTMTE_LaserEnergy_Out(ID2++,  "ZPM 256 A/t Laser Source (Output) Hatch", 7, 256).getStackForm(1L));
+		DynamoTunnel2_ZPM.set(new GTMTE_LaserEnergy_Out(ID2++,  "ZPM 1024 A/t Laser Source (Output) Hatch", 7, 1024).getStackForm(1L));
+		DynamoTunnel3_ZPM.set(new GTMTE_LaserEnergy_Out(ID2++,  "ZPM 4096 A/t Laser Source (Output) Hatch", 7, 4096).getStackForm(1L));
+		DynamoTunnel4_ZPM.set(new GTMTE_LaserEnergy_Out(ID2++,  "ZPM 16384 A/t Laser Source (Output) Hatch", 7, 16384).getStackForm(1L));
+		DynamoTunnel5_ZPM.set(new GTMTE_LaserEnergy_Out(ID2++,  "ZPM 65536 A/t Laser Source (Output) Hatch", 7, 65536).getStackForm(1L));
+		DynamoTunnel6_ZPM.set(new GTMTE_LaserEnergy_Out(ID2++,  "ZPM 262144 A/t Laser Source (Output) Hatch", 7, 262144).getStackForm(1L));
+		DynamoTunnel7_ZPM.set(new GTMTE_LaserEnergy_Out(ID2++,  "ZPM 1048576 A/t Laser Source (Output) Hatch", 7, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_UV .set(new GTMTE_LaserEnergy_Out(ID2++,  "UV 256 A/t Laser Source (Output) Hatch", 8, 256).getStackForm(1L));
+		DynamoTunnel2_UV .set(new GTMTE_LaserEnergy_Out(ID2++,  "UV 1024 A/t Laser Source (Output) Hatch", 8, 1024).getStackForm(1L));
+		DynamoTunnel3_UV .set(new GTMTE_LaserEnergy_Out(ID2++,  "UV 4096 A/t Laser Source (Output) Hatch", 8, 4096).getStackForm(1L));
+		DynamoTunnel4_UV .set(new GTMTE_LaserEnergy_Out(ID2++,  "UV 16384 A/t Laser Source (Output) Hatch", 8, 16384).getStackForm(1L));
+		DynamoTunnel5_UV .set(new GTMTE_LaserEnergy_Out(ID2++,  "UV 65536 A/t Laser Source (Output) Hatch", 8, 65536).getStackForm(1L));
+		DynamoTunnel6_UV .set(new GTMTE_LaserEnergy_Out(ID2++,  "UV 262144 A/t Laser Source (Output) Hatch", 8, 262144).getStackForm(1L));
+		DynamoTunnel7_UV .set(new GTMTE_LaserEnergy_Out(ID2++,  "UV 1048576 A/t Laser Source (Output) Hatch", 8, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_UHV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UHV 256 A/t Laser Source (Output) Hatch", 9, 256).getStackForm(1L));
+		DynamoTunnel2_UHV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UHV 1024 A/t Laser Source (Output) Hatch", 9, 1024).getStackForm(1L));
+		DynamoTunnel3_UHV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UHV 4096 A/t Laser Source (Output) Hatch", 9, 4096).getStackForm(1L));
+		DynamoTunnel4_UHV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UHV 16384 A/t Laser Source (Output) Hatch", 9, 16384).getStackForm(1L));
+		DynamoTunnel5_UHV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UHV 65536 A/t Laser Source (Output) Hatch", 9, 65536).getStackForm(1L));
+		DynamoTunnel6_UHV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UHV 262144 A/t Laser Source (Output) Hatch", 9, 262144).getStackForm(1L));
+		DynamoTunnel7_UHV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UHV 1048576 A/t Laser Source (Output) Hatch", 9, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_UEV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UEV 256 A/t Laser Source (Output) Hatch", 10, 256).getStackForm(1L));
+		DynamoTunnel2_UEV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UEV 1024 A/t Laser Source (Output) Hatch", 10, 1024).getStackForm(1L));
+		DynamoTunnel3_UEV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UEV 4096 A/t Laser Source (Output) Hatch", 10, 4096).getStackForm(1L));
+		DynamoTunnel4_UEV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UEV 16384 A/t Laser Source (Output) Hatch", 10, 16384).getStackForm(1L));
+		DynamoTunnel5_UEV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UEV 65536 A/t Laser Source (Output) Hatch", 10, 65536).getStackForm(1L));
+		DynamoTunnel6_UEV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UEV 262144 A/t Laser Source (Output) Hatch", 10, 262144).getStackForm(1L));
+		DynamoTunnel7_UEV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UEV 1048576 A/t Laser Source (Output) Hatch", 10, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_UIV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UIV 256 A/t Laser Source (Output) Hatch", 11, 256).getStackForm(1L));
+		DynamoTunnel2_UIV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UIV 1024 A/t Laser Source (Output) Hatch", 11, 1024).getStackForm(1L));
+		DynamoTunnel3_UIV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UIV 4096 A/t Laser Source (Output) Hatch", 11, 4096).getStackForm(1L));
+		DynamoTunnel4_UIV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UIV 16384 A/t Laser Source (Output) Hatch", 11, 16384).getStackForm(1L));
+		DynamoTunnel5_UIV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UIV 65536 A/t Laser Source (Output) Hatch", 11, 65536).getStackForm(1L));
+		DynamoTunnel6_UIV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UIV 262144 A/t Laser Source (Output) Hatch", 11, 262144).getStackForm(1L));
+		DynamoTunnel7_UIV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UIV 1048576 A/t Laser Source (Output) Hatch", 11, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_UMV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UMV 256 A/t Laser Source (Output) Hatch", 12, 256).getStackForm(1L));
+		DynamoTunnel2_UMV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UMV 1024 A/t Laser Source (Output) Hatch", 12, 1024).getStackForm(1L));
+		DynamoTunnel3_UMV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UMV 4096 A/t Laser Source (Output) Hatch", 12, 4096).getStackForm(1L));
+		DynamoTunnel4_UMV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UMV 16384 A/t Laser Source (Output) Hatch", 12, 16384).getStackForm(1L));
+		DynamoTunnel5_UMV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UMV 65536 A/t Laser Source (Output) Hatch", 12, 65536).getStackForm(1L));
+		DynamoTunnel6_UMV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UMV 262144 A/t Laser Source (Output) Hatch", 12, 262144).getStackForm(1L));
+		DynamoTunnel7_UMV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UMV 1048576 A/t Laser Source (Output) Hatch", 12, 1048576).getStackForm(1L));
+		
+		DynamoTunnel1_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 256 A/t Laser Source (Output) Hatch", 13, 256).getStackForm(1L));
+		DynamoTunnel2_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 1024 A/t Laser Source (Output) Hatch", 13, 1024).getStackForm(1L));
+		DynamoTunnel3_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 4096 A/t Laser Source (Output) Hatch", 13, 4096).getStackForm(1L));
+		DynamoTunnel4_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 16384 A/t Laser Source (Output) Hatch", 13, 16384).getStackForm(1L));
+		DynamoTunnel5_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 65536 A/t Laser Source (Output) Hatch", 13, 65536).getStackForm(1L));
+		DynamoTunnel6_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 262144 A/t Laser Source (Output) Hatch", 13, 262144).getStackForm(1L));
+		DynamoTunnel7_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 1048576 A/t Laser Source (Output) Hatch", 13, 1048576).getStackForm(1L));
+		
+		DynamoTunnel9001 .set(new GTMTE_LaserEnergy_Out(ID2++,  "Legendary Laser Source (Output) Hatch", 13, (int) CommonValues.V[13]).getStackForm(1L));
+		
+		INFO("Last ID Basic_Register.java: " + ID2);
 		
 		DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
 				"impact.basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts",

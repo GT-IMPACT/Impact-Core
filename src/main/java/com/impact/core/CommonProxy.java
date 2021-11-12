@@ -1,6 +1,8 @@
 package com.impact.core;
 
 import com.impact.util.files.JsonWorld;
+import com.impact.util.vector.Vector3i;
+import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.block.Block;
@@ -72,6 +74,9 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public void beam(World worldObj, double sx, double sy, double sz, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, int age) {
+	}
+	
+	public void beam(World worldObj, Vector3ic vec1, Vector3ic vec2, int type, int color, boolean reverse, float endmod, int age) {
 	}
 	
 	public Object beamBore(World worldObj, double px, double py, double pz, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, Object input, int impact) {
