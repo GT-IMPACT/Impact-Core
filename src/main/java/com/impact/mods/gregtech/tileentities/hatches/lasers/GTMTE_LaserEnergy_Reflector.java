@@ -1,8 +1,8 @@
 package com.impact.mods.gregtech.tileentities.hatches.lasers;
 
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.network.elegant.IPacketInteger;
-import com.impact.network.elegant.ToClient_Integer;
+import com.impact.network.IPacketInteger;
+import com.impact.network.ToClient_Integer;
 import com.impact.util.vector.LaserPath;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

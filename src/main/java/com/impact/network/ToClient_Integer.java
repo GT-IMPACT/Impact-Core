@@ -1,4 +1,4 @@
-package com.impact.network.elegant;
+package com.impact.network;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;

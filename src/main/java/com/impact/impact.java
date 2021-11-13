@@ -17,7 +17,6 @@ import com.impact.mods.nei.oreplugin.helper.GT5OreLayerHelper;
 import com.impact.mods.nei.oreplugin.helper.GT5OreSmallHelper;
 import com.impact.mods.railcraft.carts.item.ChestCartModule;
 import com.impact.mods.railcraft.carts.item.events.Module;
-import com.impact.network.ImpactNetwork;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -54,7 +53,6 @@ public class impact {
   public impact() {
     impact.I_RA = new RecipeAdder();
     Texture.Icons.VOID.name();
-    new ImpactNetwork();
   }
 
   public static ArrayList<Module> getModules() {

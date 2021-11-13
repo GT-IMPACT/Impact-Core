@@ -1,10 +1,6 @@
 package com.impact.mods.gregtech.gui.aerostat;
 
-import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
-import com.impact.network.ImpactNetwork;
-import com.impact.network.ImpactPacketStringArray;
-import com.impact.util.PositionObject;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -12,15 +8,10 @@ import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 	
@@ -39,7 +30,6 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 		addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 8, 26, false, false, 1));
 		addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 8, 55, false, false, 1));
 	}
-	
 	
 	
 	@Override
@@ -80,7 +70,6 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
 	
-
 	
 	@Override
 	public void detectAndSendChanges() {
@@ -89,9 +78,9 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 			return;
 		}
 		
-		timer = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).timer;
+		timer      = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).timer;
 		idLocation = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curID;
-		curBuffer = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curBuffer;
+		curBuffer  = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curBuffer;
 		
 		for (Object crafter : this.crafters) {
 			ICrafting var1 = (ICrafting) crafter;

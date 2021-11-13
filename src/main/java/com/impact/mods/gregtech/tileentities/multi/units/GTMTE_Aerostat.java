@@ -4,6 +4,7 @@ import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.network.IPacketString;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -34,7 +35,7 @@ import java.util.List;
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.AEROSTATE_PLATFORM;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Aerostat> {
+public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Aerostat> implements IPacketString {
 	
 	public final static int MAX_BUFFER = 50_000;
 	static Block CASING = Casing_Helper.sCaseCore3;
@@ -294,5 +295,10 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 	@Override
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 1, 0, 1);
+	}
+	
+	@Override
+	public void update(String... str) {
+		setLocationName(str[0]);
 	}
 }

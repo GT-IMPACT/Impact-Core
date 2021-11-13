@@ -1,4 +1,4 @@
-package com.impact.network.elegant;
+package com.impact.network;
 
 import hohserg.elegant.networking.api.ClientToServerPacket;
 import hohserg.elegant.networking.api.ElegantPacket;

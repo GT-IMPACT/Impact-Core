@@ -4,9 +4,8 @@ import com.impact.client.gui.ImpactGuiMainMenu;
 import com.impact.client.key.KeyBindings;
 import com.impact.common.block.itemblock.IB_IGlass;
 import com.impact.core.Config;
-import com.impact.network.ImpactNetwork;
-import com.impact.network.ImpactPacketMetaDataPacket;
-import com.impact.network.ImpactPacketPlacedItem;
+import com.impact.network.special.ToServer_MetaBlockGlass;
+import com.impact.network.special.ToServer_PlacedItems;
 import com.impact.util.Utilits;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
@@ -44,7 +43,7 @@ public class ClientEvent {
 			final ItemStack itemStack = entityPlayer.getHeldItem();
 			if (itemStack != null && itemStack.getItem() instanceof IB_IGlass) {
 				if (event.dwheel != 0) {
-					ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketMetaDataPacket(event.dwheel > 0, entityPlayer));
+					new ToServer_MetaBlockGlass(event.dwheel > 0).sendToServer();
 				}
 				event.setCanceled(true);
 			}
@@ -60,7 +59,7 @@ public class ClientEvent {
 				WorldClient world = Minecraft.getMinecraft().theWorld;
 				MovingObjectPosition mop = Utilits.raytraceFromEntity(world, player, 4.5D);
 				if (mop != null) {
-					ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketPlacedItem((byte) mop.sideHit, mop.blockX, mop.blockY, mop.blockZ, player));
+					new ToServer_PlacedItems(mop.sideHit, mop.blockX, mop.blockY, mop.blockZ).sendToServer();
 				}
 			}
 		}

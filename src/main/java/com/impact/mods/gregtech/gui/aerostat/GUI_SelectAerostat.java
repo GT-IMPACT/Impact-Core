@@ -2,7 +2,7 @@ package com.impact.mods.gregtech.gui.aerostat;
 
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
-import com.impact.network.elegant.IPacketString;
+import com.impact.network.IPacketString;
 import com.impact.util.PositionObject;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;

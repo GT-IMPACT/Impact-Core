@@ -3,20 +3,12 @@ package com.impact.mods.gregtech.gui.regulatechest;
 
 import com.impact.client.gui.GuiIntegerBox;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_RegulateDigitalChest;
-import com.impact.network.ImpactNetwork;
-import com.impact.network.ImpactPacketAerostat;
-import com.impact.network.ImpactPacketGuiTextField;
-import gregtech.api.enums.GT_Values;
+import com.impact.network.ToServer_Integer;
+import com.impact.network.special.ToServer_RegulateDigitalChest;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.gui.GT_GUIContainerVolumetricFlask;
-import gregtech.common.items.GT_VolumetricFlask;
-import gregtech.common.net.MessageSetFlaskCapacity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
@@ -89,7 +81,7 @@ public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 					String out = amount.getText();
 					boolean fixed = false;
 					while ((out.startsWith("0")) && (out.length() > 1)) {
-						out = out.substring(1);
+						out   = out.substring(1);
 						fixed = true;
 					}
 					if (fixed) {
@@ -114,7 +106,8 @@ public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 	protected void actionPerformed(GuiButton btn) {
 		try {
 			if (btn == apply) {
-				ImpactNetwork.INSTANCE.sendToServer(new ImpactPacketGuiTextField(Integer.parseInt(amount.getText()), Minecraft.getMinecraft().thePlayer));
+				new ToServer_RegulateDigitalChest(Integer.parseInt(amount.getText()), mContainer.mTileEntity.getXCoord(),
+						mContainer.mTileEntity.getYCoord(), mContainer.mTileEntity.getZCoord()).sendToServer();
 				mc.thePlayer.closeScreen();
 			}
 			
@@ -136,7 +129,7 @@ public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 			
 			boolean fixed = false;
 			while ((out.startsWith("0")) && (out.length() > 1)) {
-				out = out.substring(1);
+				out   = out.substring(1);
 				fixed = true;
 			}
 			
