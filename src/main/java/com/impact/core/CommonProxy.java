@@ -1,14 +1,15 @@
 package com.impact.core;
 
 import com.impact.util.files.JsonWorld;
-import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
@@ -94,6 +95,39 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public void nodeBolt(World world, int tX, int tY, int tZ, int tXN, int tYN, int tZN, int duration, float multi, int speed) {
+	}
+	
+	public String getUUID(String name) {
+		for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
+			for (Object o : worldServer.playerEntities) {
+				if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getName().equals(name)) {
+					return ((EntityPlayer) o).getGameProfile().getId().toString();
+				}
+			}
+		}
+		return null;
+	}
+	
+	public boolean isOnlineName(String name) {
+		for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
+			for (Object o : worldServer.playerEntities) {
+				if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getName().equals(name)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean isOnlineUUID(String uuid) {
+		for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
+			for (Object o : worldServer.playerEntities) {
+				if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile().getId().toString().equals(uuid)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public void onServerStarted() {

@@ -139,7 +139,7 @@ public enum GT_ItemList implements IItemContainer {
 	LDPE_LV, LDPE_MV, LDPE_HV, LDPE_EV, LDPE_IV,
 	LDPFE_LV, LDPFE_MV, LDPFE_HV, LDPFE_EV, LDPFE_IV,
 	
-	EnergyTunnel9001, DynamoTunnel9001,
+	EnergyTunnel9001, DynamoTunnel9001, Machine_DataReader,
 	
 	Laser_reflector_IV, Laser_reflector_LuV, Laser_reflector_ZPM, Laser_reflector_UV, Laser_reflector_UHV,
 	Laser_reflector_UEV, Laser_reflector_UIV, Laser_reflector_UMV, Laser_reflector_UXV,

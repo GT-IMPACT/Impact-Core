@@ -1,6 +1,5 @@
 package com.impact.mods.gregtech;
 
-import com.github.technus.tectech.util.CommonValues;
 import com.impact.mods.gregtech.tileentities.basic.*;
 import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
@@ -333,7 +332,7 @@ public class Basic_Register {
 		DynamoTunnel6_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 262144 A/t Laser Source (Output) Hatch", 13, 262144).getStackForm(1L));
 		DynamoTunnel7_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 1048576 A/t Laser Source (Output) Hatch", 13, 1048576).getStackForm(1L));
 		
-		DynamoTunnel9001 .set(new GTMTE_LaserEnergy_Out(ID2++,  "Legendary Laser Source (Output) Hatch", 13, (int) CommonValues.V[13]).getStackForm(1L));
+		DynamoTunnel9001 .set(new GTMTE_LaserEnergy_Out(ID2++,  "Legendary Laser Source (Output) Hatch", 13, (int) V[13]).getStackForm(1L));
 		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		
@@ -529,6 +528,8 @@ public class Basic_Register {
 		DynamoMulti4_UXV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15208, "UXV 4A Dynamo Hatch", 13, 4).getStackForm(1L));
 		DynamoMulti16_UXV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15218, "UXV 16A Dynamo Hatch", 13, 16).getStackForm(1L));
 		DynamoMulti64_UXV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15228, "UXV 64A Dynamo Hatch", 13, 64).getStackForm(1L));
+		
+		Machine_DataReader.set(new GTMTE_DataReader(15481, "Data Reader").getStackForm(1));
 		
 	}
 }
