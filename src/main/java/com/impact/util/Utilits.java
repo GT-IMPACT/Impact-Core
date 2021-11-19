@@ -2,8 +2,6 @@ package com.impact.util;
 
 import com.impact.core.Refstrings;
 import com.impact.register.SSBodies;
-import com.impact.util.vector.Vector3i;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,13 +29,6 @@ import java.util.List;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class Utilits {
-
-    public static boolean invertBoolean(final boolean booleans) {
-        if (booleans) {
-            return false;
-        }
-        return true;
-    }
     
     public static Color getColorTier(int aTier) {
         switch (aTier) {
@@ -65,7 +56,6 @@ public class Utilits {
         return new short[] {(short) c.getRed(), (short) c.getGreen(), (short) c.getBlue(), 0};
     }
     
-
     public static void bindTexture(String texture) {
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("impact", texture));
     }
@@ -185,40 +175,7 @@ public class Utilits {
     public static boolean isB(int A, int B, int C) {
         return (A >= B && A <= C);
     }
-
-    public static float calculateGravity(float Si) {
-        return (9.81F - Si) * 0.008664628F;
-    }
-
-    public static void registerEntity(Class<? extends Entity> entityClass, String name,
-                                      Object instance) {
-        int ID = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(entityClass, name, ID);
-        EntityRegistry.registerModEntity(entityClass, name, ID, instance, 128, 1, true);
-    }
-
-    public static ItemStack[] arrayIS(ItemStack... is) {
-        return is.clone();
-    }
-
-    public static FluidStack[] arrayFS(FluidStack... fs) {
-        return fs.clone();
-    }
-
-    public static ItemStack simpleMetaStack(final Item item, int meta, int size) {
-        if (item == null) {
-            return null;
-        }
-        if (meta < 0 || meta > Short.MAX_VALUE) {
-            meta = 0;
-        }
-        if (size < 0 || size > 64) {
-            size = 1;
-        }
-        final ItemStack metaStack = new ItemStack(item, size, meta);
-        return metaStack;
-    }
-
+    
     public static String getUniqueIdentifier(ItemStack is) {
         return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
     }
@@ -320,9 +277,5 @@ public class Utilits {
     public static void openGui(EntityPlayer aPlayer, int idGui, IGregTechTileEntity igt) {
         aPlayer.openGui(Refstrings.MODID, idGui, igt.getWorld(), igt.getXCoord(), igt.getYCoord(), igt.getZCoord());
     }
-
-    public static int invertNumber(int num, int max) {
-        if (num > max) return 0;
-        return max - num;
-    }
+    
 }
