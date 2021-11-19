@@ -614,7 +614,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	}
 	
 	/**
-	 * Centrifuge, Electrolyzer, Mixer, Heavy Metal Cyclone ^^^^^
+	 * Centrifuge, Electrolyzer, Mixer, Heavy Metal Cyclone, FlotationUnit ^^^^^
 	 */
 	public boolean impactRecipeWithStackSize() {
 		if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {

@@ -1527,44 +1527,6 @@ public class Holo_Vanila_GregTech implements Runnable {
           }
         });
 
-    //FlotationUnit
-    registerTileClass(GT_MetaTileEntity_FlotationUnit.class.getCanonicalName(),
-        new IMultiBlockInfoContainer<GT_MetaTileEntity_FlotationUnit>() {
-          //region Structure
-          private final IStructureDefinition<GT_MetaTileEntity_FlotationUnit> definition =
-              StructureDefinition.<GT_MetaTileEntity_FlotationUnit>builder()
-                  .addShapeOldApi("main", new String[][]{
-                      {"000", "121", "121", "0.0",},
-                      {"0.0", "2A2", "2A2", "000",},
-                      {"000", "121", "121", "000",},
-                  })
-                  .addElement('0', ofBlock(sBlockCasings4, 2))
-                  .addElement('1', ofBlock(sBlockCasings2, 14))
-                  .addElement('2', ofBlock(sBlockCasings5, 2))
-                  .build();
-          private final String[] desc = new String[]{
-              EnumChatFormatting.RED + "Impact Details:",
-              "- Stable Titanium Machine Casing",
-              "- Titanium Pipe Casing",
-              "- Nichrome Coil Block",
-          };
-          //endregion
-
-          @Override
-          public void construct(ItemStack stackSize, boolean hintsOnly,
-              GT_MetaTileEntity_FlotationUnit tileEntity, ExtendedFacing aSide) {
-            IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
-            definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
-                base.getXCoord(), base.getYCoord(), base.getZCoord(),
-                1, 3, 0, hintsOnly);
-          }
-
-          @Override
-          public String[] getDescription(ItemStack stackSize) {
-            return desc;
-          }
-        });
-
     //HeatExchanger
     registerTileClass(GT_MetaTileEntity_HeatExchanger.class.getCanonicalName(),
         new IMultiBlockInfoContainer<GT_MetaTileEntity_HeatExchanger>() {

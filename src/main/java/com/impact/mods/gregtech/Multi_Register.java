@@ -24,6 +24,8 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.*;
+import gregtech.api.enums.ItemList;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FlotationUnit;
 
 import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.*;
@@ -105,5 +107,8 @@ public class Multi_Register {
 		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, "Wind Generator").get());
 		
 		INFO("Multi_Register.java | Last ID: " + ID);
+		
+		ItemList.Machine_FlotationUnit.set(new GTMTE_FlotationUnit(12192, "Flotation Unit").get());
+		
 	}
 }
