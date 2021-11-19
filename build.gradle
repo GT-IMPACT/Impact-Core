@@ -12,7 +12,11 @@
         }
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
         }
         maven {
             name = "sonatype"
@@ -23,7 +27,7 @@
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'com.github.TheElan:ForgeGradle:f59d5c1f8d'
     }
 }
 
