@@ -142,7 +142,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	}
 	
 	/**
-	 * Heavy Metal Cyclone, Rail Assembler, Saw Mill
+	 * Rail Assembler, Saw Mill
 	 */
 	public boolean impactRecipe() {
 		mCheckParallelCurrent = 0;
@@ -614,7 +614,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	}
 	
 	/**
-	 * Centrifuge, Electrolyzer, Mixer ^^^^^
+	 * Centrifuge, Electrolyzer, Mixer, Heavy Metal Cyclone ^^^^^
 	 */
 	public boolean impactRecipeWithStackSize() {
 		if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {

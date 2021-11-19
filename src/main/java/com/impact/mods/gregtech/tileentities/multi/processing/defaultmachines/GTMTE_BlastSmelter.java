@@ -53,7 +53,7 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("blast_smelter");
 		b
-				.addTypeMachine("name", "")
+				.addTypeMachine("name", "Blast Smelter")
 				.addPollution(20 * getPollutionPerTick(null))
 				.addSeparatedBus()
 				.addSeparator()
