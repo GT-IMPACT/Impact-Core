@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
+import com.impact.mods.gregtech.enums.BiomesOreGenerator;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.network.ToClient_String;
 import com.impact.util.Utilits;
@@ -9,15 +10,18 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Behaviour_Aerostat extends Behaviour_None {
 	
@@ -27,6 +31,16 @@ public class Behaviour_Aerostat extends Behaviour_None {
 	
 	public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
 		TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
+		
+		if (aPlayer instanceof EntityPlayerMP) {
+			BiomeGenBase biomeGenBase = aWorld.getBiomeGenForCoords(aX, aZ);
+			BiomesOreGenerator.generateOres(0, biomeGenBase).forEach(a -> {
+				if (a.stackSize > 0) {
+					GT_Utility.sendChatToPlayer(aPlayer, a.getDisplayName() + " size: " + a.stackSize);
+				}
+			});
+		}
+		
 		if (aPlayer instanceof EntityPlayerMP && te instanceof IGregTechTileEntity) {
 			IGregTechTileEntity gte = (IGregTechTileEntity) te;
 			IMetaTileEntity aerostat = gte.getMetaTileEntity();
