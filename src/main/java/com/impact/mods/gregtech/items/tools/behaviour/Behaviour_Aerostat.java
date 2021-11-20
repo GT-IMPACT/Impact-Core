@@ -34,7 +34,7 @@ public class Behaviour_Aerostat extends Behaviour_None {
 		
 		if (aPlayer instanceof EntityPlayerMP) {
 			BiomeGenBase biomeGenBase = aWorld.getBiomeGenForCoords(aX, aZ);
-			BiomesOreGenerator.generateOres(0, biomeGenBase).forEach(a -> {
+			BiomesOreGenerator.generatedOres(0, biomeGenBase).forEach(a -> {
 				if (a.stackSize > 0) {
 					GT_Utility.sendChatToPlayer(aPlayer, a.getDisplayName() + " size: " + a.stackSize);
 				}
