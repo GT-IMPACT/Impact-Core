@@ -11,6 +11,7 @@ public class SaveManager {
 	private static final String IMPACT_DIRECTORY_NAME = "IMPACT";
 	private static final String PARALLEL_SYSTEM = "parallelsystem";
 	private static final String AERO_STATE_SYSTEM = "aerostatesystem";
+	private static final String BIOMES_ORES = "biomesores";
 	
 	@Nullable
 	private static SaveManager instance;
@@ -18,6 +19,7 @@ public class SaveManager {
 	public final File impactDirectory;
 	public final File parallelSystemDirectory;
 	public final File aerostateSystemDirectory;
+	public final File biomesOresDirectory;
 	
 	private SaveManager(@Nullable final File worldDirectory) {
 		
@@ -27,6 +29,7 @@ public class SaveManager {
 		this.impactDirectory          = new File(worldDirectory, IMPACT_DIRECTORY_NAME);
 		this.parallelSystemDirectory  = new File(this.impactDirectory, PARALLEL_SYSTEM);
 		this.aerostateSystemDirectory = new File(this.impactDirectory, AERO_STATE_SYSTEM);
+		this.biomesOresDirectory = new File(this.impactDirectory, BIOMES_ORES);
 	}
 	
 	public static void onServerAboutToStart() {
@@ -51,6 +54,10 @@ public class SaveManager {
 		
 		if (!this.aerostateSystemDirectory.isDirectory() && !this.aerostateSystemDirectory.mkdir()) {
 			throw new IllegalStateException("Failed to create " + this.aerostateSystemDirectory.getAbsolutePath());
+		}
+		
+		if (!this.biomesOresDirectory.isDirectory() && !this.biomesOresDirectory.mkdir()) {
+			throw new IllegalStateException("Failed to create " + this.biomesOresDirectory.getAbsolutePath());
 		}
 	}
 	

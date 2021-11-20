@@ -33,11 +33,10 @@ public class Behaviour_Aerostat extends Behaviour_None {
 	public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
 		TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
 		
-		if (aPlayer instanceof EntityPlayerMP) {
-			List<ItemStack> ores = new ArrayList<>();
-			BiomesOreGenerator.generatedOres(ores, aWorld, aX, aZ);
-			ores.forEach(ore -> GT_Utility.sendChatToPlayer(aPlayer, ore.getDisplayName()));
-		}
+//		if (aPlayer instanceof EntityPlayerMP) {
+//			BiomesOreGenerator.generatedOres(null, aWorld, aX, aZ, 0).
+//					forEach(ore -> GT_Utility.sendChatToPlayer(aPlayer, ore.getDisplayName()));
+//		}
 		
 		if (aPlayer instanceof EntityPlayerMP && te instanceof IGregTechTileEntity) {
 			IGregTechTileEntity gte = (IGregTechTileEntity) te;

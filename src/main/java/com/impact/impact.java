@@ -17,14 +17,11 @@ import com.impact.mods.nei.oreplugin.helper.GT5OreLayerHelper;
 import com.impact.mods.nei.oreplugin.helper.GT5OreSmallHelper;
 import com.impact.mods.railcraft.carts.item.ChestCartModule;
 import com.impact.mods.railcraft.carts.item.events.Module;
-import com.impact.util.files.ChunkManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraftforge.event.world.ChunkDataEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -119,20 +116,6 @@ public class impact {
     public void postInit(FMLPostInitializationEvent event) {
         MainLoader.postInit(event);
         proxy.postInit();
-    }
-
-    @SubscribeEvent
-    public void onChunkSave(ChunkDataEvent.Save event) {
-        if (!event.world.isRemote) {
-            ChunkManager.chunkSave(event.world, event.getChunk(), event.getData());
-        }
-    }
-
-    @SubscribeEvent
-    public void onChunkLoad(ChunkDataEvent.Load event) {
-        if (!event.world.isRemote) {
-            ChunkManager.chunkLoad(event.world, event.getChunk(), event.getData());
-        }
     }
 
     @Mod.EventHandler
