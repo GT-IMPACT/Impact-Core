@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +34,9 @@ public class Behaviour_Aerostat extends Behaviour_None {
 		TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
 		
 		if (aPlayer instanceof EntityPlayerMP) {
-			BiomeGenBase biomeGenBase = aWorld.getBiomeGenForCoords(aX, aZ);
-			BiomesOreGenerator.generatedOres(0, biomeGenBase).forEach(a -> {
-				if (a.stackSize > 0) {
-					GT_Utility.sendChatToPlayer(aPlayer, a.getDisplayName() + " size: " + a.stackSize);
-				}
-			});
+			List<ItemStack> ores = new ArrayList<>();
+			BiomesOreGenerator.generatedOres(ores, aWorld, aX, aZ);
+			ores.forEach(ore -> GT_Utility.sendChatToPlayer(aPlayer, ore.getDisplayName()));
 		}
 		
 		if (aPlayer instanceof EntityPlayerMP && te instanceof IGregTechTileEntity) {

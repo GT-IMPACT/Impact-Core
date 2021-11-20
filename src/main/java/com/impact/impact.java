@@ -17,11 +17,14 @@ import com.impact.mods.nei.oreplugin.helper.GT5OreLayerHelper;
 import com.impact.mods.nei.oreplugin.helper.GT5OreSmallHelper;
 import com.impact.mods.railcraft.carts.item.ChestCartModule;
 import com.impact.mods.railcraft.carts.item.events.Module;
+import com.impact.util.files.ChunkManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.event.world.ChunkDataEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,100 +34,114 @@ import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
 
 @Mod(
-    modid = MODID,
-    name = Refstrings.NAME,
-    version = Refstrings.VERSION,
-    dependencies =
-        "required-after:Forge@[10.13.2.1291,);")
+        modid = MODID,
+        name = Refstrings.NAME,
+        version = Refstrings.VERSION,
+        dependencies =
+                "required-after:Forge@[10.13.2.1291,);")
 
 public class impact {
 
-  @SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
-  public static CommonProxy proxy;
+    @SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
+    public static CommonProxy proxy;
 
-  @Mod.Instance(MODID)
-  public static impact instance;
-  public static String ModPackVersion = "1.0.1.6";
-  public static Config mConfig;
-  public static FMLEventChannel channel;
-  public static IRecipeAdder I_RA;
-  private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
+    @Mod.Instance(MODID)
+    public static impact instance;
+    public static String ModPackVersion = "1.0.1.6";
+    public static Config mConfig;
+    public static FMLEventChannel channel;
+    public static IRecipeAdder I_RA;
+    private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
 
-  public impact() {
-    impact.I_RA = new RecipeAdder();
-    Texture.Icons.VOID.name();
-  }
-
-  public static ArrayList<Module> getModules() {
-    if (MODULES_ENABLED.isEmpty()) {
-      MODULES_ENABLED.add(new ChestCartModule());
+    public impact() {
+        impact.I_RA = new RecipeAdder();
+        Texture.Icons.VOID.name();
     }
-    return MODULES_ENABLED;
-  }
 
-  @Mod.EventHandler
-  public void onServerStarted(FMLServerStartedEvent aEvent) {
-    proxy.onServerStarted();
-  }
-
-  @Mod.EventHandler
-  public void onServerStarting(FMLServerStartingEvent aEvent) {
-     aEvent.registerServerCommand(new Command_FixBQ());
-  }
-
-  @Mod.EventHandler
-  public void onServerStopping(FMLServerStoppingEvent aEvent) {
-    proxy.onServerStopping();
-    SaveManager.get().onServerStopping();
-  }
-
-  @Mod.EventHandler
-  public void init(FMLInitializationEvent event) {
-    proxy.init();
-    MainLoader.Init(event);
-    new GUIHandler();
-    INFO("MainLoader LOAD Loaded");
-  }
-
-  @Mod.EventHandler
-  public void preInit(FMLPreInitializationEvent event) {
-    mConfig = new Config(new File("config/IMPACT/impact.cfg"));
-    INFO("Config Loaded");
-
-    MainLoader.preInit(event);
-    INFO("MainLoader PREINIT Loaded ");
-    //MainLoader.preInitClient();
-
-    CommonProxy.register_event(new impactEvents());
-    CommonProxy.register_event(new TickHandler());
-
-    proxy.preInit();
-  }
-
-  @Mod.EventHandler
-  public void onLoadComplete(FMLLoadCompleteEvent event) {
-    if (event.getSide() == Side.CLIENT) {
-      new GT5OreLayerHelper();
-      new GT5OreSmallHelper();
-      if (csv) {
-        new CSVMaker().run();
-      }
+    public static ArrayList<Module> getModules() {
+        if (MODULES_ENABLED.isEmpty()) {
+            MODULES_ENABLED.add(new ChestCartModule());
+        }
+        return MODULES_ENABLED;
     }
-  }
 
-  @Mod.EventHandler
-  public void postInit(FMLPostInitializationEvent event) {
-    MainLoader.postInit(event);
-    proxy.postInit();
-  }
+    @Mod.EventHandler
+    public void onServerStarted(FMLServerStartedEvent aEvent) {
+        proxy.onServerStarted();
+    }
 
-  @Mod.EventHandler
-  public void serverAboutToStart(final FMLServerAboutToStartEvent event) {
-    SaveManager.onServerAboutToStart();
-  }
+    @Mod.EventHandler
+    public void onServerStarting(FMLServerStartingEvent aEvent) {
+        aEvent.registerServerCommand(new Command_FixBQ());
+    }
 
-  @Mod.EventHandler
-  private void serverStopped(final FMLServerStoppedEvent event) {
-    SaveManager.get().onServerStopped();
-  }
+    @Mod.EventHandler
+    public void onServerStopping(FMLServerStoppingEvent aEvent) {
+        proxy.onServerStopping();
+        SaveManager.get().onServerStopping();
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        proxy.init();
+        MainLoader.Init(event);
+        new GUIHandler();
+        INFO("MainLoader LOAD Loaded");
+    }
+
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        mConfig = new Config(new File("config/IMPACT/impact.cfg"));
+        INFO("Config Loaded");
+
+        MainLoader.preInit(event);
+        INFO("MainLoader PREINIT Loaded ");
+        //MainLoader.preInitClient();
+
+        CommonProxy.register_event(new impactEvents());
+        CommonProxy.register_event(new TickHandler());
+
+        proxy.preInit();
+    }
+
+    @Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        if (event.getSide() == Side.CLIENT) {
+            new GT5OreLayerHelper();
+            new GT5OreSmallHelper();
+            if (csv) {
+                new CSVMaker().run();
+            }
+        }
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        MainLoader.postInit(event);
+        proxy.postInit();
+    }
+
+    @SubscribeEvent
+    public void onChunkSave(ChunkDataEvent.Save event) {
+        if (!event.world.isRemote) {
+            ChunkManager.chunkSave(event.world, event.getChunk(), event.getData());
+        }
+    }
+
+    @SubscribeEvent
+    public void onChunkLoad(ChunkDataEvent.Load event) {
+        if (!event.world.isRemote) {
+            ChunkManager.chunkLoad(event.world, event.getChunk(), event.getData());
+        }
+    }
+
+    @Mod.EventHandler
+    public void serverAboutToStart(final FMLServerAboutToStartEvent event) {
+        SaveManager.onServerAboutToStart();
+    }
+
+    @Mod.EventHandler
+    private void serverStopped(final FMLServerStoppedEvent event) {
+        SaveManager.get().onServerStopped();
+    }
 }

@@ -4,7 +4,12 @@ import com.impact.core.Impact_API;
 import gregtech.api.enums.Materials;
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.DimensionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +25,7 @@ public enum BiomesOreGenerator {
 	COAL_VEIN("Coal", BiomeGenBase.forest, 0, Coal, Lignite),
 	NICKEL_VEIN("Nickel", BiomeGenBase.beach, 0, Nickel, Cobalt, Garnierite),
 	
-	;
+	NONE("Empty", null, -1);
 	
 	@Getter
 	private final BiomeGenBase mBiome;
@@ -39,22 +44,60 @@ public enum BiomesOreGenerator {
 		Stream.of(materials).forEach(material -> this.mOre.add(material.getDust(1)));
 		Impact_API.sBiomeOres.put(name, this);
 	}
-	
-	public static List<ItemStack> generatedOres(int tier, BiomeGenBase biomes) {
-		List<ItemStack> ores = new ArrayList<>();
-		for (BiomesOreGenerator biomesOreGenerator : Impact_API.sBiomeOres.values()) {
-			if (tier == biomesOreGenerator.getMTier() && biomes.biomeName.equals(biomesOreGenerator.getMBiome().biomeName)) {
-				ores.addAll(biomesOreGenerator.getMOre());
+
+	public static BiomesOreGenerator getFromName(String name) {
+		for (BiomesOreGenerator b : BiomesOreGenerator.values()) {
+			if (b.mName.equals(name)) {
+				return b;
 			}
 		}
-		return ores;
+		return NONE;
 	}
 	
-	public static void startGenerateOres(List<ItemStack> ores, int tier, BiomeGenBase biomes) {
+	public static void generatedOres(List<ItemStack> ores, World w, int x, int z) {
+		int dim = w.provider.dimensionId;
+		int[] m = {dim, x, z};
+		if (Impact_API.sOreInChunk.containsKey(m)) {
+			ores.addAll(Impact_API.sOreInChunk.get(m).mOre);
+		}
+	}
+	
+	public static void startGenerateOres(BiomeGenBase biomes, Chunk chunk) {
 		for (BiomesOreGenerator biomesOreGenerator : Impact_API.sBiomeOres.values()) {
-			if (tier == biomesOreGenerator.getMTier() && biomes.biomeName.equals(biomesOreGenerator.getMBiome().biomeName)) {
-				ores.addAll(biomesOreGenerator.getMOre());
+			if (biomes.biomeName.equals(biomesOreGenerator.mBiome.biomeName)) {
+				int dim = chunk.worldObj.provider.dimensionId;
+				int x = chunk.xPosition;
+				int z = chunk.zPosition;
+				int[] m = {dim, x, z};
+				Impact_API.sOreInChunk.put(m, biomesOreGenerator);
 			}
+		}
+	}
+
+	public static void save(Chunk chunk, NBTTagCompound nbt) {
+		int dim = chunk.worldObj.provider.dimensionId;
+		int x = chunk.xPosition;
+		int z = chunk.zPosition;
+		int[] m = {dim, x, z};
+		if (!Impact_API.sOreInChunk.containsKey(m)) {
+			BiomesOreGenerator biomesOreGenerator = Impact_API.sOreInChunk.get(m);
+			nbt.setString("vein_name", biomesOreGenerator.mName);
+		}
+	}
+
+	public static void load(Chunk chunk, NBTTagCompound nbt) {
+		int dim = chunk.worldObj.provider.dimensionId;
+		int x = chunk.xPosition;
+		int z = chunk.zPosition;
+		int[] m = {dim, x, z};
+		ChunkPosition
+		if (nbt.hasKey("vein_name")) {
+			if (Impact_API.sOreInChunk.containsKey(m)) {
+				Impact_API.sOreInChunk.replace(m, getFromName(nbt.getString("vein_name")));
+			}
+		} else {
+			BiomeGenBase biomes = chunk.worldObj.getBiomeGenForCoords(x, z);
+			startGenerateOres(biomes, chunk);
 		}
 	}
 }

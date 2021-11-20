@@ -1,6 +1,7 @@
 package com.impact.core;
 
 import com.impact.mods.gregtech.enums.BiomesOreGenerator;
+import net.minecraft.world.chunk.Chunk;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,6 +14,7 @@ public class Impact_API {
 	 * The OreGeneration Map
 	 */
 	public static final Map<String, BiomesOreGenerator> sBiomeOres = new HashMap<>();
+	public static final Map<int[], BiomesOreGenerator> sOreInChunk = new HashMap<>();
 	
 	/**
 	 * The Space Satellite Frequencies
