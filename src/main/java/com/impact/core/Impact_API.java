@@ -1,7 +1,6 @@
 package com.impact.core;
 
-import com.impact.mods.gregtech.enums.BiomeOreRegister;
-import com.impact.util.PositionObject;
+import com.impact.mods.gregtech.enums.BiomesOreGenerator;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,7 +12,7 @@ public class Impact_API {
 	/**
 	 * The OreGeneration Map
 	 */
-	public static final Map<String, BiomeOreRegister> sBiomeOres = new HashMap<>();
+	public static final Map<String, BiomesOreGenerator> sBiomeOres = new HashMap<>();
 	
 	/**
 	 * The Space Satellite Frequencies
