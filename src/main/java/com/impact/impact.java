@@ -6,6 +6,7 @@ import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.Refstrings;
 import com.impact.core.SaveManager;
+import com.impact.events.EventDropBlock;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
@@ -97,6 +98,7 @@ public class impact {
 
         CommonProxy.register_event(new impactEvents());
         CommonProxy.register_event(new TickHandler());
+        CommonProxy.register_event(new EventDropBlock());
 
         proxy.preInit();
     }

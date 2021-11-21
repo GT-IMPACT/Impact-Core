@@ -2,10 +2,12 @@ package com.impact.util;
 
 import com.impact.core.Refstrings;
 import com.impact.register.SSBodies;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -14,6 +16,7 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -167,6 +170,20 @@ public class Utilits {
     public static ItemStack Itemstack(Item aItem, int aAmount) {
         return new ItemStack(aItem, aAmount, 0);
     }
+    
+    private static Block getBlock(String modID, String name, int meta) {
+        if (Loader.isModLoaded(modID)) {
+            return Block.getBlockFromItem(GT_ModHandler.getModItem(modID, name, 1, meta).getItem());
+        }
+        return null;
+    }
+    
+    public static Block getBlock(String modID, String name) {
+        if (Loader.isModLoaded(modID)) {
+            return Block.getBlockFromItem(GT_ModHandler.getModItem(modID, name, 1).getItem());
+        }
+        return null;
+    }
 
     public static boolean isB(int A, int B) {
         return (A == B);
@@ -278,4 +295,17 @@ public class Utilits {
         aPlayer.openGui(Refstrings.MODID, idGui, igt.getWorld(), igt.getXCoord(), igt.getYCoord(), igt.getZCoord());
     }
     
+    public static boolean equalsIntArray(int[] int1, int[] int2) {
+        if (int1.length == int2.length) {
+            boolean check = true;
+            for (int i = 0; i < int1.length; i++) {
+                if (int1[i] != int2[i]) {
+                    check = false;
+                    break;
+                }
+            }
+            return check;
+        }
+        return false;
+    }
 }

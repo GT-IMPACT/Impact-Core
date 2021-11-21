@@ -1,8 +1,8 @@
-package com.impact.mods.gregtech.items.tools.behaviour;
+package com.impact.mods.gregtech.items.tools;
 
 import com.google.common.collect.Lists;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.items.tools.IImpact_Tools;
+import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_IImpactTools;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -31,13 +31,15 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-public class Behaviour_LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
+import static com.impact.util.ItemNBTHelper.getBoolean;
+
+public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 
     public int breakRadius;
     public int breakDepth;
     public IToolStats iToolStats;
 
-    public Behaviour_LumberAxe(int aBreakRadius, int aBreakDepth) {
+    public LumberAxe(int aBreakRadius, int aBreakDepth) {
         breakRadius = aBreakRadius;
         breakDepth = aBreakDepth;
         iToolStats = this;
@@ -113,8 +115,9 @@ public class Behaviour_LumberAxe extends GT_Tool implements IToolStats, IImpact_
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
         super.onToolCrafted(aStack, aPlayer);
     }
-
+    
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_IImpactTools(true));
     }
 
     @Override
@@ -208,14 +211,14 @@ public class Behaviour_LumberAxe extends GT_Tool implements IToolStats, IImpact_
         public final World world;
         public final EntityPlayer player;
         public final ItemStack stack;
-        public final Behaviour_LumberAxe axe;
+        public final LumberAxe axe;
 
         public final int blocksPerTick;
 
         public Queue<ChunkPosition> blocks = Lists.newLinkedList();
         public Set<ChunkPosition> visited = new THashSet<>();
 
-        public TreeChopTask(Behaviour_LumberAxe axe, ItemStack stack, ChunkPosition start, EntityPlayer player, int blocksPerTick) {
+        public TreeChopTask(LumberAxe axe, ItemStack stack, ChunkPosition start, EntityPlayer player, int blocksPerTick) {
             this.world = player.getEntityWorld();
             this.player = player;
             this.stack = stack;
@@ -354,5 +357,10 @@ public class Behaviour_LumberAxe extends GT_Tool implements IToolStats, IImpact_
     @Override
     public IToolStats getTools() {
         return iToolStats;
+    }
+    
+    @Override
+    public boolean canAdDrop(ItemStack stack) {
+        return getBoolean(stack, "adDrop", false);
     }
 }

@@ -1,6 +1,10 @@
 package com.impact.core;
 
+import com.impact.mods.gregtech.enums.DropsBlock;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,6 +15,11 @@ public class Impact_API {
 	 * String - BiomesOreGenerator.name
 	 */
 	public static final Map<int[], String> sOreInChunk = new ConcurrentHashMap<>();
+	
+	/**
+	 * Drops from harvest blocks
+	 */
+	public static final List<DropsBlock> dropsFromBlock = new ArrayList<>();
 	
 	/**
 	 * The Space Satellite Frequencies

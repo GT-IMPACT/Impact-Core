@@ -1,11 +1,13 @@
-package com.impact.mods.gregtech.items.tools.behaviour;
+package com.impact.mods.gregtech.items.tools;
 
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.items.tools.IImpact_Tools;
+import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_IImpactTools;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.common.items.behaviors.Behaviour_Drill;
 import gregtech.common.tools.GT_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -19,16 +21,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 
+import java.util.List;
+
+import static com.impact.util.ItemNBTHelper.getBoolean;
 import static com.impact.util.vector.ToolsVector.raytraceFromEntity;
 
-public class Behaviour_ForgeHammer extends GT_Tool implements IToolStats, IImpact_Tools {
+public class ForgeHammer extends GT_Tool implements IToolStats, IImpact_Tools {
 
     private final ThreadLocal<Object> sIsHarvesting = new ThreadLocal();
     public int breakRadius;
     public int breakDepth;
     public IToolStats iToolStats;
 
-    public Behaviour_ForgeHammer(int aBreakRadius, int aBreakDepth) {
+    public ForgeHammer(int aBreakRadius, int aBreakDepth) {
         breakRadius = aBreakRadius;
         breakDepth = aBreakDepth;
         iToolStats = this;
@@ -104,8 +109,9 @@ public class Behaviour_ForgeHammer extends GT_Tool implements IToolStats, IImpac
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
         super.onToolCrafted(aStack, aPlayer);
     }
-
+    
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new Behaviour_IImpactTools(true));
     }
 
     @Override
@@ -121,7 +127,6 @@ public class Behaviour_ForgeHammer extends GT_Tool implements IToolStats, IImpac
     @Override
     public boolean startBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
         // only effective materials matter. We don't want to aoe when beraking dirt with a hammer.
-
 
         Block block = player.worldObj.getBlock(x, y, z);
         int meta = player.worldObj.getBlockMetadata(x, y, z);
@@ -228,5 +233,10 @@ public class Behaviour_ForgeHammer extends GT_Tool implements IToolStats, IImpac
     @Override
     public IToolStats getTools() {
         return iToolStats;
+    }
+    
+    @Override
+    public boolean canAdDrop(ItemStack stack) {
+        return getBoolean(stack, "adDrop", false);
     }
 }

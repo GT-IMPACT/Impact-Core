@@ -1,7 +1,5 @@
 package com.impact.mods.gregtech.items.tools;
 
-import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_ForgeHammer;
-import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_LumberAxe;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -13,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
@@ -27,8 +26,8 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         super("impact.metatool.01");
         INSTANCE = this;
         ITool = new LinkedHashMap<>();
-        addTool(FORGE_HAMMER, "Forge Hammer", "", (IImpact_Tools) new Behaviour_ForgeHammer(1, 0));
-        addTool(LUMBER_AXE, "Lumber Axe", "", (IImpact_Tools) new Behaviour_LumberAxe(1, 0));
+        addTool(FORGE_HAMMER, "Forge Hammer", "", (IImpact_Tools) new ForgeHammer(1, 0));
+        addTool(LUMBER_AXE, "Lumber Axe", "", (IImpact_Tools) new LumberAxe(1, 0));
 
         GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(FORGE_HAMMER, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFF", " S ", " SS", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1)});
         GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(LUMBER_AXE, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFF", " S ", "SS ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1)});
@@ -47,7 +46,11 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         }
         return super.onBlockStartBreak(stack, x, y, z, player);
     }
-
+    
+    public boolean canAdDrop(ItemStack stack) {
+        return ITool.get(stack.getItemDamage()).canAdDrop(stack);
+    }
+    
     //todo remove this
     public static class ProccessToolHead implements IOreRecipeRegistrator {
         public ProccessToolHead() {
