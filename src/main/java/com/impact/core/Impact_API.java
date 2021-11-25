@@ -1,20 +1,18 @@
 package com.impact.core;
 
 import com.impact.mods.gregtech.enums.DropsBlock;
+import com.impact.mods.gregtech.enums.VeinChunk;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Impact_API {
 	
 	/**
-	 * int[]  - dimension, xChunk, zChunk, tier
+	 * int[]  - dimension, xChunk, zChunk, tier, sizeVein
 	 * String - BiomesOreGenerator.name
 	 */
-	public static final Map<int[], String> sOreInChunk = new ConcurrentHashMap<>();
+	public static final Map<VeinChunk, String> sOreInChunk = new HashMap<>();
 	
 	/**
 	 * Drops from harvest blocks

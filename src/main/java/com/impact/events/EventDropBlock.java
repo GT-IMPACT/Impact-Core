@@ -10,15 +10,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 
-import static gregtech.api.enums.Materials.Neutronium;
-import static gregtech.api.enums.Materials.Steel;
+import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.OrePrefixes.dustImpure;
 import static gregtech.api.enums.OrePrefixes.nugget;
 
 public class EventDropBlock {
 	
 	static {
-		DropsBlock.add(Blocks.grass, 0, 0.1f, nugget, Neutronium);
-		DropsBlock.add(Blocks.stone, 0, 0.1f, nugget, Steel);
+		DropsBlock.add(Blocks.stone, 0, 0.1f, dustImpure, Iron, Copper, Tin, Coal);
 	}
 //
 //		String ubc = "UndergroundBiomes";

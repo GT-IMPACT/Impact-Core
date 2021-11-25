@@ -1,8 +1,16 @@
 package com.impact.util.files;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.impact.core.SaveManager;
+import com.impact.mods.gregtech.enums.VeinChunk;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,24 +76,32 @@ public class JsonWorld {
     //region BiomesOres
     private static void loadBiomesOres() {
         File json = SaveManager.get().biomesOresDirectory;
-        Map<String, int[]> loadMap = new HashMap<>();
-        JsonUtils.jsonToMapStringIntArray(loadMap, json.getPath(), BIOMES_ORES);
-        loadMap.forEach((k, v) -> {
-            int[] ints = new int[] {v[0], v[1], v[2], v[3]};
-            int sub = k.indexOf('~');
-            String name = k.substring(0, sub);
-            sOreInChunk.put(ints, name);
-        });
+        Gson gson = new Gson();
+        JsonElement jsonElement = null;
+        try {
+            jsonElement = gson.fromJson(new FileReader(json.getPath() + "\\" + BIOMES_ORES + ".json"), JsonElement.class);
+            Type listType = new TypeToken<Map<String, VeinChunk>>() {}.getType();
+            Map<String, VeinChunk> loadMap = gson.fromJson(jsonElement, listType);
+            loadMap.forEach((k, v) -> {
+                int sub = k.indexOf('~');
+                String name = k.substring(0, sub);
+                sOreInChunk.put(v, name);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private static void saveBiomesOres() {
         File json = SaveManager.get().biomesOresDirectory;
-        Map<String, int[]> saveMap = new HashMap<>();
-        sOreInChunk.forEach((k, v) -> {
-            int[] ints = new int[] {k[0], k[1], k[2], k[3]};
-            saveMap.put(v + "~" + k, ints);
-        });
-        JsonUtils.jsonFromMapStringIntArray(saveMap, json.getPath(), BIOMES_ORES);
+        Gson objGson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(json.getPath() + "\\" + BIOMES_ORES + ".json")) {
+            Map<String, VeinChunk> saveMap = new HashMap<>();
+            sOreInChunk.forEach((k, v) -> saveMap.put(v + "~" + k.hashCode(), k));
+            objGson.toJson(saveMap, writer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //endregion
 }

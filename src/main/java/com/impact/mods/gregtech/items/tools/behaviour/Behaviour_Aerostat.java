@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
@@ -34,8 +35,13 @@ public class Behaviour_Aerostat extends Behaviour_None {
 		TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
 		
 //		if (aPlayer instanceof EntityPlayerMP) {
-//			BiomesOreGenerator.generatedOres(null, aWorld, aX, aZ, 0).
-//					forEach(ore -> GT_Utility.sendChatToPlayer(aPlayer, ore.getDisplayName()));
+//			if (!aPlayer.isSneaking()) {
+//				BiomesOreGenerator.generatedOres(aWorld, aX, aZ, 1).mOre.forEach(ore ->
+//						GT_Utility.sendChatToPlayer(aPlayer, "Ore: " + EnumChatFormatting.YELLOW + ore.getDisplayName()));
+//				GT_Utility.sendChatToPlayer(aPlayer, "Size Vein: " + EnumChatFormatting.RED + BiomesOreGenerator.getCurrentSizeVein(aWorld, aX, aZ, 1));
+//			} else {
+//				BiomesOreGenerator.increaseCycle(aWorld, aX, aZ, 1, 10);
+//			}
 //		}
 		
 		if (aPlayer instanceof EntityPlayerMP && te instanceof IGregTechTileEntity) {

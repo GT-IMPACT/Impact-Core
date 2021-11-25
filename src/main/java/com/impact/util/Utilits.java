@@ -5,6 +5,7 @@ import com.impact.register.SSBodies;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -307,5 +308,9 @@ public class Utilits {
             return check;
         }
         return false;
+    }
+
+    public static ItemStack getFluidDisplay(FluidStack fs) {
+        return GT_Utility.getFluidDisplayStack(fs, true);
     }
 }
