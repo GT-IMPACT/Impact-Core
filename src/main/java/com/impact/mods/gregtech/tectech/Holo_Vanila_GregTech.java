@@ -15,6 +15,7 @@ import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.decorateBlock;
+import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static gregtech.api.GregTech_API.*;
 import static space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer.registerTileClass;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
@@ -689,14 +690,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Steel.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Steel)))
                   .addElement('1', ofBlock(sBlockCasings2, 0))
                   .build();
           private final String[] desc = new String[]{
@@ -733,14 +727,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Titanium.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Titanium)))
                   .addElement('1', ofBlock(sBlockCasings4, 2))
                   .build();
           private final String[] desc = new String[]{
@@ -776,14 +763,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Steel.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Steel)))
                   .addElement('1', ofBlock(sBlockCasings2, 0))
                   .build();
           private final String[] desc = new String[]{
@@ -819,14 +799,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Titanium.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Titanium)))
                   .addElement('1', ofBlock(sBlockCasings4, 2))
                   .build();
           private final String[] desc = new String[]{
@@ -862,14 +835,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.TungstenSteel.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.TungstenSteel)))
                   .addElement('1', ofBlock(sBlockCasings4, 0))
                   .build();
           private final String[] desc = new String[]{
@@ -905,14 +871,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Steel.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Steel)))
                   .addElement('1', ofBlock(sBlockCasings2, 0))
                   .build();
           private final String[] desc = new String[]{
@@ -948,14 +907,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Titanium.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Titanium)))
                   .addElement('1', ofBlock(sBlockCasings4, 2))
                   .build();
           private final String[] desc = new String[]{
@@ -991,14 +943,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.TungstenSteel.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.TungstenSteel)))
                   .addElement('1', ofBlock(sBlockCasings4, 0))
                   .build();
           private final String[] desc = new String[]{
@@ -1034,14 +979,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Osmiridium.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Osmiridium)))
                   .addElement('1', ofBlock(sBlockCasings4, 14))
                   .build();
           private final String[] desc = new String[]{
@@ -1077,14 +1015,7 @@ public class Holo_Vanila_GregTech implements Runnable {
                       {".0.", ".0.", ".0.", "010", "010", "010", "111",},
                       {"...", "...", "...", ".0.", ".0.", ".0.", "111",},
                   })
-                  .addElement('0', ofHintDeferred(() -> new IIcon[]{
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                      Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-                  }, Materials.Neutronium.mRGBa))
+                  .addElement('0', lazy(t -> ofFrame(Materials.Neutronium)))
                   .addElement('1', ofBlock(sBlockCasings7, 2))
                   .build();
           private final String[] desc = new String[]{

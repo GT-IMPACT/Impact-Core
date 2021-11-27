@@ -115,6 +115,24 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		}
 	}
 	
+	public boolean inputStack(IGregTechTileEntity te, int slotIndex, int side, ItemStack stack) {
+		return false;
+	}
+	
+	public boolean outputStack(IGregTechTileEntity te, int slotIndex, int side, ItemStack stack) {
+		return false;
+	}
+	
+	@Override
+	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		return outputStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
+	}
+	
+	@Override
+	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		return inputStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
+	}
+	
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
 							   IGregTechTileEntity aBaseMetaTileEntity) {

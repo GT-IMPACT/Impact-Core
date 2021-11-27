@@ -34,15 +34,16 @@ public class Behaviour_Aerostat extends Behaviour_None {
 	public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
 		TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
 		
-//		if (aPlayer instanceof EntityPlayerMP) {
-//			if (!aPlayer.isSneaking()) {
-//				BiomesOreGenerator.generatedOres(aWorld, aX, aZ, 1).mOre.forEach(ore ->
-//						GT_Utility.sendChatToPlayer(aPlayer, "Ore: " + EnumChatFormatting.YELLOW + ore.getDisplayName()));
-//				GT_Utility.sendChatToPlayer(aPlayer, "Size Vein: " + EnumChatFormatting.RED + BiomesOreGenerator.getCurrentSizeVein(aWorld, aX, aZ, 1));
-//			} else {
+		if (aPlayer instanceof EntityPlayerMP) {
+			if (!aPlayer.isSneaking()) {
+				GT_Utility.sendChatToPlayer(aPlayer, "------ DEBUG INFO ------");
+				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.YELLOW + BiomesOreGenerator.generatedOres(aWorld, aX, aZ, 0).mName);
+				GT_Utility.sendChatToPlayer(aPlayer, "Size Vein: " + EnumChatFormatting.RED + BiomesOreGenerator.getCurrentSizeVein(aWorld, aX, aZ, 0));
+				GT_Utility.sendChatToPlayer(aPlayer, "------ DEBUG INFO ------");
+			} else {
 //				BiomesOreGenerator.increaseCycle(aWorld, aX, aZ, 1, 10);
-//			}
-//		}
+			}
+		}
 		
 		if (aPlayer instanceof EntityPlayerMP && te instanceof IGregTechTileEntity) {
 			IGregTechTileEntity gte = (IGregTechTileEntity) te;

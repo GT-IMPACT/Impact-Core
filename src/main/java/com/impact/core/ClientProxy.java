@@ -20,6 +20,10 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.GT_Mod;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.XSTR;
+import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
@@ -30,7 +34,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -63,6 +69,21 @@ public class ClientProxy extends CommonProxy {
 		for (String s : messages) {
 			chat.printChatMessage(new ChatComponentText(s));
 		}
+	}
+	
+	@Override
+	public void smoke_particle(World w, int x, int y, int z, int side) {
+		float ran1 = XSTR.XSTR_INSTANCE.nextFloat();
+		ForgeDirection aDir = ForgeDirection.getOrientation(side);
+		float xPos = (float) aDir.offsetX * 0.76F + (float) x + 0.25F;
+		float yPos = (float) aDir.offsetY * 0.76F + (float) y + 0.25F;
+		float zPos = (float) aDir.offsetZ * 0.76F + (float) z + 0.25F;
+		float ySpd = (float) aDir.offsetY * 0.1F + 0.2F + 0.1F * XSTR.XSTR_INSTANCE.nextFloat();
+		float xSpd;
+		float zSpd;
+
+		w.spawnParticle("largesmoke", xPos + ran1 * 2.5F, yPos + ran1 * 2.5F,
+				zPos + ran1 * 2.5F, 0.0D, 0.3D, 0.0D);
 	}
 	
 	@Override

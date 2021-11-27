@@ -9,6 +9,7 @@ import com.impact.mods.nei.impactplugin.NEI_Impact_Config;
 import com.impact.mods.nei.impactplugin.util.FixedPositionedStack;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -61,7 +62,8 @@ public class NEI_Impact_OreBiomes extends TemplateRecipeHandler {
 		
 		drawText(4, 12, "Vein Name: " +  vName, clr);
 		drawText(4, 85, "Biome Name: " +  name, clr);
-		drawText(4, 95, "Tier: " + tier, clr);
+		drawText(4, 95, "Ore Layer: " + tier, clr);
+		drawText(4, 105, "Size Vein: " + GT_Utility.formatNumbers(50L * ((long) (tier + 1) << tier)) + " - " + GT_Utility.formatNumbers(100L * ((long) (tier + 1) << tier)) + "k cycles", clr);
 		
 		drawText(4, 0, "Show All", new Color(84, 81, 81).hashCode());
 	}

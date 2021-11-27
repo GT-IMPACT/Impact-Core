@@ -10,6 +10,7 @@ import com.impact.mods.nei.impactplugin.NEI_Impact_SingleTemplate;
 import com.impact.mods.nei.impactplugin.util.DrawText;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
+import gregtech.common.items.ItemDebug;
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
 
@@ -45,11 +46,13 @@ public class BuilderNEI {
 	}
 	
 	public BuilderNEI addInput(ItemStack stack, int x, int y) {
+		stack = stack == null ? new ItemStack(ItemDebug.getInstance(), 1) : stack;
 		inStack.put(stack, new int[]{x, y});
 		return this;
 	}
 	
 	public BuilderNEI addOutput(ItemStack stack, int x, int y) {
+		stack = stack == null ? new ItemStack(ItemDebug.getInstance(), 1) : stack;
 		outStack.put(stack, new int[]{x, y});
 		return this;
 	}

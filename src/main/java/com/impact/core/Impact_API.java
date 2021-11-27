@@ -9,10 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Impact_API {
 	
 	/**
-	 * int[]  - dimension, xChunk, zChunk, tier, sizeVein
+	 * VeinChunk  - dimension, xChunk, zChunk, tier, sizeVein
 	 * String - BiomesOreGenerator.name
 	 */
-	public static final Map<VeinChunk, String> sOreInChunk = new HashMap<>();
+	public static final Map<VeinChunk, String> sOreInChunk = new ConcurrentHashMap<>();
 	
 	/**
 	 * Drops from harvest blocks

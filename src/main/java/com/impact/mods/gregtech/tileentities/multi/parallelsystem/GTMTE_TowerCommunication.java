@@ -30,6 +30,7 @@ import static com.impact.core.Impact_API.sCommunicationTower;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
+import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
@@ -55,14 +56,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 							ofBlock(CASING, CASING_META)
 					))
 					.addElement('D', ofHatchAdder(GTMTE_TowerCommunication::addCommunicationHatchToMachineList, CASING_TEXTURE_ID, CASING, CASING_META))
-					.addElement('E', ofHintDeferred(() -> new IIcon[]{
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-					}, Materials.Steel.mRGBa))
+					.addElement('E', lazy(t -> ofFrame(Materials.Steel)))
 					.build();
 	public static int frameId = 4096 + Materials.Steel.mMetaItemSubID;
 	public static int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();

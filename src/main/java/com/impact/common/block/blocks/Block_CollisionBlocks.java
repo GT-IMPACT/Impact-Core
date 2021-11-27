@@ -2,6 +2,8 @@ package com.impact.common.block.blocks;
 
 import com.impact.common.block.itemblock.IB_InsideBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,8 +29,8 @@ public class Block_CollisionBlocks extends gtUpdateBlockAPI {
   public static Block registerBlock() {
     final String blockName = "impact_collision_block";
     instance.setBlockName(blockName);
-    instance.setHardness(5.0f);
-    instance.setResistance(6.0f);
+    instance.setHardness(1.0f);
+    instance.setResistance(1.0f);
     GameRegistry.registerBlock(instance, IB_InsideBlocks.class, blockName);
     return instance;
   }
@@ -106,6 +108,9 @@ public class Block_CollisionBlocks extends gtUpdateBlockAPI {
   public void setBlockBoundsForItemRender() {
     this.setBlockBounds(0.200F, 0.0F, 0.200F, 0.800F, 1.0F, 0.800F);
   }
-
-
+  
+  @Override
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    return new ArrayList<>();
+  }
 }
