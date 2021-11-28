@@ -26,8 +26,8 @@ import org.lwjgl.input.Keyboard;
 
 public class ClientEvent {
 	
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
 	public void onGuiOpenEvent(GuiOpenEvent event) {
 		if (Config.mainMenu && event.gui instanceof GuiMainMenu) {
 			event.gui = new ImpactGuiMainMenu();
