@@ -16,7 +16,6 @@ import com.impact.mods.gregtech.GT_WorldGenRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
-import com.impact.mods.gtscanner.GTScanner;
 import com.impact.mods.opencomputers.Driver_Register;
 import com.impact.mods.railcraft.carts.item.events.Module;
 import com.impact.util.Language;
@@ -25,26 +24,15 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import java.util.HashMap;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.common.item.Core_List_Items.registerOreDictNames;
 import static com.impact.core.Config.DisableNether;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.impact.getModules;
-import static com.impact.loader.ItemRegistery.IGlassBlock;
 
 public class MainLoader {
 	
@@ -136,8 +124,6 @@ public class MainLoader {
 		GameRegistry.registerTileEntity(TE_NqTether.class, "nq_tether");
 		GameRegistry.registerTileEntity(TilePlacedItem.class, "TilePlacedItem");
 		GameRegistry.registerTileEntity(TE_WindMill.class, "TileWindMill");
-		
-		GTScanner.preInit();
 	}
 	
 	public static void postInit(FMLPostInitializationEvent event) {
