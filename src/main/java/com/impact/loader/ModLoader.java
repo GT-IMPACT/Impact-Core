@@ -8,9 +8,7 @@ public class ModLoader implements Runnable {
 	
 	@Override
 	public void run() {
-		
-		// --- TecTech
-		if (Loader.isModLoaded("tectech")) {
+		if (Loader.isModLoaded("impactapi")) {
 			new Holo_Impact().run();
 			new Holo_Vanila_GregTech().run();
 		}
