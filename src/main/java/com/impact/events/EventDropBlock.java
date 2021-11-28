@@ -3,7 +3,6 @@ package com.impact.events;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.enums.DropsBlock;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
-import com.impact.mods.gregtech.items.tools.IImpact_Tools;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -12,7 +11,6 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.dustImpure;
-import static gregtech.api.enums.OrePrefixes.nugget;
 
 public class EventDropBlock {
 	
