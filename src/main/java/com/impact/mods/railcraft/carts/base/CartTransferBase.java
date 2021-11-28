@@ -22,150 +22,141 @@ import net.minecraft.world.World;
  */
 @Optional.Interface(iface = "mods.railcraft.api.carts.IItemTransfer", modid = "RailcraftAPI|carts")
 public abstract class CartTransferBase extends EntityMinecartContainer implements IItemTransfer {
-
-  /**
-   * If passThrough == true, this cart will only pass requests along, it wont attempt to fulfill
-   * them.
-   */
-  protected boolean passThrough = false;
-
-  public CartTransferBase(World world) {
-    super(world);
-  }
-
-  public CartTransferBase(World world, double x, double y, double z) {
-    super(world, x, y, z);
-  }
-
-  @Optional.Method(modid = "RailcraftAPI|carts")
-  public ItemStack offerItem(Object source, ItemStack offer) {
-    if (!passThrough && getSizeInventory() > 0) {
-      offer = moveItemStack(offer, this);
-      if (offer == null) {
-        return null;
-      }
-    }
-
-    ILinkageManager lm = CartTools.getLinkageManager(worldObj);
-
-    EntityMinecart linkedCart = lm.getLinkedCartA(this);
-    if (linkedCart != source && linkedCart instanceof IItemTransfer) {
-      offer = ((IItemTransfer) linkedCart).offerItem(this, offer);
-    }
-
-    if (offer == null) {
-      return null;
-    }
-
-    linkedCart = lm.getLinkedCartB(this);
-    if (linkedCart != source && linkedCart instanceof IItemTransfer) {
-      offer = ((IItemTransfer) linkedCart).offerItem(this, offer);
-    }
-
-    return offer;
-  }
-
-  @Optional.Method(modid = "RailcraftAPI|carts")
-  public ItemStack requestItem(Object source) {
-    return requestItem(this, IStackFilter.filters.get("ALL"));
-  }
-
-  @Optional.Method(modid = "RailcraftAPI|carts")
-  public ItemStack requestItem(Object source, ItemStack request) {
-    return requestItem(this, new ArrayStackFilter(request));
-  }
-
-  @Optional.Method(modid = "RailcraftAPI|carts")
-  public ItemStack requestItem(Object source, IStackFilter request) {
-    ItemStack result = null;
-    if (!passThrough && getSizeInventory() > 0) {
-      result = removeOneItem(this, request);
-      if (result != null) {
-        return result;
-      }
-    }
-
-    ILinkageManager lm = CartTools.getLinkageManager(worldObj);
-
-    EntityMinecart linkedCart = lm.getLinkedCartA(this);
-    if (linkedCart != source && linkedCart instanceof IItemTransfer) {
-      result = ((IItemTransfer) linkedCart).requestItem(this, request);
-    }
-
-    if (result != null) {
-      return result;
-    }
-
-    linkedCart = lm.getLinkedCartB(this);
-    if (linkedCart != source && linkedCart instanceof IItemTransfer) {
-      result = ((IItemTransfer) linkedCart).requestItem(this, request);
-    }
-
-    return result;
-  }
-
-  /**
-   * Removes and returns a single item from the inventory that matches the filter.
-   *
-   * @param inv    The inventory
-   * @param filter EnumItemType to match against
-   * @return An ItemStack
-   */
-  protected ItemStack removeOneItem(IInventory inv, IStackFilter filter) {
-    for (int i = 0; i < inv.getSizeInventory(); i++) {
-      ItemStack slot = inv.getStackInSlot(i);
-      if (slot != null && filter.matches(slot)) {
-        return inv.decrStackSize(i, 1);
-      }
-    }
-    return null;
-  }
-
-  protected ItemStack moveItemStack(ItemStack stack, IInventory dest) {
-    if (stack == null) {
-      return null;
-    }
-    stack = stack.copy();
-    if (dest == null) {
-      return stack;
-    }
-    boolean movedItem = false;
-    do {
-      movedItem = false;
-      ItemStack destStack = null;
-      for (int ii = 0; ii < dest.getSizeInventory(); ii++) {
-        destStack = dest.getStackInSlot(ii);
-        if (destStack != null && destStack.isItemEqual(stack)) {
-          int maxStack = Math.min(destStack.getMaxStackSize(), dest.getInventoryStackLimit());
-          int room = maxStack - destStack.stackSize;
-          if (room > 0) {
-            int move = Math.min(room, stack.stackSize);
-            destStack.stackSize += move;
-            stack.stackSize -= move;
-            if (stack.stackSize <= 0) {
-              return null;
-            }
-            movedItem = true;
-          }
-        }
-      }
-      if (!movedItem) {
-        for (int ii = 0; ii < dest.getSizeInventory(); ii++) {
-          destStack = dest.getStackInSlot(ii);
-          if (destStack == null) {
-            if (stack.stackSize > dest.getInventoryStackLimit()) {
-              dest.setInventorySlotContents(ii,
-                  stack.splitStack(dest.getInventoryStackLimit()));
-            } else {
-              dest.setInventorySlotContents(ii, stack);
-              return null;
-            }
-            movedItem = true;
-          }
-        }
-      }
-    } while (movedItem);
-    return stack;
-  }
-
+	
+	/**
+	 * If passThrough == true, this cart will only pass requests along, it wont attempt to fulfill
+	 * them.
+	 */
+	protected boolean passThrough = false;
+	
+	public CartTransferBase(World world) {
+		super(world);
+	}
+	
+	public CartTransferBase(World world, double x, double y, double z) {
+		super(world, x, y, z);
+	}
+	
+	@Optional.Method(modid = "RailcraftAPI|carts")
+	public ItemStack offerItem(Object source, ItemStack offer) {
+		if (!passThrough && getSizeInventory() > 0) {
+			offer = moveItemStack(offer, this);
+			if (offer == null) {
+				return null;
+			}
+		}
+		ILinkageManager lm = CartTools.getLinkageManager(worldObj);
+		EntityMinecart linkedCart = lm.getLinkedCartA(this);
+		if (linkedCart != source && linkedCart instanceof IItemTransfer) {
+			offer = ((IItemTransfer) linkedCart).offerItem(this, offer);
+		}
+		if (offer == null) {
+			return null;
+		}
+		linkedCart = lm.getLinkedCartB(this);
+		if (linkedCart != source && linkedCart instanceof IItemTransfer) {
+			offer = ((IItemTransfer) linkedCart).offerItem(this, offer);
+		}
+		return offer;
+	}
+	
+	@Optional.Method(modid = "RailcraftAPI|carts")
+	public ItemStack requestItem(Object source) {
+		return requestItem(this, IStackFilter.filters.get("ALL"));
+	}
+	
+	@Optional.Method(modid = "RailcraftAPI|carts")
+	public ItemStack requestItem(Object source, ItemStack request) {
+		return requestItem(this, new ArrayStackFilter(request));
+	}
+	
+	@Optional.Method(modid = "RailcraftAPI|carts")
+	public ItemStack requestItem(Object source, IStackFilter request) {
+		ItemStack result = null;
+		if (!passThrough && getSizeInventory() > 0) {
+			result = removeOneItem(this, request);
+			if (result != null) {
+				return result;
+			}
+		}
+		ILinkageManager lm = CartTools.getLinkageManager(worldObj);
+		EntityMinecart linkedCart = lm.getLinkedCartA(this);
+		if (linkedCart != source && linkedCart instanceof IItemTransfer) {
+			result = ((IItemTransfer) linkedCart).requestItem(this, request);
+		}
+		if (result != null) {
+			return result;
+		}
+		linkedCart = lm.getLinkedCartB(this);
+		if (linkedCart != source && linkedCart instanceof IItemTransfer) {
+			result = ((IItemTransfer) linkedCart).requestItem(this, request);
+		}
+		return result;
+	}
+	
+	/**
+	 * Removes and returns a single item from the inventory that matches the filter.
+	 *
+	 * @param inv    The inventory
+	 * @param filter EnumItemType to match against
+	 * @return An ItemStack
+	 */
+	protected ItemStack removeOneItem(IInventory inv, IStackFilter filter) {
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			ItemStack slot = inv.getStackInSlot(i);
+			if (slot != null && filter.matches(slot)) {
+				return inv.decrStackSize(i, 1);
+			}
+		}
+		return null;
+	}
+	
+	protected ItemStack moveItemStack(ItemStack stack, IInventory dest) {
+		if (stack == null) {
+			return null;
+		}
+		stack = stack.copy();
+		if (dest == null) {
+			return stack;
+		}
+		boolean movedItem = false;
+		do {
+			movedItem = false;
+			ItemStack destStack = null;
+			for (int ii = 0; ii < dest.getSizeInventory(); ii++) {
+				destStack = dest.getStackInSlot(ii);
+				if (destStack != null && destStack.isItemEqual(stack)) {
+					int maxStack = Math.min(destStack.getMaxStackSize(), dest.getInventoryStackLimit());
+					int room = maxStack - destStack.stackSize;
+					if (room > 0) {
+						int move = Math.min(room, stack.stackSize);
+						destStack.stackSize += move;
+						stack.stackSize -= move;
+						if (stack.stackSize <= 0) {
+							return null;
+						}
+						movedItem = true;
+					}
+				}
+			}
+			if (!movedItem) {
+				for (int ii = 0; ii < dest.getSizeInventory(); ii++) {
+					destStack = dest.getStackInSlot(ii);
+					if (destStack == null) {
+						if (stack.stackSize > dest.getInventoryStackLimit()) {
+							dest.setInventorySlotContents(
+									ii,
+									stack.splitStack(dest.getInventoryStackLimit())
+							);
+						} else {
+							dest.setInventorySlotContents(ii, stack);
+							return null;
+						}
+						movedItem = true;
+					}
+				}
+			}
+		} while (movedItem);
+		return stack;
+	}
 }
