@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.impact.util.Utilits.is;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.dust;
@@ -108,10 +109,6 @@ public enum BiomesOreGenerator {
 		this.mChance = chance;
 		this.mOre    = new ArrayList<>();
 		Stream.of(materials).forEach(material -> this.mOre.add(GT_OreDictUnificator.get(crushed, material, 1)));
-	}
-	
-	private static ItemStack is(OrePrefixes prefixes, Materials materials) {
-		return GT_OreDictUnificator.get(prefixes, materials, 1);
 	}
 	
 	public static BiomesOreGenerator getFromName(String name) {

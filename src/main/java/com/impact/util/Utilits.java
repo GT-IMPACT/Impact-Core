@@ -6,6 +6,8 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -184,6 +186,10 @@ public class Utilits {
             return Block.getBlockFromItem(GT_ModHandler.getModItem(modID, name, 1).getItem());
         }
         return null;
+    }
+    
+    public static ItemStack is(OrePrefixes prefixes, Materials materials) {
+        return GT_OreDictUnificator.get(prefixes, materials, 1);
     }
 
     public static boolean isB(int A, int B) {
