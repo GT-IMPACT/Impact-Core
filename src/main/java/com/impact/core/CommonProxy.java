@@ -56,9 +56,6 @@ public class CommonProxy implements IGuiHandler {
 	public void addClientSideChatMessages(String... messages) {
 	}
 	
-	public void smoke_particle(World w, int x, int y, int z, int side) {
-	}
-	
 	public void hint_particle(World w, int x, int y, int z, Block block, int meta) {
 	}
 	

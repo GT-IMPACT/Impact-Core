@@ -72,21 +72,6 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void smoke_particle(World w, int x, int y, int z, int side) {
-		float ran1 = XSTR.XSTR_INSTANCE.nextFloat();
-		ForgeDirection aDir = ForgeDirection.getOrientation(side);
-		float xPos = (float) aDir.offsetX * 0.76F + (float) x + 0.25F;
-		float yPos = (float) aDir.offsetY * 0.76F + (float) y + 0.25F;
-		float zPos = (float) aDir.offsetZ * 0.76F + (float) z + 0.25F;
-		float ySpd = (float) aDir.offsetY * 0.1F + 0.2F + 0.1F * XSTR.XSTR_INSTANCE.nextFloat();
-		float xSpd;
-		float zSpd;
-
-		w.spawnParticle("largesmoke", xPos + ran1 * 2.5F, yPos + ran1 * 2.5F,
-				zPos + ran1 * 2.5F, 0.0D, 0.3D, 0.0D);
-	}
-	
-	@Override
 	public void hint_particle(World w, int x, int y, int z, Block block, int meta) {
 		Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(w, x, y, z, block, meta));
 	}
