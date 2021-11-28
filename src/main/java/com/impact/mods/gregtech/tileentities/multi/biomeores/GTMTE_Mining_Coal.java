@@ -42,7 +42,9 @@ import static space.impact.api.multiblocks.structure.StructureUtility.lazy;
 
 public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Mining_Coal> {
 	
-	private static final int DEFAULT_WORK = 200;
+	private static final int DEFAULT_WORK = 400;
+	private static final int INPUT_SLOT = 0;
+	private static final int OUTPUT_SLOT = 1;
 	static IStructureDefinition<GTMTE_Mining_Coal> definition =
 			StructureDefinition.<GTMTE_Mining_Coal>builder()
 					.addShape("main", new String[][]{
@@ -70,12 +72,12 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer p, IGregTechTileEntity te) {
-		return new CoalContaniner(p, te);
+		return new CoalContainer(p, te);
 	}
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer p, IGregTechTileEntity te) {
-		return new CoalGUI(new CoalContaniner(p, te));
+		return new CoalGUI(new CoalContainer(p, te));
 	}
 	
 	@Override
@@ -83,11 +85,6 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		super.onFirstTick(te);
 		cycleIncrease      = 0;
 		biomesOreGenerator = BiomesOreGenerator.generatedOres(te.getWorld(), te.getXCoord(), te.getZCoord(), 0);
-	}
-	
-	@Override
-	public String[] getDescription() {
-		return new String[]{"HELLO"};
 	}
 	
 	@Override
@@ -159,14 +156,6 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		}
 	}
 	
-	private int getInputSlot() {
-		return 0;
-	}
-	
-	private int getOutputSlot() {
-		return 1;
-	}
-	
 	@Override
 	public void onPostTick(IGregTechTileEntity te, long aTick) {
 		super.onPostTick(te, aTick);
@@ -186,7 +175,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 			if (te.isActive() && (aTick & 0x7) == 0) {
 				IInventory tTileEntity = te.getIInventoryAtSide((byte) 1);
 				if (tTileEntity != null) {
-					if (mInventory[getOutputSlot()] != null) {
+					if (mInventory[OUTPUT_SLOT] != null) {
 						GT_Utility.moveOneItemStack(te, tTileEntity, (byte) 1, (byte) 1,
 								null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1
 						);
@@ -203,14 +192,14 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 					te.setActive(false);
 				}
 				if (mProgresstime == DEFAULT_WORK - 1) {
-					if (mInventory[getOutputSlot()] != null) {
-						mInventory[getOutputSlot()].stackSize += 1;
-						if (mInventory[getOutputSlot()].stackSize >= 64) {
-							mInventory[getOutputSlot()].stackSize = 64;
+					if (mInventory[OUTPUT_SLOT] != null) {
+						mInventory[OUTPUT_SLOT].stackSize += 1;
+						if (mInventory[OUTPUT_SLOT].stackSize >= 64) {
+							mInventory[OUTPUT_SLOT].stackSize = 64;
 						}
 					} else {
 						ItemStack stack = biomesOreGenerator.mOre.get(0);
-						mInventory[getOutputSlot()] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
+						mInventory[OUTPUT_SLOT] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
 					}
 					cycleIncrease++;
 				}
@@ -220,12 +209,12 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	private boolean checkFuel() {
 		boolean check = false;
-		if (cBurnTime <= 0 && TileEntityFurnace.getItemBurnTime(this.mInventory[getInputSlot()]) > 0) {
-			maxBurnTime = cBurnTime = TileEntityFurnace.getItemBurnTime(this.mInventory[getInputSlot()]);
+		if (cBurnTime <= 0 && TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]) > 0) {
+			maxBurnTime = cBurnTime = TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]);
 			check       = cBurnTime > 0;
-			mInventory[getInputSlot()].stackSize--;
-			if (mInventory[getInputSlot()].stackSize <= 0) {
-				mInventory[getInputSlot()] = null;
+			mInventory[INPUT_SLOT].stackSize--;
+			if (mInventory[INPUT_SLOT].stackSize <= 0) {
+				mInventory[INPUT_SLOT] = null;
 			}
 		}
 		return check;
@@ -233,7 +222,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		if (cBurnTime <= 0 && mInventory[getInputSlot()] == null && biomesOreGenerator == BiomesOreGenerator.NONE) {
+		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && biomesOreGenerator == BiomesOreGenerator.NONE) {
 			return false;
 		}
 		checkFuel();
@@ -327,16 +316,16 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 			double work = (double) mContainer.mProgressTime / (double) mContainer.mMaxProgressTime;
 			
 			drawTexturedModalRect(x + 78, y + 24, 176, 1, Math.min(20, (int) (work * 20)), 16);
-			double burn = (double) ((CoalContaniner) mContainer).burnTime / ((CoalContaniner) mContainer).maxBurnTime;
+			double burn = (double) ((CoalContainer) mContainer).burnTime / ((CoalContainer) mContainer).maxBurnTime;
 			drawTexturedModalRect(x + 81, y + 60 - (int) Math.min(13d, burn * 13d), 198, 14 - (int) Math.min(13d, burn * 13d), 14, 13);
 		}
 	}
 	
-	private static class CoalContaniner extends GT_ContainerMetaTile_Machine {
+	private static class CoalContainer extends GT_ContainerMetaTile_Machine {
 		
 		public int cWork, burnTime, maxBurnTime;
 		
-		public CoalContaniner(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+		public CoalContainer(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 			super(aInventoryPlayer, aTileEntity);
 		}
 		

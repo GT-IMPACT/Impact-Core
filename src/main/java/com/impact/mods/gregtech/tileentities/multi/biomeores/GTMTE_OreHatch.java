@@ -1,7 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.biomeores;
 
-import com.impact.util.vector.Structure;
-import com.impact.util.vector.Vector3i;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,7 +17,9 @@ public class GTMTE_OreHatch extends GT_MetaTileEntity_Hatch {
 	public boolean goPipeGo = false;
 	
 	public GTMTE_OreHatch(int aID, String name, int tier) {
-		super(aID, "matrix.system.mp_chamber." + tier, name, tier, 0, new String[]{});
+		super(aID, "impact.hatch.miner_hatch." + tier, name, tier, 0, new String[]{
+				"Throws headband of the drill and begins resource extraction"
+		});
 	}
 	
 	public GTMTE_OreHatch(String aName, int tier, String[] aDescription, ITexture[][][] aTextures) {
@@ -114,5 +114,4 @@ public class GTMTE_OreHatch extends GT_MetaTileEntity_Hatch {
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return false;
 	}
-	
 }
