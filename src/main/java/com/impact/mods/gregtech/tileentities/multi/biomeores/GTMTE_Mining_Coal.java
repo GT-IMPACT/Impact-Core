@@ -58,9 +58,9 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 					.addElement('B', ofHatchAdder(GTMTE_Mining_Coal::checkHatch, 178, ImpactAPI.RED))
 					.build();
 	private final Set<GTMTE_OreHatch> hatch = new HashSet<>();
-	private int cBurnTime = 0, maxBurnTime = 10;
-	private int cycleIncrease = 0;
-	private BiomesOreGenerator biomesOreGenerator = BiomesOreGenerator.NONE;
+	public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
+	public int cycleIncrease = 0;
+	public BiomesOreGenerator biomesOreGenerator = BiomesOreGenerator.NONE;
 	
 	public GTMTE_Mining_Coal(int aID, String aNameRegional) {
 		super(aID, "impact.multis.miner.coal", aNameRegional);
@@ -84,6 +84,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
 		cycleIncrease      = 0;
+		sizeVeinPreStart   = BiomesOreGenerator.getCurrentSizeVein(te.getWorld(), te.getXCoord(), te.getZCoord(), 0);
 		biomesOreGenerator = BiomesOreGenerator.generatedOres(te.getWorld(), te.getXCoord(), te.getZCoord(), 0);
 	}
 	
@@ -281,6 +282,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		aNBT.setInteger("cBurnTime", cBurnTime);
 		aNBT.setInteger("maxBurnTime", maxBurnTime);
 		aNBT.setInteger("cycleIncrease", cycleIncrease);
+		aNBT.setInteger("sizeVeinPreStart", sizeVeinPreStart);
 	}
 	
 	@Override
@@ -289,6 +291,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		cBurnTime     = aNBT.getInteger("cBurnTime");
 		maxBurnTime   = aNBT.getInteger("maxBurnTime");
 		cycleIncrease = aNBT.getInteger("cycleIncrease");
+		sizeVeinPreStart = aNBT.getInteger("sizeVeinPreStart");
 	}
 	
 	@Override
@@ -314,8 +317,8 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 			int y = (height - ySize) / 2;
 			drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 			double work = (double) mContainer.mProgressTime / (double) mContainer.mMaxProgressTime;
-			
 			drawTexturedModalRect(x + 78, y + 24, 176, 1, Math.min(20, (int) (work * 20)), 16);
+			
 			double burn = (double) ((CoalContainer) mContainer).burnTime / ((CoalContainer) mContainer).maxBurnTime;
 			drawTexturedModalRect(x + 81, y + 60 - (int) Math.min(13d, burn * 13d), 198, 14 - (int) Math.min(13d, burn * 13d), 14, 13);
 		}

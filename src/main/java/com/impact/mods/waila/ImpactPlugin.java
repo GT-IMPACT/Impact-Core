@@ -6,6 +6,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
@@ -85,8 +86,13 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
+        final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
 
         if (tMeta != null) {
+            
+            if (coal_miner != null) {
+                currenttip.add("Vein Size: " + tag.getInteger("coal_miner.vein"));
+            }
 
             if (solar != null) {
                 currenttip.add("Generation: " + tag.getInteger("solar.mOutputSalary") + "EU/t");
@@ -272,8 +278,13 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
+        final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
 
         if (tMeta != null) {
+            
+            if (coal_miner != null) {
+                tag.setInteger("coal_miner.vein", coal_miner.sizeVeinPreStart - coal_miner.cycleIncrease);
+            }
 
             if (solar != null) {
                 tag.setInteger("solar.mOutputSalary", (int) solar.maxEUOutput());

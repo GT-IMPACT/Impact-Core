@@ -165,7 +165,7 @@ public enum BiomesOreGenerator {
 		VeinChunk m = new VeinChunk(dim, xx, zz, tier, -1);
 		for (VeinChunk i : Impact_API.sOreInChunk.keySet()) {
 			if (i.equals(m)) {
-				m.sizeVein = i.sizeVein - sizeIncrease;
+				m.sizeVein = Math.max(i.sizeVein - sizeIncrease, 0);
 				String currentBiome = Impact_API.sOreInChunk.get(i);
 				Impact_API.sOreInChunk.remove(i, currentBiome);
 				Impact_API.sOreInChunk.put(m, currentBiome);
