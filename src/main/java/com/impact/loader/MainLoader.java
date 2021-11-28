@@ -43,7 +43,6 @@ import static codechicken.nei.api.API.hideItem;
 import static com.impact.common.item.Core_List_Items.registerOreDictNames;
 import static com.impact.core.Config.DisableNether;
 import static com.impact.core.impactLog.INFO;
-import static com.impact.core.impactLog.WARNING;
 import static com.impact.impact.getModules;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 
@@ -156,20 +155,5 @@ public class MainLoader {
 				module.postInit(event);
 			}
 		}
-		if (Loader.isModLoaded("GalacticraftCore")) {
-			addRecipeSS();
-		}
-	}
-	
-	private static void addRecipeSS() {
-		final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-		inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 40), 40);
-		inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 20), 20);
-		inputMap.put(new ItemStack(IGlassBlock, 20), 20);
-		inputMap.put(new ItemStack(GCItems.rocketEngine, 4), 4);
-		GalacticraftRegistry.registerSpaceStation(
-				new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0,
-						new SpaceStationRecipe(inputMap)
-				));
 	}
 }
