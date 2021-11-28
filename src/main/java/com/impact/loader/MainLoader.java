@@ -10,7 +10,6 @@ import com.impact.common.te.TE_WindMill;
 import com.impact.common.te.TilePlacedItem;
 import com.impact.impact;
 import com.impact.mods.asp.ASP;
-import com.impact.mods.galacticraft.gg.SpaceDimRegisterer;
 import com.impact.mods.gregtech.Basic_Register;
 import com.impact.mods.gregtech.GT_ItemRegister;
 import com.impact.mods.gregtech.GT_WorldGenRegister;
@@ -55,16 +54,6 @@ public class MainLoader {
 	
 	public static void Init(FMLInitializationEvent event) {
 		ItemRegistery.run();
-		
-		// Register Dimensions in GalacticGregGT5
-		if (Loader.isModLoaded("galacticgreg")) {
-			SpaceDimRegisterer spaceDimReg = new SpaceDimRegisterer();
-			if (spaceDimReg.Init()) {
-				spaceDimReg.Register();
-				INFO("[load] Space Dimension Register - Loaded");
-			}
-			WARNING("[load] Space Dimension Register - Not Loaded");
-		}
 		
 		OreDictRegister.register_all();
 		INFO("[load] OreDict Register List - Loaded");
