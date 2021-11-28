@@ -14,7 +14,6 @@ public class Config {
 	public static Configuration config;
 	
 	public static boolean disableLogger;
-	public static boolean csv;
 	public static boolean hideBackground;
 	public static boolean toolTips;
 	public static boolean DisableNether;
@@ -41,11 +40,6 @@ public class Config {
 			
 			Property cfg;
 			//GENERAL
-			cfg         = config.get("GENERAL", "Print csv", false);
-			cfg.comment = "[NEI Ore Plugin] Princsv, you need apache commons collections to be injected in the minecraft jar. [Default: false]";
-			csv         = cfg.getBoolean(false);
-			General.add(cfg.getName());
-			
 			cfg            = config.get("GENERAL", "Hide Background", true);
 			cfg.comment    = "[NEI Ore Plugin] Hides the Background when the tooltip for the Dimensions is renderedr. [Default: true]";
 			hideBackground = cfg.getBoolean(true);

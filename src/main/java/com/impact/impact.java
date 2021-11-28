@@ -13,21 +13,17 @@ import com.impact.loader.MainLoader;
 import com.impact.mods.gregtech.enums.IRecipeAdder;
 import com.impact.mods.gregtech.enums.RecipeAdder;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.nei.oreplugin.helper.CSVMaker;
-import com.impact.mods.nei.oreplugin.helper.GT5OreLayerHelper;
-import com.impact.mods.nei.oreplugin.helper.GT5OreSmallHelper;
 import com.impact.mods.railcraft.carts.item.ChestCartModule;
 import com.impact.mods.railcraft.carts.item.events.Module;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.relauncher.Side;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
-import static com.impact.core.Config.csv;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
 
@@ -45,11 +41,10 @@ public class impact {
 
     @Mod.Instance(MODID)
     public static impact instance;
-    public static String ModPackVersion = "1.0.1.6";
+    public static String ModPackVersion = "1.0.1.7-dev";
     public static Config mConfig;
-    public static FMLEventChannel channel;
     public static IRecipeAdder I_RA;
-    private static ArrayList<Module> MODULES_ENABLED = new ArrayList<Module>();
+    private static final ArrayList<Module> MODULES_ENABLED = new ArrayList<>();
 
     public impact() {
         impact.I_RA = new RecipeAdder();
@@ -73,10 +68,11 @@ public class impact {
         aEvent.registerServerCommand(new Command_FixBQ());
     }
 
+    @SuppressWarnings("")
     @Mod.EventHandler
     public void onServerStopping(FMLServerStoppingEvent aEvent) {
         proxy.onServerStopping();
-        SaveManager.get().onServerStopping();
+        Objects.requireNonNull(SaveManager.get()).onServerStopping();
     }
 
     @Mod.EventHandler
@@ -104,17 +100,6 @@ public class impact {
     }
 
     @Mod.EventHandler
-    public void onLoadComplete(FMLLoadCompleteEvent event) {
-        if (event.getSide() == Side.CLIENT) {
-            new GT5OreLayerHelper();
-            new GT5OreSmallHelper();
-            if (csv) {
-                new CSVMaker().run();
-            }
-        }
-    }
-
-    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         MainLoader.postInit(event);
         proxy.postInit();
@@ -127,6 +112,6 @@ public class impact {
 
     @Mod.EventHandler
     private void serverStopped(final FMLServerStoppedEvent event) {
-        SaveManager.get().onServerStopped();
+        Objects.requireNonNull(SaveManager.get()).onServerStopped();
     }
 }
