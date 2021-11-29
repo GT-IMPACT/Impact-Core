@@ -107,7 +107,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public void inValidate() {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
-		BiomesOreGenerator.increaseCycle(te.getWorld(), te.getXCoord(), te.getZCoord(), 0, cycleIncrease - 1);
+		BiomesOreGenerator.increaseCycle(te.getWorld(), te.getXCoord(), te.getZCoord(), 0, cycleIncrease);
 		cycleIncrease = 0;
 		super.inValidate();
 	}
