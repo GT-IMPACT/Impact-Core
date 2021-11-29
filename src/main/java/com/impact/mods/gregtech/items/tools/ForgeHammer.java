@@ -1,13 +1,12 @@
 package com.impact.mods.gregtech.items.tools;
 
+import codechicken.nei.recipe.GuiCraftingRecipe;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.items.tools.IImpact_Tools;
-import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_IImpactTools;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.common.items.behaviors.Behaviour_Drill;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.tools.GT_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,7 +15,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
@@ -24,6 +26,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import java.util.List;
 
 import static com.impact.util.ItemNBTHelper.getBoolean;
+import static com.impact.util.ItemNBTHelper.setBoolean;
 import static com.impact.util.vector.ToolsVector.raytraceFromEntity;
 
 public class ForgeHammer extends GT_Tool implements IToolStats, IImpact_Tools {
@@ -111,7 +114,7 @@ public class ForgeHammer extends GT_Tool implements IToolStats, IImpact_Tools {
     }
     
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_IImpactTools(true));
+        aItem.addItemBehavior(aID, null);
     }
 
     @Override
@@ -238,5 +241,37 @@ public class ForgeHammer extends GT_Tool implements IToolStats, IImpact_Tools {
     @Override
     public boolean canAdDrop(ItemStack stack) {
         return getBoolean(stack, "adDrop", false);
+    }
+    
+    @Override
+    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        return false;
+    }
+    
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        boolean mode = getBoolean(aStack, "adDrop", false);
+        aList.add("Shift + Right click on the block to open recipes NEI");
+        aList.add("Right click on the block to change harvester mode");
+        aList.add(EnumChatFormatting.WHITE + "Advanced Harvester Mode: " + EnumChatFormatting.GREEN + (mode ? "Enable" : "Disable"));
+    }
+    
+    
+    @Override
+    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        if (!aWorld.isRemote) {
+            if (!aPlayer.isSneaking()) {
+                boolean statusAdDrop = getBoolean(aStack, "adDrop", false);
+                statusAdDrop = !statusAdDrop;
+                setBoolean(aStack, "adDrop", statusAdDrop);
+                GT_Utility.sendChatToPlayer(aPlayer, "Advanced Drop Harvester: " + (statusAdDrop ? "Enabled" : "Disabled"));
+            }
+        } else {
+            if (aPlayer.isSneaking()) {
+                GuiCraftingRecipe.openRecipeGui("drops_hammer");
+            }
+        }
+        return false;
     }
 }

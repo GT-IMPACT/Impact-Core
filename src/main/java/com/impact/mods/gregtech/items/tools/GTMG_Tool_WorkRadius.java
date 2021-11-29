@@ -9,6 +9,7 @@ import gregtech.api.util.GT_ModHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,7 +39,12 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         ITool.put(aID + 1, aTools);
         return addTool(aID, aEnglish, aToolTip, aTools.getTools(), aOreDictNames);
     }
-
+    
+    @Override
+    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        ITool.get(aStack.getItemDamage()).addAdditionalToolTips(aList, aStack, aPlayer);
+    }
+    
     @Override
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
         if (ITool.get(stack.getItemDamage()) != null) {
@@ -51,6 +57,16 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         return ITool.get(stack.getItemDamage()).canAdDrop(stack);
     }
     
+    @Override
+    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        return ITool.get(aStack.getItemDamage()).onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+    }
+    
+    @Override
+    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        return ITool.get(aStack.getItemDamage()).onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+    }
+    
     //todo remove this
     public static class ProccessToolHead implements IOreRecipeRegistrator {
         public ProccessToolHead() {
@@ -60,25 +76,18 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
 
         @Override
         public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-            boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
-
             switch (aPrefix) {
                 case toolHeadHammer:
-                GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
-                        GTMG_Tool_WorkRadius.FORGE_HAMMER, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[]{
-                                aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)
-                        });
-                break;
+                    GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
+                            GTMG_Tool_WorkRadius.FORGE_HAMMER, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[]{aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
+                    break;
                 case toolHeadAxe:
                     GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
-                                    GTMG_Tool_WorkRadius.LUMBER_AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[]{
-                                    aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)
-                            });
+                            GTMG_Tool_WorkRadius.LUMBER_AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[]{aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
                     break;
             }
-
         }
     }
 }

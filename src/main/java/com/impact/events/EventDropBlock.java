@@ -57,7 +57,7 @@ public class EventDropBlock {
 									float a = event.world.rand.nextFloat();
 									if (a <= dropBlock.chance[i]) {
 										event.drops.add(dropBlock.drop.get(i));
-										event.dropChance = dropBlock.chance[i] + 0.25f;
+										event.dropChance = dropBlock.chance[i];
 									}
 								}
 								return;
