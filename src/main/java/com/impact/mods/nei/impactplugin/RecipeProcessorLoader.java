@@ -7,7 +7,7 @@ import static com.github.vfyjxf.nee.processor.RecipeProcessor.recipeProcessors;
 public class RecipeProcessorLoader {
 
     public static void init() {
-        NotEnoughEnergistics.logger.info("Found Impact-core ,install Impact-core Support");
+        NotEnoughEnergistics.logger.info("Found Impact-core, install Impact-core Support");
         recipeProcessors.add(new ImpactRecipeProcessor());
     }
 }
