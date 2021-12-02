@@ -32,8 +32,8 @@ import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
@@ -57,7 +57,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 					.addElement('A', lazy(t -> ofFrame(Materials.Iron)))
 					.addElement('B', ofHatchAdder(GTMTE_Mining_Coal::checkHatch, 178, ImpactAPI.RED))
 					.build();
-	private final Set<GTMTE_OreHatch> hatch = new HashSet<>();
+	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
 	public int cycleIncrease = 0;
 	public BiomesOreGenerator biomesOreGenerator = BiomesOreGenerator.NONE;
@@ -92,7 +92,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][50], new GT_RenderedTexture(aActive ?
-					Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN)};
+					Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE)};
 		} else if (aSide == 1) {
 			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][50], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
 		}
@@ -170,10 +170,8 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 				);
 			}
 		} else {
-			if (aTick % 20 == 12) {
-				hatch.forEach(a -> a.goPipeGo = te.isActive());
-			}
 			if (te.isActive() && (aTick & 0x7) == 0) {
+				
 				IInventory tTileEntity = te.getIInventoryAtSide((byte) 1);
 				if (tTileEntity != null) {
 					if (mInventory[OUTPUT_SLOT] != null) {
@@ -193,6 +191,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 					te.setActive(false);
 				}
 				if (mProgresstime == DEFAULT_WORK - 1) {
+					
 					if (mInventory[OUTPUT_SLOT] != null) {
 						mInventory[OUTPUT_SLOT].stackSize += 1;
 						if (mInventory[OUTPUT_SLOT].stackSize >= 64) {
@@ -204,20 +203,28 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 					}
 					cycleIncrease++;
 				}
+			} else {
+				if (aTick % 20 == 2 && hatch.get(0) != null) {
+					hatch.get(0).cycleDrill(false);
+				}
 			}
 		}
 	}
 	
 	private boolean checkFuel() {
-		boolean check = false;
-		if (cBurnTime <= 0 && TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]) > 0) {
-			maxBurnTime = cBurnTime = TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]);
-			check       = cBurnTime > 0;
-			mInventory[INPUT_SLOT].stackSize--;
-			if (mInventory[INPUT_SLOT].stackSize <= 0) {
-				mInventory[INPUT_SLOT] = null;
+		if (hatch.get(0) == null) return false;
+		boolean check = biomesOreGenerator != null && hatch.get(0).ready;
+		if (check) {
+			if (cBurnTime <= 0 && TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]) > 0) {
+				maxBurnTime = cBurnTime = TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]);
+				check       = cBurnTime > 0;
+				mInventory[INPUT_SLOT].stackSize--;
+				if (mInventory[INPUT_SLOT].stackSize <= 0) {
+					mInventory[INPUT_SLOT] = null;
+				}
 			}
 		}
+		hatch.get(0).cycleDrill(check);
 		return check;
 	}
 	
@@ -288,9 +295,9 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		cBurnTime     = aNBT.getInteger("cBurnTime");
-		maxBurnTime   = aNBT.getInteger("maxBurnTime");
-		cycleIncrease = aNBT.getInteger("cycleIncrease");
+		cBurnTime        = aNBT.getInteger("cBurnTime");
+		maxBurnTime      = aNBT.getInteger("maxBurnTime");
+		cycleIncrease    = aNBT.getInteger("cycleIncrease");
 		sizeVeinPreStart = aNBT.getInteger("sizeVeinPreStart");
 	}
 	

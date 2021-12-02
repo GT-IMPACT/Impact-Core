@@ -87,6 +87,15 @@ tile.impact_coal.12.name=Четырехкратно Сжатый Уголь
 tile.impact_matrix_system.name=Отражатель Матричных Частиц
 tile.impact_matrix_transducer.name=Матричный Преобразователь
 
+#TieredItems
+item.impact_drillHeads.0.name=Бурильная Головка из Железа
+item.impact_drillHeads.1.name=Бурильная Головка из Стали
+item.impact_drillHeads.2.name=Бурильная Головка из Нержавеющей Стали
+item.impact_drillHeads.3.name=Бурильная Головка из Титана
+item.impact_drillHeads.4.name=Бурильная Головка из Вольфрамстали
+item.impact_drillHeads.5.name=Бурильная Головка из Инконель-690
+item.impact_drillHeads.6.name=Бурильная Головка из Иридия
+
 #MetaItems.00
 item.impact_item.0.name=Каменная Пыль БарнардаE 
 item.impact_item.1.name=Каменная Пыль БарнардаF 

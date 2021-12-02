@@ -1,5 +1,7 @@
 package com.impact.mods.gregtech;
 
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_BasicMiner;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
@@ -105,6 +107,9 @@ public class Multi_Register {
 		ME_System_Provider.set(new GTMTE_MESystemProvider(ID++, "ME System Provider").get());
 		
 		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, "Wind Generator").get());
+		
+		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Coal Miner").get());
+		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
 		
 		INFO("Multi_Register.java | Last ID: " + ID);
 		

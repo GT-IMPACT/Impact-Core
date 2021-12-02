@@ -134,8 +134,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	}
 	
 	@Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
-							   IGregTechTileEntity aBaseMetaTileEntity) {
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
@@ -1567,8 +1566,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		return getCastedStructureDefinition().buildOrHints(this, trigger, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, hintOnly);
 	}
 	
-	protected final boolean buildPiece(ItemStack trigger, boolean hintOnly, int horizontalOffset, int verticalOffset, int depthOffset) {
-		return buildPiece("main", trigger, hintOnly, horizontalOffset, verticalOffset, depthOffset);
+	protected final boolean buildPiece(ItemStack trigger, boolean hintOnly, int x, int y, int z) {
+		return buildPiece("main", trigger, hintOnly, x, y, z);
 	}
 	
 	protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
@@ -1576,8 +1575,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		return getCastedStructureDefinition().check(this, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, !mMachine);
 	}
 
-	protected final boolean checkPiece(int horizontalOffset, int verticalOffset, int depthOffset) {
-		return checkPiece("main", horizontalOffset, verticalOffset, depthOffset);
+	protected final boolean checkPiece(int x, int y, int z) {
+		return checkPiece("main", x, y, z);
 	}
 	
 	@Override

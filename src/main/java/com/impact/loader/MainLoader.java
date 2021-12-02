@@ -92,6 +92,9 @@ public class MainLoader {
 		KineticRotors.getInstance().registerItem();
 		INFO("[preInit] Kinetic Rotors - Loaded");
 		
+		DrillHeads.getInstance().registerItem();
+		INFO("[preInit] Drill Heads - Loaded");
+		
 		registerOreDictNames();
 		INFO("[preInit] Meta Items OreDict List - Loaded");
 		

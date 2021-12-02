@@ -37,8 +37,8 @@ public class Behaviour_Aerostat extends Behaviour_None {
 		if (aPlayer instanceof EntityPlayerMP) {
 			if (!aPlayer.isSneaking()) {
 				GT_Utility.sendChatToPlayer(aPlayer, "------ DEBUG INFO ------");
-				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.YELLOW + BiomesOreGenerator.generatedOres(aWorld, aX, aZ, 0).mName);
-				GT_Utility.sendChatToPlayer(aPlayer, "Size Vein: " + EnumChatFormatting.RED + BiomesOreGenerator.getCurrentSizeVein(aWorld, aX, aZ, 0));
+				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.YELLOW + BiomesOreGenerator.generatedOres(aWorld, aX, aZ, 1).mName);
+				GT_Utility.sendChatToPlayer(aPlayer, "Size Vein: " + EnumChatFormatting.RED + BiomesOreGenerator.getCurrentSizeVein(aWorld, aX, aZ, 1));
 				GT_Utility.sendChatToPlayer(aPlayer, "------ DEBUG INFO ------");
 			} else {
 //				BiomesOreGenerator.increaseCycle(aWorld, aX, aZ, 1, 10);

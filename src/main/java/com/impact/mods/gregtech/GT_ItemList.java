@@ -165,6 +165,7 @@ public enum GT_ItemList implements IItemContainer {
 	Parametric_Diffuser, Matrix_Stabilizer, Matrix_Containment, ME_System_Provider,
 	
 	CoalMiner, Mining_Hatch_ULV,
+	BasicMiner,
 	
 	Wind_Generator,
 	

@@ -181,7 +181,9 @@ public enum BiomesOreGenerator {
 		BiomeGenBase biomes = w.getBiomeGenForCoords(x, z);
 		int dim = w.provider.dimensionId;
 		for (BiomesOreGenerator biomesOreGenerator : BiomesOreGenerator.values()) {
-			int sizeVein = Utilits.getRandom(50_000, 100_000);
+			int max = 100_000 * ((biomesOreGenerator.mTier + 1) << biomesOreGenerator.mTier);
+			int min = 50_000 * ((biomesOreGenerator.mTier + 1) << biomesOreGenerator.mTier);
+			int sizeVein = Utilits.getRandom(min, max);
 			VeinChunk m = new VeinChunk(dim, x, z, biomesOreGenerator.mTier, sizeVein);
 			for (VeinChunk i : Impact_API.sOreInChunk.keySet()) {
 				if (i.equals(m)) {

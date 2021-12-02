@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.green;
 
-import com.impact.common.item.IRotorKinetic;
+import com.impact.common.item.ITieredDamagedItems;
 import com.impact.common.te.TE_WindMill;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
@@ -81,7 +81,7 @@ public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBa
 		this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 		if (mEfficiency < getMaxEfficiency(null)) return false;
 		ItemStack is = mInputBusses.get(0).mInventory[0];
-		if (is == null || !(is.getItem() instanceof IRotorKinetic) || is.stackSize <= 0) {
+		if (is == null || !(is.getItem() instanceof ITieredDamagedItems) || is.stackSize <= 0) {
 			wind.setRotorHidden(true);
 			wind.setSpeed(0);
 			return false;
@@ -161,11 +161,11 @@ public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBa
 			}
 			ItemStack is = mInputBusses.get(0).mInventory[0];
 			
-			if (is == null || !(is.getItem() instanceof IRotorKinetic) || is.stackSize <= 0) {
+			if (is == null || !(is.getItem() instanceof ITieredDamagedItems) || is.stackSize <= 0) {
 				wind.setRotorHidden(true);
 				iAm.setActive(false);
 			} else {
-				IRotorKinetic rotor = (IRotorKinetic) is.getItem();
+				ITieredDamagedItems rotor = (ITieredDamagedItems) is.getItem();
 				if (rotor.isBroken(is) || !is.hasTagCompound()) {
 					wind.setRotorHidden(true);
 					mInputBusses.get(0).mInventory[0] = null;
@@ -180,8 +180,8 @@ public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBa
 					damage = damage - (IC2.random.nextFloat() >= 0.6F && IC2.random.nextInt(damage - 1) > 0 ? 1 : 0);
 					is.stackTagCompound.setInteger("rotorDamage", damage);
 					
-					wind.setRGB(((IRotorKinetic) is.getItem()).getColor(is).getRGB());
-					int tier = ((IRotorKinetic) is.getItem()).getCoefficient(is) + 1;
+					wind.setRGB(((ITieredDamagedItems) is.getItem()).getColor(is).getRGB());
+					int tier = ((ITieredDamagedItems) is.getItem()).getCoefficient(is) + 1;
 					mOutputSalary = Math.max(speedRotor << tier, 0);
 					mCapacity += mOutputSalary * 20;
 					if (mCapacity >= MAX_CAPACITY) mCapacity = MAX_CAPACITY;

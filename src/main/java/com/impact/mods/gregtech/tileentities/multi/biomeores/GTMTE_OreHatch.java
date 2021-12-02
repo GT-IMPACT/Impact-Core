@@ -1,29 +1,57 @@
 package com.impact.mods.gregtech.tileentities.multi.biomeores;
 
+import com.impact.common.item.ITieredDamagedItems;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_Container_1by1;
+import gregtech.api.gui.GT_GUIContainer_1by1;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
+import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.Random;
 
 import static com.impact.loader.ItemRegistery.CollisionBlock;
 
 public class GTMTE_OreHatch extends GT_MetaTileEntity_Hatch {
 	
-	public boolean goPipeGo = false;
+	public int drillCoefficient = 0;
+	public boolean ready = false;
 	
 	public GTMTE_OreHatch(int aID, String name, int tier) {
-		super(aID, "impact.hatch.miner_hatch." + tier, name, tier, 0, new String[]{
+		super(aID, "impact.hatch.miner_hatch." + tier, name, tier, 1, new String[]{
 				"Throws headband of the drill and begins resource extraction"
 		});
 	}
 	
 	public GTMTE_OreHatch(String aName, int tier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, tier, 0, aDescription, aTextures);
+		super(aName, tier, 1, aDescription, aTextures);
+	}
+	
+	@Override
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
+	}
+	
+	@Override
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity,"Drill Hatch", "DrillHatch");
+	}
+	
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		if (aBaseMetaTileEntity.isClientSide()) {
+			return true;
+		}
+		aBaseMetaTileEntity.openGUI(aPlayer);
+		return true;
 	}
 	
 	@Override
@@ -39,8 +67,32 @@ public class GTMTE_OreHatch extends GT_MetaTileEntity_Hatch {
 	@Override
 	public void onPostTick(IGregTechTileEntity te, long aTick) {
 		super.onPostTick(te, aTick);
-		if (te.isServerSide() && aTick % 20 == 0) {
-			miningPipe(te, goPipeGo);
+		if (te.isServerSide()) {
+			if (aTick % 20 == 2) {
+				if (mInventory[0] != null && mInventory[0].getItem() instanceof ITieredDamagedItems) {
+					ready = true;
+					drillCoefficient = mInventory[0].getItemDamage();
+				} else {
+					ready = false;
+					drillCoefficient = 0;
+				}
+				te.setActive(ready);
+				miningPipe(te, te.isActive());
+			}
+		}
+	}
+	
+	public void cycleDrill(boolean active) {
+		if (active) {
+			int damage = mInventory[0].getTagCompound().getInteger("drillDamage");
+			damage = damage - 1;
+			if (damage >= 0) {
+				mInventory[0].stackTagCompound.setInteger("drillDamage", damage);
+			} else {
+				drillCoefficient = 0;
+				ready = false;
+				mInventory[0] = null;
+			}
 		}
 	}
 	
@@ -96,13 +148,15 @@ public class GTMTE_OreHatch extends GT_MetaTileEntity_Hatch {
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setBoolean("goPipeGo", goPipeGo);
+		aNBT.setInteger("drillCoefficient", drillCoefficient);
+		aNBT.setBoolean("ready", ready);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		goPipeGo = aNBT.getBoolean("goPipeGo");
+		drillCoefficient = aNBT.getInteger("drillCoefficient");
+		ready = aNBT.getBoolean("ready");
 	}
 	
 	@Override

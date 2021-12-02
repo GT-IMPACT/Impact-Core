@@ -2,6 +2,7 @@ package com.impact.common.item;
 
 import com.impact.core.Refstrings;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,23 +16,21 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class KineticRotors extends Item implements ITieredDamagedItems {
+public class DrillHeads extends Item implements ITieredDamagedItems {
 
-    int x = 4;
-    private final static int WEEK_SECOND = 604800;
+    int x = 6; //Iron (Steam), Steel(LV), Stain.Steel(MV), Titanium(HV), Tang.Steel(EV), Inconel-690(IV), Iridium(LuV)
 
-    private static final KineticRotors kineticRotors = new KineticRotors();
+    private static final DrillHeads drillHeads = new DrillHeads();
     private final IIcon[] icons = new IIcon[x + 1];
 
-    public static KineticRotors getInstance() {
-        return kineticRotors;
+    public static DrillHeads getInstance() {
+        return drillHeads;
     }
 
     public void registerItem() {
         super.setHasSubtypes(true);
-        final String unlocalizedName = "impact_kinetic_rotors";
+        final String unlocalizedName = "impact_drillHeads";
         super.setUnlocalizedName(unlocalizedName);
-//        super.setMaxDamage(99);
         super.setMaxStackSize(1);
         GameRegistry.registerItem(getInstance(), unlocalizedName);
     }
@@ -39,7 +38,7 @@ public class KineticRotors extends Item implements ITieredDamagedItems {
     @Override
     public void registerIcons(IIconRegister reg) {
         for (int i = 0; i <= x; i++) {
-            icons[i] = reg.registerIcon(Refstrings.MODID + ":impact_metatool.01/rotor." + i);
+            icons[i] = reg.registerIcon(Refstrings.MODID + ":impact_metatool.01/drill_head." + i);
         }
     }
 
@@ -49,7 +48,7 @@ public class KineticRotors extends Item implements ITieredDamagedItems {
         for (int i = 0; i < icons.length; i++) {
             ItemStack stack = new ItemStack(item, 1, i);
             NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setInteger("rotorDamage", WEEK_SECOND);
+            nbt.setInteger("drillDamage", damage(stack));
             stack.stackTagCompound = nbt;
             list.add(stack);
         }
@@ -68,17 +67,16 @@ public class KineticRotors extends Item implements ITieredDamagedItems {
     @SuppressWarnings({"unchecked"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
-        list.add("Rotors for Impact Wind Generator");
-        int damage = stack.getTagCompound().getInteger("rotorDamage");
-        double damageCalc = ((100F * (float) damage) / (float) WEEK_SECOND);
-        list.add("Damage: " + new DecimalFormat("#.00").format(damageCalc) + "%");
-        list.add("Real " + EnumChatFormatting.GREEN + "Days" + EnumChatFormatting.GRAY + " Working: " + EnumChatFormatting.GREEN + damage / (60 * 60 * 24) + "d");
-        list.add("Real "+ EnumChatFormatting.GREEN + "Hours" + EnumChatFormatting.GRAY + " Working: " + EnumChatFormatting.GREEN + damage / (60 * 60) + "h");
+        list.add("Drill Heads for Impact Miners");
+        int damage = stack.getTagCompound().getInteger("drillDamage");
+        list.add(EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(damage) + " / " + GT_Utility.formatNumbers(damage(stack)));
+        String[] a = {"Iron", "Steel", "Stainless Steel", "Titanium", "Tungstensteel", "Inconel-690", "Iridium"};
+        list.add(EnumChatFormatting.WHITE + a[stack.getItemDamage()] + " " + EnumChatFormatting.YELLOW + stack.getItemDamage() + " lvl");
     }
 
     @Override
     public double getDurabilityForDisplay(ItemStack stack) {
-        return 1D - (stack.getTagCompound().getInteger("rotorDamage") / (double) WEEK_SECOND);
+        return 1D - (stack.getTagCompound().getInteger("drillDamage") / (double) damage(stack));
     }
 
     @Override
@@ -93,22 +91,29 @@ public class KineticRotors extends Item implements ITieredDamagedItems {
 
     @Override
     public boolean isBroken(ItemStack stack) {
-        return stack.getTagCompound().getInteger("rotorDamage") <= 0;
+        return stack.getTagCompound().getInteger("drillDamage") <= 0;
     }
 
     @Override
     public boolean isNew(ItemStack stack) {
-        return stack.getTagCompound().getInteger("rotorDamage") == WEEK_SECOND;
+        return stack.getTagCompound().getInteger("drillDamage") == damage(stack);
+    }
+    
+    private int damage(ItemStack stack) {
+        int meta = stack.getItemDamage();
+        return 10_000 * ((meta + 1) << meta);
     }
 
     @Override
     public Color getColor(ItemStack stack) {
         switch (stack.getItemDamage()) {
-            case 0: return new Color(91, 91, 91);
-            case 1: return new Color(190, 101, 47);
-            case 2: return new Color(172, 201, 188);
-            case 3: return new Color(180, 102, 153);
-            case 4: return new Color(62, 113, 187);
+            case 0: return new Color(200, 200, 200); // Iron
+            case 1: return new Color(128, 128, 128); // Steel
+            case 2: return new Color(200, 200, 220); // Stain.Steel
+            case 3: return new Color(220, 160, 240); // Titanium
+            case 4: return new Color(100, 100, 160); // Tang.Steel
+            case 5: return new Color(221,238,1);     // Inconel-690
+            case 6: return new Color(240, 240, 245); // Iridium
         }
         return Color.WHITE;
     }
