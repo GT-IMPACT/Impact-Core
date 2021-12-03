@@ -279,8 +279,9 @@ public enum Core_List_Items {
     EVRotor(3, 5),
     IVRotor(4, 5),
     
-    AdvFluidCover(0, 6)
-
+    AdvFluidCover(0, 6),
+    AdvEnergyCover(1, 6),
+    
     ;
 
     static {

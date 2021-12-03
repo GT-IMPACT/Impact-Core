@@ -1,6 +1,7 @@
 package com.impact.common.item;
 
 import com.impact.core.Refstrings;
+import com.impact.mods.gregtech.tileentities.covers.GTC_AdvEUDetector;
 import com.impact.mods.gregtech.tileentities.covers.GTC_AdvFluidDetector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
@@ -18,11 +19,11 @@ import java.util.List;
 
 public class Covers extends Item {
 	
-	public static int x = 1;  //количество предметов
+	public static int x = 2;  //количество предметов
 	
 	public static Covers covers = new Covers();
 	private final IIcon[] icons = new IIcon[x + 1];
- 
+	
 	public static Covers getInstance() {
 		return covers;
 	}
@@ -32,6 +33,11 @@ public class Covers extends Item {
 				new ItemStack(getInstance(), 1, 0),
 				new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FLUIDDETECTOR)),
 				new GTC_AdvFluidDetector()
+		);
+		GregTech_API.registerCover(
+				new ItemStack(getInstance(), 1, 1),
+				new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ENERGYDETECTOR)),
+				new GTC_AdvEUDetector()
 		);
 	}
 	
@@ -77,8 +83,12 @@ public class Covers extends Item {
 			case 0:
 				list.add("Gives out Fluid Amount as Redstone");
 				break;
+			case 1:
+				list.add("Gives out Energy Amount as Redstone");
+				break;
 		}
 	}
+	
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return 0.0d;
