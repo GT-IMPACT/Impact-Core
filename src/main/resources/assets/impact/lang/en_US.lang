@@ -97,6 +97,9 @@ item.impact_drillHeads.4.name=Tungstensteel Drill Head
 item.impact_drillHeads.5.name=Inconel-690 Drill Head
 item.impact_drillHeads.6.name=Iridium Drill Head
 
+#Covers
+item.impact_cover.0.name=Advanced Fluid Detector
+
 #MetaItems.00
 item.impact_item.0.name=BarnardaE Stone Dust
 item.impact_item.1.name=BarnardaF Stone Dust

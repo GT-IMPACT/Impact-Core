@@ -40,26 +40,26 @@ public enum Core_List_Items {
     DustSmallFertilizer(29, 0),
     DustTinyFertilizer(30, 0),
     CokeOvenBrickDust(31, 1),
-    SearedBrickDust(32, 1),
-    ClearGlassDust(33, 1),
-    RawNeutroniumDust(34, 1),
-    BarnardaCBiomass(35, 1),
-    StargateCrystalDust(36, 1),
-    ConcreteDust(37, 1),
-    ChargedQuartzDust(38, 1),
-    SawDust(39, 1),
-    DioxideYttrium(40, 1),
+    SearedBrickDust(32, 0),
+    ClearGlassDust(33, 0),
+    RawNeutroniumDust(34, 0),
+    BarnardaCBiomass(35, 0),
+    StargateCrystalDust(36, 0),
+    ConcreteDust(37, 0),
+    ChargedQuartzDust(38, 0),
+    SawDust(39, 0),
+    DioxideYttrium(40, 0),
 
-    EMPTY(41, 1), // пустой
+    EMPTY(41, 0), // пустой
 
-    YSZdust(42, 1),
-    GDCdust(43, 1),
-    LSCFdust(44, 1),
-    YSZCeramic(45, 1),
-    GDCCeramic(46, 1),
-    LSFCCeramic(47, 1),
-    Zircon(48, 1),
-    ZirconiumChloride(49, 1),
+    YSZdust(42, 0),
+    GDCdust(43, 0),
+    LSCFdust(44, 0),
+    YSZCeramic(45, 0),
+    GDCCeramic(46, 0),
+    LSFCCeramic(47, 0),
+    Zircon(48, 0),
+    ZirconiumChloride(49, 0),
 
     //MetaItems1
     SchematicsTier1(0, 1),
@@ -257,6 +257,7 @@ public enum Core_List_Items {
     RTRMFoil(192, 1),
     PGFoil(193, 1),
     NANDArray(194, 1),
+    
 
     WoodenBrickForm1(0, 2),
 
@@ -277,6 +278,8 @@ public enum Core_List_Items {
     HVRotor(2, 5),
     EVRotor(3, 5),
     IVRotor(4, 5),
+    
+    AdvFluidCover(0, 6)
 
     ;
 
@@ -373,6 +376,8 @@ public enum Core_List_Items {
                 return new ItemStack(Core_Items3.getInstance(), amount, this.getMetaID());
             case 5:
                 return new ItemStack(KineticRotors.getInstance(), amount, this.getMetaID());
+            case 6:
+                return new ItemStack(Covers.getInstance(), amount, this.getMetaID());
             default:
                 return null;
         }

@@ -74,6 +74,9 @@ public class MainLoader {
 		ASP.preInit();
 		INFO("[preInit] Solar Panel - Loaded");
 		
+		Covers.getInstance().registerItem();
+		INFO("[preInit] Covers - Loaded");
+		
 		Core_Items.getInstance().registerItem();
 		INFO("[preInit] Meta Items 1 - Loaded");
 		
