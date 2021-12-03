@@ -2,11 +2,14 @@ package com.impact.mods.gregtech.tileentities.covers;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -35,10 +38,19 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 			if (tMax < aCoverVariable) {
 				aCoverVariable = tMax;
 			} else {
-				if (tUsed >= aCoverVariable) {
-					aTileEntity.setOutputRedstoneSignal(aSide, (byte) 15);
+				if (aCoverVariable > 0) {
+					if (tUsed >= aCoverVariable) {
+						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 15);
+					} else {
+						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
+					}
 				} else {
-					aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
+					int abs = Math.abs(aCoverVariable);
+					if (tUsed <= abs) {
+						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 15);
+					} else {
+						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
+					}
 				}
 			}
 		} else {
@@ -82,7 +94,7 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 	public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
 		return 5;
 	}
-
+	
 	@Override
 	public boolean hasCoverGUI() {
 		return true;
@@ -100,23 +112,35 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 		private final static int spaceY = 18;
 		private final byte side;
 		private final int coverID;
-		private final GT_GuiIntegerTextBox fBox;
-		private int coverVariable;
+		private final GT_GuiIntegerTextBox fBox, pBox;
+		private int coverVariable, percent, maxCapacity;
 		
 		public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
 			super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
 			this.side          = aSide;
 			this.coverID       = aCoverID;
 			this.coverVariable = aCoverVariable;
-			this.fBox          = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 0 + 2, spaceX * 4 - 3, 12);
-			fBox.setText(String.valueOf(coverVariable));
+			this.maxCapacity   = 1;
+			this.fBox = new GT_GuiIntegerTextBox(this, 1, startX, startY + 2, spaceX * 4 - 3, 12);
+			fBox.setText(String.valueOf(Math.abs(coverVariable)));
 			fBox.setMaxStringLength(12);
+			this.pBox = new GT_GuiIntegerTextBox(this, 2, startX, startY + spaceY + 2, spaceX * 4 - 3, 12);
+			if ((aTileEntity instanceof IFluidHandler)) {
+				FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
+				if (tTank != null) {
+					maxCapacity = tTank.capacity;
+				}
+			}
+			percent = (int) ((double) coverVariable / (double) maxCapacity * 100d);
+			pBox.setText(String.valueOf(Math.abs(percent)));
+			pBox.setMaxStringLength(3);
 		}
 		
 		@Override
 		public void drawExtras(int mouseX, int mouseY, float parTicks) {
 			super.drawExtras(mouseX, mouseY, parTicks);
-			this.getFontRenderer().drawString("Limit", startX + spaceX * 4, 4 + startY + spaceY * 0, 0xFF555555);
+			this.getFontRenderer().drawString("L (Limit)", startX + spaceX * 4, 4 + startY, 0xFF555555);
+			this.getFontRenderer().drawString("% (Limit)", startX + spaceX * 4, 4 + startY + spaceY, 0xFF555555);
 		}
 		
 		@Override
@@ -163,8 +187,17 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 			} else if (i < Integer.MIN_VALUE) {
 				i = Integer.MIN_VALUE;
 			}
-			coverVariable = (int) i;
+			
+			if (box.id == 1) {
+				coverVariable = Math.min((int) i, maxCapacity);
+				percent       = (int) ((double) coverVariable / (double) maxCapacity * 100d);
+			} else if (box.id == 2) {
+				percent       = Math.min((int) i, 100);
+				coverVariable = (int) ((double) percent * (double) maxCapacity / 100d);
+			}
+			
 			fBox.setText(String.valueOf(coverVariable));
+			pBox.setText(String.valueOf(percent));
 			GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
 		}
 		
