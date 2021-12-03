@@ -2,14 +2,11 @@ package com.impact.mods.gregtech.tileentities.covers;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
-import gregtech.api.gui.widgets.GT_GuiIcon;
-import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -21,18 +18,14 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 	
 	public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
 		if ((aTileEntity instanceof IFluidHandler)) {
-			FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN);
 			int tMax = 0;
 			int tUsed = 0;
-			if (tTanks != null) {
-				for (FluidTankInfo tTank : tTanks) {
-					if (tTank != null) {
-						tMax = tTank.capacity;
-						FluidStack tLiquid = tTank.fluid;
-						if (tLiquid != null) {
-							tUsed = tLiquid.amount;
-						}
-					}
+			FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
+			if (tTank != null) {
+				tMax = tTank.capacity;
+				FluidStack tLiquid = tTank.fluid;
+				if (tLiquid != null) {
+					tUsed = tLiquid.amount;
 				}
 			}
 			if (tMax < aCoverVariable) {
@@ -121,7 +114,7 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 			this.coverID       = aCoverID;
 			this.coverVariable = aCoverVariable;
 			this.maxCapacity   = 1;
-			this.fBox = new GT_GuiIntegerTextBox(this, 1, startX, startY + 2, spaceX * 4 - 3, 12);
+			this.fBox          = new GT_GuiIntegerTextBox(this, 1, startX, startY + 2, spaceX * 4 - 3, 12);
 			fBox.setText(String.valueOf(Math.abs(coverVariable)));
 			fBox.setMaxStringLength(12);
 			this.pBox = new GT_GuiIntegerTextBox(this, 2, startX, startY + spaceY + 2, spaceX * 4 - 3, 12);
