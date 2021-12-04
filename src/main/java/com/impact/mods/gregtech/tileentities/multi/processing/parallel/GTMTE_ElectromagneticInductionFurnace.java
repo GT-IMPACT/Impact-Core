@@ -86,7 +86,7 @@ public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_Mul
 				.addEnergyHatch()
 				.addMaintenanceHatch()
 				.addMuffler()
-				.addInputHatch(3)
+				.addInputHatch(8)
 				.addOutputHatch(3)
 				.addInputBus(8)
 				.addOutputBus(3)
