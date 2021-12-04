@@ -114,6 +114,8 @@ public class Multi_Register {
 		INFO("Multi_Register.java | Last ID: " + ID);
 		
 		ItemList.Machine_FlotationUnit.set(new GTMTE_FlotationUnit(12192, "Flotation Unit").get());
-		
+		ItemList.Machine_MultiblockTesseract.set(new GTMTE_Tesseract(12195, "Tesseract").get());
+		ItemList.Machine_MultiblockTinyWormHole.set(new GTMTE_TinyWormHole(12197, "Tiny Wormhole").get());
+		ItemList.Antimatter_Reactor.set(new GTMTE_AntimatterReactor(12071, "Antimatter Reactor").get());
 	}
 }
