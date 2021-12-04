@@ -5,6 +5,7 @@ import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.FluidStack;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
@@ -66,9 +68,11 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
-		cycleIncrease      = 0;
-		sizeVeinPreStart   = BiomesOreGenerator.getCurrentSizeVein(te.getWorld(), te.getXCoord(), te.getZCoord(), 1);
-		biomesOreGenerator = BiomesOreGenerator.generatedOres(te.getWorld(), te.getXCoord(), te.getZCoord(), 1);
+		if (te.isServerSide()) {
+			cycleIncrease      = 0;
+			sizeVeinPreStart   = BiomesOreGenerator.getCurrentSizeVein(te.getWorld(), te.getXCoord(), te.getZCoord(), 1);
+			biomesOreGenerator = BiomesOreGenerator.generatedOres(te.getWorld(), te.getXCoord(), te.getZCoord(), 1);
+		}
 	}
 	
 	@Override
@@ -165,13 +169,22 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		if (hatch.get(0) == null) return false;
-		boolean check = biomesOreGenerator != null && hatch.get(0).ready;
+		if (biomesOreGenerator == null) return false;
+		boolean check = hatch.get(0).ready;
 		if (check) {
 			List<ItemStack> output = new ArrayList<>();
 			IGregTechTileEntity te = getBaseMetaTileEntity();
 			int chancePrimary = 500;
 //			long voltage = getMaxInputVoltage();
 			long voltage = 32;
+			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
+				return false;
+			}
+			if (biomesOreGenerator.specialFluid != null) {
+				if (!depleteInput(biomesOreGenerator.specialFluid)) {
+					return false;
+				}
+			}
 			List<ItemStack> is = biomesOreGenerator.mOre;
 			for (int ore = 0; ore < is.size(); ore++) {
 				if (te.getRandomNumber(10000) < biomesOreGenerator.mChance[ore]) {
