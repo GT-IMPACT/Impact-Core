@@ -25,7 +25,7 @@ public class GT_StructureUtility {
 	}
 	
 	public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGT_HatchAdder<T> IGT_HatchAdder, int textureIndex, int dots) {
-		return ofHatchAdder(IGT_HatchAdder, textureIndex, ImpactAPI.getBlockHint(), dots - 1);
+		return ofHatchAdder(IGT_HatchAdder, textureIndex, ImpactAPI.getBlockHint(), dots);
 	}
 	
 	public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGT_HatchAdder<T> IGT_HatchAdder, int textureIndex, Block hintBlock, int hintMeta) {

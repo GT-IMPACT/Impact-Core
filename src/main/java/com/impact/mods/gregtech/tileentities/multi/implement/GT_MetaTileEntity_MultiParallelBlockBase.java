@@ -1548,7 +1548,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	@Override
 	public String[] getStructureDescription(ItemStack stackSize) {
-		return getTooltip().getStructureInformation();
+		return getTooltip().getHoloInfo();
 	}
 	
 	public abstract IStructureDefinition<T> getStructureDefinition();
