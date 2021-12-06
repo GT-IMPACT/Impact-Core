@@ -4,14 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.impact.common.oregeneration.OresRegion;
+import com.impact.core.Impact_API;
 import com.impact.core.SaveManager;
 import com.impact.mods.gregtech.enums.VeinChunk;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.impact.core.Impact_API.*;
@@ -27,14 +31,14 @@ public class JsonWorld {
         saveCommunicationTowers();
         saveSpaceSatellite();
         saveAeroState();
-        saveBiomesOres();
+        saveOreGenerator();
     }
 
     public static void load() {
         loadCommunicationTowers();
         loadSpaceSatellite();
         loadAeroState();
-        loadBiomesOres();
+        loadOreGenerator();
     }
 
     //region CommunicationTowers
@@ -73,35 +77,31 @@ public class JsonWorld {
     }
     //endregion
     
-    //region BiomesOres
-    private static void loadBiomesOres() {
+    private static void loadOreGenerator() {
         File json = SaveManager.get().biomesOresDirectory;
         Gson gson = new Gson();
         JsonElement jsonElement = null;
         try {
-            jsonElement = gson.fromJson(new FileReader(json.getPath() + "\\" + BIOMES_ORES + ".json"), JsonElement.class);
-            Type listType = new TypeToken<Map<String, VeinChunk>>() {}.getType();
-            Map<String, VeinChunk> loadMap = gson.fromJson(jsonElement, listType);
-            loadMap.forEach((k, v) -> {
-                int sub = k.indexOf('~');
-                String name = k.substring(0, sub);
-                sOreInChunk.put(v, name);
-            });
+            
+            FileReader fr = new FileReader(json.getPath() + "\\" + BIOMES_ORES + ".json");
+            BufferedReader br = new BufferedReader(fr);
+            jsonElement = gson.fromJson(br, JsonElement.class);
+            Type listType = new TypeToken<List<OresRegion>>() {}.getType();
+            List<OresRegion> regionList = gson.fromJson(jsonElement, listType);
+            regionsOres.addAll(regionList);
+            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    private static void saveBiomesOres() {
+    private static void saveOreGenerator() {
         File json = SaveManager.get().biomesOresDirectory;
         Gson objGson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(json.getPath() + "\\" + BIOMES_ORES + ".json")) {
-            Map<String, VeinChunk> saveMap = new HashMap<>();
-            sOreInChunk.forEach((k, v) -> saveMap.put(v + "~" + k.hashCode(), k));
-            objGson.toJson(saveMap, writer);
+            objGson.toJson(regionsOres, writer);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    //endregion
 }

@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.biomeores;
 
-import com.impact.mods.gregtech.enums.BiomesOreGenerator;
+import com.impact.common.oregeneration.OreChunk;
+import com.impact.mods.gregtech.enums.OreGenerator;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -54,7 +55,8 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 					.build();
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	public int cycleIncrease = 0, sizeVeinPreStart = 0;
-	public BiomesOreGenerator biomesOreGenerator = BiomesOreGenerator.NONE;
+	public OreChunk oreChunk = null;
+	public OreGenerator oreGenerator = OreGenerator.NONE;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
 	
 	public GTMTE_BasicMiner(int aID, String aNameRegional) {
@@ -69,9 +71,12 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
 		if (te.isServerSide()) {
-			cycleIncrease      = 0;
-			sizeVeinPreStart   = BiomesOreGenerator.getCurrentSizeVein(te.getWorld(), te.getXCoord(), te.getZCoord(), 1);
-			biomesOreGenerator = BiomesOreGenerator.generatedOres(te.getWorld(), te.getXCoord(), te.getZCoord(), 1);
+			cycleIncrease = 0;
+			oreChunk      = OreGenerator.getChunkFromIGT(te, 0);
+			if (oreChunk != null) {
+				sizeVeinPreStart = oreChunk.sizeOreChunk;
+				oreGenerator     = OreGenerator.getFromName(oreChunk.oreGenerator);
+			}
 		}
 	}
 	
@@ -88,8 +93,10 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	public void inValidate() {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
-		BiomesOreGenerator.increaseCycle(te.getWorld(), te.getXCoord(), te.getZCoord(), 1, cycleIncrease);
-		cycleIncrease = 0;
+		if (te.isServerSide()) {
+			OreGenerator.amountIncrease(te, 0, cycleIncrease);
+			cycleIncrease = 0;
+		}
 		super.inValidate();
 	}
 	
@@ -169,7 +176,8 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		if (hatch.get(0) == null) return false;
-		if (biomesOreGenerator == null) return false;
+		if (oreChunk == null) return false;
+		if (oreGenerator == null) return false;
 		boolean check = hatch.get(0).ready;
 		if (check) {
 			List<ItemStack> output = new ArrayList<>();
@@ -180,14 +188,14 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
 			}
-			if (biomesOreGenerator.specialFluid != null) {
-				if (!depleteInput(biomesOreGenerator.specialFluid)) {
+			if (oreGenerator.specialFluid != null) {
+				if (!depleteInput(oreGenerator.specialFluid)) {
 					return false;
 				}
 			}
-			List<ItemStack> is = biomesOreGenerator.mOre;
+			List<ItemStack> is = oreGenerator.mOre;
 			for (int ore = 0; ore < is.size(); ore++) {
-				if (te.getRandomNumber(10000) < biomesOreGenerator.mChance[ore]) {
+				if (te.getRandomNumber(10000) < oreGenerator.mChance[ore]) {
 					ItemStack drillHeadDrop = new ItemStack(is.get(ore).getItem(), byDrillHead(is.get(ore)), is.get(ore).getItemDamage());
 					output.add(drillHeadDrop);
 					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, voltage, null, is.get(ore));

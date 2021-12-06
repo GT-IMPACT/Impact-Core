@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.biomeores;
 
-import com.impact.mods.gregtech.enums.BiomesOreGenerator;
+import com.impact.common.oregeneration.OreChunk;
+import com.impact.mods.gregtech.enums.OreGenerator;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -60,7 +61,8 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
 	public int cycleIncrease = 0;
-	public BiomesOreGenerator biomesOreGenerator = BiomesOreGenerator.NONE;
+	public OreChunk oreChunk = null;
+	public OreGenerator oreGenerator = OreGenerator.NONE;
 	
 	public GTMTE_Mining_Coal(int aID, String aNameRegional) {
 		super(aID, "impact.multis.miner.coal", aNameRegional);
@@ -83,9 +85,14 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
-		cycleIncrease      = 0;
-		sizeVeinPreStart   = BiomesOreGenerator.getCurrentSizeVein(te.getWorld(), te.getXCoord(), te.getZCoord(), 0);
-		biomesOreGenerator = BiomesOreGenerator.generatedOres(te.getWorld(), te.getXCoord(), te.getZCoord(), 0);
+		if (te.isServerSide()) {
+			cycleIncrease = 0;
+			oreChunk      = OreGenerator.getChunkFromIGT(te, 0);
+			if (oreChunk != null) {
+				sizeVeinPreStart = oreChunk.sizeOreChunk;
+				oreGenerator     = OreGenerator.getFromName(oreChunk.oreGenerator);
+			}
+		}
 	}
 	
 	@Override
@@ -107,8 +114,10 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public void inValidate() {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
-		BiomesOreGenerator.increaseCycle(te.getWorld(), te.getXCoord(), te.getZCoord(), 0, cycleIncrease);
-		cycleIncrease = 0;
+		if (te.isServerSide()) {
+			OreGenerator.amountIncrease(te, 0, cycleIncrease);
+			cycleIncrease = 0;
+		}
 		super.inValidate();
 	}
 	
@@ -198,7 +207,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 							mInventory[OUTPUT_SLOT].stackSize = 64;
 						}
 					} else {
-						ItemStack stack = biomesOreGenerator.mOre.get(0);
+						ItemStack stack = oreGenerator.mOre.get(0);
 						mInventory[OUTPUT_SLOT] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
 					}
 					cycleIncrease++;
@@ -213,7 +222,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	private boolean checkFuel() {
 		if (hatch.get(0) == null) return false;
-		boolean check = biomesOreGenerator != null && hatch.get(0).ready;
+		boolean check = oreGenerator != null && hatch.get(0).ready;
 		if (check) {
 			if (cBurnTime <= 0 && TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]) > 0) {
 				maxBurnTime = cBurnTime = TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]);
@@ -230,7 +239,8 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && biomesOreGenerator == BiomesOreGenerator.NONE) {
+		if (oreChunk == null) return false;
+		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreGenerator == OreGenerator.NONE) {
 			return false;
 		}
 		checkFuel();

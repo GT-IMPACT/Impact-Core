@@ -1,6 +1,6 @@
 package com.impact.mods.nei.impactplugin.ores;
 
-import com.impact.mods.gregtech.enums.BiomesOreGenerator;
+import com.impact.mods.gregtech.enums.OreGenerator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.FluidStack;
@@ -13,9 +13,9 @@ public class OreBiome {
 	public static List<OreBiome> biomesOreList = new ArrayList<>();
 	
 	public static List<OreBiome> startNEIBiomes() {
-		for (BiomesOreGenerator biomesOreGenerator : BiomesOreGenerator.values()) {
-			if (!biomesOreGenerator.equals(BiomesOreGenerator.NONE)) {
-				new OreBiome(biomesOreGenerator.mName, biomesOreGenerator.mTier, biomesOreGenerator.specialFluid, biomesOreGenerator.mBiome, biomesOreGenerator.mOre, biomesOreGenerator.mChance);
+		for (OreGenerator oreGenerator : OreGenerator.values()) {
+			if (!oreGenerator.equals(OreGenerator.NONE)) {
+				new OreBiome(oreGenerator.mName, oreGenerator.mTier, oreGenerator.specialFluid, null, oreGenerator.mOre, oreGenerator.mChance);
 			}
 		}
 		return biomesOreList;

@@ -29,7 +29,7 @@ public class SaveManager {
 		this.impactDirectory          = new File(worldDirectory, IMPACT_DIRECTORY_NAME);
 		this.parallelSystemDirectory  = new File(this.impactDirectory, PARALLEL_SYSTEM);
 		this.aerostateSystemDirectory = new File(this.impactDirectory, AERO_STATE_SYSTEM);
-		this.biomesOresDirectory = new File(this.impactDirectory, BIOMES_ORES);
+		this.biomesOresDirectory      = new File(this.impactDirectory, BIOMES_ORES);
 	}
 	
 	public static void onServerAboutToStart() {

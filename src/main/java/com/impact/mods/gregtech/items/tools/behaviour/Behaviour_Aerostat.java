@@ -1,9 +1,11 @@
 package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
-import com.impact.mods.gregtech.enums.BiomesOreGenerator;
+import com.impact.common.oregeneration.OreVein;
+import com.impact.mods.gregtech.enums.OreGenerator;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.network.ToClient_String;
+import com.impact.util.ItemNBTHelper;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,14 +18,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+
 
 public class Behaviour_Aerostat extends Behaviour_None {
 	
@@ -35,13 +35,23 @@ public class Behaviour_Aerostat extends Behaviour_None {
 		TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
 		
 		if (aPlayer instanceof EntityPlayerMP) {
+			Chunk chunkCurr = aWorld.getChunkFromBlockCoords(aX, aZ);
+			
 			if (!aPlayer.isSneaking()) {
-				GT_Utility.sendChatToPlayer(aPlayer, "------ DEBUG INFO ------");
-				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.YELLOW + BiomesOreGenerator.generatedOres(aWorld, aX, aZ, 1).mName);
-				GT_Utility.sendChatToPlayer(aPlayer, "Size Vein: " + EnumChatFormatting.RED + BiomesOreGenerator.getCurrentSizeVein(aWorld, aX, aZ, 1));
-				GT_Utility.sendChatToPlayer(aPlayer, "------ DEBUG INFO ------");
+				int tier = ItemNBTHelper.getInteger(aStack, "tierVein", 0);
+				int size = OreGenerator.sizeChunk(chunkCurr, tier);
+				OreVein oreVein = OreGenerator.getVein(chunkCurr, tier);
+				String nameVein = "Пусто нахуй";
+				if (oreVein != null) {
+					nameVein = OreGenerator.getFromName(oreVein.oreGenerator).mName;
+				}
+				GT_Utility.sendChatToPlayer(aPlayer, "Name: " + nameVein);
+				GT_Utility.sendChatToPlayer(aPlayer, "Size: " + size);
 			} else {
-//				BiomesOreGenerator.increaseCycle(aWorld, aX, aZ, 1, 10);
+//				OresRegion currentRegion = OreGenerator.getRegions(chunkCurr);
+//				currentRegion.hashCode();
+				int tier = ItemNBTHelper.getInteger(aStack, "tierVein", 0);
+				ItemNBTHelper.setInteger(aStack, "tierVein", tier + 1);
 			}
 		}
 		
