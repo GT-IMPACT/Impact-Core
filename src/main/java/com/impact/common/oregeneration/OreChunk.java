@@ -1,5 +1,6 @@
 package com.impact.common.oregeneration;
 
+import com.google.gson.annotations.SerializedName;
 import com.impact.mods.gregtech.enums.OreGenerator;
 import com.impact.util.Utilits;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -9,11 +10,15 @@ import java.util.Objects;
 
 public class OreChunk {
 	
+	@SerializedName("x")
 	public final int xChunk;
+	@SerializedName("z")
 	public final int zChunk;
-	
-	public int sizeOreChunk;
+	@SerializedName("layer")
 	public final int tier;
+	@SerializedName("size")
+	public int sizeOreChunk;
+	@SerializedName("generator")
 	public String oreGenerator;
 	
 	public OreChunk(int xChunk, int zChunk, int tier, String oreGenerator) {

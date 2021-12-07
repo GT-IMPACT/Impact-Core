@@ -21,6 +21,7 @@ public class Config {
 	public static boolean downloadOnlyOnce;
 	public static boolean mainMenu;
 	public static boolean placedItems;
+	public static int saveTime;
 	
 	public Config(File file) {
 		if (!loadConfig) {
@@ -73,6 +74,11 @@ public class Config {
 			cfg         = config.get("GENERAL", "Enable Impact Placed Items", true);
 			cfg.comment = "Enable Impact Placed Items. [Default: true]";
 			placedItems = cfg.getBoolean(true);
+			General.add(cfg.getName());
+			
+			cfg         = config.get("GENERAL", "Impact saves files timer", 30);
+			cfg.comment = "SaveTimer. [Default: 30min]";
+			saveTime = cfg.getInt(30);
 			General.add(cfg.getName());
 			
 			//DEBUG

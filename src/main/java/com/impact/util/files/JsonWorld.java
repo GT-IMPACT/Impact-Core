@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.impact.core.Impact_API.*;
+import static com.impact.core.impactLog.INFO;
+
 @SuppressWarnings("ALL")
 public class JsonWorld {
 
@@ -28,10 +30,12 @@ public class JsonWorld {
     private final static String BIOMES_ORES = "BiomesOres";
 
     public static void save() {
+        long start = System.currentTimeMillis();
         saveCommunicationTowers();
         saveSpaceSatellite();
         saveAeroState();
         saveOreGenerator();
+        System.out.println("Impact Save files finished: (" + (System.currentTimeMillis() - start) + "ms)");
     }
 
     public static void load() {
@@ -48,6 +52,7 @@ public class JsonWorld {
     }
 
     private static void saveCommunicationTowers() {
+        if (sCommunicationTower.isEmpty()) return;
         File json = SaveManager.get().parallelSystemDirectory;
         JsonUtils.jsonFromMapStringIntArray(sCommunicationTower, json.getPath(), COMMUNICATION_TOWERS);
     }
@@ -60,6 +65,7 @@ public class JsonWorld {
     }
 
     private static void saveSpaceSatellite() {
+        if (sSpaceSatellite.isEmpty()) return;
         File json = SaveManager.get().parallelSystemDirectory;
         JsonUtils.jsonFromMapStringIntArray(sSpaceSatellite, json.getPath(), SPACE_SATELLITES);
     }
@@ -72,6 +78,7 @@ public class JsonWorld {
     }
     
     private static void saveAeroState() {
+        if (sAerostat.isEmpty()) return;
         File json = SaveManager.get().aerostateSystemDirectory;
         JsonUtils.jsonFromMapStringIntArray(sAerostat, json.getPath(), AERO_STATES);
     }
@@ -82,7 +89,6 @@ public class JsonWorld {
         Gson gson = new Gson();
         JsonElement jsonElement = null;
         try {
-            
             FileReader fr = new FileReader(json.getPath() + "\\" + BIOMES_ORES + ".json");
             BufferedReader br = new BufferedReader(fr);
             jsonElement = gson.fromJson(br, JsonElement.class);
@@ -96,8 +102,9 @@ public class JsonWorld {
     }
     
     private static void saveOreGenerator() {
+        if (regionsOres.isEmpty()) return;
         File json = SaveManager.get().biomesOresDirectory;
-        Gson objGson = new GsonBuilder().setPrettyPrinting().create();
+        Gson objGson = new Gson();
         try (FileWriter writer = new FileWriter(json.getPath() + "\\" + BIOMES_ORES + ".json")) {
             objGson.toJson(regionsOres, writer);
         } catch (Exception e) {

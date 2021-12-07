@@ -1,5 +1,6 @@
 package com.impact.common.oregeneration;
 
+import com.google.gson.annotations.SerializedName;
 import com.impact.mods.gregtech.enums.OreGenerator;
 
 import java.util.ArrayList;
@@ -8,19 +9,17 @@ import java.util.Objects;
 
 public class OresRegion {
 	
+	@SerializedName("x")
 	public final int xRegion;
+	@SerializedName("z")
 	public final int zRegion;
-	public final int xVeinFirst;
-	public final int zVeinFirst;
 	
 	public final List<OreVein> veins;
 	
 	public OresRegion(int xRegion, int zRegion) {
-		this.xRegion    = xRegion;
-		this.zRegion    = zRegion;
-		this.xVeinFirst = xRegion << 3;
-		this.zVeinFirst = zRegion << 3;
-		this.veins      = new ArrayList<>();
+		this.xRegion = xRegion;
+		this.zRegion = zRegion;
+		this.veins   = new ArrayList<>();
 	}
 	
 	@Override
@@ -42,7 +41,7 @@ public class OresRegion {
 			for (int z = 0; z < 8; z++) {
 				for (int layer = 0; layer < 2; layer++) {
 					OreGenerator ore = OreGenerator.getRandomGenerator(layer);
-					OreVein vein = new OreVein(xVeinFirst + x, zVeinFirst + z, ore.name(), ore.mTier);
+					OreVein vein = new OreVein((xRegion << 3) + x, (zRegion << 3) + z, ore.name(), ore.mTier);
 					vein.createOreChunk();
 					veins.add(vein);
 				}
