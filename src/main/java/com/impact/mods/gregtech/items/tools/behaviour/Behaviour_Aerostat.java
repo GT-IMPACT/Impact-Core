@@ -1,8 +1,9 @@
 package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
-import com.impact.common.oregeneration.OreVein;
-import com.impact.mods.gregtech.enums.OreGenerator;
+import com.impact.common.oregeneration.generator.OreVeinGenerator;
+import com.impact.common.oregeneration.OreGenerator;
+import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.network.ToClient_String;
 import com.impact.util.ItemNBTHelper;
@@ -40,10 +41,10 @@ public class Behaviour_Aerostat extends Behaviour_None {
 			if (!aPlayer.isSneaking()) {
 				int tier = ItemNBTHelper.getInteger(aStack, "tierVein", 0);
 				int size = OreGenerator.sizeChunk(chunkCurr, tier);
-				OreVein oreVein = OreGenerator.getVein(chunkCurr, tier);
+				OreVeinGenerator oreVein = OreGenerator.getVein(chunkCurr, tier);
 				String nameVein = "Пусто нахуй";
 				if (oreVein != null) {
-					nameVein = OreGenerator.getFromName(oreVein.oreGenerator).mName;
+					nameVein = Impact_API.registerVeins.get(oreVein.oreVeinID).nameVein;
 				}
 				GT_Utility.sendChatToPlayer(aPlayer, "Name: " + nameVein);
 				GT_Utility.sendChatToPlayer(aPlayer, "Size: " + size);
@@ -51,7 +52,15 @@ public class Behaviour_Aerostat extends Behaviour_None {
 //				OresRegion currentRegion = OreGenerator.getRegions(chunkCurr);
 //				currentRegion.hashCode();
 				int tier = ItemNBTHelper.getInteger(aStack, "tierVein", 0);
-				ItemNBTHelper.setInteger(aStack, "tierVein", tier + 1);
+				tier++;
+				if (tier > 2) tier = 0;
+				GT_Utility.sendChatToPlayer(aPlayer, "Layer: " + tier);
+				if (tier == 2) {
+					Impact_API.regionsOres.clear();
+				} else {
+					ItemNBTHelper.setInteger(aStack, "tierVein", tier);
+					
+				}
 			}
 		}
 		

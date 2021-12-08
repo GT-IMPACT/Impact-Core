@@ -4,6 +4,7 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
+import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.te.TE_NqTether;
 import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.common.te.TE_WindMill;
@@ -68,6 +69,9 @@ public class MainLoader {
 		}
 		impact.proxy.registerRenderInfo();
 		INFO("[Init] Item Registery - Loaded");
+		
+		OreGenerator.register();
+		INFO("[Init] Impact Ore Generation - Loaded");
 	}
 	
 	public static void preInit(FMLPreInitializationEvent event) {

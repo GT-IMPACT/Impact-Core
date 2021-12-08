@@ -1,6 +1,7 @@
 package com.impact.mods.nei.impactplugin.ores;
 
-import com.impact.mods.gregtech.enums.OreGenerator;
+import com.impact.common.oregeneration.OreVein;
+import com.impact.core.Impact_API;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.FluidStack;
@@ -13,9 +14,9 @@ public class OreBiome {
 	public static List<OreBiome> biomesOreList = new ArrayList<>();
 	
 	public static List<OreBiome> startNEIBiomes() {
-		for (OreGenerator oreGenerator : OreGenerator.values()) {
-			if (!oreGenerator.equals(OreGenerator.NONE)) {
-				new OreBiome(oreGenerator.mName, oreGenerator.mTier, oreGenerator.specialFluid, null, oreGenerator.mOre, oreGenerator.mChance);
+		for (OreVein oreGenerator : Impact_API.registerVeins.values()) {
+			if (oreGenerator.idVein != 999) {
+				new OreBiome(oreGenerator.nameVein, oreGenerator.tierVein, oreGenerator.specialFluid, null, oreGenerator.ores, oreGenerator.chanceOres);
 			}
 		}
 		return biomesOreList;

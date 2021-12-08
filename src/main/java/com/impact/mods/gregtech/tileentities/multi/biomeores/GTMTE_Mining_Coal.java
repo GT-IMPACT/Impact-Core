@@ -1,7 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.biomeores;
 
-import com.impact.common.oregeneration.OreChunk;
-import com.impact.mods.gregtech.enums.OreGenerator;
+import com.impact.common.oregeneration.OreVein;
+import com.impact.common.oregeneration.generator.OreChunkGenerator;
+import com.impact.common.oregeneration.OreGenerator;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -61,8 +62,8 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
 	public int cycleIncrease = 0;
-	public OreChunk oreChunk = null;
-	public OreGenerator oreGenerator = OreGenerator.NONE;
+	public OreChunkGenerator oreChunkGenerator = null;
+	public OreVein oreVein = OreGenerator.empty;
 	
 	public GTMTE_Mining_Coal(int aID, String aNameRegional) {
 		super(aID, "impact.multis.miner.coal", aNameRegional);
@@ -86,11 +87,11 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
 		if (te.isServerSide()) {
-			cycleIncrease = 0;
-			oreChunk      = OreGenerator.getChunkFromIGT(te, 0);
-			if (oreChunk != null) {
-				sizeVeinPreStart = oreChunk.sizeOreChunk;
-				oreGenerator     = OreGenerator.getFromName(oreChunk.oreGenerator);
+			cycleIncrease     = 0;
+			oreChunkGenerator = OreGenerator.getChunkFromIGT(te, 0);
+			if (oreChunkGenerator != null) {
+				sizeVeinPreStart = oreChunkGenerator.sizeOreChunk;
+//				oreGenerator     = OreGenerator.getFromName(oreChunkGenerator.oreGenerator);
 			}
 		}
 	}
@@ -207,7 +208,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 							mInventory[OUTPUT_SLOT].stackSize = 64;
 						}
 					} else {
-						ItemStack stack = oreGenerator.mOre.get(0);
+						ItemStack stack = oreVein.ores.get(0);
 						mInventory[OUTPUT_SLOT] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
 					}
 					cycleIncrease++;
@@ -222,7 +223,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	private boolean checkFuel() {
 		if (hatch.get(0) == null) return false;
-		boolean check = oreGenerator != null && hatch.get(0).ready;
+		boolean check = oreVein != null && hatch.get(0).ready;
 		if (check) {
 			if (cBurnTime <= 0 && TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]) > 0) {
 				maxBurnTime = cBurnTime = TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]);
@@ -239,8 +240,8 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		if (oreChunk == null) return false;
-		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreGenerator == OreGenerator.NONE) {
+		if (oreChunkGenerator == null) return false;
+		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == OreGenerator.empty) {
 			return false;
 		}
 		checkFuel();

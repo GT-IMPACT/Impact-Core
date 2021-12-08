@@ -1,25 +1,20 @@
 package com.impact.util.files;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.impact.common.oregeneration.OresRegion;
-import com.impact.core.Impact_API;
+import com.impact.common.oregeneration.OreVeinRandomizer;
+import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.core.SaveManager;
-import com.impact.mods.gregtech.enums.VeinChunk;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.impact.core.Impact_API.*;
-import static com.impact.core.impactLog.INFO;
 
 @SuppressWarnings("ALL")
 public class JsonWorld {
@@ -92,13 +87,14 @@ public class JsonWorld {
             FileReader fr = new FileReader(json.getPath() + "\\" + BIOMES_ORES + ".json");
             BufferedReader br = new BufferedReader(fr);
             jsonElement = gson.fromJson(br, JsonElement.class);
-            Type listType = new TypeToken<List<OresRegion>>() {}.getType();
-            List<OresRegion> regionList = gson.fromJson(jsonElement, listType);
+            Type listType = new TypeToken<List<OresRegionGenerator>>() {}.getType();
+            List<OresRegionGenerator> regionList = gson.fromJson(jsonElement, listType);
             regionsOres.addAll(regionList);
             br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        OreVeinRandomizer.resizeVeins();
     }
     
     private static void saveOreGenerator() {

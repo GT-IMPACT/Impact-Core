@@ -1,32 +1,27 @@
-package com.impact.common.oregeneration;
+package com.impact.common.oregeneration.generator;
 
 import com.google.gson.annotations.SerializedName;
-import com.impact.mods.gregtech.enums.OreGenerator;
+import com.impact.common.oregeneration.OreGenerator;
+import com.impact.common.oregeneration.OreVein;
 import com.impact.util.Utilits;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.Objects;
 
-public class OreChunk {
+public class OreChunkGenerator {
 	
 	@SerializedName("x")
 	public final int xChunk;
 	@SerializedName("z")
 	public final int zChunk;
-	@SerializedName("layer")
-	public final int tier;
 	@SerializedName("size")
 	public int sizeOreChunk;
-	@SerializedName("generator")
-	public String oreGenerator;
 	
-	public OreChunk(int xChunk, int zChunk, int tier, String oreGenerator) {
+	public OreChunkGenerator(int xChunk, int zChunk, int tier) {
 		this.xChunk       = xChunk;
 		this.zChunk       = zChunk;
-		this.tier         = tier;
-		this.sizeOreChunk = OreGenerator.getFromName(oreGenerator) == OreGenerator.NONE ? 0 : calcChunkSize(tier);
-		this.oreGenerator = oreGenerator;
+		this.sizeOreChunk = calcChunkSize(tier);
 	}
 	
 	private static int calcChunkSize(int tier) {
@@ -35,9 +30,9 @@ public class OreChunk {
 		return Utilits.getRandom(min, max);
 	}
 	
-	public static OreChunk fromChunk(Chunk chunk) {
+	public static OreChunkGenerator fromChunk(Chunk chunk) {
 		ChunkCoordIntPair c = chunk.getChunkCoordIntPair();
-		return new OreChunk(c.chunkXPos, c.chunkZPos, -1, "NONE");
+		return new OreChunkGenerator(c.chunkXPos, c.chunkZPos, -1);
 	}
 	
 	@Override
@@ -45,7 +40,7 @@ public class OreChunk {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		if (o.hashCode() == hashCode()) return true;
-		OreChunk region = (OreChunk) o;
+		OreChunkGenerator region = (OreChunkGenerator) o;
 		return xChunk == region.xChunk && zChunk == region.zChunk;
 	}
 	
