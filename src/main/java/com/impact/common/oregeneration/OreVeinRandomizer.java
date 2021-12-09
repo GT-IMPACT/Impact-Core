@@ -32,8 +32,8 @@ public class OreVeinRandomizer {
 	}
 	
 	public static OreVein getVein(int tier, int dim) {
-		if (!resizedAllVeins.containsKey(dim)) return null;
-		if (!resizedAllVeins.get(dim).containsKey(tier)) return null;
+		if (!resizedAllVeins.containsKey(dim)) return OreGenerator.empty;
+		if (!resizedAllVeins.get(dim).containsKey(tier)) return OreGenerator.empty;
 		double total = 0d;
 		for (OreVein candidate : resizedAllVeins.get(dim).get(tier)) {
 			total += candidate.maxWeight;

@@ -40,7 +40,6 @@ public class OresRegionGenerator {
 	}
 	
 	public void createVeins() {
-		long time = System.currentTimeMillis();
 		for (int layer = 0; layer < layers; layer++) {
 			List<OreVeinGenerator> layerVeins = new ArrayList<>();
 			for (int x = 0; x < 8; x++) {
@@ -56,6 +55,5 @@ public class OresRegionGenerator {
 			}
 			veins.put(layer, layerVeins);
 		}
-		System.out.println(System.currentTimeMillis() - time);
 	}
 }
