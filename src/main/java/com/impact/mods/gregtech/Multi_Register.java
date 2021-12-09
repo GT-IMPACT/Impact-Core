@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech;
 
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
@@ -98,8 +99,8 @@ public class Multi_Register {
 		Machine_DistTower.set(new GTMTE_MultiDistillationTower(ID++, "Multi Distillation Tower").get());
 		Machine_ElectricImplosion.set(new GTMTE_ElectricImplosionCompressor(ID++, "Electric Implosion Compressor").get());
 		
-		ABS.set(new GTMTE_Aerostat(ID++, "Aerostat").get());
-		filler.set(new GTMTE_Filler(ID++, "Filler").get());
+		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate").get());
+		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
 		
 		Parametric_Diffuser.set(new GTMTE_ParametricDiffuser(ID++, "Parametric Diffuser").get());
 		Matrix_Stabilizer.set(new GTMTE_MPStabilizer(ID++, "Matrix Particles Stabilizer").get());
@@ -110,6 +111,7 @@ public class Multi_Register {
 		
 		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Coal Miner").get());
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
+		AdvancedMiner.set(new GTMTE_AdvancedMiner(ID++, "Advanced Electric Miner").get());
 		
 		INFO("Multi_Register.java | Last ID: " + ID);
 		

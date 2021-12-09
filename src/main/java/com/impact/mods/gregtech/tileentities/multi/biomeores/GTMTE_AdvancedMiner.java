@@ -3,7 +3,9 @@ package com.impact.mods.gregtech.tileentities.multi.biomeores;
 import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
+import com.impact.impact;
 import com.impact.mods.gregtech.enums.Texture;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.hatches.GTMTE_EnrichmentUnit;
 import com.impact.mods.gregtech.tileentities.multi.biomeores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -31,16 +33,17 @@ import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_BasicMiner> {
+public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedMiner> {
 	
-	static IStructureDefinition<GTMTE_BasicMiner> definition =
-			StructureDefinition.<GTMTE_BasicMiner>builder()
+	static IStructureDefinition<GTMTE_AdvancedMiner> definition =
+			StructureDefinition.<GTMTE_AdvancedMiner>builder()
 					.addShape("main", new String[][]{
 							{"     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G "},
 							{"     ", "     ", "     ", "  G  ", "  G  ", "  G  ", " GAG ", " G G ", " G G ", "GA~AG", "G   G", "G   G"},
@@ -49,25 +52,27 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 							{"     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G "},
 					})
 					.addElement('G', lazy(t -> ofFrame(Materials.Steel)))
-					.addElement('C', ofHatchAdder(GTMTE_BasicMiner::checkHatch, 16, ImpactAPI.RED))
+					.addElement('C', ofHatchAdder(GTMTE_AdvancedMiner::checkHatch, 16, ImpactAPI.RED))
 					.addElement('A', ofChain(
 									ofBlock(GregTech_API.sBlockCasings2, 0),
-									ofHatchAdder(GTMTE_BasicMiner::addToMachineList, 16, GregTech_API.sBlockCasings2, 0)
+									ofHatchAdder(GTMTE_AdvancedMiner::addToMachineList, 16, GregTech_API.sBlockCasings2, 0),
+									ofHatchAdder(GTMTE_AdvancedMiner::checkEnrich, 16, GregTech_API.sBlockCasings2, 0)
 							)
 					)
 					.build();
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
+	private final List<GTMTE_EnrichmentUnit> enrich = new ArrayList<>();
 	public int cycleIncrease = 0, sizeVeinPreStart = 0;
 	public OreChunkGenerator oreChunkGenerator = null;
 	public OreVein oreVein = OreGenerator.empty;
+	public int layer = 2;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
-	public int layer = 1;
 	
-	public GTMTE_BasicMiner(int aID, String aNameRegional) {
-		super(aID, "impact.multis.miner.basic", aNameRegional);
+	public GTMTE_AdvancedMiner(int aID, String aNameRegional) {
+		super(aID, "impact.multis.miner.advanced", aNameRegional);
 	}
 	
-	public GTMTE_BasicMiner(String aName) {
+	public GTMTE_AdvancedMiner(String aName) {
 		super(aName);
 	}
 	
@@ -91,8 +96,12 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				if (sizeVeinPreStart > 0) {
 					oreVein = OreGenerator.getOreVein(te, layer);
 				} else {
+					sizeVeinPreStart = 0;
 					oreVein = OreGenerator.empty;
 				}
+			} else {
+				sizeVeinPreStart = 0;
+				oreVein = OreGenerator.empty;
 			}
 		}
 	}
@@ -103,13 +112,8 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	}
 	
 	@Override
-	public IStructureDefinition<GTMTE_BasicMiner> getStructureDefinition() {
+	public IStructureDefinition<GTMTE_AdvancedMiner> getStructureDefinition() {
 		return definition;
-	}
-	
-	@Override
-	public void onRemoval() {
-		super.onRemoval();
 	}
 	
 	public boolean machineStructure(IGregTechTileEntity te) {
@@ -121,7 +125,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				TileEntity tile = (TileEntity) o;
 				if (tile instanceof IGregTechTileEntity) {
 					IMetaTileEntity meta = ((IGregTechTileEntity) tile).getMetaTileEntity();
-					if (meta instanceof GTMTE_BasicMiner) {
+					if (meta instanceof GTMTE_Mining_Coal) {
 						size++;
 					}
 				}
@@ -129,8 +133,10 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		}
 		if (size > 1) return false;
 		hatch.clear();
+		enrich.clear();
 		boolean check = checkPiece(2, 9, 1);// TODO: 02.12.2021
 		if (hatch.size() != 1) check = false;
+		if (enrich.size() != 1) check = false;
 		return check;
 	}
 	
@@ -155,6 +161,27 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		}
 	}
 	
+	private boolean checkEnrich(IGregTechTileEntity te, int index) {
+		if (te == null) {
+			return false;
+		} else {
+			IMetaTileEntity mte = te.getMetaTileEntity();
+			if (mte == null) {
+				return false;
+			} else {
+				if (mte instanceof GT_MetaTileEntity_Hatch) {
+					((GT_MetaTileEntity_Hatch) mte).updateTexture(index);
+				}
+				if (mte instanceof GTMTE_EnrichmentUnit) {
+					((GTMTE_EnrichmentUnit) mte).updateTexture(index);
+					return this.enrich.add((GTMTE_EnrichmentUnit) mte);
+				} else {
+					return false;
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void onPostTick(IGregTechTileEntity te, long aTick) {
 		super.onPostTick(te, aTick);
@@ -172,7 +199,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				if (mProgresstime == mMaxProgresstime - 1) {
 					cycleIncrease++;
 				}
-				if (aTick % 20 == 5 && !hatch.isEmpty() && hatch.get(0) != null) {
+				if (aTick % 20 == 5 && hatch.get(0) != null) {
 					if (!hatch.get(0).ready && hatch.get(0).drillCoefficient == 0) {
 						stopMachine();
 					}
@@ -185,8 +212,26 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		return stack.stackSize + hatch.get(0).drillCoefficient;
 	}
 	
+	private boolean depleteEnrichInput(FluidStack aLiquid) {
+		if (aLiquid == null) return false;
+		for (GTMTE_EnrichmentUnit tHatch : enrich) {
+			if (isValidMetaTileEntity(tHatch)) {
+				FluidStack tLiquid = tHatch.getFluid();
+				if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
+					tLiquid = tHatch.drain(aLiquid.amount, false);
+					if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+						tLiquid = tHatch.drain(aLiquid.amount, true);
+						return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
+		long start = System.currentTimeMillis();
 		if (hatch.get(0) == null) return false;
 		if (oreChunkGenerator == null) return false;
 		if (oreVein == OreGenerator.empty) return false;
@@ -198,10 +243,11 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		}
 		if (check) {
 			List<ItemStack> output = new ArrayList<>();
+			List<ItemStack> outputEnrich = new ArrayList<>();
 			IGregTechTileEntity te = getBaseMetaTileEntity();
 			int chancePrimary = 500;
 //			long voltage = getMaxInputVoltage();
-			long voltage = 32;
+			long voltage = 1920;
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
 			}
@@ -214,9 +260,11 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			for (int ore = 0; ore < is.size(); ore++) {
 				if (te.getRandomNumber(10000) < oreVein.chanceOres[ore]) {
 					ItemStack drillHeadDrop = new ItemStack(is.get(ore).getItem(), byDrillHead(is.get(ore)), is.get(ore).getItemDamage());
-					output.add(drillHeadDrop);
-					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, voltage, null, is.get(ore));
+					outputEnrich.add(drillHeadDrop);
+					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
+							.findRecipe(getBaseMetaTileEntity(), false, voltage, null, is.get(ore));
 					if (tRecipe != null) {
+						voltage-=tRecipe.mEUt;
 						for (int i = 0; i < tRecipe.mOutputs.length; i++) {
 							ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
 							if (i == 0 && te.getRandomNumber(10000) < chancePrimary) {
@@ -226,28 +274,56 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 					}
 				}
 			}
+			
+			if (enrich.size() > 0) {
+				for (GTMTE_EnrichmentUnit e : enrich) {
+					for (ItemStack stack : outputEnrich) {
+						int size = stack.stackSize;
+						for (int i = 0; i < size; i++) {
+							if (e.getFluid() == null) break;
+							FluidStack[] eFluid = new FluidStack[]{e.getFluid()};
+							GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFlotationUnitRecipes
+									.findRecipe(this.getBaseMetaTileEntity(), false, false, voltage, eFluid, stack);
+							if (tRecipe != null && tRecipe.isRecipeInputEqual(true, eFluid, stack)) {
+								voltage -= tRecipe.mEUt;
+								output.addAll(Arrays.asList(tRecipe.mOutputs));
+								e.updateSlots();
+							}
+						}
+						if (stack.stackSize > 0) {
+							output.add(stack);
+						}
+					}
+				}
+			}
+			
+			if (output.isEmpty()) {
+				output.addAll(outputEnrich);
+			}
+			
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
 			int tier = Math.max(1, GT_Utility.getTier(voltage));
 //			this.mEUt = -3 * (1 << (tier << 1));
 			this.mMaxProgresstime = 400 / (1 << (tier - 1));
 			this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
-			mOutputItems          = output.toArray(new ItemStack[0]);
+			this.mOutputItems     = output.toArray(new ItemStack[0]);
 		}
 		hatch.get(0).cycleDrill(check);
+		impact.proxy.addClientSideChatMessages("" + (System.currentTimeMillis() - start));
 		return check;
 	}
 	
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
-		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("basic_miner");
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_miner");
 		b.addInfo("0", "WIP").signAndFinalize();
 		return b;
 	}
 	
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_BasicMiner(mName);
+		return new GTMTE_AdvancedMiner(mName);
 	}
 	
 	@Override

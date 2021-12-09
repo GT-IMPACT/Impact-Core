@@ -66,7 +66,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	private final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
 	private final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
 	
-	
 	public ArrayList<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new ArrayList<>();
 	public ArrayList<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new ArrayList<>();
 	

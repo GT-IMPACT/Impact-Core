@@ -252,6 +252,7 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("filler");
 		b.addInfo("info.0", "Its not Filler, its DESTROYER!");
+		b.addInfo("info.1",  EnumChatFormatting.RED + "In development, do not use it");
 		return b;
 	}
 	

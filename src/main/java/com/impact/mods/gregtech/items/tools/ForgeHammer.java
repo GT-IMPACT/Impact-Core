@@ -31,7 +31,6 @@ import static com.impact.util.vector.ToolsVector.raytraceFromEntity;
 
 public class ForgeHammer extends GT_Tool implements IToolStats, IImpact_Tools {
 
-    private final ThreadLocal<Object> sIsHarvesting = new ThreadLocal();
     public int breakRadius;
     public int breakDepth;
     public IToolStats iToolStats;

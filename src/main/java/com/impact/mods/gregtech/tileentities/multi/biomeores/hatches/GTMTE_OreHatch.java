@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.multi.biomeores;
+package com.impact.mods.gregtech.tileentities.multi.biomeores.hatches;
 
 import com.impact.common.item.ITieredDamagedItems;
 import gregtech.api.enums.Textures;
@@ -8,15 +8,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
-import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.Random;
 
 import static com.impact.loader.ItemRegistery.CollisionBlock;
 

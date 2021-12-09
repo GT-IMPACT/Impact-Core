@@ -1,9 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.biomeores;
 
+import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
-import com.impact.common.oregeneration.OreGenerator;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import cpw.mods.fml.relauncher.Side;
@@ -59,6 +60,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 					.addElement('A', lazy(t -> ofFrame(Materials.Iron)))
 					.addElement('B', ofHatchAdder(GTMTE_Mining_Coal::checkHatch, 178, ImpactAPI.RED))
 					.build();
+	static int TIER_MINER = 0;
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
 	public int cycleIncrease = 0;
@@ -86,12 +88,25 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
+		initOreProperty(te);
+		increaseLayer(te);
+	}
+	
+	public void increaseLayer(IGregTechTileEntity te) {
+		OreGenerator.amountIncrease(te, 0, cycleIncrease);
+		cycleIncrease = 0;
+	}
+	
+	public void initOreProperty(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
-			cycleIncrease     = 0;
 			oreChunkGenerator = OreGenerator.getChunkFromIGT(te, 0);
 			if (oreChunkGenerator != null) {
 				sizeVeinPreStart = oreChunkGenerator.sizeOreChunk;
-//				oreGenerator     = OreGenerator.getFromName(oreChunkGenerator.oreGenerator);
+				if (sizeVeinPreStart > 0) {
+					oreVein = OreGenerator.getOreVein(te, 0);
+				} else {
+					oreVein = OreGenerator.empty;
+				}
 			}
 		}
 	}
@@ -110,16 +125,6 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public IStructureDefinition<GTMTE_Mining_Coal> getStructureDefinition() {
 		return definition;
-	}
-	
-	@Override
-	public void inValidate() {
-		IGregTechTileEntity te = getBaseMetaTileEntity();
-		if (te.isServerSide()) {
-			OreGenerator.amountIncrease(te, 0, cycleIncrease);
-			cycleIncrease = 0;
-		}
-		super.inValidate();
 	}
 	
 	@Override
@@ -242,6 +247,11 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	public boolean checkRecipe(ItemStack itemStack) {
 		if (oreChunkGenerator == null) return false;
 		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == OreGenerator.empty) {
+			return false;
+		}
+		if ((sizeVeinPreStart - cycleIncrease) <= 0) {
+			increaseLayer(getBaseMetaTileEntity());
+			initOreProperty(getBaseMetaTileEntity());
 			return false;
 		}
 		checkFuel();

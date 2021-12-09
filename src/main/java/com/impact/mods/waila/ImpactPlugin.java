@@ -6,6 +6,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
@@ -89,8 +90,14 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
         final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
+        final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
 
         if (tMeta != null) {
+            
+            if (adv_miner != null) {
+                currenttip.add("Vein Size: " + tag.getInteger("adv_miner.vein"));
+                currenttip.add("Layer: " + tag.getInteger("adv_miner.layer"));
+            }
             
             if (basic_miner != null) {
                 currenttip.add("Vein Size: " + tag.getInteger("basic_miner.vein"));
@@ -286,8 +293,14 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
         final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
-        
+        final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
+    
         if (tMeta != null) {
+        
+            if (adv_miner != null) {
+                tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart - adv_miner.cycleIncrease);
+                tag.setInteger("adv_miner.layer", adv_miner.layer);
+            }
     
             if (basic_miner != null) {
                 tag.setInteger("basic_miner.vein", basic_miner.sizeVeinPreStart - basic_miner.cycleIncrease);

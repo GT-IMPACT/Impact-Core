@@ -94,6 +94,9 @@ public class OreGenerator {
 		OreChunkGenerator oreChunkGenerator = getChunk(chunk, tier);
 		if (oreChunkGenerator != null) {
 			oreChunkGenerator.sizeOreChunk -= minus;
+			if (oreChunkGenerator.sizeOreChunk <= 0) {
+				oreChunkGenerator.sizeOreChunk = 0;
+			}
 		}
 	}
 	
@@ -101,7 +104,31 @@ public class OreGenerator {
 		OreChunkGenerator oreChunkGenerator = getChunkFromIGT(te, tier);
 		if (oreChunkGenerator != null) {
 			oreChunkGenerator.sizeOreChunk -= minus;
+			if (oreChunkGenerator.sizeOreChunk <= 0) {
+				oreChunkGenerator.sizeOreChunk = 0;
+			}
 		}
+	}
+	
+	public static OreVein getOreVein(IGregTechTileEntity te, int tier) {
+		Chunk chunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+		OreVeinGenerator gen = getVein(chunk, tier);
+		if (gen != null) {
+			if (Impact_API.registerVeins.containsKey(gen.oreVeinID)) {
+				return Impact_API.registerVeins.get(gen.oreVeinID);
+			}
+		}
+		return empty;
+	}
+	
+	public static OreVein getOreVein(Chunk chunk, int tier) {
+		OreVeinGenerator gen = getVein(chunk, tier);
+		if (gen != null) {
+			if (Impact_API.registerVeins.containsKey(gen.oreVeinID)) {
+				return Impact_API.registerVeins.get(gen.oreVeinID);
+			}
+		}
+		return empty;
 	}
 	
 	public static OreVeinGenerator getVein(Chunk ch, int tier) {
