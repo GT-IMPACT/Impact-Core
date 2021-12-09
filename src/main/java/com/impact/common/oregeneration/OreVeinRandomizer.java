@@ -49,6 +49,6 @@ public class OreVeinRandomizer {
 				candidate.increaseWeight();
 			}
 		}
-		return getVein(tier, dim);
+		return null;
 	}
 }

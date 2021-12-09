@@ -45,12 +45,13 @@ public class OresRegionGenerator {
 			List<OreVeinGenerator> layerVeins = new ArrayList<>();
 			for (int x = 0; x < 8; x++) {
 				for (int z = 0; z < 8; z++) {
-					OreVein ore = OreVeinRandomizer.getVein(layer, dim);
-					if (ore != null) {
-						OreVeinGenerator vein = new OreVeinGenerator((xRegion << 3) + x, (zRegion << 3) + z, ore.idVein);
-						vein.createOreChunk();
-						layerVeins.add(vein);
+					OreVein ore = null;
+					while(ore == null) {
+						ore = OreVeinRandomizer.getVein(layer, dim);
 					}
+					OreVeinGenerator vein = new OreVeinGenerator((xRegion << 3) + x, (zRegion << 3) + z, ore.idVein);
+					vein.createOreChunk();
+					layerVeins.add(vein);
 				}
 			}
 			veins.put(layer, layerVeins);

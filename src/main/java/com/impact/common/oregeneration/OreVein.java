@@ -97,14 +97,14 @@ public class OreVein {
 	}
 	
 	public void reduceWeight() {
-		currentWeight -= 2.0D;
+		currentWeight -= 2.5D;
 		if (currentWeight < 0.0D) {
 			currentWeight = 0.0D;
 		}
 	}
 	
 	public void increaseWeight() {
-		currentWeight += 1.0D;
+		currentWeight += 0.5D;
 		if (currentWeight > maxWeight) {
 			currentWeight = maxWeight;
 		}
