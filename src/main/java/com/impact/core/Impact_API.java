@@ -1,19 +1,24 @@
 package com.impact.core;
 
-import com.impact.mods.gregtech.enums.BiomeOreRegister;
-import com.impact.util.PositionObject;
+import com.impact.common.oregeneration.OreVein;
+import com.impact.common.oregeneration.generator.OresRegionGenerator;
+import com.impact.mods.gregtech.enums.DropsBlock;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Impact_API {
 	
 	/**
-	 * The OreGeneration Map
+	 * Ore Regions
 	 */
-	public static final Map<String, BiomeOreRegister> sBiomeOres = new HashMap<>();
+	public static final List<OresRegionGenerator> regionsOres = new ArrayList<>();
+	public static final Map<Integer, OreVein> registerVeins = new HashMap<>();
+	
+	/**
+	 * Drops from harvest blocks
+	 */
+	public static final List<DropsBlock> dropsFromBlock = new ArrayList<>();
 	
 	/**
 	 * The Space Satellite Frequencies

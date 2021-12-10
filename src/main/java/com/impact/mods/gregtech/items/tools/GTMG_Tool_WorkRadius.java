@@ -1,7 +1,5 @@
 package com.impact.mods.gregtech.items.tools;
 
-import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_ForgeHammer;
-import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_LumberAxe;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -11,8 +9,10 @@ import gregtech.api.util.GT_ModHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
@@ -27,8 +27,8 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         super("impact.metatool.01");
         INSTANCE = this;
         ITool = new LinkedHashMap<>();
-        addTool(FORGE_HAMMER, "Forge Hammer", "", (IImpact_Tools) new Behaviour_ForgeHammer(1, 0));
-        addTool(LUMBER_AXE, "Lumber Axe", "", (IImpact_Tools) new Behaviour_LumberAxe(1, 0));
+        addTool(FORGE_HAMMER, "Forge Hammer", "", (IImpact_Tools) new ForgeHammer(1, 0));
+        addTool(LUMBER_AXE, "Lumber Axe", "", (IImpact_Tools) new LumberAxe(1, 0));
 
         GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(FORGE_HAMMER, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFF", " S ", " SS", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1)});
         GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(LUMBER_AXE, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFF", " S ", "SS ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1)});
@@ -39,7 +39,12 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         ITool.put(aID + 1, aTools);
         return addTool(aID, aEnglish, aToolTip, aTools.getTools(), aOreDictNames);
     }
-
+    
+    @Override
+    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        ITool.get(aStack.getItemDamage()).addAdditionalToolTips(aList, aStack, aPlayer);
+    }
+    
     @Override
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
         if (ITool.get(stack.getItemDamage()) != null) {
@@ -47,7 +52,21 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         }
         return super.onBlockStartBreak(stack, x, y, z, player);
     }
-
+    
+    public boolean canAdDrop(ItemStack stack) {
+        return ITool.get(stack.getItemDamage()).canAdDrop(stack);
+    }
+    
+    @Override
+    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        return ITool.get(aStack.getItemDamage()).onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+    }
+    
+    @Override
+    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        return ITool.get(aStack.getItemDamage()).onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+    }
+    
     //todo remove this
     public static class ProccessToolHead implements IOreRecipeRegistrator {
         public ProccessToolHead() {
@@ -57,25 +76,18 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
 
         @Override
         public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-            boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
-
             switch (aPrefix) {
                 case toolHeadHammer:
-                GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
-                        GTMG_Tool_WorkRadius.FORGE_HAMMER, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                        new Object[]{
-                                aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)
-                        });
-                break;
+                    GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
+                            GTMG_Tool_WorkRadius.FORGE_HAMMER, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[]{aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
+                    break;
                 case toolHeadAxe:
                     GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
-                                    GTMG_Tool_WorkRadius.LUMBER_AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[]{
-                                    aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)
-                            });
+                            GTMG_Tool_WorkRadius.LUMBER_AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[]{aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
                     break;
             }
-
         }
     }
 }

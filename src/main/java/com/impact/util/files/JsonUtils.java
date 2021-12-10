@@ -14,7 +14,7 @@ import java.util.*;
 
 public class JsonUtils {
 
-    public static void parseMapToJson(Map<String, int[]> map, String pathFile, String nameFile) {
+    public static void jsonFromMapStringIntArray(Map<String, int[]> map, String pathFile, String nameFile) {
         try {
             Gson gson = new Gson();
             Type gsonType = new TypeToken<Map<String, int[]>>(){}.getType();
@@ -28,7 +28,7 @@ public class JsonUtils {
         }
     }
 
-    public static void parseJsonToMap(Map<String, int[]> map, String pathFile, String nameFile) {
+    public static void jsonToMapStringIntArray(Map<String, int[]> map, String pathFile, String nameFile) {
         try {
             FileReader fr = new FileReader(pathFile + "\\" + nameFile + ".json");
             BufferedReader br = new BufferedReader(fr);

@@ -1,15 +1,20 @@
 package com.impact.events;
 
+import com.impact.core.Config;
+import com.impact.util.files.JsonWorld;
 import com.impact.util.vector.PlayerPos;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -21,6 +26,7 @@ import static com.impact.core.Config.DisableTheEnd;
 public class TickHandler {
 	
 	private HashMap<UUID, PlayerPos> lastPlayerPosition = new HashMap<>();
+	public int saveTicker = 0;
 	
 	@SubscribeEvent
 	public void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
@@ -63,6 +69,19 @@ public class TickHandler {
 			if (e.entityPlayer.dimension == 1 && DisableTheEnd) {
 				player.addChatComponentMessage(new ChatComponentTranslation(EnumChatFormatting.RED + "Teleport to " + EnumChatFormatting.BOLD + "The End" + EnumChatFormatting.RESET + EnumChatFormatting.RED + " is disabled"));
 				e.setCanceled(true);
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onWorldTick(TickEvent.WorldTickEvent e) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+			if (e.world.provider.dimensionId == 0) {
+				saveTicker++;
+				if (saveTicker >= ((1200 * Config.saveTime))) {
+					JsonWorld.save();
+					saveTicker = 0;
+				}
 			}
 		}
 	}

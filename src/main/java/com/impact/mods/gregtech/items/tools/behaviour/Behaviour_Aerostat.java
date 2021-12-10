@@ -8,7 +8,6 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,11 +18,10 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Behaviour_Aerostat extends Behaviour_None {
 	
 	public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Aerostat();
-	
-	protected MetaTileEntity mMetaTileEntity;
 	
 	public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
 		TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
@@ -52,9 +50,9 @@ public class Behaviour_Aerostat extends Behaviour_None {
 	}
 	
 	public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
+		// TODO: 09.12.2021
 		aList.add("1");
 		aList.add("123");
 		return aList;
 	}
-	
 }

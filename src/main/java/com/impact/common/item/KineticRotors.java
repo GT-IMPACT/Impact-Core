@@ -10,13 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import opisapache.math3.util.Precision;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class KineticRotors extends Item implements IRotorKinetic {
+public class KineticRotors extends Item implements ITieredDamagedItems {
 
     int x = 4;
     private final static int WEEK_SECOND = 604800;

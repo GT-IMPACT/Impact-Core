@@ -26,8 +26,8 @@ import org.lwjgl.input.Keyboard;
 
 public class ClientEvent {
 	
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
 	public void onGuiOpenEvent(GuiOpenEvent event) {
 		if (Config.mainMenu && event.gui instanceof GuiMainMenu) {
 			event.gui = new ImpactGuiMainMenu();
@@ -63,40 +63,5 @@ public class ClientEvent {
 				}
 			}
 		}
-	}
-	
-	@SubscribeEvent
-	public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-		Error e = new Error();
-		e.setStackTrace(new StackTraceElement[]{});
-		
-		try {
-			Class.forName("net.minecraftxray.loader.XRayForgeTweaker");
-			Minecraft.getMinecraft().crashed(new CrashReport("", e));
-			return;
-		} catch (Exception ignored) {
-		}
-		
-		try {
-			Class.forName("de.Kradxn.Xray.mod_Xray");
-			Minecraft.getMinecraft().crashed(new CrashReport("", e));
-			return;
-		} catch (Exception ignored) {
-		}
-		
-		try {
-			Class.forName("forgefuck.team.xenobyte.ModulesList");
-			Minecraft.getMinecraft().crashed(new CrashReport("", e));
-			return;
-		} catch (Exception ignored) {
-		}
-		
-		try {
-			Class.forName("forgefuck.team.xenobyte.XenoByte");
-			Minecraft.getMinecraft().crashed(new CrashReport("", e));
-			return;
-		} catch (Exception ignored) {
-		}
-		
 	}
 }

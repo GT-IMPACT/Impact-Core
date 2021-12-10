@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech;
 import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_Aerostat;
+import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_DebugOreGen;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
 
 public class GT_ItemRegister {
@@ -13,6 +14,7 @@ public class GT_ItemRegister {
 
   private void registerItems() {
     GT_ItemList.Aerostat.set(GT.addItem(6, "Aerostat", "", Behaviour_Aerostat.INSTANCE));
+    GT_ItemList.DebugOreGen.set(GT.addItem(7, "Debug Impact Ore Generator", "", Behaviour_DebugOreGen.INSTANCE));
     
     GT_ItemList.ULVPump.set(GT.addItem(395, "ULV Electric Pump", "640 L/sec"));
     GT_ItemList.ULVMotor.set(GT.addItem(396, "ULV Electric Motor", ""));

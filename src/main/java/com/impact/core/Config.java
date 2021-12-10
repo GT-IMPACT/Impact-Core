@@ -14,7 +14,6 @@ public class Config {
 	public static Configuration config;
 	
 	public static boolean disableLogger;
-	public static boolean csv;
 	public static boolean hideBackground;
 	public static boolean toolTips;
 	public static boolean DisableNether;
@@ -22,6 +21,7 @@ public class Config {
 	public static boolean downloadOnlyOnce;
 	public static boolean mainMenu;
 	public static boolean placedItems;
+	public static int saveTime;
 	
 	public Config(File file) {
 		if (!loadConfig) {
@@ -41,11 +41,6 @@ public class Config {
 			
 			Property cfg;
 			//GENERAL
-			cfg         = config.get("GENERAL", "Print csv", false);
-			cfg.comment = "[NEI Ore Plugin] Princsv, you need apache commons collections to be injected in the minecraft jar. [Default: false]";
-			csv         = cfg.getBoolean(false);
-			General.add(cfg.getName());
-			
 			cfg            = config.get("GENERAL", "Hide Background", true);
 			cfg.comment    = "[NEI Ore Plugin] Hides the Background when the tooltip for the Dimensions is renderedr. [Default: true]";
 			hideBackground = cfg.getBoolean(true);
@@ -79,6 +74,11 @@ public class Config {
 			cfg         = config.get("GENERAL", "Enable Impact Placed Items", true);
 			cfg.comment = "Enable Impact Placed Items. [Default: true]";
 			placedItems = cfg.getBoolean(true);
+			General.add(cfg.getName());
+			
+			cfg         = config.get("GENERAL", "Impact saves files timer", 30);
+			cfg.comment = "SaveTimer. [Default: 30min]";
+			saveTime = cfg.getInt(30);
 			General.add(cfg.getName());
 			
 			//DEBUG

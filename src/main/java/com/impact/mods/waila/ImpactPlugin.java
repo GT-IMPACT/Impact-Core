@@ -6,6 +6,9 @@ import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_AdvancedMiner;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_BasicMiner;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
@@ -66,12 +69,12 @@ public class ImpactPlugin extends PluginBase {
         final int side = (byte) accessor.getSide().ordinal();
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
-        final GT_MetaTileEntity_MultiParallelBlockBase MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase) tMeta) : null;
+        final GT_MetaTileEntity_MultiParallelBlockBase<?> MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase<?>) tMeta) : null;
         final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
         final GTMTE_LapPowerStation LapBuffer = tMeta instanceof GTMTE_LapPowerStation ? ((GTMTE_LapPowerStation) tMeta) : null;
         final GT_MetaTileEntity_EM_research Research = tMeta instanceof GT_MetaTileEntity_EM_research ? ((GT_MetaTileEntity_EM_research) tMeta) : null;
         final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication ? ((GTMTE_TowerCommunication) tMeta) : null;
-        final GTMTE_NuclearReactorBase reactor = tMeta instanceof GTMTE_NuclearReactorBase ? ((GTMTE_NuclearReactorBase) tMeta) : null;
+        final GTMTE_NuclearReactorBase<?> reactor = tMeta instanceof GTMTE_NuclearReactorBase ? ((GTMTE_NuclearReactorBase<?>) tMeta) : null;
         final GTMTE_Reactor_Rod_Hatch reactorHatch = tMeta instanceof GTMTE_Reactor_Rod_Hatch ? ((GTMTE_Reactor_Rod_Hatch) tMeta) : null;
         final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
         final GTMTE_ParallelHatch_Input parallelHatch_input = tMeta instanceof GTMTE_ParallelHatch_Input ? ((GTMTE_ParallelHatch_Input) tMeta) : null;
@@ -85,8 +88,24 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
+        final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
+        final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
+        final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
 
         if (tMeta != null) {
+            
+            if (adv_miner != null) {
+                currenttip.add("Vein Size: " + tag.getInteger("adv_miner.vein"));
+                currenttip.add("Layer: " + tag.getInteger("adv_miner.layer"));
+            }
+            
+            if (basic_miner != null) {
+                currenttip.add("Vein Size: " + tag.getInteger("basic_miner.vein"));
+            }
+            
+            if (coal_miner != null) {
+                currenttip.add("Vein Size: " + tag.getInteger("coal_miner.vein"));
+            }
 
             if (solar != null) {
                 currenttip.add("Generation: " + tag.getInteger("solar.mOutputSalary") + "EU/t");
@@ -256,10 +275,10 @@ public class ImpactPlugin extends PluginBase {
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
         final GT_MetaTileEntity_MultiBlockBase multiBlockBase = tMeta instanceof GT_MetaTileEntity_MultiBlockBase ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
-        final GT_MetaTileEntity_MultiParallelBlockBase MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase) tMeta) : null;
+        final GT_MetaTileEntity_MultiParallelBlockBase<?> MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase<?>) tMeta) : null;
         final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
         final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication ? ((GTMTE_TowerCommunication) tMeta) : null;
-        final GTMTE_NuclearReactorBase reactor = tMeta instanceof GTMTE_NuclearReactorBase ? ((GTMTE_NuclearReactorBase) tMeta) : null;
+        final GTMTE_NuclearReactorBase<?> reactor = tMeta instanceof GTMTE_NuclearReactorBase ? ((GTMTE_NuclearReactorBase<?>) tMeta) : null;
         final GTMTE_Reactor_Rod_Hatch reactorHatch = tMeta instanceof GTMTE_Reactor_Rod_Hatch ? ((GTMTE_Reactor_Rod_Hatch) tMeta) : null;
         final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
         final GTMTE_ParallelHatch_Input parallelHatch_input = tMeta instanceof GTMTE_ParallelHatch_Input ? ((GTMTE_ParallelHatch_Input) tMeta) : null;
@@ -272,8 +291,24 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
-
+        final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
+        final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
+        final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
+    
         if (tMeta != null) {
+        
+            if (adv_miner != null) {
+                tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart - adv_miner.cycleIncrease);
+                tag.setInteger("adv_miner.layer", adv_miner.layer);
+            }
+    
+            if (basic_miner != null) {
+                tag.setInteger("basic_miner.vein", basic_miner.sizeVeinPreStart - basic_miner.cycleIncrease);
+            }
+            
+            if (coal_miner != null) {
+                tag.setInteger("coal_miner.vein", coal_miner.sizeVeinPreStart - coal_miner.cycleIncrease);
+            }
 
             if (solar != null) {
                 tag.setInteger("solar.mOutputSalary", (int) solar.maxEUOutput());

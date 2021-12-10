@@ -66,7 +66,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	private final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
 	private final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
 	
-	
 	public ArrayList<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new ArrayList<>();
 	public ArrayList<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new ArrayList<>();
 	
@@ -115,9 +114,26 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		}
 	}
 	
+	public boolean inputStack(IGregTechTileEntity te, int slotIndex, int side, ItemStack stack) {
+		return false;
+	}
+	
+	public boolean outputStack(IGregTechTileEntity te, int slotIndex, int side, ItemStack stack) {
+		return false;
+	}
+	
 	@Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
-							   IGregTechTileEntity aBaseMetaTileEntity) {
+	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		return outputStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
+	}
+	
+	@Override
+	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		return inputStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
+	}
+	
+	@Override
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
@@ -1531,7 +1547,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	@Override
 	public String[] getStructureDescription(ItemStack stackSize) {
-		return getTooltip().getStructureInformation();
+		return getTooltip().getHoloInfo();
 	}
 	
 	public abstract IStructureDefinition<T> getStructureDefinition();
@@ -1549,8 +1565,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		return getCastedStructureDefinition().buildOrHints(this, trigger, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, hintOnly);
 	}
 	
-	protected final boolean buildPiece(ItemStack trigger, boolean hintOnly, int horizontalOffset, int verticalOffset, int depthOffset) {
-		return buildPiece("main", trigger, hintOnly, horizontalOffset, verticalOffset, depthOffset);
+	protected final boolean buildPiece(ItemStack trigger, boolean hintOnly, int x, int y, int z) {
+		return buildPiece("main", trigger, hintOnly, x, y, z);
 	}
 	
 	protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
@@ -1558,8 +1574,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		return getCastedStructureDefinition().check(this, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, !mMachine);
 	}
 
-	protected final boolean checkPiece(int horizontalOffset, int verticalOffset, int depthOffset) {
-		return checkPiece("main", horizontalOffset, verticalOffset, depthOffset);
+	protected final boolean checkPiece(int x, int y, int z) {
+		return checkPiece("main", x, y, z);
 	}
 	
 	@Override

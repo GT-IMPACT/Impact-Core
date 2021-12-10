@@ -4,20 +4,19 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
+import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.te.TE_NqTether;
 import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.common.te.TE_WindMill;
 import com.impact.common.te.TilePlacedItem;
 import com.impact.impact;
 import com.impact.mods.asp.ASP;
-import com.impact.mods.galacticraft.gg.SpaceDimRegisterer;
 import com.impact.mods.gregtech.Basic_Register;
 import com.impact.mods.gregtech.GT_ItemRegister;
 import com.impact.mods.gregtech.GT_WorldGenRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
-import com.impact.mods.gtscanner.GTScanner;
 import com.impact.mods.opencomputers.Driver_Register;
 import com.impact.mods.railcraft.carts.item.events.Module;
 import com.impact.util.Language;
@@ -26,27 +25,19 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
-import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
-import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.items.GCItems;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.common.item.Core_List_Items.registerOreDictNames;
 import static com.impact.core.Config.DisableNether;
 import static com.impact.core.impactLog.INFO;
-import static com.impact.core.impactLog.WARNING;
 import static com.impact.impact.getModules;
-import static com.impact.loader.ItemRegistery.IGlassBlock;
 
 public class MainLoader {
 	
@@ -55,16 +46,6 @@ public class MainLoader {
 	
 	public static void Init(FMLInitializationEvent event) {
 		ItemRegistery.run();
-		
-		// Register Dimensions in GalacticGregGT5
-		if (Loader.isModLoaded("galacticgreg")) {
-			SpaceDimRegisterer spaceDimReg = new SpaceDimRegisterer();
-			if (spaceDimReg.Init()) {
-				spaceDimReg.Register();
-				INFO("[load] Space Dimension Register - Loaded");
-			}
-			WARNING("[load] Space Dimension Register - Not Loaded");
-		}
 		
 		OreDictRegister.register_all();
 		INFO("[load] OreDict Register List - Loaded");
@@ -88,6 +69,9 @@ public class MainLoader {
 		}
 		impact.proxy.registerRenderInfo();
 		INFO("[Init] Item Registery - Loaded");
+		
+		OreGenerator.register();
+		INFO("[Init] Impact Ore Generation - Loaded");
 	}
 	
 	public static void preInit(FMLPreInitializationEvent event) {
@@ -97,6 +81,9 @@ public class MainLoader {
 		
 		ASP.preInit();
 		INFO("[preInit] Solar Panel - Loaded");
+		
+		Covers.getInstance().registerItem();
+		INFO("[preInit] Covers - Loaded");
 		
 		Core_Items.getInstance().registerItem();
 		INFO("[preInit] Meta Items 1 - Loaded");
@@ -115,6 +102,9 @@ public class MainLoader {
 		
 		KineticRotors.getInstance().registerItem();
 		INFO("[preInit] Kinetic Rotors - Loaded");
+		
+		DrillHeads.getInstance().registerItem();
+		INFO("[preInit] Drill Heads - Loaded");
 		
 		registerOreDictNames();
 		INFO("[preInit] Meta Items OreDict List - Loaded");
@@ -148,8 +138,6 @@ public class MainLoader {
 		GameRegistry.registerTileEntity(TE_NqTether.class, "nq_tether");
 		GameRegistry.registerTileEntity(TilePlacedItem.class, "TilePlacedItem");
 		GameRegistry.registerTileEntity(TE_WindMill.class, "TileWindMill");
-		
-		GTScanner.preInit();
 	}
 	
 	public static void postInit(FMLPostInitializationEvent event) {
@@ -167,20 +155,5 @@ public class MainLoader {
 				module.postInit(event);
 			}
 		}
-		if (Loader.isModLoaded("GalacticraftCore")) {
-			addRecipeSS();
-		}
-	}
-	
-	private static void addRecipeSS() {
-		final HashMap<Object, Integer> inputMap = new HashMap<Object, Integer>();
-		inputMap.put(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 40), 40);
-		inputMap.put(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 20), 20);
-		inputMap.put(new ItemStack(IGlassBlock, 20), 20);
-		inputMap.put(new ItemStack(GCItems.rocketEngine, 4), 4);
-		GalacticraftRegistry.registerSpaceStation(
-				new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0,
-						new SpaceStationRecipe(inputMap)
-				));
 	}
 }

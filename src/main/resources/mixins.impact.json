@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "minVersion": "0.7.11",
+  "package": "com.impact.mixins",
+  "plugin": "com.impact.mixinplugin.MixinPlugin",
+  "refmap": "mixins.impact.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8"
+}

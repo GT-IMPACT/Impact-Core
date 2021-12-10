@@ -1,5 +1,8 @@
 package com.impact.mods.gregtech;
 
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_AdvancedMiner;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_BasicMiner;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
@@ -96,8 +99,8 @@ public class Multi_Register {
 		Machine_DistTower.set(new GTMTE_MultiDistillationTower(ID++, "Multi Distillation Tower").get());
 		Machine_ElectricImplosion.set(new GTMTE_ElectricImplosionCompressor(ID++, "Electric Implosion Compressor").get());
 		
-		ABS.set(new GTMTE_Aerostat(ID++, "Aerostat").get());
-		filler.set(new GTMTE_Filler(ID++, "Filler").get());
+		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate").get());
+		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
 		
 		Parametric_Diffuser.set(new GTMTE_ParametricDiffuser(ID++, "Parametric Diffuser").get());
 		Matrix_Stabilizer.set(new GTMTE_MPStabilizer(ID++, "Matrix Particles Stabilizer").get());
@@ -106,9 +109,15 @@ public class Multi_Register {
 		
 		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, "Wind Generator").get());
 		
+		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Coal Miner").get());
+		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
+		AdvancedMiner.set(new GTMTE_AdvancedMiner(ID++, "Advanced Electric Miner").get());
+		
 		INFO("Multi_Register.java | Last ID: " + ID);
 		
 		ItemList.Machine_FlotationUnit.set(new GTMTE_FlotationUnit(12192, "Flotation Unit").get());
-		
+		ItemList.Machine_MultiblockTesseract.set(new GTMTE_Tesseract(12195, "Tesseract").get());
+		ItemList.Machine_MultiblockTinyWormHole.set(new GTMTE_TinyWormHole(12197, "Tiny Wormhole").get());
+		ItemList.Antimatter_Reactor.set(new GTMTE_AntimatterReactor(12071, "Antimatter Reactor").get());
 	}
 }

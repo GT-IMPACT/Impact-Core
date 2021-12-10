@@ -25,7 +25,7 @@ public enum GT_ItemList implements IItemContainer {
 	packEris, packGanymed, packHaumea, packIapetus, packIo, packMakeMake, packMercury, packMoon,
 	packOberon, packPhobos, packPluto, packTCetiE, packTitan, packTriton, packVegaB, packVenus, packMars,
 	packProteus, packAsteroids, spacebox1, spacebox2, spacebox3, spacebox4, spacebox5, spacebox6, spacebox7,
-	spacebox8, Aerostat, ConstructionLaser,
+	spacebox8, Aerostat, ConstructionLaser, DebugOreGen,
 	
 	ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump,
 	
@@ -114,7 +114,7 @@ public enum GT_ItemList implements IItemContainer {
 	Machine_Siftarator, Machine_DDDPrinter, Machine_AdvDDDPrinter,
 	PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
 	AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
-	Machine_EIF, Machine_ChemicalReactor, Machine_DistTower, Machine_ElectricImplosion, ABS,
+	Machine_EIF, Machine_ChemicalReactor, Machine_DistTower, Machine_ElectricImplosion, Aerostate,
 	
 	Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched, Moon_Miner, Rail_Assembler, Space_Elevator,
 	Nuclear_Reactor_I, Nuclear_Reactor_II, Nuclear_Reactor_III, Huge_Steam_Turbine,
@@ -160,9 +160,13 @@ public enum GT_ItemList implements IItemContainer {
 	DynamoTunnel6_IV, DynamoTunnel6_LuV, DynamoTunnel6_ZPM, DynamoTunnel6_UV, DynamoTunnel6_UHV, DynamoTunnel6_UEV, DynamoTunnel6_UIV, DynamoTunnel6_UMV, DynamoTunnel6_UXV,
 	DynamoTunnel7_IV, DynamoTunnel7_LuV, DynamoTunnel7_ZPM, DynamoTunnel7_UV, DynamoTunnel7_UHV, DynamoTunnel7_UEV, DynamoTunnel7_UIV, DynamoTunnel7_UMV, DynamoTunnel7_UXV,
 	
-	filler,
+	Filler,
 	
 	Parametric_Diffuser, Matrix_Stabilizer, Matrix_Containment, ME_System_Provider,
+	
+	Mining_Hatch_ULV,
+	Mining_Enrich_HV,
+	CoalMiner, BasicMiner, AdvancedMiner,
 	
 	Wind_Generator,
 	

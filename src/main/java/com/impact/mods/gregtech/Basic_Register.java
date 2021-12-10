@@ -5,6 +5,8 @@ import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Reflector;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.hatches.GTMTE_EnrichmentUnit;
+import com.impact.mods.gregtech.tileentities.multi.biomeores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_AE_Connector;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_Hatch_MESystemMPChamber;
@@ -333,6 +335,9 @@ public class Basic_Register {
 		DynamoTunnel7_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 1048576 A/t Laser Source (Output) Hatch", 13, 1048576).getStackForm(1L));
 		
 		DynamoTunnel9001 .set(new GTMTE_LaserEnergy_Out(ID2++,  "Legendary Laser Source (Output) Hatch", 13, (int) V[13]).getStackForm(1L));
+		
+		Mining_Hatch_ULV.set(new GTMTE_OreHatch(ID2++, "Miner Drill Hatch", 0).getStackForm(1));
+		Mining_Enrich_HV.set(new GTMTE_EnrichmentUnit(ID2++, "Miner Enrichment Unit", 3).getStackForm(1));
 		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		

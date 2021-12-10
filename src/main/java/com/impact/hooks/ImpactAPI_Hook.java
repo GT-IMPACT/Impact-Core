@@ -7,9 +7,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.api.multiblocks.alignment.IAlignment;
 import space.impact.api.multiblocks.alignment.constructable.ConstructableUtility;
@@ -21,11 +23,13 @@ public class ImpactAPI_Hook {
 	@Hook(returnCondition = ReturnCondition.ALWAYS, isMandatory = true)
 	public static boolean handle(ConstructableUtility constructableUtility, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide) {
 		TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+		if (tTileEntity == null || aPlayer instanceof FakePlayer) {
+			return aPlayer instanceof EntityPlayerMP;
+		}
 		try {
 			if (aPlayer == Minecraft.getMinecraft().thePlayer) {
 				if (tTileEntity instanceof IGregTechTileEntity) {
 					IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-					
 					if (metaTE instanceof IConstructable) {
 						((IConstructable) metaTE).construct(aStack, true);
 						impact.proxy.addClientSideChatMessages(((IConstructable) metaTE).getStructureDescription(aStack));
@@ -41,7 +45,8 @@ public class ImpactAPI_Hook {
 						return false;
 					}
 				}
-			} else {
+				return false;
+			} else if (aPlayer instanceof EntityPlayerMP) {
 				if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode) {
 					if (tTileEntity instanceof IGregTechTileEntity) {
 						IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
@@ -59,8 +64,8 @@ public class ImpactAPI_Hook {
 				}
 			}
 		} catch (Exception e) {
-			return false;
+			return true;
 		}
-		return false;
+		return true;
 	}
 }
