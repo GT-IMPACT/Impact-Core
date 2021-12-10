@@ -11,10 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.impact.util.Utilits.is;
@@ -153,17 +150,13 @@ public class OreGenerator {
 		int xReg = chunk.xChunk >> 5;
 		int zReg = chunk.zChunk >> 5;
 		OresRegionGenerator region = new OresRegionGenerator(xReg, zReg, dim);
-		if (!Impact_API.regionsOres.contains(region)) {
+		int idRegion = Objects.hash(region.xRegion, region.zRegion);
+		if (!Impact_API.regionsOres.containsKey(idRegion)) {
 			region.createVeins();
-			Impact_API.regionsOres.add(region);
+			Impact_API.regionsOres.put(idRegion, region);
 			return region;
 		} else {
-			for (OresRegionGenerator r : Impact_API.regionsOres) {
-				if (r.equals(region)) {
-					return r;
-				}
-			}
+			return Impact_API.regionsOres.get(idRegion);
 		}
-		return null;
 	}
 }

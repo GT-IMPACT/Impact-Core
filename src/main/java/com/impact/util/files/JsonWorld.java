@@ -12,7 +12,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.impact.core.Impact_API.*;
 
@@ -89,7 +91,9 @@ public class JsonWorld {
             jsonElement = gson.fromJson(br, JsonElement.class);
             Type listType = new TypeToken<List<OresRegionGenerator>>() {}.getType();
             List<OresRegionGenerator> regionList = gson.fromJson(jsonElement, listType);
-            regionsOres.addAll(regionList);
+            for (OresRegionGenerator o : regionList) {
+                regionsOres.put(Objects.hash(o.xRegion, o.zRegion), o);
+            }
             br.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,7 +106,8 @@ public class JsonWorld {
         File json = SaveManager.get().biomesOresDirectory;
         Gson objGson = new Gson();
         try (FileWriter writer = new FileWriter(json.getPath() + "\\" + BIOMES_ORES + ".json")) {
-            objGson.toJson(regionsOres, writer);
+            List<OresRegionGenerator> list = new ArrayList<>(regionsOres.values());
+            objGson.toJson(list, writer);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -95,20 +95,24 @@ public class ImpactPlugin extends PluginBase {
         if (tMeta != null) {
             
             if (adv_miner != null) {
-                currenttip.add("Vein Size: " + tag.getInteger("adv_miner.vein"));
+                currenttip.add("Start Vein Size: " + GT_Utility.formatNumbers(tag.getInteger("adv_miner.vein")));
+                currenttip.add("Cycles Done: " + GT_Utility.formatNumbers(tag.getInteger("adv_miner.cycles")));
                 currenttip.add("Layer: " + tag.getInteger("adv_miner.layer"));
             }
             
             if (basic_miner != null) {
-                currenttip.add("Vein Size: " + tag.getInteger("basic_miner.vein"));
+                currenttip.add("Start Chunk Size: " + GT_Utility.formatNumbers(tag.getInteger("basic_miner.vein")));
+                currenttip.add("Cycles Done: " + GT_Utility.formatNumbers(tag.getInteger("basic_miner.cycles")));
+                currenttip.add("Layer: " + tag.getInteger("basic_miner.layer"));
             }
             
             if (coal_miner != null) {
-                currenttip.add("Vein Size: " + tag.getInteger("coal_miner.vein"));
+                currenttip.add("Start Chunk Size: " + GT_Utility.formatNumbers(tag.getInteger("coal_miner.vein")));
+                currenttip.add("Cycles Done: " + GT_Utility.formatNumbers(tag.getInteger("basic_miner.cycles")));
             }
 
             if (solar != null) {
-                currenttip.add("Generation: " + tag.getInteger("solar.mOutputSalary") + "EU/t");
+                currenttip.add("Generation: " + GT_Utility.formatNumbers(tag.getInteger("solar.mOutputSalary")) + "EU/t");
             }
 
             if (wind_generator != null) {
@@ -298,16 +302,20 @@ public class ImpactPlugin extends PluginBase {
         if (tMeta != null) {
         
             if (adv_miner != null) {
-                tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart - adv_miner.cycleIncrease);
+                tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart);
+                tag.setInteger("adv_miner.cycles", adv_miner.cycleIncrease);
                 tag.setInteger("adv_miner.layer", adv_miner.layer);
             }
     
             if (basic_miner != null) {
-                tag.setInteger("basic_miner.vein", basic_miner.sizeVeinPreStart - basic_miner.cycleIncrease);
+                tag.setInteger("basic_miner.vein", basic_miner.sizeVeinPreStart);
+                tag.setInteger("basic_miner.cycles", basic_miner.cycleIncrease);
+                tag.setInteger("basic_miner.layer", basic_miner.layer);
             }
             
             if (coal_miner != null) {
-                tag.setInteger("coal_miner.vein", coal_miner.sizeVeinPreStart - coal_miner.cycleIncrease);
+                tag.setInteger("coal_miner.vein", coal_miner.sizeVeinPreStart);
+                tag.setInteger("coal_miner.cycles", coal_miner.cycleIncrease);
             }
 
             if (solar != null) {

@@ -12,7 +12,7 @@ public class Impact_API {
 	/**
 	 * Ore Regions
 	 */
-	public static final List<OresRegionGenerator> regionsOres = new ArrayList<>();
+	public static final Map<Integer, OresRegionGenerator> regionsOres = new HashMap<>();
 	public static final Map<Integer, OreVein> registerVeins = new HashMap<>();
 	
 	/**
