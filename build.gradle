@@ -167,7 +167,7 @@ else {
 
 minecraft {
     version = minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion
-    runDir = "run"
+    runDir = "idea"
 
     if (replaceGradleTokenInFile) {
         replaceIn replaceGradleTokenInFile

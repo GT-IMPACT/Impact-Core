@@ -1,8 +1,6 @@
-package com.impact.hooks;
+package com.impact.mixins.impactapi;
 
 import com.impact.impact;
-import gloomyfolken.hooklib.asm.Hook;
-import gloomyfolken.hooklib.asm.ReturnCondition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
@@ -13,18 +11,25 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import space.impact.api.multiblocks.alignment.IAlignment;
 import space.impact.api.multiblocks.alignment.constructable.ConstructableUtility;
 import space.impact.api.multiblocks.alignment.constructable.IConstructable;
 import space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer;
 import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
 
-public class ImpactAPI_Hook {
-	@Hook(returnCondition = ReturnCondition.ALWAYS, isMandatory = true)
-	public static boolean handle(ConstructableUtility constructableUtility, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide) {
+@Mixin(ConstructableUtility.class)
+public class ImpactAPI_Mixin {
+	
+	@Inject(method = "handle0", at = @At("HEAD"), remap = false, cancellable = true)
+	private static void handle(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, CallbackInfoReturnable<Boolean> cir) {
 		TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 		if (tTileEntity == null || aPlayer instanceof FakePlayer) {
-			return aPlayer instanceof EntityPlayerMP;
+			cir.setReturnValue(aPlayer instanceof EntityPlayerMP);
+			return;
 		}
 		try {
 			if (aPlayer == Minecraft.getMinecraft().thePlayer) {
@@ -33,7 +38,8 @@ public class ImpactAPI_Hook {
 					if (metaTE instanceof IConstructable) {
 						((IConstructable) metaTE).construct(aStack, true);
 						impact.proxy.addClientSideChatMessages(((IConstructable) metaTE).getStructureDescription(aStack));
-						return false;
+						cir.setReturnValue(false);
+						return;
 					} else if (IMultiBlockInfoContainer.contains(metaTE.getClass())) {
 						IMultiBlockInfoContainer<IMetaTileEntity> iMultiBlockInfoContainer = IMultiBlockInfoContainer.get(metaTE.getClass());
 						if (metaTE instanceof IAlignment) {
@@ -42,10 +48,12 @@ public class ImpactAPI_Hook {
 							iMultiBlockInfoContainer.construct(aStack, true, metaTE, ExtendedFacing.of(ForgeDirection.getOrientation(((IGregTechTileEntity) tTileEntity).getFrontFacing())));
 						}
 						impact.proxy.addClientSideChatMessages(iMultiBlockInfoContainer.getDescription(aStack));
-						return false;
+						cir.setReturnValue(false);
+						return;
 					}
 				}
-				return false;
+				cir.setReturnValue(false);
+				return;
 			} else if (aPlayer instanceof EntityPlayerMP) {
 				if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode) {
 					if (tTileEntity instanceof IGregTechTileEntity) {
@@ -64,8 +72,9 @@ public class ImpactAPI_Hook {
 				}
 			}
 		} catch (Exception e) {
-			return true;
+			cir.setReturnValue(true);
+			return;
 		}
-		return true;
+		cir.setReturnValue(true);
 	}
 }

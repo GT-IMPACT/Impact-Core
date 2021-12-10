@@ -1,11 +1,13 @@
-package com.impact.events;
-
+package com.impact.mixins.vanilla;
 
 import com.impact.core.Config;
-import gloomyfolken.hooklib.asm.Hook;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.opengl.Display;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,12 +15,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-public class Hooks {
+@Mixin(ForgeHooksClient.class)
+public class ForgeHooksClient_Mixin {
 	
-	//-Dfml.coreMods.load=com.impact.loader.HooksLoader
-	@Hook
-	public static void createDisplay(ForgeHooksClient mc) {
-		Display.setTitle("IMPACT: GREGTECH EDITION");
+	@Inject(method = "createDisplay", at = @At("HEAD"), remap = false)
+	private static void createDisplay(CallbackInfo ci) {
+		Display.setTitle("IMPACT GREGTECH EDITION");
 		ResourceLocation icon = new ResourceLocation("impact", "textures/gui/title/fav.png");
 		try {
 			InputStream inputstream = Config.class.getResourceAsStream("/assets/" + icon.getResourceDomain() + "/" + icon.getResourcePath());
