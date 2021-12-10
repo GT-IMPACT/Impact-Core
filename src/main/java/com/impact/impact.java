@@ -28,15 +28,16 @@ import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
 
 @Mod(
-        modid = MODID,
-        name = Refstrings.NAME,
-        version = Refstrings.VERSION,
+        modid = Tags.MODID,
+        name = Tags.MODNAME,
+        version = Tags.VERSION,
+        acceptedMinecraftVersions = "[1.7.10]",
         dependencies =
                 "required-after:Forge@[10.13.2.1291,);")
 
 public class impact {
 
-    @SidedProxy(clientSide = Refstrings.CLIENTSIDE, serverSide = Refstrings.SERVERSIDE)
+    @SidedProxy(clientSide = "com.impact.core.ClientProxy", serverSide = "com.impact.core.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance(MODID)
