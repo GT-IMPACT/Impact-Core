@@ -49,8 +49,8 @@ public enum Core_List_Items {
     ChargedQuartzDust(38, 0),
     SawDust(39, 0),
     DioxideYttrium(40, 0),
-
-    EMPTY(41, 0), // пустой
+    
+    NULL41(41, 0, true), // пустой
 
     YSZdust(42, 0),
     GDCdust(43, 0),
@@ -60,7 +60,62 @@ public enum Core_List_Items {
     LSFCCeramic(47, 0),
     Zircon(48, 0),
     ZirconiumChloride(49, 0),
-
+    
+    NULL50(50, 0, true),
+    NULL51(51, 0, true),
+    NULL52(52, 0, true),
+    NULL53(53, 0, true),
+    NULL54(54, 0, true),
+    NULL55(55, 0, true),
+    NULL56(56, 0, true),
+    NULL57(57, 0, true),
+    NULL58(58, 0, true),
+    NULL59(59, 0, true),
+    NULL60(60, 0, true),
+    NULL61(61, 0, true),
+    NULL62(62, 0, true),
+    NULL63(63, 0, true),
+    NULL64(64, 0, true),
+    NULL65(65, 0, true),
+    NULL66(66, 0, true),
+    NULL67(67, 0, true),
+    NULL68(68, 0, true),
+    NULL69(69, 0, true),
+    NULL70(70, 0, true),
+    NULL71(71, 0, true),
+    NULL72(72, 0, true),
+    NULL73(73, 0, true),
+    NULL74(74, 0, true),
+    NULL75(75, 0, true),
+    NULL76(76, 0, true),
+    NULL77(77, 0, true),
+    NULL78(78, 0, true),
+    NULL79(79, 0, true),
+    NULL80(80, 0, true),
+    NULL81(81, 0, true),
+    NULL82(82, 0, true),
+    NULL83(83, 0, true),
+    NULL84(84, 0, true),
+    NULL85(85, 0, true),
+    NULL86(86, 0, true),
+    NULL87(87, 0, true),
+    NULL88(88, 0, true),
+    NULL89(89, 0, true),
+    NULL90(90, 0, true),
+    NULL91(91, 0, true),
+    NULL92(92, 0, true),
+    NULL93(93, 0, true),
+    NULL94(94, 0, true),
+    NULL95(95, 0, true),
+    NULL96(96, 0, true),
+    NULL97(97, 0, true),
+    NULL98(98, 0, true),
+    NULL99(99, 0, true),
+    
+    DropCrashedStone(100, 0),
+    DropCrashedMetallic(101, 0),
+    DropCrashedCoal(102, 0),
+    
     //MetaItems1
     SchematicsTier1(0, 1),
     SchematicsTier2(1, 1),
@@ -339,11 +394,19 @@ public enum Core_List_Items {
 
     private final int metaID;
     private final int identifier;
+    public final boolean hideNEI;
     String OreDictName;
 
-    private Core_List_Items(int metaID, int identifier) {
+    Core_List_Items(int metaID, int identifier) {
         this.metaID = metaID;
         this.identifier = identifier;
+        this.hideNEI = false;
+    }
+    
+    Core_List_Items(int metaID, int identifier, boolean hideNEI) {
+        this.metaID = metaID;
+        this.identifier = identifier;
+        this.hideNEI = hideNEI;
     }
 
     public static void registerOreDictNames() {

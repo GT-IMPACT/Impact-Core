@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 
+import static com.impact.common.item.Core_List_Items.*;
 import static com.impact.util.Utilits.getBlock;
 import static com.impact.util.Utilits.is;
 import static gregtech.api.enums.Materials.*;
@@ -17,29 +18,19 @@ import static gregtech.api.enums.OrePrefixes.*;
 public class EventDropBlock {
 	
 	static {
-		
-		DropsBlock.add(Blocks.stone, 0, 0.05f, dustImpure, Stone, Iron, Copper, Tin, Coal);
-
+		ItemStack[] dropCrashedStone = {DropCrashedStone.get(1), DropCrashedMetallic.get(1), DropCrashedCoal.get(1)};
+		DropsBlock.add(Blocks.stone, 0, 0.05f, dropCrashedStone);
 		String ubc = "UndergroundBiomes";
 		String name = "igneousStone";
-		DropsBlock.add(getBlock(ubc, name), 0, 0.05f, dustImpure, RedGranite, Iron, Copper, Tin, Coal); //Red Granite
-		DropsBlock.add(getBlock(ubc, name), 1, 0.05f, dustImpure, BlackGranite, Iron, Copper, Tin, Coal); //Black Granite
-		DropsBlock.add(getBlock(ubc, name), 2, 0.05f, is(dust, PotassiumFeldspar), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Rhyolite
-		DropsBlock.add(getBlock(ubc, name), 3, 0.05f, is(dust, SiliconDioxide), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Andesite
-		DropsBlock.add(getBlock(ubc, name), 4, 0.05f, is(dust, PotassiumFeldspar), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Gabbro
-		DropsBlock.add(getBlock(ubc, name), 5, 0.05f, dustImpure, Basalt, Iron, Copper, Tin, Coal); //Basalt
-		DropsBlock.add(getBlock(ubc, name), 6, 0.05f, is(dust, Biotite), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Komatite
-		DropsBlock.add(getBlock(ubc, name), 7, 0.05f, is(dust, SiliconDioxide), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Dacite
-		
+		for (int i = 0; i < 8; i++) {
+			//Red Granite, Black Granite, Rhyolite, Andesite, Gabbro, Basalt, Komatite, Dacite
+			DropsBlock.add(getBlock(ubc, name), i, 0.05f, dropCrashedStone);
+		}
 		name = "metamorphicStone";
-		DropsBlock.add(getBlock(ubc, name), 0, 0.05f, is(dust, SiliconDioxide), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Gneiss
-		DropsBlock.add(getBlock(ubc, name), 1, 0.05f, is(dust, SiliconDioxide), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Eclogite
-		DropsBlock.add(getBlock(ubc, name), 2, 0.05f, dustImpure, Marble, Iron, Copper, Tin, Coal); //Marble
-		DropsBlock.add(getBlock(ubc, name), 3, 0.05f, dustImpure, Quartzite, Iron, Copper, Tin, Coal); //Quartzite
-		DropsBlock.add(getBlock(ubc, name), 4, 0.05f, dustImpure, Glauconite, Iron, Copper, Tin, Coal); //Blue Schist
-		DropsBlock.add(getBlock(ubc, name), 5, 0.05f, dustImpure, Glauconite, Iron, Copper, Tin, Coal); //Green Schist
-		DropsBlock.add(getBlock(ubc, name), 6, 0.05f, dustImpure, Soapstone, Iron, Copper, Tin, Coal); //Soapstone
-		DropsBlock.add(getBlock(ubc, name), 7, 0.05f, is(dust, SiliconDioxide), is(dustImpure, Iron), is(dustImpure, Copper), is(dustImpure, Tin), is(dustImpure, Coal)); //Migmatite
+		for (int i = 0; i < 8; i++) {
+			//Gneiss, Eclogite, Marble, Quartzite, Blue Schist, Green Schist, Soapstone, Migmatite
+			DropsBlock.add(getBlock(ubc, name), i, 0.05f, dropCrashedStone);
+		}
 	}
 	
 	@SubscribeEvent

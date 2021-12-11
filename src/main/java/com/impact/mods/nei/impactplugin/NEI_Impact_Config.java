@@ -1,7 +1,9 @@
 package com.impact.mods.nei.impactplugin;
 
+import codechicken.nei.NEIModContainer;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.HandlerInfo;
+import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.core.Impact_API;
 import com.impact.core.Refstrings;
 import com.impact.mods.gregtech.GT_ItemList;
@@ -22,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static com.impact.mods.gregtech.GT_ItemList.*;
 import static com.impact.util.Utilits.getFluidDisplay;
@@ -44,9 +47,27 @@ public class NEI_Impact_Config implements IConfigureNEI {
 	}
 	
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (o.hashCode() == hashCode()) return true;
+		NEI_Impact_Config cfg = (NEI_Impact_Config) o;
+		return cfg.getName().equals(getName()) && cfg.getVersion().equals(getVersion());
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getName(), getVersion());
+	}
+	
+	@Override
 	public void loadConfig() {
-		RecipeProcessorLoader.init();
 		
+		if (NEIModContainer.plugins.contains(this)) {
+			return;
+		}
+		
+		RecipeProcessorLoader.init();
 		sIsAdded = false;
 		
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
@@ -72,8 +93,10 @@ public class NEI_Impact_Config implements IConfigureNEI {
 					.addInput(new ItemStack(GCItems.rocketTier1), 25, 22)
 					.addInput(getFluidDisplay(new FluidStack(ItemList.sRocketFuel, 1000)), 125, 22)
 					.addOutput(new ItemStack(GCItems.fuelCanister), 75, 22)
-					.addText(4, 85, Color.BLACK, "For any Rockets").addText(4, 95, Color.BLACK, "Need to make the rocket fuel")
-					.addText(4, 105, Color.BLACK, "Need to fill the canister").addText(4, 115, Color.BLACK, "Need to fuel the rocket")
+					.addText(4, 85, Color.BLACK, "For any Rockets")
+					.addText(4, 95, Color.BLACK, "Need to make the rocket fuel")
+					.addText(4, 105, Color.BLACK, "Need to fill the canister")
+					.addText(4, 115, Color.BLACK, "Need to fuel the rocket")
 					.addHandlerInfo(new HandlerInfo.Builder("rocket_fuel", "Impact-Core", Refstrings.MODID)
 							.setDisplayStack(new ItemStack(GCItems.fuelCanister)).setMaxRecipesPerPage(2).setHeight(145).setWidth(166).setShiftY(6).build())
 					.build();
