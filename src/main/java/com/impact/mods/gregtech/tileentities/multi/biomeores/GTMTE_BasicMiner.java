@@ -57,11 +57,12 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 					)
 					.build();
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
-	public int cycleIncrease = 0, sizeVeinPreStart = 0;
+	public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
 	public OreChunkGenerator oreChunkGenerator = null;
 	public OreVein oreVein = OreGenerator.empty;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
 	public int layer = 1;
+	public double cashedDecrement = 0d;
 	
 	public GTMTE_BasicMiner(int aID, String aNameRegional) {
 		super(aID, "impact.multis.miner.basic", aNameRegional);
@@ -79,8 +80,10 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	}
 	
 	public void increaseLayer(IGregTechTileEntity te) {
-		OreGenerator.amountIncrease(te, layer, cycleIncrease);
-		cycleIncrease = 0;
+		if (te.isServerSide()) {
+			oreChunkGenerator.sizeOreChunk -= cycleIncrease;
+			cycleIncrease = 0;
+		}
 	}
 	
 	public void initOreProperty(IGregTechTileEntity te) {
@@ -169,9 +172,6 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			}
 		} else {
 			if (te.isActive()) {
-				if (mProgresstime == mMaxProgresstime - 1) {
-					cycleIncrease++;
-				}
 				if (aTick % 20 == 5 && !hatch.isEmpty() && hatch.get(0) != null) {
 					if (!hatch.get(0).ready && hatch.get(0).drillCoefficient == 0) {
 						stopMachine();
@@ -182,7 +182,8 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	}
 	
 	private int byDrillHead(ItemStack stack) {
-		return stack.stackSize + hatch.get(0).drillCoefficient;
+		drillLevel = hatch.get(0).drillCoefficient;
+		return stack.stackSize + drillLevel;
 	}
 	
 	@Override
@@ -235,6 +236,20 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			mOutputItems          = output.toArray(new ItemStack[0]);
 		}
 		hatch.get(0).cycleDrill(check);
+		
+		double utilization = 1.0D;
+		for (int i = 0; i < drillLevel; i++) {
+			utilization *= 0.9D;
+		}
+		
+		double aa = utilization + cashedDecrement;
+		cycleIncrease = (int) Math.floor(aa);
+		cashedDecrement = aa - cycleIncrease;
+		
+		if (cycleIncrease >= 1) {
+			sizeVeinPreStart -= cycleIncrease;
+			increaseLayer(getBaseMetaTileEntity());
+		}
 		return check;
 	}
 	
@@ -256,6 +271,8 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		aNBT.setInteger("cycleIncrease", cycleIncrease);
 		aNBT.setInteger("sizeVeinPreStart", sizeVeinPreStart);
 		aNBT.setInteger("layer", layer);
+		aNBT.setInteger("drillLevel", drillLevel);
+		aNBT.setDouble("cashedDecrement", cashedDecrement);
 	}
 	
 	@Override
@@ -264,6 +281,8 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		cycleIncrease    = aNBT.getInteger("cycleIncrease");
 		sizeVeinPreStart = aNBT.getInteger("sizeVeinPreStart");
 		layer            = aNBT.getInteger("layer");
+		drillLevel       = aNBT.getInteger("drillLevel");
+		cashedDecrement  = aNBT.getDouble("cashedDecrement");
 	}
 	
 	@Override

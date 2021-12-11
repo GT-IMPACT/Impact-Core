@@ -24,7 +24,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -64,11 +63,12 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 					.build();
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	private final List<GTMTE_EnrichmentUnit> enrich = new ArrayList<>();
-	public int cycleIncrease = 0, sizeVeinPreStart = 0;
+	public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
 	public OreVeinGenerator oreVeinGenerator = null;
 	public List<OreChunkGenerator> chunksGenerator = new ArrayList<>();
 	public OreVein oreVein = OreGenerator.empty;
 	public int layer = 2;
+	public double cashedDecrement = 0d;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
 	
 	public GTMTE_AdvancedMiner(int aID, String aNameRegional) {
@@ -82,39 +82,21 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 	@Override
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
-		initOreProperty(te);
 		increaseLayer(te);
+		initOreProperty(te);
 	}
 	
 	public void increaseLayer(IGregTechTileEntity te) {
-		if (cycleIncrease <= 0) return;
-		Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-		OreVeinGenerator veinLocal = OreGenerator.getVein(ch, layer);
-		if (veinLocal != null) {
-			for (OreChunkGenerator oreChunkGenerator : veinLocal.oreChunkGenerators) {
+		if (te.isServerSide()) {
+			if (cycleIncrease <= 0) return;
+			for (OreChunkGenerator oreChunkGenerator : chunksGenerator) {
 				if (oreChunkGenerator.sizeOreChunk > 0) {
-					int localSum = oreChunkGenerator.sizeOreChunk - cycleIncrease;
-					if (localSum >= 0) {
-						
-						Chunk chunk = te.getWorld().getChunkFromChunkCoords(oreChunkGenerator.xChunk, oreChunkGenerator.zChunk);
-						OreGenerator.amountIncrease(chunk, layer, cycleIncrease);
-
-						break;
-					} else {
-						cycleIncrease -= oreChunkGenerator.sizeOreChunk;
-						
-						if (cycleIncrease <= 0) {
-							break;
-						}
-						
-						Chunk chunk = te.getWorld().getChunkFromChunkCoords(oreChunkGenerator.xChunk, oreChunkGenerator.zChunk);
-						OreGenerator.amountIncrease(chunk, layer, oreChunkGenerator.sizeOreChunk);
-						
-					}
+					oreChunkGenerator.sizeOreChunk -= cycleIncrease;
+					break;
 				}
 			}
+			cycleIncrease = 0;
 		}
-		cycleIncrease = 0;
 	}
 	
 	public void initOreProperty(IGregTechTileEntity te) {
@@ -240,7 +222,8 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	private int byDrillHead(ItemStack stack) {
-		return stack.stackSize + hatch.get(0).drillCoefficient;
+		drillLevel = hatch.get(0).drillCoefficient;
+		return stack.stackSize + drillLevel;
 	}
 	
 	@Override
@@ -324,7 +307,20 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			this.mOutputItems     = output.toArray(new ItemStack[0]);
 		}
 		hatch.get(0).cycleDrill(check);
-		this.cycleIncrease += 10000;
+		
+		double utilization = 1.0D;
+		for (int i = 0; i < drillLevel; i++) {
+			utilization *= 0.9D;
+		}
+		
+		double aa = utilization + cashedDecrement;
+		cycleIncrease = (int) Math.floor(aa);
+		cashedDecrement = aa - cycleIncrease;
+		
+		if (cycleIncrease >= 1) {
+			sizeVeinPreStart -= cycleIncrease;
+			increaseLayer(getBaseMetaTileEntity());
+		}
 		impact.proxy.addClientSideChatMessages("" + (System.currentTimeMillis() - start));
 		return check;
 	}
@@ -347,6 +343,8 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 		aNBT.setInteger("cycleIncrease", cycleIncrease);
 		aNBT.setInteger("sizeVeinPreStart", sizeVeinPreStart);
 		aNBT.setInteger("layer", layer);
+		aNBT.setInteger("drillLevel", drillLevel);
+		aNBT.setDouble("cashedDecrement", cashedDecrement);
 	}
 	
 	@Override
@@ -355,6 +353,8 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 		cycleIncrease    = aNBT.getInteger("cycleIncrease");
 		sizeVeinPreStart = aNBT.getInteger("sizeVeinPreStart");
 		layer            = aNBT.getInteger("layer");
+		drillLevel       = aNBT.getInteger("drillLevel");
+		cashedDecrement  = aNBT.getDouble("cashedDecrement");
 	}
 	
 	@Override
@@ -368,7 +368,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 				if (layer > 2) {
 					layer = 0;
 				}
-				initOreProperty(te);
+				initOreProperty(getBaseMetaTileEntity());
 				GT_Utility.sendChatToPlayer(aPlayer, "Layer set: " + (layer));
 			}
 		}

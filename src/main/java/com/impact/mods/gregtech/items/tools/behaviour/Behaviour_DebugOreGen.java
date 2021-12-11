@@ -14,6 +14,7 @@ import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -61,13 +62,12 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 						for (int i = 0; i < OresRegionGenerator.layers; i++) {
 							List<OreVeinGenerator> veins = region.veins.get(i);
 							for (OreVeinGenerator vein : veins) {
+								OreVein oreVein = Impact_API.registerVeins.get(vein.oreVeinID);
 								for (OreChunkGenerator oreChunkGenerator : vein.oreChunkGenerators) {
 									Chunk chunks = aWorld.getChunkFromChunkCoords(oreChunkGenerator.xChunk, oreChunkGenerator.zChunk);
 									OreChunkGenerator chunk = OreGenerator.getChunk(chunks, i);
 									if (chunk != null) {
-										int max = 100_000 * ((i + 1) << i);
-										int min = 50_000 * ((i + 1) << i);
-										chunk.sizeOreChunk = Utilits.getRandom(min, max);
+										chunk.setSize(oreVein);
 									}
 								}
 							}
@@ -90,15 +90,38 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 						
 				}
 			} else {
-				int layer = aStack.stackSize - 1;
-				OreChunkGenerator chunk = OreGenerator.getChunk(ch, layer);
-				if (chunk != null) {
-					OreVein vein = OreGenerator.getOreVein(ch, layer);
-					GT_Utility.sendChatToPlayer(aPlayer, "Name Vein: " + Impact_API.registerVeins.get(vein.idVein).nameVein);
-					OreGenerator.amountIncrease(ch, layer, 10_000);
-					GT_Utility.sendChatToPlayer(aPlayer, "Current Ore Chunk Increase 10,000 cycles, Cycles: " + chunk.sizeOreChunk);
-				} else {
-					GT_Utility.sendChatToPlayer(aPlayer, "Not Found Ore Chunk! Please conduct a geo-exploration");
+				switch (aStack.stackSize) {
+					case 1:
+					case 2:
+					int layer = aStack.stackSize - 1;
+					OreChunkGenerator chunk = OreGenerator.getChunk(ch, layer);
+					if (chunk != null) {
+						OreVein vein = OreGenerator.getOreVein(ch, layer);
+						GT_Utility.sendChatToPlayer(aPlayer, "Name Vein: " + Impact_API.registerVeins.get(vein.idVein).nameVein);
+						OreGenerator.amountIncrease(ch, layer, 10_000);
+						GT_Utility.sendChatToPlayer(aPlayer, "Current Ore Chunk Increase 10,000 cycles, Cycles: " + chunk.sizeOreChunk);
+					} else {
+						GT_Utility.sendChatToPlayer(aPlayer, "Not Found Ore Chunk! Please conduct a geo-exploration");
+					}
+						break;
+					case 50:
+					case 51:
+						int tierVein = aStack.stackSize - 50;
+						int sizeVein = 0;
+						OreVeinGenerator o = OreGenerator.getVein(ch, tierVein);
+						if (o != null) {
+							for (OreChunkGenerator oo : o.oreChunkGenerators) {
+								sizeVein += oo.sizeOreChunk;
+							}
+						}
+						GT_Utility.sendChatToPlayer(aPlayer, "Layer " + tierVein + ", Vein Size Cycles: " + GT_Utility.formatNumbers(sizeVein));
+						break;
+					case 60:
+					case 61:
+						int tierChunk = aStack.stackSize - 60;
+						int sizeChunk = OreGenerator.sizeChunk(ch, tierChunk);
+						GT_Utility.sendChatToPlayer(aPlayer, "Layer " + tierChunk + ", Chunk Size Cycles: " + GT_Utility.formatNumbers(sizeChunk));
+						break;
 				}
 			}
 			return true;
@@ -107,19 +130,21 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 	}
 	
 	public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
-		aList.add("Debug Ore Gen");
-		aList.add("Shift + RClick - clear current Ore Region (512 x 512)");
-		aList.add("Stacksize this item:");
-		aList.add("   - 1x - Remove full Region");
-		aList.add("   - 2x - Remove only Region Veins Cycles");
-		aList.add("   - 3x - Filled Region Veins Cycles");
-		aList.add("   - 61x - Generate Regions Area (Cube) -10K x 10K blocks");
+		aList.add(EnumChatFormatting.RED + "DEBUG ORE GEN");
 		aList.add(" ");
-		aList.add("RClick - increase current Ore Chunk (10,000 cycles)");
-		aList.add("Stacksize this item: ");
-		aList.add("   - 1x - 0 Ore Layer");
-		aList.add("   - 2x - 1 Ore Layer");
-		aList.add("   - 3x - 2 Ore Layer");
+		aList.add(EnumChatFormatting.GREEN + "SHIFT + RCLICK - Stacksize this item:");
+		aList.add("   -  x1 - Remove full Region");
+		aList.add("   -  x2 - Remove only Region Veins Cycles");
+		aList.add("   -  x3 - Filled Region Veins Cycles");
+		aList.add("   - x61 - Generate Regions Area (Cube) -10K x 10K blocks");
+		aList.add(" ");
+		aList.add(EnumChatFormatting.YELLOW + "RCLICK - Stacksize this item: ");
+		aList.add("   -  x1 - 0 Ore Layer increase current Ore Chunk (10,000 cycles)");
+		aList.add("   -  x2 - 1 Ore Layer increase current Ore Chunk (10,000 cycles)");
+		aList.add("   - x50 - Check 0 layer Vein Size");
+		aList.add("   - x51 - Check 1 layer Vein Size");
+		aList.add("   - x60 - Check 0 layer Chunk Size");
+		aList.add("   - x61 - Check 1 layer Chunk Size");
 		return aList;
 	}
 }

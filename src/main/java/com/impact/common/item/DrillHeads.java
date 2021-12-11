@@ -18,7 +18,7 @@ import java.util.List;
 
 public class DrillHeads extends Item implements ITieredDamagedItems {
 
-    int x = 6; //Iron (Steam), Steel(LV), Stain.Steel(MV), Titanium(HV), Tang.Steel(EV), Inconel-690(IV), Iridium(LuV)
+    int x = 7; //Iron (Steam), Steel(LV), Stain.Steel(MV), Titanium(HV), Tang.Steel(EV), Inconel-690(IV), Iridium(LuV), Neutronium(ZPM)
 
     private static final DrillHeads drillHeads = new DrillHeads();
     private final IIcon[] icons = new IIcon[x + 1];
@@ -70,7 +70,7 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
         list.add("Drill Heads for Impact Miners");
         int damage = stack.getTagCompound().getInteger("drillDamage");
         list.add(EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(damage) + " / " + GT_Utility.formatNumbers(damage(stack)));
-        String[] a = {"Iron", "Steel", "Stainless Steel", "Titanium", "Tungstensteel", "Inconel-690", "Iridium"};
+        String[] a = {"Iron", "Steel", "Stainless Steel", "Titanium", "Tungstensteel", "Inconel-690", "Iridium", "Neutronium"};
         list.add(EnumChatFormatting.WHITE + a[stack.getItemDamage()] + " " + EnumChatFormatting.YELLOW + stack.getItemDamage() + " lvl");
     }
 
@@ -114,6 +114,7 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
             case 4: return new Color(100, 100, 160); // Tang.Steel
             case 5: return new Color(221,238,1);     // Inconel-690
             case 6: return new Color(240, 240, 245); // Iridium
+            case 7: return new Color(255, 255, 255); // Neutronium
         }
         return Color.WHITE;
     }

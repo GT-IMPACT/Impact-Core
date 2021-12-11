@@ -41,9 +41,11 @@ public class OreVeinGenerator {
 	}
 	
 	public void createOreChunk() {
+		OreVein oreVein = Impact_API.registerVeins.get(oreVeinID);
 		for (int x = 0; x < 4; x++) {
 			for (int z = 0; z < 4; z++) {
-				OreChunkGenerator oreChunkGenerator = new OreChunkGenerator((xVein << 2) + x, (zVein << 2) + z, Impact_API.registerVeins.get(oreVeinID).tierVein);
+				OreChunkGenerator oreChunkGenerator = new OreChunkGenerator((xVein << 2) + x, (zVein << 2) + z);
+				oreChunkGenerator.setSize(oreVein);
 				oreChunkGenerators.add(oreChunkGenerator);
 			}
 		}

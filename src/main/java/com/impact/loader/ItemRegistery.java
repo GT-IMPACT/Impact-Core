@@ -3,6 +3,7 @@ package com.impact.loader;
 import com.impact.common.armor.MaskOfVision;
 import com.impact.common.block.blocks.*;
 import com.impact.common.block.itemblock.FakeBlocksItem;
+import com.impact.common.item.Core_List_Items;
 import com.impact.common.item.GT_Pump.GregtechPump;
 import com.impact.core.Refstrings;
 import com.impact.mods.gregtech.items.tools.ConstructionLaser;
@@ -149,6 +150,11 @@ public class ItemRegistery {
 		hideItem(new ItemStack(decorateBlock[2], 1, 2));
 		hideItem(new ItemStack(decorateBlock[2], 1, 3));
 		hideItem(new ItemStack(decorateBlock[2], 1, 4));
+		for (Core_List_Items value : Core_List_Items.values()) {
+			if (value.hideNEI) {
+				hideItem(value.get(1));
+			}
+		}
 		for (int i = 0; i <= 11; i++) {
 			hideItem(GT_ModHandler.getModItem("Railcraft", "cube", 1, i));
 		}

@@ -26,6 +26,7 @@ public class OreVeinBuilder {
 	private FluidStack fluid;
 	private List<ItemStack> ores;
 	private int[] idDim;
+	private int[] size;
 	
 	public static OreVeinBuilder addVein(int id, String name) {
 		OreVeinBuilder builder = new OreVeinBuilder();
@@ -37,6 +38,8 @@ public class OreVeinBuilder {
 		builder.chance = new int[]{90, 60, 60, 30};
 		builder.ores   = new ArrayList<>();
 		builder.idDim  = new int[]{0};
+		builder.idDim  = new int[]{0};
+		builder.size   = new int[]{0, 0};
 		return builder;
 	}
 	
@@ -100,6 +103,13 @@ public class OreVeinBuilder {
 		return this;
 	}
 	
+	public OreVeinBuilder setSize(int min, int max) {
+		this.size = new int[]{min, max};
+		return this;
+	}
+	
+	
+	
 	public OreVein end() {
 		short[] fixChance;
 		if (chance == null) {
@@ -110,6 +120,6 @@ public class OreVeinBuilder {
 				fixChance[i] = (short) chance[i];
 			}
 		}
-		return OreVein.addVein(id, name, tier, idDim, weight, color, fixChance, fluid, ores);
+		return OreVein.addVein(id, name, tier, idDim, size, weight, color, fixChance, fluid, ores);
 	}
 }

@@ -18,21 +18,21 @@ public class OreChunkGenerator {
 	@SerializedName("size")
 	public int sizeOreChunk;
 	
-	public OreChunkGenerator(int xChunk, int zChunk, int tier) {
+	public OreChunkGenerator(int xChunk, int zChunk) {
 		this.xChunk       = xChunk;
 		this.zChunk       = zChunk;
-		this.sizeOreChunk = calcChunkSize(tier);
+		this.sizeOreChunk = 0;
 	}
 	
-	private static int calcChunkSize(int tier) {
-		int max = 100_000 * ((tier + 1) << tier);
-		int min = 50_000 * ((tier + 1) << tier);
-		return Utilits.getRandom(min, max);
+	public void setSize(OreVein oreVein) {
+		int max = oreVein.size[0] * 1000;
+		int min = oreVein.size[1] * 1000;
+		this.sizeOreChunk = Utilits.getRandom(min, max);
 	}
 	
 	public static OreChunkGenerator fromChunk(Chunk chunk) {
 		ChunkCoordIntPair c = chunk.getChunkCoordIntPair();
-		return new OreChunkGenerator(c.chunkXPos, c.chunkZPos, -1);
+		return new OreChunkGenerator(c.chunkXPos, c.chunkZPos);
 	}
 	
 	@Override

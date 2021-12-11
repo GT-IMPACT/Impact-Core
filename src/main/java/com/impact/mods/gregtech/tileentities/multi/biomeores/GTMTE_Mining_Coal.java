@@ -93,17 +93,17 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	}
 	
 	public void increaseLayer(IGregTechTileEntity te) {
-		OreGenerator.amountIncrease(te, 0, cycleIncrease);
+		OreGenerator.amountIncrease(te, TIER_MINER, cycleIncrease);
 		cycleIncrease = 0;
 	}
 	
 	public void initOreProperty(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
-			oreChunkGenerator = OreGenerator.getChunkFromIGT(te, 0);
+			oreChunkGenerator = OreGenerator.getChunkFromIGT(te, TIER_MINER);
 			if (oreChunkGenerator != null) {
 				sizeVeinPreStart = oreChunkGenerator.sizeOreChunk;
 				if (sizeVeinPreStart > 0) {
-					oreVein = OreGenerator.getOreVein(te, 0);
+					oreVein = OreGenerator.getOreVein(te, TIER_MINER);
 				} else {
 					oreVein = OreGenerator.empty;
 				}
