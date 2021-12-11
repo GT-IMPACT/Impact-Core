@@ -1,7 +1,7 @@
 package com.impact.events;
 
 
-import com.impact.util.Language;
+import com.impact.util.string.Language;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.EntityList;
@@ -15,7 +15,7 @@ import java.util.List;
 public class impactEvents {
 	
 	public static List<String> bannedEntities = Arrays.asList(
-			"Chicken", "Creeper", "Skeleton", "Spider", "Giant", "Zombie", "Slime", "Ghast",
+			"Creeper", "Skeleton", "Spider", "Giant", "Zombie", "Slime", "Ghast",
 			"PigZombie", "Enderman", "Silverfish", "Blaze", "LavaSlime", "WitherBoss", "Bat", "Witch",
 			"MushroomCow", "SnowMan", "GalacticraftCore.EvolvedSpider",
 			"GalacticraftCore.EvolvedZombie", "GalacticraftCore.EvolvedCreeper",

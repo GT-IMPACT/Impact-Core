@@ -2,7 +2,7 @@ package com.impact.mods.gregtech.tileentities.basic;
 
 import com.impact.mods.gregtech.gui.regulatechest.Container_OneStackRegulateChest;
 import com.impact.mods.gregtech.gui.regulatechest.GUI_OneStackRegulateChest;
-import com.impact.util.Language;
+import com.impact.util.string.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

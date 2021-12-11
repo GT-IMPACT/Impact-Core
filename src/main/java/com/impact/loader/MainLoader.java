@@ -19,7 +19,8 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
 import com.impact.mods.opencomputers.Driver_Register;
 import com.impact.mods.railcraft.carts.item.events.Module;
-import com.impact.util.Language;
+import com.impact.util.string.Lang;
+import com.impact.util.string.Language;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -28,10 +29,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.common.item.Core_List_Items.registerOreDictNames;
@@ -147,9 +144,7 @@ public class MainLoader {
 		new Basic_Register().run();
 		new GT_WorldGenRegister().run();
 		new ModLoader().run();
-		
-		Language.registerStaticLanguage();
-		
+		INFO(Lang.impact.eng + " Lang Loaded");
 		for (Module module : getModules()) {
 			if (module.getIsActive()) {
 				module.postInit(event);

@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.hatches;
 
-import com.impact.util.Language;
+import com.impact.util.string.Language;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

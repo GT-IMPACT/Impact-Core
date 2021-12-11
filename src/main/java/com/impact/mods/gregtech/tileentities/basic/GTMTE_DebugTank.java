@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
-import com.impact.util.Language;
+import com.impact.util.string.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.hatches;
 
-import com.impact.util.Language;
+import com.impact.util.string.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_1by1;
 import gregtech.api.gui.GT_GUIContainer_1by1;

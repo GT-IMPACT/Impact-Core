@@ -1,17 +1,12 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.util.Language;
+import com.impact.util.string.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_Utility.getOppositeSide;

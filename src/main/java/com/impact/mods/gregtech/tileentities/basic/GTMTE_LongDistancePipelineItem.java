@@ -4,7 +4,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_ITEM
 import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_ITEM_FRONT;
 import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_PIPELINE_ITEM_SIDE;
 
-import com.impact.util.Language;
+import com.impact.util.string.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
