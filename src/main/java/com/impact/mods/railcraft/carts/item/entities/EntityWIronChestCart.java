@@ -56,6 +56,6 @@ public class EntityWIronChestCart extends EntityExtraCartChestMinecart implement
 	@Optional.Method(modid = "RailcraftAPI|carts")
 	public boolean doesCartMatchFilter(ItemStack stack, EntityMinecart cart) {
 		ItemStack CartStack = new ItemStack(ChestCartItems.ChestCart, 1, 0);
-		return cart instanceof EntityWIronChestCart && stack.getItem() == CartStack.getItem() && stack.getItemDamage() == 3;
+		return cart instanceof EntityWIronChestCart && stack.getItem() == CartStack.getItem() && stack.getItemDamage() == 0;
 	}
 }
