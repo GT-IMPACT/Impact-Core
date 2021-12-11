@@ -17,8 +17,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -77,7 +77,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 		b
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
-				.addTypeMachine("name", "Cutting Machine")
+				.addTypeMachine("name", "Cutting Machine, Saw Mill")
 				.addScrew()
 				.addSeparatedBus()
 				.addSeparator()
@@ -100,7 +100,12 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sCutterRecipes;
+		switch (mMode) {
+			case 1: return GT_Recipe.GT_Recipe_Map.sSawMill0;
+			case 2: return GT_Recipe.GT_Recipe_Map.sSawMill1;
+			case 3: return GT_Recipe.GT_Recipe_Map.sSawMill2;
+			default: return GT_Recipe.GT_Recipe_Map.sCutterRecipes;
+		}
 	}
 	
 	@Override
@@ -187,13 +192,14 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (aPlayer.isSneaking()) {
-			if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-				modeBuses++;
-				if (modeBuses > 1) {
-					modeBuses = 0;
-				}
-				GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
+			ScrewClick(aSide, aPlayer, aX, aY, aZ);
+		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+			mMode++;
+			if (mMode > 3) {
+				mMode = 0;
 			}
+			String a = (mMode == 0 ? "Cutting Saw" : mMode == 1 ? "Saw Mill (Planks & Sawdust)" : mMode == 2 ? "Saw Mill (Wood Pulp & Sawdust)" : "Saw Mill (Only Sawdust)");
+			GT_Utility.sendChatToPlayer(aPlayer, "Now " + EnumChatFormatting.YELLOW + a + EnumChatFormatting.RESET + " Mode");
 		}
 	}
 	
