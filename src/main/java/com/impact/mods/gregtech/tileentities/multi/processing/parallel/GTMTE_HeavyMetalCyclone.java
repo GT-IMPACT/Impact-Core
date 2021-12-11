@@ -87,10 +87,10 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 				.addController()
 				.addEnergyHatch()
 				.addMaintenanceHatch()
-				.addInputBus(3)
+				.addInputBus(4)
 				.addInputHatch(6)
-				.addOutputBus(1)
-				.addOutputHatch(1)
+				.addOutputBus(4)
+				.addOutputHatch(4)
 				.addCasingInfo("case", "Cyclone Casing")
 				.addOtherStructurePart("other.0", "Cyclone Chamber Casing", "other.1", "inside structure")
 				.addOtherStructurePart("other.2", "I-Glass", "other.3", "glass for structure")
@@ -304,16 +304,16 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 			}
 		}
 		
-		if (this.mInputBusses.size() > 3) {
+		if (this.mInputBusses.size() > 4) {
 			formationChecklist = false;
 		}
 		if (this.mInputHatches.size() > 6) {
 			formationChecklist = false;
 		}
-		if (this.mOutputBusses.size() > 1) {
+		if (this.mOutputBusses.size() > 4) {
 			formationChecklist = false;
 		}
-		if (this.mOutputHatches.size() > 1) {
+		if (this.mOutputHatches.size() > 4) {
 			formationChecklist = false;
 		}
 		if (this.mEnergyHatches.size() > 3) {
