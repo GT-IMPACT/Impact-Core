@@ -95,6 +95,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 		b
 				.addInfo("info.0", "Industrial Wood producer")
 				.addTypeMachine("name", "Wood Farm")
+				.addEffectiveLoss()
 				.addScrew()
 				.addSeparator()
 				.addController()

@@ -40,10 +40,10 @@ public enum Lang {
 	generator("Generator"),
 	steam_producer("Steam Producer"),
 	single_analog("One-block machine analog"),
-	efficiency_loss("Overclocking without loss of efficiency"),
 	dimensions("Dimensions"),
 	wxhxl("(WxHxL)"),
 	holo_details("Impact Hologram Details"),
+	efficiency_loss("Overclocking without loss of efficiency"),
 	;
 	
 	public String eng;

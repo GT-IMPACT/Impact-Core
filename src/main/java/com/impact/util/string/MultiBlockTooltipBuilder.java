@@ -78,6 +78,11 @@ public class MultiBlockTooltipBuilder {
 		return this;
 	}
 	
+	public MultiBlockTooltipBuilder addEffectiveLoss() {
+		iLines.add(efficiency_loss.get());
+		return this;
+	}
+	
 	public MultiBlockTooltipBuilder addMultiAmpGen() {
 		iLines.add(Lang.multi_amperes_generator.get());
 		return this;
