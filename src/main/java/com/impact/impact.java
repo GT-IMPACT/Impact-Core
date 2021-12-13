@@ -15,6 +15,7 @@ import com.impact.mods.gregtech.enums.RecipeAdder;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.railcraft.carts.item.ChestCartModule;
 import com.impact.mods.railcraft.carts.item.events.Module;
+import com.impact.recipe.maps.RecipesJson;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
@@ -103,6 +104,7 @@ public class impact {
     public void postInit(FMLPostInitializationEvent event) {
         MainLoader.postInit(event);
         proxy.postInit();
+        RecipesJson.load();
     }
 
     @Mod.EventHandler

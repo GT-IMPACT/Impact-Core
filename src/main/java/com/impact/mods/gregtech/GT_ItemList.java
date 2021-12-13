@@ -166,6 +166,7 @@ public enum GT_ItemList implements IItemContainer {
 	
 	Mining_Hatch_ULV,
 	Mining_Enrich_HV,
+	RecipeEditor,
 	CoalMiner, BasicMiner, AdvancedMiner,
 	
 	Wind_Generator,

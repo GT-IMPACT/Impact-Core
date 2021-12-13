@@ -24,3 +24,5 @@ idea/
 *.jar1
 *.psd
 *.patch
+src/main/generated/
+

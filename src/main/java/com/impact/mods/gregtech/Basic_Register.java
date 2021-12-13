@@ -339,6 +339,8 @@ public class Basic_Register {
 		Mining_Hatch_ULV.set(new GTMTE_OreHatch(ID2++, "Miner Drill Hatch", 0).getStackForm(1));
 		Mining_Enrich_HV.set(new GTMTE_EnrichmentUnit(ID2++, "Miner Enrichment Unit", 3).getStackForm(1));
 		
+		RecipeEditor.set(new GTMTE_RecipeEditor(ID2++, "Recipe Editor", 3).getStackForm(1));
+		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		
 		DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
