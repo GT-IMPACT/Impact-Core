@@ -136,11 +136,39 @@ public class GTMTE_RecipeEditor extends GT_MetaTileEntity_BasicTank {
 			FluidStack[] intF = inputF.toArray(new FluidStack[0]);
 			FluidStack[] outF = outputF.toArray(new FluidStack[0]);
 			
-			map.addRecipe(false, in, out, chanceEnabled ? chance : null, intF, outF, time, voltage, special);
+			if (time == 0 || voltage == 0) {
+				if (getBaseMetaTileEntity().isServerSide()) {
+					impact.proxy.addClientSideChatMessages("Error Recipe! Check Time or Voltage");
+				}
+				return;
+			}
 			
+			if (map.mUsualInputCount < in.length || map.mUsualOutputCount < out.length) {
+				if (getBaseMetaTileEntity().isServerSide()) {
+					impact.proxy.addClientSideChatMessages("Error Recipe! Check Inputs or Outputs (Maximum Inputs/Outputs)");
+				}
+				return;
+			}
+			
+			if (map.mMinimalInputFluids > intF.length || map.mMinimalInputItems > in.length) {
+				if (getBaseMetaTileEntity().isServerSide()) {
+					impact.proxy.addClientSideChatMessages("Error Recipe! Check Inputs (Minimum Inputs)");
+				}
+				return;
+			}
+			
+			GT_Recipe recipe = map.addRecipe(false, in, out, chanceEnabled ? chance : null, intF, outF, time, voltage, special);
+			
+			if (recipe == null) {
+				if (getBaseMetaTileEntity().isServerSide()) {
+					impact.proxy.addClientSideChatMessages("Error Recipe!");
+				}
+				return;
+			}
+			
+			RecipeJson recipeJson = new RecipeJson(false, in, out, chanceEnabled ? chance : null, intF, outF, time, voltage, special);
+			RecipesJson.preSave(map.mUnlocalizedName, recipeJson);
 			if (getBaseMetaTileEntity().isServerSide()) {
-				RecipeJson recipeJson = new RecipeJson(false, in, out, chanceEnabled ? chance : null, intF, outF, time, voltage, special);
-				RecipesJson.preSave(map.mUnlocalizedName, recipeJson);
 				impact.proxy.addClientSideChatMessages("Recipe Added");
 			}
 		} catch (Exception e) {

@@ -103,14 +103,13 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 				}
 			}
 			if (index == 49) {
-				if (mTileEntity.isClientSide()) return super.slotClick(index, mouse, hotkeys, player);
-				if (recipeEditor.map != null) {
-					new ToClient_String(recipeEditor.nameGui, recipeEditor.map.mNEIName, recipeEditor.voltage + "", recipeEditor.time + "", recipeEditor.special + "").sendToClients();
-				}
 			}
 			if (index == 50) {
-				Arrays.fill(recipeEditor.mInventory, null);
-				load();
+				if (hotkeys == 1) {
+					load();
+				} else {
+					Arrays.fill(recipeEditor.mInventory, null);
+				}
 			}
 			if (index <= 47 && index >= 24) {
 				ItemStack tStackHeld = player.inventory.getItemStack();
@@ -128,6 +127,25 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 		} catch (Exception e) {
 		}
 		return super.slotClick(index, mouse, hotkeys, player);
+	}
+	
+	int ticker;
+	
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+		if (mTileEntity.isClientSide() && mTileEntity.getMetaTileEntity() == null) return;
+		if (mTileEntity.isServerSide()) {
+			GTMTE_RecipeEditor recipeEditor = (GTMTE_RecipeEditor) mTileEntity.getMetaTileEntity();
+			if (ticker % 20 == 0) {
+				if (recipeEditor.map != null) {
+					new ToClient_String(recipeEditor.nameGui, recipeEditor.map.mNEIName,
+							recipeEditor.voltage + "", recipeEditor.time + "", recipeEditor.special + ""
+					).sendToClients();
+				}
+			}
+			ticker++;
+		}
 	}
 	
 	@Override

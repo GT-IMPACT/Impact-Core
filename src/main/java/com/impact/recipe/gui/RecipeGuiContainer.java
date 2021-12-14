@@ -35,10 +35,9 @@ public class RecipeGuiContainer extends GT_GUIContainerMT_Machine implements IPa
 		boxes.add(vol = new GuiIntegerBox(fontRendererObj, guiLeft + 55, guiTop + 120, 115, 10));
 		boxes.add(time = new GuiIntegerBox(fontRendererObj, guiLeft + 55, guiTop + 135, 115, 10));
 		boxes.add(special = new GuiIntegerBox(fontRendererObj, guiLeft + 55, guiTop + 150, 115, 10));
-		RecipeContainer container = (RecipeContainer) mContainer;
-//		vol.setText(container.vol + "");
-//		time.setText(container.time + "");
-//		special.setText(container.special + "");
+		vol.setText("0");
+		time.setText("0");
+		special.setText("0");
 	}
 	
 	@Override
@@ -85,17 +84,21 @@ public class RecipeGuiContainer extends GT_GUIContainerMT_Machine implements IPa
 			int x = ((Slot) mContainer.inventorySlots.get(49)).xDisplayPosition - 1;
 			int y = ((Slot) mContainer.inventorySlots.get(49)).yDisplayPosition - 1;
 			getTooltip(mouseX, mouseY, x, y, 16, 16, new String[]{
-					"Set Recipe Map and Open NEI: ", nameMap,
+					"Open NEI: ", nameMap,
 			});
 			x = ((Slot) mContainer.inventorySlots.get(48)).xDisplayPosition - 1;
 			y = ((Slot) mContainer.inventorySlots.get(48)).yDisplayPosition - 1;
 			getTooltip(mouseX, mouseY, x, y, 16, 16, new String[]{
 					"Save Recipe",
+					"RClick: Add to NEI",
+					"Shift + RClick: Add to JSON",
 			});
 			x = ((Slot) mContainer.inventorySlots.get(50)).xDisplayPosition - 1;
 			y = ((Slot) mContainer.inventorySlots.get(50)).yDisplayPosition - 1;
 			getTooltip(mouseX, mouseY, x, y, 16, 16, new String[]{
-					"Clear all Slots",
+					"Refresh",
+					"RClick: Clear all Slots",
+					"Shift + RClick: Reload all maps from JSON",
 			});
 		}
 	}
