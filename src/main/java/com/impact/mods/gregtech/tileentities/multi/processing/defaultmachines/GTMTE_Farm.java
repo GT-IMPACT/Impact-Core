@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
@@ -24,11 +20,16 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer;
+import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer.registerTileClass;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
 
 public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 	
@@ -45,7 +46,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 	}
 	
 	public void run() {
-		registerMetaClass(GTMTE_Farm.class, new IMultiblockInfoContainer<GTMTE_Farm>() {
+		registerTileClass(GTMTE_Farm.class.getCanonicalName(), new IMultiBlockInfoContainer<GTMTE_Farm>() {
 			//region Structure
 			private final IStructureDefinition<GTMTE_Farm> definition =
 					StructureDefinition.<GTMTE_Farm>builder()
@@ -57,7 +58,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 									{"AAAAA", "AAAAA", "AAAAA", "AAAAA", "AAAAA"},
 							})
 							.addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))
-							.addElement('B', ofBlock(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
+							.addElement('B', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
 							.addElement('C', ofBlock(Casing_Helper.sCasePage8_3, 3))
 							.build();
 			private final String[] desc = new String[]{
@@ -70,8 +71,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 			
 			//endregion
 			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Farm tileEntity,
-								  ExtendedFacing aSide) {
+			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_Farm tileEntity, ExtendedFacing aSide) {
 				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
 				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
 						base.getXCoord(), base.getYCoord(), base.getZCoord(),

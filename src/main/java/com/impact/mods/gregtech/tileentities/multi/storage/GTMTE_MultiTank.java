@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import com.impact.util.fluid.MultiFluidHandler;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -31,17 +27,22 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import org.lwjgl.input.Keyboard;
+import space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer;
+import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
+import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.github.technus.tectech.mechanics.constructable.IMultiblockInfoContainer.registerMetaClass;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
 import static com.impact.loader.ItemRegistery.FluidTankBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static gregtech.api.GregTech_API.sBlockCasings8;
+import static space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer.registerTileClass;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
 
 public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements IFluidHandler {
 	
@@ -49,11 +50,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 	private final Block glassIC2 = IGlassBlock;
 	private final Block CASING = sBlockCasings8;
 	private final Block CASING_TANK = FluidTankBlock;
+	private final byte fluidSelector = 0;
 	public MultiFluidHandler mfh;
 	int CASING_TEXTURE_ID = 176;
 	private int runningCost = 0;
 	private boolean doVoidExcess = false;
-	private final byte fluidSelector = 0;
 	
 	public GTMTE_MultiTank(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.multifluidtank", aNameRegional);
@@ -475,7 +476,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 	}
 	
 	public void run() {
-		registerMetaClass(GTMTE_MultiTank.class, new IMultiblockInfoContainer<GTMTE_MultiTank>() {
+		registerTileClass(GTMTE_MultiTank.class.getCanonicalName(), new IMultiBlockInfoContainer<GTMTE_MultiTank>() {
 			//region Structure
 			private final IStructureDefinition<GTMTE_MultiTank> definition =
 					StructureDefinition.<GTMTE_MultiTank>builder()
@@ -491,8 +492,8 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 									{"AAAAA", "AAAAA", "AAAAA", "AAAAA", "AAAAA"}
 							})
 							.addElement('A', ofBlock(sBlockCasings8, 0))
-							.addElement('B', ofBlock(FluidTankBlock))
-							.addElement('C', ofBlock(IGlassBlock))
+							.addElement('B', ofBlockAnyMeta(FluidTankBlock))
+							.addElement('C', ofBlockAnyMeta(IGlassBlock))
 							.build();
 			private final String[] desc = new String[]{
 					EnumChatFormatting.RED + "Impact Details:",
@@ -505,8 +506,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 			
 			//endregion
 			@Override
-			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MultiTank tileEntity,
-								  ExtendedFacing aSide) {
+			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MultiTank tileEntity, ExtendedFacing aSide) {
 				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
 				definition.buildOrHints(tileEntity, stackSize, "main", base.getWorld(), aSide,
 						base.getXCoord(), base.getYCoord(), base.getZCoord(),
