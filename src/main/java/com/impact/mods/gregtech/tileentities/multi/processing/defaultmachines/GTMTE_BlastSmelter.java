@@ -4,6 +4,7 @@ import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -36,6 +37,7 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 	private int controllerY;
 	private final Block CASING = GregTech_API.sBlockCasings5;
 	private final FluidStack[] pollutionFluidStacks = new FluidStack[]{};
+	private GT_Recipe cashedRecipe = null;
 	
 	public GTMTE_BlastSmelter(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.blastsmelter", aNameRegional);
@@ -146,9 +148,10 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 			if (tInputList.size() > 0) {
 				long tVoltage = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-				GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastSmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, GT_Values.V[tTier], tFluids, tInputs
                 );
 				if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+					cashedRecipe = tRecipe;
 					this.mEfficiency         = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 					this.mEfficiencyIncrease = 10000;
 					int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;

@@ -84,6 +84,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
 	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 	
+	public GT_Recipe cashedRecipe = null;
+	
 	public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -202,10 +204,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		if (inputs.length > 0 || fluids.length > 0) {
 			long voltage = getMaxInputVoltageVanila();
 			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false,
+			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
 					false, GT_Values.V[tier], fluids, inputs
 			);
 			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+				
+				cashedRecipe = recipe;
 				
 				if (!WorldProperties.needCleanroom(recipe, this)) {
 					return false;
@@ -281,9 +285,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				GT_Recipe tRecipe;
 				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -358,9 +364,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				GT_Recipe tRecipe;
 				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -452,9 +460,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				
 				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -553,9 +563,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				
 				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -669,8 +681,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				GT_Recipe tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, false, V[tTier], tFluids, tInputs);
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
+					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
 					}
@@ -734,8 +749,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				GT_Recipe tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, false, V[tTier], tFluids, tInputs);
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
+					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
 					}
@@ -814,8 +832,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			if (tInputList.size() > 0 || tFluidList.size() > 0) {
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
+					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
 					}
@@ -880,8 +901,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				GT_Recipe tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
+					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
 					}

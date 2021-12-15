@@ -139,9 +139,10 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 			long nominalV = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 			
-			tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+			tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 			
 			if (tRecipe != null) {
+				cashedRecipe = tRecipe;
 				ArrayList<ItemStack> outputItems = new ArrayList<>();
 				ArrayList<FluidStack> outputFluids = new ArrayList<>();
 				

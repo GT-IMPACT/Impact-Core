@@ -139,10 +139,10 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				
 				GT_Recipe tRecipe;
-				tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+				tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				
 				if (tRecipe != null) {
-					
+					cashedRecipe = tRecipe;
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
 					}

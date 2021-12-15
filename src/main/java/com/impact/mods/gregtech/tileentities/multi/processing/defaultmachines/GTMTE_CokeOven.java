@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class GTMTE_CokeOven extends GTMTE_MBBase {
 	
+	private GT_Recipe cashedRecipe = null;
 	public GTMTE_CokeOven(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.cokeoven", aNameRegional);
 	}
@@ -125,11 +126,12 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
 		
 		if (inputs.length > 0 || fluids.length > 0) {
 			long voltage = getMaxInputVoltage();
-			GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sCokeOvenRecipes
-					.findRecipe(getBaseMetaTileEntity(), false,
+			GT_Recipe recipe = getRecipeMap()
+					.findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
 							false, 0, fluids, inputs
 					);
 			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+				cashedRecipe = recipe;
 				this.mEfficiency         = 10000;
 				this.mEfficiencyIncrease = 10000;
 				

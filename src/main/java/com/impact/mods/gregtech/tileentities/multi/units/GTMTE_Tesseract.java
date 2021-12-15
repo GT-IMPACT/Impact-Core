@@ -95,6 +95,11 @@ public class GTMTE_Tesseract extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 	}
 	
 	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return sTesseractRecipes;
+	}
+	
+	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		int tInputList_sS = tInputList.size();
@@ -136,8 +141,11 @@ public class GTMTE_Tesseract extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 		if (inputs.length > 0 || fluids.length > 0) {
 			long voltage = getMaxInputVoltage();
 			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-			GT_Recipe recipe = sTesseractRecipes.findRecipe(getBaseMetaTileEntity(), false, false, GT_Values.V[tier], fluids, inputs);
+			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, false, GT_Values.V[tier], fluids, inputs);
 			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+				
+				cashedRecipe = recipe;
+				
 				this.mEfficiency         = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 				

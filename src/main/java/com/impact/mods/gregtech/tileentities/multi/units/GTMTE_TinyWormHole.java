@@ -77,6 +77,10 @@ public class GTMTE_TinyWormHole extends GT_MetaTileEntity_MultiParallelBlockBase
 		return aFacing > 1;
 	}
 	
+	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return sTinyWormHoleRecipes;
+	}
 	
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
@@ -120,8 +124,11 @@ public class GTMTE_TinyWormHole extends GT_MetaTileEntity_MultiParallelBlockBase
 		if (inputs.length > 0 || fluids.length > 0) {
 			long voltage = getMaxInputVoltage();
 			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-			GT_Recipe recipe = sTinyWormHoleRecipes.findRecipe(getBaseMetaTileEntity(), false, false, GT_Values.V[tier], fluids, inputs);
+			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, false, GT_Values.V[tier], fluids, inputs);
 			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
+				
+				cashedRecipe = recipe;
+				
 				this.mEfficiency         = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 				

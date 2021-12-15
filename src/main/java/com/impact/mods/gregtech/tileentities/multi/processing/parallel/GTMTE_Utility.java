@@ -303,8 +303,11 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				GT_Recipe tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), false, false, V[tTier], tFluids, tInputs);
+						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, false, V[tTier], tFluids, tInputs);
 				if (tRecipe != null) {
+					
+					cashedRecipe = tRecipe;
+					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
 					}

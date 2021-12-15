@@ -32,6 +32,8 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.of
 
 public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 	
+	private GT_Recipe cashedRecipe = null;
+	
 	public GTMTE_Farm(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.farm", aNameRegional);
 		run();
@@ -145,6 +147,11 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 	}
 	
 	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return GT_Recipe.GT_Recipe_Map.sFarmRecipes;
+	}
+	
+	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		int tInputList_sS = tInputList.size();
@@ -184,11 +191,12 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 		if (tInputList.size() > 0) {
 			long tVoltage = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sFarmRecipes
-					.findRecipe(getBaseMetaTileEntity(), false,
+			GT_Recipe recipe = getRecipeMap()
+					.findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
 							false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs
 					);
 			if ((recipe != null) && (recipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+				cashedRecipe = recipe;
 				this.mEfficiency         = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 				

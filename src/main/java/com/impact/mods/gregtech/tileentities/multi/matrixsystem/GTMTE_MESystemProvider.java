@@ -141,9 +141,9 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 			long nominalV = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 			GT_Recipe tRecipe;
-			tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], null, tInputs);
+			tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], null, tInputs);
 			if (tRecipe != null && (mMatrixParticlesSummary - tRecipe.mSpecialValue >= 0)) {
-				
+				cashedRecipe = tRecipe;
 				ArrayList<ItemStack> outputItems = new ArrayList<>();
 				boolean found_Recipe = false;
 				int processed = 0;

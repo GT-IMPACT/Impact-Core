@@ -142,10 +142,10 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				GT_Recipe tRecipe;
-				tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+				tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
 				
 				if (tRecipe != null) {
-					
+					cashedRecipe = tRecipe;
 					if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100) && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
 						return false;
 					}

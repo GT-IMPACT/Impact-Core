@@ -26,6 +26,7 @@ import java.util.Arrays;
 
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.GregTech_API.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAntimatterReactorFuels;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofChain;
 
@@ -64,7 +65,7 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_AntimatterReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AntimatterReactor.png", GT_Recipe.GT_Recipe_Map.sAntimatterReactorFuels.mNEIName);
+		return new GT_GUIContainer_AntimatterReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AntimatterReactor.png", sAntimatterReactorFuels.mNEIName);
 		
 	}
 	
@@ -112,11 +113,12 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 		FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
 		
 		if (tInputList.size() > 1) {
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map_Fuel.sAntimatterReactorFuels.findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, tFluids, tInputs);
+			GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, Long.MAX_VALUE, tFluids, tInputs);
 			if (tRecipe == null) {
 				return false;
 			}
 			if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+				cashedRecipe = tRecipe;
 				this.mEUt                = 2097152;
 				this.mMaxProgresstime    = tRecipe.mSpecialValue * 20;
 				this.mEfficiency         = 10000;
@@ -132,6 +134,10 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 		return false;
 	}
 	
+	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return sAntimatterReactorFuels;
+	}
 	
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
