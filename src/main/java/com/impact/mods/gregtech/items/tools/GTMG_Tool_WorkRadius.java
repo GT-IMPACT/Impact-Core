@@ -42,6 +42,7 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
     
     @Override
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        super.addAdditionalToolTips(aList, aStack, aPlayer);
         ITool.get(aStack.getItemDamage()).addAdditionalToolTips(aList, aStack, aPlayer);
     }
     
