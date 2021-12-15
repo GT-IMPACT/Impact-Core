@@ -142,6 +142,12 @@ public class GTMTE_RecipeEditor extends GT_MetaTileEntity_BasicTank {
 				}
 				return;
 			}
+			int[] newChance = new int[out.length];
+			if (chance.length >= map.mUsualOutputCount) {
+				for (int reChance = 0; reChance < out.length; reChance++) {
+					newChance[reChance] = chance[reChance];
+				}
+			}
 			
 			if (map.mUsualInputCount < in.length || map.mUsualOutputCount < out.length) {
 				if (getBaseMetaTileEntity().isServerSide()) {
@@ -157,7 +163,7 @@ public class GTMTE_RecipeEditor extends GT_MetaTileEntity_BasicTank {
 				return;
 			}
 			
-			GT_Recipe recipe = map.addRecipe(false, in, out, chanceEnabled ? chance : null, intF, outF, time, voltage, special);
+			GT_Recipe recipe = map.addRecipe(false, in, out, chanceEnabled ? newChance : null, intF, outF, time, voltage, special);
 			
 			if (recipe == null) {
 				if (getBaseMetaTileEntity().isServerSide()) {
@@ -166,7 +172,7 @@ public class GTMTE_RecipeEditor extends GT_MetaTileEntity_BasicTank {
 				return;
 			}
 			
-			RecipeJson recipeJson = new RecipeJson(false, in, out, chanceEnabled ? chance : null, intF, outF, time, voltage, special);
+			RecipeJson recipeJson = new RecipeJson(false, in, out, chanceEnabled ? newChance : null, intF, outF, time, voltage, special);
 			RecipesJson.preSave(map.mUnlocalizedName, recipeJson);
 			if (getBaseMetaTileEntity().isServerSide()) {
 				impact.proxy.addClientSideChatMessages("Recipe Added");

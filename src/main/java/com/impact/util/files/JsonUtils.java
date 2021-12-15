@@ -26,7 +26,7 @@ public class JsonUtils {
 	public static final Gson recipeDefaultGson = getRecipeGson().create();
 	
 	public static GsonBuilder getRecipeGson() {
-		GsonBuilder builder = new GsonBuilder();
+		GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
 		NbtToJson.registerSmartNBTSerializer(builder);
 		builder.registerTypeAdapter(FluidStack.class, new JsonFluidStack());
 		builder.registerTypeAdapter(ItemStack.class, new JsonItemStack());

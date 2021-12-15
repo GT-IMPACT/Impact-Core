@@ -79,18 +79,19 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 				}
 			}
 			if (index >= 16 && index <= 23) {
-				
+				recipeEditor.chanceEnabled = false;
 				int chanceIndex = index - 16;
 				if (hotkeys == 1) {
+					recipeEditor.chanceEnabled = true;
 					if (mTileEntity.isClientSide()) return null;
 					if (recipeEditor.mInventory[index] != null) {
-						int chance = recipeEditor.chance[chanceIndex] / 1000;
+						int chance = recipeEditor.chance[chanceIndex] / 100;
 						chance += mouse == 1 ? 1 : chance <= 0 ? 100 : -1;
 						if (chance > 100) {
 							chance = 0;
 						}
-						recipeEditor.chance[chanceIndex] = chance*1000;
-						impact.proxy.addClientSideChatMessages("Chance product set: " + recipeEditor.chance[chanceIndex]/1000 + "%");
+						recipeEditor.chance[chanceIndex] = chance*100;
+						impact.proxy.addClientSideChatMessages("Chance product set: " + recipeEditor.chance[chanceIndex]/100 + "% (" + recipeEditor.chance[chanceIndex] + ")");
 						return null;
 					}
 				}
@@ -108,6 +109,7 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 				if (hotkeys == 1) {
 					load();
 				} else {
+					recipeEditor.chanceEnabled = false;
 					Arrays.fill(recipeEditor.mInventory, null);
 				}
 			}
