@@ -22,6 +22,7 @@ public enum Mixin {
 	MovableTileRegistry_Mixin("ae2.MovableTileRegistry_Mixin", AE, GREGTECH, VANILLA),
 	ForgeHooksClient_Mixin("vanilla.ForgeHooksClient_Mixin", VANILLA),
 	BlockHopper_Mixin("vanilla.BlockHopper_Mixin", VANILLA),
+	OreDictionaryArbiter_Mixin("cofh.OreDictionaryArbiter_Mixin", COFH, VANILLA),
 	
 	;
 	public final String mixinClass;
