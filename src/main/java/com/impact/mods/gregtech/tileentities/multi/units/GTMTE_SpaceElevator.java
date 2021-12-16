@@ -91,7 +91,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-		boolean formationChecklist = checkPiece(1, 3, 0);
+		boolean formationChecklist = checkPiece(3, 4, 3);
 		mWrench        = true;
 		mScrewdriver   = true;
 		mSoftHammer    = true;

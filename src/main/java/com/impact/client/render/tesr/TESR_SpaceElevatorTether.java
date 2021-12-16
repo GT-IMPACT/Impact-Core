@@ -13,6 +13,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+
 @SideOnly(Side.CLIENT)
 public class TESR_SpaceElevatorTether extends TileEntitySpecialRenderer {
 	
@@ -58,8 +60,6 @@ public class TESR_SpaceElevatorTether extends TileEntitySpecialRenderer {
 							tessellator.setColorRGBA(46, 46, 46, 32);
 							halfBeamWidth = 1.7D;
 							height        = -(256.0F * beamLengthScale);
-							y             = y + 1;
-							
 						}
 					}
 				}
@@ -80,6 +80,7 @@ public class TESR_SpaceElevatorTether extends TileEntitySpecialRenderer {
 		final double uv_y1 = -1.0D; // This makes the beam stream upwards if you add a time sensitive number to it
 		final double uv_y2 = (double) (256.0F * beamLengthScale) * (0.5D / halfBeamWidth) + uv_y1;
 		// Construct mesh with texture
+
 		tessellator.addVertexWithUV(x + d_rot1, y + height, z + d_rot2, uv_x2, uv_y2);
 		tessellator.addVertexWithUV(x + d_rot1, y, z + d_rot2, uv_x2, uv_y1);
 		tessellator.addVertexWithUV(x + d_rot3, y, z + d_rot4, uv_x1, uv_y1);
@@ -98,6 +99,8 @@ public class TESR_SpaceElevatorTether extends TileEntitySpecialRenderer {
 		tessellator.addVertexWithUV(x + d_rot1, y + height, z + d_rot2, uv_x1, uv_y2);
 		// Draw!
 		tessellator.draw();
+		
+		
 		
 		// Reset render flags
 		GL11.glEnable(GL11.GL_LIGHTING);
