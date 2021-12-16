@@ -59,12 +59,6 @@ public enum GT_ItemList implements IItemContainer {
 	Bus_Input_UEV, Bus_Input_UIV, Bus_Input_UMV, Bus_Input_UXV, Bus_Input_OPV, Bus_Input_MAX,
 	Bus_Output_UEV, Bus_Output_UIV, Bus_Output_UMV, Bus_Output_UXV, Bus_Output_OPV, Bus_Output_MAX,
 	
-	Energy_4A_IV, Energy_4A_LuV, Energy_4A_ZPM, Energy_4A_UV, Energy_16A_LuV, Energy_16A_ZPM, Energy_16A_UV, Energy_64A_ZPM,
-	Energy_64A_UV, Energy_256A_UV,
-	
-	Dynamo_2A_EV, Dynamo_2A_IV, Dynamo_2A_LuV, Dynamo_2A_ZPM, Dynamo_2A_UV, Dynamo_4A_IV, Dynamo_4A_LuV, Dynamo_4A_ZPM,
-	Dynamo_4A_UV, Dynamo_16A_LuV, Dynamo_16A_ZPM, Dynamo_16A_UV, Dynamo_64A_ZPM, Dynamo_64A_UV, Dynamo_256A_UV,
-	
 	Diode_2A_ULV, Diode_2A_LV, Diode_2A_MV, Diode_2A_HV, Diode_2A_EV, Diode_2A_IV, Diode_2A_LuV, Diode_2A_ZPM, Diode_2A_UV,
 	Diode_4A_ULV, Diode_4A_LV, Diode_4A_MV, Diode_4A_HV, Diode_4A_EV, Diode_4A_IV, Diode_4A_LuV, Diode_4A_ZPM, Diode_4A_UV,
 	Diode_16A_ULV, Diode_16A_LV, Diode_16A_MV, Diode_16A_HV, Diode_16A_EV, Diode_16A_IV, Diode_16A_LuV, Diode_16A_ZPM, Diode_16A_UV,
