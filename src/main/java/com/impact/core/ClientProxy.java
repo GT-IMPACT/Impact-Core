@@ -1,5 +1,6 @@
 package com.impact.core;
 
+import baubles.api.BaublesApi;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
 import com.impact.client.render.tesr.PlacedItemRenderer;
@@ -20,6 +21,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
@@ -31,6 +33,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -132,6 +135,13 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void beam(World worldObj, Vector3ic vec1, Vector3ic vec2, int type, int color, boolean reverse, float endmod, int age) {
 		ItemStack is = Minecraft.getMinecraft().thePlayer.getCurrentArmor(3);
+		IInventory handler = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
+		if (handler != null) {
+			for (int i = 0; i < handler.getSizeInventory(); ++i) {
+				is = handler.getStackInSlot(i);
+				if (is.getItem() instanceof MaskOfVision) break;
+			}
+		}
 		if (is == null || !(is.getItem() instanceof MaskOfVision)) return;
 		beam(worldObj, vec1.x() + 0.5d, vec1.y() + 0.5d, vec1.z() + 0.5d, vec2.x() + 0.5d, vec2.y() + 0.5d, vec2.z() + 0.5d, type, color, reverse, endmod, age);
 	}
