@@ -64,12 +64,6 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
 	public boolean Stuff;
 	public int casingCount = 0;
-	public int mFrequency = -1;
-	public int mTargetX = 0;
-	public int mTargetY = 0;
-	public int mTargetZ = 0;
-	public int mTargetD = 0;
-	public boolean mIsConnect = false;
 	
 	public GTMTE_TowerCommunication(int aID, String aNameRegional) {
 		super(aID, "impact.multis.communicationtower", aNameRegional);
@@ -153,7 +147,9 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 					checker.add(ph.getIsReceive());
 					active = ph.getBaseMetaTileEntity().isActive();
 				}
-				if (active) this.mIsConnect = checker.stream().filter(b -> b).count() == 4;
+				if (active) {
+					this.mIsConnect = checker.stream().filter(b -> b).count() == 4;
+				}
 			}
 		}
 		if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
@@ -212,27 +208,5 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 		this.mTargetY = pos.yPos;
 		this.mTargetZ = pos.zPos;
 		this.mTargetD = pos.dPos;
-	}
-	
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		super.saveNBTData(aNBT);
-		aNBT.setInteger("mTargetX", this.mTargetX);
-		aNBT.setInteger("mTargetY", this.mTargetY);
-		aNBT.setInteger("mTargetZ", this.mTargetZ);
-		aNBT.setInteger("mTargetD", this.mTargetD);
-		aNBT.setInteger("mFrequency", this.mFrequency);
-		aNBT.setBoolean("mIsReceive", this.mIsConnect);
-	}
-	
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
-		this.mTargetX   = aNBT.getInteger("mTargetX");
-		this.mTargetY   = aNBT.getInteger("mTargetY");
-		this.mTargetZ   = aNBT.getInteger("mTargetZ");
-		this.mTargetD   = aNBT.getInteger("mTargetD");
-		this.mFrequency = aNBT.getInteger("mFrequency");
-		this.mIsConnect = aNBT.getBoolean("mIsReceive");
 	}
 }

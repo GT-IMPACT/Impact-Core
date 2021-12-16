@@ -74,11 +74,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	public int mCheckParallelCurrent = 0;
 	public int modeBuses = 0;
 	public byte mMode = -1;
-	public int mFrequency = -1;
-	public int mTargetX = 0;
-	public int mTargetY = 0;
-	public int mTargetZ = 0;
-	public int mTargetD = 0;
+	public int mFrequency = 0, mTargetX = 0, mTargetY = 0, mTargetZ = 0, mTargetD = 0;
 	public boolean mIsConnect = false;
 	public IGregTechTileEntity tile = null;
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
