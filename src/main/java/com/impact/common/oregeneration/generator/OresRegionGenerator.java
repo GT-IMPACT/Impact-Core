@@ -46,9 +46,11 @@ public class OresRegionGenerator {
 				for (int z = 0; z < 8; z++) {
 					OreVein ore = null;
 					int checker = 0;
-					while(ore == null || checker > 16) {
+					while(checker <= 16) {
 						ore = OreVeinRandomizer.getVein(layer, dim);
-						checker++;
+						if (ore == null) {
+							checker++;
+						}
 					}
 					OreVeinGenerator vein = new OreVeinGenerator((xRegion << 3) + x, (zRegion << 3) + z, ore.idVein);
 					vein.createOreChunk();
