@@ -4,12 +4,14 @@ import com.impact.impact;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Reflector;
 import com.impact.util.PositionObject;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
+import mods.railcraft.common.blocks.hidden.BlockHidden;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
@@ -27,6 +29,7 @@ public class LaserPath {
 			Block block = te.getBlockAtSideAndDistance(front, dist);
 			
 			if (block == Blocks.air) continue;
+			if (Loader.isModLoaded("Railcraft") && block instanceof BlockHidden) continue;
 			if (block != GregTech_API.sBlockMachines) return false;
 		
 			IGregTechTileEntity ReflectorOrLaserIn = te.getIGregTechTileEntityAtSideAndDistance(front, dist);
