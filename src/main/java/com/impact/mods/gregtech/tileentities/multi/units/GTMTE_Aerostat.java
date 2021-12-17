@@ -33,7 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.AEROSTATE_PLATFORM;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.GregTech_API.sBlockCasings3;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofChain;
 
 public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Aerostat> implements IPacketString {
 	
@@ -49,7 +53,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 							{"A~A"},
 							{"AAA"},
 					})
-					.addElement('A', ofHatchAdderOptional(GTMTE_Aerostat::addInputToMachineList, CASING_TEXTURE_ID, ImpactAPI.RED, CASING, CASING_META))
+					.addElement('A', ofBlock(CASING, CASING_META))
 					.build();
 	public int timer = 20;
 	public int curID = 0;
