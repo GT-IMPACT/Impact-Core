@@ -252,7 +252,8 @@ public class Utilits {
     }
 
     public static boolean isLowGravity(IGregTechTileEntity iAm) {
-        return iAm.getWorld().provider.dimensionId == SSBodies.dimensionIDOrbitEarth;
+        int dimId = iAm.getWorld().provider.dimensionId;
+        return dimId == SSBodies.dimensionIDOrbitEarth || isValidDim(dimId, "Orbit") || isValidDim(dimId, "Space") || isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation");
     }
 
     public static AxisAlignedBB setBoxAABB(IGregTechTileEntity igt, double radius) {
