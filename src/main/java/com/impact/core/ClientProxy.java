@@ -135,11 +135,13 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void beam(World worldObj, Vector3ic vec1, Vector3ic vec2, int type, int color, boolean reverse, float endmod, int age) {
 		ItemStack is = Minecraft.getMinecraft().thePlayer.getCurrentArmor(3);
-		IInventory handler = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
-		if (handler != null) {
-			for (int i = 0; i < handler.getSizeInventory(); ++i) {
-				is = handler.getStackInSlot(i);
-				if (is.getItem() instanceof MaskOfVision) break;
+		if (is == null) {
+			IInventory handler = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
+			if (handler != null) {
+				for (int i = 0; i < handler.getSizeInventory(); ++i) {
+					is = handler.getStackInSlot(i);
+					if (is.getItem() instanceof MaskOfVision) break;
+				}
 			}
 		}
 		if (is == null || !(is.getItem() instanceof MaskOfVision)) return;
