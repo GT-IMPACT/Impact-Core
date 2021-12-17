@@ -10,10 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(OreDictionaryArbiter.class)
 public class OreDictionaryArbiter_Mixin {
 	
-	@Inject(method = "initialize", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "initialize", at = @At("HEAD"), remap = false, cancellable = true)
 	private static void initialize(CallbackInfo ci) {
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-			ci.cancel();
-		}
+		ci.cancel();
 	}
 }
