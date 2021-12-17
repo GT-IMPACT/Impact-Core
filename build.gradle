@@ -23,7 +23,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.4'
+        classpath 'com.github.GT-IMPACT:ForgeGradle:1.2.4'
     }
 }
 
