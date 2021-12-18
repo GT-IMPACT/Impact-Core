@@ -38,6 +38,9 @@ public class ToClient_Integer implements ServerToClientPacket {
 				((IPacketInteger) mte).update(integer);
 				igt.issueTextureUpdate();
 			}
+		} else if (tileEntity instanceof IPacketInteger) {
+			IPacketInteger cont = (IPacketInteger) tileEntity;
+			cont.update(integer);
 		}
 	}
 }

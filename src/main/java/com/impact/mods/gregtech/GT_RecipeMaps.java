@@ -12,6 +12,7 @@ public class GT_RecipeMaps {
     public static final GT_Recipe.GT_Recipe_Map sDryingOven;
     public static final GT_Recipe.GT_Recipe_Map sMESystemProvider;
     public static final GT_Recipe.GT_Recipe_Map sMPContainer;
+    public static final GT_Recipe.GT_Recipe_Map sTheMill;
 
     static {
         sDryingOven = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
@@ -23,9 +24,12 @@ public class GT_RecipeMaps {
                 9, 1, 1, 0, 1, E, 1, E,
                 true, false);
         sMPContainer = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
-                "impact.recipe.matrixcontainer", "Matrix Pr. Containment", null, RES_PATH_GUI + "basic" +
-                "/MatrixContainment",
+                "impact.recipe.matrixcontainer", "Matrix Pr. Containment", null, RES_PATH_GUI + "basic" + "/MatrixContainment",
                 1, 1, 1, 0, 1, E, 1, E,
                 false, false);
+        sTheMill = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
+                "impact.recipe.the_mill", "The Mill", null, RES_PATH_GUI + "basic" + "/Default",
+                1, 4, 1, 0, 0, E, 1, E,
+                false, true);
     }
 }

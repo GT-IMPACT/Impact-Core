@@ -3,17 +3,12 @@ package com.impact.core;
 import baubles.api.BaublesApi;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
-import com.impact.client.render.tesr.PlacedItemRenderer;
-import com.impact.client.render.tesr.TESR_SETether;
-import com.impact.client.render.tesr.TESR_SpaceElevatorTether;
-import com.impact.client.render.tesr.TESR_WindMill;
+import com.impact.client.render.tesr.*;
 import com.impact.common.armor.MaskOfVision;
 import com.impact.common.block.QuantumStuffRender;
 import com.impact.common.block.blocks.Block_QuantumStuff;
-import com.impact.common.te.TE_NqTether;
-import com.impact.common.te.TE_SpaceElevatorTether;
-import com.impact.common.te.TE_WindMill;
-import com.impact.common.te.TilePlacedItem;
+import com.impact.common.block.blocks.Block_TheMill;
+import com.impact.common.te.*;
 import com.impact.events.ClientEvent;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -60,10 +55,15 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderInfo() {
 		Block_QuantumStuff.renderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
+		Block_TheMill.renderID = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(Block_TheMill.renderID, new Block_TheMill.BlockRender());
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SpaceElevatorTether());
 		ClientRegistry.bindTileEntitySpecialRenderer(TilePlacedItem.class, new PlacedItemRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_WindMill.class, new TESR_WindMill());
+		ClientRegistry.bindTileEntitySpecialRenderer(TE_TheMill.class, new TESR_TheMill());
+		
+		
 		register_event(new ClientEvent());
 	}
 	

@@ -5,10 +5,7 @@ import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
 import com.impact.common.oregeneration.OreGenerator;
-import com.impact.common.te.TE_NqTether;
-import com.impact.common.te.TE_SpaceElevatorTether;
-import com.impact.common.te.TE_WindMill;
-import com.impact.common.te.TilePlacedItem;
+import com.impact.common.te.*;
 import com.impact.impact;
 import com.impact.mods.asp.ASP;
 import com.impact.mods.gregtech.Basic_Register;
@@ -135,6 +132,7 @@ public class MainLoader {
 		GameRegistry.registerTileEntity(TE_NqTether.class, "nq_tether");
 		GameRegistry.registerTileEntity(TilePlacedItem.class, "TilePlacedItem");
 		GameRegistry.registerTileEntity(TE_WindMill.class, "TileWindMill");
+		GameRegistry.registerTileEntity(TE_TheMill.class, "TheMill");
 	}
 	
 	public static void postInit(FMLPostInitializationEvent event) {

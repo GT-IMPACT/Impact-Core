@@ -33,4 +33,11 @@ public class RecipeAdder implements IRecipeAdder {
                 null, null, null, aDuration, aEUt, aMPAmount);
         return true;
     }
+    
+    @Override
+    public boolean addTheMillRecipes(ItemStack aInput, ItemStack[] aOutput, int[] chance, int aDuration) {
+        GT_RecipeMaps.sTheMill.addRecipe(true, new ItemStack[]{aInput}, aOutput, null,
+                chance, null, null, aDuration, 0, 0);
+        return true;
+    }
 }

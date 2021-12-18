@@ -122,7 +122,7 @@ public enum GT_ItemList implements IItemContainer {
 	
 	NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
 	DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, NqCasing, CycloneCasing, MoonMinerCasing, RailAssemblerCasing,
-	SpaceElevatorCasing, LabSafeLGCasing, MECasing, AerostateCasing,
+	SpaceElevatorCasing, LabSafeLGCasing, MECasing, AerostateCasing, MillCasing,
 	
 	Casing_Farm, Huge_Casing_Turbine, Space_Satellite_Casing, Tower_Casing, Computer_Casing,
 	
@@ -163,7 +163,7 @@ public enum GT_ItemList implements IItemContainer {
 	RecipeEditor,
 	CoalMiner, BasicMiner, AdvancedMiner,
 	
-	Wind_Generator,
+	Wind_Generator, The_Mill,
 	
 	end;
 	private ItemStack mStack;

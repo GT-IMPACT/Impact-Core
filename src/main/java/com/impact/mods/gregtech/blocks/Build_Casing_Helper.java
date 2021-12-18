@@ -27,6 +27,7 @@ public enum Build_Casing_Helper {
 
     ME_CASING("ME Construction Casing", 3, 3, 0, MECasing),
     AEROSTATE_PLATFORM("Aerostate Platform Casing", 3, 3, 1, AerostateCasing),
+    MILL("The Mill Wood Planks", 3, 3, 2, MillCasing),
 
     //EMPTY("", 0, 0, 0, null)
     ;

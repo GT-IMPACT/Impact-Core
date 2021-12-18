@@ -11,4 +11,6 @@ public interface IRecipeAdder {
     boolean addMPContainer(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, int aMPAmount);
 
     boolean addMESPRecipes(ItemStack[] aInputs, ItemStack aOutput, int aDuration, int aEUt, int aMPAmount);
+    
+    boolean addTheMillRecipes(ItemStack aInput, ItemStack[] aOutput, int[] chance, int aDuration);
 }

@@ -86,6 +86,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		super(aID, aName, aNameRegional);
 	}
 	
+	public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional, int slots) {
+		super(aID, aName, aNameRegional, slots);
+	}
+	
+	public GT_MetaTileEntity_MultiParallelBlockBase(final String aName, int slots) {
+		super(aName, slots);
+	}
+	
 	public GT_MetaTileEntity_MultiParallelBlockBase(final String aName) {
 		super(aName);
 	}
@@ -153,6 +161,15 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
+	}
+	
+	protected void noMaintenance() {
+		mWrench        = true;
+		mScrewdriver   = true;
+		mSoftHammer    = true;
+		mHardHammer    = true;
+		mSolderingTool = true;
+		mCrowbar       = true;
 	}
 	
 	/**

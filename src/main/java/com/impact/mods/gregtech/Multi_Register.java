@@ -112,6 +112,7 @@ public class Multi_Register {
 		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Coal Miner").get());
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
 		AdvancedMiner.set(new GTMTE_AdvancedMiner(ID++, "Advanced Electric Miner").get());
+		The_Mill.set(new GTMTE_TheMill(ID++, "The Mill").get());
 		
 		INFO("Multi_Register.java | Last ID: " + ID);
 		

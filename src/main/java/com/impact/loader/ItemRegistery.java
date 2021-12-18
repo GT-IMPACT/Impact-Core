@@ -38,7 +38,7 @@ public class ItemRegistery {
 	public static GregtechPump GTPump;
 	public static Block lscLapotronicEnergyUnit, SawMillBlock, IGlassBlock, CoalBlock, UtilBlock,
 			NqTetherBlock, InsideBlock, FluidTankBlock, CeramicBlock, CollisionBlock,
-			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, Wind_rotor;
+			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, Wind_rotor, TheWind;
 	public static Item maskVision;
 	
 	public static void run() {
@@ -140,16 +140,17 @@ public class ItemRegistery {
 		MPSystem                = Block_MatrixSystem.registerBlock();
 		MPTransducer            = Block_MatrixTransducer.registerBlock();
 		Wind_rotor              = Block_Wind.registerBlock();
+		TheWind                 = Block_TheMill.registerBlock();
 		maskVision              = MaskOfVision.registerItem();
 		INFO("[Init] Item Registery Blocks - Loaded");
 	}
 	
 	public static void NEIHide() {
-		hideItem(new ItemStack(decorateBlock[2], 1, 0));
-		hideItem(new ItemStack(decorateBlock[2], 1, 1));
-		hideItem(new ItemStack(decorateBlock[2], 1, 2));
-		hideItem(new ItemStack(decorateBlock[2], 1, 3));
-		hideItem(new ItemStack(decorateBlock[2], 1, 4));
+		hideItem(new ItemStack(TheWind, 1, 0));
+		
+		for (int i = 0; i < 5; i++)  {
+			hideItem(new ItemStack(decorateBlock[2], 1, i));
+		}
 		for (Core_List_Items value : Core_List_Items.values()) {
 			if (value.hideNEI) {
 				hideItem(value.get(1));
