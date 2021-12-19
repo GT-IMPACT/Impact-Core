@@ -30,6 +30,7 @@ import com.impact.mods.gregtech.tileentities.multi.units.*;
 import gregtech.api.enums.ItemList;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FlotationUnit;
 
+import static codechicken.nei.api.API.hideItem;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.*;
 
@@ -100,7 +101,7 @@ public class Multi_Register {
 		Machine_ElectricImplosion.set(new GTMTE_ElectricImplosionCompressor(ID++, "Electric Implosion Compressor").get());
 		
 		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate").get());
-		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
+		Filler.set(new GTMTE_Filler(ID++, "Filler").get()); hideItem(Filler.get(1));
 		
 		Parametric_Diffuser.set(new GTMTE_ParametricDiffuser(ID++, "Parametric Diffuser").get());
 		Matrix_Stabilizer.set(new GTMTE_MPStabilizer(ID++, "Matrix Particles Stabilizer").get());

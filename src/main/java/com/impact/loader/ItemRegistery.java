@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.ConstructionLaser;
+import static com.impact.mods.gregtech.GT_ItemList.Filler;
 import static com.impact.util.Utilits.BlockstackMeta;
 import static gregtech.api.enums.GT_Values.W;
 
@@ -147,6 +148,8 @@ public class ItemRegistery {
 	
 	public static void NEIHide() {
 		hideItem(new ItemStack(TheWind, 1, 0));
+		hideItem(ConstructionLaser.get(1));
+		hideItem(new ItemStack(placedItem));
 		
 		for (int i = 0; i < 5; i++)  {
 			hideItem(new ItemStack(decorateBlock[2], 1, i));

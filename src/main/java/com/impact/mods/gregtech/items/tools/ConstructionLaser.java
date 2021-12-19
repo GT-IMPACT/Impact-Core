@@ -110,7 +110,7 @@ public class ConstructionLaser extends GT_Generic_Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean b) {
 		super.addInformation(stack, player, info, b);
 		info.add("This is a construction laser that serves to mark out the region");
-		info.add("RСlick and Shift-Rclick on a block set a points");
+		info.add("RClick and Shift-RClick on a block set a points");
 		info.add("Click on the air shows the size of the selected area");
 	}
 }
