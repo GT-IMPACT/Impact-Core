@@ -1,8 +1,6 @@
 package com.impact.client.gui;
 
 import com.impact.impact;
-import com.impact.mods.asp.client.GuiAdvSolarPanel;
-import com.impact.mods.asp.common.te.TileEntitySolarPanel;
 import com.impact.mods.gregtech.gui.aerostat.Container_FirstAerostat;
 import com.impact.mods.gregtech.gui.aerostat.Countainer_SelectAerostat;
 import com.impact.mods.gregtech.gui.aerostat.GUI_FirstAerostat;
@@ -35,19 +33,12 @@ public class GUIHandler implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity te = world.getTileEntity(x, y, z);
 		Entity e = world.getEntityByID(x);
-		
+
 		switch (ID) {
-			case GUI_ID_Solar:
-				if (te instanceof TileEntitySolarPanel) {
-					return ((TileEntitySolarPanel) te).getGuiContainer(player.inventory);
-				}
 			case GUI_ID_Carts:
 				if (e instanceof OpenableGUI) {
 					return ((OpenableGUI) e).getServerGuiElement(ID, player, world, x, y, z);
 				}
-		}
-		
-		switch (ID) {
 			case GUI_ID_LapTop:
 				if (te instanceof IGregTechTileEntity) {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
@@ -79,10 +70,6 @@ public class GUIHandler implements IGuiHandler {
 		Entity e = world.getEntityByID(x);
 		
 		switch (ID) {
-			case GUI_ID_Solar:
-				if (te instanceof TileEntitySolarPanel) {
-					return new GuiAdvSolarPanel((TileEntitySolarPanel) te, player.inventory);
-				}
 			case GUI_ID_Carts:
 				if (e instanceof OpenableGUI) {
 					return ((OpenableGUI) e).getClientGuiElement(ID, player, world, x, y, z);
