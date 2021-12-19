@@ -91,7 +91,9 @@ public class Basic_Register {
 		
 		Generator_Steam_Turbine_EV.set(new GT_MetaTileEntity_SteamTurbine(ID2++, "impact.basicgenerator.steamturbine.tier.04", "EV Steam Turbine", 4).getStackForm(1L));
 		Generator_Diesel_EV.set(new GT_MetaTileEntity_DieselGenerator(ID2++, "impact.basicgenerator.diesel.tier.04", "EV Combustion Generator", 4).getStackForm(1L));
-		Boxinator_Hatch_Input.set(new GTMTE_BoxinatorInputBus(ID2++, "impact.boxinator.hatch.input", "Packager Input Bus", 5, 256).getStackForm(1L));
+		
+		ID2++; // ID:14564 boxinator hatch - removed
+		
 		Generator_Semi_Turbine_EV.set(new GTMTE_SemifluidGenerator(ID2++, "impact.basicgenerator.semifluid.tier.04", "EV Semifluid Generator", 4).getStackForm(1L));
 		
 		Long_Distance_Pipeline_Fluid.set(new GTMTE_LongDistancePipelineFluid(ID2++, "long.distance.pipeline.fluid", "Long Distance Fluid Pipeline", 1).getStackForm(1L));

@@ -2,7 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.hatches.GTMTE_BoxinatorInputBus;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.multis.WorldProperties;
@@ -39,7 +38,6 @@ import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Utility> {
 	
 	public String mModed;
-	public final ArrayList<GTMTE_BoxinatorInputBus> sBoxinatorHatch = new ArrayList<>();
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 11;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
@@ -126,22 +124,6 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 							GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
 	}
 	
-	public boolean checkBoxinatorHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity == null) {
-				return false;
-			} else if (aMetaTileEntity instanceof GTMTE_BoxinatorInputBus) {
-				((GTMTE_BoxinatorInputBus) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return sBoxinatorHatch.add((GTMTE_BoxinatorInputBus) aMetaTileEntity);
-			} else {
-				return false;
-			}
-		}
-	}
-	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
 		final Vector3ic forgeDirection = new Vector3i(
@@ -160,7 +142,6 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 				if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !checkBoxinatorHatch(currentTE, CASING_TEXTURE_ID)
 						&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
 						&& !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -197,7 +178,6 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 					IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !checkBoxinatorHatch(currentTE, CASING_TEXTURE_ID)
 							&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -220,7 +200,6 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 					IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !checkBoxinatorHatch(currentTE, CASING_TEXTURE_ID)
 							&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
@@ -248,9 +227,6 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 			formationChecklist = false;
 		}
 		if (this.mMaintenanceHatches.size() != 1) {
-			formationChecklist = false;
-		}
-		if (this.sBoxinatorHatch.size() > 2) {
 			formationChecklist = false;
 		}
 		if (this.sParallHatchesIn.size() > 1) {
