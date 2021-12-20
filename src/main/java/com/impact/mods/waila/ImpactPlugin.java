@@ -25,10 +25,14 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.GT_Cover_Fluidfilter;
+import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler_Solar;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PrimitiveBlastFurnace;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import lombok.SneakyThrows;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -49,12 +53,18 @@ import java.util.List;
 import static mcp.mobius.waila.api.SpecialChars.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-@Plugin(name = "Impact-core", deps = {"impact", "gregtech"})
+@Plugin(name = "Impact-core", deps = {"impact", "gregtech", "appliedenergistics2"})
 public class ImpactPlugin extends PluginBase {
 
     @Override
     public void load(IWailaRegistrar registrar) {
         super.load(registrar);
+        addConfig("machineFacing");
+        addConfig("transformer");
+        addConfig("solar");
+        addConfig("multiblock");
+        addConfig("fluidFilter");
+        addConfig("basicmachine");
         registerBody(BaseTileEntity.class, AEBaseTile.class);
         registerNBT(BaseTileEntity.class, AEBaseTile.class);
     }
@@ -67,8 +77,15 @@ public class ImpactPlugin extends PluginBase {
         MovingObjectPosition pos = accessor.getPosition();
         NBTTagCompound tag = accessor.getNBTData();
         final int side = (byte) accessor.getSide().ordinal();
+        
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
+        final BaseMetaTileEntity mBaseMetaTileEntity = tile instanceof  BaseMetaTileEntity ? ((BaseMetaTileEntity) tile) : null;
+    
+        final GT_MetaTileEntity_MultiBlockBase multiBlockBase = tMeta instanceof GT_MetaTileEntity_MultiBlockBase ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
+        final GT_MetaTileEntity_BasicMachine BasicMachine = tMeta instanceof GT_MetaTileEntity_BasicMachine ? ((GT_MetaTileEntity_BasicMachine) tMeta) : null;
+        final GT_MetaTileEntity_BasicBatteryBuffer bateryBuffer = tMeta instanceof GT_MetaTileEntity_BasicBatteryBuffer ? ((GT_MetaTileEntity_BasicBatteryBuffer) tMeta) : null;
+        
         final GT_MetaTileEntity_MultiParallelBlockBase<?> MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase<?>) tMeta) : null;
         final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
         final GTMTE_LapPowerStation LapBuffer = tMeta instanceof GTMTE_LapPowerStation ? ((GTMTE_LapPowerStation) tMeta) : null;
@@ -91,8 +108,19 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
         final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
         final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
+    
+        final boolean showTransformer = tMeta instanceof GT_MetaTileEntity_Transformer && getConfig("transformer");
+        final boolean showSolar = tMeta instanceof GT_MetaTileEntity_Boiler_Solar && getConfig("solar");
+        final boolean allowedToWork = tag.hasKey("isAllowedToWork") && tag.getBoolean("isAllowedToWork");
 
         if (tMeta != null) {
+    
+            if (tBaseMetaTile != null && getConfig("fluidFilter")) {
+                final String filterKey = "filterInfo" + side;
+                if (tag.hasKey(filterKey)) {
+                    currenttip.add(tag.getString(filterKey));
+                }
+            }
             
             if (adv_miner != null) {
                 currenttip.add("Vein Size: " + GT_Utility.formatNumbers(tag.getInteger("adv_miner.vein")));
@@ -256,6 +284,80 @@ public class ImpactPlugin extends PluginBase {
                 if (tag.getBoolean("wMox")) currenttip.add(color[3] + trans("waila.reactor.mox"));
                 if (tag.getBoolean("wFastDecay")) currenttip.add(color[2] + trans("waila.reactor.fastdecay"));
             }
+    
+            String facingStr = "Facing";
+            if (showTransformer && tag.hasKey("isAllowedToWork")) {
+                currenttip.add(
+                        String.format(
+                                "%s %d(%dA) -> %d(%dA)",
+                                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
+                                tag.getLong("maxEUInput"),
+                                tag.getLong("maxAmperesIn"),
+                                tag.getLong("maxEUOutput"),
+                                tag.getLong("maxAmperesOut")
+                        )
+                );
+                facingStr = tag.getBoolean("isAllowedToWork") ? "Input" : "Output";
+            }
+    
+            if (showSolar && tag.hasKey("calcificationOutput")) {
+                currenttip.add(String.format((GOLD + "Solar Boiler Output: " + RESET + "%d/%d L/s"), tag.getInteger("calcificationOutput"), tag.getInteger("maxCalcificationOutput")));
+            }
+    
+            if (tMeta instanceof GT_MetaTileEntity_PrimitiveBlastFurnace) {
+                if(tag.getBoolean("incompleteStructurePrimitiveBlastFurnace")) {
+                    currenttip.add(RED + trans("waila.incompletestructure") + RESET);
+                }
+        
+                if (tag.getInteger("progressPrimitiveBlastFurnace") <= 20 && tag.getInteger("maxProgressPrimitiveBlastFurnace") <= 20) {
+                    currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progressPrimitiveBlastFurnace"), tag.getInteger("maxProgressPrimitiveBlastFurnace")));
+                } else {
+                    currenttip.add(String.format(trans("waila.progress") + ": %d s / %d s", tag.getInteger("progressPrimitiveBlastFurnace") / 20, tag.getInteger("maxProgressPrimitiveBlastFurnace") / 20));
+                }
+            }
+    
+            if (mBaseMetaTileEntity != null && getConfig("machineFacing")) {
+                final int facing = mBaseMetaTileEntity.getFrontFacing();
+                if(showTransformer) {
+                    if((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
+                        currenttip.add(String.format(GOLD + "Input:" + RESET + " %d(%dA)", tag.getLong("maxEUInput"), tag.getLong("maxAmperesIn")));
+                    } else {
+                        currenttip.add(String.format(BLUE + "Output:" + RESET + " %d(%dA)", tag.getLong("maxEUOutput"), tag.getLong("maxAmperesOut")));
+                    }
+                } else {
+                    currenttip.add(String.format("%s: %s", facingStr, ForgeDirection.getOrientation(facing).name()));
+                }
+            }
+    
+            if (BasicMachine != null && getConfig("basicmachine")) {
+        
+                if (tag.getInteger("progressSingleBlock") <= 20 && tag.getInteger("maxProgressSingleBlock") <= 20 ) {
+                    currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
+                } else {
+                    currenttip.add(trans("waila.progress") + String.format(": %d s / %d s", tag.getInteger("progressSingleBlock") / 20, tag.getInteger("maxProgressSingleBlock") / 20));
+                }
+                currenttip.add(trans("waila.consumption") + ": " + RED + tag.getInteger("EUOut") + RESET + " " + trans("waila.eut"));
+            }
+    
+            if(multiBlockBase != null && getConfig("multiblock")) {
+                if(tag.getBoolean("incompleteStructure")) {
+                    currenttip.add(RED + trans("waila.incompletestructure") + RESET);
+                }
+                currenttip.add((tag.getBoolean("hasProblems") ? (RED + trans("waila.maintenance")) : GREEN + trans("waila.running")) + RESET + "  " + trans("waila.efficiency") + " : " + tag.getFloat("efficiency") + "%");
+        
+                if (tag.getInteger("progress") <= 20 && tag.getInteger("maxProgress") <= 20 ) {
+                    currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progress"), tag.getInteger("maxProgress")));
+                } else {
+                    currenttip.add(trans("waila.progress") + String.format(": %d s / %d s", tag.getInteger("progress") / 20, tag.getInteger("maxProgress") / 20));
+                }
+            }
+    
+            if(bateryBuffer != null && getConfig("basicmachine")) {
+                currenttip.add(trans("waila.usedcapacity") + ": " + GREEN + GT_Utility.formatNumbers(tag.getLong("nowStorage")) + RESET + " " + trans("waila.eu"));
+                currenttip.add(trans("waila.totalcapacity") + ": " + YELLOW + GT_Utility.formatNumbers(tag.getLong("maxStorage")) + RESET + " " + trans("waila.eu"));
+                currenttip.add(trans("waila.input") + ": " + GREEN + GT_Utility.formatNumbers(tag.getLong("energyInput")) + RESET + " " + trans("waila.eut"));
+                currenttip.add(trans("waila.output") + ": " + RED + GT_Utility.formatNumbers(tag.getLong("energyOutput")) + RESET + " " + trans("waila.eut"));
+            }
         }
 
         final AEBaseTile aeBaseTE = tile instanceof AEBaseTile ? (AEBaseTile) tile : null;
@@ -275,6 +377,10 @@ public class ImpactPlugin extends PluginBase {
     protected void getNBTData(TileEntity tile, NBTTagCompound tag, World world, BlockCoord pos) {
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
+    
+        final GT_MetaTileEntity_BasicMachine BasicMachine = tMeta instanceof GT_MetaTileEntity_BasicMachine ? ((GT_MetaTileEntity_BasicMachine) tMeta) : null;
+        final GT_MetaTileEntity_BasicBatteryBuffer bateryBuffer = tMeta instanceof GT_MetaTileEntity_BasicBatteryBuffer ? ((GT_MetaTileEntity_BasicBatteryBuffer) tMeta) : null;
+        
         final GT_MetaTileEntity_MultiBlockBase multiBlockBase = tMeta instanceof GT_MetaTileEntity_MultiBlockBase ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
         final GT_MetaTileEntity_MultiParallelBlockBase<?> MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase<?>) tMeta) : null;
         final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
@@ -437,6 +543,62 @@ public class ImpactPlugin extends PluginBase {
                 tag.setInteger("progressImpact", progress);
                 tag.setInteger("maxProgressImpact", maxProgress);
                 tag.setBoolean("incompleteStructureImpact", (tBaseMetaTile.getErrorDisplayID() & 64) != 0);
+            }
+    
+            if (tMeta instanceof GT_MetaTileEntity_Transformer) {
+                final GT_MetaTileEntity_Transformer transformer = (GT_MetaTileEntity_Transformer)tMeta;
+                tag.setBoolean("isAllowedToWork", tMeta.getBaseMetaTileEntity().isAllowedToWork());
+                tag.setLong("maxEUInput", transformer.maxEUInput());
+                tag.setLong("maxAmperesIn", transformer.maxAmperesIn());
+                tag.setLong("maxEUOutput", transformer.maxEUOutput());
+                tag.setLong("maxAmperesOut", transformer.maxAmperesOut());
+            } else if (tMeta instanceof GT_MetaTileEntity_Boiler_Solar) {
+                final GT_MetaTileEntity_Boiler_Solar slr = (GT_MetaTileEntity_Boiler_Solar)tMeta;
+                tag.setInteger("calcificationOutput", (slr.getCalcificationOutput()*20/25));
+                tag.setInteger("maxCalcificationOutput", (slr.getBasicOutput()*20/25));
+            }
+    
+            if (multiBlockBase != null) {
+                final int problems = multiBlockBase.getIdealStatus() - multiBlockBase.getRepairStatus();
+                final float efficiency = multiBlockBase.mEfficiency / 100.0F;
+                final int progress = multiBlockBase.mProgresstime;
+                final int maxProgress = multiBlockBase.mMaxProgresstime;
+        
+                tag.setBoolean("hasProblems", problems > 0);
+                tag.setFloat("efficiency", efficiency);
+                tag.setInteger("progress", progress);
+                tag.setInteger("maxProgress", maxProgress);
+                tag.setBoolean("incompleteStructure", (tBaseMetaTile.getErrorDisplayID() & 64) != 0);
+            }
+    
+            if (BasicMachine != null) {
+                final int progressSingleBlock = BasicMachine.mProgresstime;
+                final int maxProgressSingleBlock = BasicMachine.mMaxProgresstime;
+                final int EUOut = BasicMachine.mEUt;
+                tag.setInteger("progressSingleBlock", progressSingleBlock);
+                tag.setInteger("maxProgressSingleBlock", maxProgressSingleBlock);
+                tag.setInteger("EUOut", EUOut);
+            }
+    
+            if (bateryBuffer != null) {
+                long[] tmp = bateryBuffer.getStoredEnergy();
+                long nowStorage = tmp[0];
+                long maxStorage = tmp[1];
+        
+                long energyInput = bateryBuffer.getBaseMetaTileEntity().getAverageElectricInput();
+                long energyOutput = bateryBuffer.getBaseMetaTileEntity().getAverageElectricOutput();
+                tag.setLong("nowStorage", nowStorage);
+                tag.setLong("maxStorage", maxStorage);
+                tag.setLong("energyInput", energyInput);
+                tag.setLong("energyOutput", energyOutput);
+            }
+    
+            if (tBaseMetaTile instanceof BaseMetaPipeEntity) {
+                for(byte side=0 ; side < 6 ; side++) {
+                    if(tBaseMetaTile.getCoverBehaviorAtSide(side) instanceof GT_Cover_Fluidfilter) {
+                        tag.setString("filterInfo" + side, tBaseMetaTile.getCoverBehaviorAtSide(side).getDescription(side, tBaseMetaTile.getCoverIDAtSide(side), tBaseMetaTile.getCoverDataAtSide(side), tBaseMetaTile));
+                    }
+                }
             }
         }
 

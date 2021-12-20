@@ -107,8 +107,8 @@ item.impact_kinetic_rotors.4.name=Tungstensteel Kinetic Rotor
 
 
 #Covers
-item.impact_cover.0.name=Advanced Fluid Detector
-item.impact_cover.1.name=Advanced Energy Detector
+item.impact_cover.0.name=Advanced Fluid Detector (Cover)
+item.impact_cover.1.name=Advanced Energy Detector (Cover)
 
 #MetaItems.00
 item.impact_item.0.name=BarnardaE Stone Dust
@@ -508,6 +508,26 @@ waila.multis.progress=Progress
 waila.reactor.temp=Temperature
 waila.reactor.mox=Mox Fuel
 waila.reactor.fastdecay=Fast Decay Mode
+waila.fluidFilter=Show Fluid Filter Info
+waila.transformer=Show Transformer
+waila.solar=Show Solar Calcification
+waila.machineFacing=Show Machine Facing
+waila.multiblock=Show Multiblock Info
+waila.basicmachine=Show Basicmachine Info
+waila.facing=Facing
+waila.stepdown=Step Down
+waila.stepup=Step Up
+waila.input=Input
+waila.output=Output
+waila.solaroutput=Solar Boiler Output
+waila.incompletestructure=Incomplete Structure
+waila.progress=Progress
+waila.maintenance=Need Maintenance
+waila.running=Running Fine
+waila.efficiency=Efficiency
+waila.consumption=Consumption
+waila.usedcapacity=Used Capacity
+waila.totalcapacity=Total Capacity
 
 impact_details=Impact Details
 any_case=Any casing
