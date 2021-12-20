@@ -201,8 +201,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			List<ItemStack> output = new ArrayList<>();
 			IGregTechTileEntity te = getBaseMetaTileEntity();
 			int chancePrimary = 500;
-//			long voltage = getMaxInputVoltage();
-			long voltage = 32;
+			long voltage = getMaxInputVoltage();
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
 			}
@@ -230,7 +229,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
 			int tier = Math.max(1, GT_Utility.getTier(voltage));
-//			this.mEUt = -3 * (1 << (tier << 1));
+			this.mEUt = -3 * (1 << (tier << 1));
 			this.mMaxProgresstime = 400 / (1 << (tier - 1));
 			this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
 			mOutputItems          = output.toArray(new ItemStack[0]);
@@ -256,7 +255,21 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("basic_miner");
-		b.addInfo("0", "WIP").signAndFinalize();
+		b		.addInfo("info.0", "Factorio Miner??")
+				.addTypeMachine("name", "Miner")
+				.addInfo("info.1", "Mining takes place in current Chunk")
+				.addInfo("info.2", "There is only ONE miner in one Chunk")
+				.addSeparator()
+				.addController()
+				.sizeStructure(5, 12, 5)
+				.addMaintenanceHatch()
+				.addOutputBus(1)
+				.addInputHatch(1)
+				.addEnergyHatch(2)
+				.addCasingInfo("case.0", "Solid Steel Machine Casing")
+				.addOtherStructurePart("case.1", "Steel Frame Box", "case.2", "Any Frame Box")
+				.addRedHint("Miner Drill Hatch")
+				.signAndFinalize();
 		return b;
 	}
 	

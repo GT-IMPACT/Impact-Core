@@ -89,12 +89,12 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
 		initOreProperty(te);
-		increaseLayer(te);
 	}
 	
 	public void increaseLayer(IGregTechTileEntity te) {
-		OreGenerator.amountIncrease(te, TIER_MINER, cycleIncrease);
-		cycleIncrease = 0;
+		if (te.isServerSide()) {
+			oreChunkGenerator.sizeOreChunk--;
+		}
 	}
 	
 	public void initOreProperty(IGregTechTileEntity te) {
@@ -216,7 +216,6 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 						ItemStack stack = oreVein.ores.get(0);
 						mInventory[OUTPUT_SLOT] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
 					}
-					cycleIncrease++;
 				}
 			} else {
 				if (aTick % 20 == 2 && hatch.get(0) != null) {
@@ -249,7 +248,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == OreGenerator.empty) {
 			return false;
 		}
-		if ((sizeVeinPreStart - cycleIncrease) <= 0) {
+		if (sizeVeinPreStart-- < 1) {
 			increaseLayer(getBaseMetaTileEntity());
 			initOreProperty(getBaseMetaTileEntity());
 			return false;
@@ -257,8 +256,8 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		checkFuel();
 		if (cBurnTime > 0) {
 			mMaxProgresstime = DEFAULT_WORK;
-			return true;
 		}
+		increaseLayer(getBaseMetaTileEntity());
 		return true;
 	}
 	
@@ -295,7 +294,16 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("coal_miner");
-		b.addInfo("0", "WIP").signAndFinalize();
+		b		.addInfo("info.0", "Factorio Miner??")
+				.addTypeMachine("name", "Miner")
+				.addInfo("info.1", "Mining takes place in current Chunk")
+				.addInfo("info.2", "There is only ONE miner in one Chunk")
+				.addSeparator()
+				.addController()
+				.sizeStructure(5, 3, 5)
+				.addOtherStructurePartAny("case.0", "Iron Frame Box")
+				.addRedHint("Miner Drill Hatch")
+				.signAndFinalize();
 		return b;
 	}
 	

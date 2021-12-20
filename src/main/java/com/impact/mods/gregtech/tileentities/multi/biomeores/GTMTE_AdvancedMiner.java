@@ -23,6 +23,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,33 +44,40 @@ import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
 public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedMiner> {
 	
-	static IStructureDefinition<GTMTE_AdvancedMiner> definition =
-			StructureDefinition.<GTMTE_AdvancedMiner>builder()
-					.addShape("main", new String[][]{
-							{"     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G "},
-							{"     ", "     ", "     ", "  G  ", "  G  ", "  G  ", " GAG ", " G G ", " G G ", "GA~AG", "G   G", "G   G"},
-							{"  G  ", "  G  ", "  G  ", " GAG ", " GAG ", " GAG ", " AAA ", "     ", "     ", " ACA ", "     ", "     "},
-							{"     ", "     ", "     ", "  G  ", "  G  ", "  G  ", " GAG ", " G G ", " G G ", "GAAAG", "G   G", "G   G"},
-							{"     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G "},
-					})
-					.addElement('G', lazy(t -> ofFrame(Materials.Steel)))
-					.addElement('C', ofHatchAdder(GTMTE_AdvancedMiner::checkHatch, 16, ImpactAPI.RED))
-					.addElement('A', ofChain(
-									ofBlock(GregTech_API.sBlockCasings2, 0),
-									ofHatchAdder(GTMTE_AdvancedMiner::addToMachineList, 16, GregTech_API.sBlockCasings2, 0),
-									ofHatchAdder(GTMTE_AdvancedMiner::checkEnrich, 16, GregTech_API.sBlockCasings2, 0)
-							)
-					)
-					.build();
+
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	private final List<GTMTE_EnrichmentUnit> enrich = new ArrayList<>();
 	public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
 	public OreVeinGenerator oreVeinGenerator = null;
 	public List<OreChunkGenerator> chunksGenerator = new ArrayList<>();
 	public OreVein oreVein = OreGenerator.empty;
-	public int layer = 2;
+	public int layer = 1;
 	public double cashedDecrement = 0d;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
+	static Block CASING = GregTech_API.sBlockCasings8;
+	static byte CASING_META = 3;
+	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[1][48 + CASING_META];
+	static int CASING_TEXTURE_ID = CASING_META + 48 + 128;
+	
+	static IStructureDefinition<GTMTE_AdvancedMiner> definition =
+			StructureDefinition.<GTMTE_AdvancedMiner>builder()
+					.addShape("main", new String[][]{
+							{"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " B   B ", " B   B ", " B   B "},
+							{"       ", "       ", "       ", "       ", "       ", "       ", "       ", "  B B  ", "  B B  ", " BB BB ", " BA~AB ", "BBBBBBB", "B     B", "B     B"},
+							{"       ", "       ", "       ", "   B   ", "   B   ", "   B   ", "  AAA  ", " BBBBB ", " B   B ", " B   B ", " AAAAA ", " B   B ", "       ", "       "},
+							{"   B   ", "   B   ", "   B   ", "  BAB  ", "  BAB  ", "  BAB  ", "  AAA  ", "  B B  ", "       ", "       ", " AACAA ", " B   B ", "       ", "       "},
+							{"       ", "       ", "       ", "   B   ", "   B   ", "   B   ", "  AAA  ", " BBBBB ", " B   B ", " B   B ", " AAAAA ", " B   B ", "       ", "       "},
+							{"       ", "       ", "       ", "       ", "       ", "       ", "       ", "  B B  ", "  B B  ", " BB BB ", " BAAAB ", "BBBBBBB", "B     B", "B     B"},
+							{"       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " B   B ", " B   B ", " B   B "}
+					})
+					.addElement('B', lazy(t -> ofFrame(Materials.HSLA)))
+					.addElement('C', ofHatchAdder(GTMTE_AdvancedMiner::checkHatch, CASING_TEXTURE_ID, ImpactAPI.RED))
+					.addElement('A', ofChain(
+									ofBlock(CASING, CASING_META),
+									ofHatchAdder(GTMTE_AdvancedMiner::addToMachineList, CASING_TEXTURE_ID, CASING, CASING_META),
+									ofHatchAdder(GTMTE_AdvancedMiner::checkEnrich, CASING_TEXTURE_ID, CASING, CASING_META)
+							)
+					)
+					.build();
 	
 	public GTMTE_AdvancedMiner(int aID, String aNameRegional) {
 		super(aID, "impact.multis.miner.advanced", aNameRegional);
@@ -90,12 +98,16 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 		if (te.isServerSide()) {
 			if (cycleIncrease <= 0) return;
 			for (OreChunkGenerator oreChunkGenerator : chunksGenerator) {
-				if (oreChunkGenerator.sizeOreChunk > 0) {
+				if (oreChunkGenerator.sizeOreChunk >= cycleIncrease) {
 					oreChunkGenerator.sizeOreChunk -= cycleIncrease;
+					cycleIncrease = 0;
 					break;
+				} else {
+					int preSize = cycleIncrease - oreChunkGenerator.sizeOreChunk;
+					oreChunkGenerator.sizeOreChunk -= preSize;
+					cycleIncrease -= preSize;
 				}
 			}
-			cycleIncrease = 0;
 		}
 	}
 	
@@ -150,7 +162,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 		if (size > 1) return false;
 		hatch.clear();
 		enrich.clear();
-		boolean check = checkPiece(2, 9, 1);// TODO: 02.12.2021
+		boolean check = checkPiece(3, 10, 1);
 		if (hatch.size() != 1) check = false;
 		if (enrich.size() != 1) check = false;
 		return check;
@@ -228,7 +240,6 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		long start = System.currentTimeMillis();
 		if (hatch.get(0) == null) return false;
 		if (oreVeinGenerator == null) return false;
 		if (oreVein == OreGenerator.empty) return false;
@@ -243,8 +254,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			List<ItemStack> outputEnrich = new ArrayList<>();
 			IGregTechTileEntity te = getBaseMetaTileEntity();
 			int chancePrimary = 500;
-//			long voltage = getMaxInputVoltage();
-			long voltage = 1920;
+			long voltage = getMaxInputVoltage();
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
 			}
@@ -301,7 +311,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
 			int tier = Math.max(1, GT_Utility.getTier(voltage));
-//			this.mEUt = -3 * (1 << (tier << 1));
+			this.mEUt = -3 * (1 << (tier << 1));
 			this.mMaxProgresstime = 400 / (1 << (tier - 1));
 			this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
 			this.mOutputItems     = output.toArray(new ItemStack[0]);
@@ -321,14 +331,28 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			sizeVeinPreStart -= cycleIncrease;
 			increaseLayer(getBaseMetaTileEntity());
 		}
-		impact.proxy.addClientSideChatMessages("" + (System.currentTimeMillis() - start));
 		return check;
 	}
 	
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_miner");
-		b.addInfo("0", "WIP").signAndFinalize();
+		b		.addInfo("info.0", "Factorio Miner??")
+				.addTypeMachine("name", "Miner")
+				.addInfo("info.1", "Mining takes place in 16 (4x4 zone) Chunks (Full Vein)")
+				.addInfo("info.2", "There is only ONE miner in one Chunk")
+				.addSeparator()
+				.addController()
+				.sizeStructure(7, 13, 7)
+				.addMaintenanceHatch()
+				.addOutputBus(1)
+				.addInputHatch(1)
+				.addEnergyHatch(2)
+				.addCasingInfo("case.0", "HSLA Machine Casing")
+				.addOtherStructurePart("case.1", "HSLA Steel Frame Box", "case.2", "Any Frame Box")
+				.addOtherStructurePartAny("case.3", "Miner Enrichment Unit")
+				.addRedHint("Miner Drill Hatch")
+				.signAndFinalize()	;
 		return b;
 	}
 	
@@ -375,7 +399,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	@Override
-	public void construct(ItemStack itemStack, boolean b) { // TODO: 02.12.2021
-		buildPiece(itemStack, b, 2, 9, 1);
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(itemStack, b, 3, 10, 1);
 	}
 }
