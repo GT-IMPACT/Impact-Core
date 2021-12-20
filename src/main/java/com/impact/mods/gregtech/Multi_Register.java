@@ -114,6 +114,7 @@ public class Multi_Register {
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
 		AdvancedMiner.set(new GTMTE_AdvancedMiner(ID++, "Advanced Electric Miner").get());
 		The_Mill.set(new GTMTE_TheMill(ID++, "The Mill").get());
+		AdvCrackUnit.set(new GTMTE_AdvancedCrackingUnit(ID++, "Advanced Cracking Unit").get());
 		
 		INFO("Multi_Register.java | Last ID: " + ID);
 		

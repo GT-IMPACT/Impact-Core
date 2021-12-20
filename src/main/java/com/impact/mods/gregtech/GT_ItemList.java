@@ -107,7 +107,7 @@ public enum GT_ItemList implements IItemContainer {
 	Machine_Utility, Machine_Brewmenter, Machine_ArcFurnace, Machine_Cutting, Machine_Extradifier, Machine_Macerator, Machine_Mixer,
 	Machine_Siftarator, Machine_DDDPrinter, Machine_AdvDDDPrinter,
 	PowerStation, PowerReactor, PowerTurbine, Machine_FreezSolidifier, Machine_BlastSmelter, WaterDrill, BasicWaterPump,
-	AdvVacuumFreezer, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
+	AdvVacuumFreezer, AdvCrackUnit, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
 	Machine_EIF, Machine_ChemicalReactor, Machine_DistTower, Machine_ElectricImplosion, Aerostate,
 	
 	Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched, Moon_Miner, Rail_Assembler, Space_Elevator,
