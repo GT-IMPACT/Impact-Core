@@ -343,6 +343,12 @@ public class Basic_Register {
 		
 		RecipeEditor.set(new GTMTE_RecipeEditor(ID2++, "Recipe Editor", 3).getStackForm(1));
 		
+		ProspectorLV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 1).getStackForm(1));
+		ProspectorMV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 2).getStackForm(1));
+		ProspectorHV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 3).getStackForm(1));
+		ProspectorEV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 4).getStackForm(1));
+		ProspectorIV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 5).getStackForm(1));
+		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		
 		DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,

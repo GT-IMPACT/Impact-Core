@@ -25,7 +25,7 @@ public enum GT_ItemList implements IItemContainer {
 	packEris, packGanymed, packHaumea, packIapetus, packIo, packMakeMake, packMercury, packMoon,
 	packOberon, packPhobos, packPluto, packTCetiE, packTitan, packTriton, packVegaB, packVenus, packMars,
 	packProteus, packAsteroids, spacebox1, spacebox2, spacebox3, spacebox4, spacebox5, spacebox6, spacebox7,
-	spacebox8, Aerostat, ConstructionLaser, DebugOreGen,
+	spacebox8, Aerostat, ConstructionLaser, DebugOreGen, OreProbe,
 	
 	ULVMotor, ULVPiston, ULVRobotArm, ULVConveyorModule, ULVPump,
 	
@@ -162,6 +162,7 @@ public enum GT_ItemList implements IItemContainer {
 	Mining_Enrich_HV,
 	RecipeEditor,
 	CoalMiner, BasicMiner, AdvancedMiner,
+	ProspectorLV, ProspectorMV, ProspectorHV, ProspectorEV, ProspectorIV,
 	
 	Wind_Generator, The_Mill,
 	
