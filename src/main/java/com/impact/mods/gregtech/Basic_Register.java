@@ -341,7 +341,8 @@ public class Basic_Register {
 		Mining_Hatch_ULV.set(new GTMTE_OreHatch(ID2++, "Miner Drill Hatch", 0).getStackForm(1));
 		Mining_Enrich_HV.set(new GTMTE_EnrichmentUnit(ID2++, "Miner Enrichment Unit", 3).getStackForm(1));
 		
-		RecipeEditor.set(new GTMTE_RecipeEditor(ID2++, "Recipe Editor", 3).getStackForm(1));
+		RecipeEditor.set(new GTMTE_RecipeEditor(ID2++, "Recipe Editor Machines", 3).getStackForm(1));
+		RecipeEditorCrafting.set(new GTMTE_RecipeEditorCrafting(ID2++, "Recipe Editor WorkTable", 3).getStackForm(1));
 		
 		ProspectorLV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 1).getStackForm(1));
 		ProspectorMV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 2).getStackForm(1));

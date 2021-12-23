@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Arrays;
@@ -93,6 +94,28 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 						recipeEditor.chance[chanceIndex] = chance*100;
 						impact.proxy.addClientSideChatMessages("Chance product set: " + recipeEditor.chance[chanceIndex]/100 + "% (" + recipeEditor.chance[chanceIndex] + ")");
 						return null;
+					}
+				}
+			}
+			if (index <= 23) {
+				if (recipeEditor.mInventory[index] != null) {
+					if (mouse == 2) {
+						if (hotkeys == 0) {
+							if (recipeEditor.mInventory[index].getTagCompound() == null) {
+								recipeEditor.mInventory[index].setTagCompound(new NBTTagCompound());
+							}
+							recipeEditor.mInventory[index].stackTagCompound.setString("oredict", "oredict");
+							if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("Input #" + index + " OreDict Enabled");
+							return null;
+						} else if (hotkeys == 1) {
+							if (recipeEditor.mInventory[index].getTagCompound() != null) {
+								if (recipeEditor.mInventory[index].getTagCompound().hasKey("oredict")) {
+									recipeEditor.mInventory[index].getTagCompound().removeTag("oredict");
+									if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("Input #" + index + " OreDict Disabled");
+									return null;
+								}
+							}
+						}
 					}
 				}
 			}
