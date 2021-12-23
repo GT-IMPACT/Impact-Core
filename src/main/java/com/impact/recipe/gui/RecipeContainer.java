@@ -100,22 +100,19 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 			if (index <= 23) {
 				if (recipeEditor.mInventory[index] != null) {
 					if (mouse == 2) {
-						if (hotkeys == 0) {
-							if (recipeEditor.mInventory[index].getTagCompound() == null) {
-								recipeEditor.mInventory[index].setTagCompound(new NBTTagCompound());
-							}
+						if (recipeEditor.mInventory[index].getTagCompound() == null) {
+							recipeEditor.mInventory[index].setTagCompound(new NBTTagCompound());
+						}
+						if (!recipeEditor.mInventory[index].getTagCompound().hasKey("oredict")) {
 							recipeEditor.mInventory[index].stackTagCompound.setString("oredict", "oredict");
-							if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("Input #" + index + " OreDict Enabled");
-							return null;
-						} else if (hotkeys == 1) {
-							if (recipeEditor.mInventory[index].getTagCompound() != null) {
-								if (recipeEditor.mInventory[index].getTagCompound().hasKey("oredict")) {
-									recipeEditor.mInventory[index].getTagCompound().removeTag("oredict");
-									if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("Input #" + index + " OreDict Disabled");
-									return null;
-								}
+							if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("#" + index + " OreDict Enabled");
+						} else {
+							if (recipeEditor.mInventory[index].getTagCompound().hasKey("oredict")) {
+								recipeEditor.mInventory[index].getTagCompound().removeTag("oredict");
+								if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("#" + index + " OreDict Disabled");
 							}
 						}
+						return null;
 					}
 				}
 			}

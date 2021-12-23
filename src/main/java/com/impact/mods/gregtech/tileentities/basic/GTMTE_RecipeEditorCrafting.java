@@ -32,7 +32,10 @@ import java.util.List;
 public class GTMTE_RecipeEditorCrafting extends GT_MetaTileEntity_BasicTank {
 	
 	public GTMTE_RecipeEditorCrafting(int aID, String aNameRegional, int aTier) {
-		super(aID, "allo_nahui", aNameRegional, aTier, 10, "");
+		super(aID, "recipe_editor_crafting", aNameRegional, aTier, 10, new String[] {
+				"   In GUI:",
+				"- Inputs/Outputs: MIDDLE CLICK - enabled/disabled ore dictionary",
+		});
 	}
 	
 	public GTMTE_RecipeEditorCrafting(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -66,14 +69,7 @@ public class GTMTE_RecipeEditorCrafting extends GT_MetaTileEntity_BasicTank {
 		super.loadNBTData(aNBT);
 	}
 	
-	public void onPostTick(IGregTechTileEntity igt, long aTick) {
-		super.onPostTick(igt, aTick);
-	}
 	
-	@Override
-	public void onFirstTick(IGregTechTileEntity igt) {
-		super.onFirstTick(igt);
-	}
 	
 	public void save() {
 		try {

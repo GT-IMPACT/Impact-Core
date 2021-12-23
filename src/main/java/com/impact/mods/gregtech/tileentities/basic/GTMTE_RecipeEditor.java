@@ -39,7 +39,12 @@ public class GTMTE_RecipeEditor extends GT_MetaTileEntity_BasicTank {
 	public boolean chanceEnabled;
 	
 	public GTMTE_RecipeEditor(int aID, String aNameRegional, int aTier) {
-		super(aID, "allo_nahui", aNameRegional, aTier, 50, "");
+		super(aID, "allo_nahui", aNameRegional, aTier, 50, new String[] {
+				"   In GUI:",
+				"- Inputs items: SHIFT + R/L CLICK +/- stacksize",
+				"- Inputs/Outputs: MIDDLE CLICK - enabled/disabled ore dictionary",
+				"- Outputs slots: SHIFT + R/L CLICK +/- chance",
+		});
 	}
 	
 	public GTMTE_RecipeEditor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

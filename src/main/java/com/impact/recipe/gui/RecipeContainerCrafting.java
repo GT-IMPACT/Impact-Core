@@ -64,11 +64,11 @@ public class RecipeContainerCrafting extends GT_ContainerMetaTile_Machine {
 						    }
 							if (!recipeEditor.mInventory[index].getTagCompound().hasKey("oredict")) {
 								recipeEditor.mInventory[index].stackTagCompound.setString("oredict", "oredict");
-								if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("Input #" + index + " OreDict Enabled");
+								if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("#" + index + " OreDict Enabled");
 							} else {
 								if (recipeEditor.mInventory[index].getTagCompound().hasKey("oredict")) {
 									recipeEditor.mInventory[index].getTagCompound().removeTag("oredict");
-									if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("Input #" + index + " OreDict Disabled");
+									if (!mTileEntity.isServerSide()) impact.proxy.addClientSideChatMessages("#" + index + " OreDict Disabled");
 								}
 							}
 						return null;
