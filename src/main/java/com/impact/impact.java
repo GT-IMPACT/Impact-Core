@@ -4,7 +4,6 @@ import com.impact.client.gui.GUIHandler;
 import com.impact.command.Command_FixBQ;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
-import com.impact.core.Refstrings;
 import com.impact.core.SaveManager;
 import com.impact.events.EventDropBlock;
 import com.impact.events.TickHandler;
@@ -19,7 +18,6 @@ import com.impact.recipe.maps.RecipesJson;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.FMLEventChannel;
 
 import java.io.File;
 import java.util.ArrayList;

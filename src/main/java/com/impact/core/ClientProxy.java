@@ -4,43 +4,34 @@ import baubles.api.BaublesApi;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
 import com.impact.client.render.tesr.*;
+import com.impact.command.Command_Run;
 import com.impact.common.armor.MaskOfVision;
 import com.impact.common.block.QuantumStuffRender;
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.blocks.Block_TheMill;
 import com.impact.common.te.*;
 import com.impact.events.ClientEvent;
-import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import gregtech.GT_Mod;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.XSTR;
-import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.List;
-
-import static com.impact.loader.ItemRegistery.maskVision;
 
 public class ClientProxy extends CommonProxy {
 	
@@ -229,6 +220,7 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	public void postInit() {
+		ClientCommandHandler.instance.registerCommand(new Command_Run());
 	}
 	
 	public void init() {
