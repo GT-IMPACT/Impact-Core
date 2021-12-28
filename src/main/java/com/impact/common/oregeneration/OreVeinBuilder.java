@@ -1,5 +1,6 @@
 package com.impact.common.oregeneration;
 
+import com.impact.core.Config;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.impact.core.Impact_API.worldDimensions;
 import static gregtech.api.enums.OrePrefixes.crushed;
 import static gregtech.api.enums.OrePrefixes.ore;
 
@@ -100,6 +102,16 @@ public class OreVeinBuilder {
 	
 	public OreVeinBuilder addDim(int... dim) {
 		this.idDim = dim;
+		return this;
+	}
+	
+	public OreVeinBuilder addDim(OreGenerator.Dimensions... dim) {
+		int[] ints = new int[dim.length + 1];
+		for (int i = 0; i < dim.length; i++) {
+			ints[i] = dim[i].id;
+		}
+		ints[dim.length] = Config.MiningWorldID;
+		this.idDim = ints;
 		return this;
 	}
 	

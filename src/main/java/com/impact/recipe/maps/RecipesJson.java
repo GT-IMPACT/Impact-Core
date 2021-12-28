@@ -130,12 +130,14 @@ public class RecipesJson {
 			if (!saveDir.isDirectory()) return;
 			for (File fileEntry : Objects.requireNonNull(saveDir.listFiles())) {
 				try {
-					FileReader fr = new FileReader(fileEntry);
-					BufferedReader br = new BufferedReader(fr);
-					Type gsonType = new TypeToken<List<RecipeJson>>(){}.getType();
-					recipeTest.put(fileEntry.getName().replaceAll("\\.json", "")
-							.replaceAll("_", "\\."), gson.fromJson(br, gsonType));
-					br.close();
+					if (!fileEntry.equals(new File(saveDir.getPath() + "\\crafting.json"))) {
+						FileReader fr = new FileReader(fileEntry);
+						BufferedReader br = new BufferedReader(fr);
+						Type gsonType = new TypeToken<List<RecipeJson>>() {}.getType();
+						recipeTest.put(fileEntry.getName().replaceAll("\\.json", "")
+								.replaceAll("_", "\\."), gson.fromJson(br, gsonType));
+						br.close();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

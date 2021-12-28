@@ -22,6 +22,7 @@ public class Config {
 	public static boolean mainMenu;
 	public static boolean placedItems;
 	public static int saveTime;
+	public static int MiningWorldID;
 	
 	public Config(File file) {
 		if (!loadConfig) {
@@ -79,6 +80,11 @@ public class Config {
 			cfg         = config.get("GENERAL", "Impact saves files timer", 30);
 			cfg.comment = "SaveTimer. [Default: 30min]";
 			saveTime = cfg.getInt(30);
+			General.add(cfg.getName());
+			
+			cfg         = config.get("GENERAL", "Mining World (Copy OverWorld)", 45);
+			cfg.comment = "MiningWorldID. [Default: 45]";
+			MiningWorldID = cfg.getInt(45);
 			General.add(cfg.getName());
 			
 			//DEBUG

@@ -63,9 +63,6 @@ public class MainLoader {
 		}
 		impact.proxy.registerRenderInfo();
 		INFO("[Init] Item Registery - Loaded");
-		
-		OreGenerator.register();
-		INFO("[Init] Impact Ore Generation - Loaded");
 	}
 	
 	public static void preInit(FMLPreInitializationEvent event) {
@@ -142,6 +139,7 @@ public class MainLoader {
 		new Basic_Register().run();
 		new GT_WorldGenRegister().run();
 		new ModLoader().run();
+		OreGenerator.register();
 		INFO(Lang.impact.eng + " Lang Loaded");
 		for (Module module : getModules()) {
 			if (module.getIsActive()) {

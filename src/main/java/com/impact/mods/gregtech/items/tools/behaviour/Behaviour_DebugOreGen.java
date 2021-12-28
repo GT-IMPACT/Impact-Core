@@ -17,9 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.DimensionManager;
 
 import java.util.List;
 import java.util.Objects;
+
+import static com.impact.core.impactLog.INFO;
 
 public class Behaviour_DebugOreGen extends Behaviour_None {
 	
@@ -73,6 +76,13 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 							}
 						}
 						GT_Utility.sendChatToPlayer(aPlayer, "Current Ore Region Cycles Filled");
+						break;
+					case 4:
+						for (int id : DimensionManager.getIDs()) {
+							String name = DimensionManager.getProvider(id).getDimensionName();
+							GT_Utility.sendChatToPlayer(aPlayer, "ID: " + EnumChatFormatting.GREEN + id + EnumChatFormatting.RESET + " Name: " + EnumChatFormatting.GREEN + name);
+							System.out.println(id + "  " + name);
+						}
 						break;
 					case 61:
 						long start = System.currentTimeMillis();
@@ -136,6 +146,7 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 		aList.add("   -  x1 - Remove full Region");
 		aList.add("   -  x2 - Remove only Region Veins Cycles");
 		aList.add("   -  x3 - Filled Region Veins Cycles");
+		aList.add("   -  x4 - Print All ID and Name World Dimensions");
 		aList.add("   - x61 - Generate Regions Area (Cube) -10K x 10K blocks");
 		aList.add(" ");
 		aList.add(EnumChatFormatting.YELLOW + "RCLICK - Stacksize this item: ");

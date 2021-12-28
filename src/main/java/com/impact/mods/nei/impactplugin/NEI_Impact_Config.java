@@ -3,17 +3,17 @@ package com.impact.mods.nei.impactplugin;
 import codechicken.nei.NEIModContainer;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.HandlerInfo;
-import com.impact.common.oregeneration.generator.OreChunkGenerator;
+import com.impact.common.oregeneration.OreGenerator;
 import com.impact.core.Impact_API;
 import com.impact.core.Refstrings;
-import com.impact.mods.gregtech.GT_ItemList;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
 import com.impact.mods.nei.impactplugin.builder.BuilderNEI;
 import com.impact.mods.nei.impactplugin.builder.HandlerInfoRegister;
+import com.impact.mods.nei.impactplugin.ores.NEI_Impact_DimOres;
 import com.impact.mods.nei.impactplugin.ores.NEI_Impact_HammerDrop;
-import com.impact.mods.nei.impactplugin.ores.NEI_Impact_OreBiomes;
-import com.impact.mods.nei.impactplugin.ores.OreBiome;
+import com.impact.mods.nei.impactplugin.ores.NEI_Impact_Ores;
+import com.impact.mods.nei.impactplugin.ores.OreBuilderNEI;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
@@ -21,12 +21,17 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Objects;
 
+import static com.impact.core.Impact_API.worldDimensions;
 import static com.impact.mods.gregtech.GT_ItemList.*;
+import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIDimOres;
+import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIOres;
 import static com.impact.util.Utilits.getFluidDisplay;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.*;
@@ -70,13 +75,20 @@ public class NEI_Impact_Config implements IConfigureNEI {
 		RecipeProcessorLoader.init();
 		sIsAdded = false;
 		
+		worldDimensions.addAll(Arrays.asList(OreGenerator.Dimensions.values()));
+		BuildNEIDimOres();
+		BuildNEIOres();
+		
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			new GT_NEI_NaquadahGen(GT_Recipe.GT_Recipe_Map.sLiquidNqGenerator);
 			new GT_NEI_EnrichedNaquadahGen(GT_Recipe.GT_Recipe_Map.sLiquidENqGenerator);
 			new GT_NEI_HyperGen(GT_Recipe.GT_Recipe_Map.sHyperGenerator);
 			new GT_NEI_HeavyMetalCyclone(GT_Recipe.GT_Recipe_Map.sCyclonRecipes);
 			new NEI_Impact_RailAssembler(GTMTE_RailAssembler.sTrackAssemblerRecipes);
-			new NEI_Impact_OreBiomes(OreBiome.startNEIBiomes());
+			new NEI_Impact_Ores(OreBuilderNEI.defaultOres, 1);
+			new NEI_Impact_DimOres(OreBuilderNEI.dimDefaultOres, 1);
+			new NEI_Impact_Ores(OreBuilderNEI.smallOres, 0);
+			new NEI_Impact_DimOres(OreBuilderNEI.dimSmallOres, 0);
 			new NEI_Impact_HammerDrop(Impact_API.dropsFromBlock);
 			registerSingle();
 			registerHandlerInfo();
