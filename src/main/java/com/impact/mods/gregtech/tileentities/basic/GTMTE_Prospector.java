@@ -133,9 +133,6 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 					for (Chunk c : chunks) {
 						for(int x = 0; x < 16; ++x) {
 							for (int z = 0; z < 16; ++z) {
-								int ySize = c.getHeightValue(x, z);
-								
-								for (int y = 1; y < ySize; ++y) {
 									switch (data) {
 										case 2:
 											if (x != 0 && z != 0) {
@@ -167,11 +164,6 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 												packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) sizeVein);
 											}
 									}
-									
-									if (data > 1) {
-										break;
-									}
-								}
 							}
 						}
 					}

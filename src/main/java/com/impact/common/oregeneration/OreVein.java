@@ -28,7 +28,7 @@ public class OreVein {
 	public List<ItemStack> ores;
 	
 	private OreVein(int id, String name, int tier, int[] dim, int[] size, double weight, short[] color, short[] chance, FluidStack specialFluid, List<ItemStack> ores) {
-		this.idVein        = id;
+		this.idVein        = 1000 + id;
 		this.idDim         = dim;
 		this.nameVein      = name;
 		this.tierVein      = tier;
@@ -44,10 +44,16 @@ public class OreVein {
 			for (int i = 0; i < chanceOres.length; i++) {
 				chanceOres[i] *= 100;
 			}
+		} else {
+			this.chanceOres = new short[this.ores.size()];
+			Arrays.fill(this.chanceOres, (short) 10000);
 		}
 		this.currentWeight = weight;
 		this.maxWeight     = weight;
-		Impact_API.registerVeins.put(id, this);
+		if (Impact_API.registerVeins.containsKey(id)) {
+			throw new ArrayIndexOutOfBoundsException("OreVein ID: " + id + " already registered");
+		}
+		Impact_API.registerVeins.put(this.idVein, this);
 	}
 	
 	public static OreVein addVein(int id, String name, int tier, int[] dim, int[] size, double weight, short[] chance, FluidStack specialFluid, List<Materials> crushedMaterials) {

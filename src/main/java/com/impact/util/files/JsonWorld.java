@@ -24,7 +24,7 @@ public class JsonWorld {
     private final static String COMMUNICATION_TOWERS = "CommunicationTowers";
     private final static String SPACE_SATELLITES = "SpaceSatellites";
     private final static String AERO_STATES = "AeroStates";
-    private final static String BIOMES_ORES = "BiomesOres";
+    private final static String ORES = "Ores";
 
     public static void save() {
         long start = System.currentTimeMillis();
@@ -82,11 +82,11 @@ public class JsonWorld {
     //endregion
     
     private static void loadOreGenerator() {
-        File json = SaveManager.get().biomesOresDirectory;
+        File json = SaveManager.get().oresDirectory;
         Gson gson = new Gson();
         JsonElement jsonElement = null;
         try {
-            FileReader fr = new FileReader(json.getPath() + "\\" + BIOMES_ORES + ".json");
+            FileReader fr = new FileReader(json.getPath() + "\\" + ORES + ".json");
             BufferedReader br = new BufferedReader(fr);
             jsonElement = gson.fromJson(br, JsonElement.class);
             Type listType = new TypeToken<List<OresRegionGenerator>>() {}.getType();
@@ -103,9 +103,9 @@ public class JsonWorld {
     
     private static void saveOreGenerator() {
         if (regionsOres.isEmpty()) return;
-        File json = SaveManager.get().biomesOresDirectory;
+        File json = SaveManager.get().oresDirectory;
         Gson objGson = new Gson();
-        try (FileWriter writer = new FileWriter(json.getPath() + "\\" + BIOMES_ORES + ".json")) {
+        try (FileWriter writer = new FileWriter(json.getPath() + "\\" + ORES + ".json")) {
             List<OresRegionGenerator> list = new ArrayList<>(regionsOres.values());
             objGson.toJson(list, writer);
         } catch (Exception e) {

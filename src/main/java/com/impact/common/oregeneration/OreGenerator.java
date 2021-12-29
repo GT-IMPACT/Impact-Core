@@ -6,15 +6,12 @@ import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.core.Impact_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.DimensionManager;
+import scala.tools.ant.sabbus.Make;
 
 import java.util.Objects;
 
 import static com.impact.common.oregeneration.OreGenerator.Dimensions.*;
 import static com.impact.common.oregeneration.OreVeinBuilder.addVein;
-import static com.impact.core.Impact_API.worldDimensions;
-import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIDimOres;
-import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIOres;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.dust;
 
@@ -24,7 +21,7 @@ public class OreGenerator {
 	
 	public static void register() {
 		//Empty
-		empty = addVein(999, "Empty").setTier(-1).noChance().setWeight(20.0d).setColor(Empty).end();
+		empty = addVein(999, "Empty").setTier(-1).noChance().setWeight(20).setColor(Empty).end();
 		
 		addVein(0, "Uraninite")
 				.addDim(KuiperBelt, Haumea, Ganymede, Proteus, Deimos, Makemake, Ceres, Phobos, Dimensions.Titan)
@@ -268,7 +265,7 @@ public class OreGenerator {
 				.setColor(Stibnite)
 				.addOres(Stibnite, Tantalite, Stibnite, Tantalite)
 				.end();
-		addVein(40, "Magnetite")
+		addVein(40, "Gold Magnetite")
 				.addDim(Dimensions.Mars, Overworld, Asteroids, Pluto, Callisto, Triton, Phobos)
 				.setSize(50, 400).setTier(1).setWeight(160).setChance(100, 80, 60, 40)
 				.setColor(Gold)
@@ -352,7 +349,7 @@ public class OreGenerator {
 				.setColor(Cassiterite)
 				.addOres(Cassiterite, Ledox, Palladium, Zinc)
 				.end();
-		addVein(54, "Magnetite")
+		addVein(54, "Iron Magnetite")
 				.addDim(Overworld, Deimos, Io, Makemake, Ceres)
 				.setSize(50, 400).setTier(1).setWeight(160).setChance(100, 80, 60, 40)
 				.setColor(Iron)
@@ -376,11 +373,291 @@ public class OreGenerator {
 				.setColor(Tin)
 				.addOres(Tin, Tin, Cassiterite, Tin)
 				.end();
-		addVein(59, "Zinc")
+		addVein(58, "Zinc")
 				.addDim(Dimensions.Mars, Venus, Deimos, Io, Phobos, Overworld)
 				.setSize(50, 400).setTier(1).setWeight(50).setChance(100, 80, 60, 40)
 				.setColor(Zinc)
 				.addOres(Sphalerite, Zinc, Sulfur, Pyrite)
+				.end();
+		
+		addVein(500, "Copper")
+				.addDim(Dimensions.Mars, Overworld, Proteus, Triton, Phobos, Asteroids)
+				.setSize(1, 10).setTier(0).setWeight(32).noChance()
+				.setColor(Copper)
+				.addOres(Copper)
+				.end();
+		addVein(501, "Tin")
+				.addDim(Overworld, Dimensions.Mars, Deimos, Ganymede, Dimensions.Titan, Proteus, Asteroids)
+				.setSize(1, 10).setTier(0).setWeight(32).noChance()
+				.setColor(Tin)
+				.addOres(Tin)
+				.end();
+		addVein(502, "Bismuth")
+				.addDim(Overworld, Dimensions.Mars, Callisto, Dimensions.Mercury, Io, Proteus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Bismuth)
+				.addOres(Bismuth)
+				.end();
+		addVein(503, "Coal")
+				.addDim(Overworld)
+				.setSize(1, 10).setTier(0).setWeight(24).noChance()
+				.setColor(Coal)
+				.addOres(Coal)
+				.end();
+		addVein(504, "Iron")
+				.addDim(Overworld, Dimensions.Mars, Io, Callisto, Triton, Enceladus, Asteroids, Haumea, Ganymede, Miranda, Phobos, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(16).noChance()
+				.setColor(Iron)
+				.addOres(Iron)
+				.end();
+		addVein(505, "Lead")
+				.addDim(Overworld, Dimensions.Mars, Venus, Dimensions.Mercury, Pluto, Triton, Asteroids, Makemake, Oberon, Ceres, Ganymede, Deimos)
+				.setSize(1, 10).setTier(0).setWeight(16).noChance()
+				.setColor(Lead)
+				.addOres(Lead)
+				.end();
+		addVein(506, "Zinc")
+				.addDim(Overworld, Dimensions.Mars, Io, Dimensions.Mercury, Enceladus, Haumea, Ganymede, Proteus, Dimensions.Titan )
+				.setSize(1, 10).setTier(0).setWeight(12).noChance()
+				.setColor(Zinc)
+				.addOres(Zinc)
+				.end();
+		addVein(507, "Gold")
+				.addDim(Overworld, Dimensions.Mars, Venus, Pluto, Callisto, Asteroids, Ceres, Miranda, Phobos)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Gold)
+				.addOres(Gold)
+				.end();
+		addVein(508, "Silver")
+				.addDim(Overworld, Io, Pluto, Triton, Enceladus, Oberon, Proteus, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Silver)
+				.addOres(Silver)
+				.end();
+		addVein(509, "Nickel")
+				.addDim(Overworld, Dimensions.Mars, Venus, Dimensions.Mercury, Pluto, Makemake, Asteroids, Ceres, Deimos)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Nickel)
+				.addOres(Nickel)
+				.end();
+		addVein(510, "Lapis")
+				.addDim(Overworld, Io, Ganymede, Enceladus, Phobos, Oberon)
+				.setSize(1, 10).setTier(0).setWeight(4).noChance()
+				.setColor(Lapis)
+				.addOres(Lapis)
+				.end();
+		addVein(511, "Diamond")
+				.addDim(Overworld, Venus, Callisto, Triton, Enceladus, Asteroids, Oberon, Ceres, Deimos, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(2).noChance()
+				.setColor(Diamond)
+				.addOres(Diamond)
+				.end();
+		addVein(512, "Emerald")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Emerald)
+				.addOres(Emerald)
+				.end();
+		addVein(513, "Ruby")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Ruby)
+				.addOres(Ruby)
+				.end();
+		addVein(514, "Sapphire")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Sapphire)
+				.addOres(Sapphire)
+				.end();
+		addVein(515, "Green Sapphire")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(GreenSapphire)
+				.addOres(GreenSapphire)
+				.end();
+		addVein(516, "Olivine")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Olivine)
+				.addOres(Olivine)
+				.end();
+		addVein(517, "Topaz")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Topaz)
+				.addOres(Topaz)
+				.end();
+		addVein(518, "Tanzanite")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Tanzanite)
+				.addOres(Tanzanite)
+				.end();
+		addVein(519, "Amethyst")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Amethyst)
+				.addOres(Amethyst)
+				.end();
+		addVein(520, "Opal")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Opal)
+				.addOres(Opal)
+				.end();
+		addVein(521, "Blue Topaz")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(BlueTopaz)
+				.addOres(BlueTopaz)
+				.end();
+		addVein(522, "Red Garnet")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(GarnetRed)
+				.addOres(GarnetRed)
+				.end();
+		addVein(523, "Yellow Garnet")
+				.addDim(Overworld, Haumea, Proteus, Enceladus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(GarnetYellow)
+				.addOres(GarnetYellow)
+				.end();
+		addVein(524, "Iridium")
+				.addDim(Venus, Io, Dimensions.Mercury, Pluto, Callisto, Triton, Enceladus, Asteroids, Oberon, Ceres, Ganymede, Proteus, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Iridium)
+				.addOres(Iridium)
+				.end();
+		addVein(525, "Nether Quartz")
+				.addDim(Overworld, Enceladus)
+				.setSize(1, 10).setTier(0).setWeight(32).noChance()
+				.setColor(NetherQuartz)
+				.addOres(NetherQuartz)
+				.end();
+		addVein(526, "Saltpeter")
+				.addDim(Overworld, Dimensions.Mars, Venus, Io, Ganymede, Proteus, Enceladus, Deimos)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Saltpeter)
+				.addOres(Saltpeter)
+				.end();
+		addVein(527, "Sulfur")
+				.addDim(Overworld)
+				.setSize(1, 10).setTier(0).setWeight(16).noChance()
+				.setColor(Sulfur)
+				.addOres(Sulfur)
+				.end();
+		addVein(528, "Osmium")
+				.addDim(Haumea, Ganymede, Miranda, Pluto, Proteus, Triton, Makemake, Dimensions.Titan, Oberon)
+				.setSize(1, 10).setTier(0).setWeight(1).noChance()
+				.setColor(Osmium)
+				.addOres(Osmium)
+				.end();
+		addVein(529, "Titanium")
+				.addDim(Dimensions.Mars, Venus, Io, Dimensions.Mercury, Pluto, Callisto, Triton, Enceladus, Makemake, Asteroids,
+						Oberon, Haumea, Ceres, Ganymede, Miranda, Proteus, Deimos, Phobos, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(32).noChance()
+				.setColor(Titanium)
+				.addOres(Titanium)
+				.end();
+		addVein(530, "Meteoric Iron")
+				.addDim(Dimensions.Mars, Venus, Dimensions.Moon, Io, Pluto, Deimos, Phobos)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(MeteoricIron)
+				.addOres(MeteoricIron)
+				.end();
+		addVein(531, "Neutronium")
+				.addDim(Makemake)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Neutronium)
+				.addOres(Neutronium)
+				.end();
+		addVein(532, "Chromite")
+				.addDim(Dimensions.Mars, Venus, Io, Dimensions.Mercury, Pluto, Callisto, Triton, Enceladus, Makemake, Asteroids,
+						Oberon, Haumea, Ceres, Ganymede, Proteus, Deimos, Phobos, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Chromite)
+				.addOres(Chromite)
+				.end();
+		addVein(533, "Tungstate")
+				.addDim(Dimensions.Mars, Venus, Io, Dimensions.Mercury, Pluto, Callisto, Triton, Enceladus, Asteroids, Oberon,
+						Ceres, Ganymede, Miranda, Proteus, Deimos, Phobos, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Tungstate)
+				.addOres(Tungstate)
+				.end();
+		addVein(534, "Naquadah")
+				.addDim(Venus, Io, Ceres, Dimensions.Mercury, Pluto, Proteus, Enceladus)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Naquadah)
+				.addOres(Naquadah)
+				.end();
+		addVein(535, "Quantium")
+				.addDim(Pluto, Triton)
+				.setSize(1, 10).setTier(0).setWeight(6).noChance()
+				.setColor(Quantium)
+				.addOres(Quantium)
+				.end();
+		addVein(536, "Mithril")
+				.addDim(Venus, Ganymede, Triton, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Mithril)
+				.addOres(Mithril)
+				.end();
+		addVein(537, "Ledox")
+				.addDim(Haumea, Dimensions.Mercury, Pluto, Callisto, Enceladus, Oberon)
+				.setSize(1, 10).setTier(0).setWeight(4).noChance()
+				.setColor(Ledox)
+				.addOres(Ledox)
+				.end();
+		addVein(538, "Oriharukon")
+				.addDim(Pluto, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(6).noChance()
+				.setColor(Oriharukon)
+				.addOres(Oriharukon)
+				.end();
+		addVein(539, "Meitnerium")
+				.addDim(Haumea, Pluto, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(4).noChance()
+				.setColor(Draconium)
+				.addOres(Draconium)
+				.end();
+		addVein(540, "Desh")
+				.addDim(Dimensions.Mars, Haumea, Miranda, Proteus, Callisto, Triton, Deimos, Makemake, Phobos)
+				.setSize(1, 10).setTier(0).setWeight(6).noChance()
+				.setColor(Desh)
+				.addOres(Desh)
+				.end();
+		addVein(541, "Deep Iron")
+				.addDim(Dimensions.Mercury, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(DeepIron)
+				.addOres(DeepIron)
+				.end();
+		addVein(542, "Graphite")
+				.addDim(Venus, Io, Dimensions.Mercury, Dimensions.Titan)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Graphite)
+				.addOres(Graphite)
+				.end();
+		addVein(543, "Forcicium")
+				.addDim(Pluto, Proteus, Makemake)
+				.setSize(1, 10).setTier(0).setWeight(8).noChance()
+				.setColor(Forcicium)
+				.addOres(Forcicium)
+				.end();
+		addVein(544, "Enriched Naquadah")
+				.addDim(Miranda, Proteus)
+				.setSize(1, 10).setTier(0).setWeight(6).noChance()
+				.setColor(NaquadahEnriched)
+				.addOres(NaquadahEnriched)
+				.end();
+		addVein(545, "Naquadria")
+				.addDim(KuiperBelt)
+				.setSize(1, 10).setTier(0).setWeight(4).noChance()
+				.setColor(Naquadria)
+				.addOres(Naquadria)
 				.end();
 	}
 	
@@ -470,7 +747,7 @@ public class OreGenerator {
 		int xReg = chunk.xChunk >> 5;
 		int zReg = chunk.zChunk >> 5;
 		OresRegionGenerator region = new OresRegionGenerator(xReg, zReg, dim);
-		int idRegion = Objects.hash(region.xRegion, region.zRegion);
+		int idRegion = Objects.hash(region.xRegion, region.zRegion, dim);
 		if (!Impact_API.regionsOres.containsKey(idRegion)) {
 			region.createVeins();
 			Impact_API.regionsOres.put(idRegion, region);

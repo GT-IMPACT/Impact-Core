@@ -125,12 +125,15 @@ public class OreVeinBuilder {
 	public OreVein end() {
 		short[] fixChance;
 		if (chance == null) {
-			fixChance = new short[]{};
+			fixChance = null;
 		} else {
 			fixChance = new short[chance.length];
 			for (int i = 0; i < chance.length; i++) {
 				fixChance[i] = (short) chance[i];
 			}
+		}
+		if (tier == 0) {
+			name = "Small " + name;
 		}
 		return OreVein.addVein(id, name, tier, idDim, size, weight, color, fixChance, fluid, ores);
 	}
