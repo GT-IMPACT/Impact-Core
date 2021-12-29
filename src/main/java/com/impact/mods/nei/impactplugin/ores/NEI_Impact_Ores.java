@@ -114,7 +114,7 @@ public class NEI_Impact_Ores extends TemplateRecipeHandler {
 	
 	@Override
 	public String getRecipeName() {
-		return "Impact" + (tier == 0 ? " Small " : "") + "Veins";
+		return "Impact" + (tier == 0 ? " Small" : "") + " Veins";
 	}
 	
 	@Override

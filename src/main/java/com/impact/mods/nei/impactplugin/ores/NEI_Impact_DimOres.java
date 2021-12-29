@@ -117,7 +117,7 @@ public class NEI_Impact_DimOres extends TemplateRecipeHandler {
 	
 	@Override
 	public String getRecipeName() {
-		return "Dimension List" + (tier == 0 ? " Small " : "") + "Veins";
+		return "Dimension List" + (tier == 0 ? " Small" : "") + " Veins";
 	}
 	
 	@Override

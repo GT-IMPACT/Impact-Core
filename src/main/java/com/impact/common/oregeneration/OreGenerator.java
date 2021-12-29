@@ -659,6 +659,12 @@ public class OreGenerator {
 				.setColor(Naquadria)
 				.addOres(Naquadria)
 				.end();
+		addVein(545, "Redstone")
+				.addDim(Overworld)
+				.setSize(1, 10).setTier(0).setWeight(16).noChance()
+				.setColor(Redstone)
+				.addOres(Redstone)
+				.end();
 	}
 	
 	public static int sizeChunk(Chunk chunk, int tier) {
