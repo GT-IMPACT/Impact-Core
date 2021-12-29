@@ -25,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -70,6 +71,20 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GTMTE_Prospector(this.mName, this.mTier, this.mDescriptionArray, this.mTextures,
 				this.mGUIName, this.mNEIName);
+	}
+	
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+		aNBT.setInteger("mode", mode);
+		aNBT.setBoolean("ready", ready);
+	}
+	
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		mode = aNBT.getInteger("mode");
+		ready = aNBT.getBoolean("ready");
 	}
 	
 	@Override
