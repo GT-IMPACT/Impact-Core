@@ -35,9 +35,9 @@ public class Command_Run extends CommandBase implements ICommandSender {
 		}
 		try {
 			if (args[0].equals("panel")) {
-				Runtime.getRuntime().exec("java -jar " + Minecraft.getMinecraft().mcDataDir.getPath() + "/mods/ImpactPanel.jar");
+				Runtime.getRuntime().exec("java -jar " + Minecraft.getMinecraft().mcDataDir.getPath() + "/impact/ImpactPanel.jar");
 			} else if (args[0].equals("nec")) {
-				Runtime.getRuntime().exec("java -jar " + Minecraft.getMinecraft().mcDataDir.getPath() + "/mods/nec-0.3.0-9df2870-all.jar");
+				Runtime.getRuntime().exec("java -jar " + Minecraft.getMinecraft().mcDataDir.getPath() + "/impact/nec-0.3.0-9df2870-all.jar");
 			}
 		} catch (Exception e) {
 			ics.addChatMessage(new ChatComponentText("Not Found Files"));
