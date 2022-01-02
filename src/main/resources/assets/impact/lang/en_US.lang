@@ -89,6 +89,8 @@ tile.impact_matrix_system.name=Matrix Particles Reflector
 tile.impact_matrix_transducer.name=Matrix Transducer
 tile.impact_wind_block.0.name=Wind Gear Box
 
+tile.drying_rack.name=Drying Rack
+
 #TieredItems
 item.impact_drillHeads.0.name=Iron Drill Head
 item.impact_drillHeads.1.name=Steel Drill Head

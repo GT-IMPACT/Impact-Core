@@ -4,6 +4,7 @@ import appeng.tile.AEBaseTile;
 import appeng.tile.crafting.TileCraftingTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
+import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
 import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_AdvancedMiner;
@@ -65,8 +66,8 @@ public class ImpactPlugin extends PluginBase {
         addConfig("multiblock");
         addConfig("fluidFilter");
         addConfig("basicmachine");
-        registerBody(BaseTileEntity.class, AEBaseTile.class);
-        registerNBT(BaseTileEntity.class, AEBaseTile.class);
+        registerBody(BaseTileEntity.class, AEBaseTile.class, TE_DryingRack.class);
+        registerNBT(BaseTileEntity.class, AEBaseTile.class, TE_DryingRack.class);
     }
 
     @Override
@@ -77,6 +78,8 @@ public class ImpactPlugin extends PluginBase {
         MovingObjectPosition pos = accessor.getPosition();
         NBTTagCompound tag = accessor.getNBTData();
         final int side = (byte) accessor.getSide().ordinal();
+        
+        final TE_DryingRack dryingRack = tile instanceof TE_DryingRack ? (TE_DryingRack) tile : null;
         
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
@@ -370,6 +373,10 @@ public class ImpactPlugin extends PluginBase {
                 }
             }
         }
+        
+        if (dryingRack != null) {
+            currenttip.add((tag.getInteger("dryingRack.time") / 20) + " / " + (tag.getInteger("dryingRack.maxTime") / 20) + "s");
+        }
     }
 
     @Override
@@ -377,6 +384,8 @@ public class ImpactPlugin extends PluginBase {
     protected void getNBTData(TileEntity tile, NBTTagCompound tag, World world, BlockCoord pos) {
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
+    
+        final TE_DryingRack dryingRack = tile instanceof TE_DryingRack ? (TE_DryingRack) tile : null;
     
         final GT_MetaTileEntity_BasicMachine BasicMachine = tMeta instanceof GT_MetaTileEntity_BasicMachine ? ((GT_MetaTileEntity_BasicMachine) tMeta) : null;
         final GT_MetaTileEntity_BasicBatteryBuffer bateryBuffer = tMeta instanceof GT_MetaTileEntity_BasicBatteryBuffer ? ((GT_MetaTileEntity_BasicBatteryBuffer) tMeta) : null;
@@ -401,7 +410,7 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
         final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
         final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
-    
+        
         if (tMeta != null) {
         
             if (adv_miner != null) {
@@ -612,6 +621,11 @@ public class ImpactPlugin extends PluginBase {
                     tag.setInteger("bigAcceleratorAmount", cpu.getBigAccelerator());
                 }
             }
+        }
+        
+        if (dryingRack != null) {
+            tag.setInteger("dryingRack.time", dryingRack.currentTime);
+            tag.setInteger("dryingRack.maxTime", dryingRack.maxTime);
         }
 
         tile.writeToNBT(tag);

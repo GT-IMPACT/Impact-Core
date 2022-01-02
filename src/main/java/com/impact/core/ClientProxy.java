@@ -3,6 +3,7 @@ package com.impact.core;
 import baubles.api.BaublesApi;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
+import com.impact.client.render.models.Model_DryingRack;
 import com.impact.client.render.tesr.*;
 import com.impact.command.Command_Run;
 import com.impact.common.armor.MaskOfVision;
@@ -48,12 +49,14 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
 		Block_TheMill.renderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(Block_TheMill.renderID, new Block_TheMill.BlockRender());
+		RenderingRegistry.registerBlockHandler(new Model_DryingRack());
+	
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SpaceElevatorTether());
 		ClientRegistry.bindTileEntitySpecialRenderer(TilePlacedItem.class, new PlacedItemRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_WindMill.class, new TESR_WindMill());
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_TheMill.class, new TESR_TheMill());
-		
+		ClientRegistry.bindTileEntitySpecialRenderer(TE_DryingRack.class, new TESR_DryingRack());
 		
 		register_event(new ClientEvent());
 	}

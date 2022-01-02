@@ -130,7 +130,9 @@ public class MainLoader {
 		GameRegistry.registerTileEntity(TilePlacedItem.class, "TilePlacedItem");
 		GameRegistry.registerTileEntity(TE_WindMill.class, "TileWindMill");
 		GameRegistry.registerTileEntity(TE_TheMill.class, "TheMill");
+		GameRegistry.registerTileEntity(TE_DryingRack.class, "DryingRack");
 	}
+	
 	
 	public static void postInit(FMLPostInitializationEvent event) {
 		new GT_ItemRegister().run();

@@ -39,7 +39,7 @@ public class ItemRegistery {
 	public static GregtechPump GTPump;
 	public static Block lscLapotronicEnergyUnit, SawMillBlock, IGlassBlock, CoalBlock, UtilBlock,
 			NqTetherBlock, InsideBlock, FluidTankBlock, CeramicBlock, CollisionBlock,
-			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, Wind_rotor, TheWind;
+			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, Wind_rotor, TheWind, DryingRack;
 	public static Item maskVision;
 	
 	public static void run() {
@@ -142,6 +142,7 @@ public class ItemRegistery {
 		MPTransducer            = Block_MatrixTransducer.registerBlock();
 		Wind_rotor              = Block_Wind.registerBlock();
 		TheWind                 = Block_TheMill.registerBlock();
+		DryingRack              = Block_DryingRack.registerBlock();
 		maskVision              = MaskOfVision.registerItem();
 		INFO("[Init] Item Registery Blocks - Loaded");
 	}
