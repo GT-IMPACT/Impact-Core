@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.multi.biomeores.hatches;
+package com.impact.mods.gregtech.tileentities.multi.ores.hatches;
 
 import com.impact.common.item.ITieredDamagedItems;
 import gregtech.api.enums.Textures;

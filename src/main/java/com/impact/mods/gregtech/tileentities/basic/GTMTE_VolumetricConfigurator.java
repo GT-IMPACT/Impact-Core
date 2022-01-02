@@ -21,7 +21,7 @@ public class GTMTE_VolumetricConfigurator extends GT_MetaTileEntity_TieredMachin
 	public int exampleCapacity = 1000;
 	
 	public GTMTE_VolumetricConfigurator(int aID, String aNameRegional) {
-		super(aID, "impact.basic.volumetric_regulator", aNameRegional, 1, 3, "aaa");
+		super(aID, "impact.basic.volumetric_regulator", aNameRegional, 1, 3, "The machine is used to configure volumetric flasks");
 	}
 	
 	public GTMTE_VolumetricConfigurator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

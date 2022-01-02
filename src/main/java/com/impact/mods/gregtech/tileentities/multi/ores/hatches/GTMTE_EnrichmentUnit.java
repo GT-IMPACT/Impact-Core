@@ -1,4 +1,4 @@
-package com.impact.mods.gregtech.tileentities.multi.biomeores.hatches;
+package com.impact.mods.gregtech.tileentities.multi.ores.hatches;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.*;
@@ -7,14 +7,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
-
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GTMTE_EnrichmentUnit extends GT_MetaTileEntity_Hatch {
 	

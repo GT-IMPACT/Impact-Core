@@ -1,8 +1,8 @@
 package com.impact.mods.gregtech;
 
-import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_AdvancedMiner;
-import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_BasicMiner;
-import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
@@ -28,7 +28,6 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.*;
 import gregtech.api.enums.ItemList;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FlotationUnit;
 
 import static codechicken.nei.api.API.hideItem;
 import static com.impact.core.impactLog.INFO;

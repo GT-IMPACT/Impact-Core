@@ -1,10 +1,10 @@
-package com.impact.mods.gregtech.tileentities.multi.biomeores;
+package com.impact.mods.gregtech.tileentities.multi.ores;
 
 import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
-import com.impact.mods.gregtech.tileentities.multi.biomeores.hatches.GTMTE_OreHatch;
+import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import cpw.mods.fml.relauncher.Side;
