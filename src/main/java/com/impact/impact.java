@@ -103,6 +103,7 @@ public class impact {
         MainLoader.postInit(event);
         proxy.postInit();
         RecipesJson.load();
+        RecipesJson.loadCrafting();
     }
 
     @Mod.EventHandler

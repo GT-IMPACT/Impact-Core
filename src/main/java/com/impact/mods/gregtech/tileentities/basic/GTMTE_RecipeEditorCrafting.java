@@ -106,8 +106,6 @@ public class GTMTE_RecipeEditorCrafting extends GT_MetaTileEntity_BasicTank {
 		if (outputI == null) {
 			impact.proxy.addClientSideChatMessages("Output not found!");
 			return;
-		} else {
-			outputI.stackSize = 1;
 		}
 		
 		ItemStack[] in = inputI.toArray(new ItemStack[0]);

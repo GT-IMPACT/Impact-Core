@@ -42,15 +42,16 @@ public class RecipesJson {
 	public static void saveCrafting() {
 		if (recipeTestCrafting.isEmpty()) return;
 		File saveDir = new File("config/IMPACT/recipes");
-			Gson gson = JsonUtils.recipeDefaultGson;
-			try (FileWriter writer = new FileWriter(saveDir.getPath() + "\\crafting.json")) {
-				Type gsonType = new TypeToken<List<RecipeJsonCrafing>>() {}.getType();
-				String gsonString = gson.toJson(recipeTestCrafting, gsonType);
-				writer.write(gsonString);
-				writer.flush();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		saveDir.mkdir();
+		Gson gson = JsonUtils.recipeDefaultGson;
+		try (FileWriter writer = new FileWriter(saveDir.getPath() + "\\crafting.json")) {
+			Type gsonType = new TypeToken<List<RecipeJsonCrafing>>() {}.getType();
+			String gsonString = gson.toJson(recipeTestCrafting, gsonType);
+			writer.write(gsonString);
+			writer.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void loadCrafting() {
@@ -109,6 +110,7 @@ public class RecipesJson {
 	
 	public static void save() {
 		File saveDir = new File("config/IMPACT/recipes");
+		saveDir.mkdir();
 		for (String name : recipeTest.keySet()) {
 			Gson gson = JsonUtils.recipeDefaultGson;
 			try (FileWriter writer = new FileWriter(saveDir.getPath() + "\\" + name.replaceAll("\\.", "_") + ".json")) {
@@ -120,7 +122,6 @@ public class RecipesJson {
 				e.printStackTrace();
 			}
 		}
-		recipeTest.clear();
 	}
 	
 	public static void load() {

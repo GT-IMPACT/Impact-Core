@@ -90,15 +90,15 @@ public class RecipeGuiContainer extends GT_GUIContainerMT_Machine implements IPa
 			y = ((Slot) mContainer.inventorySlots.get(48)).yDisplayPosition - 1;
 			getTooltip(mouseX, mouseY, x, y, 16, 16, new String[]{
 					"Save Recipe",
-					"RClick: Add to NEI",
-					"Shift + RClick: Add to JSON",
+					"LClick: Add to NEI",
+					"Shift + LClick: Add to JSON",
 			});
 			x = ((Slot) mContainer.inventorySlots.get(50)).xDisplayPosition - 1;
 			y = ((Slot) mContainer.inventorySlots.get(50)).yDisplayPosition - 1;
 			getTooltip(mouseX, mouseY, x, y, 16, 16, new String[]{
 					"Refresh",
-					"RClick: Clear all Slots",
-					"Shift + RClick: Reload all maps from JSON",
+					"LClick: Clear all Slots",
+					"Shift + LClick: Reload all maps from JSON",
 			});
 		}
 	}

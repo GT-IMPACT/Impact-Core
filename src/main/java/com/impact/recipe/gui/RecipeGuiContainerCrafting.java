@@ -64,15 +64,15 @@ public class RecipeGuiContainerCrafting extends GT_GUIContainerMT_Machine {
 			y = ((Slot) mContainer.inventorySlots.get(10)).yDisplayPosition - 1;
 			getTooltip(mouseX, mouseY, x, y, 16, 16, new String[]{
 					"Save Recipe",
-					"RClick: Add to NEI",
-					"Shift + RClick: Add to JSON",
+					"LClick: Add to NEI",
+					"Shift + LClick: Add to JSON",
 			});
 			x = ((Slot) mContainer.inventorySlots.get(12)).xDisplayPosition - 1;
 			y = ((Slot) mContainer.inventorySlots.get(12)).yDisplayPosition - 1;
 			getTooltip(mouseX, mouseY, x, y, 16, 16, new String[]{
 					"Refresh",
-					"RClick: Clear all Slots",
-					"Shift + RClick: Reload all maps from JSON",
+					"LClick: Clear all Slots",
+					"Shift + LClick: Reload all maps from JSON",
 			});
 		}
 	}
