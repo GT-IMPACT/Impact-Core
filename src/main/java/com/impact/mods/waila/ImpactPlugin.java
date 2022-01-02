@@ -7,9 +7,9 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_E
 import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
-import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_AdvancedMiner;
-import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_BasicMiner;
-import com.impact.mods.gregtech.tileentities.multi.biomeores.GTMTE_Mining_Coal;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;

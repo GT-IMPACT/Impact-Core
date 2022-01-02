@@ -41,7 +41,7 @@ import static space.impact.api.multiblocks.structure.StructureUtility.ofChain;
 
 public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Aerostat> implements IPacketString {
 	
-	public final static int MAX_BUFFER = 50_000;
+	public final static int MAX_BUFFER = 100_000;
 	static Block CASING = Casing_Helper.sCaseCore3;
 	static int CASING_META = AEROSTATE_PLATFORM.getMeta();
 	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
@@ -182,6 +182,16 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 	
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("aerostate");
+		b
+				.addInfo("info.0", "Moving over a distance")
+				.addInfo("info.1", "Natural gas is used as fuel")
+				.addTypeMachine("type", "Moving Machine")
+				.addController()
+				.sizeStructure(3, 1, 3)
+				.addInputHatch(1)
+				.addCasingInfo("case.1", "Aerostate Platform Casing")
+				.signAndFinalize();
 		return null;
 	}
 	
