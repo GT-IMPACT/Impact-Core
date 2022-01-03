@@ -4,6 +4,7 @@ import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.common.oregeneration.generator.OreVeinGenerator;
+import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_EnrichmentUnit;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
@@ -388,7 +389,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			if (!aPlayer.isSneaking()) {
 				increaseLayer(te);
 				layer++;
-				if (layer > 2) {
+				if (layer >= OresRegionGenerator.layers) {
 					layer = 0;
 				}
 				initOreProperty(getBaseMetaTileEntity());

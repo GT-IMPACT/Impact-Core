@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.ores;
 import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
+import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -306,7 +307,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			if (!aPlayer.isSneaking()) {
 				increaseLayer(te);
 				layer++;
-				if (layer > 2) {
+				if (layer >= OresRegionGenerator.layers) {
 					layer = 0;
 				}
 				initOreProperty(te);
