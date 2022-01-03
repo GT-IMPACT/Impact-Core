@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import codechicken.nei.recipe.GuiCraftingRecipe;
 import com.impact.common.te.TE_TheMill;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
@@ -24,6 +25,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -71,8 +73,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						Utilits.is(OrePrefixes.dustImpure, Materials.Lignite),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Sulfur)
 				},
-				new int[]{10000, 10000, 10000}, 20 * 30)
-		;
+				new int[]{10000, 10000, 10000}, 20 * 30);
 	}
 	
 	public GTMTE_TheMill(String aName) {
@@ -188,7 +189,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				}
 				cashedRecipe = tRecipe;
 				mEfficiency = mEfficiencyIncrease = 10000;
-				mMaxProgresstime = tRecipe.mDuration / 4;
+				mMaxProgresstime = tRecipe.mDuration;
 				mOutputItems = tRecipe.mOutputs;
 				return true;
 			}
@@ -268,6 +269,26 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 			drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 			double work = (double) mContainer.mProgressTime / (double) mContainer.mMaxProgressTime;
 			drawTexturedModalRect(x + 68, y + 32, 176, 1, Math.min(20, (int) (work * 20)), 16);
+		}
+		
+		@Override
+		public void drawScreen(int mouseX, int mouseY, float par3) {
+			super.drawScreen(mouseX, mouseY, par3);
+			getTooltip(mouseX, mouseY, 69, 32, 16, 20, new String[]{
+					"Recipes"
+			});
+		}
+		
+		@Override
+		protected void mouseClicked(int mouseX, int mouseY, int par3) {
+			super.mouseClicked(mouseX, mouseY, par3);
+			int x = (this.width - this.xSize) / 2;
+			int y = (this.height - this.ySize) / 2;
+			int xx = x + 69;
+			int yy = y + 32;
+			if (xx <= mouseX && xx + 20 >= mouseX && yy <= mouseY && yy + 16 >= mouseY) {
+				GuiCraftingRecipe.openRecipeGui(GT_RecipeMaps.sTheMill.mUnlocalizedName);
+			}
 		}
 	}
 	

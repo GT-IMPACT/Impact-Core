@@ -144,6 +144,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
 		new HandlerInfoRegister(sDisassemblerRecipes, Machine_LV_Disassembler);
 		new HandlerInfoRegister(sCokeOvenRecipes, Machine_CokeOven);
 		new HandlerInfoRegister(sCokeOvenRecipes, Machine_CokeOven);
+		new HandlerInfoRegister(GT_RecipeMaps.sTheMill, The_Mill);
 		new HandlerInfoRegister("gt.recipe.semifluidgeneratorfuel", Generator_Semi_Turbine_LV.get(1));
 	}
 }
