@@ -188,7 +188,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				.addInputHatch(1)
 				.addCasingInfo("case.1", "Aerostate Platform Casing")
 				.signAndFinalize();
-		return null;
+		return b;
 	}
 	
 	@Override
