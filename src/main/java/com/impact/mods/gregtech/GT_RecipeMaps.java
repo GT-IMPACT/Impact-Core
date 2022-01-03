@@ -20,15 +20,15 @@ public class GT_RecipeMaps {
                 1, 2, 1, 0, 1, E, 1, E,
                 true, true);
         sMESystemProvider = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
-                "impact.recipe.mesystemprovider", "ME System Provider", null, RES_PATH_GUI + "basic/RailAssembler",
+                "impact.recipe.mesystemprovider", "ME System Provider", null, RES_PATH_GUI + "basic/MEProvider.png",
                 9, 1, 1, 0, 1, E, 1, E,
                 true, false);
         sMPContainer = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
-                "impact.recipe.matrixcontainer", "Matrix Pr. Containment", null, RES_PATH_GUI + "basic" + "/MatrixContainment",
+                "impact.recipe.matrixcontainer", "Matrix Pr. Containment", null, RES_PATH_GUI + "basic/MatrixContainment",
                 1, 1, 1, 0, 1, E, 1, E,
                 false, false);
         sTheMill = new GT_Recipe.GT_Recipe_Map(new HashSet<>(1000),
-                "impact.recipe.the_mill", "The Mill", null, RES_PATH_GUI + "basic" + "/Default",
+                "impact.recipe.the_mill", "The Mill", null, RES_PATH_GUI + "basic/Default",
                 1, 4, 1, 0, 0, E, 1, E,
                 false, true);
     }
