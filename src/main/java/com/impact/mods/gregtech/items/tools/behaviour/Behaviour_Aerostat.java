@@ -40,6 +40,7 @@ public class Behaviour_Aerostat extends Behaviour_None {
 					toClient.addAll(names);
 					String[] pArray = new String[toClient.size()];
 					new ToClient_String(toClient.toArray(pArray)).sendToPlayer((EntityPlayerMP) aPlayer);
+					
 				} else {
 					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
 				}
@@ -50,9 +51,9 @@ public class Behaviour_Aerostat extends Behaviour_None {
 	}
 	
 	public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
-		// TODO: 09.12.2021
-		aList.add("1");
-		aList.add("123");
+		aList.add("This is an Aerostat");
+		aList.add("Shift + RClick to set name station");
+		aList.add("RClick to select traveling stations");
 		return aList;
 	}
 }

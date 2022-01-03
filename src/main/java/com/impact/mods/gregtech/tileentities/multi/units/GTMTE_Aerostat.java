@@ -76,12 +76,13 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 		for (String name : Impact_API.sAerostat.keySet()) {
 			PositionObject location = new PositionObject(Impact_API.sAerostat.get(name));
 			PositionObject thisPos = new PositionObject(te);
-			IGregTechTileEntity teTarget = Structure.getIGTEno(te, location.toVec3());
+			IGregTechTileEntity teTarget = te.getIGregTechTileEntity(location.xPos, location.yPos, location.zPos);
+			if (teTarget == null) continue;
 			if (teTarget.getMetaTileEntity() instanceof GTMTE_Aerostat) {
 				GTMTE_Aerostat gtmte_aerostat = (GTMTE_Aerostat) teTarget.getMetaTileEntity();
 				if (gtmte_aerostat.playerName.equals(owner)) {
 					int distance = Utilits.distanceBetween3D(thisPos.xPos, location.xPos, thisPos.yPos, location.yPos, thisPos.zPos, location.zPos);
-					if (distance >= 16 && distance <= 256) {
+					if (distance >= 16 && distance <= 512) {
 						as.add(gtmte_aerostat);
 					}
 				}
@@ -121,10 +122,10 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-
-//		if (thisController.getYCoord() < 100) {
-//			return false;
-//		}
+		mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
+		if (thisController.getYCoord() < 60) {
+			return false;
+		}
 		
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
@@ -154,12 +155,6 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				}
 			}
 		}
-		mWrench        = true;
-		mScrewdriver   = true;
-		mSoftHammer    = true;
-		mHardHammer    = true;
-		mSolderingTool = true;
-		mCrowbar       = true; //todo Пересмотреть мейнтенанс
 		return formationChecklist;
 	}
 	
@@ -186,6 +181,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 		b
 				.addInfo("info.0", "Moving over a distance")
 				.addInfo("info.1", "Natural gas is used as fuel")
+				.addInfo("info.2", "Minimum height (Y coord) for work: 60")
 				.addTypeMachine("type", "Moving Machine")
 				.addController()
 				.sizeStructure(3, 1, 3)
@@ -210,10 +206,10 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				Impact_API.sAerostat.put(aerName, thisLocation.getCoords());
 				curID = 1;
 			} else {
-				Utilits.sendChatByTE(getBaseMetaTileEntity(), "Такое название уже используется!");
+//				Utilits.sendChatByTE(getBaseMetaTileEntity(), "This name is already in use!");
 			}
 		} catch (Exception e) {
-			Utilits.sendChatByTE(getBaseMetaTileEntity(), "CRASH!");
+			e.printStackTrace();
 		}
 	}
 	
@@ -244,9 +240,9 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 	@Override
 	public void inValidate() {
 		Impact_API.sAerostat.remove(aerName);
-		if (!aerName.equals("")) { // TODO: 31.10.2021 debug
-			Utilits.sendChatByTE(getBaseMetaTileEntity(), "Remove Station: \"" + aerName + "\"");
-		}
+//		if (!aerName.equals("")) {
+//			Utilits.sendChatByTE(getBaseMetaTileEntity(), "Remove Station: \"" + aerName + "\"");
+//		}
 		super.inValidate();
 	}
 	

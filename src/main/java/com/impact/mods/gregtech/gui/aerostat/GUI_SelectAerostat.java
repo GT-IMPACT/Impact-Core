@@ -80,7 +80,7 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements IPa
 				this.fontRendererObj.drawString(getNameLocation(container.idLocation - 5, DARK_GRAY, false), 33, 150, 16448255);
 			} else {
 				this.fontRendererObj.drawString(EnumChatFormatting.RED + "No Stations", 33, 70, 16448255);
-				this.fontRendererObj.drawString(EnumChatFormatting.RED + "in radius 256 blocks!", 33, 80, 16448255);
+				this.fontRendererObj.drawString(EnumChatFormatting.RED + "in radius 512 blocks! ", 33, 80, 16448255);
 			}
 		} else {
 			this.fontRendererObj.drawString(EnumChatFormatting.RED + "Station without name!", 33, 70, 16448255);

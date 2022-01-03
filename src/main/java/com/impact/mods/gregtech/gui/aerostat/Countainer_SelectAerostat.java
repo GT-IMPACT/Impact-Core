@@ -66,6 +66,7 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 				}
 			}
 		} catch (Exception ignored) {
+			ignored.printStackTrace();
 		}
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
