@@ -100,9 +100,9 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_cracking_unit");
 		b
-				.addSingleAnalog()
 				.addParallelInfo(1, 256)
 				.addTypeMachine("name", "Cracking Unit")
+				.addSeparatedBus()
 				.addSeparator()
 				.addController()
 				.addEnergyHatch(4)
@@ -112,9 +112,11 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 				.addInputBus(8)
 				.addOutputBus(3)
 				.addParallelHatch(1)
+				.addMuffler()
 				.addOtherStructurePart("other.0", "Naquadah Coil", "other.1", "around Pipe Machine Casing")
 				.addOtherStructurePart("other.2", "PTFE Pipe Machine Casing", "other.3", "inside the hollow")
 				.addCasingInfo("case", "Stainless Steel Machine Casings")
+				.addRedHint("Muffler Hatch")
 				.signAndFinalize();
 		return b;
 	}

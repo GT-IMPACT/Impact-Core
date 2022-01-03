@@ -178,8 +178,8 @@ public class MultiBlockTooltipBuilder {
 	}
 	
 	public MultiBlockTooltipBuilder addParallelHatch() {
-		sLines.add(TAB + EnumChatFormatting.WHITE + parallel_hatch.get() + ": (max 1x)" +
-				EnumChatFormatting.GRAY + any_case.get());
+		sLines.add(TAB + EnumChatFormatting.WHITE + parallel_hatch.get() +
+				EnumChatFormatting.GRAY + any_case.get() + ": (max 1x)");
 		return this;
 	}
 	
@@ -297,7 +297,7 @@ public class MultiBlockTooltipBuilder {
 	
 	public MultiBlockTooltipBuilder addMuffler() {
 		sLines.add(TAB + EnumChatFormatting.WHITE + hatch_muffler.get() + ": " +
-				EnumChatFormatting.GRAY + any_case.get());
+				EnumChatFormatting.GRAY + any_case.get() + ": (max 1x)");
 		return this;
 	}
 	
@@ -317,7 +317,7 @@ public class MultiBlockTooltipBuilder {
 	
 	public MultiBlockTooltipBuilder addMaintenanceHatch() {
 		sLines.add(TAB + EnumChatFormatting.WHITE + hatch_maintenance.get() + ": " +
-				EnumChatFormatting.GRAY + any_case.get());
+				EnumChatFormatting.GRAY + any_case.get() + ": (max 1x)");
 		return this;
 	}
 	
