@@ -26,6 +26,7 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
     private boolean noSunWorld;
     public boolean sunIsUp;
     public boolean skyIsVisible;
+    public boolean first = true;
     private boolean wetBiome;
 
     public GTMTE_Solar(int aID, String aNameRegional, int aTier) {
@@ -100,6 +101,7 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
         aNBT.setBoolean("skyIsVisible", skyIsVisible);
         aNBT.setBoolean("noSunWorld", noSunWorld);
         aNBT.setBoolean("wetBiome", wetBiome);
+        aNBT.setBoolean("first", first);
     }
 
     @Override
@@ -110,6 +112,7 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
         skyIsVisible = aNBT.getBoolean("skyIsVisible");
         noSunWorld = aNBT.getBoolean("noSunWorld");
         wetBiome = aNBT.getBoolean("wetBiome");
+        first = aNBT.getBoolean("first");
     }
 
     public long maxEUOutput() {
@@ -123,7 +126,10 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
     @Override
     public void onFirstTick(IGregTechTileEntity te) {
         super.onFirstTick(te);
-        te.setFrontFacing((byte) 2);
+        if (first) {
+            te.setFrontFacing((byte) 2);
+            first = false;
+        }
         World w = te.getWorld();
         this.noSunWorld = w.provider.hasNoSky;
         this.wetBiome = w.getWorldChunkManager().getBiomeGenAt(te.getXCoord(), te.getZCoord()).getIntRainfall() > 0;
