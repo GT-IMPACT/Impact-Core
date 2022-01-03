@@ -100,7 +100,8 @@ public class Multi_Register {
 		Machine_ElectricImplosion.set(new GTMTE_ElectricImplosionCompressor(ID++, "Electric Implosion Compressor").get());
 		
 		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate").get());
-		Filler.set(new GTMTE_Filler(ID++, "Filler").get()); hideItem(Filler.get(1));
+		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
+		hideItem(Filler.get(1));
 		
 		Parametric_Diffuser.set(new GTMTE_ParametricDiffuser(ID++, "Parametric Diffuser").get());
 		Matrix_Stabilizer.set(new GTMTE_MPStabilizer(ID++, "Matrix Particles Stabilizer").get());
@@ -108,6 +109,7 @@ public class Multi_Register {
 		ME_System_Provider.set(new GTMTE_MESystemProvider(ID++, "ME System Provider").get());
 		
 		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, /*"Wind Generator", */"[WIP]").get());
+		hideItem(Wind_Generator.get(1));
 		
 		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Coal Miner").get());
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
