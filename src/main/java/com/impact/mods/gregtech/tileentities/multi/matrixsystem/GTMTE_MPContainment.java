@@ -100,19 +100,29 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_container");
 		b
-				.addTypeMachine("name", "Matrix Particles Containment")
+				.addInfo("info.0", "Collecting stable Matrix Particles")
+				.addTypeMachine("name", "Containment")
+				.addInfo("info.1", "Constant power consumption: 1,920 EU/t")
+				.addInfo("info.2", "Stable particles are filled in \"Portable Cell with Matrix Particles\"")
 				.addSeparator()
 				.addController()
 				.addEnergyHatch()
 				.addMaintenanceHatch()
+				.addInputBus()
+				.addOutputBus()
 				.addCasingInfo("case", "Lab-Safe Low Gravity Casing")
+				.addOtherStructurePartAny("glass", "Any I-Glass")
+				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector")
+				.addOtherStructurePartAny("core", "Matrix Transducer")
 				.signAndFinalize();
 		return b;
 	}
 	
+	
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		this.mEUt = -(int) GT_Values.V[4];
+		this.mEUt = -1920;
+		this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 		this.mMaxProgresstime = 20;
 		return true;
 	}

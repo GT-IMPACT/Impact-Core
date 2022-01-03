@@ -35,6 +35,8 @@ public class GUI_ParametricDiffuser extends GT_GUIContainerMT_Machine {
 			if ((mContainer).mDisplayErrorCode == 0) {
 				if ((mContainer).mActive == 0) {
 					fontRendererObj.drawString("Progress:" + EnumChatFormatting.RED + " not working", 8, 22, 16448255);
+				} else {
+					fontRendererObj.drawString("Progress:" + EnumChatFormatting.GREEN + " active", 8, 22, 16448255);
 				}
 				fontRendererObj.drawString("Generated MP:", 8, 42, 16448255);
 				fontRendererObj.drawString("" + EnumChatFormatting.GREEN + container.mMPGenerate, 8, 52, 16448255);

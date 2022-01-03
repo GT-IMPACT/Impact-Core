@@ -15,6 +15,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -102,31 +103,42 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 	
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
-		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_parametric");
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_diffuser");
 		b
-				.addTypeMachine("name", "Matrix Particles Parametric Diffuser")
+				.addInfo("info.0", "Generation of unstable Matrix Particles")
+				.addTypeMachine("name", "Parametric Diffuser")
+				.addInfo("info.1", "Need any Exquisite Gem")
+				.addInfo("info.2", "Power Beam: (Tier Energy Hatch - 3) * ~200")
+				.addInfo("info.3", "Max range to Matrix Particle Stabilizer: 30 blocks")
 				.addSeparator()
 				.addController()
-				.addEnergyHatch()
+				.addEnergyHatch("energy", "EV and above", 1)
+				.addInputBus(1)
 				.addMaintenanceHatch()
-				.addCasingInfo(LAB_SAFELG_CASING.getItemContainer())
+				.addCasingInfo("case", "Lab-Safe Low Gravity Casing")
+				.addOtherStructurePartAny("glass", "Any I-Glass")
+				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector")
+				.addOtherStructurePartAny("core", "Matrix Transducer")
 				.signAndFinalize();
 		return b;
 	}
 	
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		ItemStack gem = mInputBusses.get(0).mInventory[0];
-		int[] idOreDict = OreDictionary.getOreIDs(gem);
-		for (int id : idOreDict) {
-			if (OreDictionary.getOreName(id).startsWith("gemExquisite")) {
-				this.mMaxProgresstime    = 20;
-				this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-				this.mEfficiencyIncrease = 10000;
-				int tier = GT_Utility.getTier(getMaxInputVoltage());
-				this.mPeakBeamMP = mEfficiency < 10000 ? 0 : tier >= 4 ? tier - 3 : 0;
-				this.mEUt        = -(int) getMaxInputVoltage();
-				return true;
+		for (GT_MetaTileEntity_Hatch_InputBus mInputBuss : mInputBusses) {
+			ItemStack gem = mInputBuss.mInventory[0];
+			if (gem == null) return false;
+			int[] idOreDict = OreDictionary.getOreIDs(gem);
+			for (int id : idOreDict) {
+				if (OreDictionary.getOreName(id).startsWith("gemExquisite")) {
+					this.mMaxProgresstime    = 20;
+					this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+					this.mEfficiencyIncrease = 10000;
+					int tier = GT_Utility.getTier(getMaxInputVoltage());
+					this.mPeakBeamMP = mEfficiency < 10000 ? 0 : tier >= 4 ? tier - 3 : 0;
+					this.mEUt        = -(int) getMaxInputVoltage();
+					return true;
+				}
 			}
 		}
 		return false;
@@ -144,16 +156,14 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 		);
 		
 		if (iAm.isActive()) {
-			try {
-				Vector3ic offset = rotateOffsetVector(forgeDirection, 1, 0, -1);
-				Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, -1);
-				double kek = 0.5d;
-				
-				impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek, offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek, 0, 0x770ED0, false, 1.3f, 20);
-				impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek, offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek, 0, 0x770ED0, true, 1.3f, 20);
-			} catch (Exception e) {
-				Utilits.sendChatByTE(iAm, e.toString());
-			}
+			Vector3ic offset = rotateOffsetVector(forgeDirection, 1, 0, -1);
+			Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, -1);
+			double kek = 0.5d;
+			
+			impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
+					offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek, 0, 0x770ED0, false, 1.3f, 20);
+			impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
+					offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek, 0, 0x770ED0, true, 1.3f, 20);
 		}
 	}
 	
@@ -182,7 +192,8 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 						if (currentTE.isActive() && mMPStabilizer.mMPSummary < 100_000) {
 							Random random = new Random();
 							mMPGenerate = random.nextInt(200) * mPeakBeamMP;
-							Utilits.sendChatByTE(iAm, "" + mMPGenerate);
+//							Utilits.sendChatByTE(iAm, "" + mMPGenerate);
+							
 							mMPStabilizer.setMP(mMPGenerate);
 							addBound(iAm);
 							if (mMPStabilizer.mMPSummary > 100_000) {

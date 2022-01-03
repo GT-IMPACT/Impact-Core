@@ -81,7 +81,16 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
-		return null;
+		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("the_mill");
+		b		.addInfo("info.0", "Is a primitive windmill")
+				.addTypeMachine("name", "Wind Mill")
+				.addInfo("info.1", "The wind is whirling, something is crushing")
+				.addSeparator()
+				.addController()
+				.sizeStructure(9, 12, 9)
+				.addCasingInfo("case.0", "The Mill Wood Planks")
+				.signAndFinalize()	;
+		return b;
 	}
 	
 	@Override

@@ -107,7 +107,7 @@ public class Multi_Register {
 		Matrix_Containment.set(new GTMTE_MPContainment(ID++, "Matrix Particles Containment").get());
 		ME_System_Provider.set(new GTMTE_MESystemProvider(ID++, "ME System Provider").get());
 		
-		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, "Wind Generator").get());
+		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, /*"Wind Generator", */"[WIP]").get());
 		
 		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Coal Miner").get());
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());

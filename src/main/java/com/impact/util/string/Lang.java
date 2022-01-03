@@ -16,7 +16,7 @@ public enum Lang {
 	parallel_hatch("Parallel Hatch"),
 	begin_structure_block("Description of the structure in development"),
 	structure("Structure"),
-	blueprint("Follow the %s blueprint to build the main structure"),
+	blueprint("Follow the %s Hologram Projector to build the main structure"),
 	at_least("at least"),
 	hatch_energy("Energy Hatch"),
 	hatch_dynamo("Dynamo Hatch"),

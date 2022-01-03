@@ -25,6 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
+import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.LAB_SAFELG_CASING;
 import static net.minecraft.util.EnumChatFormatting.*;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
@@ -86,12 +87,17 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("matrix_stabilizer");
 		b
-				.addTypeMachine("name", "Matrix Particles Stabilizer")
+				.addInfo("info.0", "Stabilizes unstable Matrix Particles")
+				.addTypeMachine("name", "Stabilizer")
+				.addInfo("info.1", "Max range to Matrix Particle Containment: 30 blocks")
+				.addInfo("info.2", "Constant power consumption: 1,920 EU/t")
 				.addSeparator()
 				.addController()
 				.addEnergyHatch()
 				.addMaintenanceHatch()
 				.addCasingInfo("case", "Lab-Safe Low Gravity Casing")
+				.addOtherStructurePartAny("glass", "Any I-Glass")
+				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector")
 				.signAndFinalize();
 		return b;
 	}
@@ -108,8 +114,8 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
     
     @Override
 	public boolean checkRecipe(ItemStack aStack) {
-		
-		this.mEUt             = -(int) GT_Values.V[4];
+		this.mEUt = -1920;
+		this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 		this.mMaxProgresstime = 40;
 		return true;
 	}
@@ -124,7 +130,6 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
 				ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY,
 				ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ
 		);
-		
 		if (iAm.isActive()) {
 			
 			Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);

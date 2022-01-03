@@ -26,9 +26,6 @@ public class GT_Container_ParametricDiffuser extends GT_ContainerMetaTile_Machin
 	@Override
 	public void addSlots(InventoryPlayer aInventoryPlayer) {
 		addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 155, 5, false, false, 1));
-		addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 155, 37, false, false, 1));
-		addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 155, 55, false, false, 1));
-		addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 155, 73, false, false, 1));
 	}
 	
 	@Override
