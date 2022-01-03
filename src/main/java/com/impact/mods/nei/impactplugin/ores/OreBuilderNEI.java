@@ -4,6 +4,8 @@ import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.core.Impact_API;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -26,7 +28,10 @@ public class OreBuilderNEI {
 				for (OreGenerator.Dimensions dimension : worldDimensions) {
 					for (int id : oreGenerator.idDim) {
 						if (dimension.id == id) {
-							nameDims.add(DimensionManager.getProvider(id).getDimensionName() + (" (T" + dimension.tier + ")"));
+							World w = DimensionManager.getWorld(id);
+							if (w != null) {
+								nameDims.add(w.provider.getDimensionName() + (" (T" + dimension.tier + ")"));
+							}
 						}
 					}
 				}
@@ -60,9 +65,12 @@ public class OreBuilderNEI {
 					}
 				}
 			}
-			String name = DimensionManager.getProvider(dimension.id).getDimensionName() + " (T" + dimension.tier + ")";
-			dimSmallOres.add(new DimOre(name, smallVeins, 0));
-			dimDefaultOres.add(new DimOre(name, veins, 1));
+			World w = DimensionManager.getWorld(dimension.id);
+			if (w != null) {
+				String name = w.provider.getDimensionName() + " (T" + dimension.tier + ")";
+				dimSmallOres.add(new DimOre(name, smallVeins, 0));
+				dimDefaultOres.add(new DimOre(name, veins, 1));
+			}
 		});
 	}
 	
