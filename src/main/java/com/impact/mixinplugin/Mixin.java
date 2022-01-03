@@ -23,7 +23,7 @@ public enum Mixin {
 	ForgeHooksClient_Mixin("vanilla.ForgeHooksClient_Mixin", VANILLA),
 	BlockHopper_Mixin("vanilla.BlockHopper_Mixin", VANILLA),
 	OreDictionaryArbiter_Mixin("cofh.OreDictionaryArbiter_Mixin", COFH, VANILLA),
-	
+	CoFHCoreUpdate_Mixin_Mixin("cofh.CoFHCoreUpdate_Mixin", COFH, VANILLA),
 	;
 	public final String mixinClass;
 	public final List<TargetedMod> targetedMods;
