@@ -50,7 +50,7 @@ public class GTMTE_LaserEnergy_In extends GT_MetaTileEntity_Hatch_EnergyMulti {
 	
 	@Override
 	public long getMinimumStoredEU() {
-		return V[mTier];
+		return 128L * (long) this.Amp;
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class GTMTE_LaserEnergy_In extends GT_MetaTileEntity_Hatch_EnergyMulti {
 	
 	@Override
 	public long maxEUStore() {
-		return V[mTier] * 24L * Amp;
+		return 512L + V[this.mTier] * 4L * (long) this.Amp;
 	}
 	
 	@Override

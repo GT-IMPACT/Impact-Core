@@ -38,6 +38,7 @@ public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull imp
 	public String[] getDescription() {
 		return new String[] {
 				"The reflector serves to turn the laser (tunnel)",
+				"Accepts up to 256A",
 				"To set the entry point, use an RClick screwdriver on the side of the reflector",
 				"Shift + RClick resets the entry point"
 		};
