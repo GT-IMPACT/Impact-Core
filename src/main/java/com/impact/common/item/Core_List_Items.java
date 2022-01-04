@@ -314,6 +314,7 @@ public enum Core_List_Items {
     NANDArray(194, 1),
     FlawedFluixCrystal(195, 1),
     FlawlessFluixCrystal(196, 1),
+    BlankPattern(197, 1),
     
 
     WoodenBrickForm1(0, 2),
