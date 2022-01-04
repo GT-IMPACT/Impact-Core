@@ -1,30 +1,21 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
 import com.impact.impact;
-import com.impact.recipe.gui.RecipeContainer;
 import com.impact.recipe.gui.RecipeContainerCrafting;
-import com.impact.recipe.gui.RecipeGuiContainer;
 import com.impact.recipe.gui.RecipeGuiContainerCrafting;
-import com.impact.recipe.json.RecipeJson;
-import com.impact.recipe.json.RecipeJsonCrafing;
+import com.impact.recipe.json.RecipeJsonCrafting;
 import com.impact.recipe.maps.RecipesJson;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,46 +101,17 @@ public class GTMTE_RecipeEditorCrafting extends GT_MetaTileEntity_BasicTank {
 		
 		ItemStack[] in = inputI.toArray(new ItemStack[0]);
 		
-		RecipeJsonCrafing recipe = new RecipeJsonCrafing(in, outputI);
-	
+		RecipeJsonCrafting recipe = new RecipeJsonCrafting(in, outputI);
 		
-		final char[] slot = new char[9];
-		List<Character> chars = new ArrayList<>();
-		List<ItemStack> stacks = new ArrayList<>();
-		for (int i = 0; i < recipe.inputItem.length; i++) {
-			slot[i] = recipe.inputItem[i] != null ? Integer.toString(i).toCharArray()[0] : ' ';
-			if (recipe.inputItem[i] != null) {
-				chars.add(slot[i]);
-				stacks.add(recipe.inputItem[i]);
-			}
-		}
-		
-		String first = slot[0] + "" + slot[1] + "" + (recipe.inputItem[2] == null ? "" : slot[2]);
-		String second = slot[3] + "" + slot[4] + "" + (recipe.inputItem[5] == null ? "" : slot[5]);
-		String third = (recipe.inputItem[6] == null ? "" : slot[6]) + "" +
-						(recipe.inputItem[7] == null ? "" : slot[7]) + "" +
-						(recipe.inputItem[8] == null ? "" : slot[8]);
-		
-		int size = 2 + (third.isEmpty() ? 0 : 1);
-		
-		Object[] shapeRecipe = new Object[size + chars.size() + stacks.size()];
-		
-		shapeRecipe[0] = first;
-		shapeRecipe[1] = second;
-		if (size > 2) {
-			shapeRecipe[2] = third;
-		}
-		
-		int indexSlot = 0;
-		for (int i = size; i < shapeRecipe.length; i += 2) {
-			shapeRecipe[i + 1] = stacks.get(indexSlot);
-			shapeRecipe[i] = chars.get(indexSlot++);
-		}
-		GT_ModHandler.addCraftingRecipe(recipe.outputItem, shapeRecipe);
-		RecipesJson.preSaveCrafting(recipe);
-		impact.proxy.addClientSideChatMessages("Recipe Added");
-	}
+		boolean recipeAdder = GT_ModHandler.addCraftingRecipe(recipe.outputItem, RecipeJsonCrafting.buildRecipeString(recipe));
 
+		if (recipeAdder) {
+			RecipesJson.preSaveCrafting(recipe);
+			impact.proxy.addClientSideChatMessages("Recipe Added");
+		} else {
+			impact.proxy.addClientSideChatMessages("Recipe Error or already added");
+		}
+	}
 	
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,
