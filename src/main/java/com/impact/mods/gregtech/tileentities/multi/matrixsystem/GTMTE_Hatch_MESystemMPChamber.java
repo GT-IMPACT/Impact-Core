@@ -37,13 +37,13 @@ public class GTMTE_Hatch_MESystemMPChamber extends GT_MetaTileEntity_Hatch {
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Texture.Icons.OVERLAY_REACTOR_HATCH_ACTIVE)};
+				new GT_RenderedTexture(Texture.Icons.OVERLAY_MCHAMBER_ITEM_OVERLAY)};
 	}
 
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Texture.Icons.OVERLAY_REACTOR_HATCH_INACTIVE)};
+				new GT_RenderedTexture(Texture.Icons.OVERLAY_MCHAMBER_ITEM_OVERLAY)};
 	}
 
 	@Override
