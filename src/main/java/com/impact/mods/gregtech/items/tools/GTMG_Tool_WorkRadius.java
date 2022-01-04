@@ -29,9 +29,9 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         ITool = new LinkedHashMap<>();
         addTool(FORGE_HAMMER, "Forge Hammer", "", (IImpact_Tools) new ForgeHammer(1, 0));
         addTool(LUMBER_AXE, "Lumber Axe", "", (IImpact_Tools) new LumberAxe(1, 0));
-
-        GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(FORGE_HAMMER, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFF", " S ", " SS", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1)});
-        GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(LUMBER_AXE, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFF", " S ", "SS ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1)});
+        
+        GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(FORGE_HAMMER, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFF", "FFF", "TS ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1), 'T', new ItemStack(Items.string, 1)});
+        GT_ModHandler.addCraftingRecipe(INSTANCE.getToolWithStats(LUMBER_AXE, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FFT", "FS ", "S  ", 'S', OrePrefixes.stick.get(Materials.Wood), 'F', new ItemStack(Items.flint, 1), 'T', new ItemStack(Items.string, 1)});
     }
 
     public ItemStack addTool(int aID, String aEnglish, String aToolTip, IImpact_Tools aTools, Object... aOreDictNames) {
@@ -74,19 +74,19 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
             OrePrefixes.toolHeadHammer.add(this);
             OrePrefixes.toolHeadAxe.add(this);
         }
-
+    
         @Override
         public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
             switch (aPrefix) {
                 case toolHeadHammer:
-                    GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
-                            GTMG_Tool_WorkRadius.FORGE_HAMMER, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[]{aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
+                    GT_ModHandler.addCraftingRecipe(
+                            GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(GTMG_Tool_WorkRadius.FORGE_HAMMER, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[]{"XSX", "XSX", "hSf", 'X', OrePrefixes.plateTriple.get(aMaterial), 'S', OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
                     break;
                 case toolHeadAxe:
-                    GT_ModHandler.addShapelessCraftingRecipe(GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
-                            GTMG_Tool_WorkRadius.LUMBER_AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
-                            new Object[]{aOreDictName, OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
+                    GT_ModHandler.addCraftingRecipe(
+                            GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(GTMG_Tool_WorkRadius.LUMBER_AXE, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                            new Object[]{"XXf", "XS ", "hS ", 'X', OrePrefixes.plateTriple.get(aMaterial), 'S', OrePrefixes.stickLong.get(aMaterial.mHandleMaterial)});
                     break;
             }
         }
