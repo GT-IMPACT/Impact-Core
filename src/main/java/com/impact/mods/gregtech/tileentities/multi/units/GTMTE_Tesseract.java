@@ -272,6 +272,12 @@ public class GTMTE_Tesseract extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 			}
 		}
 		
+		if (mInputHatches.size() > 1) check = false;
+		if (mOutputHatches.size() > 1) check = false;
+		if (mInputBusses.size() > 1) check = false;
+		if (mOutputBusses.size() > 1) check = false;
+		if (mEnergyHatches.size() > 2) check = false;
+		
 		return check;
 	}
 	

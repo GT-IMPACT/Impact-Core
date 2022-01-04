@@ -220,6 +220,13 @@ public class GTMTE_TinyWormHole extends GT_MetaTileEntity_MultiParallelBlockBase
 			}
 		}
 		
+		
+		if (mInputHatches.size() > 1) check = false;
+		if (mOutputHatches.size() > 1) check = false;
+		if (mInputBusses.size() > 1) check = false;
+		if (mOutputBusses.size() > 1) check = false;
+		if (mEnergyHatches.size() > 2) check = false;
+		
 		return check;
 	}
 	
@@ -234,7 +241,7 @@ public class GTMTE_TinyWormHole extends GT_MetaTileEntity_MultiParallelBlockBase
 				.sizeStructure(5,7,5)
 				.addInputBus("hatches.0", "(UV or better)", 1)
 				.addOutputBus("hatches.1", "(UV or better)", 1)
-				.addEnergyHatch("hatches.2", "(UV or better)", 1)
+				.addEnergyHatch("hatches.2", "(UV or better)", 2)
 				.addMaintenanceHatch()
 				.addCasingInfo("case.0", "Robust Naquadah Alloy Machine Casing")
 				.addCasingInfo("case.5", "Intermix Chamber Casing")
