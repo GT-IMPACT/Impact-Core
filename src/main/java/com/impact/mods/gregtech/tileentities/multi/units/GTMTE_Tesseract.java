@@ -190,7 +190,7 @@ public class GTMTE_Tesseract extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 				.addOutputHatch("hatches.1", "(UHV or better)", 1)
 				.addInputBus("hatches.2", "(UHV or better)", 1)
 				.addOutputBus("hatches.3", "(UHV or better)", 1)
-				.addEnergyHatch("hatches.4", "(UHV or better)", 1)
+				.addEnergyHatch("hatches.4", "(UHV or better)", 2)
 				.addMaintenanceHatch()
 				.addCasingInfo("case.0", "Robust Naquadah Alloy Machine Casing")
 				.addCasingInfo("case.5", "Intermix Chamber Casing")

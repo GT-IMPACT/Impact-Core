@@ -54,7 +54,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 				.addInputBus(1)
 				.addOutputHatch(1)
 				.addCasingInfo(ItemList.Casing_SolidSteel)
-				.signAndFinalize();
+				.signAndFinalize(true);
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			return b.getControlInfo();
 		}

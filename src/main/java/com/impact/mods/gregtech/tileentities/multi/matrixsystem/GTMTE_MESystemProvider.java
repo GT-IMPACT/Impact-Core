@@ -105,12 +105,16 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("me_system_provider");
 		b
+				.addInfo("info.0", "Consume Stable Matrix Particles")
 				.addTypeMachine("name", "ME System Provider")
+				.addInfo("info.1", "Accelerate ME GPU and Crafting ME Components")
 				.addSeparator()
 				.addController()
 				.addEnergyHatch()
 				.addMaintenanceHatch()
 				.addCasingInfo("case", "ME Construction Casing")
+				.addOtherStructurePart("other.0", "ME Connector", "other.1", "Any IGlass (max x1)")
+				.addOtherStructurePart("other.2", "Matrix Particles Chamber", "other.3", "Any Casing (max x1)")
 				.signAndFinalize();
 		return b;
 	}
