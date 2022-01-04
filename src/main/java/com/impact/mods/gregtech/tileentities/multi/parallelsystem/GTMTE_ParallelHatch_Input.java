@@ -39,19 +39,18 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 	public PositionObject mThisPosition;
 	public PositionObject mOutputPosition;
 	
-	public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier,
-									 int aMaxParallel) {
+	public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
 		super(aID, aName, aNameRegional, aTier, 0, new String[]{
 				Utilits.impactTag(),
 				"Parallel points receiver",
-				"Used in multi-block machines"
+				"Used in multi-block machines",
+				"Reduces recipe time by a factor of " + aMaxParallel
 		});
 		mMaxParallel = aMaxParallel;
 		isDebug = false;
 	}
 	
-	public GTMTE_ParallelHatch_Input(String aName, int aTier, String[] aDescription,
-									 ITexture[][][] aTextures, int aMaxParallel) {
+	public GTMTE_ParallelHatch_Input(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aMaxParallel) {
 		super(aName, aTier, 0, aDescription, aTextures);
 		mMaxParallel = aMaxParallel;
 		isDebug = false;
@@ -59,18 +58,12 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 	
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(PRL_HATCH_YELLOW,
-						Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-				/*new GT_RenderedTexture(EM_D_CONN)*/};
+		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(PRL_HATCH_YELLOW, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),};
 	}
 	
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(PRL_HATCH_RED,
-						Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-				/*new GT_RenderedTexture(EM_D_CONN)*/};
+		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(PRL_HATCH_RED, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),};
 	}
 	
 	@Override
