@@ -87,8 +87,9 @@ tile.impact_coal.12.name=Quadruple Compressed Coal
 
 tile.impact_matrix_system.name=Matrix Particles Reflector
 tile.impact_matrix_transducer.name=Matrix Transducer
-tile.impact_wind_block.0.name=Wind Gear Box
+tile.impact_wind_block.0.name=[WIP] Wind Gear Box
 
+tile.the_mill.name=The Mill Rotor
 tile.drying_rack.name=Drying Rack
 
 #TieredItems

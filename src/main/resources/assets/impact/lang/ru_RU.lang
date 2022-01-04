@@ -86,9 +86,10 @@ tile.impact_coal.12.name=Четырехкратно Сжатый Уголь
 
 tile.impact_matrix_system.name=Отражатель Матричных Частиц
 tile.impact_matrix_transducer.name=Матричный Преобразователь
-tile.impact_wind_block.0.name=Wind Gear Box
+tile.impact_wind_block.0.name=[WIP] Wind Gear Box
 
-tile.drying_rack.name=Drying Rack
+tile.the_mill.name=Ротор Ветряной Мельницы
+tile.drying_rack.name=Сушильная Стойка
 
 #TieredItems
 item.impact_drillHeads.0.name=Бурильная Головка из Железа
