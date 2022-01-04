@@ -24,6 +24,8 @@ import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainm
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
+import com.impact.util.string.MultiBlockTooltipBuilder;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -118,10 +120,15 @@ public class ImpactPlugin extends PluginBase {
 
         if (tMeta != null) {
     
-            if (tBaseMetaTile != null && getConfig("fluidFilter")) {
-                final String filterKey = "filterInfo" + side;
-                if (tag.hasKey(filterKey)) {
-                    currenttip.add(tag.getString(filterKey));
+            if (tBaseMetaTile != null) {
+                if (getConfig("fluidFilter")){
+                    final String filterKey = "filterInfo" + side;
+                    if (tag.hasKey(filterKey)) {
+                        currenttip.add(tag.getString(filterKey));
+                    }
+                }
+                if (tag.getByte("gt_colorization") >= 0) {
+                    currenttip.add("Color: " + Dyes.get(tag.getByte("gt_colorization")).mName);
                 }
             }
             
@@ -601,7 +608,9 @@ public class ImpactPlugin extends PluginBase {
                 tag.setLong("energyInput", energyInput);
                 tag.setLong("energyOutput", energyOutput);
             }
-    
+            
+            tag.setByte("gt_colorization", tBaseMetaTile.getColorization());
+            
             if (tBaseMetaTile instanceof BaseMetaPipeEntity) {
                 for(byte side=0 ; side < 6 ; side++) {
                     if(tBaseMetaTile.getCoverBehaviorAtSide(side) instanceof GT_Cover_Fluidfilter) {
