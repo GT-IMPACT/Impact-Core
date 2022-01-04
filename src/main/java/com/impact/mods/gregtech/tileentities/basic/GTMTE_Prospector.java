@@ -44,7 +44,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	
 	public GTMTE_Prospector(int aID, String aNameRegional, int aTier) {
 		super(aID, "impact.basic.prospector." + aTier, aNameRegional, aTier, 1, // amperage
-				"",
+				"Scan: " + (aTier + 5) + "x" + (aTier + 5) + " chunks",
 				1, // input slot count
 				1, // output slot count
 				"Default.png", // GUI name
