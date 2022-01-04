@@ -74,7 +74,7 @@ public class OreGenerator {
 				.addOres(Orichalcum, Tanzanite, Europium, MeteoricIron)
 				.end();
 		addVein(8, "Sheldonite")
-				.addDim(Venus, Enceladus, Haumea, Miranda, Pluto, Makemake, Dimensions.Titan)
+				.addDim(Venus, Enceladus, Haumea, Miranda, Pluto, Makemake)
 				.setSize(50, 200).setTier(1).setChance(100, 80, 60, 40).setWeight(20)
 				.setColor(Sheldonite)
 				.addOres(Sheldonite, Osmirinigon, Chromite, MeteoricIron)
@@ -98,7 +98,7 @@ public class OreGenerator {
 				.addOres(Tungsten, Silicon, DeepIron, Andradite)
 				.end();
 		addVein(12, "Naqlatigon")
-				.addDim(Oberon, Proteus, Pluto, Triton, Dimensions.Titan)
+				.addDim(Oberon, Proteus, Pluto, Triton, Dimensions.Titan, Dimensions.Mercury, Haumea, KuiperBelt)
 				.setSize(50, 200).setTier(1).setChance(100, 80, 60, 40).setWeight(40)
 				.setColor(Naqlatigon)
 				.addOres(Naqlatigon, Naquadah, Pyrolusite, Ilmenite)
@@ -128,7 +128,7 @@ public class OreGenerator {
 				.addOres(Nickel, Iridium, Palladium, Platinum)
 				.end();
 		addVein(17, "Quartz")
-				.addDim(Dimensions.Mars, Venus, Overworld, Enceladus, Proteus, Io, Dimensions.Moon)
+				.addDim(Dimensions.Mars, Venus, Overworld, Enceladus, Proteus, Io, Dimensions.Moon, Phobos)
 				.setSize(50, 400).setTier(1).setWeight(30).setChance(100, 80, 60, 40)
 				.setColor(Quartzite)
 				.addOres(Quartzite, NetherQuartz, CertusQuartz, Barite)
@@ -182,7 +182,7 @@ public class OreGenerator {
 				.addOres(Thorium, Europium, Plutonium241, Uranium235)
 				.end();
 		addVein(26, "Black Plutonium")
-				.addDim(Haumea, Pluto, Triton)
+				.addDim(Haumea, Pluto, Makemake)
 				.setSize(50, 400).setTier(1).setWeight(40).setChance(100, 80, 60, 40)
 				.setColor(BlackPlutonium)
 				.addOres(BlackPlutonium, GarnetRed, GarnetYellow, Infuscolium)
@@ -423,7 +423,7 @@ public class OreGenerator {
 				.addOres(Zinc)
 				.end();
 		addVein(507, "Gold")
-				.addDim(Overworld, Dimensions.Mars, Venus, Pluto, Callisto, Asteroids, Ceres, Miranda, Phobos)
+				.addDim(Overworld, Dimensions.Mars, Venus, Pluto, Callisto, Asteroids, Ceres, Miranda, Phobos, Dimensions.Mercury)
 				.setSize(1, 10).setTier(0).setWeight(8).noChance()
 				.setColor(Gold)
 				.addOres(Gold)
@@ -624,7 +624,7 @@ public class OreGenerator {
 				.addOres(Draconium)
 				.end();
 		addVein(540, "Desh")
-				.addDim(Dimensions.Mars, Haumea, Miranda, Proteus, Callisto, Triton, Deimos, Makemake, Phobos)
+				.addDim(Dimensions.Mars, Haumea, Miranda, Proteus, Callisto, Triton, Deimos, Makemake, Phobos, Dimensions.Mercury)
 				.setSize(1, 10).setTier(0).setWeight(6).noChance()
 				.setColor(Desh)
 				.addOres(Desh)
@@ -659,11 +659,17 @@ public class OreGenerator {
 				.setColor(Naquadria)
 				.addOres(Naquadria)
 				.end();
-		addVein(545, "Redstone")
-				.addDim(Overworld)
+		addVein(546, "Redstone")
+				.addDim(Overworld, Dimensions.Mars, Ganymede, Dimensions.Mercury, Dimensions.Titan, Proteus, Enceladus)
 				.setSize(1, 10).setTier(0).setWeight(16).noChance()
 				.setColor(Redstone)
 				.addOres(Redstone)
+				.end();
+		addVein(547, "Platinum")
+				.addDim(Dimensions.Mars, Phobos, Asteroids, Ceres, Callisto, Miranda, Oberon, Makemake, Pluto, Haumea)
+				.setSize(1, 10).setTier(0).setWeight(16).noChance()
+				.setColor(Platinum)
+				.addOres(Platinum)
 				.end();
 	}
 	

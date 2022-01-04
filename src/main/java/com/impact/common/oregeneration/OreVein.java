@@ -50,7 +50,7 @@ public class OreVein {
 		}
 		this.currentWeight = weight;
 		this.maxWeight     = weight;
-		if (Impact_API.registerVeins.containsKey(id)) {
+		if (Impact_API.registerVeins.containsKey(this.idVein)) {
 			throw new ArrayIndexOutOfBoundsException("OreVein ID: " + id + " already registered");
 		}
 		Impact_API.registerVeins.put(this.idVein, this);
