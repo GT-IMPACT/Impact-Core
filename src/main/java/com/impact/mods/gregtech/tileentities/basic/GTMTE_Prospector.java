@@ -44,7 +44,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	
 	public GTMTE_Prospector(int aID, String aNameRegional, int aTier) {
 		super(aID, "impact.basic.prospector." + aTier, aNameRegional, aTier, 1, // amperage
-				"Scan: " + (aTier + 5) + "x" + (aTier + 5) + " chunks",
+				"",
 				1, // input slot count
 				1, // output slot count
 				"Default.png", // GUI name
@@ -61,7 +61,11 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	}
 	
 	public String[] getDescription() {
-		return new String[]{"Place, activate with explosives", "2 Powderbarrels, 4 Glyceryl Trinitrate, 16 TNT, or 8 ITNT"};
+		return new String[]{
+				"Scan: " + (mTier + 5) + "x" + (mTier + 5) + " chunks",
+				"Place, activate with explosives",
+				"2 Powderbarrels, 4 Glyceryl Trinitrate, 16 TNT, or 8 ITNT"
+		};
 	}
 	
 	protected GTMTE_Prospector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
