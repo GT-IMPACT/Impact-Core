@@ -50,6 +50,15 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
     public GT_Recipe.GT_Recipe_Map getRecipes() {
         return null;
     }
+    
+    @Override
+    public String[] getDescription() {
+        return new String[] {
+                "Generating energy with sunlight",
+                String.format("Day: %s EU/t", GT_Values.V[mTier]),
+                String.format("Night: %s EU/t", GT_Values.V[mTier] / 8)
+        };
+    }
 
     @Override
     public int getEfficiency() {
