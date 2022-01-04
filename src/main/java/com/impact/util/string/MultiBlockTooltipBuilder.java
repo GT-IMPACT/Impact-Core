@@ -35,18 +35,15 @@ public class MultiBlockTooltipBuilder {
 	private final List<String> iLines;
 	private final List<String> sLines;
 	private final List<String> cLines;
-	private final List<String> holoLines;
 	private final String prefix;
 	private String[] iArray;
 	private String[] sArray;
 	private String[] cArray;
-	private String[] holoArray;
 	
 	public MultiBlockTooltipBuilder() {
 		iLines    = new LinkedList<>();
 		sLines    = new LinkedList<>();
 		cLines    = new LinkedList<>();
-		holoLines = new LinkedList<>();
 		prefix    = "";
 	}
 	
@@ -54,7 +51,6 @@ public class MultiBlockTooltipBuilder {
 		iLines    = new LinkedList<>();
 		sLines    = new LinkedList<>();
 		cLines    = new LinkedList<>();
-		holoLines = new LinkedList<>();
 		prefix    = aPrefix + ".";
 	}
 	
@@ -460,82 +456,81 @@ public class MultiBlockTooltipBuilder {
 	 */
 	
 	public MultiBlockTooltipBuilder addHints() {
-		holoLines.add(EnumChatFormatting.RED + holo_details.get() + ":");
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addWhiteHint(String aEng) {
-		holoLines.add(EnumChatFormatting.WHITE + "▉" + EnumChatFormatting.RESET + " - " + trans("white", aEng));
+		sLines.add(EnumChatFormatting.WHITE + "▉" + EnumChatFormatting.RESET + " - " + trans("white", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addOrangeHint(String aEng) {
-		holoLines.add(EnumChatFormatting.GOLD + "▉" + EnumChatFormatting.RESET + " - " + trans("orange", aEng));
+		sLines.add(EnumChatFormatting.GOLD + "▉" + EnumChatFormatting.RESET + " - " + trans("orange", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addMagentaHint(String aEng) {
-		holoLines.add(EnumChatFormatting.DARK_RED + "▉" + EnumChatFormatting.RESET + " - " + trans("magenta", aEng));
+		sLines.add(EnumChatFormatting.DARK_RED + "▉" + EnumChatFormatting.RESET + " - " + trans("magenta", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addLBlueHint(String aEng) {
-		holoLines.add(EnumChatFormatting.BLUE + "▉" + EnumChatFormatting.RESET + " - " + trans("l_blue", aEng));
+		sLines.add(EnumChatFormatting.BLUE + "▉" + EnumChatFormatting.RESET + " - " + trans("l_blue", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addYellowHint(String aEng) {
-		holoLines.add(EnumChatFormatting.YELLOW + "▉" + EnumChatFormatting.RESET + " - " + trans("yellow", aEng));
+		sLines.add(EnumChatFormatting.YELLOW + "▉" + EnumChatFormatting.RESET + " - " + trans("yellow", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addLimeHint(String aEng) {
-		holoLines.add(EnumChatFormatting.GREEN + "▉" + EnumChatFormatting.RESET + " - " + trans("lime", aEng));
+		sLines.add(EnumChatFormatting.GREEN + "▉" + EnumChatFormatting.RESET + " - " + trans("lime", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addPinkHint(String aEng) {
-		holoLines.add(EnumChatFormatting.LIGHT_PURPLE + "▉" + EnumChatFormatting.RESET + " - " + trans("pink", aEng));
+		sLines.add(EnumChatFormatting.LIGHT_PURPLE + "▉" + EnumChatFormatting.RESET + " - " + trans("pink", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addGrayHint(String aEng) {
-		holoLines.add(EnumChatFormatting.DARK_GRAY + "▉" + EnumChatFormatting.RESET + " - " + trans("gray", aEng));
+		sLines.add(EnumChatFormatting.DARK_GRAY + "▉" + EnumChatFormatting.RESET + " - " + trans("gray", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addLGrayHint(String aEng) {
-		holoLines.add(EnumChatFormatting.GRAY + "▉" + EnumChatFormatting.RESET + " - " + trans("l_gray", aEng));
+		sLines.add(EnumChatFormatting.GRAY + "▉" + EnumChatFormatting.RESET + " - " + trans("l_gray", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addCyanHint(String aEng) {
-		holoLines.add(EnumChatFormatting.DARK_AQUA + "▉" + EnumChatFormatting.RESET + " - " + trans("cyan", aEng));
+		sLines.add(EnumChatFormatting.DARK_AQUA + "▉" + EnumChatFormatting.RESET + " - " + trans("cyan", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addPurpleHint(String aEng) {
-		holoLines.add(EnumChatFormatting.DARK_PURPLE + " - " + "▉" + EnumChatFormatting.RESET + " - " + trans("purple", aEng));
+		sLines.add(EnumChatFormatting.DARK_PURPLE + " - " + "▉" + EnumChatFormatting.RESET + " - " + trans("purple", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addBlueHint(String aEng) {
-		holoLines.add(EnumChatFormatting.DARK_BLUE + "▉" + EnumChatFormatting.RESET + " - " + trans("blue", aEng));
+		sLines.add(EnumChatFormatting.DARK_BLUE + "▉" + EnumChatFormatting.RESET + " - " + trans("blue", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addGreenHint(String aEng) {
-		holoLines.add(EnumChatFormatting.DARK_GREEN + "▉" + EnumChatFormatting.RESET + " - " + trans("green", aEng));
+		sLines.add(EnumChatFormatting.DARK_GREEN + "▉" + EnumChatFormatting.RESET + " - " + trans("green", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addRedHint(String aEng) {
-		holoLines.add(EnumChatFormatting.RED + "▉" + EnumChatFormatting.RESET + " - " + trans("red", aEng));
+		sLines.add(EnumChatFormatting.RED + "▉" + EnumChatFormatting.RESET + " - " + trans("red", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addBlackHint(String aEng) {
-		holoLines.add(EnumChatFormatting.BLACK + "▉" + EnumChatFormatting.RESET + " - " + trans("black", aEng));
+		sLines.add(EnumChatFormatting.BLACK + "▉" + EnumChatFormatting.RESET + " - " + trans("black", aEng));
 		return this;
 	}
 	
@@ -557,11 +552,8 @@ public class MultiBlockTooltipBuilder {
 		iLines.add(impactTag());
 		iArray    = new String[iLines.size()];
 		sArray    = new String[sLines.size()];
-		holoArray = new String[holoLines.size()];
 		iLines.toArray(iArray);
 		sLines.toArray(sArray);
-		holoLines.addAll(sLines);
-		holoLines.toArray(holoArray);
 	}
 	
 	public void signAndFinalize(boolean ctrl) {
@@ -576,12 +568,9 @@ public class MultiBlockTooltipBuilder {
 		iArray    = new String[iLines.size()];
 		sArray    = new String[sLines.size()];
 		cArray    = new String[cLines.size()];
-		holoArray = new String[holoLines.size()];
 		iLines.toArray(iArray);
 		sLines.toArray(sArray);
 		cLines.toArray(cArray);
-		holoLines.addAll(sLines);
-		holoLines.toArray(holoArray);
 	}
 	
 	public String[] getInformation() {
@@ -594,9 +583,5 @@ public class MultiBlockTooltipBuilder {
 	
 	public String[] getControlInfo() {
 		return cArray;
-	}
-	
-	public String[] getHoloInfo() {
-		return holoArray;
 	}
 }

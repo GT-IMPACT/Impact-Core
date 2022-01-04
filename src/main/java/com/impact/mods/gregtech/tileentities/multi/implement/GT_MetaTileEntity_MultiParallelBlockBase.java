@@ -52,6 +52,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.util.recipe.RecipeHelper.calcTimeParallel;
 import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
+import static com.impact.util.string.Lang.holo_details;
 import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_MetaTileEntity_MultiParallelBlockBase<T>> extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable {
@@ -1584,7 +1585,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	@Override
 	public String[] getStructureDescription(ItemStack stackSize) {
-		return getTooltip().getHoloInfo();
+		String[] desc = new String[getTooltip().getStructureInformation().length];
+		desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
+		for (int i = 1; i < getTooltip().getStructureInformation().length; i++) {
+			desc[i] = getTooltip().getStructureInformation()[i];
+		}
+		return desc;
 	}
 	
 	public abstract IStructureDefinition<T> getStructureDefinition();
