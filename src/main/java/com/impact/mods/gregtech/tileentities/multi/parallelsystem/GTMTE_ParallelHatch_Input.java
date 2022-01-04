@@ -44,7 +44,7 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 				Utilits.impactTag(),
 				"Parallel points receiver",
 				"Used in multi-block machines",
-				"Reduces recipe time by a factor of " + aMaxParallel
+				"Reduces recipe time by a factor of " + (aTier - 4)
 		});
 		mMaxParallel = aMaxParallel;
 		isDebug = false;
