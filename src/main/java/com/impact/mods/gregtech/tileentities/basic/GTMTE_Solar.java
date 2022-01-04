@@ -55,8 +55,8 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
     public String[] getDescription() {
         return new String[] {
                 "Generating energy with sunlight",
-                String.format("Day: %s EU/t", GT_Values.V[mTier]),
-                String.format("Night: %s EU/t", GT_Values.V[mTier] / 8)
+                String.format("Day: %s EU/t", GT_Utility.formatNumbers(GT_Values.V[mTier])),
+                String.format("Night: %s EU/t", GT_Utility.formatNumbers(GT_Values.V[mTier] / 8))
         };
     }
 

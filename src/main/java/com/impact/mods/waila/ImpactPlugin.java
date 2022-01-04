@@ -171,11 +171,11 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (tMatrixStabilizer != null) {
-                currenttip.add(tag.getInteger("mMPSummary") + "");
+                currenttip.add(GT_Utility.formatNumbers(tag.getInteger("mMPSummary")) + " particles");
             }
 
             if (tMatrixContainment != null) {
-                currenttip.add(tag.getInteger("mMPStable") + "");
+                currenttip.add(GT_Utility.formatNumbers(tag.getInteger("mMPStable")) + " particles");
             }
 
             if (aerostat != null) {
