@@ -92,7 +92,7 @@ public class JsonWorld {
             Type listType = new TypeToken<List<OresRegionGenerator>>() {}.getType();
             List<OresRegionGenerator> regionList = gson.fromJson(jsonElement, listType);
             for (OresRegionGenerator o : regionList) {
-                regionsOres.put(Objects.hash(o.xRegion, o.zRegion), o);
+                regionsOres.put(Objects.hash(o.xRegion, o.zRegion, o.dim), o);
             }
             br.close();
         } catch (Exception e) {
