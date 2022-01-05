@@ -84,7 +84,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_Mult
 				.addOutputHatch(AMOUNT_OUTPUT_HATCHES[tierReactor() - 1])
 				.addCasingInfo("case", "Radiation Proof Casing")
 				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "pipes!")
-				.addOtherStructurePart("other.2", "Machine Hull (max x1)", "other.3", "what? yes, its for AE2 provider")
+				.addOtherStructurePart("other.2", "Machine Hull", "other.3", "what? yes, its for AE2 provider (max x1)")
 				.signAndFinalize();
 		return b;
 	}
