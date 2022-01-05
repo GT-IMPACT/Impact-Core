@@ -82,7 +82,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("heavy_metal_cyclone");
 		b
 				.addInfo("info.0", "Centrifuge for heavy materials")
-				.addParallelInfo(0, 256)
+				.addParallelInfo(1, 256)
 				.addTypeMachine("name", "Heavy Metal Cyclone")
 				.addSeparator()
 				.addController()
