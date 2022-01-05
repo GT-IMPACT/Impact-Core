@@ -61,6 +61,14 @@ public class Core_Items3 extends Item {
     @SuppressWarnings({"unchecked"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
+        switch (stack.getItemDamage()) {
+            case 0:
+                list.add("Capacity: 0 / 1,000 particles");
+                break;
+            case 1:
+                list.add("Capacity: 1,000 / 1,000 particles");
+                break;
+        }
     }
 
     @Override

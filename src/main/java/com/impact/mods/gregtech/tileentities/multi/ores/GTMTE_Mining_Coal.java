@@ -249,13 +249,14 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 			return false;
 		}
 		if (sizeVeinPreStart-- < 1) {
-			increaseLayer(getBaseMetaTileEntity());
-			initOreProperty(getBaseMetaTileEntity());
+			stopMachine();
 			return false;
 		}
 		checkFuel();
 		if (cBurnTime > 0) {
 			mMaxProgresstime = DEFAULT_WORK;
+		} else {
+			return false;
 		}
 		increaseLayer(getBaseMetaTileEntity());
 		return true;
