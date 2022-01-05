@@ -66,7 +66,6 @@ public class RecipeJsonCrafting {
 		shape[1] = shapeTotal[1];
 		shape[2] = shapeTotal[2];
 		System.arraycopy(inputsToObj, 0, shape, 3, shape.length - 3);
-		System.out.println(Arrays.toString(shape));
 		return shape;
 	}
 }
