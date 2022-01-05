@@ -43,7 +43,7 @@ public class NEI_Impact_DryingRack extends TemplateRecipeHandler {
 		
 		HandlerInfo handlerInfo = new HandlerInfo.Builder(getOverlayIdentifier(), "Impact-Core", Refstrings.MODID)
 				.setDisplayStack(new ItemStack(Items.leather))
-				.setMaxRecipesPerPage(2).setHeight(165).setWidth(200).setShiftY(6).build();
+				.setMaxRecipesPerPage(4).setHeight(80).setWidth(200).setShiftY(6).build();
 		handlerMap.put(handlerInfo.getHandlerName(), handlerInfo);
 	}
 	
@@ -70,7 +70,7 @@ public class NEI_Impact_DryingRack extends TemplateRecipeHandler {
 	public void drawBackground(int recipe) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GuiDraw.changeTexture(getGuiTexture());
-		GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 80);
+		GuiDraw.drawTexturedModalRect(0, 0, 0, 0, 160, 65);
 	}
 	
 	@Override
