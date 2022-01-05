@@ -91,6 +91,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
 			new NEI_Impact_Ores(OreBuilderNEI.smallOres, 0);
 			new NEI_Impact_DimOres(OreBuilderNEI.dimSmallOres, 0);
 			new NEI_Impact_HammerDrop(Impact_API.dropsFromBlock);
+			new NEI_Impact_DryingRack();
 			registerSingle();
 			registerHandlerInfo();
 		}
