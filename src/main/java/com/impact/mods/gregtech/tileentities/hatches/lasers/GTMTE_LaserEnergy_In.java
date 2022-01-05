@@ -60,7 +60,7 @@ public class GTMTE_LaserEnergy_In extends GT_MetaTileEntity_Hatch_EnergyMulti {
 	
 	@Override
 	public long maxEUStore() {
-		return 512L + V[this.mTier] * 4L * (long) this.Amp;
+		return V[this.mTier] * 24L * (long) this.Amp;
 	}
 	
 	@Override

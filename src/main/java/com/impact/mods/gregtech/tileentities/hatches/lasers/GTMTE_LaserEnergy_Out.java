@@ -64,7 +64,7 @@ public class GTMTE_LaserEnergy_Out extends GT_MetaTileEntity_Hatch_DynamoMulti {
 	}
 	
 	public long maxEUStore() {
-		return 512L + V[this.mTier] * 4L * (long) this.Amp;
+		return V[this.mTier] * 24L * (long) this.Amp;
 	}
 	
 	public long maxAmperesOut() {
