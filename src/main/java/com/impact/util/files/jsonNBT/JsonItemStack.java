@@ -3,6 +3,11 @@ package com.impact.util.files.jsonNBT;
 import com.google.gson.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.items.ItemDebug;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
@@ -43,7 +48,18 @@ public class JsonItemStack implements JsonSerializer<ItemStack>, JsonDeserialize
 		int amount = object.get("amount").getAsInt();
 		if (object.has("oredict")) {
 			String ore = object.get("oredict").getAsString();
-			is = GregTech_API.getStackofAmountFromOreDict(ore, amount);
+			if (ore.startsWith("craftingTool")) {
+				is = new ItemStack(ItemDebug.getInstance(), amount);
+				OreDictionary.registerOre(ore, is);
+				return is;
+			}
+			OrePrefixes prefixes = OrePrefixes.getOrePrefix(ore);
+			Materials material = OrePrefixes.getMaterial(ore);
+			if (prefixes != null && material != Materials._NULL) {
+				is = GT_OreDictUnificator.get(prefixes, material, amount);
+			} else {
+				is = GregTech_API.getStackofAmountFromOreDict(ore, amount);
+			}
 		} else {
 			NBTTagCompound nbtTagCompound = null;
 			try {
