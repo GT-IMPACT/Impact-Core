@@ -201,7 +201,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 			if (mpChambers.size() > 0) {
 				GTMTE_Hatch_MESystemMPChamber ch = mpChambers.get(0);
 				if (ch.getMPSummary() >= 1000) {
-					if ((mMatrixParticlesSummary + 1000) <= 99_000) {
+					if ((mMatrixParticlesSummary + 1000) <= 100_000) {
 						mMatrixParticlesSummary += 1000;
 						ch.subMPSummary(1000);
 					}
