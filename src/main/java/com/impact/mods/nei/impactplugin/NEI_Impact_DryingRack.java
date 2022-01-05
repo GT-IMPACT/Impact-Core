@@ -151,7 +151,7 @@ public class NEI_Impact_DryingRack extends TemplateRecipeHandler {
 		for (TE_DryingRack.DryingRackRecipes.DryingRecipe recipe : recipes) {
 			CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(recipe);
 			for (ItemStack tStack : tInputs) {
-				if (tNEIRecipe.contains(tNEIRecipe.mOutputs, tStack) || tNEIRecipe.contains(tNEIRecipe.mInputs, tStack)) {
+				if (tNEIRecipe.contains(tNEIRecipe.mInputs, tStack)) {
 					this.arecipes.add(tNEIRecipe);
 					break;
 				}
