@@ -30,10 +30,12 @@ public class Behaviour_Aerostat extends Behaviour_None {
 			IMetaTileEntity aerostat = gte.getMetaTileEntity();
 			if (aerostat instanceof GTMTE_Aerostat && ((GTMTE_Aerostat) aerostat).mMachine) {
 				GTMTE_Aerostat as = (GTMTE_Aerostat) aerostat;
+				as.currentLocationPlatforms.clear();
+				as.currentLocationPlatforms.addAll(GTMTE_Aerostat.getRadiusAeroStates(as.playerName, gte));
 				if (!aPlayer.isSneaking()) {
 					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
 					List<String> names = new ArrayList<>();
-					GTMTE_Aerostat.getRadiusAeroStates(as.playerName, gte).forEach(a -> names.add(a.aerName));
+					as.currentLocationPlatforms.forEach(a -> names.add(a.aerName));
 					List<String> toClient = new ArrayList<>();
 					toClient.add(as.playerName);
 					toClient.add(as.aerName);

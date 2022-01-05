@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
 import com.impact.core.Impact_API;
+import com.impact.impact;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -62,6 +63,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 	public int curBuffer = 0;
 	public String playerName = "";
 	public String aerName = "";
+	public List<GTMTE_Aerostat> currentLocationPlatforms = new ArrayList<>();
 	
 	public GTMTE_Aerostat(int aID, String aNameRegional) {
 		super(aID, "impact.multis.aerostat", aNameRegional);
@@ -162,12 +164,12 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide() && mMachine) {
-			if (aTick % 20 == 0 && curBuffer < MAX_BUFFER - 100) {
+			if (aTick % 20 == 0 && curBuffer < MAX_BUFFER - 1000) {
 				isFullBuffer = false;
 			}
-			if (!isFullBuffer && depleteInput(Materials.NatruralGas.getGas(100))) {
-				curBuffer += 100;
-				if (curBuffer + 100 > MAX_BUFFER) {
+			if (!isFullBuffer && (depleteInput(Materials.NatruralGas.getGas(1000)) || depleteInput(Materials.Gas.getGas(1000)))) {
+				curBuffer += 1000;
+				if (curBuffer + 1000 > MAX_BUFFER) {
 					curBuffer    = MAX_BUFFER;
 					isFullBuffer = true;
 				}
@@ -202,7 +204,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 			if (!Impact_API.sAerostat.containsKey(name)) {
 				Impact_API.sAerostat.remove(aerName);
 				aerName = name;
-				Utilits.sendChatByTE(getBaseMetaTileEntity(), "Set location name: \"" + aerName + "\"");
+				impact.proxy.addClientSideChatMessages("Set location name: \"" + aerName + "\"");
 				Impact_API.sAerostat.put(aerName, thisLocation.getCoords());
 				curID = 1;
 			} else {
@@ -272,17 +274,34 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 		return false;
 	}
 	
+	public int getDistanceTravel() {
+		int distance = 0;
+		int id = 1;
+		for (GTMTE_Aerostat aerostat : currentLocationPlatforms) {
+			if (id == curID) {
+				PositionObject thisPos = new PositionObject(getBaseMetaTileEntity());
+				PositionObject newPos = new PositionObject(aerostat.getBaseMetaTileEntity());
+				distance = Utilits.distanceBetween3D(thisPos.xPos, newPos.xPos, thisPos.yPos, newPos.yPos, thisPos.zPos, newPos.zPos);
+				if (distance >= 16 && thisPos.dPos == newPos.dPos) {
+					break;
+				}
+			}
+			id++;
+		}
+		return distance;
+	}
+	
 	public void toTravel(EntityPlayer aPlayer) {
 		
 		int id = 1;
-		for (GTMTE_Aerostat aerostat : getRadiusAeroStates(playerName, getBaseMetaTileEntity())) {
+		for (GTMTE_Aerostat aerostat : currentLocationPlatforms) {
 			if (id == curID) {
 				PositionObject thisPos = new PositionObject(getBaseMetaTileEntity());
 				PositionObject newPos = new PositionObject(aerostat.getBaseMetaTileEntity());
 				int distance = Utilits.distanceBetween3D(thisPos.xPos, newPos.xPos, thisPos.yPos, newPos.yPos, thisPos.zPos, newPos.zPos);
 				if (distance >= 16 && thisPos.dPos == newPos.dPos) {
-					if (curBuffer - distance * 100 > 0) {
-						curBuffer -= distance * 100;
+					if (curBuffer - distance * 25 > 0) {
+						curBuffer -= distance * 25;
 						aPlayer.setPositionAndUpdate(newPos.xPos + 0.5D, newPos.yPos + 1, newPos.zPos + 0.5D);
 					} else {
 						GT_Utility.sendChatToPlayer(aPlayer, "No Fuel");

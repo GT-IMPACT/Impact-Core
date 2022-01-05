@@ -99,7 +99,7 @@ public class Multi_Register {
 		Machine_DistTower.set(new GTMTE_MultiDistillationTower(ID++, "Multi Distillation Tower").get());
 		Machine_ElectricImplosion.set(new GTMTE_ElectricImplosionCompressor(ID++, "Electric Implosion Compressor").get());
 		
-		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate").get());
+		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate Platform").get());
 		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
 		hideItem(Filler.get(1));
 		

@@ -19,6 +19,7 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 	public int curBuffer = 0;
 	public String playerName = "";
 	public int timer = 20;
+	public int distance = 0;
 	
 	public Countainer_SelectAerostat(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity, false);
@@ -43,7 +44,7 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 				IMetaTileEntity imte = this.mTileEntity.getMetaTileEntity();
 				if (imte instanceof GTMTE_Aerostat) {
 					GTMTE_Aerostat aerostat = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity());
-					int size = GTMTE_Aerostat.getRadiusAeroStates(aerostat.playerName, mTileEntity).size();
+					int size = aerostat.currentLocationPlatforms.size();
 					if (!aerostat.aerName.equals("")) {
 						if (aSlotIndex == 0) {
 							if (aShifthold == 1) {
@@ -51,6 +52,7 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 							} else {
 								aerostat.curID += (aerostat.curID + 1 > size) ? 0 : 1;
 							}
+							
 							return null;
 						} else if (aSlotIndex == 1) {
 							if (aShifthold == 1) {
@@ -82,6 +84,7 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 		timer      = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).timer;
 		idLocation = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curID;
 		curBuffer  = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).curBuffer;
+		distance = ((GTMTE_Aerostat) this.mTileEntity.getMetaTileEntity()).getDistanceTravel();
 		
 		for (Object crafter : this.crafters) {
 			ICrafting var1 = (ICrafting) crafter;
@@ -91,6 +94,8 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 			var1.sendProgressBarUpdate(this, 103, this.timer >>> 16);
 			var1.sendProgressBarUpdate(this, 104, this.curBuffer & 0xFFFF);
 			var1.sendProgressBarUpdate(this, 105, this.curBuffer >>> 16);
+			var1.sendProgressBarUpdate(this, 106, this.distance & 0xFFFF);
+			var1.sendProgressBarUpdate(this, 107, this.distance >>> 16);
 		}
 	}
 	
@@ -115,6 +120,12 @@ public class Countainer_SelectAerostat extends GT_ContainerMetaTile_Machine {
 				break;
 			case 105:
 				this.curBuffer = (this.curBuffer & 0xFFFF | par2 << 16);
+				break;
+			case 106:
+				this.distance = (this.distance & 0xFFFF0000 | par2);
+				break;
+			case 107:
+				this.distance = (this.distance & 0xFFFF | par2 << 16);
 				break;
 		}
 	}

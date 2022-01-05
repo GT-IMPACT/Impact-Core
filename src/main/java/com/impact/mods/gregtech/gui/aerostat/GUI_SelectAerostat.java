@@ -4,6 +4,7 @@ import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.network.IPacketString;
 import com.impact.util.PositionObject;
+import com.impact.util.Utilits;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,11 +32,12 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements IPa
 	}
 	
 	public String getNameLocation(int id, EnumChatFormatting color, boolean general) {
+		Countainer_SelectAerostat container = (Countainer_SelectAerostat) this.mContainer;
 		int idd = 1;
 		for (String name : names) {
 			if (idd == id) {
 				if (color == EnumChatFormatting.RESET) return name;
-				return color + "" + (general ? EnumChatFormatting.BOLD + "> " + color : "") + name + color;
+				return color + "" + (general ? EnumChatFormatting.BOLD + "> " + color : "") + name + color + (general ? " " + container.distance + "m" : "");
 			}
 			idd++;
 		}
@@ -67,7 +69,7 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements IPa
 		if (!mStationName.isEmpty()) {
 			if (!names.isEmpty()) {
 				this.fontRendererObj.drawString("Station Select:", 33, 28, 16448255);
-				this.fontRendererObj.drawString(getNameLocation(container.idLocation + 5, DARK_GRAY, false), 33, 50 - 10, 16448255);
+				this.fontRendererObj.drawString("Need Gas to move: " + container.distance * 25 + "L", 33, 38, 16448255);
 				this.fontRendererObj.drawString(getNameLocation(container.idLocation + 4, DARK_GRAY, false), 33, 60 - 10, 16448255);
 				this.fontRendererObj.drawString(getNameLocation(container.idLocation + 3, DARK_GRAY, false), 33, 70 - 10, 16448255);
 				this.fontRendererObj.drawString(getNameLocation(container.idLocation + 2, DARK_GRAY, false), 33, 80 - 10, 16448255);
@@ -77,7 +79,6 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements IPa
 				this.fontRendererObj.drawString(getNameLocation(container.idLocation - 2, DARK_GRAY, false), 33, 120, 16448255);
 				this.fontRendererObj.drawString(getNameLocation(container.idLocation - 3, DARK_GRAY, false), 33, 130, 16448255);
 				this.fontRendererObj.drawString(getNameLocation(container.idLocation - 4, DARK_GRAY, false), 33, 140, 16448255);
-				this.fontRendererObj.drawString(getNameLocation(container.idLocation - 5, DARK_GRAY, false), 33, 150, 16448255);
 			} else {
 				this.fontRendererObj.drawString(EnumChatFormatting.RED + "No Stations", 33, 70, 16448255);
 				this.fontRendererObj.drawString(EnumChatFormatting.RED + "in radius 512 blocks! ", 33, 80, 16448255);
