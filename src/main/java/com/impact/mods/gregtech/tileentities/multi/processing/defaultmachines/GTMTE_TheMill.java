@@ -56,7 +56,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						Utilits.is(OrePrefixes.dustImpure, Materials.Calcite),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Gypsum)
 				},
-				new int[]{10000, 10000}, 20 * 30
+				new int[]{10000, 10000}, 20 * 20
 		);
 		impact.I_RA.addTheMillRecipes(DropCrashedMetallic.get(1),
 				new ItemStack[]{
@@ -65,7 +65,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						Utilits.is(OrePrefixes.dustImpure, Materials.Tin),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Lead)
 				},
-				new int[]{10000, 10000, 10000, 10000}, 20 * 30
+				new int[]{10000, 10000, 10000, 10000}, 20 * 20
 		);
 		impact.I_RA.addTheMillRecipes(DropCrashedCoal.get(1),
 				new ItemStack[]{
@@ -73,7 +73,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						Utilits.is(OrePrefixes.dustImpure, Materials.Lignite),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Sulfur)
 				},
-				new int[]{10000, 10000, 10000}, 20 * 30);
+				new int[]{10000, 10000, 10000}, 20 * 20);
 	}
 	
 	public GTMTE_TheMill(String aName) {
@@ -141,9 +141,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 			
 			IInventory tTileEntity = iAm.getIInventoryAtSide(iAm.getBackFacing());
 			if (tTileEntity != null) {
-				if (mInventory[1] != null) {
-					GT_Utility.moveOneItemStack(iAm, tTileEntity, (byte) 1, (byte) 1, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-				}
+				GT_Utility.moveOneItemStack(iAm, tTileEntity, (byte) 1, (byte) 1, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
 			}
 		}
 	}
@@ -183,6 +181,13 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 			ItemStack[] slot0 = {mInventory[0]};
 			GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, false, 0, null, slot0);
 			if (tRecipe != null) {
+				if (cashedRecipe != tRecipe) {
+					for (int i = 1; i < mInventory.length; i++) {
+						if (mInventory[i] != null) {
+							return false;
+						}
+					}
+				}
 				mInventory[0].stackSize--;
 				if (mInventory[0].stackSize <= 0) {
 					mInventory[0] = null;
