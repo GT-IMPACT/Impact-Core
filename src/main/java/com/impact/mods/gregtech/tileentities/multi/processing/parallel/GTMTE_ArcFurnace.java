@@ -81,7 +81,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.addSingleAnalog()
 				.addParallelInfo(1, 256)
 				.addPollution(200, 12800)
-				.addTypeMachine("name", "Arc Furnace, Alloy Smelter")
+				.addTypeMachine("name", "Arc Furnace, Alloy Smelter, Drying Oven")
 				.addScrew()
 				.addSeparatedBus()
 				.addSeparator()
