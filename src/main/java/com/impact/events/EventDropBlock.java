@@ -19,17 +19,17 @@ public class EventDropBlock {
 	
 	static {
 		ItemStack[] dropCrashedStone = {DropCrashedStone.get(1), DropCrashedMetallic.get(1), DropCrashedCoal.get(1)};
-		DropsBlock.add(Blocks.stone, 0, 0.05f, dropCrashedStone);
+		DropsBlock.add(Blocks.stone, 0, 0.15f, dropCrashedStone);
 		String ubc = "UndergroundBiomes";
 		String name = "igneousStone";
 		for (int i = 0; i < 8; i++) {
 			//Red Granite, Black Granite, Rhyolite, Andesite, Gabbro, Basalt, Komatite, Dacite
-			DropsBlock.add(getBlock(ubc, name), i, 0.05f, dropCrashedStone);
+			DropsBlock.add(getBlock(ubc, name), i, 0.15f, dropCrashedStone);
 		}
 		name = "metamorphicStone";
 		for (int i = 0; i < 8; i++) {
 			//Gneiss, Eclogite, Marble, Quartzite, Blue Schist, Green Schist, Soapstone, Migmatite
-			DropsBlock.add(getBlock(ubc, name), i, 0.05f, dropCrashedStone);
+			DropsBlock.add(getBlock(ubc, name), i, 0.15f, dropCrashedStone);
 		}
 	}
 	
