@@ -5,6 +5,7 @@ import com.impact.mods.gregtech.blocks.itemblocks.IB_Casing_3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IAxeWrenchable;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
@@ -15,7 +16,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.*;
 import static com.impact.util.Utilits.BlockstackMeta;
 import static gregtech.api.util.GT_LanguageManager.addStringLocalization;
 
-public class Casing_3 extends GT_Block_Casings_Abstract {
+public class Casing_3 extends GT_Block_Casings_Abstract implements IAxeWrenchable {
 
     private static final Build_Casing_Helper[] casing_helpers = {
             ME_CASING, AEROSTATE_PLATFORM, MILL,
@@ -45,5 +46,10 @@ public class Casing_3 extends GT_Block_Casings_Abstract {
             default:
                 return null;
         }
+    }
+    
+    @Override
+    public boolean apply() {
+        return true;
     }
 }

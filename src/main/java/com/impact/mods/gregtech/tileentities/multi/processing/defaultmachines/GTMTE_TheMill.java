@@ -24,8 +24,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tools.GT_Tool_Axe;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -129,6 +133,21 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	}
 	
 	@Override
+	public void onLeftclick(IGregTechTileEntity te, EntityPlayer aPlayer) {
+		super.onLeftclick(te, aPlayer);
+		if (aPlayer.getCurrentEquippedItem() != null) {
+			ItemStack is = aPlayer.getCurrentEquippedItem();
+			if (is.getItem() instanceof GT_MetaGenerated_Tool_01) {
+				GT_MetaGenerated_Tool_01 tool = (GT_MetaGenerated_Tool_01) is.getItem();
+				if (tool.getToolStats(is) instanceof GT_Tool_Axe) {
+					te.getBlock(te.getXCoord(), te.getYCoord(), te.getZCoord())
+							.harvestBlock(te.getWorld(), aPlayer, te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getMetaTileID());
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		if (iAm.isServerSide() && iAm.isActive()) {
 			if (mProgresstime >= mMaxProgresstime - 1) {
@@ -206,6 +225,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	public boolean machineStructure(IGregTechTileEntity thisController) {
 		this.noMaintenance();
 		boolean check = checkPiece(4, 3, 0);
+		if (!check) return false;
 		for (int x = -6; x < 6; x++) {
 			for (int y = -6; y < 6; y++) {
 				Vector3ic vec = Structure.goBuild(thisController, x, y, 1);
@@ -213,24 +233,20 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 					continue;
 				}
 				if (Structure.getBlock(thisController, vec) != Blocks.air) {
-					check = false;
+					return false;
 				}
 			}
 		}
 		Vector3ic vec = Structure.goBuild(thisController, 0, 0, 1);
-		if (check) {
-			if (thisController.isServerSide()) {
-				Structure.setBlock(thisController, vec, ItemRegistery.TheWind, 0);
-				TileEntity te = Structure.getTE(thisController, vec);
-				if (te instanceof TE_TheMill) {
-					TE_TheMill te_theMill = (TE_TheMill) te;
-					te_theMill.facing = thisController.getFrontFacing();
-				}
+		if (thisController.isServerSide()) {
+			Structure.setBlock(thisController, vec, ItemRegistery.TheWind, 0);
+			TileEntity te = Structure.getTE(thisController, vec);
+			if (te instanceof TE_TheMill) {
+				TE_TheMill te_theMill = (TE_TheMill) te;
+				te_theMill.facing = thisController.getFrontFacing();
 			}
-		} else {
-			Structure.setBlock(thisController, vec, Blocks.air, 0);
 		}
-		return check;
+		return true;
 	}
 	
 	@Override

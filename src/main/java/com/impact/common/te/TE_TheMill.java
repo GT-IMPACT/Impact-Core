@@ -7,11 +7,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TE_TheMill extends TileEntity implements IPacketInteger {
 	
-	public int facing = 2;
+	public int facing = 0;
 	public int tick = 0;
 	public float prevRotation = 0.0F;
 	public float rotation = 0.0F;
@@ -25,10 +26,9 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 	
 	public void updateEntity() {
 		tick++;
-		if (tick < 3 || tick % (20 * 60) == 0) {
-			if (!worldObj.isRemote) {
-				new ToClient_Integer(xCoord, yCoord, zCoord, facing).sendToClients();
-			}
+		
+		if (!worldObj.isRemote && (tick < 5 || tick % 3 == 0)) {
+			new ToClient_Integer(xCoord, yCoord, zCoord, facing).sendPacketToAllAround(worldObj, xCoord, yCoord, zCoord, 16*2);
 		}
 		
 		if (this.worldObj.getTotalWorldTime() % 128L == (long)((this.xCoord ^ this.zCoord) & 127)) {
