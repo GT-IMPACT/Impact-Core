@@ -16,7 +16,6 @@ public enum TargetedMod {
 	VANILLA("Minecraft", "unused", true),
 	GREGTECH("GregTech", "gregtech", true),
 	EXTRACELLS("ExtraCells2", "ExtraCells", true),
-	IMPACTAPI("Impact API", "ImpactAPI", true),
 	IC2("IndustrialCraft 2", "industrialcraft", true),
 	AE("Applied Energistics 2", "appliedenergistics2", true),
 	COFH("CoFHCore", "CoFHCore", true),

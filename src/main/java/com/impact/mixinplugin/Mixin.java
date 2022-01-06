@@ -17,7 +17,6 @@ public enum Mixin {
 	//
 	
 //	TileEntityFluidInterface_Mixin("extracells.TileEntityFluidInterface_Mixin", EXTRACELLS, VANILLA),
-	ImpactAPI_Mixin("impactapi.ImpactAPI_Mixin", IMPACTAPI, GREGTECH, VANILLA),
 	InvSlotConsumable_Mixin("ic2.InvSlotConsumable_Mixin", IC2, VANILLA),
 	MovableTileRegistry_Mixin("ae2.MovableTileRegistry_Mixin", AE, GREGTECH, VANILLA),
 	ForgeHooksClient_Mixin("vanilla.ForgeHooksClient_Mixin", VANILLA),
