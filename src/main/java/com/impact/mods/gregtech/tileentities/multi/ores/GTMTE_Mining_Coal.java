@@ -218,8 +218,10 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 					}
 				}
 			} else {
-				if (aTick % 20 == 2 && hatch.get(0) != null) {
-					hatch.get(0).cycleDrill(false);
+				if (aTick % 20 == 2 && hatch.size() > 0) {
+					if (hatch.get(0) != null) {
+						hatch.get(0).cycleDrill(false);
+					}
 				}
 			}
 		}

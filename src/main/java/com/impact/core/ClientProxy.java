@@ -135,7 +135,7 @@ public class ClientProxy extends CommonProxy {
 			if (handler != null) {
 				for (int i = 0; i < handler.getSizeInventory(); ++i) {
 					is = handler.getStackInSlot(i);
-					if ((is.getItem() instanceof MaskOfVision)) {
+					if (is != null && is.getItem() instanceof MaskOfVision) {
 						mask = true;
 						break;
 					}
