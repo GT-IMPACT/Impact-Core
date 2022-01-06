@@ -129,23 +129,25 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void beam(World worldObj, Vector3ic vec1, Vector3ic vec2, int type, int color, boolean reverse, float endmod, int age) {
 		boolean mask = false;
-		ItemStack is = Minecraft.getMinecraft().thePlayer.getCurrentArmor(3);
-		if (is == null || !(is.getItem() instanceof MaskOfVision)) {
-			IInventory handler = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
-			if (handler != null) {
-				for (int i = 0; i < handler.getSizeInventory(); ++i) {
-					is = handler.getStackInSlot(i);
-					if (is != null && is.getItem() instanceof MaskOfVision) {
-						mask = true;
-						break;
+		if (Minecraft.getMinecraft().thePlayer != null) {
+			ItemStack is = Minecraft.getMinecraft().thePlayer.getCurrentArmor(3);
+			if (is == null || !(is.getItem() instanceof MaskOfVision)) {
+				IInventory handler = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
+				if (handler != null) {
+					for (int i = 0; i < handler.getSizeInventory(); ++i) {
+						is = handler.getStackInSlot(i);
+						if (is != null && is.getItem() instanceof MaskOfVision) {
+							mask = true;
+							break;
+						}
 					}
 				}
+			} else {
+				mask = true;
 			}
-		} else {
-			mask = true;
-		}
-		if (mask) {
-			beam(worldObj, vec1.x() + 0.5d, vec1.y() + 0.5d, vec1.z() + 0.5d, vec2.x() + 0.5d, vec2.y() + 0.5d, vec2.z() + 0.5d, type, color, reverse, endmod, age);
+			if (mask) {
+				beam(worldObj, vec1.x() + 0.5d, vec1.y() + 0.5d, vec1.z() + 0.5d, vec2.x() + 0.5d, vec2.y() + 0.5d, vec2.z() + 0.5d, type, color, reverse, endmod, age);
+			}
 		}
 	}
 	
