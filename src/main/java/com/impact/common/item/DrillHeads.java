@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -53,7 +54,15 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
             list.add(stack);
         }
     }
-
+    
+    @Override
+    public void onCreated(ItemStack stack, World w, EntityPlayer p) {
+        super.onCreated(stack, w, p);
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("drillDamage", damage(stack));
+        stack.stackTagCompound = nbt;
+    }
+    
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
