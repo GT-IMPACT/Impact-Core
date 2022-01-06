@@ -70,7 +70,7 @@ public class ForgeHammer extends GT_Tool implements IToolStats, IImpact_Tools {
     }
 
     public float getMaxDurabilityMultiplier() {
-        return 1.0F;
+        return 4.5F;
     }
 
     public String getCraftingSound() {
