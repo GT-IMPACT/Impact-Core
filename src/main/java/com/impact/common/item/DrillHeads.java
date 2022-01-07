@@ -48,9 +48,13 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < icons.length; i++) {
             ItemStack stack = new ItemStack(item, 1, i);
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setInteger("drillDamage", damage(stack));
-            stack.stackTagCompound = nbt;
+            if (stack.hasTagCompound()) {
+                stack.stackTagCompound.setInteger("drillDamage", damage(stack));
+            } else {
+                NBTTagCompound nbt = new NBTTagCompound();
+                nbt.setInteger("drillDamage", damage(stack));
+                stack.stackTagCompound = nbt;
+            }
             list.add(stack);
         }
     }
@@ -58,9 +62,13 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
     @Override
     public void onCreated(ItemStack stack, World w, EntityPlayer p) {
         super.onCreated(stack, w, p);
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("drillDamage", damage(stack));
-        stack.stackTagCompound = nbt;
+        if (stack.hasTagCompound()) {
+            stack.stackTagCompound.setInteger("drillDamage", damage(stack));
+        } else {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setInteger("drillDamage", damage(stack));
+            stack.stackTagCompound = nbt;
+        }
     }
     
     @Override
@@ -77,10 +85,12 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
         list.add("Drill Heads for Impact Miners");
-        int damage = stack.getTagCompound().getInteger("drillDamage");
-        list.add(EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(damage) + " / " + GT_Utility.formatNumbers(damage(stack)));
-        String[] a = {"Iron", "Steel", "Stainless Steel", "Titanium", "Tungstensteel", "Inconel-690", "Iridium", "Neutronium"};
-        list.add(EnumChatFormatting.WHITE + a[stack.getItemDamage()] + " " + EnumChatFormatting.YELLOW + stack.getItemDamage() + " lvl");
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("drillDamage")) {
+            int damage = stack.getTagCompound().getInteger("drillDamage");
+            list.add(EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(damage) + " / " + GT_Utility.formatNumbers(damage(stack)));
+            String[] a = {"Iron", "Steel", "Stainless Steel", "Titanium", "Tungstensteel", "Inconel-690", "Iridium", "Neutronium"};
+            list.add(EnumChatFormatting.WHITE + a[stack.getItemDamage()] + " " + EnumChatFormatting.YELLOW + stack.getItemDamage() + " lvl");
+        }
     }
 
     @Override
