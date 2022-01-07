@@ -52,4 +52,12 @@ public class Casing_3 extends GT_Block_Casings_Abstract implements IAxeWrenchabl
     public boolean apply() {
         return true;
     }
+    
+    @Override
+    public int getHarvestLevel(int aMeta) {
+        if (aMeta == 1 || aMeta == 2) {
+            return 0;
+        }
+        return super.getHarvestLevel(aMeta);
+    }
 }
