@@ -110,6 +110,7 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 				.addInfo("info.1", "Need any Exquisite Gem")
 				.addInfo("info.2", "Power Beam: (Tier Energy Hatch - 3) * ~200")
 				.addInfo("info.3", "Max range to Matrix Particle Stabilizer: 30 blocks")
+				.addInfo("info.4", "Need Low Gravity")
 				.addSeparator()
 				.addController()
 				.addEnergyHatch("energy", "EV and above", 1)

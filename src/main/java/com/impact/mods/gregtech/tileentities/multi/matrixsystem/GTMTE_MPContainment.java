@@ -104,6 +104,7 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addTypeMachine("name", "Containment")
 				.addInfo("info.1", "Constant power consumption: 1,920 EU/t")
 				.addInfo("info.2", "Stable particles are filled in \"Portable Cell with Matrix Particles\"")
+				.addInfo("info.3", "Need Low Gravity")
 				.addSeparator()
 				.addController()
 				.addEnergyHatch()

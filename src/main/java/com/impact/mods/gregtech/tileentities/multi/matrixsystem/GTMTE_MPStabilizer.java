@@ -91,6 +91,7 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
 				.addTypeMachine("name", "Stabilizer")
 				.addInfo("info.1", "Max range to Matrix Particle Containment: 30 blocks")
 				.addInfo("info.2", "Constant power consumption: 1,920 EU/t")
+				.addInfo("info.3", "Need Low Gravity")
 				.addSeparator()
 				.addController()
 				.addEnergyHatch()
