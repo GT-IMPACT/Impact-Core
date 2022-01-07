@@ -1,9 +1,12 @@
 package com.impact.common.te;
 
+import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_TheMill;
 import com.impact.network.IPacketInteger;
 import com.impact.network.ToClient_Integer;
+import com.impact.util.vector.Structure;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -18,113 +21,101 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 	public float rotation = 0.0F;
 	public float turnSpeed = 0.0F;
 	public boolean canTurn = false;
-	@SideOnly(Side.CLIENT)
-	private AxisAlignedBB renderAABB;
 	
 	public TE_TheMill() {
 	}
 	
-	public void updateEntity() {
-		tick++;
+	@Override
+	public void updateEntity()
+	{
+		if(worldObj.getTotalWorldTime()%128==((xCoord^zCoord)&127))
+			canTurn = checkArea();
+		if(!canTurn)
+			return;
 		
-		if (!worldObj.isRemote && (tick < 5 || tick % 3 == 0)) {
-			new ToClient_Integer(xCoord, yCoord, zCoord, facing).sendPacketToAllAround(worldObj, xCoord, yCoord, zCoord, 16*2);
-		}
+		double mod = .00005;
+		if(!worldObj.isRaining())
+			mod *= .75;
+		if(!worldObj.isThundering())
+			mod *= .66;
+		if(yCoord>200)
+			mod *= 2;
+		else if(yCoord>150)
+			mod *= 1.5;
+		else if(yCoord>100)
+			mod *= 1.25;
+		else if(yCoord<70)
+			mod *= .33;
+		mod*=getSpeedModifier();
 		
-		if (this.worldObj.getTotalWorldTime() % 128L == (long)((this.xCoord ^ this.zCoord) & 127)) {
-			this.canTurn = this.checkArea();
-		}
 		
-		
-		if (this.canTurn) {
-			double mod = 5.0E-5D;
-			if (!this.worldObj.isRaining()) {
-				mod *= 0.75D;
-			}
-			
-			if (!this.worldObj.isThundering()) {
-				mod *= 0.66D;
-			}
-			
-			if (this.yCoord > 200) {
-				mod *= 2.0D;
-			} else if (this.yCoord > 150) {
-				mod *= 1.5D;
-			} else if (this.yCoord > 100) {
-				mod *= 1.25D;
-			} else if (this.yCoord < 70) {
-				mod *= 0.33D;
-			}
-			
-			mod *= this.getSpeedModifier();
-			this.prevRotation = (float)((double)this.turnSpeed * mod);
-			this.rotation = (float)((double)this.rotation + (double)this.turnSpeed * mod);
-			this.rotation %= 1.0F;
-			if (!this.worldObj.isRemote) {
-				ForgeDirection fd = ForgeDirection.getOrientation(this.facing);
-				TileEntity tileEntity = this.worldObj.getTileEntity(
-						this.xCoord - fd.offsetX,
-						this.yCoord - fd.offsetY,
-						this.zCoord - fd.offsetZ
-				);
-			}
-		}
+		prevRotation = (float) (turnSpeed*mod);
+		rotation += turnSpeed*mod;
+		rotation %= 1;
 	}
 	
 	protected float getSpeedModifier() {
-		return 0.5F;
+		return .5F;
 	}
 	
-	public boolean checkArea() {
-		this.turnSpeed = 0.0F;
-		int blocked;
-		int hh;
-		int r;
-		for(blocked = -6; blocked <= 6; ++blocked) {
-			hh = Math.abs(blocked) == 6 ? 1 : (Math.abs(blocked) == 5 ? 3 : (Math.abs(blocked) == 4 ? 4 : (Math.abs(blocked) > 1 ? 5 : 6)));
-			
-			for(r = -hh; r <= hh; ++r) {
-				if ((blocked != 0 || r != 0) && !this.worldObj.isAirBlock(this.xCoord + (this.facing <= 3 ? r : 0), this.yCoord + blocked, this.zCoord + (this.facing <= 3 ? 0 : r))) {
+	public boolean checkArea()
+	{
+		turnSpeed=0;
+		for(int hh=-6;hh<=6;hh++)
+		{
+			int r=Math.abs(hh)==6?1: Math.abs(hh)==5?3: Math.abs(hh)==4?4: Math.abs(hh)>1?5: 6;
+			for(int ww=-r;ww<=r;ww++)
+				if((hh!=0||ww!=0)&&!worldObj.isAirBlock(xCoord+(facing<=3?ww:0), yCoord+hh, zCoord+(facing<=3?0:ww)))
 					return false;
-				}
-			}
 		}
 		
-		blocked = 0;
+		ForgeDirection fd = ForgeDirection.getOrientation(this.facing);
+		GTMTE_TheMill mill = Structure.getIMTE(GTMTE_TheMill.class, worldObj,
+				this.xCoord - fd.offsetX,
+				this.yCoord - fd.offsetY,
+				this.zCoord - fd.offsetZ
+		);
+		if (mill == null) {
+			return false;
+		}
 		
-		for(hh = -6; hh <= 6; ++hh) {
-			r = Math.abs(hh) == 6 ? 1 : (Math.abs(hh) == 5 ? 3 : (Math.abs(hh) == 4 ? 4 : (Math.abs(hh) > 1 ? 5 : 6)));
-			
-			for(int ww = -r; ww <= r; ++ww) {
-				for(int dd = 1; dd < 8; ++dd) {
-					int xx = this.xCoord + (this.facing <= 3 ? ww : 0) + (this.facing == 4 ? -dd : (this.facing == 5 ? dd : 0));
-					int yy = this.yCoord + hh;
-					int zz = this.zCoord + (this.facing <= 3 ? 0 : ww) + (this.facing == 2 ? -dd : (this.facing == 3 ? dd : 0));
-					if (this.worldObj.isAirBlock(xx, yy, zz)) {
-						++this.turnSpeed;
-					} else if (this.worldObj.getTileEntity(xx, yy, zz) instanceof TE_TheMill) {
-						blocked += 20;
-						this.turnSpeed -= 179.0F;
-					} else {
-						++blocked;
-						this.turnSpeed -= 2.0F;
+		int blocked = 0;
+		for(int hh=-6;hh<=6;hh++)
+		{
+			int r=Math.abs(hh)==6?1: Math.abs(hh)==5?3: Math.abs(hh)==4?4: Math.abs(hh)>1?5: 6;
+			for(int ww=-r;ww<=r;ww++)
+			{
+				for(int dd=1;dd<8;dd++)
+				{
+					int xx = xCoord+(facing<=3?ww:0)+(facing==4?-dd: facing==5?dd: 0);
+					int yy = yCoord+hh;
+					int zz = zCoord+(facing<=3?0:ww)+(facing==2?-dd: facing==3?dd: 0);
+					if(worldObj.isAirBlock(xx,yy,zz))
+						turnSpeed ++;
+					else if(worldObj.getTileEntity(xx,yy,zz) instanceof TE_TheMill)
+					{
+						blocked+=20;
+						turnSpeed-=179;
+					}
+					else
+					{
+						blocked++;
+						turnSpeed-=2;
 					}
 				}
 			}
-			if (blocked > 100) {
+			if(blocked>100)
 				return false;
-			}
 		}
-		
-		if (this.turnSpeed <= 0.0F) {
+		if (turnSpeed<=0)
 			return false;
-		} else {
-			return true;
-		}
+		
+		return true;
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
 		this.facing = nbt.getInteger("facing");
 		this.rotation = nbt.getFloat("rotation");
 		this.turnSpeed = nbt.getFloat("turnSpeed");
@@ -132,17 +123,22 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
 		nbt.setInteger("facing", this.facing);
 		nbt.setFloat("rotation", this.rotation);
 		nbt.setFloat("turnSpeed", this.turnSpeed);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getRenderBoundingBox() {
-		if (this.renderAABB == null) {
-			this.renderAABB = AxisAlignedBB.getBoundingBox((this.xCoord - (this.facing <= 3 ? 6 : 0)), (this.yCoord - 6), (this.zCoord - (this.facing <= 3 ? 0 : 6)), (this.xCoord + (this.facing <= 3 ? 7 : 0)), (this.yCoord + 7), (this.zCoord + (this.facing <= 3 ? 0 : 7)));
-		}
-		return this.renderAABB;
+	private AxisAlignedBB renderAABB;
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public AxisAlignedBB getRenderBoundingBox()
+	{
+		if(renderAABB==null)
+			renderAABB = AxisAlignedBB.getBoundingBox(xCoord-(facing<=3?6:0),yCoord-6,zCoord-(facing<=3?0:6), xCoord+(facing<=3?7:0),yCoord+7,zCoord+(facing<=3?0:7));
+		return renderAABB;
 	}
 	
 	public double getMaxRenderDistanceSquared() {

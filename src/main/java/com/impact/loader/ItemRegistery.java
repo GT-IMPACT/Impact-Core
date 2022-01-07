@@ -148,7 +148,6 @@ public class ItemRegistery {
 	}
 	
 	public static void NEIHide() {
-		hideItem(new ItemStack(TheWind, 1, 0));
 		hideItem(ConstructionLaser.get(1));
 		hideItem(new ItemStack(placedItem));
 		

@@ -40,7 +40,7 @@ public class impact {
 
     @Mod.Instance(MODID)
     public static impact instance;
-    public static String ModPackVersion = "1.0.1.7";
+    public static String ModPackVersion = "1.0.1.8";
     public static Config mConfig;
     public static IRecipeAdder I_RA;
     private static final ArrayList<Module> MODULES_ENABLED = new ArrayList<>();

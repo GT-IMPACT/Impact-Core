@@ -89,10 +89,8 @@ public class Block_TheMill extends gtUpdateBlockAPI {
 		public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
 			GL11.glPushMatrix();
 			try {
-				if (metadata == 2) {
-					GL11.glScalef(0.125F, 0.125F, 0.125F);
-					TileEntityRendererDispatcher.instance.renderTileEntityAt(windMill, 0.0D, 0.0D, 0.0D, 0.0F);
-				}
+				GL11.glScalef(0.125F, 0.125F, 0.125F);
+				TileEntityRendererDispatcher.instance.renderTileEntityAt(windMill, 0.0D, 0.0D, 0.0D, 0.0F);
 			} catch (Exception var6) {
 				var6.printStackTrace();
 			}
@@ -101,7 +99,7 @@ public class Block_TheMill extends gtUpdateBlockAPI {
 		}
 		
 		public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-			return true;
+			return false;
 		}
 		
 		public boolean shouldRender3DInInventory(int modelID) {

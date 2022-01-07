@@ -36,9 +36,7 @@ public class IB_TheMill extends ItemBlock {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List lines,
-							   boolean advancedTooltips) {
-
+	public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advancedTooltips) {
 	}
 	
 	@Override

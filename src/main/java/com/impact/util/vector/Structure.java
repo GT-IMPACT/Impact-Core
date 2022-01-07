@@ -1,9 +1,11 @@
 package com.impact.util.vector;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -73,6 +75,18 @@ public class Structure {
 	
 	public static IGregTechTileEntity getIGTEno(IGregTechTileEntity iAm, Vector3ic offset) {
 		return iAm.getIGregTechTileEntity(offset.x(), offset.y(), offset.z());
+	}
+	
+	public static <T> T getIMTE(Class<T> cls, World w, int x, int y, int z) {
+		T meta = null;
+		TileEntity te = w.getTileEntity(x, y, z);
+		if (te instanceof IGregTechTileEntity) {
+			IGregTechTileEntity igt = (IGregTechTileEntity) te;
+			if (igt.getMetaTileEntity() != null) {
+				meta = (T) igt.getMetaTileEntity();
+			}
+		}
+		return meta;
 	}
 	
 	public static TileEntity getTE(IGregTechTileEntity iAm, Vector3ic offset) {

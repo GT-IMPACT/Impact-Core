@@ -9,6 +9,7 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.network.ToClient_Integer;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
@@ -222,28 +223,22 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	}
 	
 	@Override
-	public boolean machineStructure(IGregTechTileEntity thisController) {
+	public boolean machineStructure(IGregTechTileEntity gt) {
 		this.noMaintenance();
 		boolean check = checkPiece(4, 3, 0);
 		if (!check) return false;
 		for (int x = -6; x < 6; x++) {
 			for (int y = -6; y < 6; y++) {
-				Vector3ic vec = Structure.goBuild(thisController, x, y, 1);
+				Vector3ic vec = Structure.goBuild(gt, x, y, 1);
 				if (x == 0 && y == 0) {
+					if (Structure.getBlock(gt, vec) != ItemRegistery.TheWind) {
+						return false;
+					}
 					continue;
 				}
-				if (Structure.getBlock(thisController, vec) != Blocks.air) {
+				if (Structure.getBlock(gt, vec) != Blocks.air) {
 					return false;
 				}
-			}
-		}
-		Vector3ic vec = Structure.goBuild(thisController, 0, 0, 1);
-		if (thisController.isServerSide()) {
-			Structure.setBlock(thisController, vec, ItemRegistery.TheWind, 0);
-			TileEntity te = Structure.getTE(thisController, vec);
-			if (te instanceof TE_TheMill) {
-				TE_TheMill te_theMill = (TE_TheMill) te;
-				te_theMill.facing = thisController.getFrontFacing();
 			}
 		}
 		return true;
@@ -251,8 +246,6 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public void inValidate() {
-		Vector3ic vec = Structure.goBuild(getBaseMetaTileEntity(), 0, 0, 1);
-		Structure.setBlock(getBaseMetaTileEntity(), vec, Blocks.air, 0);
 		super.inValidate();
 	}
 	
