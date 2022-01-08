@@ -1576,7 +1576,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	@Override
 	public String[] getDescription() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+		if (getTooltip() == null) return new String[] {"Error Description"};
+		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+			return getTooltip().getControlInfo();
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return getTooltip().getStructureInformation();
 		} else {
 			return getTooltip().getInformation();
@@ -1585,10 +1588,17 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	@Override
 	public String[] getStructureDescription(ItemStack stackSize) {
-		String[] desc = new String[getTooltip().getStructureInformation().length];
-		desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
-		for (int i = 1; i < getTooltip().getStructureInformation().length; i++) {
-			desc[i] = getTooltip().getStructureInformation()[i];
+		String[] desc;
+		if (getTooltip() != null) {
+			desc = new String[getTooltip().getStructureInformation().length];
+			desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
+			for (int i = 1; i < getTooltip().getStructureInformation().length; i++) {
+				desc[i] = getTooltip().getStructureInformation()[i];
+			}
+		} else {
+			desc = new String[2];
+			desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
+			desc[1] = "No found description";
 		}
 		return desc;
 	}

@@ -86,7 +86,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 	}
 	
 	@Override
-	public String[] getDescription() {
+	protected MultiBlockTooltipBuilder getTooltip() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("primitive_pump");
 		b
 				.addInfo("info.0", "Drilling water from ground")
@@ -109,13 +109,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 				.addController()
 				.addCasingInfo("case", "Primitive Pump Deck and Wood Frame Box")
 				.signAndFinalize(true);
-		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-			return b.getControlInfo();
-		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return b.getStructureInformation();
-		}
-		return b.getInformation();
+		return b;
 	}
 	
 	@Override
