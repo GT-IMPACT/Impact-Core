@@ -27,7 +27,7 @@ public class OreVeinBuilder {
 	private int[] chance;
 	private FluidStack fluid;
 	private List<ItemStack> ores;
-	private int[] idDim;
+	private List<Integer> idDim;
 	private int[] size;
 	
 	public static OreVeinBuilder addVein(int id, String name) {
@@ -39,8 +39,7 @@ public class OreVeinBuilder {
 		builder.fluid  = null;
 		builder.chance = new int[]{90, 60, 60, 30};
 		builder.ores   = new ArrayList<>();
-		builder.idDim  = new int[]{0};
-		builder.idDim  = new int[]{0};
+		builder.idDim  = new ArrayList<>();
 		builder.size   = new int[]{0, 0};
 		return builder;
 	}
@@ -100,18 +99,20 @@ public class OreVeinBuilder {
 		return this;
 	}
 	
-	public OreVeinBuilder addDim(int... dim) {
-		this.idDim = dim;
+	public OreVeinBuilder addDim(Integer... dim) {
+		Collections.addAll(idDim, dim);
 		return this;
 	}
 	
 	public OreVeinBuilder addDim(OreGenerator.Dimensions... dim) {
-		int[] ints = new int[dim.length + 1];
-		for (int i = 0; i < dim.length; i++) {
-			ints[i] = dim[i].id;
+		List<Integer> dims = new ArrayList<>();
+		for (OreGenerator.Dimensions dimensions : dim) {
+			dims.add(dimensions.id);
 		}
-		ints[dim.length] = Config.MiningWorldID;
-		this.idDim = ints;
+		if (dims.contains(0)) {
+			dims.add(Config.MiningWorldID);
+		}
+		this.idDim = dims;
 		return this;
 	}
 	
@@ -119,8 +120,6 @@ public class OreVeinBuilder {
 		this.size = new int[]{min, max};
 		return this;
 	}
-	
-	
 	
 	public OreVein end() {
 		short[] fixChance;
