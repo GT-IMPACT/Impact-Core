@@ -106,7 +106,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addOutputHatch(1)
 				.addInputHatch(2)
 				.addParallelHatch()
-				.addCasingInfo("case", "Stable Titanium Machine Casings")
+				.addCasingInfo("case", "Stable Titanium Machine Casings", 6)
 				.addOtherStructurePartAny("case.1", "Titanium Pipe Casing")
 				.addOtherStructurePartAny("case.2", "Nichrome Coil")
 				.signAndFinalize();

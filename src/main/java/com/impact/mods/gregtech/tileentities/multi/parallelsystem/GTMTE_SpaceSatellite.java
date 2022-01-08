@@ -86,9 +86,8 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 				.addInfo(disableSpaceStationCreation ? "info.0" : "info.1",
 						disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required")
 				.addController()
-				.addEnergyHatch()
 				.addOtherStructurePartAny("other.0", "Communication Transmitter")
-				.addCasingInfo("case", "Space Satellite Casing")
+				.addCasingInfo("case", "Space Satellite Casing", 48)
 				.signAndFinalize();
 		return b;
 	}

@@ -28,12 +28,12 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 import java.util.ArrayList;
 
 import static com.impact.util.Utilits.isB;
+import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
 import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.GregTech_API.sBlockCasings8;
 import static gregtech.api.enums.GT_Values.V;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofHintDeferred;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedPyrolyse> {
 	
@@ -52,14 +52,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 							{"000.00000", "000.00000", "1.1.1...1",},
 					})
 					.addElement('0', ofBlock(sBlockCasings8, 3))
-					.addElement('1', ofHintDeferred(() -> new IIcon[]{
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-					}, Materials.HSLA.mRGBa))
+					.addElement('1', lazy(t -> ofFrame(Materials.HSLA)))
 					.addElement('2', ofBlock(sBlockCasings2, 13))
 					.build();
 	
@@ -105,13 +98,13 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 				.addPollution(100, "info.6", "x tier energy hatch")
 				.addSeparator()
 				.addController()
-				.addEnergyHatch()
+				.addEnergyHatch(1)
 				.addMaintenanceHatch()
 				.addMuffler()
-				.addInputBus()
-				.addOutputBus()
-				.addOutputHatch()
-				.addCasingInfo("case", "HSLA Casing")
+				.addInputBus(1)
+				.addOutputBus(1)
+				.addOutputHatch(1)
+				.addCasingInfo("case", "HSLA Casing", 40)
 				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "Middle line")
 				.addOtherStructurePart("adv_other.0", "HSLA Frame", "adv_other.1", "Bottom angles")
 				.signAndFinalize();

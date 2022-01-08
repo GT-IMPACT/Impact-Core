@@ -102,7 +102,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				.addInputBus(6)
 				.addOutputBus(3)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Utility Machine Casing")
+				.addCasingInfo("case", "Utility Machine Casing", 67)
 				.signAndFinalize();
 		return b;
 	}
@@ -114,13 +114,13 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sCompressorRecipes :
-               mMode == 1 ? GT_Recipe.GT_Recipe_Map.sExtractorRecipes :
-               mMode == 2 ? GT_Recipe.GT_Recipe_Map.sCannerRecipes :
-               mMode == 3 ? GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes :
-               mMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes :
-               mMode == 5 ? GT_Recipe.GT_Recipe_Map.sHammerRecipes :
-               mMode == 6 ? GT_Recipe.GT_Recipe_Map.sLatheRecipes :
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sCompressorRecipes :
+               mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sExtractorRecipes :
+               mRecipeMode == 2 ? GT_Recipe.GT_Recipe_Map.sCannerRecipes :
+               mRecipeMode == 3 ? GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes :
+               mRecipeMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes :
+               mRecipeMode == 5 ? GT_Recipe.GT_Recipe_Map.sHammerRecipes :
+               mRecipeMode == 6 ? GT_Recipe.GT_Recipe_Map.sLatheRecipes :
 							GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
 	}
 	
@@ -359,12 +359,12 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mMode++;
-			if (mMode > 7) {
-				mMode = 0;
+			mRecipeMode++;
+			if (mRecipeMode > 7) {
+				mRecipeMode = 0;
 			}
 			
-			mModed = (mMode == 0 ? " Compressor " : mMode == 1 ? " Extractor " : mMode == 2 ? " Canning " : mMode == 3 ? " Packager " : mMode == 4 ? " Recycler " : mMode == 5 ? " Hammer " : mMode == 6 ? " Lathe " : " Polarizer ");
+			mModed = (mRecipeMode == 0 ? " Compressor " : mRecipeMode == 1 ? " Extractor " : mRecipeMode == 2 ? " Canning " : mRecipeMode == 3 ? " Packager " : mRecipeMode == 4 ? " Recycler " : mRecipeMode == 5 ? " Hammer " : mRecipeMode == 6 ? " Lathe " : " Polarizer ");
 			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
 		}
 	}

@@ -20,7 +20,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -94,7 +93,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.addOutputHatch(1)
 				.addMuffler()
 				.addParallelHatch()
-				.addCasingInfo("case", "Arc Casing")
+				.addCasingInfo("case", "Arc Casing", 39)
 				.signAndFinalize();
 		return b;
 	}
@@ -106,7 +105,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes : GT_RecipeMaps.sDryingOven;
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes : mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes : GT_RecipeMaps.sDryingOven;
 	}
 	
 	@Override
@@ -250,12 +249,12 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mMode++;
-			if (mMode > 2) {
-				mMode = 0;
+			mRecipeMode++;
+			if (mRecipeMode > 2) {
+				mRecipeMode = 0;
 			}
 			
-			mModed = (mMode == 0 ? " Arc Furnace " : mMode == 1 ? " Alloy Smelter " : " Drying Oven ");
+			mModed = (mRecipeMode == 0 ? " Arc Furnace " : mRecipeMode == 1 ? " Alloy Smelter " : " Drying Oven ");
 			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
 		}
 	}

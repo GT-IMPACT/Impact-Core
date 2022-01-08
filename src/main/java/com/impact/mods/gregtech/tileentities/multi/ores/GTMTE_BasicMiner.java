@@ -230,10 +230,10 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
 			int tier = Math.max(1, GT_Utility.getTier(voltage));
-			this.mEUt = -3 * (1 << (tier << 1));
+			this.mEUt = -3 * (2 << (tier << 1)); //start lv 24 eu/t
 			this.mMaxProgresstime = 400 / (1 << (tier - 1));
 			this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
-			mOutputItems          = output.toArray(new ItemStack[0]);
+			this.mOutputItems     = output.toArray(new ItemStack[0]);
 		}
 		hatch.get(0).cycleDrill(check);
 		
@@ -267,7 +267,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.addOutputBus(1)
 				.addInputHatch(1)
 				.addEnergyHatch(2)
-				.addCasingInfo("case.0", "Solid Steel Machine Casing")
+				.addCasingInfo("case.0", "Solid Steel Machine Casing", 11)
 				.addOtherStructurePart("case.1", "Steel Frame Box", "case.2", "Any Frame Box")
 				.addRedHint("Miner Drill Hatch")
 				.signAndFinalize();

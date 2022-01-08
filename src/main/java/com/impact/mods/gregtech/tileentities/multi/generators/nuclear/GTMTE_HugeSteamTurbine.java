@@ -100,7 +100,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 				.addDynamoHatch("dynamo", "Any casing back side", 9)
 				.addMaintenanceHatch()
 				.addInputHatch(20)
-				.addCasingInfo("case", "Huge Turbine Casing")
+				.addCasingInfo("case", "Huge Turbine Casing", 82)
 				.addOtherStructurePart("htg.other.0", "Steel GearBox Casing", "htg.other.1", "inside structure")
 				.signAndFinalize();
 		return b;

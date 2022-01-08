@@ -19,7 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -93,7 +92,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
 				.addOutputHatch(6)
 				.addInputHatch(6)
 				.addParallelHatch()
-				.addCasingInfo("case", "Extradification Casing")
+				.addCasingInfo("case", "Extradification Casing", 31)
 				.signAndFinalize();
 		return b;
 	}
@@ -105,7 +104,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes : GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes;
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes : mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes : GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes;
 	}
 	
 	@Override
@@ -275,12 +274,12 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mMode++;
-			if (mMode > 2) {
-				mMode = 0;
+			mRecipeMode++;
+			if (mRecipeMode > 2) {
+				mRecipeMode = 0;
 			}
 			
-			mModed = (mMode == 0 ? " Fluid Extractor " : mMode == 1 ? " Fluid Solidifier " : " Fluid Heater ");
+			mModed = (mRecipeMode == 0 ? " Fluid Extractor " : mRecipeMode == 1 ? " Fluid Solidifier " : " Fluid Heater ");
 			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
 		}
 	}

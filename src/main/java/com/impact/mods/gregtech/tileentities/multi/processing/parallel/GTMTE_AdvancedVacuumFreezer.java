@@ -88,14 +88,15 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
 				.addSeparatedBus()
 				.addSeparator()
 				.addController()
-				.addEnergyHatch()
+				.addEnergyHatch(4)
 				.addMaintenanceHatch()
 				.addInputHatch(1)
 				.addOutputHatch(1)
 				.addInputBus(8)
 				.addOutputBus(1)
 				.addParallelHatch()
-				.addCasingInfo("case", "Frost Proof Machine Casing and IC2 Coolant fluid")
+				.addCasingInfo("case", "Frost Proof Machine Casing", 51)
+				.addOtherStructurePartAny("other.0", "IC2 Coolant fluid")
 				.signAndFinalize();
 		return b;
 	}

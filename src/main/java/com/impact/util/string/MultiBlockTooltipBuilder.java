@@ -217,6 +217,11 @@ public class MultiBlockTooltipBuilder {
 		return this;
 	}
 	
+	public MultiBlockTooltipBuilder addCasingInfo(String aKey, String aEng, int minAmount) {
+		sLines.add(TAB + EnumChatFormatting.WHITE + trans(aKey, aEng) + EnumChatFormatting.GRAY + " ("+ min.get() +" x" + minAmount +")");
+		return this;
+	}
+	
 	public MultiBlockTooltipBuilder addCasingInfo(Block block, int meta) {
 		sLines.add(TAB + EnumChatFormatting.WHITE + Blockstack(block, 1, meta).getDisplayName() + EnumChatFormatting.GRAY + " (" + at_least.get() + ")");
 		return this;
@@ -448,6 +453,16 @@ public class MultiBlockTooltipBuilder {
 	
 	public MultiBlockTooltipBuilder addOtherStructurePartAny(String aKey, String aEng) {
 		sLines.add(TAB + EnumChatFormatting.WHITE + trans(aKey, aEng) + ": " + EnumChatFormatting.GRAY + any_case.get());
+		return this;
+	}
+	
+	public MultiBlockTooltipBuilder addOtherStructurePartAny(String aKey, String aEng, int minAmount) {
+		sLines.add(TAB + EnumChatFormatting.WHITE + trans(aKey, aEng) + ": " + EnumChatFormatting.GRAY + "(" + min.get() + " x" + minAmount + ")");
+		return this;
+	}
+	
+	public MultiBlockTooltipBuilder addOtherStructurePartAny(String aKey, String aEng, int maxAmount, boolean isMax) {
+		sLines.add(TAB + EnumChatFormatting.WHITE + trans(aKey, aEng) + ": " + EnumChatFormatting.GRAY + "(" + max.get() + " x" + maxAmount + ")");
 		return this;
 	}
 	

@@ -77,7 +77,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
 				.addInputHatch(2)
 				.addOutputBus(1)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Frost Proof Machine Casing")
+				.addCasingInfo("case", "Frost Proof Machine Casing", 55)
 				.signAndFinalize();
 		return b;
 	}

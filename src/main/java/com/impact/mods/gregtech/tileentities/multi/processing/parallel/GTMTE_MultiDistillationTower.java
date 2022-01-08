@@ -99,7 +99,7 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 				.addInputBus(4)
 				.addOutputBus(1)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Clean Stainless Steel Machine Casing")
+				.addCasingInfo("case", "Clean Stainless Steel Machine Casing", 75)
 				.addOtherStructurePart("other.0", "Kanthal Coil", "other.1", "inside the hollow")
 				.signAndFinalize();
 		return b;

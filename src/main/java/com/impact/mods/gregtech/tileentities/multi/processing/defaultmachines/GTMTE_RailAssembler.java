@@ -82,7 +82,8 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addMaintenanceHatch()
 				.addInputBus(5)
 				.addOutputBus(1)
-				.addCasingInfo("case", "Rail Assembler Casing")
+				.addEnergyHatch(1)
+				.addCasingInfo("case", "Rail Assembler Casing", 9)
 				.signAndFinalize();
 		return b;
 	}

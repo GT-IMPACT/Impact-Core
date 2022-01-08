@@ -88,7 +88,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				.addInputHatch(3)
 				.addOutputBus(1)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Cutting Casing")
+				.addCasingInfo("case", "Cutting Casing", 18)
 				.signAndFinalize();
 		return b;
 	}
@@ -100,7 +100,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		switch (mMode) {
+		switch (mRecipeMode) {
 			case 1: return GT_Recipe.GT_Recipe_Map.sSawMill0;
 			case 2: return GT_Recipe.GT_Recipe_Map.sSawMill1;
 			case 3: return GT_Recipe.GT_Recipe_Map.sSawMill2;
@@ -194,11 +194,11 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mMode++;
-			if (mMode > 3) {
-				mMode = 0;
+			mRecipeMode++;
+			if (mRecipeMode > 3) {
+				mRecipeMode = 0;
 			}
-			String a = (mMode == 0 ? "Cutting Saw" : mMode == 1 ? "Saw Mill (Planks & Sawdust)" : mMode == 2 ? "Saw Mill (Wood Pulp & Sawdust)" : "Saw Mill (Only Sawdust)");
+			String a = (mRecipeMode == 0 ? "Cutting Saw" : mRecipeMode == 1 ? "Saw Mill (Planks & Sawdust)" : mRecipeMode == 2 ? "Saw Mill (Wood Pulp & Sawdust)" : "Saw Mill (Only Sawdust)");
 			GT_Utility.sendChatToPlayer(aPlayer, "Now " + EnumChatFormatting.YELLOW + a + EnumChatFormatting.RESET + " Mode");
 		}
 	}

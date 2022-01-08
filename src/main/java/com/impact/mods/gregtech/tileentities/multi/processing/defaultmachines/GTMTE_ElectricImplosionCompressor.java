@@ -89,12 +89,12 @@ public class GTMTE_ElectricImplosionCompressor extends GT_MetaTileEntity_MultiPa
 				.addSeparatedBus()
 				.addSeparator()
 				.addController()
-				.addEnergyHatch()
+				.addEnergyHatch(2)
 				.addMaintenanceHatch()
 				.addMuffler()
 				.addInputBus(5)
 				.addOutputBus(3)
-				.addCasingInfo("case", "Solid Steel Machine Casing")
+				.addCasingInfo("case", "Solid Steel Machine Casing", 29)
 				.addOtherStructurePart("other.0", "Superconductor Coil", "other.1", "inside")
 				.signAndFinalize();
 		return b;

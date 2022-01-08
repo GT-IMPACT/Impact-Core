@@ -19,7 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -198,19 +197,19 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sSawMill0 : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sSawMill1 : GT_Recipe.GT_Recipe_Map.sSawMill2;
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sSawMill0 : mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sSawMill1 : GT_Recipe.GT_Recipe_Map.sSawMill2;
 	}
 	
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		
-		mMode++;
-		if (mMode > 2) {
-			mMode = 0;
+		mRecipeMode++;
+		if (mRecipeMode > 2) {
+			mRecipeMode = 0;
 		}
 		
-		mModed = (mMode == 0 ? " Planks & Sawdust " : mMode == 1 ? " Wood Pulp & Sawdust " : " Only Sawdust ");
+		mModed = (mRecipeMode == 0 ? " Planks & Sawdust " : mRecipeMode == 1 ? " Wood Pulp & Sawdust " : " Only Sawdust ");
 		GT_Utility.sendChatToPlayer(aPlayer, "Mode:" + EnumChatFormatting.GREEN + mModed);
 	}
 }

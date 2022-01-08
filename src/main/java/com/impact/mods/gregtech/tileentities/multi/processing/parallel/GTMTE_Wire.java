@@ -74,7 +74,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 				.addOutputBus(3)
 				.addInputHatch(3)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Wire Factory Casing")
+				.addCasingInfo("case", "Wire Factory Casing", 12)
 				.signAndFinalize();
 		return b;
 	}
@@ -102,7 +102,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sWiremillRecipes : GT_Recipe.GT_Recipe_Map.sWireAssemblerRecipes;
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sWiremillRecipes : GT_Recipe.GT_Recipe_Map.sWireAssemblerRecipes;
 	}
 	
 	@Override
@@ -200,11 +200,11 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mMode++;
-			if (mMode > 1) {
-				mMode = 0;
+			mRecipeMode++;
+			if (mRecipeMode > 1) {
+				mRecipeMode = 0;
 			}
-			mModed = (mMode == 0 ? " WireMill " : " Wire Assembler ");
+			mModed = (mRecipeMode == 0 ? " WireMill " : " Wire Assembler ");
 			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
 		}
 	}

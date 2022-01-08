@@ -85,7 +85,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 				.addOutputBus(1)
 				.addMuffler()
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Maceration Casing")
+				.addCasingInfo("case", "Maceration Casing", 33)
 				.signAndFinalize();
 		return b;
 	}

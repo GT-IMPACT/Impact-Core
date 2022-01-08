@@ -35,6 +35,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_Mult
 	private final int[] AMOUNT_NUCLEAR_HATCHES = {1, 9, 25};
 	private final int[] AMOUNT_INPUT_HATCHES = {1, 3, 6};
 	private final int[] AMOUNT_OUTPUT_HATCHES = {6, 12, 24};
+	private final int[] AMOUNT_CASE = {36, 100, 121};
 	public ArrayList<GTMTE_Reactor_Rod_Hatch> mRodHatches = new ArrayList<>();
 	public ArrayList<GT_MetaTileEntity_BasicHull> mMachineHull = new ArrayList<>();
 	public boolean mFirstStart = false;
@@ -82,7 +83,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_Mult
 				.addNuclearRod("nc.hatch", "Any top middle casing", AMOUNT_NUCLEAR_HATCHES[tierReactor() - 1])
 				.addInputHatch(AMOUNT_INPUT_HATCHES[tierReactor() - 1])
 				.addOutputHatch(AMOUNT_OUTPUT_HATCHES[tierReactor() - 1])
-				.addCasingInfo("case", "Radiation Proof Casing")
+				.addCasingInfo("case", "Radiation Proof Casing", AMOUNT_CASE[tierReactor() - 1])
 				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "pipes!")
 				.addOtherStructurePart("other.2", "Machine Hull", "other.3", "what? yes, its for AE2 provider (max x1)")
 				.signAndFinalize();

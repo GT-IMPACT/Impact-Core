@@ -19,7 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -95,7 +94,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.addOutputHatch(3)
 				.addMuffler()
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Brewmenter Casing")
+				.addCasingInfo("case", "Brewmenter Casing", 52)
 				.signAndFinalize();
 		return b;
 	}
@@ -110,7 +109,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sBrewingRecipes : GT_Recipe.GT_Recipe_Map.sFermentingRecipes;
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sBrewingRecipes : GT_Recipe.GT_Recipe_Map.sFermentingRecipes;
 	}
 	
 	@Override
@@ -221,12 +220,12 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mMode++;
-			if (mMode > 1) {
-				mMode = 0;
+			mRecipeMode++;
+			if (mRecipeMode > 1) {
+				mRecipeMode = 0;
 			}
 			
-			mModed = (mMode == 0 ? " Brewery " : " Fermenter ");
+			mModed = (mRecipeMode == 0 ? " Brewery " : " Fermenter ");
 			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
 		}
 	}

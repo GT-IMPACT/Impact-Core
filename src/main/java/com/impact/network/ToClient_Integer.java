@@ -1,5 +1,6 @@
 package com.impact.network;
 
+import com.impact.util.vector.Vector3ic;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import hohserg.elegant.networking.api.ElegantPacket;
@@ -24,6 +25,13 @@ public class ToClient_Integer implements ServerToClientPacket {
 		this.x = te.getXCoord();
 		this.y = te.getYCoord();
 		this.z = te.getZCoord();
+		this.integer = integer;
+	}
+	
+	public ToClient_Integer(IGregTechTileEntity te, Vector3ic vec, int... integer) {
+		this.x = te.getXCoord() + vec.x();
+		this.y = te.getYCoord() + vec.y();
+		this.z = te.getZCoord() + vec.z();
 		this.integer = integer;
 	}
 	

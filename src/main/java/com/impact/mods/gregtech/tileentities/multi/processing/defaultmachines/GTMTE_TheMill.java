@@ -37,6 +37,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -45,6 +46,7 @@ import java.awt.*;
 import static com.impact.common.item.Core_List_Items.*;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofHint;
 
 public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_TheMill> {
 	
@@ -94,7 +96,8 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				.addSeparator()
 				.addController()
 				.sizeStructure(9, 12, 9)
-				.addCasingInfo("case.0", "The Mill Wood Planks")
+				.addCasingInfo("case.0", "The Mill Wood Planks", 260)
+				.addRedHint("The Mill Rotor")
 				.signAndFinalize()	;
 		return b;
 	}
@@ -103,6 +106,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	public IStructureDefinition<GTMTE_TheMill> getStructureDefinition() {
 		return StructureDefinition.<GTMTE_TheMill>builder()
 				.addShape("main", new String[][]{
+						{"         ", "         ", "         ", "    A    ", "         ", "         ", "         ", "         ", "         ", "         ", "         ", "         "},
 						{"         ", "         ", "   CCC   ", "   C~C   ", "   CCC   ", "         ", "         ", "         ", "   CCC   ", "  CCCCC  ", "  CC CC  ", "  CC CC  "},
 						{"         ", "   CCC   ", "  C   C  ", "  C   C  ", "  C   C  ", "   CCC   ", "   CCC   ", "   CCC   ", " CC   CC ", " C     C ", " C     C ", " C     C "},
 						{"   CCC   ", "  C   C  ", " C     C ", " C     C ", " C     C ", "  CCCCC  ", "  C   C  ", "  C   C  ", " C     C ", "C       C", "C       C", "C       C"},
@@ -113,6 +117,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						{"         ", "   CCC   ", "  C   C  ", "  C   C  ", "  C   C  ", "   CCC   ", "   CCC   ", "   CCC   ", " CC C CC ", " C  C  C ", " C  C  C ", " C  C  C "},
 						{"         ", "         ", "   CCC   ", "   CCC   ", "   CCC   ", "         ", "         ", "         ", "   CCC   ", "  CCCCC  ", "  CCCCC  ", "  CCCCC  "}}
 				)
+				.addElement('A', ofHint(ImpactAPI.RED))
 				.addElement('C', ofBlock(CASING, CASING_META))
 				.build();
 	}
@@ -233,6 +238,10 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				if (x == 0 && y == 0) {
 					if (Structure.getBlock(gt, vec) != ItemRegistery.TheWind) {
 						return false;
+					} else {
+						if (gt.isServerSide()) {
+							new ToClient_Integer(gt, vec, gt.getBackFacing()).sendToClients();
+						}
 					}
 					continue;
 				}

@@ -83,7 +83,7 @@ public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_Mul
 				.addSeparatedBus()
 				.addSeparator()
 				.addController()
-				.addEnergyHatch()
+				.addEnergyHatch(4)
 				.addMaintenanceHatch()
 				.addMuffler()
 				.addInputHatch(8)
@@ -93,7 +93,7 @@ public class GTMTE_ElectromagneticInductionFurnace extends GT_MetaTileEntity_Mul
 				.addParallelHatch()
 				.addOtherStructurePart("other.0", "Electromagnetic Chamber", "other.1", "middle center")
 				.addOtherStructurePart("other.2", "Magnetic Coil", "other.3", "middle outside")
-				.addCasingInfo("case", "Heat Proof Machine Casing")
+				.addCasingInfo("case", "Heat Proof Machine Casing", 24)
 				.signAndFinalize();
 		return b;
 	}

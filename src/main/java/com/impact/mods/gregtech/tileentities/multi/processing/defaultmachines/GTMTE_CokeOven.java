@@ -44,10 +44,10 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
 				.addPollution(25)
 				.addSeparator()
 				.addController()
-				.addCasingInfo("case", "Coke Oven Bricks")
-				.addOtherStructurePartAny("hatch.bus.in", "Primitive Input Bus")
-				.addOtherStructurePartAny("hatch.bus.out", "Primitive Output Bus")
-				.addOtherStructurePartAny("hatch.out", "Primitive Output Hatch")
+				.addCasingInfo("case", "Coke Oven Bricks", 16)
+				.addOtherStructurePartAny("hatch.bus.in", "Primitive Input Bus", 1, true)
+				.addOtherStructurePartAny("hatch.bus.out", "Primitive Output Bus", 1, true)
+				.addOtherStructurePartAny("hatch.out", "Primitive Output Hatch", 1, true)
 				.signAndFinalize();
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();

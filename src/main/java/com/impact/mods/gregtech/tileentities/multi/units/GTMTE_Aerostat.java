@@ -147,9 +147,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				
 				//Utilits.setBlock(thisController, offset.x(), offset.y(), offset.z(), CASING, CASING_META);
 				
-				if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
+				if (!super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
 					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
 					} else {
 						formationChecklist = false;
@@ -157,6 +155,11 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				}
 			}
 		}
+		
+		if (mInputHatches.size() != 1) {
+			formationChecklist = false;
+		}
+		
 		return formationChecklist;
 	}
 	
@@ -188,7 +191,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				.addController()
 				.sizeStructure(3, 1, 3)
 				.addInputHatch(1)
-				.addCasingInfo("case.1", "Aerostate Platform Casing")
+				.addCasingInfo("case.1", "Aerostate Platform Casing", 7)
 				.signAndFinalize();
 		return b;
 	}

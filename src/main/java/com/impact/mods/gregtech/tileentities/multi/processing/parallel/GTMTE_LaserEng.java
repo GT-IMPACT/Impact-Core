@@ -92,7 +92,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				.addInputBus(16)
 				.addOutputBus(1)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Engraver Casing")
+				.addCasingInfo("case", "Engraver Casing", 15)
 				.signAndFinalize();
 		return b;
 	}

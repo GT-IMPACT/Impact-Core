@@ -107,7 +107,7 @@ public class GTMTE_Farm extends GT_MetaTileEntity_MultiBlockBase {
 				.addInputHatch()
 				.addOutputBus()
 				.addOutputHatch()
-				.addCasingInfo("case", "Solid Steel Casings")
+				.addCasingInfo("case", "Solid Steel Casings", 64)
 				.addOtherStructurePart("other.0", "Farm Casings", "other.1", "At the center of the bottom layer")
 				.addOtherStructurePart("other.2", "Reinforced Glass", "other.3", "At the center of the Top layer")
 				.signAndFinalize();

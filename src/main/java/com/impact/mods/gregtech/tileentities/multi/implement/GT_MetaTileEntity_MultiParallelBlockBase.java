@@ -46,7 +46,6 @@ import space.impact.api.multiblocks.structure.IStructureDefinition;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import static com.impact.core.Refstrings.MODID;
@@ -74,7 +73,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	public int mParallel = 0;
 	public int mCheckParallelCurrent = 0;
 	public int modeBuses = 0;
-	public byte mMode = -1;
+	public byte mRecipeMode = -1;
 	public int mFrequency = 0, mTargetX = 0, mTargetY = 0, mTargetZ = 0, mTargetD = 0;
 	public boolean mIsConnect = false;
 	public IGregTechTileEntity tile = null;
@@ -274,7 +273,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
 		
 		for (int count = 0; count < countOperation; count++) {
-			if (modeBuses == 0 && count > 1) {
+			if (modeBuses == 0) {
 				ArrayList<ItemStack> tBusItems = new ArrayList<>();
 				mInputBusHatches.get(count).mRecipeMap = getRecipeMap();
 				if (isValidMetaTileEntity(mInputBusHatches.get(count))) {
@@ -549,7 +548,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
 		
 		for (int count = 0; count < countOperation; count++) {
-			if (modeBuses == 0 && count > 1) {
+			if (modeBuses == 0) {
 				ArrayList<ItemStack> tBusItems = new ArrayList<>();
 				mInputBusHatches.get(count).mRecipeMap = getRecipeMap();
 				if (isValidMetaTileEntity(mInputBusHatches.get(count))) {
@@ -671,7 +670,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
 		
 		for (int count = 0; count < countOperation; count++) {
-			if (modeBuses == 0 && count > 1) {
+			if (modeBuses == 0) {
 				ArrayList<ItemStack> tBusItems = new ArrayList<>();
 				mInputBusHatches.get(count).mRecipeMap = getRecipeMap();
 				if (isValidMetaTileEntity(mInputBusHatches.get(count))) {
@@ -891,7 +890,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
 		
 		for (int count = 0; count < countOperation; count++) {
-			if (modeBuses == 0 && count > 1) {
+			if (modeBuses == 0) {
 				ArrayList<ItemStack> tBusItems = new ArrayList<>();
 				mInputBusHatches.get(count).mRecipeMap = getRecipeMap();
 				if (isValidMetaTileEntity(mInputBusHatches.get(count))) {
@@ -1240,7 +1239,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
-		aNBT.setByte("mMode", mMode);
+		aNBT.setByte("mRecipeMode", mRecipeMode);
 		aNBT.setInteger("mTargetX", this.mTargetX);
 		aNBT.setInteger("mTargetY", this.mTargetY);
 		aNBT.setInteger("mTargetZ", this.mTargetZ);
@@ -1250,18 +1249,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		aNBT.setInteger("mParallel", this.mParallel);
 		aNBT.setInteger("modeBuses", this.modeBuses);
 		aNBT.setInteger("mCheckParallelCurrent", this.mCheckParallelCurrent);
-		aNBT.setByte("eRotation", (byte) mExtendedFacing.getRotation().getIndex());
-		aNBT.setByte("eFlip", (byte) mExtendedFacing.getFlip().getIndex());
+		aNBT.setByte("eRotation", (byte) this.mExtendedFacing.getRotation().getIndex());
+		aNBT.setByte("eFlip", (byte) this.mExtendedFacing.getFlip().getIndex());
 		super.saveNBTData(aNBT);
 	}
 	
-	/*
-	 * NEW PARALLEL SYSTEM TEST
-	 */
-	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		this.mMode                 = aNBT.getByte("mMode");
+		this.mRecipeMode           = aNBT.getByte("mRecipeMode");
 		this.mTargetX              = aNBT.getInteger("mTargetX");
 		this.mTargetY              = aNBT.getInteger("mTargetY");
 		this.mTargetZ              = aNBT.getInteger("mTargetZ");
@@ -1271,7 +1266,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		this.mParallel             = aNBT.getInteger("mParallel");
 		this.modeBuses             = aNBT.getInteger("modeBuses");
 		this.mCheckParallelCurrent = aNBT.getInteger("mCheckParallelCurrent");
-		mExtendedFacing            = ExtendedFacing.of(
+		this.mExtendedFacing       = ExtendedFacing.of(
 				ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
 				Rotation.byIndex(aNBT.getByte("eRotation")),
 				Flip.byIndex(aNBT.getByte("eFlip"))

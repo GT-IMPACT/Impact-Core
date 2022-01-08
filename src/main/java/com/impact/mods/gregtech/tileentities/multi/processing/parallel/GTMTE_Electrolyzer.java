@@ -91,7 +91,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
 				.addOutputHatch(6)
 				.addInputHatch(6)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Electrolyzer Casing")
+				.addCasingInfo("case", "Electrolyzer Casing", 10)
 				.signAndFinalize();
 		return b;
 	}

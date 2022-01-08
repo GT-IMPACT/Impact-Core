@@ -348,7 +348,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addOutputBus(1)
 				.addInputHatch(1)
 				.addEnergyHatch(2)
-				.addCasingInfo("case.0", "HSLA Machine Casing")
+				.addCasingInfo("case.0", "HSLA Machine Casing", 25)
 				.addOtherStructurePart("case.1", "HSLA Steel Frame Box", "case.2", "Any Frame Box")
 				.addOtherStructurePartAny("case.3", "Miner Enrichment Unit")
 				.addRedHint("Miner Drill Hatch")

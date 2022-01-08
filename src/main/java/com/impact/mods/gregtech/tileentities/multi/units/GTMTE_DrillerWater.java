@@ -49,11 +49,12 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 				.addinfoBTab("bwp.info.12", "Plans, Forest - 250 L/s")
 				.addinfoBTab("bwp.info.13", "Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
 				.addinfoBTab("bwp.info.14", "Ocean (Salt Water) - 20 L/s")
-				.addEnergyHatch()
+				.addEnergyHatch(1)
 				.addMaintenanceHatch()
 				.addInputBus(1)
 				.addOutputHatch(1)
-				.addCasingInfo(ItemList.Casing_SolidSteel)
+				.addCasingInfo("case", "Solid Steel Casing", 25)
+				.addOtherStructurePartAny("adv_other.0", "Steel Frame Box")
 				.signAndFinalize(true);
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			return b.getControlInfo();

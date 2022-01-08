@@ -80,7 +80,7 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_
 				.addOutputHatch(3)
 				.addMuffler()
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Mixing Casing")
+				.addCasingInfo("case", "Mixing Casing", 7)
 				.signAndFinalize();
 		return b;
 	}

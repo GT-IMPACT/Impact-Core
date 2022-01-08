@@ -60,12 +60,12 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 				.addSeparatedBus()
 				.addSeparator()
 				.addController()
-				.addEnergyHatch()
+				.addEnergyHatch(4)
 				.addMaintenanceHatch()
 				.addMuffler()
 				.addInputBus(5)
 				.addOutputHatch(5)
-				.addCasingInfo("case", "HSLA Casings")
+				.addCasingInfo("case", "HSLA Casings", 25)
 				.addOtherStructurePart("other.0", "Heating Coils", "other.1", "Two middle Layers, hollow")
 				.signAndFinalize();
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {

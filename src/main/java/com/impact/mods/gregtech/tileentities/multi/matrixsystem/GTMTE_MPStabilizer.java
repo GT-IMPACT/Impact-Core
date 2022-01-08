@@ -96,9 +96,9 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
 				.addController()
 				.addEnergyHatch()
 				.addMaintenanceHatch()
-				.addCasingInfo("case", "Lab-Safe Low Gravity Casing")
+				.addCasingInfo("case", "Lab-Safe Low Gravity Casing", 22)
 				.addOtherStructurePartAny("glass", "Any I-Glass")
-				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector")
+				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector", 11)
 				.signAndFinalize();
 		return b;
 	}

@@ -115,7 +115,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 				.addMuffler()
 				.addOtherStructurePart("other.0", "Naquadah Coil", "other.1", "around Pipe Machine Casing")
 				.addOtherStructurePart("other.2", "PTFE Pipe Machine Casing", "other.3", "inside the hollow")
-				.addCasingInfo("case", "Stainless Steel Machine Casings")
+				.addCasingInfo("case", "Stainless Steel Machine Casings", 10)
 				.addRedHint("Muffler Hatch")
 				.signAndFinalize();
 		return b;

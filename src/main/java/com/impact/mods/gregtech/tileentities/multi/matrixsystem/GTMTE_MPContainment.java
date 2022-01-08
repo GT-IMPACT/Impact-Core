@@ -111,10 +111,10 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addMaintenanceHatch()
 				.addInputBus()
 				.addOutputBus()
-				.addCasingInfo("case", "Lab-Safe Low Gravity Casing")
+				.addCasingInfo("case", "Lab-Safe Low Gravity Casing", 53)
 				.addOtherStructurePartAny("glass", "Any I-Glass")
-				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector")
-				.addOtherStructurePartAny("core", "Matrix Transducer")
+				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector", 17)
+				.addOtherStructurePartAny("core", "Matrix Transducer", 1)
 				.signAndFinalize();
 		return b;
 	}

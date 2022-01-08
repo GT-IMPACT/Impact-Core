@@ -307,7 +307,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 				.addSeparator()
 				.addController()
 				.sizeStructure(5, 3, 5)
-				.addOtherStructurePartAny("case.0", "Iron Frame Box")
+				.addOtherStructurePartAny("case.0", "Iron Frame Box", 16)
 				.addRedHint("Miner Drill Hatch")
 				.signAndFinalize();
 		return b;

@@ -167,7 +167,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 				.addController()
 				.addOtherStructurePart("other.0", "Communication Receiver Hatch", "other.1", "Top")
 				.addOtherStructurePart("other.2", "Steel Frame Box", "other.3", "Frames")
-				.addCasingInfo("case", "Tower Casing")
+				.addCasingInfo("case", "Tower Casing", 41)
 				.signAndFinalize();
 		return b;
 	}

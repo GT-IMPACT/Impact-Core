@@ -175,8 +175,8 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addInfo("info.2", "Send a redstone signal to teleport")
 				.addInfo("info.3", "Passive usage: 1920 EU/t")
 				.addController()
-				.addEnergyHatch()
-				.addCasingInfo("case", "Space Elevator Casing")
+				.addEnergyHatch(2)
+				.addCasingInfo("case", "Space Elevator Casing", 150)
 				.addOtherStructurePart("other.0", "Space Elevator Hawser", "other.1", "Center below Controller")
 				.signAndFinalize();
 		return b;

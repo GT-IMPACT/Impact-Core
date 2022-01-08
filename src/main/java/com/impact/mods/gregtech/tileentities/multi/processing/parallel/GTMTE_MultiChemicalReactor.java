@@ -106,7 +106,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 				.addOutputBus(3)
 				.addParallelHatch(1)
 				.addOtherStructurePart("other.0", "PTFE Pipe Machine Casing", "mcr.other.1", "inside the hollow")
-				.addCasingInfo("case", "Chemically Inert Machine Casings")
+				.addCasingInfo("case", "Chemically Inert Machine Casings", 24)
 				.signAndFinalize();
 		return b;
 	}

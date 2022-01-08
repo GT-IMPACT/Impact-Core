@@ -19,7 +19,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -92,7 +91,7 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE
 				.addOutputBus(3)
 				.addInputHatch(3)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Supply Production Casing")
+				.addCasingInfo("case", "Supply Production Casing", 38)
 				.signAndFinalize();
 		return b;
 	}
@@ -105,7 +104,7 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes : mMode == 1 ? GT_Recipe.GT_Recipe_Map.sDustWashRecipes : mMode == 2 ? GT_Recipe.GT_Recipe_Map.sOreWasherRecipes : GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes : mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sDustWashRecipes : mRecipeMode == 2 ? GT_Recipe.GT_Recipe_Map.sOreWasherRecipes : GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
 	}
 	
 	@Override
@@ -251,12 +250,12 @@ public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else {
-			mMode++;
+			mRecipeMode++;
 		}
-		if (mMode > 3) {
-			mMode = 0;
+		if (mRecipeMode > 3) {
+			mRecipeMode = 0;
 		}
-		mModed = (mMode == 0 ? " Autoclave " : mMode == 1 ? " Dust Washer " : mMode == 2 ? " Ore Washer " : " Chemical Bath ");
+		mModed = (mRecipeMode == 0 ? " Autoclave " : mRecipeMode == 1 ? " Dust Washer " : mRecipeMode == 2 ? " Ore Washer " : " Chemical Bath ");
 		GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
 	}
 	

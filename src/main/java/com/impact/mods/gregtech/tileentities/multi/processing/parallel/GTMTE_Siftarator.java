@@ -19,12 +19,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
@@ -80,7 +77,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.addInputBus(8)
 				.addOutputBus(1)
 				.addParallelHatch(1)
-				.addCasingInfo("case", "Electromagnetic Casing")
+				.addCasingInfo("case", "Electromagnetic Casing", 35)
 				.signAndFinalize();
 		return b;
 	}
@@ -103,7 +100,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mMode == 0 ? GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes : GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes : GT_Recipe.GT_Recipe_Map.sSifterRecipes;
 	}
 	
 	@Override
@@ -244,12 +241,12 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		if (aPlayer.isSneaking()) {
 			ScrewClick(aSide, aPlayer, aX, aY, aZ);
 		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mMode++;
-			if (mMode > 1) {
-				mMode = 0;
+			mRecipeMode++;
+			if (mRecipeMode > 1) {
+				mRecipeMode = 0;
 			}
 			
-			mModed = (mMode == 0 ? " Separator " : " Sifter ");
+			mModed = (mRecipeMode == 0 ? " Separator " : " Sifter ");
 			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
 		}
 	}

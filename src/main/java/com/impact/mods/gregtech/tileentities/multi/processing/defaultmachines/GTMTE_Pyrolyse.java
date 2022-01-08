@@ -25,9 +25,9 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import static com.impact.common.item.Core_Items.Core_Items1;
 import static com.impact.util.Utilits.isB;
+import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static gregtech.api.GregTech_API.sBlockCasings2;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofHintDeferred;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
 public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Pyrolyse> {
 	
@@ -45,14 +45,7 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 							{"000.00000", "000.00000", "1.1.1...1",},
 					})
 					.addElement('0', ofBlock(sBlockCasings2, 0))
-					.addElement('1', ofHintDeferred(() -> new IIcon[]{
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-					}, Materials.Steel.mRGBa))
+					.addElement('1', lazy(t -> ofFrame(Materials.Steel)))
 					.addElement('2', ofBlock(sBlockCasings2, 13))
 					.build();
 	
@@ -102,7 +95,8 @@ public class GTMTE_Pyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 				.addInputBus(1)
 				.addOutputBus(1)
 				.addOutputHatch(1)
-				.addCasingInfo("case", "Solid Steel Casing")
+				.addEnergyHatch(1)
+				.addCasingInfo("case", "Solid Steel Casing", 40)
 				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "Middle line")
 				.addOtherStructurePart("other.2", "Steel Frame", "other.3", "Bottom angles")
 				.signAndFinalize();

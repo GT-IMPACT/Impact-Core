@@ -116,10 +116,10 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 				.addEnergyHatch("energy", "EV and above", 1)
 				.addInputBus(1)
 				.addMaintenanceHatch()
-				.addCasingInfo("case", "Lab-Safe Low Gravity Casing")
+				.addCasingInfo("case", "Lab-Safe Low Gravity Casing", 82)
 				.addOtherStructurePartAny("glass", "Any I-Glass")
-				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector")
-				.addOtherStructurePartAny("core", "Matrix Transducer")
+				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector", 20)
+				.addOtherStructurePartAny("core", "Matrix Transducer", 1)
 				.signAndFinalize();
 		return b;
 	}
