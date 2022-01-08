@@ -228,6 +228,9 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	}
 	
 	private boolean checkFuel() {
+		if (hatch.size() <= 0) {
+			return false;
+		}
 		if (hatch.get(0) == null) return false;
 		boolean check = oreVein != null && hatch.get(0).ready;
 		if (check) {
