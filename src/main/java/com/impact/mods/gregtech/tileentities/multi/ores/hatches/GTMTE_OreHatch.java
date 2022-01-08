@@ -80,14 +80,16 @@ public class GTMTE_OreHatch extends GT_MetaTileEntity_Hatch {
 	
 	public void cycleDrill(boolean active) {
 		if (active) {
-			int damage = mInventory[0].getTagCompound().getInteger("drillDamage");
-			damage = damage - 1;
-			if (damage >= 0) {
-				mInventory[0].stackTagCompound.setInteger("drillDamage", damage);
-			} else {
-				drillCoefficient = 0;
-				ready = false;
-				mInventory[0] = null;
+			if (mInventory[0] != null) {
+				int damage = mInventory[0].getTagCompound().getInteger("drillDamage");
+				damage = damage - 1;
+				if (damage >= 0) {
+					mInventory[0].stackTagCompound.setInteger("drillDamage", damage);
+				} else {
+					drillCoefficient = 0;
+					ready            = false;
+					mInventory[0]    = null;
+				}
 			}
 		}
 	}
