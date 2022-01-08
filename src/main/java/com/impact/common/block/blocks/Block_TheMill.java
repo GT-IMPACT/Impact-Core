@@ -5,6 +5,7 @@ import com.impact.common.te.TE_TheMill;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.interfaces.IAxeWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class Block_TheMill extends gtUpdateBlockAPI {
+public class Block_TheMill extends gtUpdateBlockAPI implements IAxeWrenchable {
 	
 	public static Block_TheMill instance = new Block_TheMill();
 	public static int renderID;
@@ -40,6 +41,11 @@ public class Block_TheMill extends gtUpdateBlockAPI {
 	}
 	
 	@Override
+	public boolean apply() {
+		return true;
+	}
+	
+	@Override
 	public int getRenderType() {
 		return renderID;
 	}
@@ -54,11 +60,6 @@ public class Block_TheMill extends gtUpdateBlockAPI {
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
 		this.setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-	}
-	
-	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		return new ArrayList<>();
 	}
 	
 	@Override
