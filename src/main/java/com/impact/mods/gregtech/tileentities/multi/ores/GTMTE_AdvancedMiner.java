@@ -311,7 +311,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
 			int tier = Math.max(1, GT_Utility.getTier(voltage));
-			this.mEUt = -3 * (1 << (tier << 1));
+			this.mEUt = -3 * (2 << (tier << 1));
 			this.mMaxProgresstime = 400 / (1 << (tier - 1));
 			this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
 			this.mOutputItems     = output.toArray(new ItemStack[0]);
