@@ -6,9 +6,9 @@ import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.common.oregeneration.generator.OreVeinGenerator;
 import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
+import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_EnrichmentUnit;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -57,6 +57,8 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 	static byte CASING_META = 3;
 	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[1][48 + CASING_META];
 	static int CASING_TEXTURE_ID = CASING_META + 48 + 128;
+	private GT_Recipe cashedMaceratorRecipe;
+	private GT_Recipe cashedFlotationRecipe;
 	
 	static IStructureDefinition<GTMTE_AdvancedMiner> definition =
 			StructureDefinition.<GTMTE_AdvancedMiner>builder()
@@ -250,10 +252,13 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			return false;
 		}
 		if (check) {
+			int tier = Math.max(1, getTierEnergyHatch());
+			int startEU = 3 * (2 << (tier << 1));
 			List<ItemStack> output = new ArrayList<>();
 			List<ItemStack> outputEnrich = new ArrayList<>();
 			IGregTechTileEntity te = getBaseMetaTileEntity();
-			int chancePrimary = 500;
+			int chancePrimary = 5000;
+			int euTotal = 0;
 			long voltage = getMaxInputVoltage();
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
@@ -269,9 +274,11 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 					ItemStack drillHeadDrop = new ItemStack(is.get(ore).getItem(), byDrillHead(is.get(ore)), is.get(ore).getItemDamage());
 					outputEnrich.add(drillHeadDrop);
 					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
-							.findRecipe(getBaseMetaTileEntity(), false, voltage, null, is.get(ore));
+							.findRecipe(getBaseMetaTileEntity(), cashedMaceratorRecipe, false, voltage, null, new ItemStack[]{is.get(ore)});
 					if (tRecipe != null) {
-						voltage-=tRecipe.mEUt;
+						cashedMaceratorRecipe = tRecipe;
+						if (voltage <= euTotal + startEU + tRecipe.mEUt) break;
+						euTotal += tRecipe.mEUt;
 						for (int i = 0; i < tRecipe.mOutputs.length; i++) {
 							ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
 							if (i == 0 && te.getRandomNumber(10000) < chancePrimary) {
@@ -290,9 +297,11 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 							if (e.getFluid() == null) break;
 							FluidStack[] eFluid = new FluidStack[]{e.getFluid()};
 							GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFlotationUnitRecipes
-									.findRecipe(this.getBaseMetaTileEntity(), false, false, voltage, eFluid, stack);
+									.findRecipe(this.getBaseMetaTileEntity(), cashedFlotationRecipe, false, false, voltage, eFluid, new ItemStack[]{stack});
 							if (tRecipe != null && tRecipe.isRecipeInputEqual(true, eFluid, stack)) {
-								voltage -= tRecipe.mEUt;
+								cashedFlotationRecipe = tRecipe;
+								if (voltage <= euTotal + startEU + tRecipe.mEUt) break;
+								euTotal += tRecipe.mEUt;
 								output.addAll(Arrays.asList(tRecipe.mOutputs));
 								e.updateSlots();
 							}
@@ -307,14 +316,12 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			if (output.isEmpty()) {
 				output.addAll(outputEnrich);
 			}
-			
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
-			int tier = Math.max(1, GT_Utility.getTier(voltage));
-			this.mEUt = -3 * (2 << (tier << 1));
-			this.mMaxProgresstime = 400 / (1 << (tier - 1));
-			this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
-			this.mOutputItems     = output.toArray(new ItemStack[0]);
+			this.mEUt                = -(startEU + euTotal);
+			this.mMaxProgresstime    = 400 / (1 << (tier - 1));
+			this.mMaxProgresstime    = Math.max(2, this.mMaxProgresstime);
+			this.mOutputItems        = output.toArray(new ItemStack[0]);
 		}
 		hatch.get(0).cycleDrill(check);
 		

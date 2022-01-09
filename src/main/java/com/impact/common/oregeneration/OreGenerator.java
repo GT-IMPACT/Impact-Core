@@ -770,6 +770,8 @@ public class OreGenerator {
 	}
 	
 	public enum Dimensions {
+		NO(-1,-1),
+		
 		Overworld(0, 0),
 		
 		Moon(-28, 1),

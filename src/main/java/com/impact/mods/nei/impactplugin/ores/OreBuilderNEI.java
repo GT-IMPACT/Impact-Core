@@ -1,11 +1,12 @@
 package com.impact.mods.nei.impactplugin.ores;
 
+import com.google.common.base.Objects;
 import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.core.Impact_API;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -47,31 +48,31 @@ public class OreBuilderNEI {
 	}
 	
 	public static void BuildNEIDimOres() {
-		worldDimensions.forEach(dimension -> {
+		for (WorldServer world : DimensionManager.getWorlds()) {
+			int dimID = world.provider.dimensionId;
 			List<OreVein> smallVeins = new ArrayList<>();
 			List<OreVein> veins = new ArrayList<>();
 			for (OreVein vein : Impact_API.registerVeins.values()) {
 				if (vein.tierVein == 0) {
 					for (int i : vein.idDim) {
-						if (dimension.id == i) {
+						if (dimID == i) {
 							smallVeins.add(vein);
 						}
 					}
 				} else if (vein.tierVein == 1) {
 					for (int i : vein.idDim) {
-						if (dimension.id == i) {
+						if (dimID == i) {
 							veins.add(vein);
 						}
 					}
 				}
 			}
-			World w = DimensionManager.getWorld(dimension.id);
-			if (w != null) {
-				String name = w.provider.getDimensionName() + " (T" + dimension.tier + ")";
-				dimSmallOres.add(new DimOre(name, smallVeins, 0));
-				dimDefaultOres.add(new DimOre(name, veins, 1));
-			}
-		});
+			int tier = worldDimensions.stream().filter(dimensions -> dimensions.id == dimID).findFirst().orElse(OreGenerator.Dimensions.NO).tier;
+			if (tier == -1) break;
+			String name = world.provider.getDimensionName() + " (T" + tier + ")";
+			dimSmallOres.add(new DimOre(name, smallVeins, 0));
+			dimDefaultOres.add(new DimOre(name, veins, 1));
+		}
 	}
 	
 	public static class DimOre {

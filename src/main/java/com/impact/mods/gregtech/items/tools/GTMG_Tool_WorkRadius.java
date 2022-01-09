@@ -68,7 +68,7 @@ public class GTMG_Tool_WorkRadius extends GT_MetaGenerated_Tool {
         return ITool.get(aStack.getItemDamage()).onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
     }
     
-    //todo remove this
+   
     public static class ProccessToolHead implements IOreRecipeRegistrator {
         public ProccessToolHead() {
             OrePrefixes.toolHeadHammer.add(this);

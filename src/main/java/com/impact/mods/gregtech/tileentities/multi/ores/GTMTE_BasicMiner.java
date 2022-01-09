@@ -5,8 +5,8 @@ import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -202,6 +202,9 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			List<ItemStack> output = new ArrayList<>();
 			IGregTechTileEntity te = getBaseMetaTileEntity();
 			int chancePrimary = 500;
+			int tier = Math.max(1, getTierEnergyHatch());
+			int startEU = 3 * (2 << (tier << 1));
+			int euTotal = 0;
 			long voltage = getMaxInputVoltage();
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
@@ -218,6 +221,9 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 					output.add(drillHeadDrop);
 					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, voltage, null, is.get(ore));
 					if (tRecipe != null) {
+						if (voltage <= euTotal + startEU + tRecipe.mEUt) break;
+						voltage -= tRecipe.mEUt;
+						euTotal += tRecipe.mEUt;
 						for (int i = 0; i < tRecipe.mOutputs.length; i++) {
 							ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
 							if (i == 0 && te.getRandomNumber(10000) < chancePrimary) {
@@ -229,11 +235,10 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			}
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
-			int tier = Math.max(1, GT_Utility.getTier(voltage));
-			this.mEUt = -3 * (2 << (tier << 1)); //start lv 24 eu/t
-			this.mMaxProgresstime = 400 / (1 << (tier - 1));
-			this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
-			this.mOutputItems     = output.toArray(new ItemStack[0]);
+			this.mEUt                = -(startEU + euTotal);
+			this.mMaxProgresstime    = 400 / (1 << (tier - 1));
+			this.mMaxProgresstime    = Math.max(2, this.mMaxProgresstime);
+			this.mOutputItems        = output.toArray(new ItemStack[0]);
 		}
 		hatch.get(0).cycleDrill(check);
 		

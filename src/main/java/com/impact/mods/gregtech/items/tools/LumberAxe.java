@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import static com.impact.util.ItemNBTHelper.getBoolean;
+import static gregtech.api.items.GT_MetaGenerated_Tool.getToolDamage;
 
 public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 	
@@ -256,9 +257,8 @@ public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 			}
 			ItemStack itemstack = player.getCurrentEquippedItem();
 			if (itemstack != null) {
-				itemstack.func_150999_a(world, block, x, y, z, player);
-				
-				if (itemstack.stackSize == 0) {
+				long damage = getToolDamage(itemstack);
+				if (damage <= 0) {
 					player.destroyCurrentEquippedItem();
 				}
 			}
