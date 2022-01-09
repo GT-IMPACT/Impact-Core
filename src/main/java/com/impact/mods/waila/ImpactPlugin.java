@@ -572,6 +572,13 @@ public class ImpactPlugin extends PluginBase {
                 final GT_MetaTileEntity_Boiler_Solar slr = (GT_MetaTileEntity_Boiler_Solar)tMeta;
                 tag.setInteger("calcificationOutput", (slr.getCalcificationOutput()*20/25));
                 tag.setInteger("maxCalcificationOutput", (slr.getBasicOutput()*20/25));
+            } else if (tMeta instanceof  GT_MetaTileEntity_PrimitiveBlastFurnace) {
+                final GT_MetaTileEntity_PrimitiveBlastFurnace blastFurnace = (GT_MetaTileEntity_PrimitiveBlastFurnace) tMeta;
+                final int progress = blastFurnace.mProgresstime;
+                final int maxProgress = blastFurnace.mMaxProgresstime;
+                tag.setInteger("progressPrimitiveBlastFurnace", progress);
+                tag.setInteger("maxProgressPrimitiveBlastFurnace", maxProgress);
+                tag.setBoolean("incompleteStructurePrimitiveBlastFurnace", !blastFurnace.mMachine);
             }
     
             if (multiBlockBase != null) {
