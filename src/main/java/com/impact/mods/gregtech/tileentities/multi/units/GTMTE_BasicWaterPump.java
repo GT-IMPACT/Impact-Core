@@ -31,6 +31,7 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 import java.util.ArrayList;
 
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
+import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.enums.GT_Values.W;
 import static net.minecraftforge.common.BiomeDictionary.Type.*;
@@ -52,14 +53,7 @@ public class GTMTE_BasicWaterPump extends GT_MetaTileEntity_MultiParallelBlockBa
 							{"1111", "1  1", "0200",},
 							{" 1  ", " 1  ", "0000",},
 					})
-					.addElement('1', ofHintDeferred(() -> new IIcon[]{
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-							Textures.BlockIcons.FRAMEBOXGT.getIcon(),
-					}, Materials.Wood.mRGBa))
+					.addElement('1', lazy(t -> ofFrame(Materials.Wood)))
 					.addElement('0', ofBlock(sCaseCore2, 7))
 					.addElement('2', ofChain(
 							ofHatchAdder(GTMTE_BasicWaterPump::addPrimOutputToMachineList, CASING_TEXTURE_ID, ImpactAPI.BLUE),
