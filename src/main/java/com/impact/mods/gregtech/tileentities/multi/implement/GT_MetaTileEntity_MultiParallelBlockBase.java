@@ -218,11 +218,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			long voltage = getMaxInputVoltageVanila();
 			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
 			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
-					false, GT_Values.V[tier], fluids, inputs
-			);
+					false, GT_Values.V[tier], fluids, inputs);
 			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
-				
-				cashedRecipe = recipe;
 				
 				if (!WorldProperties.needCleanroom(recipe, this)) {
 					return false;
@@ -244,6 +241,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				if (getBaseMetaTileEntity().getMetaTileEntity() instanceof GTMTE_SawMill) {
 					EUt /= 4;
 					maxProgresstime *= 2;
+				} else {
+					cashedRecipe = recipe;
 				}
 				if (maxProgresstime < 2) {
 					maxProgresstime = 2;

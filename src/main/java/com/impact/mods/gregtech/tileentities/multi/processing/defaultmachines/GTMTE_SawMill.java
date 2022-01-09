@@ -209,7 +209,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 			mRecipeMode = 0;
 		}
 		
-		mModed = (mRecipeMode == 0 ? " Planks & Sawdust " : mRecipeMode == 1 ? " Wood Pulp & Sawdust " : " Only Sawdust ");
-		GT_Utility.sendChatToPlayer(aPlayer, "Mode:" + EnumChatFormatting.GREEN + mModed);
+		String name = (mRecipeMode == 0 ? " Planks & Sawdust " : mRecipeMode == 1 ? " Wood Pulp & Sawdust " : " Only Sawdust ");
+		GT_Utility.sendChatToPlayer(aPlayer, "Mode:" + EnumChatFormatting.GREEN + name);
 	}
 }
