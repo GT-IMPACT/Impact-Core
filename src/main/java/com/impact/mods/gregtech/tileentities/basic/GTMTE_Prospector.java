@@ -170,7 +170,8 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 											int xRegCurrent = (chunkPosition.chunkXPos >> 5) % 512;
 											int zRegCurrent = (chunkPosition.chunkZPos >> 5) % 512;
 											OresRegionGenerator currentRegion = new OresRegionGenerator(xRegCurrent, zRegCurrent, te.getWorld().provider.dimensionId);
-											int idHash = Objects.hashCode(currentRegion.xRegion, currentRegion.zRegion);
+											int dimID = getBaseMetaTileEntity().getWorld().provider.dimensionId;
+											int idHash = Objects.hashCode(currentRegion.xRegion, currentRegion.zRegion, dimID);
 											if (!Impact_API.regionsOres.containsKey(idHash)) {
 												currentRegion.createVeins();
 												Impact_API.regionsOres.put(idHash, currentRegion);
