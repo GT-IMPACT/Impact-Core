@@ -230,18 +230,17 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	@Override
 	public boolean machineStructure(IGregTechTileEntity gt) {
 		this.noMaintenance();
-		boolean check = checkPiece(4, 3, 0);
+		boolean check = checkPiece(4, 3, 1);
 		if (!check) return false;
 		for (int x = -6; x < 6; x++) {
 			for (int y = -6; y < 6; y++) {
 				Vector3ic vec = Structure.goBuild(gt, x, y, 1);
 				if (x == 0 && y == 0) {
-					if (Structure.getBlock(gt, vec) != ItemRegistery.TheWind) {
-						return false;
+					TileEntity te = Structure.getTE(gt, vec);
+					if (te instanceof TE_TheMill) {
+						new ToClient_Integer(te.xCoord, te.yCoord, te.zCoord, gt.getFrontFacing()).sendToClients();
 					} else {
-						if (gt.isServerSide()) {
-							new ToClient_Integer(gt, vec, gt.getBackFacing()).sendToClients();
-						}
+						return false;
 					}
 					continue;
 				}

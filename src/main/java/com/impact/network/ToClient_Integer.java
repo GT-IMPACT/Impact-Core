@@ -37,7 +37,7 @@ public class ToClient_Integer implements ServerToClientPacket {
 	
 	@Override
 	public void onReceive(Minecraft minecraft) {
-		World w = minecraft.theWorld;
+		World w = minecraft.thePlayer.worldObj;
 		TileEntity tileEntity = w.getTileEntity(x, y, z);
 		if (tileEntity instanceof IGregTechTileEntity) {
 			IGregTechTileEntity igt = (IGregTechTileEntity) tileEntity;

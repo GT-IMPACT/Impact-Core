@@ -2,7 +2,12 @@ package com.impact.common.te;
 
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_TheMill;
 import com.impact.network.IPacketInteger;
+import com.impact.network.ToClient_Integer;
 import com.impact.util.vector.Structure;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLModContainer;
+import cpw.mods.fml.common.event.FMLEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,7 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TE_TheMill extends TileEntity implements IPacketInteger {
 	
 	public int facing = 0;
-	public int tick = 0;
+	public long tick = 0;
 	public float prevRotation = 0.0F;
 	public float rotation = 0.0F;
 	public float turnSpeed = 0.0F;
@@ -21,35 +26,31 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 	@SideOnly(Side.CLIENT)
 	private AxisAlignedBB renderAABB;
 	
-	public TE_TheMill() {
-	}
-	
 	@Override
 	public void updateEntity() {
-		if (worldObj.getTotalWorldTime() % 128 == ((xCoord ^ zCoord) & 127))
+		super.updateEntity();
+		tick++;
+		if (tick >= Long.MAX_VALUE) {
+			tick = 0;
+		}
+		
+		if (worldObj.getTotalWorldTime() % 128 == ((xCoord ^ zCoord) & 127)) {
 			canTurn = checkArea();
-		if (!canTurn)
-			return;
+		}
 		
-		double mod = .00005;
-		if (!worldObj.isRaining())
-			mod *= .75;
-		if (!worldObj.isThundering())
-			mod *= .66;
-		if (yCoord > 200)
-			mod *= 2;
-		else if (yCoord > 150)
-			mod *= 1.5;
-		else if (yCoord > 100)
-			mod *= 1.25;
-		else if (yCoord < 70)
-			mod *= .33;
-		mod *= getSpeedModifier();
-		
-		
-		prevRotation = (float) (turnSpeed * mod);
-		rotation += turnSpeed * mod;
-		rotation %= 1;
+		if (!canTurn) return;
+			double mod = .00005;
+			if (!worldObj.isRaining()) mod *= .75;
+			if (!worldObj.isThundering()) mod *= .66;
+			if (yCoord > 200) mod *= 2;
+			else if (yCoord > 150) mod *= 1.5;
+			else if (yCoord > 100) mod *= 1.25;
+			else if (yCoord < 70) mod *= .33;
+			mod *= getSpeedModifier();
+			
+			prevRotation = (float) (turnSpeed * mod);
+			rotation += turnSpeed * mod;
+			
 	}
 	
 	protected float getSpeedModifier() {
@@ -106,6 +107,7 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 		this.facing    = nbt.getInteger("facing");
 		this.rotation  = nbt.getFloat("rotation");
 		this.turnSpeed = nbt.getFloat("turnSpeed");
+		new ToClient_Integer(xCoord, yCoord, zCoord, facing).sendToClients();
 	}
 	
 	@Override
