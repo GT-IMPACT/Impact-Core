@@ -6,12 +6,14 @@ import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.core.Impact_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.world.chunk.Chunk;
-import scala.tools.ant.sabbus.Make;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.impact.common.oregeneration.OreGenerator.Dimensions.*;
 import static com.impact.common.oregeneration.OreVeinBuilder.addVein;
+import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIDimOres;
+import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIOres;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.dust;
 
@@ -532,7 +534,7 @@ public class OreGenerator {
 				.end();
 		addVein(525, "Nether Quartz")
 				.addDim(Overworld, Enceladus)
-				.setSize(1, 10).setTier(0).setWeight(32).noChance()
+				.setSize(1, 10).setTier(0).setWeight(20).noChance()
 				.setColor(NetherQuartz)
 				.addOres(NetherQuartz)
 				.end();
@@ -671,6 +673,9 @@ public class OreGenerator {
 				.setColor(Platinum)
 				.addOres(Platinum)
 				.end();
+		
+		BuildNEIDimOres();
+		BuildNEIOres();
 	}
 	
 	public static int sizeChunk(Chunk chunk, int tier) {
@@ -770,30 +775,32 @@ public class OreGenerator {
 	}
 	
 	public enum Dimensions {
-		NO(-1,-1),
+		NO(-1,-1, ""),
 		
-		Overworld(0, 0),
+		Overworld(0, 0, "Overworld"),
 		
-		Moon(-28, 1),
+		Moon(-28, 1, "Moon"),
 		
-		Mars(-29, 2), Deimos(-2053, 2), Phobos(-2052, 2),
+		Mars(-29, 2, "Mars"), Deimos(-2053, 2, "Deimos"), Phobos(-2052, 2, "Phobos"),
 		
-		Asteroids(-30, 3), Ceres(-2002, 3), Ganymede(-2011, 3), Callisto(-2017, 3), Europa(-2010, 3),
+		Asteroids(-30, 3, "Asteroids"), Ceres(-2002, 3, "Ceres"), Ganymede(-2011, 3, "Ganymede"), Callisto(-2017, 3, "Callisto"), Europa(-2010, 3, "Europa"),
 		
-		Venus(-2001, 4), Mercury(-2000, 4), Io(-2009, 4),
+		Venus(-2001, 4, "Venus"), Mercury(-2000, 4, "Mercury"), Io(-2009, 4, "Io"),
 		
-		Miranda(-2019, 5), Enceladus(-2012, 5), Titan(-2013, 5), Oberon(-2056, 5),
+		Miranda(-2019, 5, "Miranda"), Enceladus(-2012, 5, "Enceladus"), Titan(-2013, 5, "Titan"), Oberon(-2056, 5, "Oberon"),
 		
-		Proteus(-2055, 6), Triton(-2016, 6),
+		Proteus(-2055, 6, "Proteus"), Triton(-2016, 6, "Triton"),
 		
-		Makemake(-2050, 7), Pluto(-2003, 7), Haumea(-2051, 7), KuiperBelt(-2004, 7);
+		Makemake(-2050, 7, "Makemake"), Pluto(-2003, 7, "Pluto"), Haumea(-2051, 7, "Haumea"), KuiperBelt(-2004, 7, "Kuiper Belt");
 		
 		public int id;
 		public int tier;
+		public String name;
 		
-		Dimensions(int id, int tier) {
+		Dimensions(int id, int tier, String name) {
 			this.id = id;
 			this.tier = tier;
+			this.name = name;
 		}
 	}
 }

@@ -9,14 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.impact.core.Impact_API.worldDimensions;
 import static gregtech.api.enums.OrePrefixes.crushed;
-import static gregtech.api.enums.OrePrefixes.ore;
 
 public class OreVeinBuilder {
 	private int id;

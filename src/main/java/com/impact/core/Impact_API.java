@@ -40,6 +40,4 @@ public class Impact_API {
 	 * The Space Elevator Frequencies
 	 */
 	public static final Map<String, int[]> sAerostat = new LinkedHashMap<>();
-	
-	public static final List<OreGenerator.Dimensions> worldDimensions = new ArrayList<>();
 }

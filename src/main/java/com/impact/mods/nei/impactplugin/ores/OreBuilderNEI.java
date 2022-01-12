@@ -1,19 +1,13 @@
 package com.impact.mods.nei.impactplugin.ores;
 
-import com.google.common.base.Objects;
 import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.core.Impact_API;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.impact.core.Impact_API.worldDimensions;
 
 public class OreBuilderNEI {
 	
@@ -26,13 +20,11 @@ public class OreBuilderNEI {
 		for (OreVein oreGenerator : Impact_API.registerVeins.values()) {
 			if (oreGenerator.idVein != 999) {
 				List<String> nameDims = new ArrayList<>();
-				for (OreGenerator.Dimensions dimension : worldDimensions) {
+				for (OreGenerator.Dimensions dimension : OreGenerator.Dimensions.values()) {
+					if (dimension.id == -1) continue;
 					for (int id : oreGenerator.idDim) {
 						if (dimension.id == id) {
-							World w = DimensionManager.getWorld(id);
-							if (w != null) {
-								nameDims.add(w.provider.getDimensionName() + (" (T" + dimension.tier + ")"));
-							}
+							nameDims.add(dimension.name + (" (T" + dimension.tier + ")"));
 						}
 					}
 				}
@@ -48,28 +40,26 @@ public class OreBuilderNEI {
 	}
 	
 	public static void BuildNEIDimOres() {
-		for (WorldServer world : DimensionManager.getWorlds()) {
-			int dimID = world.provider.dimensionId;
+		for (OreGenerator.Dimensions value : OreGenerator.Dimensions.values()) {
+			if (value.id == -1) continue;
 			List<OreVein> smallVeins = new ArrayList<>();
 			List<OreVein> veins = new ArrayList<>();
 			for (OreVein vein : Impact_API.registerVeins.values()) {
 				if (vein.tierVein == 0) {
 					for (int i : vein.idDim) {
-						if (dimID == i) {
+						if (value.id == i) {
 							smallVeins.add(vein);
 						}
 					}
 				} else if (vein.tierVein == 1) {
 					for (int i : vein.idDim) {
-						if (dimID == i) {
+						if (value.id == i) {
 							veins.add(vein);
 						}
 					}
 				}
 			}
-			int tier = worldDimensions.stream().filter(dimensions -> dimensions.id == dimID).findFirst().orElse(OreGenerator.Dimensions.NO).tier;
-			if (tier == -1) break;
-			String name = world.provider.getDimensionName() + " (T" + tier + ")";
+			String name = value.name + " (T" + value.tier + ")";
 			dimSmallOres.add(new DimOre(name, smallVeins, 0));
 			dimDefaultOres.add(new DimOre(name, veins, 1));
 		}

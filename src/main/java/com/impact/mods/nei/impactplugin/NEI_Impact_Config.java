@@ -3,7 +3,6 @@ package com.impact.mods.nei.impactplugin;
 import codechicken.nei.NEIModContainer;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.HandlerInfo;
-import com.impact.common.oregeneration.OreGenerator;
 import com.impact.core.Impact_API;
 import com.impact.core.Refstrings;
 import com.impact.mods.gregtech.GT_RecipeMaps;
@@ -21,17 +20,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Objects;
 
-import static com.impact.core.Impact_API.worldDimensions;
 import static com.impact.mods.gregtech.GT_ItemList.*;
-import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIDimOres;
-import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIOres;
 import static com.impact.util.Utilits.getFluidDisplay;
 import static gregtech.api.enums.ItemList.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.*;
@@ -74,10 +68,6 @@ public class NEI_Impact_Config implements IConfigureNEI {
 		
 		RecipeProcessorLoader.init();
 		sIsAdded = false;
-		
-		worldDimensions.addAll(Arrays.asList(OreGenerator.Dimensions.values()));
-		BuildNEIDimOres();
-		BuildNEIOres();
 		
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			new GT_NEI_NaquadahGen(GT_Recipe.GT_Recipe_Map.sLiquidNqGenerator);
