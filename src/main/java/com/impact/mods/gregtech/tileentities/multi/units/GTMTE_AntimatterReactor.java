@@ -43,7 +43,6 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 		super(aName);
 	}
 	
-	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GTMTE_AntimatterReactor(mName);
@@ -53,7 +52,8 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		ITexture[] sTexture;
 		if (aSide == aFacing) {
-			sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FUSION1)};
+			sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+					new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FUSION1)};
 		} else {
 			if (!aActive) {
 				sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
@@ -66,7 +66,6 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_AntimatterReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AntimatterReactor.png", sAntimatterReactorFuels.mNEIName);
-		
 	}
 	
 	@Override
@@ -78,7 +77,6 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 	public boolean isFacingValid(byte aFacing) {
 		return aFacing > 1;
 	}
-	
 	
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
@@ -132,6 +130,16 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+	}
+	
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
 	}
 	
 	@Override
