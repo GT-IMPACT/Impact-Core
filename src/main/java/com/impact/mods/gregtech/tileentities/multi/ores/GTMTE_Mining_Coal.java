@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.ores;
 import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
+import com.impact.core.Config;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -129,7 +130,9 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity te) {
-		mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
+		int dimID = te.getWorld().provider.dimensionId;
+		if (dimID != 0 || dimID != Config.MiningWorldID) return false;
+		noMaintenance();
 		te.setFrontFacing((byte) 1);
 		Chunk chunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
 		int size = 0;
