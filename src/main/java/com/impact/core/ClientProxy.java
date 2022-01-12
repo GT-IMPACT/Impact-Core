@@ -19,6 +19,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
@@ -129,10 +130,12 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void beam(World worldObj, Vector3ic vec1, Vector3ic vec2, int type, int color, boolean reverse, float endmod, int age) {
 		boolean mask = false;
-		if (Minecraft.getMinecraft().thePlayer != null) {
+		EntityClientPlayerMP thePlayer = Minecraft.getMinecraft().thePlayer;
+		if (thePlayer != null) {
+			if (worldObj.provider.dimensionId != thePlayer.worldObj.provider.dimensionId) return;
 			ItemStack is = Minecraft.getMinecraft().thePlayer.getCurrentArmor(3);
 			if (is == null || !(is.getItem() instanceof MaskOfVision)) {
-				IInventory handler = BaublesApi.getBaubles(Minecraft.getMinecraft().thePlayer);
+				IInventory handler = BaublesApi.getBaubles(thePlayer);
 				if (handler != null) {
 					for (int i = 0; i < handler.getSizeInventory(); ++i) {
 						is = handler.getStackInSlot(i);
