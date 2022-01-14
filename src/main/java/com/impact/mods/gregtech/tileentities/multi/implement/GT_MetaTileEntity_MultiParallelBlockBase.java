@@ -80,8 +80,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
 	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 	
-	public GT_Recipe cashedRecipe = null;
-	
 	public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -217,8 +215,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		if (inputs.length > 0 || fluids.length > 0) {
 			long voltage = getMaxInputVoltageVanila();
 			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
-					false, GT_Values.V[tier], fluids, inputs);
+			
+			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(),
+					false, false, GT_Values.V[tier], fluids, inputs
+			);
+			
 			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
 				
 				if (!WorldProperties.needCleanroom(recipe, this)) {
@@ -241,8 +242,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				if (getBaseMetaTileEntity().getMetaTileEntity() instanceof GTMTE_SawMill) {
 					EUt /= 4;
 					maxProgresstime *= 2;
-				} else {
-					cashedRecipe = recipe;
 				}
 				if (maxProgresstime < 2) {
 					maxProgresstime = 2;
@@ -295,13 +294,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			if (tInputList.size() > 0 || tFluidList.size() > 0) {
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe;
-				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
+				
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, V[tTier], tFluids, tInputs
+				);
+				
 				
 				if (tRecipe != null) {
 					
-					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -374,13 +374,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			if (tInputList.size() > 0 || tFluidList.size() > 0) {
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe;
-				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, V[tTier], tFluids, tInputs
+				);
+				
 				
 				if (tRecipe != null) {
 					
-					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -471,12 +471,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				
-				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
+				tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, V[tTier], tFluids, tInputs
+				);
+				
 				
 				if (tRecipe != null) {
 					
-					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -574,12 +575,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 				
-				tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
+				tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, V[tTier], tFluids, tInputs
+				);
+				
 				
 				if (tRecipe != null) {
 					
-					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -666,6 +668,76 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		ItemStack[] tInputs;
 		FluidStack[] tFluids;
 		
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			if (modeBuses == 0) {
+				ArrayList<ItemStack> tBusItems = new ArrayList<>();
+				tBus.mRecipeMap = getRecipeMap();
+				if (isValidMetaTileEntity(tBus)) {
+					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+						}
+					}
+				}
+				tInputList = this.getStoredInputs();
+				tFluidList = this.getStoredFluids();
+				tInputs    = tBusItems.toArray(new ItemStack[0]);
+				tFluids    = tFluidList.toArray(new FluidStack[0]);
+			} else {
+				tInputList = this.getStoredInputs();
+				tFluidList = this.getStoredFluids();
+				tInputs    = tInputList.toArray(new ItemStack[0]);
+				tFluids    = tFluidList.toArray(new FluidStack[0]);
+			}
+			if (tInputList.size() > 0 || tFluidList.size() > 0) {
+				long nominalV = getMaxInputVoltage();
+				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, false, V[tTier], tFluids, tInputs
+				);
+				
+				
+				if (tRecipe != null) {
+					
+					
+					if (!WorldProperties.needCleanroom(tRecipe, this)) {
+						return false;
+					}
+					if (!WorldProperties.needSpace(tRecipe, this)) {
+						return false;
+					}
+					ArrayList<FluidStack> outputFluids = new ArrayList<>();
+					boolean found_Recipe = false;
+					ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
+					while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
+						if ((tRecipe.mEUt * (mCheckParallelCurrent + 1L)) < nominalV && tRecipe
+								.isRecipeInputEqual(true, tFluids, tInputs)) {
+							found_Recipe = true;
+							for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+								if (tRecipe.getOutput(h) != null) {
+									tOut[h]           = tRecipe.getOutput(h).copy();
+									tOut[h].stackSize = 0;
+								}
+							}
+							for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+								outputFluids.add(tRecipe.getFluidOutput(i));
+							}
+							++mCheckParallelCurrent;
+						} else {
+							break;
+						}
+					}
+					if (found_Recipe) {
+						calcEfficiency(nominalV, tRecipe, tOut);
+						this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
+						
+						this.updateSlots();
+						return true;
+					}
+				}
+			}
+		}
+		
 		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
 		
 		for (int count = 0; count < countOperation; count++) {
@@ -692,11 +764,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			if (tInputList.size() > 0 || tFluidList.size() > 0) {
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, false, V[tTier], tFluids, tInputs);
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, false, V[tTier], tFluids, tInputs
+				);
+				
 				if (tRecipe != null) {
-					
-					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -735,74 +807,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 				}
 			}
 		}
-		
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			if (modeBuses == 0) {
-				ArrayList<ItemStack> tBusItems = new ArrayList<>();
-				tBus.mRecipeMap = getRecipeMap();
-				if (isValidMetaTileEntity(tBus)) {
-					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-						}
-					}
-				}
-				tInputList = this.getStoredInputs();
-				tFluidList = this.getStoredFluids();
-				tInputs    = tBusItems.toArray(new ItemStack[0]);
-				tFluids    = tFluidList.toArray(new FluidStack[0]);
-			} else {
-				tInputList = this.getStoredInputs();
-				tFluidList = this.getStoredFluids();
-				tInputs    = tInputList.toArray(new ItemStack[0]);
-				tFluids    = tFluidList.toArray(new FluidStack[0]);
-			}
-			if (tInputList.size() > 0 || tFluidList.size() > 0) {
-				long nominalV = getMaxInputVoltage();
-				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, false, V[tTier], tFluids, tInputs);
-				if (tRecipe != null) {
-					
-					cashedRecipe = tRecipe;
-					
-					if (!WorldProperties.needCleanroom(tRecipe, this)) {
-						return false;
-					}
-					if (!WorldProperties.needSpace(tRecipe, this)) {
-						return false;
-					}
-					ArrayList<FluidStack> outputFluids = new ArrayList<>();
-					boolean found_Recipe = false;
-					ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-					while ((tFluidList.size() > 0 || tInputList.size() > 0) && mCheckParallelCurrent < mParallel) {
-						if ((tRecipe.mEUt * (mCheckParallelCurrent + 1L)) < nominalV && tRecipe
-								.isRecipeInputEqual(true, tFluids, tInputs)) {
-							found_Recipe = true;
-							for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-								if (tRecipe.getOutput(h) != null) {
-									tOut[h]           = tRecipe.getOutput(h).copy();
-									tOut[h].stackSize = 0;
-								}
-							}
-							for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-								outputFluids.add(tRecipe.getFluidOutput(i));
-							}
-							++mCheckParallelCurrent;
-						} else {
-							break;
-						}
-					}
-					if (found_Recipe) {
-						calcEfficiency(nominalV, tRecipe, tOut);
-						this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
-						
-						this.updateSlots();
-						return true;
-					}
-				}
-			}
-		}
+
 		return false;
 	}
 	
@@ -844,10 +849,14 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			if (tInputList.size() > 0 || tFluidList.size() > 0) {
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
+				
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, V[tTier], tFluids, tInputs
+				);
+				
+				
 				if (tRecipe != null) {
 					
-					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -912,11 +921,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			if (tInputList.size() > 0 || tFluidList.size() > 0) {
 				long nominalV = getMaxInputVoltage();
 				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe = getRecipeMap()
-						.findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, V[tTier], tFluids, tInputs
+				);
+				
+				
 				if (tRecipe != null) {
 					
-					cashedRecipe = tRecipe;
 					
 					if (!WorldProperties.needCleanroom(tRecipe, this)) {
 						return false;
@@ -1570,7 +1581,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	
 	@Override
 	public String[] getDescription() {
-		if (getTooltip() == null) return new String[] {"Error Description"};
+		if (getTooltip() == null) return new String[]{"Error Description"};
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
 			return getTooltip().getControlInfo();
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -1584,13 +1595,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 	public String[] getStructureDescription(ItemStack stackSize) {
 		String[] desc;
 		if (getTooltip() != null) {
-			desc = new String[getTooltip().getStructureInformation().length];
+			desc    = new String[getTooltip().getStructureInformation().length];
 			desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
 			for (int i = 1; i < getTooltip().getStructureInformation().length; i++) {
 				desc[i] = getTooltip().getStructureInformation()[i];
 			}
 		} else {
-			desc = new String[2];
+			desc    = new String[2];
 			desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
 			desc[1] = "No found description";
 		}
@@ -1620,7 +1631,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		IGregTechTileEntity tTile = getBaseMetaTileEntity();
 		return getCastedStructureDefinition().check(this, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, !mMachine);
 	}
-
+	
 	protected final boolean checkPiece(int x, int y, int z) {
 		return checkPiece("main", x, y, z);
 	}
