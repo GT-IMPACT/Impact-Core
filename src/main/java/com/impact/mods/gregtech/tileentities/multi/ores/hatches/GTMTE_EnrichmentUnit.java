@@ -113,7 +113,7 @@ public class GTMTE_EnrichmentUnit extends GT_MetaTileEntity_Hatch {
 	}
 	
 	public int getCapacity() {
-		return 8000 + 8000 * (this.mTier * (this.mTier + 1) >> 1);
+		return 256_000;
 	}
 	
 	public int getTankPressure() {
