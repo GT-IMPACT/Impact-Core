@@ -97,7 +97,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 				.addController()
 				.sizeStructure(9, 12, 9)
 				.addCasingInfo("case.0", "The Mill Wood Planks", 260)
-				.addRedHint("The Mill Rotor")
+				.addGreenHint("The Mill Rotor")
 				.signAndFinalize()	;
 		return b;
 	}
@@ -259,7 +259,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public void construct(ItemStack itemStack, boolean b) {
-		buildPiece(itemStack, b, 4, 3, 0);
+		buildPiece(itemStack, b, 4, 3, 1);
 	}
 	
 	@Override
