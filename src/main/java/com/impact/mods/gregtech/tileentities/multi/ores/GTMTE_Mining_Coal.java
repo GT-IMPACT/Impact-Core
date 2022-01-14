@@ -131,7 +131,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public boolean machineStructure(IGregTechTileEntity te) {
 		int dimID = te.getWorld().provider.dimensionId;
-		if (dimID != 0 || dimID != Config.MiningWorldID) return false;
+		if (dimID != 0 && dimID != Config.MiningWorldID) return false;
 		noMaintenance();
 		te.setFrontFacing((byte) 1);
 		Chunk chunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
