@@ -26,4 +26,4 @@ idea/
 *.patch
 src/main/generated/
 
-src/main/resources/mixins.impact.json
+src/main/resources/mixins.*.json
