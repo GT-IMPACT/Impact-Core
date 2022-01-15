@@ -16,11 +16,24 @@ public enum Mixin {
 	// Exception: Tags.java, as long as it is used for Strings only!
 	//
 	
-//	TileEntityFluidInterface_Mixin("extracells.TileEntityFluidInterface_Mixin", EXTRACELLS, VANILLA),
 	InvSlotConsumable_Mixin("ic2.InvSlotConsumable_Mixin", IC2, VANILLA),
+	NanoSaber_Mixin("ic2.NanoSaber_Mixin", IC2),
+	MiningLaser_Mixin("ic2.MiningLaser_Mixin", IC2),
+	ToolPainter_Mixin("ic2.ToolPainter_Mixin", IC2),
+	BlockBase_Mixin("ic2.BlockBase_Mixin", IC2),
+	ArmorQuantumSuit_Mixin("ic2.ArmorQuantumSuit_Mixin", IC2),
+	ArmorNanoSuit_Mixin("ic2.ArmorNanoSuit_Mixin", IC2),
+	ArmorLappack_Mixin("ic2.ArmorLappack_Mixin", IC2),
+	ArmorJetpackElectric_Mixin("ic2.ArmorJetpackElectric_Mixin", IC2),
+	ArmorEnergyPack_Mixin("ic2.ArmorEnergyPack_Mixin", IC2),
+	ArmorAdvBatPack_Mixin("ic2.ArmorAdvBatPack_Mixin", IC2),
+	ArmorBatPack_Mixin("ic2.ArmorBatPack_Mixin", IC2),
+	
 	MovableTileRegistry_Mixin("ae2.MovableTileRegistry_Mixin", AE, GREGTECH, VANILLA),
+	
 	ForgeHooksClient_Mixin("vanilla.ForgeHooksClient_Mixin", VANILLA),
 	BlockHopper_Mixin("vanilla.BlockHopper_Mixin", VANILLA),
+	
 	OreDictionaryArbiter_Mixin("cofh.OreDictionaryArbiter_Mixin", COFH, VANILLA),
 	CoFHCoreUpdate_Mixin_Mixin("cofh.CoFHCoreUpdate_Mixin", COFH, VANILLA),
 	;

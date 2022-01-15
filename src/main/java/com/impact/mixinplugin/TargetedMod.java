@@ -15,7 +15,6 @@ public enum TargetedMod {
 	// Replace with your injected mods here, but always keep VANILLA:
 	VANILLA("Minecraft", "unused", true),
 	GREGTECH("GregTech", "gregtech", true),
-	EXTRACELLS("ExtraCells2", "ExtraCells", true),
 	IC2("IndustrialCraft 2", "industrialcraft", true),
 	AE("Applied Energistics 2", "appliedenergistics2", true),
 	COFH("CoFHCore", "CoFHCore", true),
