@@ -268,6 +268,84 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 		ItemStack[] tInputs = null;
 		FluidStack[] tFluids = null;
 		
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			if (modeBuses == 0) {
+				ArrayList<ItemStack> tBusItems = new ArrayList<>();
+				tBus.mRecipeMap = getRecipeMap();
+				if (isValidMetaTileEntity(tBus)) {
+					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+						}
+					}
+				}
+				tInputList = this.getStoredInputs();
+				tFluidList = this.getStoredFluids();
+				tInputs    = tBusItems.toArray(new ItemStack[0]);
+				tFluids    = tFluidList.toArray(new FluidStack[0]);
+			} else {
+				tInputList = this.getStoredInputs();
+				tFluidList = this.getStoredFluids();
+				tInputs    = tInputList.toArray(new ItemStack[0]);
+				tFluids    = tFluidList.toArray(new FluidStack[0]);
+			}
+			if (tInputList.size() > 0 || tFluidList.size() > 0) {
+				long nominalV = getMaxInputVoltage();
+				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
+				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
+						false, V[tTier], tFluids, tInputs
+				);
+				
+				
+				if (tRecipe != null) {
+					
+					
+					if (!WorldProperties.needCleanroom(tRecipe, this)) {
+						return false;
+					}
+					if (!WorldProperties.needSpace(tRecipe, this)) {
+						return false;
+					}
+					
+					ArrayList<ItemStack> outputItems = new ArrayList<>();
+					ArrayList<FluidStack> outputFluids = new ArrayList<>();
+					boolean found_Recipe = false;
+					int processed = 0;
+					while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
+							&& processed < 1) {
+						if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe
+								.isRecipeInputEqual(true, tFluids, tInputs)) {
+							found_Recipe = true;
+							for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+								outputItems.add(tRecipe.getOutput(i));
+							}
+							for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+								outputFluids.add(tRecipe.getFluidOutput(i));
+							}
+							++processed;
+						} else {
+							break;
+						}
+					}
+					if (found_Recipe) {
+						this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+						this.mEfficiencyIncrease = 10000;
+						long actualEUT = (long) (tRecipe.mEUt) * processed;
+						
+						OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+						
+						if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+						
+						this.mEUt          = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
+						this.mOutputItems  = outputItems.toArray(new ItemStack[0]);
+						this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
+						this.updateSlots();
+						return true;
+					}
+				}
+			}
+		}
+		
 		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
 		
 		for (int count = 0; count < countOperation; count++) {
@@ -350,83 +428,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			}
 		}
 		
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			if (modeBuses == 0) {
-				ArrayList<ItemStack> tBusItems = new ArrayList<>();
-				tBus.mRecipeMap = getRecipeMap();
-				if (isValidMetaTileEntity(tBus)) {
-					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-						}
-					}
-				}
-				tInputList = this.getStoredInputs();
-				tFluidList = this.getStoredFluids();
-				tInputs    = tBusItems.toArray(new ItemStack[0]);
-				tFluids    = tFluidList.toArray(new FluidStack[0]);
-			} else {
-				tInputList = this.getStoredInputs();
-				tFluidList = this.getStoredFluids();
-				tInputs    = tInputList.toArray(new ItemStack[0]);
-				tFluids    = tFluidList.toArray(new FluidStack[0]);
-			}
-			if (tInputList.size() > 0 || tFluidList.size() > 0) {
-				long nominalV = getMaxInputVoltage();
-				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(),
-						false, V[tTier], tFluids, tInputs
-				);
-				
-				
-				if (tRecipe != null) {
-					
-					
-					if (!WorldProperties.needCleanroom(tRecipe, this)) {
-						return false;
-					}
-					if (!WorldProperties.needSpace(tRecipe, this)) {
-						return false;
-					}
-					
-					ArrayList<ItemStack> outputItems = new ArrayList<>();
-					ArrayList<FluidStack> outputFluids = new ArrayList<>();
-					boolean found_Recipe = false;
-					int processed = 0;
-					while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0
-							&& processed < 1) {
-						if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe
-								.isRecipeInputEqual(true, tFluids, tInputs)) {
-							found_Recipe = true;
-							for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-								outputItems.add(tRecipe.getOutput(i));
-							}
-							for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-								outputFluids.add(tRecipe.getFluidOutput(i));
-							}
-							++processed;
-						} else {
-							break;
-						}
-					}
-					if (found_Recipe) {
-						this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-						this.mEfficiencyIncrease = 10000;
-						long actualEUT = (long) (tRecipe.mEUt) * processed;
-						
-						OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
-						
-						if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
-						
-						this.mEUt          = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
-						this.mOutputItems  = outputItems.toArray(new ItemStack[0]);
-						this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
-						this.updateSlots();
-						return true;
-					}
-				}
-			}
-		}
+		
 		return false;
 	}
 	
