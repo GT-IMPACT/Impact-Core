@@ -164,6 +164,8 @@ public enum GT_ItemList implements IItemContainer {
 	CoalMiner, BasicMiner, AdvancedMiner,
 	ProspectorLV, ProspectorMV, ProspectorHV, ProspectorEV, ProspectorIV,
 	
+	Maintenance,
+	
 	Wind_Generator, The_Mill,
 	
 	end;

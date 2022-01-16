@@ -1,14 +1,12 @@
 package com.impact.mods.gregtech.enums;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+
+import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 public class Texture {
 
@@ -41,6 +39,8 @@ public class Texture {
 
     RACK_OVERLAY, RACK_OVERLAY_ACTIVE, TOWER_OVERLAY, TOWER_OVERLAY_ACTIVE,
     REACTOR_OVERLAY, REACTOR_OVERLAY_ACTIVE,
+    
+    MAINTENANCE_OVERLAY,
 
     LONG_DISTANCE_PIPE_FLUID, LONG_DISTANCE_PIPE_ITEM,
     TLDPE_LV, TLDPE_MV, TLDPE_HV, TLDPE_EV, TLDPE_IV,

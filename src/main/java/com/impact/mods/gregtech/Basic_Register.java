@@ -5,11 +5,11 @@ import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Reflector;
-import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_EnrichmentUnit;
-import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_AE_Connector;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_Hatch_MESystemMPChamber;
+import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_EnrichmentUnit;
+import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import gregtech.GT_Mod;
@@ -25,7 +25,6 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_PortableTank;
 
 import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.*;
-import static com.impact.mods.gregtech.GT_ItemList.EnergyMulti64_UXV;
 import static gregtech.api.enums.GT_Values.V;
 
 public class Basic_Register {
@@ -349,6 +348,8 @@ public class Basic_Register {
 		ProspectorHV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 3).getStackForm(1));
 		ProspectorEV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 4).getStackForm(1));
 		ProspectorIV.set(new GTMTE_Prospector(ID2++, "Ore and Oil Prospector", 5).getStackForm(1));
+		
+		Maintenance.set(new GTMTE_Maintenance(ID2++, "Non-serviceable Maintenance Hatch", 8).getStackForm(1));
 		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		
