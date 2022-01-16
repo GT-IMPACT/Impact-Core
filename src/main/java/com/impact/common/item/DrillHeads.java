@@ -14,7 +14,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import java.awt.*;
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class DrillHeads extends Item implements ITieredDamagedItems {
@@ -71,6 +70,17 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
         }
     }
     
+    public static ItemStack create(ItemStack stack) {
+        if (stack.hasTagCompound()) {
+            stack.stackTagCompound.setInteger("drillDamage", damage(stack));
+        } else {
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setInteger("drillDamage", damage(stack));
+            stack.stackTagCompound = nbt;
+        }
+        return stack;
+    }
+    
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
@@ -118,7 +128,7 @@ public class DrillHeads extends Item implements ITieredDamagedItems {
         return stack.getTagCompound().getInteger("drillDamage") == damage(stack);
     }
     
-    private int damage(ItemStack stack) {
+    private static int damage(ItemStack stack) {
         int meta = stack.getItemDamage();
         return 10_000 * ((meta + 1) << meta);
     }
