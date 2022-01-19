@@ -80,6 +80,10 @@ public class PositionObject {
 		return new Vector3i(xPos, yPos, zPos);
 	}
 	
+	public Vector3i toVec3i() {
+		return new Vector3i(xPos, yPos, zPos);
+	}
+	
 	/**
 	 * @return Integer Array with coords
 	 */

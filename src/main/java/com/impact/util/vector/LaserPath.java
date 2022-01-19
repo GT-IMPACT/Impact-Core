@@ -1,8 +1,8 @@
 package com.impact.util.vector;
 
-import com.impact.impact;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Reflector;
+import com.impact.network.special.ToClient_LaserPush;
 import com.impact.util.PositionObject;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
@@ -60,7 +60,7 @@ public class LaserPath {
 						reflector.setEUVar(reflector.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						impact.proxy.beam(te.getWorld(), new PositionObject(te).toVec3(), new PositionObject(ReflectorOrLaserIn).toVec3(), 1, colorHash, false, 1, 20);
+						new ToClient_LaserPush(new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash).sendToClients();
 						return reflector.pushLaser();
 						
 					}
@@ -80,9 +80,8 @@ public class LaserPath {
 						laserEnergyIn.setEUVar(laserEnergyIn.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						impact.proxy.beam(te.getWorld(), new PositionObject(te).toVec3(), new PositionObject(ReflectorOrLaserIn).toVec3(), 1, colorHash, false, 1, 20);
+						new ToClient_LaserPush(new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash).sendToClients();
 						return true;
-						
 					}
 					return false;
 				} else return false;
