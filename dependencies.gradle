@@ -1,4 +1,5 @@
 dependencies {
+    provided('com.github.GT-IMPACT:GT5.09OFFBEAT:master-SNAPSHOT')
     provided fileTree(dir: 'run/', include:'*.jar')
     compileOnly fileTree(dir: 'notRun/', include:'*.jar')
     annotationProcessor 'io.gitlab.hohserg.elegant.networking:annotation-processor:3.14'
