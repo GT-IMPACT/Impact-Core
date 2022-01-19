@@ -23,8 +23,10 @@ public class GUI_LapTopSetting extends GT_GUIContainerMetaTile_Machine {
 			Container_LapTopSetting aContainer = (Container_LapTopSetting) this.mContainer;
 			this.fontRendererObj.drawString(GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name"), 33, 8, 16448255);
 			this.fontRendererObj.drawString("Frequency: " + GT_Utility.parseNumberToString(aContainer.mFrequency), 33, 20, 16448255);
-			this.fontRendererObj.drawString("Coords:", 33, 30, 16448255);
-			this.fontRendererObj.drawString("X: " + aContainer.mTargetX + " Y: " + aContainer.mTargetY + " Z: " + aContainer.mTargetZ, 33, 40, 16448255);
+			if (!(aContainer.mTargetX == 0 && aContainer.mTargetY == 0 && aContainer.mTargetZ == 0)) {
+				this.fontRendererObj.drawString("Coords:", 33, 30, 16448255);
+				this.fontRendererObj.drawString("X: " + aContainer.mTargetX + " Y: " + aContainer.mTargetY + " Z: " + aContainer.mTargetZ, 33, 40, 16448255);
+			}
 			this.fontRendererObj.drawString("Dim ID: " + aContainer.mTargetD, 33, 50, 16448255);
 			this.fontRendererObj.drawString("Satellite connection: " + (aContainer.mIsEnable == 1 ? (EnumChatFormatting.GREEN + "on") : (EnumChatFormatting.RED + "off")), 33, 64, 16448255);
 		}

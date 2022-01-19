@@ -62,7 +62,7 @@ public class Container_LapTopSetting extends GT_ContainerMetaTile_Machine {
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
+		if ((this.mTileEntity.isClientSide()) && (this.mTileEntity.getMetaTileEntity() == null)) {
 			return;
 		}
 		if (this.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiParallelBlockBase<?>) {

@@ -4,7 +4,6 @@ import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.PositionObject;
-import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -13,20 +12,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.impact.core.Impact_API.sCommunicationTower;
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
@@ -198,15 +193,10 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	}
 	
 	public void setFrequency(int aFreq, EntityPlayer aPlayer) {
-		mFrequency = aFreq;
-		sCommunicationTower.put(Utilits.inToStringUUID(aFreq, aPlayer), new PositionObject(getBaseMetaTileEntity()).getCoords());
-		GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + aFreq);
+		super.setFrequency(aFreq, aPlayer);
 	}
 	
 	public void setCoord(PositionObject pos) {
-		this.mTargetX = pos.xPos;
-		this.mTargetY = pos.yPos;
-		this.mTargetZ = pos.zPos;
-		this.mTargetD = pos.dPos;
+		super.setCoord(pos);
 	}
 }
