@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -13,13 +14,10 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.impact.util.Utilits.isValidDim;
 import static micdoodle8.mods.galacticraft.core.util.ConfigManagerCore.disableSpaceStationCreation;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
@@ -122,12 +120,7 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-		int dimId = thisController.getWorld().provider.dimensionId;
-		if (!disableSpaceStationCreation) {
-			if (!(isValidDim(dimId, "Orbit") || isValidDim(dimId, "Space") || isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation"))) {
-				return false;
-			}
-		} else if (!isValidDim(dimId, "Moon")) {
+		if (!Utilits.isLowGravity(thisController)) {
 			return false;
 		}
 		//region Structure
