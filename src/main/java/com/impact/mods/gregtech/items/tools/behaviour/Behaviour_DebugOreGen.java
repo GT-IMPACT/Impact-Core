@@ -6,7 +6,6 @@ import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.common.oregeneration.generator.OreVeinGenerator;
 import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.core.Impact_API;
-import com.impact.util.Utilits;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_Utility;
@@ -19,10 +18,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-
-import static com.impact.core.impactLog.INFO;
 
 public class Behaviour_DebugOreGen extends Behaviour_None {
 	
@@ -31,19 +30,20 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 	public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
 		if (aPlayer instanceof EntityPlayerMP) {
 			Chunk ch = aWorld.getChunkFromBlockCoords(aX, aZ);
+			int dimId = aWorld.provider.dimensionId;
 			if (aPlayer.isSneaking()) {
 				OresRegionGenerator region;
 				switch (aStack.stackSize) {
 					case 1:
 						region = OreGenerator.getRegions(ch);
-						int idRegion = Objects.hash(region.xRegion, region.zRegion);
+						int idRegion = Objects.hash(region.xRegion, region.zRegion, dimId);
 						Impact_API.regionsOres.remove(idRegion, region);
 						GT_Utility.sendChatToPlayer(aPlayer, "Current Ore Region Cleared");
 						break;
 					case 2:
 						region = OreGenerator.getRegions(ch);
 						if (region == null) break;
-						if (!region.veins.containsKey(aWorld.provider.dimensionId)) break;
+						if (!region.veins.containsKey(dimId)) break;
 						for (int i = 0; i < OresRegionGenerator.layers; i++) {
 							List<OreVeinGenerator> veins = region.veins.get(i);
 							for (OreVeinGenerator vein : veins) {
@@ -61,7 +61,7 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 					case 3:
 						region = OreGenerator.getRegions(ch);
 						if (region == null) break;
-						if (!region.veins.containsKey(aWorld.provider.dimensionId)) break;
+						if (!region.veins.containsKey(dimId)) break;
 						for (int i = 0; i < OresRegionGenerator.layers; i++) {
 							List<OreVeinGenerator> veins = region.veins.get(i);
 							for (OreVeinGenerator vein : veins) {
@@ -84,14 +84,31 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 							System.out.println(id + "  " + name);
 						}
 						break;
+					case 5:
+						long millis = System.currentTimeMillis();
+						Map<Integer, OresRegionGenerator> rem = new HashMap<>();
+						Impact_API.regionsOres.forEach((hash, reg) -> {
+							if (reg.dim == dimId) {
+								rem.put(hash, reg);
+							}
+						});
+						rem.forEach(Impact_API.regionsOres::remove);
+						GT_Utility.sendChatToPlayer(aPlayer, "Removed id: " + dimId + "! Lag: " + (System.currentTimeMillis() - millis) + "ms");
+						break;
 					case 61:
 						long start = System.currentTimeMillis();
-						Impact_API.regionsOres.clear();
+						Map<Integer, OresRegionGenerator> replace = new HashMap<>();
+						Impact_API.regionsOres.forEach((hash, reg) -> {
+							if (reg.dim == dimId) {
+								replace.put(hash, reg);
+							}
+						});
+						replace.forEach(Impact_API.regionsOres::remove);
 						for (int x = -10; x <= 10; x++) {
 							for (int y = -10; y <= 10; y++) {
-								OresRegionGenerator fuckServer = new OresRegionGenerator(x, y, aWorld.provider.dimensionId);
+								OresRegionGenerator fuckServer = new OresRegionGenerator(x, y, dimId);
 								fuckServer.createVeins();
-								int idReg = Objects.hash(fuckServer.xRegion, fuckServer.zRegion);
+								int idReg = Objects.hash(fuckServer.xRegion, fuckServer.zRegion, fuckServer.dim);
 								Impact_API.regionsOres.put(idReg, fuckServer);
 							}
 						}
@@ -147,6 +164,7 @@ public class Behaviour_DebugOreGen extends Behaviour_None {
 		aList.add("   -  x2 - Remove only Region Veins Cycles");
 		aList.add("   -  x3 - Filled Region Veins Cycles");
 		aList.add("   -  x4 - Print All ID and Name World Dimensions");
+		aList.add("   -  x5 - Remove full Dimension");
 		aList.add("   - x61 - Generate Regions Area (Cube) -10K x 10K blocks");
 		aList.add(" ");
 		aList.add(EnumChatFormatting.YELLOW + "RCLICK - Stacksize this item: ");

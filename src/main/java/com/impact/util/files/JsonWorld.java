@@ -112,4 +112,41 @@ public class JsonWorld {
             e.printStackTrace();
         }
     }
+    
+    //    private static void loadOreGenerator() {
+    //        File json = SaveManager.get().oresDirectory;
+    //        Gson gson = new Gson();
+    //        JsonElement jsonElement = null;
+    //        for (File fileEntry : Objects.requireNonNull(json.listFiles())) {
+    //            try {
+    //                FileReader fr = new FileReader(fileEntry);
+    //                BufferedReader br = new BufferedReader(fr);
+    //                jsonElement = gson.fromJson(br, JsonElement.class);
+    //                Type listType = new TypeToken<List<OresRegionGenerator>>(){}.getType();
+    //                List<OresRegionGenerator> regionList = gson.fromJson(jsonElement, listType);
+    //                for (OresRegionGenerator o : regionList) {
+    //                    regionsOres.put(Objects.hash(o.xRegion, o.zRegion, o.dim), o);
+    //                }
+    //                br.close();
+    //            } catch (Exception e) {
+    //                e.printStackTrace();
+    //            }
+    //            OreVeinRandomizer.resizeVeins();
+    //        }
+    //    }
+    //
+    //    private static void saveOreGenerator() {
+    //        if (regionsOres.isEmpty()) return;
+    //        File json = SaveManager.get().oresDirectory;
+    //        Gson objGson = new Gson();
+    //        regionsOres.forEach((dimID, region) -> {
+    //            String pathFile = "\\dimID" + region.dim;
+    //            try (FileWriter writer = new FileWriter(json.getPath() + "\\" + ORES + pathFile + ".json")) {
+    //                List<OresRegionGenerator> list = new ArrayList<>(regionsOres.values());
+    //                objGson.toJson(list, writer);
+    //            } catch (Exception e) {
+    //                e.printStackTrace();
+    //            }
+    //        });
+    //    }
 }
