@@ -193,7 +193,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 				IInventory tTileEntity = te.getIInventoryAtSide((byte) 1);
 				if (tTileEntity != null) {
 					if (mInventory[OUTPUT_SLOT] != null) {
-						GT_Utility.moveOneItemStack(te, tTileEntity, (byte) 1, (byte) 1,
+						GT_Utility.moveOneItemStack(te, tTileEntity, (byte) 1, (byte) 0,
 								null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1
 						);
 					}
@@ -256,7 +256,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == OreGenerator.empty) {
 			return false;
 		}
-		if (sizeVeinPreStart-- < 1) {
+		if (sizeVeinPreStart < 1) {
 			stopMachine();
 			return false;
 		}
@@ -267,6 +267,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 			return false;
 		}
 		increaseLayer(getBaseMetaTileEntity());
+		--sizeVeinPreStart;
 		return true;
 	}
 	
