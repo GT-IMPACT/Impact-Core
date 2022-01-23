@@ -125,7 +125,7 @@ public class ImpactPlugin extends PluginBase {
                         currenttip.add(tag.getString(filterKey));
                     }
                 }
-                if (tag.getByte("gt_colorization") >= 0) {
+                if (!tag.getString("gt_colorization").equals("INVALID COLOR")) {
                     currenttip.add("Color: " + tag.getString("gt_colorization"));
                 }
             }
