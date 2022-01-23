@@ -6,6 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 
 import static gregtech.api.enums.GT_Values.V;
@@ -44,16 +45,17 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 			final IGregTechTileEntity outTE = mTarget.getBaseMetaTileEntity();
 			
 			IGregTechTileEntity in = inTE.getIGregTechTileEntityAtSide(inTE.getFrontFacing());
-			IGregTechTileEntity out = outTE.getIGregTechTileEntityAtSide(outTE.getBackFacing());
+			if (in == null) return;
 			
-			if (in != null && out != null) {
-				long tEU = V[mTier] - Math.min(V[mTier], mDistance / 16);
-				if (inTE.getFrontFacing() == getOppositeSide(in.getFrontFacing()) && outTE.getBackFacing() != getOppositeSide(out.getFrontFacing())) {
-					if (in.isUniversalEnergyStored(tEU)) {
-						long tAmp = out.injectEnergyUnits((byte) 6, tEU, in.getOutputAmperage());
-						if (tAmp > 0) {
-							in.drainEnergyUnits((byte) 6, tEU, tAmp);
-						}
+			IGregTechTileEntity out = outTE.getIGregTechTileEntityAtSide(outTE.getBackFacing());
+			if (out == null) return;
+			
+			long tEU = V[mTier] - Math.min(V[mTier], mDistance / 16);
+			if (inTE.getFrontFacing() == getOppositeSide(in.getFrontFacing()) && outTE.getBackFacing() != getOppositeSide(out.getFrontFacing())) {
+				if (in.isUniversalEnergyStored(tEU)) {
+					long ampers = out.injectEnergyUnits((byte) 6, tEU, ((MetaTileEntity) in.getMetaTileEntity()).maxAmperesOut());
+					if (ampers > 0) {
+						in.drainEnergyUnits((byte) 6, tEU, ampers);
 					}
 				}
 			}

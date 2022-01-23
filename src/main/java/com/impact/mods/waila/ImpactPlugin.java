@@ -166,6 +166,7 @@ public class ImpactPlugin extends PluginBase {
 
             if (pipeline != null) {
                 final int facing = pipeline.getBaseMetaTileEntity().getFrontFacing();
+                currenttip.add("Distance: " + tag.getLong("pipeline.distance") + EnumChatFormatting.RESET);
                 if (side == facing) {
                     currenttip.add(EnumChatFormatting.GOLD + trans("waila.pipeline.in") + EnumChatFormatting.RESET);
                 } else if (side == ForgeDirection.OPPOSITES[facing]) {
@@ -417,11 +418,17 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
         final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
         final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
+    
+        final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
         
         if (tMeta != null) {
     
             tag.setString("gt_colorization", Dyes.get(tBaseMetaTile.getColorization()).mName);
         
+            if (pipeline != null) {
+                tag.setLong("pipeline.distance", pipeline.getDistance());
+            }
+            
             if (adv_miner != null) {
                 tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart);
                 tag.setInteger("adv_miner.layer", adv_miner.layer);
