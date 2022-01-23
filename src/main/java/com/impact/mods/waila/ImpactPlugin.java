@@ -7,24 +7,23 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_E
 import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MESystemProvider;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MESystemProvider;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
-import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -81,8 +80,7 @@ public class ImpactPlugin extends PluginBase {
         NBTTagCompound tag = accessor.getNBTData();
         final int side = (byte) accessor.getSide().ordinal();
         
-        final TE_DryingRack dryingRack = tile instanceof TE_DryingRack ? (TE_DryingRack) tile : null;
-        
+        //region gregtech
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
         final BaseMetaTileEntity mBaseMetaTileEntity = tile instanceof  BaseMetaTileEntity ? ((BaseMetaTileEntity) tile) : null;
@@ -128,7 +126,7 @@ public class ImpactPlugin extends PluginBase {
                     }
                 }
                 if (tag.getByte("gt_colorization") >= 0) {
-                    currenttip.add("Color: " + Dyes.get(tag.getByte("gt_colorization")).mName);
+                    currenttip.add("Color: " + tag.getString("gt_colorization"));
                 }
             }
             
@@ -369,6 +367,7 @@ public class ImpactPlugin extends PluginBase {
                 currenttip.add(trans("waila.output") + ": " + RED + GT_Utility.formatNumbers(tag.getLong("energyOutput")) + RESET + " " + trans("waila.eut"));
             }
         }
+        //endregion
 
         final AEBaseTile aeBaseTE = tile instanceof AEBaseTile ? (AEBaseTile) tile : null;
         final TileCraftingTile cpu = aeBaseTE instanceof TileCraftingTile ? (TileCraftingTile) aeBaseTE : null;
@@ -381,6 +380,7 @@ public class ImpactPlugin extends PluginBase {
             }
         }
         
+        final TE_DryingRack dryingRack = tile instanceof TE_DryingRack ? (TE_DryingRack) tile : null;
         if (dryingRack != null) {
             currenttip.add((tag.getInteger("dryingRack.time") / 20) + " / " + (tag.getInteger("dryingRack.maxTime") / 20) + "s");
         }
@@ -419,6 +419,8 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
         
         if (tMeta != null) {
+    
+            tag.setString("gt_colorization", Dyes.get(tBaseMetaTile.getColorization()).mName);
         
             if (adv_miner != null) {
                 tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart);
@@ -468,10 +470,8 @@ public class ImpactPlugin extends PluginBase {
             if (reactorHatch != null) {
                 tag.setInteger("wIDhatch", reactorHatch.mIDhatch + 1);
                 tag.setInteger("wDownRod", reactorHatch.mDownRod);
-                if (reactorHatch.mStartReactor)
-                    tag.setInteger("wSpeedDecay", reactorHatch.mSpeedDecay);
-                tag.setString("wRodName", reactorHatch.mInventory[0] != null ?
-                        reactorHatch.mInventory[0].getDisplayName() : "");
+                if (reactorHatch.mStartReactor) tag.setInteger("wSpeedDecay", reactorHatch.mSpeedDecay);
+                tag.setString("wRodName", reactorHatch.mInventory[0] != null ? reactorHatch.mInventory[0].getDisplayName() : "");
             }
 
             if (chestBase != null) {
@@ -615,8 +615,6 @@ public class ImpactPlugin extends PluginBase {
                 tag.setLong("energyInput", energyInput);
                 tag.setLong("energyOutput", energyOutput);
             }
-            
-            tag.setByte("gt_colorization", tBaseMetaTile.getColorization());
             
             if (tBaseMetaTile instanceof BaseMetaPipeEntity) {
                 for(byte side=0 ; side < 6 ; side++) {

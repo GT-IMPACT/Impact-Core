@@ -10,13 +10,9 @@ import org.lwjgl.input.Keyboard;
 public class KeyBindings {
 	
 	public static KeyBinding placeItem;
-	public static KeyBinding checkOre;
 	
 	public static void init() {
 		placeItem = new KeyBinding("Place Any Item", Keyboard.KEY_P, "Impact");
 		ClientRegistry.registerKeyBinding(placeItem);
-		
-		checkOre = new KeyBinding("Scan Ores on/off", Keyboard.KEY_Z, "Impact");
-		ClientRegistry.registerKeyBinding(checkOre);
 	}
 }
