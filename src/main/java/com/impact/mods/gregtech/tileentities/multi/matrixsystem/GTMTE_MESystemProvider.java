@@ -26,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -133,7 +132,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	public boolean checkRecipe(ItemStack aStack) {
 		ArrayList<ItemStack> tInputList;
 		ItemStack[] tInputs;
-		
+
 		if (!checkAE()) {
 			return false;
 		}
@@ -144,10 +143,8 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 		if (tInputList.size() > 0) {
 			long nominalV = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-			GT_Recipe tRecipe;
-			tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], null, tInputs);
+			GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], null, tInputs);
 			if (tRecipe != null && (mMatrixParticlesSummary - tRecipe.mSpecialValue >= 0)) {
-				cashedRecipe = tRecipe;
 				ArrayList<ItemStack> outputItems = new ArrayList<>();
 				boolean found_Recipe = false;
 				int processed = 0;
@@ -264,8 +261,18 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 								if (aeCPU instanceof TileCraftingStorageTile) {
 									TileCraftingStorageTile craft = (TileCraftingStorageTile) aeCPU;
 									AE_CPU_CRAFT.add(craft);
-									int bytes = craft.getStorageBytes() / 1024;
-									int preSpeedUp = bytes == 64 ? 4 : bytes == 16 ? 3 : bytes == 4 ? 2 : 1;
+									int storage = craft.getStorageBytes() / 1024;
+									int preSpeedUp;
+									switch(storage) {
+										default: preSpeedUp = 1; break;
+										case 4: preSpeedUp = 2; break;
+										case 16: preSpeedUp = 3; break;
+										case 64: preSpeedUp = 4; break;
+										case 250: preSpeedUp = 5; break;
+										case 1000: preSpeedUp = 6; break;
+										case 4000: preSpeedUp = 7; break;
+										case 16000: preSpeedUp = 8; break;
+									}
 									if (mSpeedUp == 1) {
 										mSpeedUp = preSpeedUp;
 									} else if (mSpeedUp > preSpeedUp) {
@@ -331,7 +338,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	public boolean checkAE() {
 		int checker = 0;
 		for (TileCraftingTile te : AE_CPU_CRAFT) {
-			if (te.isPowered()) checker++;
+			checker++;
 		}
 		return checker == 4;
 	}

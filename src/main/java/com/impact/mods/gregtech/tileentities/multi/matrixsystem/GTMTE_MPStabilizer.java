@@ -6,6 +6,7 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.network.special.ToClient_LaserPush;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -25,7 +26,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.LAB_SAFELG_CASING;
 import static net.minecraft.util.EnumChatFormatting.*;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
@@ -136,7 +136,8 @@ public class GTMTE_MPStabilizer extends GT_MetaTileEntity_MultiParallelBlockBase
 			Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);
 			Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, mRangeToContainer - 1, 0, -1);
 			
-			impact.proxy.beam(iAm.getWorld(), offset.x() + x + 0.5D, offset.y() + y + 0.5D, offset.z() + z + 0.5D, offsetToStabilizer.x() + x + 0.5D, offsetToStabilizer.y() + y + 0.5D, offsetToStabilizer.z() + z + 0.5D, 1, 0x770ED0, false, 1, 20 * 2);
+			new ToClient_LaserPush(iAm.getWorld().provider.dimensionId, new Vector3i(offset.x() + x, offset.y() + y, offset.z() + z),
+					new Vector3i(offsetToStabilizer.x() + x, offsetToStabilizer.y() + y, offsetToStabilizer.z() + z), 0x770ED0, 1, 20*2, 1, 1).sendToClients();
 		}
 	}
 	

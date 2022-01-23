@@ -60,7 +60,7 @@ public class LaserPath {
 						reflector.setEUVar(reflector.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						new ToClient_LaserPush(new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash).sendToClients();
+						new ToClient_LaserPush(te.getWorld().provider.dimensionId, new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash, 0).sendToClients();
 						return reflector.pushLaser();
 						
 					}
@@ -80,7 +80,7 @@ public class LaserPath {
 						laserEnergyIn.setEUVar(laserEnergyIn.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						new ToClient_LaserPush(new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash).sendToClients();
+						new ToClient_LaserPush(te.getWorld().provider.dimensionId, new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash, 0).sendToClients();
 						return true;
 					}
 					return false;

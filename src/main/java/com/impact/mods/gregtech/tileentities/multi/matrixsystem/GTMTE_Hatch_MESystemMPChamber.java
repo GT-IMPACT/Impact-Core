@@ -48,7 +48,7 @@ public class GTMTE_Hatch_MESystemMPChamber extends GT_MetaTileEntity_Hatch {
 
 	@Override
 	public boolean isFacingValid(byte aFacing) {
-		return aFacing > 1;
+		return true;
 	}
 
 	@Override

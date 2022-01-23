@@ -1,11 +1,11 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
-import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.matrixsystem.GT_Container_ParametricDiffuser;
 import com.impact.mods.gregtech.gui.matrixsystem.GUI_ParametricDiffuser;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.network.special.ToClient_LaserPush;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
@@ -29,7 +29,6 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.Random;
 
-import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.LAB_SAFELG_CASING;
 import static net.minecraft.util.EnumChatFormatting.*;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
@@ -159,12 +158,9 @@ public class GTMTE_ParametricDiffuser extends GT_MetaTileEntity_MultiParallelBlo
 		if (iAm.isActive()) {
 			Vector3ic offset = rotateOffsetVector(forgeDirection, 1, 0, -1);
 			Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, -1);
-			double kek = 0.5d;
 			
-			impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
-					offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek, 0, 0x770ED0, false, 1.3f, 20);
-			impact.proxy.beam(iAm.getWorld(), offset.x() + x + kek, offset.y() + y + kek, offset.z() + z + kek,
-					offsetToStabilizer.x() + x + kek, offsetToStabilizer.y() + y + kek, offsetToStabilizer.z() + z + kek, 0, 0x770ED0, true, 1.3f, 20);
+			new ToClient_LaserPush(iAm.getWorld().provider.dimensionId, new Vector3i(offset.x() + x, offset.y() + y, offset.z() + z),
+					new Vector3i(offsetToStabilizer.x() + x, offsetToStabilizer.y() + y, offsetToStabilizer.z() + z), 0x770ED0, 1, 20, 0, 1.3f).sendToClients();
 		}
 	}
 	
