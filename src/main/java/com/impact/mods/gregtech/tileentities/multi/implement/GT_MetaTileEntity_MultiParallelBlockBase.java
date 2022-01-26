@@ -346,7 +346,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			}
 		}
 		
-		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
+		int countOperation = mInputBusHatches.size();
 		
 		for (int count = 0; count < countOperation; count++) {
 			if (modeBuses == 0) {
@@ -547,7 +547,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			}
 		}
 		
-		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
+		int countOperation = mInputBusHatches.size();
 		
 		for (int count = 0; count < countOperation; count++) {
 			if (modeBuses == 0) {
@@ -740,7 +740,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			}
 		}
 		
-		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
+		int countOperation = mInputBusHatches.size();
 		
 		for (int count = 0; count < countOperation; count++) {
 			if (modeBuses == 0) {
@@ -897,7 +897,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<T extends GT_Meta
 			}
 		}
 		
-		int countOperation = mInputBusHatches.size() > 0 ? mInputBusHatches.size() : 1;
+		int countOperation = mInputBusHatches.size();
 		
 		for (int count = 0; count < countOperation; count++) {
 			if (modeBuses == 0) {
