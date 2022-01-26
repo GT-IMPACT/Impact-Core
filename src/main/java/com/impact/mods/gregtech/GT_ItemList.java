@@ -74,7 +74,7 @@ public enum GT_ItemList implements IItemContainer {
 	
 	AE_Hatch_Connector, MP_Hatch_Chamber,
 	
-	Solar_ULV, Solar_LV, Solar_MV, Solar_HV, Solar_EV, Solar_IV, Solar_LuV, Solar_ZPM, Solar_UV,
+	Solar_ULV, Solar_LV, Solar_MV, Solar_HV, Solar_EV, Solar_IV, Solar_LuV, Solar_ZPM, Solar_UV, Solar_UHV, Solar_UEV, Solar_UIV,
 	
 	Volumetric_Configurator,
 	

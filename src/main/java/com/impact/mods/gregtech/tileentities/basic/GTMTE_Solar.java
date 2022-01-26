@@ -1,9 +1,7 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
-import cofh.api.energy.IEnergyStorage;
 import cpw.mods.fml.common.Loader;
 import galaxyspace.core.configs.GSConfigDimensions;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

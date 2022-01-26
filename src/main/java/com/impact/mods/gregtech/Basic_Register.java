@@ -351,6 +351,10 @@ public class Basic_Register {
 		
 		Maintenance.set(new GTMTE_Maintenance(ID2++, "Non-serviceable Maintenance Hatch", 8).getStackForm(1));
 		
+		Solar_UHV.set(new GTMTE_Solar(ID2++, "UHV Solar Panel", 9).getStackForm(1L));
+		Solar_UEV.set(new GTMTE_Solar(ID2++, "UEV Solar Panel", 10).getStackForm(1L));
+		Solar_UIV.set(new GTMTE_Solar(ID2++, "UIV Solar Panel", 11).getStackForm(1L));
+		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		
 		DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
