@@ -154,7 +154,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
 			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
 		}
 		
-		if (aBaseMetaTileEntity.isActive()) {
+		if (aBaseMetaTileEntity.isActive() && mfh != null) {
 			// Suck in fluids
 			final ArrayList<FluidStack> inputHatchFluids = super.getStoredFluids();
 			if (inputHatchFluids.size() > 0) {
