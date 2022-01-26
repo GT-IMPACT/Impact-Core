@@ -30,12 +30,23 @@ public class GTMTE_AE_Connector extends GT_MetaTileEntity_Hatch {
     public GTMTE_AE_Connector(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-
+    
+    
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+        return true;
     }
-
+    
+    @Override
+    public boolean isSimpleMachine() {
+        return true;
+    }
+    
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+    
     @Override
     public ITexture[] getTexturesActive(ITexture iTexture) {
         return new ITexture[]{iTexture, new GT_RenderedTexture(Texture.Icons.OVERLAY_AE_CONNECTOR_ACTIVE)};
