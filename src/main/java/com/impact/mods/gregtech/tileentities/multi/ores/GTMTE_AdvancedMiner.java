@@ -226,7 +226,7 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 			}
 		} else {
 			if (te.isActive()) {
-				if (aTick % 20 == 5 && hatch.get(0) != null) {
+				if (aTick % 20 == 5 && hatch.size() > 0 && hatch.get(0) != null) {
 					if (!hatch.get(0).ready && hatch.get(0).drillCoefficient == 0) {
 						stopMachine();
 					}
