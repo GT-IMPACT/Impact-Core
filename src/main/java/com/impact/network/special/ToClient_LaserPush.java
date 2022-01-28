@@ -4,10 +4,11 @@ import baubles.api.BaublesApi;
 import com.impact.common.armor.MaskOfVision;
 import com.impact.impact;
 import com.impact.util.vector.Vector3i;
+import gregtech.GT_Mod;
 import hohserg.elegant.networking.api.ElegantPacket;
 import hohserg.elegant.networking.api.ServerToClientPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -44,17 +45,18 @@ public class ToClient_LaserPush implements ServerToClientPacket {
 	
 	@Override
 	public void onReceive(Minecraft minecraft) {
-		EntityClientPlayerMP thePlayer = minecraft.thePlayer;
-		World w = thePlayer.worldObj;
+		EntityPlayer player = GT_Mod.gregtechproxy.getThePlayer();
+		if (player == null) return;
+		World w = player.getEntityWorld();
 		if (dim != w.provider.dimensionId) {
 			return;
 		}
 		switch (mode) {
 			case 0:
 				boolean mask = false;
-				ItemStack is = thePlayer.getCurrentArmor(3);
+				ItemStack is = player.getCurrentArmor(3);
 				if (is == null || !(is.getItem() instanceof MaskOfVision)) {
-					IInventory handler = BaublesApi.getBaubles(thePlayer);
+					IInventory handler = BaublesApi.getBaubles(player);
 					if (handler != null) {
 						for (int i = 0; i < handler.getSizeInventory(); ++i) {
 							is = handler.getStackInSlot(i);
