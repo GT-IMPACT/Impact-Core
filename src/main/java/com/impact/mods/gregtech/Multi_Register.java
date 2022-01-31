@@ -111,7 +111,7 @@ public class Multi_Register {
 		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, /*"Wind Generator", */"[WIP]").get());
 		hideItem(Wind_Generator.get(1));
 		
-		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Coal Miner").get());
+		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Primitive Miner").get());
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
 		AdvancedMiner.set(new GTMTE_AdvancedMiner(ID++, "Advanced Electric Miner").get());
 		The_Mill.set(new GTMTE_TheMill(ID++, "The Mill").get());
