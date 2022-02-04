@@ -9,6 +9,7 @@ import com.impact.mods.gregtech.gui.laptop.Container_LapTopSetting;
 import com.impact.mods.gregtech.gui.laptop.GUI_LapTopSetting;
 import com.impact.mods.gregtech.gui.regulatechest.Container_ValueRegulateChest;
 import com.impact.mods.gregtech.gui.regulatechest.GUI_ValueRegulateChest;
+import com.impact.mods.gregtech.tileentities.basic.ae.craftsup.GUI_SuppliersAE;
 import com.impact.mods.railcraft.carts.item.client.OpenableGUI;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -23,7 +24,9 @@ import static com.impact.core.impactLog.WARNING;
 
 public class GUIHandler implements IGuiHandler {
 	
-	public static final int GUI_ID_Solar = 0, GUI_ID_Carts = 2, GUI_ID_LapTop = 3, GUI_ID_FirstAerostat = 4;
+	public static final int GUI_ID_Solar = 0, GUI_ID_Carts = 2, GUI_ID_LapTop = 3, GUI_ID_FirstAerostat = 4, GUI_AE = 7;
+	
+	
 	
 	public GUIHandler() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, this);
@@ -59,6 +62,8 @@ public class GUIHandler implements IGuiHandler {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
 					return new Container_ValueRegulateChest(player.inventory, gte);
 				}
+			case GUI_AE:
+				return new GUI_SuppliersAE.Server(x, y, z);
 		}
 		WARNING("GUIHandler Server - Not Loaded");
 		return null;
@@ -94,6 +99,8 @@ public class GUIHandler implements IGuiHandler {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
 					return new GUI_ValueRegulateChest(player.inventory, gte);
 				}
+			case GUI_AE:
+				return new GUI_SuppliersAE.Client(new GUI_SuppliersAE.Server(x, y, z));
 		}
 		INFO("GUIHandler Client - Loaded");
 		return null;

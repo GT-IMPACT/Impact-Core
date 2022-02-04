@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech;
 
 import com.impact.mods.gregtech.tileentities.basic.*;
+import com.impact.mods.gregtech.tileentities.basic.ae.craftsup.GTMTE_AELevelEmitter;
 import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
@@ -354,6 +355,8 @@ public class Basic_Register {
 		Solar_UHV.set(new GTMTE_Solar(ID2++, "UHV Solar Panel", 9).getStackForm(1L));
 		Solar_UEV.set(new GTMTE_Solar(ID2++, "UEV Solar Panel", 10).getStackForm(1L));
 		Solar_UIV.set(new GTMTE_Solar(ID2++, "UIV Solar Panel", 11).getStackForm(1L));
+		
+		Level_Emitter.set(new GTMTE_AELevelEmitter(ID2++, "Level Emitter").getStackForm(1));
 		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		

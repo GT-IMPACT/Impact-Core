@@ -76,7 +76,7 @@ public enum GT_ItemList implements IItemContainer {
 	
 	Solar_ULV, Solar_LV, Solar_MV, Solar_HV, Solar_EV, Solar_IV, Solar_LuV, Solar_ZPM, Solar_UV, Solar_UHV, Solar_UEV, Solar_UIV,
 	
-	Volumetric_Configurator,
+	Volumetric_Configurator, Level_Emitter,
 	
 	EnergyMulti4_IV, EnergyMulti16_IV, EnergyMulti64_IV,
 	EnergyMulti4_LuV, EnergyMulti16_LuV, EnergyMulti64_LuV,
