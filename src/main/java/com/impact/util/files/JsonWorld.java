@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.impact.common.oregeneration.OreVeinRandomizer;
 import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.core.SaveManager;
+import com.impact.impact;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,8 +16,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static com.impact.core.Impact_API.*;
+import static com.impact.util.Utilits.getTimeString;
 
 @SuppressWarnings("ALL")
 public class JsonWorld {
@@ -33,6 +37,23 @@ public class JsonWorld {
         saveAeroState();
         saveOreGenerator();
         System.out.println("Impact Save files finished: (" + (System.currentTimeMillis() - start) + "ms)");
+    }
+    
+    public static void saveAsync() {
+        impact.chatFromServer("[IMPACT] Started saving files!");
+        CompletableFuture.supplyAsync(new Supplier<Long>() {
+            @Override
+            public Long get() {
+                long start = System.currentTimeMillis();
+                saveCommunicationTowers();
+                saveSpaceSatellite();
+                saveAeroState();
+                saveOreGenerator();
+                return start;
+            }
+        }).thenAccept(start -> {
+            impact.chatFromServer("[IMPACT] Save files finished: (" + getTimeString(System.currentTimeMillis() - start)+ ")");
+        });
     }
 
     public static void load() {

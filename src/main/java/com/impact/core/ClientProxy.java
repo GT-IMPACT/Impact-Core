@@ -217,4 +217,7 @@ public class ClientProxy extends CommonProxy {
 	public void preInit() {
 		KeyBindings.init();
 	}
+	
+	@Override
+	public void addChatFromServer(String text) {}
 }

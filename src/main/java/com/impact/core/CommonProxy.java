@@ -1,5 +1,6 @@
 package com.impact.core;
 
+import com.impact.impact;
 import com.impact.util.files.JsonWorld;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -8,6 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -146,5 +149,10 @@ public class CommonProxy implements IGuiHandler {
 		Impact_API.sCommunicationTower.clear();
 		Impact_API.sAerostat.clear();
 		Impact_API.regionsOres.clear();
+	}
+	
+	public void addChatFromServer(String text) {
+		IChatComponent c = new ChatComponentText(text);
+		impact.getServer().getConfigurationManager().sendChatMsgImpl(c, true);
 	}
 }
