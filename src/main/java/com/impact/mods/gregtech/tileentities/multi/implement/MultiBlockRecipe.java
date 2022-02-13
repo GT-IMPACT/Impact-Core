@@ -317,7 +317,8 @@ public class MultiBlockRecipe {
 				List<FluidStack> outputFluids = new ArrayList<>();
 				int processed = 0;
 				recipe.preFoundRecipe = false;
-				while (((recipe.itemsIn.length | recipe.fluidsIn.length) > 0) && processed < 1) {
+				boolean isNoEmptyHatches = recipe.itemsIn.length > 0 || recipe.fluidsIn.length > 0;
+				while (isNoEmptyHatches && processed < 1) {
 					if ((recipe.tRecipe.mEUt * (processed + 1L)) < recipe.voltageIn) {
 						if (recipe.tRecipe.isRecipeInputEqual(
 								aDecreaseStackSizeBySuccess, aDontCheckStackSizes, recipe.fluidsIn, recipe.itemsIn)) {
