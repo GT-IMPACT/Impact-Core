@@ -242,10 +242,10 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 				mInventory[INPUT_SLOT].stackSize--;
 				if (mInventory[INPUT_SLOT].stackSize <= 0) {
 					mInventory[INPUT_SLOT] = null;
-                }
-            }
-        }
-        check = check && cBurnTime > 0;
+				}
+			}
+		}
+		check = check && cBurnTime > 0;
 		hatch.get(0).cycleDrill(check);
 		return check;
 	}
