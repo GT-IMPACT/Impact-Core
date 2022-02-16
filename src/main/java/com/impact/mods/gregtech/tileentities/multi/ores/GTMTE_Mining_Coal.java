@@ -239,13 +239,13 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 		if (check) {
 			if (cBurnTime <= 0 && TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]) > 0) {
 				maxBurnTime = cBurnTime = TileEntityFurnace.getItemBurnTime(this.mInventory[INPUT_SLOT]);
-				check       = cBurnTime > 0;
 				mInventory[INPUT_SLOT].stackSize--;
 				if (mInventory[INPUT_SLOT].stackSize <= 0) {
 					mInventory[INPUT_SLOT] = null;
 				}
-			}
+            }
 		}
+        check = check && cBurnTime > 0;
 		hatch.get(0).cycleDrill(check);
 		return check;
 	}
