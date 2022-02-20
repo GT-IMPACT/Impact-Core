@@ -1,17 +1,26 @@
 package com.impact.mods.gregtech.tileentities.multi.implement
 
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase.isValidMetaTileEntity
 import com.impact.util.Utilits
+import com.impact.util.multis.OverclockCalculate
 import com.impact.util.multis.WorldProperties
+import com.impact.util.recipe.RecipeHelper
 import gregtech.api.enums.GT_Values
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
 import gregtech.api.util.GT_Recipe
 import gregtech.api.util.GT_Utility
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
-import java.util.*
+import kotlin.math.abs
 
 class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>>(val multis: GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>) {
+
+    companion object {
+        private const val MAX_TICK_FOR_RECIPE = 2
+        private const val DEFAULT_OVERCLOCK_EU = 4
+        private const val DEFAULT_OVERCLOCK_TIME = 2
+        private const val EFFICIENCY_100 = 10000
+        private const val EFFICIENCY_PER_100 = 1000
+    }
 
     var fluidsIn: Array<FluidStack>? = null
     var itemsIn: Array<ItemStack>? = null
@@ -66,27 +75,30 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
         fluidsIn = inputList.toTypedArray()
     }
 
-    @JvmOverloads
+    fun sortFluids() {
+        fluidsIn = multis.storedFluids.toTypedArray()
+    }
+
     fun <T : GT_MetaTileEntity_Hatch> sortItems(bus: T? = null) {
         itemsIn = if (bus != null) {
-            val tBusItems: ArrayList<ItemStack> = ArrayList()
-            if (isValidMetaTileEntity(bus)) {
-                for (i in bus.baseMetaTileEntity.sizeInventory - 1 downTo 0) {
-                    if (bus.baseMetaTileEntity.getStackInSlot(i) != null) {
-                        tBusItems.add(bus.baseMetaTileEntity.getStackInSlot(i))
-                    }
-                }
-            }
+            val tBusItems = ArrayList<ItemStack>()
+            bus.mInventory
+                .reversed()
+                .forEach { it != null && tBusItems.add(it) }
+//            for (i in bus.baseMetaTileEntity.sizeInventory - 1 downTo 0) {
+//                if (bus.baseMetaTileEntity.getStackInSlot(i) != null) {
+//                    tBusItems.add(bus.baseMetaTileEntity.getStackInSlot(i))
+//                }
+//            }
             tBusItems.toTypedArray()
         } else {
             multis.storedInputs.toTypedArray()
         }
     }
 
+    // TODO: 20.02.2022 Проверить
     fun checkSizeHatches() {
-        if (itemsIn != null || fluidsIn != null) {
-            preFoundRecipe = itemsIn!!.isNotEmpty() || fluidsIn!!.isNotEmpty()
-        }
+        preFoundRecipe = (itemsIn?.isNotEmpty() == true) || (fluidsIn?.isNotEmpty() == true)
     }
 
     fun checkVoltage(vanila: Boolean = true) {
@@ -101,25 +113,60 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
         }
     }
 
-    fun checkRecipeMap(): GT_Recipe? =
-        Utilits.findRecipe(
+    fun checkRecipeMap(aDontCheckStackSizes: Boolean = true): GT_Recipe? {
+        val recipe = Utilits.findRecipe(
             multis.recipeMap,
             multis.baseMetaTileEntity,
             false,
-            false,
+            aDontCheckStackSizes,
             GT_Values.V[tierFromVoltage],
             fluidsIn,
             itemsIn
         )
+        preFoundRecipe = recipe != null
+        return recipe
+    }
 
     fun checkInputEquals(
         recipe: GT_Recipe?,
-        aDecreaseStackSizeBySuccess: Boolean = false,
-        aDontCheckStackSizes: Boolean = true
+        aDecreaseStackSizeBySuccess: Boolean = true,
+        aDontCheckStackSizes: Boolean = false
     ) {
         finallyFoundRecipe =
             Utilits.checkInputs(recipe, aDecreaseStackSizeBySuccess, aDontCheckStackSizes, fluidsIn, itemsIn)
+    }
 
+    fun checkInputEqualsParallel(
+        recipe: GT_Recipe,
+        aDecreaseStackSizeBySuccess: Boolean = true,
+        aDontCheckStackSizes: Boolean = false,
+        enabledChance: Boolean = false,
+    ) {
+        finallyFoundRecipe = false
+        if (!preFoundRecipe) return
+        val outputFluids = ArrayList<FluidStack>()
+        val tOut = arrayOfNulls<ItemStack>(recipe.mOutputs.size)
+        while ((!fluidsIn.isNullOrEmpty() || !itemsIn.isNullOrEmpty()) && multis.mCheckParallelCurrent < multis.mParallel) {
+            if ((recipe.mEUt * (multis.mCheckParallelCurrent + 1L)) < voltageIn &&
+                Utilits.checkInputs(recipe, aDecreaseStackSizeBySuccess, aDontCheckStackSizes, fluidsIn, itemsIn)
+            ) {
+                finallyFoundRecipe = true
+                for (h in recipe.mOutputs.indices) {
+                    if (recipe.getOutput(h) != null) {
+                        tOut[h] = recipe.getOutput(h).copy()
+                        tOut[h]!!.stackSize = 0
+                    }
+                }
+                for (i in recipe.mFluidOutputs.indices) {
+                    outputFluids.add(recipe.getFluidOutput(i))
+                }
+                ++multis.mCheckParallelCurrent
+            } else {
+                break
+            }
+        }
+        multis.mOutputItems = RecipeHelper.resizeItemStackSizeChance(tOut, recipe, multis, enabledChance)
+        multis.mOutputFluids = outputFluids.toTypedArray()
     }
 
     fun worldProperties(recipe: GT_Recipe, needCleanRoom: Boolean = false, needLowGravity: Boolean = false) {
@@ -132,8 +179,8 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
     }
 
     fun setEfficiency(
-        efficiency: Int = 10000 - (multis.idealStatus - multis.repairStatus) * 1000,
-        efficiencyIncrease: Int = 10000
+        efficiency: Int = EFFICIENCY_100 - (multis.idealStatus - multis.repairStatus) * EFFICIENCY_PER_100,
+        efficiencyIncrease: Int = EFFICIENCY_100
     ) {
         multis.mEfficiency = efficiency
         multis.mEfficiencyIncrease = efficiencyIncrease
@@ -143,16 +190,44 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
         var tEUt = recipe.mEUt
         var maxProgressTime = recipe.mDuration
 
-        while (tEUt <= GT_Values.V[tierFromVoltage - 1] && maxProgressTime > 2) {
-            tEUt *= 4
-            maxProgressTime /= 2
+        while (tEUt <= GT_Values.V[tierFromVoltage - 1] && maxProgressTime > MAX_TICK_FOR_RECIPE) {
+            tEUt *= DEFAULT_OVERCLOCK_EU
+            maxProgressTime /= DEFAULT_OVERCLOCK_TIME
         }
-        if (maxProgressTime < 2) {
-            maxProgressTime = 2
-            tEUt = recipe.mEUt * recipe.mDuration / 2
+        if (maxProgressTime < MAX_TICK_FOR_RECIPE) {
+            maxProgressTime = MAX_TICK_FOR_RECIPE
+            tEUt = recipe.mEUt * recipe.mDuration / DEFAULT_OVERCLOCK_TIME
         }
-        multis.mEUt = -tEUt
+        multis.mEUt = -abs(tEUt)
         multis.mMaxProgresstime = maxProgressTime
+    }
+
+    fun calcEUParallel(recipe: GT_Recipe) {
+        var tEUt = recipe.mEUt.toLong() * multis.mCheckParallelCurrent
+        if (tEUt > Int.MAX_VALUE) {
+            var divider = 0
+            while (tEUt > Int.MAX_VALUE) {
+                tEUt /= DEFAULT_OVERCLOCK_TIME
+                divider++
+            }
+            OverclockCalculate.calculateOverclockedNessMulti(
+                (tEUt / (divider * DEFAULT_OVERCLOCK_TIME)).toInt(),
+                recipe.mDuration * (divider * DEFAULT_OVERCLOCK_TIME),
+                1, voltageIn, multis
+            )
+        } else {
+            OverclockCalculate.calculateOverclockedNessMulti(
+                tEUt.toInt(), recipe.mDuration, 1, voltageIn, multis
+            )
+        }
+
+        finallyFoundRecipe = multis.mMaxProgresstime == Int.MAX_VALUE - 1 && multis.mEUt == Int.MAX_VALUE - 1
+
+        if (finallyFoundRecipe) {
+            multis.mMaxProgresstime = RecipeHelper.calcTimeParallel(multis)
+            multis.mEUt = if (multis.mEUt > 0) -multis.mEUt else multis.mEUt
+            multis.mEUt = -abs(multis.mEUt)
+        }
     }
 
     fun setOutputs(recipe: GT_Recipe, default: Boolean = false, af: AdditionalFun? = null) {
