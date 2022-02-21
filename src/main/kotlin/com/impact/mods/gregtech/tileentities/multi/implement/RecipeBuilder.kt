@@ -96,7 +96,6 @@ object RecipeBuilder {
         return false
     }
 
-    //TODO ДОДЕЛАТЬ
     @JvmStatic
     fun <MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>> checkParallelMachinesRecipe(
         multis: MULTIS,
@@ -123,23 +122,23 @@ object RecipeBuilder {
             recipe = MultiBlockRecipe(multis)
             recipe.apply {
                 sortItems(if (separation) mInputBuss else null)
-                impact.chatFromServer("NEW PARALLEL Recipe Total Time: ${(System.nanoTime().toDouble() - startTime) / 1E06} ms")
                 sortFluids()
                 checkSizeHatches()
                 checkVoltage(vanila = false)
                 gtRecipe = checkRecipeMap(aDontCheckStackSizes = aDontCheckStackSizes)
                 gtRecipe?.apply {
                     worldProperties(recipe = this, needCleanRoom = true, needLowGravity = true)
-                    checkInputEqualsParallel(recipe = this, enabledChance = enabledChance)
+                    checkInputEqualsParallel(recipe = this)
                     setEfficiency()
                     calcEUParallel(recipe = this)
-                    setOutputs(recipe = this, default = false) { multis.updateSlots() }
+                    setOutputs(recipe = this, default = false, enabledChance = enabledChance) { multis.updateSlots() }
                 }
                 checkRecipe = finallyFoundRecipe
             }
             // TODO: 20.02.2022 УДАЛИТЬ
 
             if (checkRecipe) {
+                impact.chatFromServer("NEW PARALLEL Recipe Total Time: ${(System.nanoTime().toDouble() - startTime) / 1E06} ms $checkRecipe")
                 return true
             }
         }

@@ -1,5 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.implement
 
+import com.impact.core.Config
+import com.impact.impact
 import com.impact.util.Utilits
 import com.impact.util.multis.OverclockCalculate
 import com.impact.util.multis.WorldProperties
@@ -82,14 +84,7 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
     fun <T : GT_MetaTileEntity_Hatch> sortItems(bus: T? = null) {
         itemsIn = if (bus != null) {
             val tBusItems = ArrayList<ItemStack>()
-            bus.mInventory
-                .reversed()
-                .forEach { it != null && tBusItems.add(it) }
-//            for (i in bus.baseMetaTileEntity.sizeInventory - 1 downTo 0) {
-//                if (bus.baseMetaTileEntity.getStackInSlot(i) != null) {
-//                    tBusItems.add(bus.baseMetaTileEntity.getStackInSlot(i))
-//                }
-//            }
+            bus.mInventory.reversed().forEach { it != null && tBusItems.add(it) }
             tBusItems.toTypedArray()
         } else {
             multis.storedInputs.toTypedArray()
@@ -140,33 +135,19 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
         recipe: GT_Recipe,
         aDecreaseStackSizeBySuccess: Boolean = true,
         aDontCheckStackSizes: Boolean = false,
-        enabledChance: Boolean = false,
     ) {
         finallyFoundRecipe = false
         if (!preFoundRecipe) return
-        val outputFluids = ArrayList<FluidStack>()
-        val tOut = arrayOfNulls<ItemStack>(recipe.mOutputs.size)
         while ((!fluidsIn.isNullOrEmpty() || !itemsIn.isNullOrEmpty()) && multis.mCheckParallelCurrent < multis.mParallel) {
             if ((recipe.mEUt * (multis.mCheckParallelCurrent + 1L)) < voltageIn &&
                 Utilits.checkInputs(recipe, aDecreaseStackSizeBySuccess, aDontCheckStackSizes, fluidsIn, itemsIn)
             ) {
                 finallyFoundRecipe = true
-                for (h in recipe.mOutputs.indices) {
-                    if (recipe.getOutput(h) != null) {
-                        tOut[h] = recipe.getOutput(h).copy()
-                        tOut[h]!!.stackSize = 0
-                    }
-                }
-                for (i in recipe.mFluidOutputs.indices) {
-                    outputFluids.add(recipe.getFluidOutput(i))
-                }
                 ++multis.mCheckParallelCurrent
             } else {
                 break
             }
         }
-        multis.mOutputItems = RecipeHelper.resizeItemStackSizeChance(tOut, recipe, multis, enabledChance)
-        multis.mOutputFluids = outputFluids.toTypedArray()
     }
 
     fun worldProperties(recipe: GT_Recipe, needCleanRoom: Boolean = false, needLowGravity: Boolean = false) {
@@ -194,8 +175,8 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
             tEUt *= DEFAULT_OVERCLOCK_EU
             maxProgressTime /= DEFAULT_OVERCLOCK_TIME
         }
-        if (maxProgressTime < MAX_TICK_FOR_RECIPE) {
-            maxProgressTime = MAX_TICK_FOR_RECIPE
+        if (maxProgressTime < Config.MAX_TICK_RATE) {
+            maxProgressTime = Config.MAX_TICK_RATE
             tEUt = recipe.mEUt * recipe.mDuration / DEFAULT_OVERCLOCK_TIME
         }
         multis.mEUt = -abs(tEUt)
@@ -221,21 +202,57 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
             )
         }
 
-        finallyFoundRecipe = multis.mMaxProgresstime == Int.MAX_VALUE - 1 && multis.mEUt == Int.MAX_VALUE - 1
+        finallyFoundRecipe = !(multis.mMaxProgresstime == Int.MAX_VALUE - 1 && multis.mEUt == Int.MAX_VALUE - 1)
 
         if (finallyFoundRecipe) {
             multis.mMaxProgresstime = RecipeHelper.calcTimeParallel(multis)
             multis.mEUt = if (multis.mEUt > 0) -multis.mEUt else multis.mEUt
-            multis.mEUt = -abs(multis.mEUt)
         }
     }
 
-    fun setOutputs(recipe: GT_Recipe, default: Boolean = false, af: AdditionalFun? = null) {
+    fun setOutputs(recipe: GT_Recipe, default: Boolean = false, enabledChance: Boolean = false, af: AdditionalFun? = null) {
         if (default) {
             multis.mOutputItems = recipe.mOutputs
             multis.mOutputFluids = recipe.mFluidOutputs
             af?.get()
         } else {
+
+            var tOut = recipe.mOutputs.copyOfRange(0, recipe.mOutputs.size)
+
+            for (i in 0 until recipe.mOutputs.size) {
+                if (recipe.mOutputs[i] != null) {
+                    tOut[i] = recipe.mOutputs[i].copy()
+                    tOut[i]!!.stackSize = 0
+                }
+            }
+
+            if (enabledChance) {
+                for (i in tOut.indices) {
+                    if (recipe.mOutputs[i] != null && tOut[i] != null) {
+                        val chance = recipe.getOutputChance(i)
+                        val stackSize = recipe.mOutputs[i].stackSize
+                        if (multis.baseMetaTileEntity.getRandomNumber(10000) < chance) {
+                            tOut[i].stackSize += stackSize * multis.mCheckParallelCurrent
+                        }
+                    }
+                }
+            }
+
+            val overStacks: MutableList<ItemStack> = ArrayList()
+            tOut.forEach {
+                while (it.maxStackSize < it.stackSize) {
+                    val tmp = it.copy()
+                    tmp.stackSize = tmp.maxStackSize
+                    it.stackSize = it.stackSize - it.maxStackSize
+                    overStacks.add(tmp)
+                }
+            }
+            if (overStacks.size > 0) {
+                tOut = overStacks.toTypedArray()
+            }
+            multis.mOutputItems = tOut.filterNotNull().toTypedArray()
+            multis.mOutputFluids = recipe.mFluidOutputs.onEach { it.amount * multis.mCheckParallelCurrent }
+
             af?.get()
         }
     }

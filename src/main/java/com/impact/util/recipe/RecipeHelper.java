@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.impact.core.Config.MAX_TICK_RATE;
+
 public class RecipeHelper {
 
     public static int calcTimeParallel(GT_MetaTileEntity_MultiParallelBlockBase base) {
@@ -28,8 +30,8 @@ public class RecipeHelper {
                 time = base.mMaxProgresstime / 4;
                 break;
         }
-        if (time < 1) {
-            time = 1;
+        if (time < MAX_TICK_RATE) {
+            time = MAX_TICK_RATE;
         }
         return time;
     }
