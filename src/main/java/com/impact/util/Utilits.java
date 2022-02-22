@@ -277,10 +277,10 @@ public class Utilits {
 		);
 	}
 
-	public static GT_Recipe findRecipe(GT_Recipe.GT_Recipe_Map map, IHasWorldObjectAndCoords te,
+	public static GT_Recipe findRecipe(GT_Recipe.GT_Recipe_Map map, IHasWorldObjectAndCoords te, GT_Recipe cashRecipe,
 									   boolean aNotUnificated, boolean aDontCheckStackSizes,
 									   long aVoltage, FluidStack[] aFluids, ItemStack[] aItems) {
-		return map.findRecipe(te, null, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids, aItems);
+		return map.findRecipe(te, cashRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids, aItems);
 	}
 
 	public static boolean checkInputs(GT_Recipe recipe, boolean aDecreaseStackSizeBySuccess,

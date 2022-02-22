@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -29,11 +30,6 @@ import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
 public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SawMill> {
 	
-	public static String mModed;
-	Block CASING = Casing_Helper.sCaseCore2;
-	byte CASING_META = 9;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
-	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	static IStructureDefinition<GTMTE_SawMill> definition =
 			StructureDefinition.<GTMTE_SawMill>builder()
 					.addShapeOldApi("main", new String[][]{
@@ -46,6 +42,10 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 					.addElement('1', ofBlock(SawMillBlock, 0))
 					.addElement('0', ofBlock(sCaseCore2, 9))
 					.build();
+	Block CASING = Casing_Helper.sCaseCore2;
+	byte CASING_META = 9;
+	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
+	int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	
 	public GTMTE_SawMill(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.sawmill", aNameRegional);
@@ -95,21 +95,20 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", mModed);
-		
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		this.mWrench        = true;
-		this.mScrewdriver   = true;
-		this.mSoftHammer    = true;
-		this.mHardHammer    = true;
-		this.mSolderingTool = true;
-		this.mCrowbar       = true;
-		return impactRecipe();
+		noMaintenance();
+		boolean checkRecipe = RecipeBuilder.checkLowTierMachineRecipe(this);
+		if (!checkRecipe) {
+			return false;
+		}
+		mEUt /= 4;
+		mMaxProgresstime *= 2;
+		return true;
 	}
-	
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
@@ -181,12 +180,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 		if (this.mEnergyHatches.size() != 1) {
 			formationChecklist = false;
 		}
-		mWrench        = true;
-		mScrewdriver   = true;
-		mSoftHammer    = true;
-		mHardHammer    = true;
-		mSolderingTool = true;
-		mCrowbar       = true;
+		noMaintenance();
 		return formationChecklist;
 	}
 	
@@ -209,7 +203,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 			mRecipeMode = 0;
 		}
 		
-		String name = (mRecipeMode == 0 ? " Planks & Sawdust " : mRecipeMode == 1 ? " Wood Pulp & Sawdust " : " Only Sawdust ");
-		GT_Utility.sendChatToPlayer(aPlayer, "Mode:" + EnumChatFormatting.GREEN + name);
+		String name = (mRecipeMode == 0 ? "Planks & Sawdust" : mRecipeMode == 1 ? "Wood Pulp & Sawdust" : "Only Sawdust");
+		GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + EnumChatFormatting.GREEN + name);
 	}
 }

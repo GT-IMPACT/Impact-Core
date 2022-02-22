@@ -1,7 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.implement
 
 import com.impact.core.Config
-import com.impact.impact
 import com.impact.util.Utilits
 import com.impact.util.multis.OverclockCalculate
 import com.impact.util.multis.WorldProperties
@@ -108,10 +107,11 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
         }
     }
 
-    fun checkRecipeMap(aDontCheckStackSizes: Boolean = true): GT_Recipe? {
+    fun checkRecipeMap(aDontCheckStackSizes: Boolean = true, cachedRecipe: GT_Recipe? = null): GT_Recipe? {
         val recipe = Utilits.findRecipe(
             multis.recipeMap,
             multis.baseMetaTileEntity,
+            cachedRecipe,
             false,
             aDontCheckStackSizes,
             GT_Values.V[tierFromVoltage],

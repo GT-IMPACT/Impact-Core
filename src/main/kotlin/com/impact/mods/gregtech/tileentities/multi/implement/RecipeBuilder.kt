@@ -1,6 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.implement
 
-import com.impact.impact
 import gregtech.api.enums.ItemList
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
 import gregtech.api.util.GT_Recipe
@@ -13,8 +12,6 @@ object RecipeBuilder {
 
     @JvmStatic
     fun <MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>> check3DPrinterRecipe(multis: MULTIS): Boolean {
-        // TODO: 20.02.2022 УДАЛИТЬ
-        val startTime = System.nanoTime().toDouble()
         var checkRecipe: Boolean
         val busses = ArrayList<GT_MetaTileEntity_Hatch>()
         busses.apply {
@@ -45,8 +42,6 @@ object RecipeBuilder {
                 }
                 checkRecipe = finallyFoundRecipe
             }
-            // TODO: 20.02.2022 УДАЛИТЬ
-            impact.chatFromServer("Recipe Total Time: ${(System.nanoTime().toDouble() - startTime) / 1E06} ms $checkRecipe")
             if (checkRecipe) {
                 return true
             }
@@ -56,8 +51,6 @@ object RecipeBuilder {
 
     @JvmStatic
     fun <MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>> checkLowTierMachineRecipe(multis: MULTIS): Boolean {
-        // TODO: 20.02.2022 УДАЛИТЬ
-        val startTime = System.nanoTime().toDouble()
         var checkRecipe: Boolean
         val busses = ArrayList<GT_MetaTileEntity_Hatch>()
         busses.apply {
@@ -65,10 +58,13 @@ object RecipeBuilder {
             addAll(multis.mInputBusHatches)
             addAll(multis.mInputHatches)
         }
-        val separation = (multis.mInputBusses.isNotEmpty() || multis.mInputBusHatches.isNotEmpty()) && multis.modeBuses == 0
-        val preCheck = bussesIsNoEmpty(busses)
+
+        val checkItemHatches = (multis.mInputBusses.isNotEmpty() || multis.mInputBusHatches.isNotEmpty())
+        val separation = checkItemHatches && multis.modeBuses == 0
+        val preCheck = (bussesIsNoEmpty(busses) || !checkItemHatches)
 
         if (!preCheck) return false
+
         var recipe: MultiBlockRecipe<MULTIS>
         var gtRecipe: GT_Recipe?
         for (mInputBuss: GT_MetaTileEntity_Hatch in busses) {
@@ -87,8 +83,6 @@ object RecipeBuilder {
                 }
                 checkRecipe = finallyFoundRecipe
             }
-            // TODO: 20.02.2022 УДАЛИТЬ
-            impact.chatFromServer("Recipe Total Time: ${(System.nanoTime().toDouble() - startTime) / 1E06} ms $checkRecipe")
             if (checkRecipe) {
                 return true
             }
@@ -102,8 +96,6 @@ object RecipeBuilder {
         aDontCheckStackSizes: Boolean = false,
         enabledChance: Boolean = false,
     ): Boolean {
-        // TODO: 20.02.2022 УДАЛИТЬ
-        val startTime = System.nanoTime().toDouble()
         var checkRecipe: Boolean
         val busses = ArrayList<GT_MetaTileEntity_Hatch>()
         busses.apply {
@@ -111,9 +103,14 @@ object RecipeBuilder {
             addAll(multis.mInputBusHatches)
             addAll(multis.mInputHatches)
         }
-        val separation = (multis.mInputBusses.isNotEmpty() || multis.mInputBusHatches.isNotEmpty()) && multis.modeBuses == 0
-        val preCheck = multis.sParallHatchesIn.isNotEmpty() && multis.mRecipeCheckParallel && bussesIsNoEmpty(busses)
+        val checkItemHatches = (multis.mInputBusses.isNotEmpty() || multis.mInputBusHatches.isNotEmpty())
+        val separation = checkItemHatches && multis.modeBuses == 0
+        val preCheck = (bussesIsNoEmpty(busses) || !checkItemHatches)
         if (!preCheck) return false
+
+        if (multis.sParallHatchesIn.isNotEmpty() && multis.mRecipeCheckParallel) {
+            return false
+        }
 
         var recipe: MultiBlockRecipe<MULTIS>
         var gtRecipe: GT_Recipe?
@@ -135,10 +132,7 @@ object RecipeBuilder {
                 }
                 checkRecipe = finallyFoundRecipe
             }
-            // TODO: 20.02.2022 УДАЛИТЬ
-
             if (checkRecipe) {
-                impact.chatFromServer("NEW PARALLEL Recipe Total Time: ${(System.nanoTime().toDouble() - startTime) / 1E06} ms $checkRecipe")
                 return true
             }
         }

@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.multis.WorldProperties;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -115,13 +116,13 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sCompressorRecipes :
-               mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sExtractorRecipes :
-               mRecipeMode == 2 ? GT_Recipe.GT_Recipe_Map.sCannerRecipes :
-               mRecipeMode == 3 ? GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes :
-               mRecipeMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes :
-               mRecipeMode == 5 ? GT_Recipe.GT_Recipe_Map.sHammerRecipes :
-               mRecipeMode == 6 ? GT_Recipe.GT_Recipe_Map.sLatheRecipes :
-							GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
+				mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sExtractorRecipes :
+						mRecipeMode == 2 ? GT_Recipe.GT_Recipe_Map.sCannerRecipes :
+								mRecipeMode == 3 ? GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes :
+										mRecipeMode == 4 ? GT_Recipe.GT_Recipe_Map.sRecyclerRecipes :
+												mRecipeMode == 5 ? GT_Recipe.GT_Recipe_Map.sHammerRecipes :
+														mRecipeMode == 6 ? GT_Recipe.GT_Recipe_Map.sLatheRecipes :
+																GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
 	}
 	
 	@Override
@@ -241,7 +242,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		if (getRecipeMap() != GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes) {
-			return impactRecipeCheckStackSize();
+			return RecipeBuilder.checkParallelMachinesRecipe(this, true, true);
 		}
 		return checkRecipeBoxinator();
 	}
