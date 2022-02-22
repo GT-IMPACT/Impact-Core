@@ -19,9 +19,11 @@ object RecipeBuilder {
             addAll(multis.mInputBusHatches)
             addAll(multis.mInputHatches)
         }
-        val separation = (multis.mInputBusses.isNotEmpty() || multis.mInputBusHatches.isNotEmpty()) && multis.modeBuses == 0
 
-        val preCheck = bussesIsNoEmpty(busses)
+        val checkItemHatches = (multis.mInputBusses.isNotEmpty() || multis.mInputBusHatches.isNotEmpty())
+        val separation = checkItemHatches && multis.modeBuses == 0
+        val preCheck = (bussesIsNoEmpty(busses) || !checkItemHatches)
+        
         if (!preCheck) return false
 
         var recipe: MultiBlockRecipe<MULTIS>
