@@ -74,13 +74,13 @@ public class RecipeHelper {
     public static ItemStack[] removeNull(ItemStack[] in) {
         int countNull = 0;
         for (ItemStack stack : in) {
-            if (stack == null) {
+            if (stack == null || stack.stackSize == 0) {
                 countNull++;
             }
         }
         ItemStack[] on = new ItemStack[in.length - countNull];
         for (int i = 0, j = 0; i < in.length; i++) {
-            if (in[i] != null) {
+            if (in[i] != null && in[i].stackSize > 0) {
                 on[j] = in[i];
                 j++;
             }
