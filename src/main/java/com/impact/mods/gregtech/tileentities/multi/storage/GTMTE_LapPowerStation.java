@@ -324,7 +324,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 			} else if (i == 4) {
 				//capacity = Integer.MAX_VALUE;
 			} else if (i == 5) {
-				final long c = 819200000L;
+				final long c = 102400000L;
 				capacity += c * capacitors[i];
 			} else if (i == 6) {
 				final long c = 50000000000L;
