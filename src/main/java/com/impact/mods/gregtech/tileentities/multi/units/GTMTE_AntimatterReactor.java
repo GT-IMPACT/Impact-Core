@@ -32,7 +32,7 @@ import static space.impact.api.multiblocks.structure.StructureUtility.ofChain;
 
 public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AntimatterReactor> {
 	
-	protected int mColantConsumption = 0;
+	protected int mColantConsumption = 0, mPerFluidAmount;
 	private FluidStack[] mInputFluids;
 	
 	public GTMTE_AntimatterReactor(int aID, String aNameRegional) {
@@ -122,6 +122,7 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 				this.mEfficiency         = 10000;
 				this.mEfficiencyIncrease = 10000;
 				this.mInputFluids        = tRecipe.mFluidInputs;
+				this.mPerFluidAmount     = tRecipe.mFluidInputs.length;
 				this.mOutputFluids       = tRecipe.mFluidOutputs;
 				this.mOutputItems        = tRecipe.mOutputs;
 				this.mColantConsumption  = tRecipe.mFluidInputs[0].amount;
@@ -135,11 +136,22 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
+		aNBT.setInteger("mPerFluidAmount", mPerFluidAmount);
+		for (int i = 0; i < mPerFluidAmount; i++) {
+			if (mInputFluids[i] != null && mInputFluids[i].amount > 0) {
+				aNBT.setTag("mInputFluids" + (i == 0 ? "" : i), mInputFluids[i].writeToNBT(new NBTTagCompound()));
+			}
+		}
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
+		mPerFluidAmount = aNBT.getInteger("mPerFluidAmount");
+		mInputFluids = new FluidStack[mPerFluidAmount];
+		for (int i = 0; i < mPerFluidAmount; i++) {
+			mInputFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mInputFluids" + (i == 0 ? "" : i)));
+		}
 	}
 	
 	@Override
@@ -149,7 +161,7 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 	
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
-		if (mEUt > 0) {
+		if (mEUt > 0 && mInputFluids != null) {
 			if (depleteInput(mInputFluids[0])) {
 				addEnergyOutput(((long) mEUt * mEfficiency) / 10000);
 				addOutput(mOutputFluids[0]);
