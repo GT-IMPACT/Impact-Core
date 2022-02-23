@@ -50,14 +50,11 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 			IGregTechTileEntity out = outTE.getIGregTechTileEntityAtSide(outTE.getBackFacing());
 			if (out == null) return;
 			
-			long amp = Math.min(in.getOutputAmperage(), out.getInputAmperage());
-			long tEU = V[mTier] - Math.min(V[mTier], mDistance / 16);
+			long tEU = V[mTier] - Math.min(V[mTier], mDistance / 20);
 			
 			if (in.isUniversalEnergyStored(tEU)) {
-				for (int i = 0; i < amp; i++) {
-					if (out.injectEnergyUnits((byte) 6, tEU, 1) > 0) {
-						in.decreaseStoredEnergyUnits(tEU, false);
-					}
+				if (out.injectEnergyUnits((byte) 6, tEU, 1) > 0) {
+					in.decreaseStoredEnergyUnits(tEU, false);
 				}
 			}
 		}
