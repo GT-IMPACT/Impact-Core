@@ -260,10 +260,11 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 		}
 		
 		outEU = mEfficiency < 10000 ? outEU / 2 : outEU;
-		
+		outEU /= 20;
+		mStoredFluids /= 20;
 		mOutputSalary = Math.min(outEU, getMaxOutputVoltage());
 		
-		this.mMaxProgresstime    = 8;
+		this.mMaxProgresstime    = 20;
 		this.mEfficiencyIncrease = 10000;
 		return true;
 	}
