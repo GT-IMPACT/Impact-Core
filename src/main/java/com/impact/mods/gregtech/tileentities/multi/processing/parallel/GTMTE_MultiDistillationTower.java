@@ -21,6 +21,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,7 +41,6 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 	static Block CASING = GregTech_API.sBlockCasings4;
 	static byte CASING_META = 1;
 	static byte CASING_TEXTURE_ID = 49;
-	static private short controllerY;
 	static IStructureDefinition<GTMTE_MultiDistillationTower> definition =
 			StructureDefinition.<GTMTE_MultiDistillationTower>builder()
 					.addShape("main", new String[][]{
@@ -197,8 +197,6 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
 		
-		controllerY = thisController.getYCoord();
-		
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
@@ -320,9 +318,9 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 		if (aLiquid == null) return false;
 		FluidStack copiedFluidStack = aLiquid.copy();
 		
-		ArrayList<GT_MetaTileEntity_Hatch_Output> tOutputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Output>();
+		ArrayList<GT_MetaTileEntity_Hatch_Output> tOutputHatches = new ArrayList<>();
 		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-			if (tHatch.getBaseMetaTileEntity().getYCoord() == this.controllerY + 1 + i) {
+			if (tHatch.getBaseMetaTileEntity().getYCoord() == getBaseMetaTileEntity().getYCoord() + 1 + i) {
 				tOutputHatches.add(tHatch);
 			}
 		}
