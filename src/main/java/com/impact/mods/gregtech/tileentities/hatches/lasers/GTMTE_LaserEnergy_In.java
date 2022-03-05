@@ -6,6 +6,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_EnergyMulti;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -27,11 +28,17 @@ public class GTMTE_LaserEnergy_In extends GT_MetaTileEntity_Hatch_EnergyMulti {
 	}
 	
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Texture.Icons.OVERLAY_LASER_INPUT, getColorToRGBA(getColorTier(mTier)))};
+		return new ITexture[]{
+				aBaseTexture,
+				TextureFactory.of(Texture.Icons.OVERLAY_LASER_INPUT, getColorToRGBA(getColorTier(mTier)))
+		};
 	}
 	
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(Texture.Icons.OVERLAY_LASER_INPUT, getColorToRGBA(getColorTier(mTier)))};
+		return new ITexture[]{
+				aBaseTexture,
+				TextureFactory.of(Texture.Icons.OVERLAY_LASER_INPUT, getColorToRGBA(getColorTier(mTier)))
+		};
 	}
 	
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {

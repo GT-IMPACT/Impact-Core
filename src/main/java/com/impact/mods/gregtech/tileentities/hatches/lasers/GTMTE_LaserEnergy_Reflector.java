@@ -9,7 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +36,7 @@ public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull imp
 	
 	@Override
 	public String[] getDescription() {
-		return new String[] {
+		return new String[]{
 				"The reflector serves to turn the laser (tunnel)",
 				"Accepts up to 256A",
 				"To set the entry point, use an RClick screwdriver on the side of the reflector",
@@ -47,9 +47,15 @@ public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull imp
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity te, byte aSide, byte aFacing, byte aColorIndex, boolean aConnected, boolean aRedstone) {
 		if (mSide == aSide && aSide != aFacing) {
-			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Texture.Icons.OVERLAY_LASER_INPUT, getColorToRGBA(getColorTier(mTier)))};
+			return new ITexture[]{
+					Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+					TextureFactory.of(Texture.Icons.OVERLAY_LASER_INPUT, getColorToRGBA(getColorTier(mTier)))
+			};
 		} else if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Texture.Icons.OVERLAY_LASER_OUTPUT, getColorToRGBA(getColorTier(mTier)))};
+			return new ITexture[]{
+					Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+					TextureFactory.of(Texture.Icons.OVERLAY_LASER_OUTPUT, getColorToRGBA(getColorTier(mTier)))
+			};
 		}
 		return mTextures[Math.min(2, aSide)][aColorIndex + 1];
 	}
