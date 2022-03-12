@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 
+import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.cokeoven.GUI_CokeOven;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -71,6 +72,11 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
 		return new GUI_CokeOven(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CokeOven.png",
 				GT_Recipe.GT_Recipe_Map.sCokeOvenRecipes.mNEIName
 		);
+	}
+	
+	@Override
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
