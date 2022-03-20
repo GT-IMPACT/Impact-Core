@@ -103,13 +103,21 @@ public class GTMTE_AdvancedMiner extends GT_MetaTileEntity_MultiParallelBlockBas
 				if (oreChunkGenerator.sizeOreChunk >= cycleIncrease) {
 					oreChunkGenerator.sizeOreChunk -= cycleIncrease;
 					cycleIncrease = 0;
+					checkEmptyChunk(oreChunkGenerator);
 					break;
 				} else {
 					int preSize = cycleIncrease - oreChunkGenerator.sizeOreChunk;
 					oreChunkGenerator.sizeOreChunk -= preSize;
 					cycleIncrease -= preSize;
+					checkEmptyChunk(oreChunkGenerator);
 				}
 			}
+		}
+	}
+	
+	private void checkEmptyChunk(OreChunkGenerator chunk) {
+		if (chunk.sizeOreChunk <= 0) {
+			chunk.sizeOreChunk = 0;
 		}
 	}
 	

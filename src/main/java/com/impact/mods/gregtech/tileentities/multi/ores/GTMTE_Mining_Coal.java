@@ -95,6 +95,9 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	public void increaseLayer(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
 			oreChunkGenerator.sizeOreChunk--;
+			if (oreChunkGenerator.sizeOreChunk <= 0) {
+				oreChunkGenerator.sizeOreChunk = 0;
+			}
 		}
 	}
 	
@@ -252,7 +255,7 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		if (oreChunkGenerator == null) return false;
+		if (oreChunkGenerator == null || oreChunkGenerator.sizeOreChunk <= 0) return false;
 		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == OreGenerator.empty) {
 			return false;
 		}
