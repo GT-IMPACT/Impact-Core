@@ -319,7 +319,7 @@ public class OreGenerator {
 				.addDim(Dimensions.Mars, Venus, Overworld, Oberon, Ganymede, Triton, Dimensions.Moon)
 				.setSize(50, 400).setTier(1).setWeight(40).setChance(100, 80, 60, 40)
 				.setColor(Galena)
-				.addOres(Galena, Galena, Silicon, Lead)
+				.addOres(Galena, Galena, Silver, Lead)
 				.end();
 		addVein(49, "Naquadah")
 				.addDim(Venus, KuiperBelt, Dimensions.Mercury, Oberon, Haumea, Pluto, Asteroids, Dimensions.Titan)
