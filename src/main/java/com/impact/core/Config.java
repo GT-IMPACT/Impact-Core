@@ -24,6 +24,8 @@ public class Config {
 	public static int saveTime;
 	public static int MiningWorldID;
 	
+	public static int MAX_TICK_RATE;
+	
 	public Config(File file) {
 		if (!loadConfig) {
 			config = new Configuration(file);
@@ -85,6 +87,11 @@ public class Config {
 			cfg         = config.get("GENERAL", "Mining World (Copy OverWorld)", 45);
 			cfg.comment = "MiningWorldID. [Default: 45]";
 			MiningWorldID = cfg.getInt(45);
+			General.add(cfg.getName());
+			
+			cfg         = config.get("GENERAL", "Max tickrate multiblocks (only IMPACT)", 2);
+			cfg.comment = "MaxTickRate. [Default: 2]";
+			MAX_TICK_RATE = cfg.getInt(2);
 			General.add(cfg.getName());
 			
 			//DEBUG

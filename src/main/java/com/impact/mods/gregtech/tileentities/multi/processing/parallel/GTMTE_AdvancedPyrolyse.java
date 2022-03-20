@@ -18,10 +18,8 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -33,7 +31,8 @@ import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
 import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.GregTech_API.sBlockCasings8;
 import static gregtech.api.enums.GT_Values.V;
-import static space.impact.api.multiblocks.structure.StructureUtility.*;
+import static space.impact.api.multiblocks.structure.StructureUtility.lazy;
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedPyrolyse> {
 	
