@@ -230,7 +230,7 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 		if (aLiquid == null) return false;
 		FluidStack copiedFluidStack = aLiquid.copy();
 		
-		ArrayList<GT_MetaTileEntity_Hatch_Output> tOutputHatches = new ArrayList<GT_MetaTileEntity_Hatch_Output>();
+		ArrayList<GT_MetaTileEntity_Hatch_Output> tOutputHatches = new ArrayList<>();
 		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
 			if (tHatch.getBaseMetaTileEntity().getYCoord() == getBaseMetaTileEntity().getYCoord() + 1 + i) {
 				tOutputHatches.add(tHatch);

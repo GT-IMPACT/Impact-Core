@@ -32,7 +32,17 @@ public class GTMTE_DebugTank extends GT_MetaTileEntity_StorageTank {
 	public GTMTE_DebugTank(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, 3, aDescription, aTextures);
 	}
- 
+	
+	@Override
+	protected Textures.BlockIcons textureOverlay() {
+		return Textures.BlockIcons.OVERLAY_STANK;
+	}
+	
+	@Override
+	protected Textures.BlockIcons textureGlowOverlay() {
+		return Textures.BlockIcons.OVERLAY_STANK_GLOW;
+	}
+	
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GTMTE_DebugTank(mName, mTier, mDescriptionArray, mTextures);
@@ -42,6 +52,7 @@ public class GTMTE_DebugTank extends GT_MetaTileEntity_StorageTank {
 		super.saveNBTData(aNBT);
 		aNBT.setBoolean("OutputFluid", this.OutputFluid);
 	}
+	
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
@@ -88,29 +99,6 @@ public class GTMTE_DebugTank extends GT_MetaTileEntity_StorageTank {
 	@Override
 	public boolean isLiquidOutput(byte aSide) {
 		return aSide == getBaseMetaTileEntity().getFrontFacing();
-	}
-	
-	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,
-								 byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return aSide != aFacing
-				? aSide == 1
-				? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_STANK)}
-				: new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]}
-				: aActive
-				? getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1])
-				: getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]);
-	}
-	
-	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
-	}
-	
-	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
 	}
 	
 	public String[] getDescription() {

@@ -212,6 +212,15 @@ public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 		if (world.isAirBlock(x, y, z)) return;
 		
 		if (!(playerEntity instanceof EntityPlayerMP)) return;
+		
+		ItemStack itemstack = playerEntity.getCurrentEquippedItem();
+		if (itemstack != null && !playerEntity.capabilities.isCreativeMode) {
+			long damage = getToolDamage(itemstack);
+			if (damage - getToolDamagePerBlockBreak() <= 0) {
+				playerEntity.destroyCurrentEquippedItem();
+			}
+		}
+		
 		EntityPlayerMP player = (EntityPlayerMP) playerEntity;
 		
 		Block block = world.getBlock(x, y, z);
@@ -254,13 +263,6 @@ public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 			world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
 			if (block.removedByPlayer(world, player, x, y, z, true)) {
 				block.onBlockDestroyedByPlayer(world, x, y, z, meta);
-			}
-			ItemStack itemstack = player.getCurrentEquippedItem();
-			if (itemstack != null) {
-				long damage = getToolDamage(itemstack);
-				if (damage <= 0) {
-					player.destroyCurrentEquippedItem();
-				}
 			}
 		}
 	}
