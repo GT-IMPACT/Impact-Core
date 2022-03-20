@@ -240,7 +240,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 								//capacity += Integer.MAX_VALUE;;
 								break;
 							case 6:
-								c = 819200000L;
+								c = 102400000L;
 								tempCapacity += c;
 								capacity += c;
 								break;
