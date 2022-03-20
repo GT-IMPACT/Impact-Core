@@ -61,9 +61,9 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
 	public OreChunkGenerator oreChunkGenerator = null;
 	public OreVein oreVein = OreGenerator.empty;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
 	public int layer = 1;
 	public double cashedDecrement = 0d;
+	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
 	
 	public GTMTE_BasicMiner(int aID, String aNameRegional) {
 		super(aID, "impact.multis.miner.basic", aNameRegional);
@@ -83,6 +83,9 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	public void increaseLayer(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
 			oreChunkGenerator.sizeOreChunk -= cycleIncrease;
+			if (oreChunkGenerator.sizeOreChunk <= 0) {
+				oreChunkGenerator.sizeOreChunk = 0;
+			}
 			cycleIncrease = 0;
 		}
 	}
@@ -190,7 +193,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		if (hatch.get(0) == null) return false;
-		if (oreChunkGenerator == null) return false;
+		if (oreChunkGenerator == null || oreChunkGenerator.sizeOreChunk <= 0) return false;
 		if (oreVein == OreGenerator.empty) return false;
 		boolean check = hatch.get(0).ready;
 		if ((sizeVeinPreStart - cycleIncrease) <= 0) {
@@ -248,7 +251,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		}
 		
 		double aa = utilization + cashedDecrement;
-		cycleIncrease = (int) Math.floor(aa);
+		cycleIncrease   = (int) Math.floor(aa);
 		cashedDecrement = aa - cycleIncrease;
 		
 		if (cycleIncrease >= 1) {
@@ -261,7 +264,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("basic_miner");
-		b		.addInfo("info.0", "Factorio Miner??")
+		b.addInfo("info.0", "Factorio Miner??")
 				.addTypeMachine("name", "Miner")
 				.addInfo("info.1", "Mining takes place in current Chunk")
 				.addInfo("info.2", "There is only ONE miner in one Chunk")

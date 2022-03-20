@@ -71,6 +71,11 @@ public class OreVeinBuilder {
 		return this;
 	}
 	
+	public OreVeinBuilder setDefaultChance() {
+		this.chance = new int[]{90, 60, 60, 30};
+		return this;
+	}
+	
 	public OreVeinBuilder setFluid(FluidStack fluid) {
 		this.fluid = fluid;
 		return this;
