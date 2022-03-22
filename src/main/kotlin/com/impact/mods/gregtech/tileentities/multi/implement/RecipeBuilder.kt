@@ -110,7 +110,7 @@ object RecipeBuilder {
         val preCheck = (bussesIsNoEmpty(busses) || !checkItemHatches)
         if (!preCheck) return false
 
-        if (multis.sParallHatchesIn.isNotEmpty() && multis.mRecipeCheckParallel) {
+        if (multis.sParallHatchesIn.isNotEmpty() && !multis.mRecipeCheckParallel) {
             return false
         }
 
