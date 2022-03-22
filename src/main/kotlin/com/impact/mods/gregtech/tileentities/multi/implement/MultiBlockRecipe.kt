@@ -250,7 +250,7 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
             if (overStacks.size > 0) {
                 tOut = overStacks.toTypedArray()
             }
-            multis.mOutputItems = tOut.filterNotNull().toTypedArray()
+            multis.mOutputItems = tOut.filterNotNull().filter { it.stackSize > 0 }.toTypedArray()
             multis.mOutputFluids = recipe.mFluidOutputs.onEach { it.amount * multis.mCheckParallelCurrent }
 
             af?.get()
