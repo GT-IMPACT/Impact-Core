@@ -52,7 +52,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 				.addEnergyHatch(1)
 				.addMaintenanceHatch()
 				.addInputBus(1)
-				.addOutputHatch(1)
+				.addOutputHatch(4)
 				.addCasingInfo("case", "Solid Steel Casing", 25)
 				.addOtherStructurePartAny("adv_other.0", "Steel Frame Box")
 				.signAndFinalize(true);
