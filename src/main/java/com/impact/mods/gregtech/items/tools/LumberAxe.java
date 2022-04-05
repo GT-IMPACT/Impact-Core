@@ -34,6 +34,7 @@ import java.util.Stack;
 
 import static com.impact.util.ItemNBTHelper.getBoolean;
 import static gregtech.api.items.GT_MetaGenerated_Tool.getToolDamage;
+import static gregtech.api.items.GT_MetaGenerated_Tool.getToolMaxDamage;
 
 public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 	
@@ -128,7 +129,7 @@ public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 	}
 	
 	public float getMaxDurabilityMultiplier() {
-		return 4.5F;
+		return 3.0F;
 	}
 	
 	public String getCraftingSound() {
@@ -216,7 +217,8 @@ public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 		ItemStack itemstack = playerEntity.getCurrentEquippedItem();
 		if (itemstack != null && !playerEntity.capabilities.isCreativeMode) {
 			long damage = getToolDamage(itemstack);
-			if (damage - getToolDamagePerBlockBreak() <= 0) {
+			long maxDamage = getToolMaxDamage(itemstack);
+			if (damage >= maxDamage) {
 				playerEntity.destroyCurrentEquippedItem();
 			}
 		}
