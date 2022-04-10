@@ -45,7 +45,7 @@ public class impact {
 	public static CommonProxy proxy;
 	@Mod.Instance(MODID)
 	public static impact instance;
-	public static String ModPackVersion = "1.0.1.8";
+	public static String ModPackVersion = "1.0.2.0";
 	public static Config mConfig;
 	public static IRecipeAdder I_RA;
 	
