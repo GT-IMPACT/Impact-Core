@@ -1,14 +1,11 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
-import cofh.api.energy.IEnergyProvider;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.nei.impactplugin.NEI_Impact_MEProvider;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.Language;
@@ -22,8 +19,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_EnergyMulti;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -40,7 +35,6 @@ import net.minecraftforge.common.DimensionManager;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import java.util.Iterator;
 import java.util.List;
 
 import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
@@ -50,7 +44,7 @@ import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
 public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SpaceElevator> {
 	
-	public static String mModed;
+	private final static int CAPACITY_FOR_TELEPORT = 1_000_000;
 	static Block CASING = Casing_Helper.sCaseCore2;
 	static int CASING_META = 14;
 	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 16];
@@ -73,7 +67,6 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 					.addElement('B', ofBlockAnyMeta(SpaceElevatorBlock))
 					.build();
 	boolean isConnect = false;
-	private final static int CAPACITY_FOR_TELEPORT = 1_000_000;
 	private int currentCharge = 0;
 	
 	public GTMTE_SpaceElevator(int aID, String aNameRegional) {
@@ -150,7 +143,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 				currentCharge = 0;
 			} else {
 				hatch.setEUVar(0);
-				currentCharge =- (int) hatch.getEUVar();
+				currentCharge = -(int) hatch.getEUVar();
 			}
 		}
 	}
@@ -233,9 +226,9 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 		b.addInfo("info.0", "Teleportation on Space Satellite")
 				.addTypeMachine("name", "Space Elevator")
 				.addInfo("info.1", "Setup is done using Laptop")
-				.addInfo("info.3", "Consume energy for teleport: 100.000.000 EU")
+				.addInfo("info.3", "Consume energy for teleport: " + CAPACITY_FOR_TELEPORT + " EU")
 				.addController()
-				.addEnergyHatch(2)
+				.addEnergyHatch(4)
 				.addCasingInfo("case", "Space Elevator Casing", 150)
 				.addOtherStructurePart("other.0", "Space Elevator Hawser", "other.1", "Center below Controller")
 				.signAndFinalize();
@@ -281,7 +274,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		this.mMaxProgresstime = 20;
+		this.mMaxProgresstime    = 20;
 		this.mEUt                = 0;
 		this.mEfficiencyIncrease = 10000;
 		this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
@@ -309,7 +302,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 			fontRendererObj.drawString(mName, 10, 8, 16448255);
 			needTools(true);
 			if (this.mContainer != null && ((mContainer).mDisplayErrorCode & 64) == 0) {
-				long charge =  Math.min(( (CONTAINER) mContainer).currentCharge, CAPACITY_FOR_TELEPORT);
+				long charge = Math.min(((CONTAINER) mContainer).currentCharge, CAPACITY_FOR_TELEPORT);
 				String needCharge = String.format("%s / %s EU", GT_Utility.formatNumbers(charge), GT_Utility.formatNumbers(CAPACITY_FOR_TELEPORT));
 				fontRendererObj.drawString(Language.translate("space_elevator_need-charge", "Need energy for teleport:"), 10, 30, 16448255);
 				fontRendererObj.drawString(needCharge, 10, 40, 16448255);
