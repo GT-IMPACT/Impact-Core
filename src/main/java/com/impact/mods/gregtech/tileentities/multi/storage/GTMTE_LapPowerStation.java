@@ -425,7 +425,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		for (GTMTE_LaserEnergy_In eHatch : mLaserIn) {
-			if (eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
+			if (eHatch == null || eHatch.getBaseMetaTileEntity() == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
 			}
 			final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
@@ -437,7 +437,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		for (GTMTE_LaserEnergy_Out eDynamo : mLaserOut) {
-			if (eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
+			if (eDynamo == null || eDynamo.getBaseMetaTileEntity() == null ||  eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
 				continue;
 			}
 			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
