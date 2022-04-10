@@ -78,6 +78,8 @@ public enum GT_ItemList implements IItemContainer {
 	
 	Volumetric_Configurator, Level_Emitter,
 	
+	Steam_In_Hatch, Steam_Out_Hatch,
+	
 	EnergyMulti4_IV, EnergyMulti16_IV, EnergyMulti64_IV,
 	EnergyMulti4_LuV, EnergyMulti16_LuV, EnergyMulti64_LuV,
 	EnergyMulti4_ZPM, EnergyMulti16_ZPM, EnergyMulti64_ZPM,

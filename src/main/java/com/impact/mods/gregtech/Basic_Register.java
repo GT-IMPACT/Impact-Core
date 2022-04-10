@@ -358,6 +358,9 @@ public class Basic_Register {
 		
 		Level_Emitter.set(new GTMTE_AELevelEmitter(ID2++, "Level Emitter").getStackForm(1));
 		
+		Steam_Out_Hatch.set(new GT_MegaHatch_Output(ID2++, "Steam Output Hatch").getStackForm(1));
+		Steam_In_Hatch.set(new GT_MegaHatch_Input(ID2++, "Steam Input Hatch").getStackForm(1));
+		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		
 		DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
