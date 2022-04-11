@@ -59,7 +59,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 				.addController()
 				.addEnergyHatch(4)
 				.addMaintenanceHatch()
-				.addInputBus(15)
+				.addInputBus(20)
 				.addInputHatch(6)
 				.addOutputBus(3)
 				.addParallelHatch(1)
@@ -214,7 +214,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 		
 		setParallel(this.mLevel);
 		
-		if (this.mInputBusses.size() > 15) {
+		if (this.mInputBusses.size() > 20) {
 			formationChecklist = false;
 		}
 		if (this.mInputHatches.size() > 6) {
