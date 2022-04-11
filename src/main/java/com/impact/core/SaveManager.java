@@ -1,6 +1,7 @@
 package com.impact.core;
 
 import com.google.common.base.Preconditions;
+import gregtech.api.util.GT_Log;
 import net.minecraftforge.common.DimensionManager;
 
 import javax.annotation.Nullable;
@@ -45,19 +46,19 @@ public class SaveManager {
 	
 	private void onServerStarting() {
 		if (!this.impactDirectory.isDirectory() && !this.impactDirectory.mkdir()) {
-			throw new IllegalStateException("Failed to create " + this.impactDirectory.getAbsolutePath());
+			GT_Log.err.println(new IllegalStateException("Failed to create " + this.impactDirectory.getAbsolutePath()));
 		}
 		
 		if (!this.parallelSystemDirectory.isDirectory() && !this.parallelSystemDirectory.mkdir()) {
-			throw new IllegalStateException("Failed to create " + this.parallelSystemDirectory.getAbsolutePath());
+			GT_Log.err.println(new IllegalStateException("Failed to create " + this.parallelSystemDirectory.getAbsolutePath()));
 		}
 		
 		if (!this.aerostateSystemDirectory.isDirectory() && !this.aerostateSystemDirectory.mkdir()) {
-			throw new IllegalStateException("Failed to create " + this.aerostateSystemDirectory.getAbsolutePath());
+			GT_Log.err.println(new IllegalStateException("Failed to create " + this.aerostateSystemDirectory.getAbsolutePath()));
 		}
 		
 		if (!this.oresDirectory.isDirectory() && !this.oresDirectory.mkdir()) {
-			throw new IllegalStateException("Failed to create " + this.oresDirectory.getAbsolutePath());
+			GT_Log.err.println(new IllegalStateException("Failed to create " + this.oresDirectory.getAbsolutePath()));
 		}
 	}
 	

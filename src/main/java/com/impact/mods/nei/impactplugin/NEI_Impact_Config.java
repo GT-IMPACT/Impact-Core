@@ -66,7 +66,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
 			return;
 		}
 		
-		RecipeProcessorLoader.init();
+		
 		sIsAdded = false;
 		
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
@@ -85,7 +85,6 @@ public class NEI_Impact_Config implements IConfigureNEI {
 			registerSingle();
 			registerHandlerInfo();
 		}
-		
 		sIsAdded = true;
 	}
 	
