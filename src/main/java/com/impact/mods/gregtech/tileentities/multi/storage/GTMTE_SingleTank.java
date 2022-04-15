@@ -43,15 +43,15 @@ import static space.impact.api.multiblocks.alignment.constructable.IMultiBlockIn
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
 
-public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implements IFluidHandler {
+public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 	
+	public final int MAX_DISTINCT_FLUIDS = 1;
 	private final HashSet<GTMTE_TankHatch> sMultiHatches = new HashSet<>();
 	private final Block glassIC2 = IGlassBlock;
 	private final Block CASING = sBlockCasings8;
 	private final Block CASING_TANK = FluidTankBlock;
 	private final byte fluidSelector = 0;
-	private final int MAX_DISTINCT_FLUIDS = 1;
-	public MultiFluidHandler mfh;
+	private MultiFluidHandler mfh;
 	int CASING_TEXTURE_ID = 176;
 	private int runningCost = 0;
 	private boolean doVoidExcess = false;
@@ -464,8 +464,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 		});
 	}
 	
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getMultiTankInfo() {
 		if (mfh == null) {
 			return null;
 		}
