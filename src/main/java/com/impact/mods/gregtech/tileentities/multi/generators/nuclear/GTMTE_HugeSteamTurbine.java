@@ -13,6 +13,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.common.render.GT_TextureBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -68,7 +70,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5 : Textures.BlockIcons.LARGETURBINE_ST5)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5 : Textures.BlockIcons.LARGETURBINE_ST5)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override

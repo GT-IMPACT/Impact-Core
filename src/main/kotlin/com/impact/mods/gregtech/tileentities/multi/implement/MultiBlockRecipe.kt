@@ -5,9 +5,14 @@ import com.impact.util.Utilits
 import com.impact.util.multis.OverclockCalculate
 import com.impact.util.multis.WorldProperties
 import com.impact.util.recipe.RecipeHelper
+import com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance
 import gregtech.api.enums.GT_Values
+import gregtech.api.enums.Materials
+import gregtech.api.enums.OrePrefixes
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
+import gregtech.api.util.GT_OreDictUnificator
 import gregtech.api.util.GT_Recipe
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map
 import gregtech.api.util.GT_Utility
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
@@ -30,6 +35,9 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
     var parallel: Int = 1
     var preFoundRecipe = false
     var finallyFoundRecipe = false
+
+    var itemsOut: Array<ItemStack?>? = null
+    var fluidsOut: ArrayList<FluidStack>? = null
 
     init {
         multis.mCheckParallelCurrent = 0
@@ -138,12 +146,27 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
     ) {
         finallyFoundRecipe = false
         if (!preFoundRecipe) return
+
+        itemsOut = arrayOfNulls(recipe.mOutputs.size)
+        fluidsOut = ArrayList()
+
         while ((!fluidsIn.isNullOrEmpty() || !itemsIn.isNullOrEmpty()) && multis.mCheckParallelCurrent < multis.mParallel) {
             if ((recipe.mEUt * (multis.mCheckParallelCurrent + 1L)) < voltageIn &&
                 Utilits.checkInputs(recipe, aDecreaseStackSizeBySuccess, aDontCheckStackSizes, fluidsIn, itemsIn)
             ) {
                 finallyFoundRecipe = true
+                for (h in 0 until recipe.mOutputs.size) {
+                    if (recipe.getOutput(h) != null) {
+                        itemsOut!![h] = recipe.getOutput(h).copy().also { it.stackSize = 0 }
+                    }
+                }
+
+                for (i in 0 until recipe.mFluidOutputs.size) {
+                    fluidsOut?.add(recipe.getFluidOutput(i))
+                }
+
                 ++multis.mCheckParallelCurrent
+
             } else {
                 break
             }
@@ -216,45 +239,26 @@ class MultiBlockRecipe<MULTIS : GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>
             multis.mOutputFluids = recipe.mFluidOutputs
             af?.get()
         } else {
-
-            var tOut = recipe.mOutputs.copyOfRange(0, recipe.mOutputs.size)
-
-            for (i in 0 until recipe.mOutputs.size) {
-                if (recipe.mOutputs[i] != null) {
-                    tOut[i] = recipe.mOutputs[i].copy()
-                    tOut[i]!!.stackSize = 0
-                }
-            }
-
-            if (enabledChance) {
-                for (i in tOut.indices) {
-                    if (recipe.mOutputs[i] != null && tOut[i] != null) {
-                        val chance = recipe.getOutputChance(i)
-                        val stackSize = recipe.mOutputs[i].stackSize
-                        if (multis.baseMetaTileEntity.getRandomNumber(10000) < chance) {
-                            tOut[i].stackSize += stackSize * multis.mCheckParallelCurrent
-                        }
-                    }
-                }
-            }
-
-            val overStacks: MutableList<ItemStack> = ArrayList()
-            tOut.forEach {
-                while (it.maxStackSize < it.stackSize) {
-                    val tmp = it.copy()
-                    tmp.stackSize = tmp.maxStackSize
-                    it.stackSize = it.stackSize - it.maxStackSize
-                    overStacks.add(tmp)
-                }
-            }
-            if (overStacks.size > 0) {
-                tOut = overStacks.toTypedArray()
-            }
-            multis.mOutputItems = tOut.filterNotNull().filter { it.stackSize > 0 }.toTypedArray()
-            multis.mOutputFluids = recipe.mFluidOutputs.onEach { it.amount * multis.mCheckParallelCurrent }
-
+            multis.mOutputItems = itemsOut?.let { resizeItemStackSizeChance(it, recipe, multis, enabledChance) } ?: emptyArray()
+            multis.mOutputFluids = resizeList(fluidsOut)
             af?.get()
         }
+    }
+
+    private fun resizeList(oldList: List<FluidStack>?): Array<FluidStack> {
+        if (oldList == null || oldList.isEmpty()) {
+            return emptyArray()
+        }
+        val sortedList = mutableListOf<FluidStack>()
+        for (item in oldList) {
+            if (sortedList.contains(item)) {
+                val id = sortedList.indexOf(item)
+                sortedList[id].amount += item.amount
+            } else {
+                sortedList.add(item)
+            }
+        }
+        return sortedList.toTypedArray()
     }
 
     fun interface AdditionalFun {

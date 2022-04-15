@@ -62,7 +62,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	
 	public String[] getDescription() {
 		return new String[]{
-				"Scan: radius" + (mTier + 5) + " chunks",
+				"Scan: radius " + (mTier + 5) + " chunks",
 				"Use Screwdriver to change mode (Fluid, Ore Layer 0-1)",
 				"Place, activate with explosives",
 				"2 Powderbarrels, 4 Glyceryl Trinitrate, 16 TNT, or 8 ITNT"

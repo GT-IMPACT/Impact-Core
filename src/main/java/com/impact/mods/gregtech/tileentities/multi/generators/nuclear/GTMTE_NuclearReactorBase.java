@@ -14,6 +14,7 @@ import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -60,7 +61,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_Mult
 								 byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{INDEX_CASE,
-					new GT_RenderedTexture(aActive ? REACTOR_OVERLAY_ACTIVE : REACTOR_OVERLAY)};
+					TextureFactory.of(aActive ? REACTOR_OVERLAY_ACTIVE : REACTOR_OVERLAY)};
 		}
 		return new ITexture[]{INDEX_CASE};
 	}
@@ -316,7 +317,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_Mult
 		
 		return new String[]{
 				"Current Temperature: " + EnumChatFormatting.RED + temperature + " %",
-				"MAX Temperature: " + EnumChatFormatting.RED + maxTemperature() + " %",
+				"MAX Temperature: " + EnumChatFormatting.RED + (maxTemperature() / 10000) + " %",
 				"Input: " + getInputFluid().getLocalizedName() + " " + EnumChatFormatting.RED
 						+ (int) Math.ceil(mCurrentInput) + EnumChatFormatting.RESET + " L/t",
 				"Output:  " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN + (int) Math.ceil(mCurrentOutput)

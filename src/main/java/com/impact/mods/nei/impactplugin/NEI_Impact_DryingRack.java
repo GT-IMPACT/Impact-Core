@@ -168,10 +168,10 @@ public class NEI_Impact_DryingRack extends TemplateRecipeHandler {
 		public CachedDefaultRecipe(TE_DryingRack.DryingRackRecipes.DryingRecipe recipe) {
 			super();
 			if (recipe.input != null) {
-				this.mOutputs.add(new FixedPositionedStack(recipe.result, 44, 18));
+				this.mInputs.add(new FixedPositionedStack(recipe.input, 44, 18));
 			}
 			if (recipe.result != null) {
-				this.mInputs.add(new FixedPositionedStack(recipe.input, 98, 18));
+				this.mOutputs.add(new FixedPositionedStack(recipe.result, 98, 18));
 			}
 			this.time = recipe.time;
 		}

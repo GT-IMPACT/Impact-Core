@@ -13,6 +13,7 @@ import com.impact.mods.gregtech.GT_ItemRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
+import com.impact.mods.nei.impactplugin.RecipeProcessorLoader;
 import com.impact.mods.opencomputers.Driver_Register;
 import com.impact.mods.railcraft.carts.item.events.Module;
 import com.impact.util.string.Lang;
@@ -145,5 +146,6 @@ public class MainLoader {
 				module.postInit(event);
 			}
 		}
+		RecipeProcessorLoader.init();
 	}
 }
