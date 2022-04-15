@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
-import com.impact.util.fluid.SingleFluidHandler;
+import com.impact.util.fluid.MultiFluidHandler;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -50,7 +50,8 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 	private final Block CASING = sBlockCasings8;
 	private final Block CASING_TANK = FluidTankBlock;
 	private final byte fluidSelector = 0;
-	public SingleFluidHandler mfh;
+	private final int MAX_DISTINCT_FLUIDS = 1;
+	public MultiFluidHandler mfh;
 	int CASING_TEXTURE_ID = 176;
 	private int runningCost = 0;
 	private boolean doVoidExcess = false;
@@ -77,8 +78,9 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 		b.addInfo("info.0", "High-Tech fluid tank!")
 				.addTypeMachine("name", "Fluid Tank")
 				.addInfo("info.1", "Right-Click the controller with a screwdriver will turn on excess voiding.")
-				.addInfo("info.2", "Fluid storage amount and running cost depends on the storage field blocks used.")
+				.addInfo("info.2", "Fluid storage amount depends on the storage field blocks used.")
 				.addInfo("info.3", "If the integrity of Tank Storage is broken, the fluids are removed.")
+				.addInfo("info.4", "Place a fluid cell in the GUI to restrict.")
 				.addSeparator()
 				.addSeparator()
 				.beginStructureBlock(3, 7, 3)
@@ -87,7 +89,7 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 				.addOtherStructurePart("other.2", "Outer 3x1&7x3 Casing", "other.3", "Chemical Casing")
 				.addOtherStructurePart("other.4", "Outer 3x5x3 glass shell", "other.5", "I-Glass")
 				.addOtherStructurePart("other.6", "I/O Tank Hatch", "other.7", "Instead of any casing or glass")
-				.addInfo("info.4", "I/O Tank Hatch for information and used EC2, OC systems")
+				.addInfo("info.5", "I/O Tank Hatch for information and used EC2, OC systems")
 				.signAndFinalize();
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
@@ -127,14 +129,13 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 		this.mEfficiency         = 10000;
 		this.mEfficiencyIncrease = 10000;
 		this.mEUt                = 0;
-		super.mMaxProgresstime   = 10;
-		
-		// If there are no basic I/O hatches, let multi hatches handle it and skip a lot of code!
-		if (sMultiHatches.size() > 0 && super.mInputHatches.size() == 0
-				&& super.mOutputHatches.size() == 0) {
-			return true;
+		super.mMaxProgresstime   = 100;
+	
+		if (mfh != null) {
+			mfh.setFilterFluids(guiSlotItem);
+			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
 		}
-		
+	
 		this.mWrench        = true;
 		this.mScrewdriver   = true;
 		this.mSoftHammer    = true;
@@ -148,40 +149,20 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-		if (mfh != null) {
-			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
-		}
 		
 		if (aBaseMetaTileEntity.isActive() && mfh != null) {
 			// Suck in fluids
 			final ArrayList<FluidStack> inputHatchFluids = super.getStoredFluids();
 			if (inputHatchFluids.size() > 0) {
-				
 				for (FluidStack fluidStack : inputHatchFluids) {
-					
 					final int pushed = mfh.pushFluid(fluidStack, true);
 					final FluidStack toDeplete = fluidStack.copy();
 					toDeplete.amount = pushed;
 					super.depleteInput(toDeplete);
 				}
-				
-				// Void excess if that is turned on
-				if (doVoidExcess) {
-					for (GT_MetaTileEntity_Hatch_Input inputHatch : super.mInputHatches) {
-						inputHatch.setDrainableStack(null);
-					}
-					
-					for (GTMTE_TankHatch inputHatch : sMultiHatches) {
-						inputHatch.setDrainableStack(null);
-					}
-				}
 			}
-			
-			// Push out fluids
-			if (mInventory[0] != null && mInventory[0].getUnlocalizedName()
-					.equals("gt.integrated_circuit")) {
-				final int config = mInventory[0].getItemDamage();
-				final FluidStack storedFluid = mfh.getFluid(config);
+
+			for (FluidStack storedFluid : mfh.getFluids()) {
 				// Sum available output capacity
 				int possibleOutput = 0;
 				for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
@@ -195,34 +176,12 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
 					}
 				}
-				// Output as much as possible
+				// output as much as possible
 				final FluidStack tempStack = storedFluid.copy();
 				tempStack.amount = possibleOutput;
-				tempStack.amount = mfh.pullFluid(tempStack, config, true);
+				// TODO possible concurrent modification exception as pullFluid calls remove() without an iterator
+				tempStack.amount = mfh.pullFluid(tempStack, true);
 				super.addOutput(tempStack);
-				
-			} else {
-				for (FluidStack storedFluid : mfh.getFluids()) {
-					// Sum available output capacity
-					int possibleOutput = 0;
-					for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
-						if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName()
-								.equals(storedFluid.getUnlocalizedName())) {
-							possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-						} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName()
-								.equals(storedFluid.getUnlocalizedName())) {
-							possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-						} else if (outputHatch.getFluid() == null) {
-							possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-						}
-					}
-					// output as much as possible
-					final FluidStack tempStack = storedFluid.copy();
-					tempStack.amount = possibleOutput;
-					// TODO possible concurrent modification exception as pullFluid calls remove() without an iterator
-					tempStack.amount = mfh.pullFluid(tempStack, true);
-					super.addOutput(tempStack);
-				}
 			}
 		}
 		
@@ -437,17 +396,19 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 		if (formationChecklist) {
 			runningCost = Math.round(-runningCostAcc);
 			
-			// Update SingleFluidHandler in case storage cells have been changed
+			// Update MultiFluidHandler in case storage cells have been changed
 			final int capacityPerFluid = (int) Math.round(fluidCapacityAcc);
 			if (mfh == null) {
-				mfh = new SingleFluidHandler(capacityPerFluid, 1);
+				mfh = new MultiFluidHandler(capacityPerFluid, MAX_DISTINCT_FLUIDS);
+				mfh.setVoidExcess(doVoidExcess);
 			} else {
 				if (mfh.getCapacity() != capacityPerFluid) {
-					mfh = new SingleFluidHandler(capacityPerFluid, mfh.getFluids(), 1);
+					mfh = new MultiFluidHandler(capacityPerFluid, mfh.getFluids(), MAX_DISTINCT_FLUIDS);
+					mfh.setVoidExcess(doVoidExcess);
 				}
 			}
 			for (GTMTE_TankHatch mh : sMultiHatches) {
-				mh.setSingleFluidHandler(mfh);
+				mh.setMultiFluidHandler(mfh);
 			}
 		}
 		this.mWrench        = true;
@@ -538,8 +499,11 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
 										float aZ) {
 		doVoidExcess = !doVoidExcess;
+		if (mfh != null) {
+			mfh.setVoidExcess(doVoidExcess);
+		}
 		GT_Utility
-				.sendChatToPlayer(aPlayer, doVoidExcess ? "Auto-voiding enabled" : "Auto-voiding disabled");
+			.sendChatToPlayer(aPlayer, doVoidExcess ? "Auto-voiding enabled" : "Auto-voiding disabled");
 	}
 	
 	@Override
@@ -554,12 +518,11 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 								+ "L (" + (Math.round(100.0f * mfh.fluids.get(i).amount / mfh.getCapacity()))
 								+ "%)");
 			}
-		}
-		ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
-		ll.add("Auto-voiding: " + doVoidExcess);
-		if (mfh != null && mfh.fluids != null) {
-			ll.add("Fluid Capacity: " + NumberFormat.getNumberInstance().format(mfh.getCapacity())
-					+ "L");
+			ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
+			ll.add("Auto-voiding: " + mfh.getVoidExcess());
+			ll.add("Fluid Capacity: " + NumberFormat.getNumberInstance().format(mfh.getCapacity()) + "L");
+		} else {
+			ll.add("Incomplete multi-block.");
 		}
 		ll.add("---------------------------------------------");
 		
@@ -591,10 +554,11 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase implement
 		runningCost  = nbt.getInteger("runningCost");
 		doVoidExcess = nbt.getBoolean("doVoidExcess");
 		
-		mfh = new SingleFluidHandler();
+		mfh = new MultiFluidHandler(MAX_DISTINCT_FLUIDS);
 		mfh.loadNBTData(nbt);
+		mfh.setVoidExcess(doVoidExcess);
 		for (GTMTE_TankHatch mh : sMultiHatches) {
-			mh.setSingleFluidHandler(mfh);
+			mh.setMultiFluidHandler(mfh);
 		}
 		super.loadNBTData(nbt);
 	}
