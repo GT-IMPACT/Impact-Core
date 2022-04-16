@@ -5,6 +5,7 @@ import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCover;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +52,14 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 		}
 		return aCoverVariable;
 	}
-	
+
+	public boolean isCoverPlaceable(byte aSide, GT_ItemStack aStack, ICoverable aTileEntity) {
+		if(!(aTileEntity instanceof IFluidHandler)) {
+			return false;
+		}
+		return true;
+	}
+
 	public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		return aCoverVariable;
 	}

@@ -23,6 +23,8 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_Parallel
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
+import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
+import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -46,6 +48,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import tterrag.wailaplugins.api.Plugin;
 import tterrag.wailaplugins.plugins.PluginBase;
 
@@ -111,6 +116,8 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
         final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
         final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
+        final GTMTE_SingleTank single_tank = tMeta instanceof GTMTE_SingleTank ? ((GTMTE_SingleTank) tMeta) : null;
+        final GTMTE_MultiTank multi_tank = tMeta instanceof GTMTE_MultiTank ? ((GTMTE_MultiTank) tMeta) : null;
     
         final boolean showTransformer = tMeta instanceof GT_MetaTileEntity_Transformer && getConfig("transformer");
         final boolean showSolar = tMeta instanceof GT_MetaTileEntity_Boiler_Solar && getConfig("solar");
@@ -293,7 +300,24 @@ public class ImpactPlugin extends PluginBase {
                 if (tag.getBoolean("wMox")) currenttip.add(color[3] + trans("waila.reactor.mox"));
                 if (tag.getBoolean("wFastDecay")) currenttip.add(color[2] + trans("waila.reactor.fastdecay"));
             }
-    
+
+            if (single_tank != null || multi_tank != null) {
+                int maxFluids = multi_tank != null ? multi_tank.MAX_DISTINCT_FLUIDS : single_tank.MAX_DISTINCT_FLUIDS;
+                int capacity = tag.getInteger("capacityPerFluid");
+                final NBTTagCompound fluidsTag = (NBTTagCompound) tag.getTag("fluids");
+                for (int i = 0; i < maxFluids; i++) {
+                    final NBTTagCompound fnbt = (NBTTagCompound) fluidsTag.getTag("" + i);
+                    if (fnbt == null) {
+                        continue;
+                    }
+                    FluidStack fs = FluidStack.loadFluidStackFromNBT(fnbt);
+                    currenttip.add(
+                            NumberFormat.getNumberInstance().format(fs.amount) + "L /" +
+						    NumberFormat.getNumberInstance().format(capacity) + "L: " +
+                            fs.getLocalizedName());
+                }
+            }
+   
             String facingStr = "Facing";
             if (showTransformer && tag.hasKey("isAllowedToWork")) {
                 currenttip.add(
