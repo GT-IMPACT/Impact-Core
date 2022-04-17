@@ -539,7 +539,8 @@ public class Basic_Register {
 		DynamoMulti4_UHV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15204, "UHV 4A Dynamo Hatch", 9, 4).getStackForm(1L));
 		DynamoMulti16_UHV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15214, "UHV 16A Dynamo Hatch", 9, 16).getStackForm(1L));
 		DynamoMulti64_UHV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15224, "UHV 64A Dynamo Hatch", 9, 64).getStackForm(1L));
-		
+
+		DynamoMulti2_UEV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15096, "UEV 2A Dynamo Hatch", 10, 2).getStackForm(1L));
 		DynamoMulti4_UEV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15205, "UEV 4A Dynamo Hatch", 10, 4).getStackForm(1L));
 		DynamoMulti16_UEV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15215, "UEV 16A Dynamo Hatch", 10, 16).getStackForm(1L));
 		DynamoMulti64_UEV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15225, "UEV 64A Dynamo Hatch", 10, 64).getStackForm(1L));
