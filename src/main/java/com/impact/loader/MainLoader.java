@@ -146,6 +146,5 @@ public class MainLoader {
 				module.postInit(event);
 			}
 		}
-		RecipeProcessorLoader.init();
 	}
 }

@@ -10,6 +10,7 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.blocks.Block_TheMill;
 import com.impact.common.te.*;
 import com.impact.events.ClientEvent;
+import com.impact.mods.nei.impactplugin.RecipeProcessorLoader;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -209,6 +210,7 @@ public class ClientProxy extends CommonProxy {
 	
 	public void postInit() {
 		ClientCommandHandler.instance.registerCommand(new Command_Run());
+		RecipeProcessorLoader.init();
 	}
 	
 	public void init() {
