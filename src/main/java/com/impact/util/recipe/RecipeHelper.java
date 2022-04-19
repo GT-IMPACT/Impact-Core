@@ -39,11 +39,13 @@ public class RecipeHelper {
     public static ItemStack[] resizeItemStackSize(ItemStack[] tOut) {
         List<ItemStack> overStacks = new ArrayList<>();
         for (ItemStack stack : tOut) {
-            while (stack.getMaxStackSize() < stack.stackSize) {
-                ItemStack tmp = stack.copy();
-                tmp.stackSize = tmp.getMaxStackSize();
-                stack.stackSize = stack.stackSize - stack.getMaxStackSize();
-                overStacks.add(tmp);
+            if (stack != null) {
+                while (stack.getMaxStackSize() < stack.stackSize) {
+                    ItemStack tmp = stack.copy();
+                    tmp.stackSize   = tmp.getMaxStackSize();
+                    stack.stackSize = stack.stackSize - stack.getMaxStackSize();
+                    overStacks.add(tmp);
+                }
             }
         }
         if (overStacks.size() > 0) {
