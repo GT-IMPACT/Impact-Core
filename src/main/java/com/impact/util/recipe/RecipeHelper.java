@@ -56,11 +56,11 @@ public class RecipeHelper {
         return removeNull(tOut).clone();
     }
 
-    public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase base) {
+    public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase<?> base) {
         return resizeItemStackSizeChance(tOut, tRecipe, base, true);
     }
 
-    public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase base, boolean chance) {
+    public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase<?> base, boolean chance) {
         if (chance) {
             for (int f = 0; f < tOut.length; f++) {
                 if (tRecipe.mOutputs[f] != null && tOut[f] != null) {

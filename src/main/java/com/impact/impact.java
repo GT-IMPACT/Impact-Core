@@ -36,7 +36,7 @@ import static com.impact.core.impactLog.INFO;
 		name = Tags.MODNAME,
 		version = Tags.VERSION,
 		acceptedMinecraftVersions = "[1.7.10]",
-		dependencies = "required-after:Forge@[10.13.2.1291,);")
+		dependencies = "required-after:Forge@[10.13.2.1291,);after:UndergroundBiomes")
 
 public class impact {
 	
