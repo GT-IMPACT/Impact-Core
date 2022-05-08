@@ -315,6 +315,9 @@ public enum Core_List_Items {
     FlawedFluixCrystal(195, 1),
     FlawlessFluixCrystal(196, 1),
     BlankPattern(197, 1),
+	LaserCore1(198, 1),
+	LaserCore2(199, 1),
+	LaserCore3(200, 1),
     
 
     WoodenBrickForm1(0, 2),
