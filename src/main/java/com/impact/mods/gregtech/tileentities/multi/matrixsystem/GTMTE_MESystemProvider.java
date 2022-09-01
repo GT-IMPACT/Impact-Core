@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
+
 import appeng.tile.crafting.TileCraftingStorageTile;
 import appeng.tile.crafting.TileCraftingTile;
 import com.impact.loader.ItemRegistery;
@@ -44,10 +45,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	
 	public static Block CASING = Casing_Helper.sCaseCore3;
 	public static int CASING_META = ME_CASING.getMeta();
-	private final List<GTMTE_AE_Connector> aeConnectors = new ArrayList<>();
 	private final List<GTMTE_Hatch_MESystemMPChamber> mpChambers = new ArrayList<>();
-	public List<TileCraftingTile> AE_CPU_UNIT = new ArrayList<>();
-	public List<TileCraftingStorageTile> AE_CPU_CRAFT = new ArrayList<>();
 	public int mSpeedUp = 0;
 	public int mMatrixParticlesSummary = 0;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
@@ -133,10 +131,6 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 		ArrayList<ItemStack> tInputList;
 		ItemStack[] tInputs;
 
-		if (!checkAE()) {
-			return false;
-		}
-		
 		tInputList = this.getStoredInputs();
 		tInputs    = tInputList.toArray(new ItemStack[0]);
 		
@@ -186,14 +180,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		super.onPostTick(iAm, aTick);
 		if (iAm.isServerSide() && aTick % 40 == 0) {
-			
-			if (aeConnectors.size() > 0) {
-				int checker = 0;
-				for (TileCraftingStorageTile te : AE_CPU_CRAFT) {
-					if (te != null && te.isPowered()) checker++;
-				}
-				aeConnectors.get(0).getBaseMetaTileEntity().setActive(checker == 4);
-			}
+
 			
 			if (mpChambers.size() > 0) {
 				GTMTE_Hatch_MESystemMPChamber ch = mpChambers.get(0);
@@ -209,10 +196,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity iAm) {
-		aeConnectors.clear();
 		mpChambers.clear();
-		AE_CPU_UNIT.clear();
-		AE_CPU_CRAFT.clear();
 		mSpeedUp = 1;
 		//region Structure
 		final Vector3ic forgeDirection = new Vector3i(
@@ -259,25 +243,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 							if (x == -3) {
 								TileEntity aeCPU = getTE(iAm, offset);
 								if (aeCPU instanceof TileCraftingStorageTile) {
-									TileCraftingStorageTile craft = (TileCraftingStorageTile) aeCPU;
-									AE_CPU_CRAFT.add(craft);
-									int storage = craft.getStorageBytes() / 1024;
-									int preSpeedUp;
-									switch(storage) {
-										default: preSpeedUp = 1; break;
-										case 4: preSpeedUp = 2; break;
-										case 16: preSpeedUp = 3; break;
-										case 64: preSpeedUp = 4; break;
-										case 250: preSpeedUp = 5; break;
-										case 1000: preSpeedUp = 6; break;
-										case 4000: preSpeedUp = 7; break;
-										case 16000: preSpeedUp = 8; break;
-									}
-									if (mSpeedUp == 1) {
-										mSpeedUp = preSpeedUp;
-									} else if (mSpeedUp > preSpeedUp) {
-										mSpeedUp = preSpeedUp;
-									}
+									// :P
 								} else {
 									formationChecklist = false;
 								}
@@ -285,15 +251,16 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 							} else {
 								TileEntity aeCPU = getTE(iAm, offset);
 								if (aeCPU instanceof TileCraftingTile) {
-									AE_CPU_UNIT.add((TileCraftingTile) aeCPU);
+									// :P
 								} else {
 									formationChecklist = false;
 								}
 								continue;
 							}
 						} else {
-							if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
-							} else if (!addAEConnectors(currentTE, CASING_TEXTURE_ID)) {
+							if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) != ItemRegistery.IGlassBlock)) {
+								// :P
+							} else {
 								formationChecklist = false;
 							}
 							continue;
@@ -316,47 +283,10 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 			}
 		}
 		
-		if (AE_CPU_UNIT.size() != 8) formationChecklist = false;
-		if (AE_CPU_CRAFT.size() != 4) formationChecklist = false;
-		if (aeConnectors.size() != 1) formationChecklist = false;
 		if (mpChambers.size() != 1) formationChecklist = false;
-		
-		for (TileCraftingTile te : AE_CPU_UNIT) {
-			try {
-				te.updateStatus(null);
-				te.setBigAccelerator(formationChecklist, mSpeedUp);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
 		if (!formationChecklist) mSpeedUp = 1;
 		
 		return formationChecklist;
-	}
-	
-	public boolean checkAE() {
-		int checker = 0;
-		for (TileCraftingTile te : AE_CPU_CRAFT) {
-			checker++;
-		}
-		return checker == 4;
-	}
-	
-	public boolean addAEConnectors(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity == null) {
-				return false;
-			} else if (aMetaTileEntity instanceof GTMTE_AE_Connector) {
-				((GTMTE_AE_Connector) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return aeConnectors.add(((GTMTE_AE_Connector) aMetaTileEntity));
-			} else {
-				return false;
-			}
-		}
 	}
 	
 	public boolean addMPChambers(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
