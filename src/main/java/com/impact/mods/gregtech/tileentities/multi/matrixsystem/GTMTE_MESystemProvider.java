@@ -34,8 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.ME_CASING;
-import static com.impact.util.vector.Structure.getIGTE;
-import static com.impact.util.vector.Structure.getTE;
+import static com.impact.util.vector.Structure.*;
 import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.EnumChatFormatting.*;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
@@ -54,15 +53,13 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 			StructureDefinition.<GTMTE_MESystemProvider>builder()
 					.addShape("main", new String[][]{
 							{"ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "},
-							{"ADDDA ", "AFEFAA", "AFEFA~", "AAAAAA"},
-							{"ADDDA ", "AFEFAA", "AFEFAA", "AAAAAA"},
+							{"ADDDA ", "A   AA", "A   A~", "AAAAAA"},
+							{"ADDDA ", "A   AA", "A   AA", "AAAAAA"},
 							{"ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "}
 					})
 					.addElement('A', ofBlock(CASING, CASING_META))
 					.addElement('B', ofBlock(ItemRegistery.MPSystem, 0))
 					.addElement('D', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
-					.addElement('E', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingStorage", 1L, 0).getItem()), 0))
-					.addElement('F', ofBlock(Block.getBlockFromItem(GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockCraftingUnit", 1L, 0).getItem()), 1))
 					.build();
 	
 	public GTMTE_MESystemProvider(int aID, String aNameRegional) {
@@ -227,7 +224,6 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 					if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
 							&& (iAm.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
 					} else {
-						//setBlock(iAm, offset, CASING, CASING_META);
 						formationChecklist = false;
 					}
 				}
@@ -239,32 +235,14 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 					offset    = rotateOffsetVector(forgeDirection, x, y, z);
 					currentTE = getIGTE(iAm, offset);
 					if (x != -5 && x != -1 && y != -1) {
-						if (z != -2 && z != 1 && y != 2) {
-							if (x == -3) {
-								TileEntity aeCPU = getTE(iAm, offset);
-								if (aeCPU instanceof TileCraftingStorageTile) {
-									// :P
-								} else {
-									formationChecklist = false;
-								}
-								continue;
-							} else {
-								TileEntity aeCPU = getTE(iAm, offset);
-								if (aeCPU instanceof TileCraftingTile) {
-									// :P
-								} else {
-									formationChecklist = false;
-								}
-								continue;
-							}
-						} else {
-							if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) != ItemRegistery.IGlassBlock)) {
+						if (z == -2 || z == 1 || y == 2) {
+							if ((iAm.getBlockOffset(offset.x(), offset.y(), offset.z()) == ItemRegistery.IGlassBlock)) {
 								// :P
 							} else {
 								formationChecklist = false;
 							}
-							continue;
 						}
+						continue;
 					}
 					
 					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
