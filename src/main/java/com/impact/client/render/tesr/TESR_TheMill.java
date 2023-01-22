@@ -19,7 +19,7 @@ public class TESR_TheMill extends TileEntitySpecialRenderer {
 		TE_TheMill mill = (TE_TheMill) tile;
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5D, y + 0.5D, z + 0.5D);
-		GL11.glRotated(mill.facing == 2 ? 0.0D : (mill.facing == 3 ? 180.0D : (mill.facing == 4 ? 90.0D : -90.0D)), 0.0D, 1.0D, 0.0D);
+		GL11.glRotated(mill.getFacing() == 2 ? 0.0D : (mill.getFacing() == 3 ? 180.0D : (mill.getFacing() == 4 ? 90.0D : -90.0D)), 0.0D, 1.0D, 0.0D);
 		float rot = 360.0F * (mill.rotation + (mill.canTurn && mill.rotation != 0.0F ? f * mill.prevRotation : 0.0F));
 		model.setRotateAngle(model.axel, 0.0F, 0.0F, -((float)Math.toRadians(rot)));
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("impact","textures/models/windmill.png"));

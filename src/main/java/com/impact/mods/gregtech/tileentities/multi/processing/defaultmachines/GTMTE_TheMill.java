@@ -3,7 +3,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import com.impact.common.te.TE_TheMill;
 import com.impact.impact;
-import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
@@ -28,8 +27,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tools.GT_Tool_Axe;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -63,7 +60,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						Utilits.is(OrePrefixes.dustImpure, Materials.Calcite),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Gypsum)
 				},
-				new int[]{10000, 10000}, 20 * 20
+				new int[]{10000, 10000}, 20 * 10
 		);
 		impact.I_RA.addTheMillRecipes(DropCrashedMetallic.get(1),
 				new ItemStack[]{
@@ -72,7 +69,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						Utilits.is(OrePrefixes.dustImpure, Materials.Tin),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Lead)
 				},
-				new int[]{10000, 10000, 10000, 10000}, 20 * 20
+				new int[]{10000, 10000, 10000, 10000}, 20 * 10
 		);
 		impact.I_RA.addTheMillRecipes(DropCrashedCoal.get(1),
 				new ItemStack[]{
@@ -80,7 +77,8 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 						Utilits.is(OrePrefixes.dustImpure, Materials.Lignite),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Sulfur)
 				},
-				new int[]{10000, 10000, 10000}, 20 * 20);
+				new int[]{10000, 10000, 10000}, 20 * 10
+		);
 	}
 	
 	public GTMTE_TheMill(String aName) {
@@ -162,8 +160,7 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 			}
 		}
 		super.onPostTick(iAm, aTick);
-		if (iAm.isActive() && (aTick & 0x7) == 0) {
-			
+		if ((aTick % 20) == 0) {
 			IInventory tTileEntity = iAm.getIInventoryAtSide(iAm.getBackFacing());
 			if (tTileEntity != null) {
 				GT_Utility.moveOneItemStack(iAm, tTileEntity, (byte) 1, (byte) 1, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
@@ -200,24 +197,26 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 		return GT_RecipeMaps.sTheMill;
 	}
 	
+	protected boolean canOutput(ItemStack... aOutputs) {
+		if (aOutputs == null) return true;
+		ItemStack[] tOutputSlots = {mInventory[1], mInventory[2], mInventory[3], mInventory[4]};
+		for (int i = 0; i < tOutputSlots.length && i < aOutputs.length; i++)
+			if (tOutputSlots[i] != null && aOutputs[i] != null && (!GT_Utility.areStacksEqual(tOutputSlots[i], aOutputs[i], false) || tOutputSlots[i].stackSize + aOutputs[i].stackSize > tOutputSlots[i].getMaxStackSize())) {
+				return false;
+			}
+		return true;
+	}
+	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		if (mInventory[0] != null) {
-			ItemStack[] slot0 = {mInventory[0]};
-			GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, false, 0, null, slot0);
-			if (tRecipe != null) {
-				if (cashedRecipe != tRecipe) {
-					for (int i = 1; i < mInventory.length; i++) {
-						if (mInventory[i] != null) {
-							return false;
-						}
-					}
-				}
-				mInventory[0].stackSize--;
-				if (mInventory[0].stackSize <= 0) {
+			GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, false, 0, null, mInventory[0]);
+			if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, mInventory[0]))) {
+				
+				if (mInventory[0] != null && mInventory[0].stackSize <= 0) {
 					mInventory[0] = null;
 				}
-				cashedRecipe = tRecipe;
+				
 				mEfficiency = mEfficiencyIncrease = 10000;
 				mMaxProgresstime = tRecipe.mDuration;
 				mOutputItems = tRecipe.mOutputs;

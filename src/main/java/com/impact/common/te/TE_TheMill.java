@@ -1,21 +1,23 @@
 package com.impact.common.te;
 
+import com.google.common.collect.Lists;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_TheMill;
-import com.impact.network.IPacketInteger;
-import com.impact.network.ToClient_Integer;
 import com.impact.util.vector.Structure;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLModContainer;
-import cpw.mods.fml.common.event.FMLEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.network.INetworkDataProvider;
+import ic2.api.network.NetworkHelper;
+import ic2.api.tile.IWrenchable;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TE_TheMill extends TileEntity implements IPacketInteger {
+import java.util.List;
+
+public class TE_TheMill extends TileEntity implements IWrenchable, INetworkDataProvider {
 	
 	public int facing = 0;
 	public long tick = 0;
@@ -39,18 +41,17 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 		}
 		
 		if (!canTurn) return;
-			double mod = .00005;
-			if (!worldObj.isRaining()) mod *= .75;
-			if (!worldObj.isThundering()) mod *= .66;
-			if (yCoord > 200) mod *= 2;
-			else if (yCoord > 150) mod *= 1.5;
-			else if (yCoord > 100) mod *= 1.25;
-			else if (yCoord < 70) mod *= .33;
-			mod *= getSpeedModifier();
-			
-			prevRotation = (float) (turnSpeed * mod);
-			rotation += turnSpeed * mod;
-			
+		double mod = .00005;
+		if (!worldObj.isRaining()) mod *= .75;
+		if (!worldObj.isThundering()) mod *= .66;
+		if (yCoord > 200) mod *= 2;
+		else if (yCoord > 150) mod *= 1.5;
+		else if (yCoord > 100) mod *= 1.25;
+		else if (yCoord < 70) mod *= .33;
+		mod *= getSpeedModifier();
+		
+		prevRotation = (float) (turnSpeed * mod);
+		rotation += turnSpeed * mod;
 	}
 	
 	protected float getSpeedModifier() {
@@ -103,16 +104,19 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
+		try {
+			super.readFromNBT(nbt);
+		} catch (Exception ignored) {}
 		this.facing    = nbt.getInteger("facing");
 		this.rotation  = nbt.getFloat("rotation");
 		this.turnSpeed = nbt.getFloat("turnSpeed");
-		new ToClient_Integer(xCoord, yCoord, zCoord, facing).sendToClients();
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		super.writeToNBT(nbt);
+		try {
+			super.writeToNBT(nbt);
+		} catch (Exception ignored) {}
 		nbt.setInteger("facing", this.facing);
 		nbt.setFloat("rotation", this.rotation);
 		nbt.setFloat("turnSpeed", this.turnSpeed);
@@ -131,7 +135,38 @@ public class TE_TheMill extends TileEntity implements IPacketInteger {
 	}
 	
 	@Override
-	public void update(int... integer) {
-		this.facing = integer[0];
+	public List<String> getNetworkedFields() {
+		return Lists.newArrayList("facing", "rotation", "turnSpeed");
+	}
+	
+	@Override
+	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int i) {
+		return false;
+	}
+	
+	@Override
+	public short getFacing() {
+		return (short) facing;
+	}
+	
+	@Override
+	public void setFacing(short side) {
+		facing = side;
+		NetworkHelper.updateTileEntityField(this, "facing");
+	}
+	
+	@Override
+	public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
+		return false;
+	}
+	
+	@Override
+	public float getWrenchDropRate() {
+		return 0;
+	}
+	
+	@Override
+	public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
+		return null;
 	}
 }
