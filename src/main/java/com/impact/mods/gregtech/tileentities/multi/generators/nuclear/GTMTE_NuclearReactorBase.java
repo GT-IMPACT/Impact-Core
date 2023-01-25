@@ -24,6 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
@@ -217,7 +218,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_Mult
 				}
 			}
 			
-			if (temperature > 0) {
+			if (aTick % 8 == 0 && temperature > 0) {
 				addOutput(getOutputFluid());
 			}
 			
@@ -316,11 +317,10 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_Mult
 		float temperature = (float) Math.min(((100 * tScale)), 100);
 		
 		return new String[]{
-				"Current Temperature: " + EnumChatFormatting.RED + temperature + " %",
-				"MAX Temperature: " + EnumChatFormatting.RED + (maxTemperature() / 10000) + " %",
+				"Temperature: " + EnumChatFormatting.RED + temperature + " / 100.0 %",
 				"Input: " + getInputFluid().getLocalizedName() + " " + EnumChatFormatting.RED
-						+ (int) Math.ceil(mCurrentInput) + EnumChatFormatting.RESET + " L/t",
-				"Output:  " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN + (int) Math.ceil(mCurrentOutput)
+						+ NumberFormat.getNumberInstance().format(mCurrentInput / 8.0) + EnumChatFormatting.RESET + " L/t",
+				"Output: " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN +  NumberFormat.getNumberInstance().format(mCurrentOutput / 8.0)
 						+ EnumChatFormatting.RESET + " L/t"
 		};
 	}
