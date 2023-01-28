@@ -40,7 +40,7 @@ public class JsonWorld {
     }
     
     public static void saveAsync() {
-        impact.chatFromServer("[IMPACT] Started saving files!");
+        System.out.println("[IMPACT] Started saving files!");
         CompletableFuture.supplyAsync(new Supplier<Long>() {
             @Override
             public Long get() {
@@ -52,7 +52,7 @@ public class JsonWorld {
                 return start;
             }
         }).thenAccept(start -> {
-            impact.chatFromServer("[IMPACT] Save files finished: (" + getTimeString(System.currentTimeMillis() - start)+ ")");
+            System.out.println("[IMPACT] Save files finished: (" + getTimeString(System.currentTimeMillis() - start)+ ")");
         });
     }
 
