@@ -112,9 +112,10 @@ public class GTMTE_MPContainment extends GT_MetaTileEntity_MultiParallelBlockBas
 				.addInputBus()
 				.addOutputBus()
 				.addCasingInfo("case", "Lab-Safe Low Gravity Casing", 53)
-				.addOtherStructurePartAny("glass", "Any I-Glass")
 				.addOtherStructurePartAny("reflector", "Matrix Particle Reflector", 17)
-				.addOtherStructurePartAny("core", "Matrix Transducer", 1)
+				.addRedHint("Output Hatch")
+				.addWhiteHint("Any I-Glass")
+				.addPurpleHint("Matrix Transducer")
 				.signAndFinalize();
 		return b;
 	}

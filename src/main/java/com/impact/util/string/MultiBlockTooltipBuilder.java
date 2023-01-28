@@ -525,7 +525,7 @@ public class MultiBlockTooltipBuilder {
 	}
 	
 	public MultiBlockTooltipBuilder addPurpleHint(String aEng) {
-		sLines.add(EnumChatFormatting.DARK_PURPLE + " - " + "▉" + EnumChatFormatting.RESET + " - " + trans("purple", aEng));
+		sLines.add(EnumChatFormatting.DARK_PURPLE + "▉" + EnumChatFormatting.RESET + " - " + trans("purple", aEng));
 		return this;
 	}
 	
