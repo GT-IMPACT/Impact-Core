@@ -13,7 +13,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -111,6 +113,19 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 	
 	public boolean checkRecipe(ItemStack itemStack) {
 		return RecipeBuilder.checkParallelMachinesRecipe(this, false, true);
+	}
+	
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		if (aPlayer.isSneaking()) {
+			if (aSide == 1) {
+				modeBuses++;
+				if (modeBuses > 1) {
+					modeBuses = 0;
+				}
+				GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
+			}
+		}
 	}
 	
 	@Override
