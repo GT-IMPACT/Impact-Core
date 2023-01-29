@@ -19,6 +19,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.objects.XSTR
 import gregtech.api.render.TextureFactory
 import gregtech.api.util.GT_OreDictUnificator
+import gregtech.api.util.GT_Utility
+import gregtech.common.items.GT_IntegratedCircuit_Item
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -54,7 +56,8 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
                     ItemList.Hull_LV.get(1),
                     ItemList.Electric_Motor_LV.get(2),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Steel, 4)
+                    GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Steel, 4),
+                    GT_Utility.getIntegratedCircuit(1)
                 ),
                 null, GT_ItemList.OreSamplingMachine.get(1),
                 20 * 20, 16
