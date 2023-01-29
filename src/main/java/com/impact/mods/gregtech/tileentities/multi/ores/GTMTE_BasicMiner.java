@@ -19,6 +19,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,7 +107,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Texture.Icons.OVERLAY_BASIC_MINER_ACTIVE : Texture.Icons.OVERLAY_BASIC_MINER)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Texture.Icons.OVERLAY_BASIC_MINER_ACTIVE : Texture.Icons.OVERLAY_BASIC_MINER)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -207,7 +208,6 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			int chancePrimary = 500;
 			int tier = Math.max(1, getTierEnergyHatch());
 			int startEU = 3 * (2 << (tier << 1));
-			int euTotal = 0;
 			long voltage = getMaxInputVoltage();
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
@@ -224,9 +224,6 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 					output.add(drillHeadDrop);
 					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, voltage, null, is.get(ore));
 					if (tRecipe != null) {
-						if (voltage <= euTotal + startEU + tRecipe.mEUt) break;
-						voltage -= tRecipe.mEUt;
-						euTotal += tRecipe.mEUt;
 						for (int i = 0; i < tRecipe.mOutputs.length; i++) {
 							ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
 							if (i == 0 && te.getRandomNumber(10000) < chancePrimary) {
@@ -238,12 +235,15 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 			}
 			this.mEfficiency         = getCurrentEfficiency(null);
 			this.mEfficiencyIncrease = 10000;
-			this.mEUt                = -(startEU + euTotal);
+			this.mEUt                = -startEU;
 			this.mMaxProgresstime    = 400 / (1 << (tier - 1));
 			this.mMaxProgresstime    = Math.max(2, this.mMaxProgresstime);
 			this.mOutputItems        = output.toArray(new ItemStack[0]);
 		}
-		hatch.get(0).cycleDrill(check);
+		GTMTE_OreHatch oreHatch = hatch.get(0);
+		if (oreHatch != null) {
+			oreHatch.cycleDrill(check);
+		}
 		
 		double utilization = 1.0D;
 		for (int i = 0; i < drillLevel; i++) {

@@ -54,6 +54,8 @@ public class Texture {
     
     //TT textures
     READER_ONLINE, READER_OFFLINE,
+  
+    ORE_SAMPLE, ORE_SAMPLE_ACTIVE,
 
     VOID;
 

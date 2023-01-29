@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech;
 
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOreSamplingMachine;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
@@ -116,8 +117,10 @@ public class Multi_Register {
 		AdvancedMiner.set(new GTMTE_AdvancedMiner(ID++, "Advanced Electric Miner").get());
 		The_Mill.set(new GTMTE_TheMill(ID++, "The Mill").get());
 		AdvCrackUnit.set(new GTMTE_AdvancedCrackingUnit(ID++, "Advanced Cracking Unit").get());
+		OreSamplingMachine.set(new GTMTEOreSamplingMachine(ID++, "Ore Sampling Machine").get());
+		GTMTEOreSamplingMachine.Companion.addRecipe();
 		
-		INFO("Multi_Register.java | Last ID: " + ID);
+		INFO("[IMPACT-CORE] FINISH ADDED MULTIS | LAST ID: " + ID);
 		
 		ItemList.Machine_FlotationUnit.set(new GTMTE_FlotationUnit(12192, "Flotation Unit").get());
 		ItemList.Machine_MultiblockTesseract.set(new GTMTE_Tesseract(12195, "Tesseract").get());
