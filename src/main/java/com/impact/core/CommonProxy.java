@@ -4,6 +4,7 @@ import com.impact.impact;
 import com.impact.util.files.JsonWorld;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -154,5 +155,8 @@ public class CommonProxy implements IGuiHandler {
 	public void addChatFromServer(String text) {
 		IChatComponent c = new ChatComponentText(text);
 		impact.getServer().getConfigurationManager().sendChatMsgImpl(c, true);
+	}
+	
+	public void onLoadComplete(FMLLoadCompleteEvent event) {
 	}
 }

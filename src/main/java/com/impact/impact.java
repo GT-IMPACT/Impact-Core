@@ -129,4 +129,9 @@ public class impact {
 	private void serverStopped(final FMLServerStoppedEvent event) {
 		Objects.requireNonNull(SaveManager.get()).onServerStopped();
 	}
+	
+	@Mod.EventHandler
+	private void onLoadComplete(FMLLoadCompleteEvent event) {
+		proxy.onLoadComplete(event);
+	}
 }

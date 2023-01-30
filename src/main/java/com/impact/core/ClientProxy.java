@@ -16,19 +16,26 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import ic2.core.item.ItemFluidCell;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientProxy extends CommonProxy {
@@ -222,4 +229,16 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void addChatFromServer(String text) {}
+	
+	@Override
+	public void onLoadComplete(FMLLoadCompleteEvent event) {
+		ArrayList<ItemStack> itemList = new ArrayList<>();
+		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+			if (fluid == null) continue;
+			itemList.add(ItemFluidCell.getUniversalFluidCell(new FluidStack(fluid, 2147483647)));
+		}
+		for (ItemStack aCell : itemList) {
+			codechicken.nei.api.API.hideItem(aCell);
+		}
+	}
 }
