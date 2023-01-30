@@ -18,6 +18,8 @@ import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+import static com.impact.util.Utilits.getTimeString;
+
 /**
  * Created by lukas on 16.09.14.
  */
@@ -43,7 +45,7 @@ public class JsonUtils {
 			file.flush();
 			file.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("[IMPACT] " + nameFile + " not found!");
 		}
 	}
 	
@@ -56,7 +58,7 @@ public class JsonUtils {
 			map.putAll(gson.fromJson(br, gsonType));
 			br.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("[IMPACT] " + nameFile + " not found!");
 		}
 	}
 	
