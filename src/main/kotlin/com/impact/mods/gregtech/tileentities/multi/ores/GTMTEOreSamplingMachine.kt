@@ -202,7 +202,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             .addSeparator()
             .addController()
             .sizeStructure(3, 3, 3)
-            .addOtherStructurePartAny("case.0", "Steel Frame Box", 16)
+            .addOtherStructurePartAny("case.0", "Steel Frame Box", 8)
             .addRedHint("Miner Drill Hatch")
             .signAndFinalize()
         return b
