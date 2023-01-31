@@ -268,6 +268,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.addTypeMachine("name", "Miner")
 				.addInfo("info.1", "Mining takes place in current Chunk")
 				.addInfo("info.2", "There is only ONE miner in one Chunk")
+				.addInfo("info.3", "Use a screwdriver to change the Ore Layer (0-1)")
 				.addSeparator()
 				.addController()
 				.sizeStructure(5, 12, 5)

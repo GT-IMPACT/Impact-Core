@@ -20,7 +20,6 @@ import gregtech.api.objects.XSTR
 import gregtech.api.render.TextureFactory
 import gregtech.api.util.GT_OreDictUnificator
 import gregtech.api.util.GT_Utility
-import gregtech.common.items.GT_IntegratedCircuit_Item
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
