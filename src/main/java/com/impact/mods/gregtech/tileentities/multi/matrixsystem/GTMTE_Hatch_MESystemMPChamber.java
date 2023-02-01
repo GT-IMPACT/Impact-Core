@@ -119,9 +119,11 @@ public class GTMTE_Hatch_MESystemMPChamber extends GT_MetaTileEntity_Hatch {
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-		ItemStack is = mInventory[0];
-		if (aBaseMetaTileEntity.isServerSide() && aTimer % 7 == 0) {
-			aBaseMetaTileEntity.setActive(mMPSummary > 0);
+		if (aBaseMetaTileEntity.isServerSide()) {
+			ItemStack is = mInventory[0];
+			if (aTimer % 20 == 0) {
+				aBaseMetaTileEntity.setActive(mMPSummary > 0);
+			}
 			if (is != null && GT_Utility.areStacksEqual(is, MPBufferFull.get(1))) {
 				if (mMPSummary + 1000 <= MAX_MATRIX_PARTICLES) {
 					mMPSummary += 1000;

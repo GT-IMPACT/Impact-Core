@@ -176,9 +176,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	@Override
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		super.onPostTick(iAm, aTick);
-		if (iAm.isServerSide() && aTick % 40 == 0) {
-
-			
+		if (iAm.isServerSide() && aTick % 8 == 0) {
 			if (mpChambers.size() > 0) {
 				GTMTE_Hatch_MESystemMPChamber ch = mpChambers.get(0);
 				if (ch.getMPSummary() >= 1000) {
