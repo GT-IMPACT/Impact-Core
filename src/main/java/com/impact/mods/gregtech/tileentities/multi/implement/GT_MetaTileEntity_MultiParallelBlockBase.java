@@ -626,10 +626,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 		return super.drainEnergyInput(aEU);
 	}
 	
-	protected boolean addToMachineList(IGregTechTileEntity te, short baseIndex) {
-		return addToMachineList(te, baseIndex);
-	}
-	
 	@Override
 	public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		
