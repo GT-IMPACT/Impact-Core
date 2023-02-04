@@ -403,38 +403,38 @@ public class Basic_Register {
 				new Object[]{"IPI", "IMI", "ICI", 'I', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL}
 		).getStackForm(1L));
 		
-		if (GT_Mod.gregtechproxy.mComponentAssembler) {
-			Machine_LV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13010,
-					"impact.basicmachine.componentassembler.tier.01", "LV Component Assembler", 1,
-					"Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000,
-					0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
-					"COMPONENTASSEMBLER", null
-			).getStackForm(1L));
-			Machine_MV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13011,
-					"impact.basicmachine.componentassembler.tier.02", "MV Component Assembler",
-					2, "Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1,
-					24000, 0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
-					"COMPONENTASSEMBLER", null
-			).getStackForm(1L));
-			Machine_HV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13012,
-					"impact.basicmachine.componentassembler.tier.03",
-					"HV Component Assembler", 3, "Components, Assemble!",
-					GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 32000, 0, 1, "Assembler.png",
-					GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null
-			).getStackForm(1L));
-			Machine_EV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13013,
-					"impact.basicmachine.componentassembler.tier.04",
-					"EV Component Assembler", 4, "Components, Assemble!",
-					GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 48000, 0, 1, "Assembler.png",
-					GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null
-			).getStackForm(1L));
-			Machine_IV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13014,
-					"impact.basicmachine.componentassembler.tier.05",
-					"IV Component Assembler", 5, "Components, Assemble!",
-					GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 64000, 0, 1, "Assembler.png",
-					GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null
-			).getStackForm(1L));
-		}
+		
+		Machine_LV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13010,
+				"impact.basicmachine.componentassembler.tier.01", "LV Component Assembler", 1,
+				"Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000,
+				0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
+				"COMPONENTASSEMBLER", null
+		).getStackForm(1L));
+		Machine_MV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13011,
+				"impact.basicmachine.componentassembler.tier.02", "MV Component Assembler",
+				2, "Components, Assemble!", GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1,
+				24000, 0, 1, "Assembler.png", GregTech_API.sSoundList.get(204), false, false, 0,
+				"COMPONENTASSEMBLER", null
+		).getStackForm(1L));
+		Machine_HV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13012,
+				"impact.basicmachine.componentassembler.tier.03",
+				"HV Component Assembler", 3, "Components, Assemble!",
+				GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 32000, 0, 1, "Assembler.png",
+				GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null
+		).getStackForm(1L));
+		Machine_EV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13013,
+				"impact.basicmachine.componentassembler.tier.04",
+				"EV Component Assembler", 4, "Components, Assemble!",
+				GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 48000, 0, 1, "Assembler.png",
+				GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null
+		).getStackForm(1L));
+		Machine_IV_ComponentAssembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13014,
+				"impact.basicmachine.componentassembler.tier.05",
+				"IV Component Assembler", 5, "Components, Assemble!",
+				GT_Recipe.GT_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 64000, 0, 1, "Assembler.png",
+				GregTech_API.sSoundList.get(204), false, false, 0, "COMPONENTASSEMBLER", null
+		).getStackForm(1L));
+		
 		
 		Machine_ULV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13032, "impact.basicmachine.assembler.tier.00",
 				"ULV Assembler", 0, "Avengers, Assemble!",
