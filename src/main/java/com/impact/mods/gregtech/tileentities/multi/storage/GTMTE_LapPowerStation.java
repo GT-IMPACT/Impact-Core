@@ -14,7 +14,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,13 +40,19 @@ import static net.minecraft.util.EnumChatFormatting.*;
 
 public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 	
+	public static final long L_IV = 0x59682f00L * 4L;
+	public static final long L_LuV = 0x165a0bc00L * 4L;
+	public static final long L_ZPM = 0xdf8475800L * 4L;
+	public static final long L_UV = 0x8bb2c97000L * 4L;
+	public static final long L_UHV = 0x45d964b800L * 4L;
+	public static final long L_UEV = 0x2ba7def3000L * 4L;
+	public static final long E_IV = 0x247a6100L * 4L;
+	
 	private static final Block LSC_PART = lscLapotronicEnergyUnit;
 	private static final Block CASING = Casing_Helper.sCaseCore2;
 	private static final int CASING_META = 8;
 	private static final ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
 	private static final int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
-	
-	private static final long MAX_LONG = Long.MAX_VALUE;
 	
 	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
@@ -60,7 +66,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 	public long passiveDischargeAmount = 0;
 	public long intputLastTick = 0;
 	public long outputLastTick = 0;
-	private final int repairStatusCache = 0;
 	
 	public GTMTE_LapPowerStation(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.supercapacitor", aNameRegional);
@@ -101,7 +106,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 	
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? LPS_ACTIVE : LPS)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? LPS_ACTIVE : LPS)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -177,7 +182,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 		mDynamoTunnelsTT.clear();
 		mLaserIn.clear();
 		mLaserOut.clear();
-		// Temp var for loss calculation
+		
 		long tempCapacity = 0;
 		
 		// Capacitor base
@@ -221,38 +226,27 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 					final int meta = thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z());
 					if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == LSC_PART && (meta > 0)) {
 						// Add capacity
-						long c;
 						switch (meta) {
 							case 1:
-								c = 250000000L;
-								tempCapacity += c;
-								capacity += c;
+								tempCapacity += L_IV;
 								break;
 							case 2:
-							case 3:
-							case 4:
-								c = (long) (100000000L * Math.pow(10, meta - 1));
-								tempCapacity += c;
-								capacity += c;
+								tempCapacity += L_LuV;
 								break;
-							case 5:
-								tempCapacity += (long) (100000000L * Math.pow(10, 3));
-								//capacity += Integer.MAX_VALUE;;
+							case 3:
+								tempCapacity += L_ZPM;
+								break;
+							case 4:
+								tempCapacity += L_UV;
 								break;
 							case 6:
-								c = 102400000L;
-								tempCapacity += c;
-								capacity += c;
+								tempCapacity += E_IV;
 								break;
 							case 7:
-								c = 50000000000L;
-								tempCapacity += c;
-								capacity += c;
+								tempCapacity += L_UHV;
 								break;
 							case 8:
-								c = 500000000000L;
-								tempCapacity += c;
-								capacity += c;
+								tempCapacity += L_UEV;
 								break;
 						}
 						capacitors[meta - 1]++;
@@ -301,40 +295,7 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 		if (minCasingAmount > 0) {
 			formationChecklist = false;
 		}
-		
-		for (int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--) {
-			if (capacitors[highestCapacitor] > 0) {
-				break;
-			}
-		}
-
-//        if(mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) {
-//            formationChecklist = false;
-//        }
-		
-		// Calculate total capacity; i = meta - 1
-		capacity = 0;
-		for (int i = 0; i < capacitors.length; i++) {
-			if (i == 0) {
-				final long c = 250000000;
-				capacity += c * capacitors[i];
-			} else if (i <= 3) {
-				final long c = (long) (100000000L * Math.pow(10, i));
-				capacity += c * capacitors[i];
-			} else if (i == 4) {
-				//capacity = Integer.MAX_VALUE;
-			} else if (i == 5) {
-				final long c = 102400000L;
-				capacity += c * capacitors[i];
-			} else if (i == 6) {
-				final long c = 50000000000L;
-				capacity += c * capacitors[i];
-			} else if (i == 7) {
-				final long c = 500000000000L;
-				capacity += c * capacitors[i];
-			}
-		}
-		long d = capacity;
+		capacity               = tempCapacity;
 		passiveDischargeAmount = 0;
 		return formationChecklist;
 	}

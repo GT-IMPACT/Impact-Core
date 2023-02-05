@@ -1,11 +1,14 @@
 package com.impact.common.block.itemblock;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
+
+import static com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation.*;
 
 public class IB_LapotronicEnergyUnit extends ItemBlock {
 	
@@ -33,27 +36,35 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
 	public void addInformation(ItemStack stack, EntityPlayer player, List lines,
 							   boolean advancedTooltips) {
 		lines.add("Part of the Lapotronic Super Capacitor");
+		String cap;
 		switch (stack.getItemDamage()) {
 			case 1:
-				lines.add("Capacity: 250,000,000 EU");
+				cap = GT_Utility.formatNumbers(L_IV);
+				lines.add(String.format("Capacity: %s EU", cap));
 				break;
 			case 2:
-				lines.add("Capacity: 1,000,000,000 EU");
+				cap = GT_Utility.formatNumbers(L_LuV);
+				lines.add(String.format("Capacity: %s EU", cap));
 				break;
 			case 3:
-				lines.add("Capacity: 10,000,000,000 EU");
+				cap = GT_Utility.formatNumbers(L_ZPM);
+				lines.add(String.format("Capacity: %s EU", cap));
 				break;
 			case 4:
-				lines.add("Capacity: 100,000,000,000 EU");
+				cap = GT_Utility.formatNumbers(L_UV);
+				lines.add(String.format("Capacity: %s EU", cap));
 				break;
 			case 6:
-				lines.add("Capacity: 102,400,000 EU");
+				cap = GT_Utility.formatNumbers(E_IV);
+				lines.add(String.format("Capacity: %s EU", cap));
 				break;
 			case 7:
-				lines.add("Capacity: 50,000,000,000 EU");
+				cap = GT_Utility.formatNumbers(L_UHV);
+				lines.add(String.format("Capacity: %s EU", cap));
 				break;
 			case 8:
-				lines.add("Capacity: 500,000,000,000 EU");
+				cap = GT_Utility.formatNumbers(L_UEV);
+				lines.add(String.format("Capacity: %s EU", cap));
 				break;
 		}
 	}
