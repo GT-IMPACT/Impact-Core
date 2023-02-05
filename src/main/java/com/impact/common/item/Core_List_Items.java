@@ -318,6 +318,7 @@ public enum Core_List_Items {
 	LaserCore1(198, 1),
 	LaserCore2(199, 1),
 	LaserCore3(200, 1),
+    FluidStorageHousing(201, 1),
     
 
     WoodenBrickForm1(0, 2),
