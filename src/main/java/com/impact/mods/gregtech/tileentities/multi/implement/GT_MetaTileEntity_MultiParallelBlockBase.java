@@ -53,7 +53,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 	public final HashSet<GTMTE_ParallelHatch_Input> sParallHatchesIn = new HashSet<>();
 	public final HashSet<GTMTE_ParallelHatch_Output> sParallHatchesOut = new HashSet<>();
 	public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
-	public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
+	public final HashSet<GTMTE_CommunicationTower_Receiver> sCommunReceiver = new HashSet<>();
 	public final HashSet<GTMTE_ComputerRack> sComputerRack = new HashSet<>();
 	private final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
 	private final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
@@ -523,9 +523,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity == null) {
 				return false;
-			} else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Receiver) {
-				((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return sCommunReceiver.add((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GTMTE_CommunicationTower_Receiver) {
+				((GTMTE_CommunicationTower_Receiver) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return sCommunReceiver.add((GTMTE_CommunicationTower_Receiver) aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Transmitter) {
 				((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return sCommunTransmitter.add((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity);

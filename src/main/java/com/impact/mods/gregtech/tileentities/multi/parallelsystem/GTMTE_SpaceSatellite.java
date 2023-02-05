@@ -10,7 +10,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -73,7 +73,7 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -81,8 +81,10 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sps");
 		b
 				.addTypeMachine("name", "Space Satellite")
-				.addInfo(disableSpaceStationCreation ? "info.0" : "info.1",
-						disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required")
+				.addInfo(
+						disableSpaceStationCreation ? "info.0" : "info.1",
+						disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required"
+				)
 				.addController()
 				.addOtherStructurePartAny("other.0", "Communication Transmitter")
 				.addCasingInfo("case", "Space Satellite Casing", 48)
@@ -104,12 +106,12 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 		super.onPostTick(iAm, aTick);
 		boolean active;
 		if (iAm.isServerSide()) {
-			if (aTick % 20 == 0) {
+			if (aTick % 100 == 0) {
 				iAm.setActive(true);
 				for (GTMTE_SpaceSatellite_Transmitter th : sCommunTransmitter) {
 					active = iAm.isActive();
 					th.getBaseMetaTileEntity().setActive(active);
-					th.setIsTransmit(active);
+					th.mIsTransmit = active;
 				}
 			}
 			if (iAm.isServerSide() && aTick % 20 * 60 == 0) {

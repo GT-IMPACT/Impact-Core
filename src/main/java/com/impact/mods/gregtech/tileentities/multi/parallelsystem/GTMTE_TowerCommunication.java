@@ -56,7 +56,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	public static int frameId = 4096 + Materials.Steel.mMetaItemSubID;
 	public static int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
 	public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
-	public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
+	public final HashSet<GTMTE_CommunicationTower_Receiver> sCommunReceiver = new HashSet<>();
 	public boolean Stuff;
 	public int casingCount = 0;
 	
@@ -75,9 +75,9 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity == null) {
 				return false;
-			} else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Receiver) {
-				((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return sCommunReceiver.add((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GTMTE_CommunicationTower_Receiver) {
+				((GTMTE_CommunicationTower_Receiver) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return sCommunReceiver.add((GTMTE_CommunicationTower_Receiver) aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Transmitter) {
 				((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return sCommunTransmitter.add((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity);
@@ -138,7 +138,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 			if (iAm.isActive()) {
 				ArrayList<Boolean> checker = new ArrayList<>();
 				boolean active = false;
-				for (GTMTE_SpaceSatellite_Receiver ph : sCommunReceiver) {
+				for (GTMTE_CommunicationTower_Receiver ph : sCommunReceiver) {
 					checker.add(ph.getIsReceive());
 					active = ph.getBaseMetaTileEntity().isActive();
 				}
