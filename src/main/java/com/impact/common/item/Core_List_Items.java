@@ -319,6 +319,8 @@ public enum Core_List_Items {
 	LaserCore2(199, 1),
 	LaserCore3(200, 1),
     FluidStorageHousing(201, 1),
+    PetcokeDust(202, 1),
+    PetCokeGem(203, 1),
     
 
     WoodenBrickForm1(0, 2),
