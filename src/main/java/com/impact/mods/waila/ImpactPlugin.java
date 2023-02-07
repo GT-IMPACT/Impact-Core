@@ -246,8 +246,8 @@ public class ImpactPlugin extends PluginBase {
                         : GREEN + trans("waila.multis.running")) + RESET + " " + trans("waila.multis.efficiency") + ": "
                         + tag.getFloat("efficiencyImpact") + "%");
 
-                currenttip.add(trans("waila.multis.progress") + String.format(": %d s / %d s", tag.getInteger("progressImpact"),
-                        tag.getInteger("maxProgressImpact")));
+                currenttip.add(trans("waila.multis.progress") + String.format(": %s s / %s s", tag.getString("progressImpact"),
+                        tag.getString("maxProgressImpact")));
             }
 
             if (towerReciver != null) {
@@ -339,12 +339,8 @@ public class ImpactPlugin extends PluginBase {
                 if(tag.getBoolean("incompleteStructurePrimitiveBlastFurnace")) {
                     currenttip.add(RED + trans("waila.incompletestructure") + RESET);
                 }
-        
-                if (tag.getInteger("progressPrimitiveBlastFurnace") <= 20 && tag.getInteger("maxProgressPrimitiveBlastFurnace") <= 20) {
-                    currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progressPrimitiveBlastFurnace"), tag.getInteger("maxProgressPrimitiveBlastFurnace")));
-                } else {
-                    currenttip.add(String.format(trans("waila.progress") + ": %d s / %d s", tag.getInteger("progressPrimitiveBlastFurnace") / 20, tag.getInteger("maxProgressPrimitiveBlastFurnace") / 20));
-                }
+    
+                currenttip.add(String.format(trans("waila.progress") + ": %s s / %s s", tag.getString("progressPrimitiveBlastFurnace"), tag.getString("maxProgressPrimitiveBlastFurnace")));
             }
     
             if (mBaseMetaTileEntity != null && getConfig("machineFacing")) {
@@ -361,12 +357,7 @@ public class ImpactPlugin extends PluginBase {
             }
     
             if (BasicMachine != null && getConfig("basicmachine")) {
-        
-                if (tag.getInteger("progressSingleBlock") <= 20 && tag.getInteger("maxProgressSingleBlock") <= 20 ) {
-                    currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
-                } else {
-                    currenttip.add(trans("waila.progress") + String.format(": %d s / %d s", tag.getInteger("progressSingleBlock") / 20, tag.getInteger("maxProgressSingleBlock") / 20));
-                }
+                currenttip.add(trans("waila.progress") + String.format(": %s s / %s s", tag.getString("progressSingleBlock"), tag.getString("maxProgressSingleBlock")));
                 currenttip.add(trans("waila.consumption") + ": " + RED + tag.getInteger("EUOut") + RESET + " " + trans("waila.eut"));
             }
     
@@ -375,12 +366,7 @@ public class ImpactPlugin extends PluginBase {
                     currenttip.add(RED + trans("waila.incompletestructure") + RESET);
                 }
                 currenttip.add((tag.getBoolean("hasProblems") ? (RED + trans("waila.maintenance")) : GREEN + trans("waila.running")) + RESET + "  " + trans("waila.efficiency") + " : " + tag.getFloat("efficiency") + "%");
-        
-                if (tag.getInteger("progress") <= 20 && tag.getInteger("maxProgress") <= 20 ) {
-                    currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progress"), tag.getInteger("maxProgress")));
-                } else {
-                    currenttip.add(trans("waila.progress") + String.format(": %d s / %d s", tag.getInteger("progress") / 20, tag.getInteger("maxProgress") / 20));
-                }
+                currenttip.add(trans("waila.progress") + String.format(": %s s / %s s", tag.getString("progress"), tag.getString("maxProgress")));
             }
     
             if(bateryBuffer != null && getConfig("basicmachine")) {
@@ -513,7 +499,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (towerReciver != null) {
-                final boolean isActiveTowerReciver = towerReciver.mIsReceive;
+                final boolean isActiveTowerReciver = towerReciver.isConnected;
                 tag.setBoolean("isActiveTowerReciver", isActiveTowerReciver);
             }
 
@@ -580,13 +566,14 @@ public class ImpactPlugin extends PluginBase {
                 final int problems =
                         multiBlockBaseImpact.getIdealStatus() - multiBlockBaseImpact.getRepairStatus();
                 final float efficiency = multiBlockBaseImpact.mEfficiency / 100.0F;
-                final int progress = multiBlockBaseImpact.mProgresstime / 20;
-                final int maxProgress = multiBlockBaseImpact.mMaxProgresstime / 20;
+    
+                final String progress = NumberFormat.getNumberInstance().format(multiBlockBase.mProgresstime / 20.0);
+                final String maxProgress = NumberFormat.getNumberInstance().format(multiBlockBase.mMaxProgresstime / 20.0);
 
                 tag.setBoolean("hasProblemsImpact", problems > 0);
                 tag.setFloat("efficiencyImpact", efficiency);
-                tag.setInteger("progressImpact", progress);
-                tag.setInteger("maxProgressImpact", maxProgress);
+                tag.setString("progressImpact", progress);
+                tag.setString("maxProgressImpact", maxProgress);
                 tag.setBoolean("incompleteStructureImpact", (tBaseMetaTile.getErrorDisplayID() & 64) != 0);
             }
     
@@ -603,32 +590,35 @@ public class ImpactPlugin extends PluginBase {
                 tag.setInteger("maxCalcificationOutput", (slr.getBasicOutput()*20/25));
             } else if (tMeta instanceof  GT_MetaTileEntity_PrimitiveBlastFurnace) {
                 final GT_MetaTileEntity_PrimitiveBlastFurnace blastFurnace = (GT_MetaTileEntity_PrimitiveBlastFurnace) tMeta;
-                final int progress = blastFurnace.mProgresstime;
-                final int maxProgress = blastFurnace.mMaxProgresstime;
-                tag.setInteger("progressPrimitiveBlastFurnace", progress);
-                tag.setInteger("maxProgressPrimitiveBlastFurnace", maxProgress);
+    
+                final String progress = NumberFormat.getNumberInstance().format(blastFurnace.mProgresstime / 20.0);
+                final String maxProgress = NumberFormat.getNumberInstance().format(blastFurnace.mMaxProgresstime / 20.0);
+                
+                tag.setString("progressPrimitiveBlastFurnace", progress);
+                tag.setString("maxProgressPrimitiveBlastFurnace", maxProgress);
                 tag.setBoolean("incompleteStructurePrimitiveBlastFurnace", !blastFurnace.mMachine);
             }
     
             if (multiBlockBase != null) {
                 final int problems = multiBlockBase.getIdealStatus() - multiBlockBase.getRepairStatus();
                 final float efficiency = multiBlockBase.mEfficiency / 100.0F;
-                final int progress = multiBlockBase.mProgresstime;
-                final int maxProgress = multiBlockBase.mMaxProgresstime;
+                final String progress = NumberFormat.getNumberInstance().format(multiBlockBase.mProgresstime / 20.0);
+                final String maxProgress = NumberFormat.getNumberInstance().format(multiBlockBase.mMaxProgresstime / 20.0);
         
                 tag.setBoolean("hasProblems", problems > 0);
                 tag.setFloat("efficiency", efficiency);
-                tag.setInteger("progress", progress);
-                tag.setInteger("maxProgress", maxProgress);
+                tag.setString("progress", progress);
+                tag.setString("maxProgress", maxProgress);
                 tag.setBoolean("incompleteStructure", (tBaseMetaTile.getErrorDisplayID() & 64) != 0);
             }
     
             if (BasicMachine != null) {
-                final int progressSingleBlock = BasicMachine.mProgresstime;
-                final int maxProgressSingleBlock = BasicMachine.mMaxProgresstime;
+                final String progress = NumberFormat.getNumberInstance().format(BasicMachine.mProgresstime / 20.0);
+                final String maxProgress = NumberFormat.getNumberInstance().format(BasicMachine.mMaxProgresstime / 20.0);
+                
                 final int EUOut = BasicMachine.mEUt;
-                tag.setInteger("progressSingleBlock", progressSingleBlock);
-                tag.setInteger("maxProgressSingleBlock", maxProgressSingleBlock);
+                tag.setString("progressSingleBlock", progress);
+                tag.setString("maxProgressSingleBlock", maxProgress);
                 tag.setInteger("EUOut", EUOut);
             }
     
