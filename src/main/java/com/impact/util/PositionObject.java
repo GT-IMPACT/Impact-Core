@@ -1,11 +1,14 @@
 package com.impact.util;
 
+import com.impact.api.position.IPosition;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import org.jetbrains.annotations.NotNull;
 
-public class PositionObject {
+public class PositionObject implements IPosition {
 	
 	public int xPos = 0;
 	public int yPos = 0;
@@ -36,6 +39,13 @@ public class PositionObject {
 		xPos = x;
 		yPos = y;
 		zPos = z;
+	}
+	
+	public PositionObject(int x, int y, int z, int d) {
+		xPos = x;
+		yPos = y;
+		zPos = z;
+		dPos = d;
 	}
 	
 	/**
@@ -137,4 +147,56 @@ public class PositionObject {
 		if (obj == null) return null;
 		return igt.getIGregTechTileEntity(obj.xPos, obj.yPos, obj.zPos);
 	}
+	
+	@Override
+	public int getX() {
+		return xPos;
+	}
+	
+	@Override
+	public int getY() {
+		return yPos;
+	}
+	
+	@Override
+	public int getZ() {
+		return zPos;
+	}
+	
+	@Override
+	public int getD() {
+		return dPos;
+	}
+	
+	@NotNull
+	@Override
+	public NBTTagCompound saveToNBT() {
+		NBTTagCompound pos = new NBTTagCompound();
+		pos.setInteger("xPos", xPos);
+		pos.setInteger("yPos", yPos);
+		pos.setInteger("zPos", zPos);
+		pos.setInteger("dPos", dPos);
+		
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setTag("position_object", pos);
+		return tag;
+	}
+	
+	@NotNull
+	public static IPosition loadFromNBT(@NotNull NBTTagCompound nbt) {
+		NBTTagCompound pos = nbt.getCompoundTag("position_object");
+		int xPos = pos.getInteger("xPos");
+		int yPos = pos.getInteger("yPos");
+		int zPos = pos.getInteger("zPos");
+		int dPos = pos.getInteger("dPos");
+		return new PositionObject(xPos, yPos, zPos, dPos);
+	}
+	
+	@Override
+	public boolean isEquals(@NotNull IPosition pos) {
+		return getX() == pos.getX() && getY() == pos.getY()
+				&& getZ() == pos.getZ() && getD() == pos.getD();
+	}
+	
+	
 }
