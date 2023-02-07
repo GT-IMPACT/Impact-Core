@@ -7,7 +7,7 @@ import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.filler.Container_Construction_Laser;
 import com.impact.mods.gregtech.gui.filler.GUI_Construction_Laser;
 import com.impact.mods.gregtech.items.tools.ConstructionLaser;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Box;
 import com.impact.util.vector.Structure;
@@ -17,7 +17,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 import static com.impact.loader.ItemRegistery.decorateBlock;
 
-public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Filler> {
+public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
 	
 	public static String mModed;
 	public int xMax, yMax, zMax;
@@ -71,7 +71,7 @@ public class GTMTE_Filler extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE : Texture.Icons.OVERLAY_SPACE_ELEVATOR)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Texture.Icons.OVERLAY_SPACE_ELEVATOR_ACTIVE : Texture.Icons.OVERLAY_SPACE_ELEVATOR)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override

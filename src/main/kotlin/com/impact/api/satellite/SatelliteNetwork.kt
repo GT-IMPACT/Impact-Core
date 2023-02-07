@@ -23,3 +23,17 @@ interface ISatellite : IConnection {
     fun getConnections(): Set<ISatelliteNetwork>
     fun disconnect(connection: ISatelliteNetwork)
 }
+
+interface IDistributor {
+    fun notifyConnections()
+    fun getConnections(): Set<IReceiver>
+    fun disconnect(connection: IReceiver)
+}
+
+interface IReceiver {
+    fun updateConnectionStatus(isConnected: Boolean)
+    fun getConnectionStatus(): Boolean
+    fun isValid(): Boolean
+    fun onDisconnect()
+    fun createConnect(distributor: IDistributor)
+}

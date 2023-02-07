@@ -2,7 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
@@ -12,16 +12,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.render.GT_TextureBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -33,7 +30,7 @@ import static com.impact.loader.ItemRegistery.decorateBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockHint;
 
-public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_HugeSteamTurbine> {
+public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSteamTurbine> {
 	
 	static final Block CASING = Casing_Helper.sCasePage8_3;
 	static final Block GEARBOX = GregTech_API.sBlockCasings2;
@@ -43,7 +40,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 	static final int CASING_TEXTURE_ID = 16;
 	int mStoredFluids = 0;
 	long mOutputSalary = 0;
-	static  IStructureDefinition<GTMTE_HugeSteamTurbine> definition =
+	static IStructureDefinition<GTMTE_HugeSteamTurbine> definition =
 			StructureDefinition.<GTMTE_HugeSteamTurbine>builder()
 					.addShape("main", new String[][]{
 							{"     ", " BBB ", " B~B ", " BBB "},
@@ -212,7 +209,7 @@ public class GTMTE_HugeSteamTurbine extends GT_MetaTileEntity_MultiParallelBlock
 			formationChecklist = false;
 		}
 		
-		if (mDynamoHatches.size() > 9 || mDynamoHatchesMulti.size() > 9 || mDynamoTunnelsTT.size() > 9) {
+		if (mDynamoHatches.size() > 9 || mDynamoHatchesMulti.size() > 9) {
 			formationChecklist = false;
 		}
 		

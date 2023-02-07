@@ -504,7 +504,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (parallelHatch_input != null) {
-                final boolean isParallelIN = parallelHatch_input.mTrueRecipe;
+                final boolean isParallelIN = parallelHatch_input.isConnected;
                 tag.setBoolean("isParallelIN", isParallelIN);
                 tag.setInteger("ppHatchIn", parallelHatch_input.mMaxParallel);
                 tag.setString("ppInMachineName", parallelHatch_input.machineName);
@@ -512,7 +512,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (parallelHatch_output != null) {
-                final boolean isParallelOUT = parallelHatch_output.mIsTrueRecipe;
+                final boolean isParallelOUT = parallelHatch_output.isConnected;
                 tag.setBoolean("isParallelOUT", isParallelOUT);
                 tag.setInteger("ppHatchOut", parallelHatch_output.mMaxParallel);
                 tag.setString("ppOutMachineName", parallelHatch_output.machineName);
@@ -520,7 +520,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (towerCommunication != null) {
-                tag.setBoolean("towerCommunicationConnect", towerCommunication.mIsConnect);
+                tag.setBoolean("towerCommunicationConnect", towerCommunication.getConnectionStatus());
             }
 
             if (reactor != null) {
@@ -537,7 +537,7 @@ public class ImpactPlugin extends PluginBase {
                 final int Parallel = MultiParallel.mParallel;
                 tag.setInteger("Parallel", Parallel);
                 tag.setInteger("currentParallel", MultiParallel.mCheckParallelCurrent);
-                tag.setBoolean("connectWithTower", MultiParallel.mIsConnect);
+                tag.setBoolean("connectWithTower", MultiParallel.getConnectionStatus());
             }
 
             if (tMeta instanceof GTMTE_LapPowerStation) {

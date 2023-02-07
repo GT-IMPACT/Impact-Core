@@ -7,7 +7,7 @@ import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.network.ToClient_Integer;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -21,7 +21,7 @@ import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -45,7 +45,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofHint;
 
-public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_TheMill> {
+public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 	
 	
 	static Block CASING = Casing_Helper.sCaseCore3;
@@ -55,7 +55,8 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	public GTMTE_TheMill(int aID, String aNameRegional) {
 		super(aID, "impact.multis.the_mill", aNameRegional, 5);
-		impact.I_RA.addTheMillRecipes(DropCrashedStone.get(1),
+		impact.I_RA.addTheMillRecipes(
+				DropCrashedStone.get(1),
 				new ItemStack[]{
 						Utilits.is(OrePrefixes.dustImpure, Materials.Calcite),
 						Utilits.is(OrePrefixes.dustImpure, Materials.Gypsum)
@@ -131,8 +132,8 @@ public class GTMTE_TheMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(Texture.Icons.OVERLAY_PIPELINE_FLUID_FRONT)} :
-				aSide == GT_Utility.getOppositeSide(aFacing) ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)} :
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(Texture.Icons.OVERLAY_PIPELINE_FLUID_FRONT)} :
+				aSide == GT_Utility.getOppositeSide(aFacing) ? new ITexture[]{INDEX_CASE, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)} :
 						new ITexture[]{INDEX_CASE};
 	}
 	

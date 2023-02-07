@@ -16,24 +16,24 @@ public class GUI_BASE extends GT_GUIContainerMT_Machine {
 	public String mName = "";
 	
 	public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aModeString) {
-		super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity),RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
+		super(new GTC_ImpactBase(aInventoryPlayer, aTileEntity),RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
 		mName = aName;
 		mMode = aModeString;
 	}
 	
 	public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
-		super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/MultiParallelBlockGUI.png");
+		super(new GTC_ImpactBase(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/MultiParallelBlockGUI.png");
 		mName = aName;
 		mMode = "";
 	}
 	
-	public GUI_BASE(String aName, String aTextureFile, GT_Container_MultiParallelMachine aContainer) {
+	public GUI_BASE(String aName, String aTextureFile, GTC_ImpactBase aContainer) {
 		super(aContainer, RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
 		mName = aName;
 	}
 	
 	public GUI_BASE(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
-		super(new GT_Container_MultiParallelMachine(aInventoryPlayer, aTileEntity),RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
+		super(new GTC_ImpactBase(aInventoryPlayer, aTileEntity),RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
 		mName = aName;
 		mMode = "";
 	}

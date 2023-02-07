@@ -83,7 +83,10 @@ public class Multi_Register {
 		Naquadah_Liquid_multi.set(new GTMTE_LiquidNqGenerator(ID++, "Liquid Naquadah Generator").get());
 		Heavy_Metal_Cyclone.set(new GTMTE_HeavyMetalCyclone(ID++, "Heavy Metal Cyclone").get());
 		Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID++, "Liquid Enriched Naquadah Generator").getStackForm(1));
+		
 		Moon_Miner.set(new GTMTE_MoonMiner(ID++, "Moon Miner").get());
+		hideItem(Moon_Miner.get(1));
+		
 		Machine_AdvDDDPrinter.set(new GTMTE_AdvDDDPrinter(ID++, "Advanced 3D Printer").get());
 		Rail_Assembler.set(new GTMTE_RailAssembler(ID++, "Rail Assembler").get());
 		Space_Elevator.set(new GTMTE_SpaceElevator(ID++, "Space Elevator").get());
@@ -101,6 +104,7 @@ public class Multi_Register {
 		Machine_ElectricImplosion.set(new GTMTE_ElectricImplosionCompressor(ID++, "Electric Implosion Compressor").get());
 		
 		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate Platform").get());
+		
 		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
 		hideItem(Filler.get(1));
 		

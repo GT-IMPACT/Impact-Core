@@ -4,7 +4,7 @@ import com.impact.common.item.ITieredDamagedItems;
 import com.impact.common.te.TE_WindMill;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3ic;
@@ -28,7 +28,7 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
 
-public class GTMTE_Wind_Generator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Wind_Generator> {
+public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Generator> {
 	
 	public static int MAX_CAPACITY = 1_000_000;
 	static IStructureDefinition<GTMTE_Wind_Generator> definition =

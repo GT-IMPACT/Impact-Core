@@ -17,7 +17,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -123,7 +122,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 				if (checkSum && ph.getBaseMetaTileEntity().isAllowedToWork()) {
 					mCurrentCapacityPP -= ph.mMaxParallel;
 				}
-				ph.mIsTrueRecipe = checkSum;
+				ph.isConnected = checkSum;
 			}
 		}
 	}
@@ -132,7 +131,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 		boolean isActive = false;
 		for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
 			if (aBaseMetaTileEntity.isActive()) {
-				if (ph.getBaseMetaTileEntity().isAllowedToWork() && mIsConnect) {
+				if (ph.getBaseMetaTileEntity().isAllowedToWork() && isConnected) {
 					isActive = true;
 				}
 			}

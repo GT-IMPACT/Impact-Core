@@ -1,7 +1,5 @@
 package com.impact.mods.gregtech.gui.filler;
 
-import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
-import com.impact.mods.gregtech.gui.slot.CustomSlot;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Filler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

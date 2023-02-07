@@ -113,9 +113,9 @@ public class PositionObject implements IPosition {
 	 * @param obj2 - PositionObject target
 	 * @return boolean
 	 */
-	public static boolean checkComparePosition(PositionObject obj1, PositionObject obj2) {
+	public static boolean checkComparePosition(IPosition obj1, IPosition obj2) {
 		if (obj1 == null || obj2 == null) return false;
-		return obj1.xPos == obj2.xPos && obj1.yPos == obj2.yPos && obj1.zPos == obj2.zPos;
+		return obj1.getX() == obj2.getX() && obj1.getY() == obj2.getY() && obj1.getZ() == obj2.getZ();
 	}
 	
 	/**
@@ -123,9 +123,9 @@ public class PositionObject implements IPosition {
 	 * @param obj2 - PositionObject target
 	 * @return boolean
 	 */
-	public static boolean checkComparePositionWithDim(PositionObject obj1, PositionObject obj2) {
+	public static boolean checkComparePositionWithDim(IPosition obj1, IPosition obj2) {
 		if (obj1 == null || obj2 == null) return false;
-		return obj1.dPos == obj2.dPos && checkComparePosition(obj1, obj2);
+		return obj1.getD() == obj2.getD() && checkComparePosition(obj1, obj2);
 	}
 	
 	/**
@@ -133,9 +133,9 @@ public class PositionObject implements IPosition {
 	 * @param obj2 - PositionObject target
 	 * @return boolean
 	 */
-	public static boolean checkComparePositionOnlyDim(PositionObject obj1, PositionObject obj2) {
+	public static boolean checkComparePositionOnlyDim(IPosition obj1, IPosition obj2) {
 		if (obj1 == null || obj2 == null) return false;
-		return obj1.dPos == obj2.dPos;
+		return obj1.getD() == obj2.getD();
 	}
 	
 	/**
@@ -143,9 +143,9 @@ public class PositionObject implements IPosition {
 	 * @param obj - PositionObject source
 	 * @return IGregTechTileEntity
 	 */
-	public static IGregTechTileEntity getIGregTechTileEntity(IGregTechTileEntity igt, PositionObject obj) {
+	public static IGregTechTileEntity getIGregTechTileEntity(IGregTechTileEntity igt, IPosition obj) {
 		if (obj == null) return null;
-		return igt.getIGregTechTileEntity(obj.xPos, obj.yPos, obj.zPos);
+		return igt.getIGregTechTileEntity(obj.getX(), obj.getY(), obj.getZ());
 	}
 	
 	@Override
@@ -185,6 +185,7 @@ public class PositionObject implements IPosition {
 	@NotNull
 	public static IPosition loadFromNBT(@NotNull NBTTagCompound nbt) {
 		NBTTagCompound pos = nbt.getCompoundTag("position_object");
+		if (pos == null) pos = new NBTTagCompound();
 		int xPos = pos.getInteger("xPos");
 		int yPos = pos.getInteger("yPos");
 		int zPos = pos.getInteger("zPos");
@@ -197,6 +198,4 @@ public class PositionObject implements IPosition {
 		return getX() == pos.getX() && getY() == pos.getY()
 				&& getZ() == pos.getZ() && getD() == pos.getD();
 	}
-	
-	
 }

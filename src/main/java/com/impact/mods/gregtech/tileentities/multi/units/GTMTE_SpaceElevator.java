@@ -3,9 +3,9 @@ package com.impact.mods.gregtech.tileentities.multi.units;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_TargetBase;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.Language;
@@ -42,7 +42,7 @@ import static com.impact.util.Utilits.isValidDim;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SpaceElevator> {
+public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElevator> {
 	
 	private final static int CAPACITY_FOR_TELEPORT = 1_000_000;
 	static Block CASING = Casing_Helper.sCaseCore2;
@@ -117,7 +117,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	public int getStoredEU() {
-		return getCharge(mEnergyHatches) + getCharge(mEnergyHatchesMulti) + getCharge(mEnergyTunnelsTT);
+		return getCharge(mEnergyHatches) + getCharge(mEnergyHatchesMulti);
 	}
 	
 	private <T extends GT_MetaTileEntity_Hatch> int getCharge(List<T> hatches) {
@@ -131,7 +131,6 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 	public void decrease() {
 		decreaseEnergy(mEnergyHatches);
 		decreaseEnergy(mEnergyHatchesMulti);
-		decreaseEnergy(mEnergyTunnelsTT);
 	}
 	
 	private <T extends GT_MetaTileEntity_Hatch> void decreaseEnergy(List<T> hatches) {
@@ -191,7 +190,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 		if (checkCurDim || isValidDimTeleport || isMoveTeleportCoords) {
 			player.setPositionAndUpdate(mTargetX + 0.5D, mTargetY + 1.5D, mTargetZ + 0.5D);
 			decrease();
-			mIsConnect = false;
+			isConnected = false;
 		}
 	}
 	
@@ -325,7 +324,7 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiParallelBlockBas
 		}
 	}
 	
-	private static class CONTAINER extends GT_Container_MultiParallelMachine {
+	private static class CONTAINER extends GTC_ImpactBase {
 		
 		public int currentCharge = 0;
 		

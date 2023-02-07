@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.gui.parallelcomputer;
 
-import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,7 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 
-public class Container_SuperParallelComputer extends GT_Container_MultiParallelMachine {
+public class Container_SuperParallelComputer extends GTC_ImpactBase {
 
   GTMTE_ParallelComputer mte;
   public int mCurrentParallelCapacity, mMaxParallelCapacity;

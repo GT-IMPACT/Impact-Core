@@ -10,16 +10,16 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class GT_Container_MultiParallelMachine extends GT_ContainerMetaTile_Machine {
+public class GTC_ImpactBase extends GT_ContainerMetaTile_Machine {
 	
 	protected GT_MetaTileEntity_MultiBlockBase mte;
 	
-	public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+	public GTC_ImpactBase(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity);
 		mte = (GT_MetaTileEntity_MultiBlockBase) mTileEntity.getMetaTileEntity();
 	}
 	
-	public GT_Container_MultiParallelMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, GT_MetaTileEntity_MultiBlockBase base) {
+	public GTC_ImpactBase(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, GT_MetaTileEntity_MultiBlockBase base) {
 		super(aInventoryPlayer, aTileEntity);
 		mte = base;
 	}

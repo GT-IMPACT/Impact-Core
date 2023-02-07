@@ -105,7 +105,7 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.check3DPrinterRecipe(this);
+		return RecipeBuilder.check3DPrinterRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
 	}
 	
 	@Override
