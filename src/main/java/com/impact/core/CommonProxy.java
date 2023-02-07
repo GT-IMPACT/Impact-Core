@@ -1,6 +1,7 @@
 package com.impact.core;
 
 import com.impact.impact;
+import com.impact.api.satellite.SatelliteNetworkManager;
 import com.impact.util.files.JsonWorld;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -140,6 +141,7 @@ public class CommonProxy implements IGuiHandler {
 		Impact_API.sCommunicationTower.clear();
 		Impact_API.sAerostat.clear();
 		Impact_API.regionsOres.clear();
+		SatelliteNetworkManager.INSTANCE.reload();
 		JsonWorld.load();
 	}
 	
@@ -150,6 +152,7 @@ public class CommonProxy implements IGuiHandler {
 		Impact_API.sCommunicationTower.clear();
 		Impact_API.sAerostat.clear();
 		Impact_API.regionsOres.clear();
+		SatelliteNetworkManager.INSTANCE.reload();
 	}
 	
 	public void addChatFromServer(String text) {

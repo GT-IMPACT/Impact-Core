@@ -4,7 +4,11 @@ import com.impact.api.position.IPosition
 
 object SatelliteNetworkManager {
 
-    val SATELLITE_LIST: HashSet<ISatellite> = HashSet()
+    private val SATELLITE_LIST: HashSet<ISatellite> = HashSet()
+
+    fun reload() {
+        SATELLITE_LIST.clear()
+    }
 
     fun addSatelliteToWorld(satellite: ISatellite): Boolean {
         return SATELLITE_LIST.add(satellite)
