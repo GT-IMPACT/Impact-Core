@@ -104,14 +104,10 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 	@Override
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		super.onPostTick(iAm, aTick);
-		boolean active;
 		if (iAm.isServerSide()) {
 			if (aTick % 100 == 0) {
-				iAm.setActive(true);
 				for (GTMTE_SpaceSatellite_Transmitter th : sCommunTransmitter) {
-					active = iAm.isActive();
-					th.getBaseMetaTileEntity().setActive(active);
-					th.mIsTransmit = active;
+					th.updateConnectionStatus(iAm.isActive());
 				}
 			}
 			if (iAm.isServerSide() && aTick % 20 * 60 == 0) {

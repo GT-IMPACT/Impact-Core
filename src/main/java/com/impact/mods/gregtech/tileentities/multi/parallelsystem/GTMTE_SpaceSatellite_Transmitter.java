@@ -4,9 +4,14 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_RED;
 import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_YELLOW;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import com.impact.core.Impact_API;
-import com.impact.mods.gregtech.gui.spacesatellite.Container_SpaceSatelliteHatches;
-import com.impact.mods.gregtech.gui.spacesatellite.GUI_SpaceSatelliteHathes;
+import com.google.common.collect.Sets;
+import com.impact.api.satellite.gui.SatelliteNetworkContainer;
+import com.impact.api.satellite.gui.SatelliteNetworkGui;
+import com.impact.api.position.IPosition;
+import com.impact.api.satellite.IConnection;
+import com.impact.api.satellite.ISatellite;
+import com.impact.api.satellite.ISatelliteNetwork;
+import com.impact.api.satellite.SatelliteNetworkManager;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
@@ -14,7 +19,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,12 +26,21 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch implements ISatelliteConnect {
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch implements ISatellite {
 	
 	//Передатчик
-	public boolean mIsTransmit = false;
+	public boolean isConnected = false;
 	private int mFrequency = 0;
+	private boolean isNeedCheckStatus = false;
+	
+	private final HashSet<ISatelliteNetwork> towers = Sets.newHashSet();
 	
 	public GTMTE_SpaceSatellite_Transmitter(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional, 3, 0, new String[]{Utilits.impactTag(), "Transmission of signals from orbit", "Used in Space Satellite", EnumChatFormatting.RED + "▉" + EnumChatFormatting.GRAY + " - Error", EnumChatFormatting.YELLOW + "▉" + EnumChatFormatting.GRAY + " - All Right"});
@@ -44,12 +57,12 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch im
 	
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new Container_SpaceSatelliteHatches(aPlayerInventory, aBaseMetaTileEntity);
+		return new SatelliteNetworkContainer(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_SpaceSatelliteHathes(aPlayerInventory, aBaseMetaTileEntity, "Communication Transmitter");
+		return new SatelliteNetworkGui(aPlayerInventory, aBaseMetaTileEntity, "Communication Transmitter");
 	}
 	
 	@Override
@@ -104,41 +117,65 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch im
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (getBaseMetaTileEntity().isServerSide()) {
-			GT_Utility.sendChatToPlayer(aPlayer, "Check: " + mIsTransmit);
+			GT_Utility.sendChatToPlayer(aPlayer, "Check: " + isConnected);
 		}
 	}
 	
 	@Override
 	public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
-		if (getBaseMetaTileEntity().isServerSide()) {
-			getBaseMetaTileEntity().openGUI(aPlayer);
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te.isServerSide()) {
+			NBTTagCompound tag = aPlayer.getCurrentEquippedItem().stackTagCompound;
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
+			NBTTagCompound tagPos = new PositionObject(te).saveToNBT();
+			tag.setTag("satellite", tagPos);
+			
+			aPlayer.getCurrentEquippedItem().stackTagCompound = tag;
+			
+			te.openGUI(aPlayer);
 		}
 	}
 	
 	
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setBoolean("mIsTransmit", this.mIsTransmit);
+		aNBT.setBoolean("mIsTransmit", this.isConnected);
 		aNBT.setInteger("mFrequency", this.mFrequency);
 	}
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		this.mIsTransmit = aNBT.getBoolean("mIsTransmit");
+		this.isConnected = aNBT.getBoolean("mIsTransmit");
 		this.mFrequency  = aNBT.getInteger("mFrequency");
 	}
 	
 	@Override
-	public boolean onFindConnect(int frequency, @NotNull EntityPlayer player) {
-		return ParallelSystemManager.INSTANCE.connectToSatellite(frequency, player, getBaseMetaTileEntity());
+	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+		super.onFirstTick(aBaseMetaTileEntity);
+		
+		if (aBaseMetaTileEntity.isServerSide()) {
+			SatelliteNetworkManager.INSTANCE.addSatelliteToWorld(this);
+			notifyConnections();
+		}
 	}
 	
 	@Override
-	public boolean onCheckConnect(int frequency) {
-		boolean isConnected = mFrequency == frequency;
-		mIsTransmit = isConnected;
-		return isConnected;
+	public void onPostTick(IGregTechTileEntity te, long tick) {
+		super.onPostTick(te, tick);
+	}
+	
+	@Override
+	public void inValidate() {
+		if (getBaseMetaTileEntity().isServerSide()) {
+			SatelliteNetworkManager.INSTANCE.removeSatelliteFromWorld(this);
+			updateConnectionStatus(false);
+			notifyConnections();
+		}
+		
+		super.inValidate();
 	}
 	
 	@Override
@@ -149,5 +186,73 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch im
 	@Override
 	public void updateFrequency(int frequency) {
 		mFrequency = frequency;
+		checkStatusTowers();
+	}
+	
+	@Override
+	public boolean onFirstConnect(int frequency, @NotNull ISatelliteNetwork connection) {
+		if (frequency == getFrequency()) {
+			return towers.add(connection);
+		}
+		return false;
+	}
+	
+	@Override
+	public void notifyConnections() {
+		for (ISatelliteNetwork tower : towers) {
+			tower.onChangeConnection(isConnected);
+		}
+	}
+	
+	@NotNull
+	@Override
+	public IPosition getPosition() {
+		return new PositionObject(getBaseMetaTileEntity());
+	}
+	
+	@NotNull
+	@Override
+	public Set<ISatelliteNetwork> getConnections() {
+		return towers;
+	}
+	
+	@Override
+	public boolean isConnected(@Nullable IConnection connection) {
+		return connection != null && connection.getFrequency() == getFrequency();
+	}
+	
+	@Override
+	public void updateConnectionStatus(boolean isConnected) {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null) te.setActive(isConnected);
+		this.isConnected = isConnected;
+		notifyConnections();
+	}
+	
+	@Override
+	public boolean getConnectionStatus() {
+		return isConnected;
+	}
+	
+	private void checkStatusTowers() {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null && te.isServerSide()) {
+			List<ISatelliteNetwork> removeCandidates = new ArrayList<>();
+			for (ISatelliteNetwork tower : towers) {
+				if (tower.getFrequency() != getFrequency()) {
+					removeCandidates.add(tower);
+				}
+			}
+			for (ISatelliteNetwork removeCandidate : removeCandidates) {
+				removeCandidate.onDisconnect();
+				towers.remove(removeCandidate);
+			}
+		}
+	}
+	
+	@Override
+	public void disconnect(@NotNull ISatelliteNetwork connection) {
+		towers.remove(connection);
+		checkStatusTowers();
 	}
 }

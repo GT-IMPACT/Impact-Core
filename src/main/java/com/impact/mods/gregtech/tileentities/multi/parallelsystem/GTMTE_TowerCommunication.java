@@ -11,7 +11,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -57,7 +57,6 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	public static int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
 	public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
 	public final HashSet<GTMTE_CommunicationTower_Receiver> sCommunReceiver = new HashSet<>();
-	public boolean Stuff;
 	public int casingCount = 0;
 	
 	public GTMTE_TowerCommunication(int aID, String aNameRegional) {
@@ -94,7 +93,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? TOWER_OVERLAY_ACTIVE : TOWER_OVERLAY)} : new ITexture[]{INDEX_CASE};
+		return aSide == 1 ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? TOWER_OVERLAY_ACTIVE : TOWER_OVERLAY)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -132,14 +131,13 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	@Override
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		super.onPostTick(iAm, aTick);
-		if (iAm.isServerSide() && aTick % 20 == 0) {
-			this.mIsConnect = false;
+		if (iAm.isServerSide() && aTick % 100 == 0) {
 			iAm.setActive(true);
 			if (iAm.isActive()) {
 				ArrayList<Boolean> checker = new ArrayList<>();
 				boolean active = false;
 				for (GTMTE_CommunicationTower_Receiver ph : sCommunReceiver) {
-					checker.add(ph.getIsReceive());
+					checker.add(ph.hasConnected());
 					active = ph.getBaseMetaTileEntity().isActive();
 				}
 				if (active) {
