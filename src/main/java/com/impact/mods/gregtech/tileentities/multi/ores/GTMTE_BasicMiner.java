@@ -276,7 +276,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 				.addInputHatch(1)
 				.addEnergyHatch(2)
 				.addCasingInfo("case.0", "Solid Steel Machine Casing", 11)
-				.addOtherStructurePart("case.1", "Steel Frame Box", "case.2", "Any Frame Box")
+				.addCasingInfo("case.1", "Steel Frame Box", 51)
 				.addRedHint("Miner Drill Hatch")
 				.signAndFinalize();
 		return b;
