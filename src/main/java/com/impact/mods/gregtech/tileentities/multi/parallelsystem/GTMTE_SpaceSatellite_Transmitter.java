@@ -1,17 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_RED;
-import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_YELLOW;
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
-
 import com.google.common.collect.Sets;
-import com.impact.api.satellite.gui.SatelliteNetworkContainer;
-import com.impact.api.satellite.gui.SatelliteNetworkGui;
 import com.impact.api.position.IPosition;
 import com.impact.api.satellite.IConnection;
 import com.impact.api.satellite.ISatellite;
 import com.impact.api.satellite.ISatelliteNetwork;
 import com.impact.api.satellite.SatelliteNetworkManager;
+import com.impact.api.satellite.gui.SatelliteNetworkContainer;
+import com.impact.api.satellite.gui.SatelliteNetworkGui;
+import com.impact.api.security.ISecurity;
+import com.impact.client.gui.GUIHandler;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
@@ -33,12 +31,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch implements ISatellite {
+import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_RED;
+import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_YELLOW;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
+
+public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch implements ISatellite, ISecurity {
 	
 	//Передатчик
 	public boolean isConnected = false;
 	private int mFrequency = 0;
-	private boolean isNeedCheckStatus = false;
+	private String security = null;
 	
 	private final HashSet<ISatelliteNetwork> towers = Sets.newHashSet();
 	
@@ -126,30 +128,41 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch im
 		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
 		IGregTechTileEntity te = getBaseMetaTileEntity();
 		if (te.isServerSide()) {
+			
 			NBTTagCompound tag = aPlayer.getCurrentEquippedItem().stackTagCompound;
-			if (tag == null) {
-				tag = new NBTTagCompound();
+			if (tag == null) return;
+			
+			String toolSecurity = tag.getString("security_key");
+			
+			if (security == null && !toolSecurity.isEmpty()) {
+				security = toolSecurity;
 			}
+			
+			if (security == null || !security.equals(toolSecurity)) {
+				Utilits.openGui(aPlayer, GUIHandler.GUI_ID_Security, te);
+				return;
+			}
+			
 			NBTTagCompound tagPos = new PositionObject(te).saveToNBT();
 			tag.setTag("satellite", tagPos);
-			
-			aPlayer.getCurrentEquippedItem().stackTagCompound = tag;
 			
 			te.openGUI(aPlayer);
 		}
 	}
 	
-	
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setBoolean("mIsTransmit", this.isConnected);
 		aNBT.setInteger("mFrequency", this.mFrequency);
+		aNBT.setString("security", this.security);
 	}
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
 		this.isConnected = aNBT.getBoolean("mIsTransmit");
 		this.mFrequency  = aNBT.getInteger("mFrequency");
+		this.security    = aNBT.getString("security");
+		if (security.isEmpty()) security = null;
 	}
 	
 	@Override
@@ -254,5 +267,15 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch im
 	public void disconnect(@NotNull ISatelliteNetwork connection) {
 		towers.remove(connection);
 		checkStatusTowers();
+	}
+	
+	@Override
+	public void updateSecurity(String key) {
+		security = key;
+	}
+	
+	@Override
+	public String getSecurity() {
+		return security;
 	}
 }

@@ -2,10 +2,8 @@ package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import com.impact.api.satellite.IDistributor;
 import com.impact.api.satellite.IReceiver;
-import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.util.PositionObject;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -13,8 +11,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
 import static com.impact.util.multis.GT_StructureUtility.ofFrame;
@@ -64,7 +61,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 	
 	private final HashSet<IReceiver> receivers = new HashSet<>();
 	public final HashSet<GTMTE_CommunicationTower_Receiver> sCommunReceiver = new HashSet<>();
-	private int mFrequency;
+	private int timeOutCheckArea;
 	
 	public GTMTE_TowerCommunication(int aID, String aNameRegional) {
 		super(aID, "impact.multis.communicationtower", aNameRegional);
@@ -163,10 +160,19 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 	public String[] getInfoData() {
 		
 		List<String> list = new ArrayList<>();
-		list.add("Timeout rescan: " + mFrequency + "");
+		list.add("Timeout rescan: " + timeOutCheckArea + "s");
+		list.add("Connection: " + (isConnected ? "YES" : "NO"));
 		
+		int index = 0;
 		for (IReceiver receiver : receivers) {
-			list.add(receiver.getClass().getName());
+			if (receiver instanceof IMetaTileEntity) {
+				index++;
+				IMetaTileEntity mte = (IMetaTileEntity) receiver;
+				String name = GT_LanguageManager.getTranslation("gt.blockmachines." + mte.getMetaName() + ".name");
+				IGregTechTileEntity te = mte.getBaseMetaTileEntity();
+				String title = String.format("%d. %s (X: %d, Y: %d, Z: %d)", index, name, te.getXCoord(), te.getYCoord(), te.getZCoord());
+				list.add(title);
+			}
 		}
 		
 		return list.toArray(new String[0]);
@@ -181,24 +187,14 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setBoolean("isConnected", isConnected);
-		aNBT.setInteger("mFrequency", mFrequency);
+		aNBT.setInteger("timeOutCheckArea", timeOutCheckArea);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		isConnected = aNBT.getBoolean("isConnected");
-		mFrequency  = aNBT.getInteger("mFrequency");
-	}
-	
-	@Override
-	public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
-		IGregTechTileEntity iAm = getBaseMetaTileEntity();
-		PositionObject pos = new PositionObject(iAm);
-		if (!aPlayer.isSneaking()) {
-			aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, iAm.getWorld(), pos.xPos, pos.yPos, pos.zPos);
-		}
+		isConnected      = aNBT.getBoolean("isConnected");
+		timeOutCheckArea = aNBT.getInteger("timeOutCheckArea");
 	}
 	
 	@Override
@@ -211,16 +207,18 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 			for (GTMTE_CommunicationTower_Receiver ph : sCommunReceiver) {
 				checker.add(ph.hasConnected() && ph.getBaseMetaTileEntity().isActive());
 			}
-			this.isConnected = checker.stream().filter(b -> b).count() == 4;
+			boolean isConnect = checker.stream().filter(b -> b).count() == 4;
+			if (isConnect != isConnected) {
+				isConnected = isConnect;
+				notifyConnections();
+			}
 		}
 		
-		if (iAm.isServerSide() && aTick % 20 == 0) {
-			--mFrequency;
-		}
-		
-		if (iAm.isServerSide() && aTick % 600 == 0 && isConnected) {
-			checkZoneAndNotify();
-			mFrequency = 30;
+		if (iAm.isServerSide() && aTick % 20 == 0 && isConnected) {
+			if (--timeOutCheckArea <= 0) {
+				checkZoneAndNotify();
+				timeOutCheckArea = 30;
+			}
 		}
 		
 		if (iAm.isServerSide() && aTick % 20 * 60 == 0) {

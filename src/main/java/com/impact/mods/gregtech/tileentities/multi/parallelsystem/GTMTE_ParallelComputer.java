@@ -12,6 +12,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,7 +73,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -103,39 +104,38 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 	}
 	
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		super.onPostTick(aBaseMetaTileEntity, aTick);
-		if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == 0) {
-			connect(aBaseMetaTileEntity);
-			int maxCur = 0;
-			boolean isActive = false;
-			for (GTMTE_ComputerRack rack : sComputerRack) {
-				if (aBaseMetaTileEntity.isActive()) {
-					maxCur += rack.mCapacityP;
-					isActive = true;
-				}
-				rack.getBaseMetaTileEntity().setActive(isActive);
-			}
-			setMaxCapacityPP(maxCur);
-			for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
-				boolean checkSum = mCurrentCapacityPP - ph.mMaxParallel >= 0;
-				if (checkSum && ph.getBaseMetaTileEntity().isAllowedToWork()) {
-					mCurrentCapacityPP -= ph.mMaxParallel;
-				}
-				ph.isConnected = checkSum;
-			}
+	public void onPostTick(IGregTechTileEntity te, long aTick) {
+		super.onPostTick(te, aTick);
+		if (te.isServerSide() && aTick % 100 == 0) {
+			updateStatusParallelHatches(te);
 		}
 	}
 	
-	public void connect(IGregTechTileEntity aBaseMetaTileEntity) {
-		boolean isActive = false;
-		for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
-			if (aBaseMetaTileEntity.isActive()) {
-				if (ph.getBaseMetaTileEntity().isAllowedToWork() && isConnected) {
-					isActive = true;
-				}
+	private void updateStatusParallelHatches(IGregTechTileEntity te) {
+		int maxCurrentParallel = 0;
+		
+		boolean isActiveRack = false;
+		for (GTMTE_ComputerRack rack : sComputerRack) {
+			if (te.isActive()) {
+				maxCurrentParallel += rack.mCapacityP;
+				isActiveRack = true;
 			}
-			ph.setRecipe(isActive);
+			rack.getBaseMetaTileEntity().setActive(isActiveRack);
+		}
+		
+		setMaxCapacityPP(maxCurrentParallel);
+		
+		for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
+			
+			int currentParallel = ph.getParallel();
+			boolean checkSum = mCurrentCapacityPP - currentParallel >= 0;
+			boolean parallelIsDone = false;
+			
+			if (checkSum && ph.getBaseMetaTileEntity().isAllowedToWork()) {
+				mCurrentCapacityPP -= currentParallel;
+				parallelIsDone = isConnected && te.isActive();
+			}
+			ph.updateStatus(parallelIsDone);
 		}
 	}
 	
@@ -148,7 +148,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 		this.mEUt                = -this.mEUt;
 		return true;
 	}
-	
 	
 	public int getCurrentCapacityPP() {
 		return mCurrentCapacityPP;
@@ -294,7 +293,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 0;
 	}
-	
 	
 	public String[] getInfoData() {
 		return new String[]{

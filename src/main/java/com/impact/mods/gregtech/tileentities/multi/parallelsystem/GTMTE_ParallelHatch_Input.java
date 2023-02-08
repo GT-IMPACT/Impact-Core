@@ -1,5 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import com.impact.api.parallelsystem.IParallelIn;
+import com.impact.api.parallelsystem.IParallelOut;
+import com.impact.api.position.IPosition;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
@@ -8,13 +11,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -22,28 +26,23 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_RED;
 import static com.impact.mods.gregtech.enums.Texture.Icons.PRL_HATCH_YELLOW;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
+public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch implements IParallelIn {
 	
 	public int mMaxParallel = 1;
 	public int mCurrentParallelIn = 1;
-	public int mTargetX = 0;
-	public int mTargetY = 0;
-	public int mTargetZ = 0;
+
 	public boolean isDebug;
 	public String machineName;
 	public String address;
 	
-	public IGregTechTileEntity tTile = null;
-	public boolean mTrueRecipe;
-	
-	public PositionObject mThisPosition;
-	public PositionObject mOutputPosition;
+	public IParallelOut pout = null;
+	public boolean isConnected;
 	
 	public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
 		super(aID, aName, aNameRegional, aTier, 0, new String[]{
 				Utilits.impactTag(),
 				"Parallel points receiver",
-				"Used in multi-block machines",
+				"Used in multis machines",
 				"Reduces recipe time by a factor of " + (aTier - 4)
 		});
 		mMaxParallel = aMaxParallel;
@@ -58,12 +57,12 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 	
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(PRL_HATCH_YELLOW, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),};
+		return new ITexture[]{aBaseTexture, TextureFactory.of(PRL_HATCH_YELLOW, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),};
 	}
 	
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(PRL_HATCH_RED, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),};
+		return new ITexture[]{aBaseTexture, TextureFactory.of(PRL_HATCH_RED, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),};
 	}
 	
 	@Override
@@ -98,17 +97,6 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 	}
 	
 	@Override
-	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-		super.onFirstTick(aBaseMetaTileEntity);
-		if (aBaseMetaTileEntity.isServerSide()) {
-			mThisPosition = new PositionObject(aBaseMetaTileEntity);
-			mOutputPosition = new PositionObject(mTargetX, mTargetY, mTargetZ);
-			machineName = "Not target machine";
-			address = UUID.randomUUID().toString().substring(0, 8);
-		}
-	}
-	
-	@Override
 	public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (getBaseMetaTileEntity().isServerSide()) {
@@ -116,13 +104,37 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 			if (ItemList.Tool_NoteBook.getItem() == tCurrentItem.getItem()) {
 				GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 100, aPlayer);
 				NBTTagCompound nbt = tCurrentItem.getTagCompound();
-				nbt.setInteger("mXCoordIn", mThisPosition.xPos);
-				nbt.setInteger("mYCoordIn", mThisPosition.yPos);
-				nbt.setInteger("mZCoordIn", mThisPosition.zPos);
-				nbt.setInteger("mDCoordIn", mThisPosition.dPos);
-				GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.YELLOW + "Connection start");
+				
+				NBTTagCompound posNbt = nbt.getCompoundTag("parallel");
+				if (posNbt != null) {
+					IPosition pos = PositionObject.loadFromNBT(posNbt);
+					if (findOut(pos)) {
+						nbt.removeTag("parallel");
+						GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.GREEN + "Connection confirm");
+					} else {
+						GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Connection Error");
+					}
+				}
 			}
 		}
+	}
+	
+	private boolean findOut(IPosition pos) {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null) {
+			IGregTechTileEntity dest = PositionObject.getIGregTechTileEntity(te, pos);
+			
+			if (dest != null && dest.getMetaTileEntity() != null && dest.getMetaTileEntity() instanceof IParallelOut) {
+				pout = (IParallelOut) dest.getMetaTileEntity();
+				
+				if (pout.getParallel() == getParallel()) {
+					pout.onConnect(this);
+					pout.updateData(getMachineName(), getMachineAddress());
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override
@@ -130,90 +142,113 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (getBaseMetaTileEntity().isServerSide()) {
 			if (aPlayer.capabilities.isCreativeMode) {
-				GT_Utility.sendChatToPlayer(aPlayer, "Debug recipe: " + getTrueRecipe());
+				GT_Utility.sendChatToPlayer(aPlayer, "Debug recipe: " + getConnectionStatus());
 			}
 		}
 	}
 	
 	@Override
 	public void inValidate() {
-		if (getBaseMetaTileEntity().isServerSide()) {
-			if (tTile != null) {
-				IMetaTileEntity outputPar = tTile.getMetaTileEntity();
-				if (outputPar instanceof GTMTE_ParallelHatch_Output) {
-					((GTMTE_ParallelHatch_Output) outputPar).mInputPosition = null;
-					((GTMTE_ParallelHatch_Output) outputPar).mInputPosition = null;
-					((GTMTE_ParallelHatch_Output) outputPar).address = "No target address";
-					((GTMTE_ParallelHatch_Output) outputPar).machineName = "no target machine";
-				}
-			}
-		}
+		onDisconnect();
 		super.inValidate();
 	}
 	
 	@Override
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		super.onPostTick(iAm, aTick);
-		if (iAm.isServerSide() && aTick % 20 == 0) {
-			if (mOutputPosition == null) {
-				iAm.setActive(false);
-				return;
-			}
-			tTile = PositionObject.getIGregTechTileEntity(iAm, mOutputPosition);
-			if (tTile != null) {
-				IMetaTileEntity outputPar = tTile.getMetaTileEntity();
-				if (outputPar instanceof GTMTE_ParallelHatch_Output) {
-					connectOut((GTMTE_ParallelHatch_Output) outputPar);
-				}
-			}
-		}
-	}
-	
-	public void connectOut(GTMTE_ParallelHatch_Output output) {
-		boolean isActive = false;
-		boolean isActiveRecipe = false;
-		if (output.getMaxParallel() == getMaxParallel() && output.getBaseMetaTileEntity().isActive()) {
-			if (PositionObject.checkComparePosition(mThisPosition, output.mInputPosition)) {
-				isActive = true;
-				isActiveRecipe = output.mIsTrueRecipe;
-				mTargetX = mOutputPosition.xPos;
-				mTargetY = mOutputPosition.yPos;
-				mTargetZ = mOutputPosition.zPos;
-			}
-		}
-		setTrueRecipe(isActiveRecipe);
-		getBaseMetaTileEntity().setActive(isActive);
-	}
-	
-	public void setCoord(PositionObject outputPosition) {
-		mOutputPosition = outputPosition;
 	}
 	
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setInteger("mCurrentParallelIn", this.mCurrentParallelIn);
-		aNBT.setInteger("mTargetX", mTargetX);
-		aNBT.setInteger("mTargetY", mTargetY);
-		aNBT.setInteger("mTargetZ", mTargetZ);
+		aNBT.setBoolean("isConnected", this.isConnected);
+		aNBT.setString("machineName", this.machineName);
+		aNBT.setString("address", this.address);
 	}
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
 		mCurrentParallelIn = aNBT.getInteger("mCurrentParallelIn");
-		mTargetX = aNBT.getInteger("mTargetX");
-		mTargetY = aNBT.getInteger("mTargetY");
-		mTargetZ = aNBT.getInteger("mTargetZ");
+		isConnected = aNBT.getBoolean("isConnected");
+		machineName = aNBT.getString("machineName");
+		address = aNBT.getString("address");
 	}
 	
-	public int getMaxParallel() {
+	@Override
+	public void onFirstTick(IGregTechTileEntity te) {
+		super.onFirstTick(te);
+		if (te.isServerSide()) {
+			if (machineName == null) {
+				machineName = "Not target machine";
+			}
+			if (address == null) {
+				address = UUID.randomUUID().toString().substring(0, 8);
+			}
+		}
+	}
+	
+	@Override
+	public void updateConnectionStatus(boolean isConnected) {
+		this.isConnected = isConnected;
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null) {
+			te.setActive(isConnected);
+		}
+	}
+	
+	@Override
+	public boolean getConnectionStatus() {
+		return isConnected;
+	}
+	
+	@Override
+	public boolean isValid() {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		return te != null && !te.isDead() && isConnected;
+	}
+	
+	@Override
+	public void onDisconnect() {
+		if (pout != null) {
+			pout.onPostDisconnect();
+		}
+	}
+	
+	@Override
+	public void updateParallelAmount(int parallels) {
+		mCurrentParallelIn = parallels;
+	}
+	
+	@NotNull
+	@Override
+	public IPosition getPosition() {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null) {
+			return new PositionObject(te);
+		}
+		return new PositionObject(0, 0, 0);
+	}
+	
+	@Override
+	public int getParallel() {
 		return mMaxParallel;
 	}
 	
-	public boolean getTrueRecipe() {
-		return mTrueRecipe;
+	@Override
+	public void onConnect(@NotNull IParallelOut pout) {
+		this.pout = pout;
+		this.pout.updateData(getMachineName(), getMachineAddress());
 	}
 	
-	public void setTrueRecipe(boolean isTrue) {
-		mTrueRecipe = isTrue;
+	@NotNull
+	@Override
+	public String getMachineName() {
+		return machineName;
+	}
+	
+	@NotNull
+	@Override
+	public String getMachineAddress() {
+		return address;
 	}
 }

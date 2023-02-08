@@ -248,7 +248,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	}
 	
 	public boolean checkRecipeBoxinator() {
-		if (sParallHatchesIn.size() > 0 && getRecipeCheckParallel()) {
+		if (sParallHatchesIn.size() > 0 && isConnectParallel) {
 			return false;
 		}
 		ArrayList<ItemStack> tInputList;

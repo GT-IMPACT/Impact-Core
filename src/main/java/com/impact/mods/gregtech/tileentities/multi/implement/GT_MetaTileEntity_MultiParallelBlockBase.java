@@ -1,7 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.impact.api.parallelsystem.IParallelIn;
-import com.impact.api.parallelsystem.IParallelOut;
 import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import com.impact.util.PositionObject;
@@ -9,7 +7,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,18 +62,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 		ll.add(mParallel > 1 ? "Parallel Point: " + mParallel : "Parallel not found");
 		final String[] a = new String[ll.size()];
 		return ll.toArray(a);
-	}
-	
-	@Override
-	public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
-		IGregTechTileEntity iAm = getBaseMetaTileEntity();
-		PositionObject pos = new PositionObject(iAm);
-		if (!aPlayer.isSneaking()) {
-			if (sParallHatchesIn.size() > 0 || iAm.getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
-				aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, iAm.getWorld(), pos.xPos, pos.yPos, pos.zPos);
-			}
-		}
 	}
 	
 	public boolean addParallHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -142,52 +127,29 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 	@Override
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		super.onPostTick(iAm, aTick);
-		if (iAm.isServerSide() && aTick % 20 == 0) {
-//			connectParallelHatches();
-//			connectParallelComputer(iAm);
+		if (iAm.isServerSide() && aTick % 100 == 0) {
+			int maxParallel = 1;
+			boolean isDebug = false;
+			
+			for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
+				
+				isConnectParallel = ph.isConnected;
+				ph.machineName    = getLocalName();
+				
+				maxParallel = ph.getParallel();
+				isDebug     = ph.isDebug;
+				
+			}
+			if (isDebug) {
+				isConnectParallel = true;
+				isConnected       = true;
+				setParallel(maxParallel);
+				return;
+			}
+			if (!isConnectParallel || !isConnected) {
+				maxParallel = 1;
+			}
+			setParallel(maxParallel);
 		}
 	}
-
-
-//	public void connectParallelHatches() {
-//		int maxParallel = 1;
-//		boolean isDebug = false;
-//		if (sParallHatchesIn.size() > 0) {
-//			for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
-//				maxParallel = ph.getMaxParallel();
-//				setRecipeCheckParallel(ph.getTrueRecipe());
-//				isDebug        = ph.isDebug;
-//				ph.machineName = getLocalName();
-//			}
-//			if (isDebug) {
-//				setRecipeCheckParallel(true);
-//				isConnected = true;
-//				setParallel(maxParallel);
-//				return;
-//			}
-//			if (getRecipeCheckParallel() || !isConnected) {
-//				maxParallel = 1;
-//			}
-//		}
-//		setParallel(maxParallel);
-//	}
-
-//	public void connectParallelComputer(IGregTechTileEntity iAm) {
-//		isConnected = false;
-//		boolean isDebug = false;
-//		if (sParallHatchesIn.size() > 0 || iAm.getMetaTileEntity() instanceof GTMTE_ParallelComputer) {
-//			for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) isDebug = ph.isDebug;
-//			if (isDebug) {
-//				isConnected = true;
-//				return;
-//			}
-//			tile = iAm.getIGregTechTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
-//			if (tile != null && tile.getMetaTileEntity() instanceof GTMTE_TowerCommunication) {
-//				GTMTE_TowerCommunication tower = (GTMTE_TowerCommunication) tile.getMetaTileEntity();
-//				if (tower.getBaseMetaTileEntity().isActive() && mFrequency == tower.mFrequency) {
-//					isConnected = tower.isConnected;
-//				}
-//			}
-//		}
-//	}
 }

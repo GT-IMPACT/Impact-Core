@@ -1,5 +1,7 @@
 package com.impact.client.gui;
 
+import com.impact.api.security.SecurityContainer;
+import com.impact.api.security.SecurityGui;
 import com.impact.impact;
 import com.impact.mods.gregtech.gui.aerostat.Container_FirstAerostat;
 import com.impact.mods.gregtech.gui.aerostat.Countainer_SelectAerostat;
@@ -24,9 +26,7 @@ import static com.impact.core.impactLog.WARNING;
 
 public class GUIHandler implements IGuiHandler {
 	
-	public static final int GUI_ID_Solar = 0, GUI_ID_Carts = 2, GUI_ID_LapTop = 3, GUI_ID_FirstAerostat = 4, GUI_AE = 7;
-	
-	
+	public static final int GUI_ID_Solar = 0, GUI_ID_Carts = 2, GUI_ID_LapTop = 3, GUI_ID_FirstAerostat = 4, GUI_AE = 7, GUI_ID_Security = 8;
 	
 	public GUIHandler() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, this);
@@ -64,6 +64,8 @@ public class GUIHandler implements IGuiHandler {
 				}
 			case GUI_AE:
 				return new GUI_SuppliersAE.Server(x, y, z);
+			case GUI_ID_Security:
+				return new SecurityContainer(player);
 		}
 		WARNING("GUIHandler Server - Not Loaded");
 		return null;
@@ -101,6 +103,8 @@ public class GUIHandler implements IGuiHandler {
 				}
 			case GUI_AE:
 				return new GUI_SuppliersAE.Client(new GUI_SuppliersAE.Server(x, y, z));
+			case GUI_ID_Security:
+				return new SecurityGui(player);
 		}
 		INFO("GUIHandler Client - Loaded");
 		return null;
