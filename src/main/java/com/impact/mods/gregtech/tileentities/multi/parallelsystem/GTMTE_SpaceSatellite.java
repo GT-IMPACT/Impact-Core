@@ -122,9 +122,9 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-//		if (!Utilits.isLowGravity(thisController)) {
-//			return false;
-//		}
+		if (!Utilits.isLowGravity(thisController)) {
+			return false;
+		}
 		//region Structure
 		final Vector3ic forgeDirection = new Vector3i(
 				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,

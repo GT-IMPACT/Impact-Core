@@ -513,7 +513,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (towerReciver != null) {
-                final boolean isActiveTowerReciver = towerReciver.mIsReceive;
+                final boolean isActiveTowerReciver = towerReciver.isConnected;
                 tag.setBoolean("isActiveTowerReciver", isActiveTowerReciver);
             }
 

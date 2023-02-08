@@ -244,8 +244,8 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 			
 			receivers.clear();
 			
-			for (int x = -4; x < 4; x++) {
-				for (int z = -4; z < 4; z++) {
+			for (int x = -8; x <= 8; x++) {
+				for (int z = -8; z <= 8; z++) {
 					ch = w.getChunkFromChunkCoords(xChunk + x, zChunk + z);
 					for (Object value : ch.chunkTileEntityMap.values()) {
 						TileEntity tile = (TileEntity) value;

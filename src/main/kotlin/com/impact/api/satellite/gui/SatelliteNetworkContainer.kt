@@ -7,11 +7,13 @@ import com.impact.util.PositionObject
 import gregtech.api.gui.GT_ContainerMetaTile_Machine
 import gregtech.api.gui.GT_Slot_Holo
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
+import gregtech.api.util.GT_Utility
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.inventory.ICrafting
 import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumChatFormatting
 
 class SatelliteNetworkContainer(inv: InventoryPlayer, te: IGregTechTileEntity) : GT_ContainerMetaTile_Machine(inv, te) {
 
@@ -47,7 +49,10 @@ class SatelliteNetworkContainer(inv: InventoryPlayer, te: IGregTechTileEntity) :
         when (id) {
             0 -> changeFrequency(te, false, shift)
             1 -> changeFrequency(te, true, shift)
-            2 -> te.updateFrequency(currentFrequency)
+            2 -> {
+                te.updateFrequency(currentFrequency)
+                GT_Utility.sendChatToPlayer(p, "Connection created! ${EnumChatFormatting.GREEN}Frequency: $currentFrequency")
+            }
         }
     }
 
@@ -68,6 +73,7 @@ class SatelliteNetworkContainer(inv: InventoryPlayer, te: IGregTechTileEntity) :
                 val tag = p.currentEquippedItem.tagCompound?.getCompoundTag("satellite") ?: return
                 val pos = PositionObject.loadFromNBT(tag)
                 te.onFirstConnect(pos)
+                GT_Utility.sendChatToPlayer(p, "Connection confirm! ${EnumChatFormatting.GREEN}Frequency: $currentFrequency")
             }
         }
     }
