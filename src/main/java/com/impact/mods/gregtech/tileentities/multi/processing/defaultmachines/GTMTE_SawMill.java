@@ -101,7 +101,7 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		noMaintenance();
-		boolean checkRecipe = RecipeBuilder.checkLowTierMachineRecipe(this);
+		boolean checkRecipe = RecipeBuilder.checkLowTierMachineRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
 		if (!checkRecipe) {
 			return false;
 		}

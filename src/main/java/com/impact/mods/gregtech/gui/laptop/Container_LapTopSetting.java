@@ -1,7 +1,6 @@
 package com.impact.mods.gregtech.gui.laptop;
 
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -37,24 +36,6 @@ public class Container_LapTopSetting extends GT_ContainerMetaTile_Machine {
 		Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
 		if ((tSlot != null) && (this.mTileEntity.getMetaTileEntity() != null)) {
 			
-			if (mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiParallelBlockBase<?>) {
-				GT_MetaTileEntity_MultiParallelBlockBase<?> base = (GT_MetaTileEntity_MultiParallelBlockBase<?>) mTileEntity.getMetaTileEntity();
-				int aFrequency = base.mFrequency;
-				if (aSlotIndex == 0) {
-					base.mFrequency += (aShifthold == 1 ? 10 : 1);
-					return null;
-				} else if (aSlotIndex == 1) {
-					base.mFrequency -= (aShifthold == 1 ? aFrequency - 10 < 0 ? 0 : 10 : aFrequency - 1 < 0 ? 0 : 1);
-					return null;
-				} else if (aSlotIndex == 2) {
-					if (base instanceof GTMTE_TowerCommunication) {
-						base.setFrequency(base.mFrequency, aPlayer);
-					} else {
-						base.getFrequency(base.mFrequency, aPlayer);
-					}
-				}
-				return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
-			}
 		}
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
@@ -64,14 +45,6 @@ public class Container_LapTopSetting extends GT_ContainerMetaTile_Machine {
 		super.detectAndSendChanges();
 		if ((this.mTileEntity.isClientSide()) && (this.mTileEntity.getMetaTileEntity() == null)) {
 			return;
-		}
-		if (this.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiParallelBlockBase<?>) {
-			this.mTargetX   = ((GT_MetaTileEntity_MultiParallelBlockBase<?>) this.mTileEntity.getMetaTileEntity()).mTargetX;
-			this.mTargetY   = ((GT_MetaTileEntity_MultiParallelBlockBase<?>) this.mTileEntity.getMetaTileEntity()).mTargetY;
-			this.mTargetZ   = ((GT_MetaTileEntity_MultiParallelBlockBase<?>) this.mTileEntity.getMetaTileEntity()).mTargetZ;
-			this.mTargetD   = ((GT_MetaTileEntity_MultiParallelBlockBase<?>) this.mTileEntity.getMetaTileEntity()).mTargetD;
-			this.mFrequency = ((GT_MetaTileEntity_MultiParallelBlockBase<?>) this.mTileEntity.getMetaTileEntity()).mFrequency;
-			this.mIsEnable  = ((GT_MetaTileEntity_MultiParallelBlockBase<?>) this.mTileEntity.getMetaTileEntity()).mIsConnect ? 1 : 0;
 		}
 		
 		for (Object crafter : this.crafters) {

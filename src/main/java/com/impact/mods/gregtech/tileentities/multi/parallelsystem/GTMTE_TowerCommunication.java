@@ -1,35 +1,40 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import com.impact.client.gui.GUIHandler;
+import com.impact.api.satellite.IDistributor;
+import com.impact.api.satellite.IReceiver;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.PositionObject;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import org.jetbrains.annotations.NotNull;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static com.impact.core.Refstrings.MODID;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
 import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_TowerCommunication> {
+public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_TowerCommunication> implements IDistributor {
 	
 	public static Block CASING = Casing_Helper.sCasePage8_3;
 	public static byte CASING_META = 6;
@@ -53,12 +58,10 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 					.addElement('D', ofHatchAdder(GTMTE_TowerCommunication::addCommunicationHatchToMachineList, CASING_TEXTURE_ID, CASING, CASING_META))
 					.addElement('E', lazy(t -> ofFrame(Materials.Steel)))
 					.build();
-	public static int frameId = 4096 + Materials.Steel.mMetaItemSubID;
-	public static int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
-	public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
-	public final HashSet<GTMTE_SpaceSatellite_Receiver> sCommunReceiver = new HashSet<>();
-	public boolean Stuff;
-	public int casingCount = 0;
+	
+	private final HashSet<IReceiver> receivers = new HashSet<>();
+	public final HashSet<GTMTE_CommunicationTower_Receiver> sCommunReceiver = new HashSet<>();
+	private int timeOutCheckArea;
 	
 	public GTMTE_TowerCommunication(int aID, String aNameRegional) {
 		super(aID, "impact.multis.communicationtower", aNameRegional);
@@ -75,12 +78,9 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity == null) {
 				return false;
-			} else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Receiver) {
-				((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return sCommunReceiver.add((GTMTE_SpaceSatellite_Receiver) aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Transmitter) {
-				((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return sCommunTransmitter.add((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GTMTE_CommunicationTower_Receiver) {
+				((GTMTE_CommunicationTower_Receiver) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return sCommunReceiver.add((GTMTE_CommunicationTower_Receiver) aMetaTileEntity);
 			} else {
 				return false;
 			}
@@ -94,25 +94,26 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? TOWER_OVERLAY_ACTIVE : TOWER_OVERLAY)} : new ITexture[]{INDEX_CASE};
+		return aSide == 1 ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? TOWER_OVERLAY_ACTIVE : TOWER_OVERLAY)} : new ITexture[]{INDEX_CASE};
 	}
+	private boolean isConnected;
 	
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return false;
+		return null;
 	}
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return false;
+		return null;
 	}
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-		sCommunReceiver.clear();
-		sCommunTransmitter.clear();
 		boolean formationCheckList = checkPiece(3, 17, 3);
-		casingCount = 0;
+		if (sCommunReceiver.size() != 4) {
+			formationCheckList = false;
+		}
 		return formationCheckList;
 	}
 	
@@ -122,7 +123,7 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		this.mMaxProgresstime    = 1;
+		this.mMaxProgresstime    = 20;
 		this.mEfficiency         = 10000;
 		this.mEfficiencyIncrease = 10000;
 		this.mEUt                = 0;
@@ -130,26 +131,9 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	}
 	
 	@Override
-	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
-		super.onPostTick(iAm, aTick);
-		if (iAm.isServerSide() && aTick % 20 == 0) {
-			this.mIsConnect = false;
-			iAm.setActive(true);
-			if (iAm.isActive()) {
-				ArrayList<Boolean> checker = new ArrayList<>();
-				boolean active = false;
-				for (GTMTE_SpaceSatellite_Receiver ph : sCommunReceiver) {
-					checker.add(ph.getIsReceive());
-					active = ph.getBaseMetaTileEntity().isActive();
-				}
-				if (active) {
-					this.mIsConnect = checker.stream().filter(b -> b).count() == 4;
-				}
-			}
-		}
-		if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
-			mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
-		}
+	public void clearHatches() {
+		sCommunReceiver.clear();
+		super.clearHatches();
 	}
 	
 	@Override
@@ -174,7 +158,24 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	
 	@Override
 	public String[] getInfoData() {
-		return new String[]{"Frequency: " + mFrequency + ""};
+		
+		List<String> list = new ArrayList<>();
+		list.add("Timeout rescan: " + timeOutCheckArea + "s");
+		list.add("Connection: " + (isConnected ? "YES" : "NO"));
+		
+		int index = 0;
+		for (IReceiver receiver : receivers) {
+			if (receiver instanceof IMetaTileEntity) {
+				index++;
+				IMetaTileEntity mte = (IMetaTileEntity) receiver;
+				String name = GT_LanguageManager.getTranslation("gt.blockmachines." + mte.getMetaName() + ".name");
+				IGregTechTileEntity te = mte.getBaseMetaTileEntity();
+				String title = String.format("%d. %s (X: %d, Y: %d, Z: %d)", index, name, te.getXCoord(), te.getYCoord(), te.getZCoord());
+				list.add(title);
+			}
+		}
+		
+		return list.toArray(new String[0]);
 	}
 	
 	@Override
@@ -183,20 +184,117 @@ public class GTMTE_TowerCommunication extends GT_MetaTileEntity_MultiParallelBlo
 	}
 	
 	@Override
-	public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		super.onNotePadRightClick(aSide, aPlayer, aX, aY, aZ);
-		IGregTechTileEntity iAm = getBaseMetaTileEntity();
-		PositionObject pos = new PositionObject(iAm);
-		if (!aPlayer.isSneaking()) {
-			aPlayer.openGui(MODID, GUIHandler.GUI_ID_LapTop, iAm.getWorld(), pos.xPos, pos.yPos, pos.zPos);
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+		aNBT.setBoolean("isConnected", isConnected);
+		aNBT.setInteger("timeOutCheckArea", timeOutCheckArea);
+	}
+	
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		isConnected      = aNBT.getBoolean("isConnected");
+		timeOutCheckArea = aNBT.getInteger("timeOutCheckArea");
+	}
+	
+	@Override
+	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
+		super.onPostTick(iAm, aTick);
+		if (iAm.isServerSide() && aTick % 100 == 0) {
+			
+			ArrayList<Boolean> checker = new ArrayList<>();
+			
+			for (GTMTE_CommunicationTower_Receiver ph : sCommunReceiver) {
+				checker.add(ph.hasConnected() && ph.getBaseMetaTileEntity().isActive());
+			}
+			boolean isConnect = checker.stream().filter(b -> b).count() == 4;
+			if (isConnect != isConnected) {
+				isConnected = isConnect;
+				notifyConnections();
+			}
+		}
+		
+		if (iAm.isServerSide() && aTick % 20 == 0 && isConnected) {
+			if (--timeOutCheckArea <= 0) {
+				checkZoneAndNotify();
+				timeOutCheckArea = 30;
+			}
+		}
+		
+		if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
+			noMaintenance();
 		}
 	}
 	
-	public void setFrequency(int aFreq, EntityPlayer aPlayer) {
-		super.setFrequency(aFreq, aPlayer);
+	@Override
+	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+		super.onFirstTick(aBaseMetaTileEntity);
+		checkZoneAndNotify();
 	}
 	
-	public void setCoord(PositionObject pos) {
-		super.setCoord(pos);
+	private void checkZoneAndNotify() {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		
+		if (te != null) {
+			World w = te.getWorld();
+			Chunk ch = w.getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			
+			int xChunk = ch.xPosition;
+			int zChunk = ch.zPosition;
+			
+			receivers.clear();
+			
+			for (int x = -8; x <= 8; x++) {
+				for (int z = -8; z <= 8; z++) {
+					ch = w.getChunkFromChunkCoords(xChunk + x, zChunk + z);
+					for (Object value : ch.chunkTileEntityMap.values()) {
+						TileEntity tile = (TileEntity) value;
+						
+						if (tile instanceof IGregTechTileEntity) {
+							IGregTechTileEntity gte = (IGregTechTileEntity) tile;
+							
+							if (gte.getMetaTileEntity() != null && gte.getMetaTileEntity() instanceof IReceiver) {
+								IReceiver receiver = (IReceiver) gte.getMetaTileEntity();
+								if (receiver.isValid()) {
+									receivers.add(receiver);
+								}
+							}
+						}
+						
+						if (tile instanceof IReceiver) {
+							IReceiver receiver = (IReceiver) tile;
+							if (receiver.isValid()) {
+								receivers.add(receiver);
+							}
+						}
+					}
+				}
+			}
+		}
+		notifyConnections();
+	}
+	
+	@Override
+	public void notifyConnections() {
+		for (IReceiver receiver : receivers) {
+			receiver.createConnect(this);
+			receiver.updateConnectionStatus(isConnected);
+		}
+	}
+	
+	@NotNull
+	@Override
+	public Set<IReceiver> getConnections() {
+		return receivers;
+	}
+	
+	@Override
+	public void disconnect(@NotNull IReceiver connection) {
+		receivers.remove(connection);
+		checkZoneAndNotify();
+	}
+	
+	public boolean getConnectionStatus() {
+		return isConnected;
 	}
 }

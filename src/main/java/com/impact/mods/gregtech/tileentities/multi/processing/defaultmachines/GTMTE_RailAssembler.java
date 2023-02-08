@@ -162,7 +162,7 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkLowTierMachineRecipe(this);
+		return RecipeBuilder.checkLowTierMachineRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
 	}
 	
 	@Override

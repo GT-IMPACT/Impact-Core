@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -10,7 +10,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,10 +18,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
+import java.util.HashSet;
+
 import static micdoodle8.mods.galacticraft.core.util.ConfigManagerCore.disableSpaceStationCreation;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SpaceSatellite> {
+public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSatellite> {
+	
+	public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
 	
 	public static Block CASING = Casing_Helper.sCasePage8_3;
 	public static byte CASING_META = 5;
@@ -73,7 +77,7 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -81,8 +85,10 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sps");
 		b
 				.addTypeMachine("name", "Space Satellite")
-				.addInfo(disableSpaceStationCreation ? "info.0" : "info.1",
-						disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required")
+				.addInfo(
+						disableSpaceStationCreation ? "info.0" : "info.1",
+						disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required"
+				)
 				.addController()
 				.addOtherStructurePartAny("other.0", "Communication Transmitter")
 				.addCasingInfo("case", "Space Satellite Casing", 48)
@@ -102,18 +108,14 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 	@Override
 	public void onPostTick(IGregTechTileEntity iAm, long aTick) {
 		super.onPostTick(iAm, aTick);
-		boolean active;
 		if (iAm.isServerSide()) {
-			if (aTick % 20 == 0) {
-				iAm.setActive(true);
+			if (aTick % 100 == 0) {
 				for (GTMTE_SpaceSatellite_Transmitter th : sCommunTransmitter) {
-					active = iAm.isActive();
-					th.getBaseMetaTileEntity().setActive(active);
-					th.setIsTransmit(active);
+					th.updateConnectionStatus(iAm.isActive());
 				}
 			}
 			if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
-				mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
+				noMaintenance();
 			}
 		}
 	}
@@ -151,7 +153,7 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 					IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
 					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+							&& !addCommunicationHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
 						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
 								&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
 						} else {
@@ -164,6 +166,28 @@ public class GTMTE_SpaceSatellite extends GT_MetaTileEntity_MultiParallelBlockBa
 		//endregion
 		
 		return formationChecklist;
+	}
+	
+	@Override
+	public void clearHatches() {
+		super.clearHatches();
+		sCommunTransmitter.clear();
+	}
+	
+	private boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity == null) {
+				return false;
+			} else if (aMetaTileEntity instanceof GTMTE_SpaceSatellite_Transmitter) {
+				((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return sCommunTransmitter.add((GTMTE_SpaceSatellite_Transmitter) aMetaTileEntity);
+			} else {
+				return false;
+			}
+		}
 	}
 	
 	@Override

@@ -20,7 +20,7 @@ import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite_Receiver;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
@@ -49,8 +49,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import tterrag.wailaplugins.api.Plugin;
 import tterrag.wailaplugins.plugins.PluginBase;
 
@@ -101,7 +99,7 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication ? ((GTMTE_TowerCommunication) tMeta) : null;
         final GTMTE_NuclearReactorBase<?> reactor = tMeta instanceof GTMTE_NuclearReactorBase ? ((GTMTE_NuclearReactorBase<?>) tMeta) : null;
         final GTMTE_Reactor_Rod_Hatch reactorHatch = tMeta instanceof GTMTE_Reactor_Rod_Hatch ? ((GTMTE_Reactor_Rod_Hatch) tMeta) : null;
-        final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
+        final GTMTE_CommunicationTower_Receiver towerReciver = tMeta instanceof GTMTE_CommunicationTower_Receiver ? ((GTMTE_CommunicationTower_Receiver) tMeta) : null;
         final GTMTE_ParallelHatch_Input parallelHatch_input = tMeta instanceof GTMTE_ParallelHatch_Input ? ((GTMTE_ParallelHatch_Input) tMeta) : null;
         final GTMTE_ParallelHatch_Output parallelHatch_output = tMeta instanceof GTMTE_ParallelHatch_Output ? ((GTMTE_ParallelHatch_Output) tMeta) : null;
         final GT_MetaTileEntity_DigitalChestBase chestBase = tMeta instanceof GT_MetaTileEntity_DigitalChestBase ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
@@ -428,7 +426,7 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication ? ((GTMTE_TowerCommunication) tMeta) : null;
         final GTMTE_NuclearReactorBase<?> reactor = tMeta instanceof GTMTE_NuclearReactorBase ? ((GTMTE_NuclearReactorBase<?>) tMeta) : null;
         final GTMTE_Reactor_Rod_Hatch reactorHatch = tMeta instanceof GTMTE_Reactor_Rod_Hatch ? ((GTMTE_Reactor_Rod_Hatch) tMeta) : null;
-        final GTMTE_SpaceSatellite_Receiver towerReciver = tMeta instanceof GTMTE_SpaceSatellite_Receiver ? ((GTMTE_SpaceSatellite_Receiver) tMeta) : null;
+        final GTMTE_CommunicationTower_Receiver towerReciver = tMeta instanceof GTMTE_CommunicationTower_Receiver ? ((GTMTE_CommunicationTower_Receiver) tMeta) : null;
         final GTMTE_ParallelHatch_Input parallelHatch_input = tMeta instanceof GTMTE_ParallelHatch_Input ? ((GTMTE_ParallelHatch_Input) tMeta) : null;
         final GTMTE_ParallelHatch_Output parallelHatch_output = tMeta instanceof GTMTE_ParallelHatch_Output ? ((GTMTE_ParallelHatch_Output) tMeta) : null;
         final GT_MetaTileEntity_DigitalChestBase chestBase = tMeta instanceof GT_MetaTileEntity_DigitalChestBase ? ((GT_MetaTileEntity_DigitalChestBase) tMeta) : null;
@@ -515,12 +513,12 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (towerReciver != null) {
-                final boolean isActiveTowerReciver = towerReciver.mIsReceive;
+                final boolean isActiveTowerReciver = towerReciver.isConnected;
                 tag.setBoolean("isActiveTowerReciver", isActiveTowerReciver);
             }
 
             if (parallelHatch_input != null) {
-                final boolean isParallelIN = parallelHatch_input.mTrueRecipe;
+                final boolean isParallelIN = parallelHatch_input.isConnected;
                 tag.setBoolean("isParallelIN", isParallelIN);
                 tag.setInteger("ppHatchIn", parallelHatch_input.mMaxParallel);
                 tag.setString("ppInMachineName", parallelHatch_input.machineName);
@@ -528,7 +526,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (parallelHatch_output != null) {
-                final boolean isParallelOUT = parallelHatch_output.mIsTrueRecipe;
+                final boolean isParallelOUT = parallelHatch_output.isConnected;
                 tag.setBoolean("isParallelOUT", isParallelOUT);
                 tag.setInteger("ppHatchOut", parallelHatch_output.mMaxParallel);
                 tag.setString("ppOutMachineName", parallelHatch_output.machineName);
@@ -536,7 +534,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (towerCommunication != null) {
-                tag.setBoolean("towerCommunicationConnect", towerCommunication.mIsConnect);
+                tag.setBoolean("towerCommunicationConnect", towerCommunication.getConnectionStatus());
             }
 
             if (reactor != null) {
@@ -553,7 +551,7 @@ public class ImpactPlugin extends PluginBase {
                 final int Parallel = MultiParallel.mParallel;
                 tag.setInteger("Parallel", Parallel);
                 tag.setInteger("currentParallel", MultiParallel.mCheckParallelCurrent);
-                tag.setBoolean("connectWithTower", MultiParallel.mIsConnect);
+                tag.setBoolean("connectWithTower", MultiParallel.getConnectionStatus());
             }
 
             if (tMeta instanceof GTMTE_LapPowerStation) {

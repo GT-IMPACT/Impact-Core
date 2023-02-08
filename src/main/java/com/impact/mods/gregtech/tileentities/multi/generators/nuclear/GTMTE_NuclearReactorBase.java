@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 import com.impact.mods.gregtech.gui.nuclear.GT_Container_NuclearReactor;
 import com.impact.mods.gregtech.gui.nuclear.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Materials;
@@ -31,7 +32,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
 import static com.impact.util.Utilits.getFluidStack;
 
-public abstract class GTMTE_NuclearReactorBase<T> extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_NuclearReactorBase<T>> {
+public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase<GTMTE_NuclearReactorBase<T>> {
 	
 	private static final int SPEED_DECAY = 5;
 	private final int[] AMOUNT_NUCLEAR_HATCHES = {1, 9, 25};

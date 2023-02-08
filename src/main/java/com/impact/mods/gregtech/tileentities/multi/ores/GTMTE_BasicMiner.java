@@ -5,7 +5,7 @@ import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
@@ -17,7 +17,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
@@ -39,7 +38,7 @@ import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_BasicMiner> {
+public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 	
 	static IStructureDefinition<GTMTE_BasicMiner> definition =
 			StructureDefinition.<GTMTE_BasicMiner>builder()
@@ -277,7 +276,7 @@ public class GTMTE_BasicMiner extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.addInputHatch(1)
 				.addEnergyHatch(2)
 				.addCasingInfo("case.0", "Solid Steel Machine Casing", 11)
-				.addOtherStructurePart("case.1", "Steel Frame Box", "case.2", "Any Frame Box")
+				.addCasingInfo("case.1", "Steel Frame Box", 51)
 				.addRedHint("Miner Drill Hatch")
 				.signAndFinalize();
 		return b;

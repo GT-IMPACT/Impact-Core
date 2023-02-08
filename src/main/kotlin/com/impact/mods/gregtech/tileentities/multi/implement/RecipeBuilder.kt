@@ -86,7 +86,7 @@ object RecipeBuilder {
             addAll(multis.mInputBusHatches)
             addAll(multis.mInputHatches)
         }
-        if (multis.sParallHatchesIn.isNotEmpty() && !multis.mRecipeCheckParallel) {
+        if (multis.sParallHatchesIn.isNotEmpty() && !multis.isConnectParallel) {
             return false
         }
         var recipe: MultiBlockRecipe<MULTIS>

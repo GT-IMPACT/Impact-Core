@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -8,14 +8,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_AntimatterReactor;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
@@ -30,7 +29,7 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAntimatterReactorFuels;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofChain;
 
-public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AntimatterReactor> {
+public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_AntimatterReactor> {
 	
 	protected int mColantConsumption = 0, mPerFluidAmount;
 	private FluidStack[] mInputFluids;
@@ -52,13 +51,13 @@ public class GTMTE_AntimatterReactor extends GT_MetaTileEntity_MultiParallelBloc
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		ITexture[] sTexture;
 		if (aSide == aFacing) {
-			sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
-					new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FUSION1)};
+			sTexture = new ITexture[]{TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+					TextureFactory.of(Textures.BlockIcons.OVERLAY_FUSION1)};
 		} else {
 			if (!aActive) {
-				sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+				sTexture = new ITexture[]{TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
 			} else {
-				sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+				sTexture = new ITexture[]{TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
 			}
 		}
 		return sTexture;

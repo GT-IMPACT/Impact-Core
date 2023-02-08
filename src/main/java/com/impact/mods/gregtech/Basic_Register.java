@@ -13,7 +13,6 @@ import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_Enrichment
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -123,7 +122,7 @@ public class Basic_Register {
 		Parallel_Hatch_OUT256.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.256", "Parallel Transmitter 256P", 8, 256).getStackForm(1L));
 		
 		Communication_Hatch_Transmitter.set(new GTMTE_SpaceSatellite_Transmitter(ID2++, "impact.machine.communicationhatch.transmitter", "Communication Transmitter").getStackForm(1L));
-		Communication_Hatch_Receiver.set(new GTMTE_SpaceSatellite_Receiver(ID2++, "impact.machine.communicationhatch.receiver", "Communication Receiver").getStackForm(1L));
+		Communication_Hatch_Receiver.set(new GTMTE_CommunicationTower_Receiver(ID2++, "impact.machine.communicationhatch.receiver", "Communication Receiver").getStackForm(1L));
 		
 		Parallel_Hatch_Rack.set(new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack").getStackForm(1L));
 		

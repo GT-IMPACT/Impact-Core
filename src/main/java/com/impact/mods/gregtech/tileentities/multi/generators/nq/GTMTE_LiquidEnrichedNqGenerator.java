@@ -2,9 +2,9 @@ package com.impact.mods.gregtech.tileentities.multi.generators.nq;
 
 import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
-import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.Language;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
@@ -15,7 +15,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -40,7 +40,7 @@ import static gregtech.api.enums.GT_Values.RA;
 import static java.text.NumberFormat.getNumberInstance;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
 
-public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_LiquidEnrichedNqGenerator> {
+public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_LiquidEnrichedNqGenerator> {
 	
 	private static final String[] description = new String[]{
 			EnumChatFormatting.RED + "Impact Details:",
@@ -107,12 +107,12 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GT_MetaTileEntity_MultiPara
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity, this);
+		return new GTC_ImpactBase(aPlayerInventory, aBaseMetaTileEntity, this);
 	}
 	
 	@Override

@@ -1,14 +1,12 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 
-import appeng.tile.crafting.TileCraftingStorageTile;
-import appeng.tile.crafting.TileCraftingTile;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
-import com.impact.mods.gregtech.gui.base.GT_Container_MultiParallelMachine;
+import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.multis.OverclockCalculate;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -18,14 +16,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
@@ -40,7 +36,7 @@ import static net.minecraft.util.EnumChatFormatting.*;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
 
-public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_MESystemProvider> {
+public class GTMTE_MESystemProvider extends GTMTE_Impact_BlockBase<GTMTE_MESystemProvider> {
 	
 	public static Block CASING = Casing_Helper.sCaseCore3;
 	public static int CASING_META = ME_CASING.getMeta();
@@ -87,7 +83,7 @@ public class GTMTE_MESystemProvider extends GT_MetaTileEntity_MultiParallelBlock
 	
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_MultiParallelMachine(aPlayerInventory, aBaseMetaTileEntity);
+		return new GTC_ImpactBase(aPlayerInventory, aBaseMetaTileEntity);
 	}
 	
 	@Override

@@ -4,12 +4,11 @@ import com.impact.core.Impact_API;
 import com.impact.impact;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.network.IPacketString;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
-import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.Materials;
@@ -17,7 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
@@ -34,13 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.AEROSTATE_PLATFORM;
-import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
-import static com.impact.util.multis.GT_StructureUtility.ofHatchAdderOptional;
-import static gregtech.api.GregTech_API.sBlockCasings3;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofChain;
 
-public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Aerostat> implements IPacketString {
+public class GTMTE_Aerostat extends GTMTE_Impact_BlockBase<GTMTE_Aerostat> implements IPacketString {
 	
 	public final static int MAX_BUFFER = 100_000;
 	static Block CASING = Casing_Helper.sCaseCore3;
@@ -95,7 +89,7 @@ public class GTMTE_Aerostat extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == 1 ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(Texture.Icons.PLATFORM_AEROSTATE_OVERLAY)} : new ITexture[]{INDEX_CASE};
+		return aSide == 1 ? new ITexture[]{INDEX_CASE, TextureFactory.of(Texture.Icons.PLATFORM_AEROSTATE_OVERLAY)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override

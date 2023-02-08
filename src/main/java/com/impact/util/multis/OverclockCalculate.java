@@ -1,5 +1,6 @@
 package com.impact.util.multis;
 
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.util.GT_Utility;
 
@@ -11,7 +12,7 @@ public class OverclockCalculate {
 	
 	public static void calculateOverclockedNessMulti(@Nonnegative int aEUt,
 			@Nonnegative int aDuration, @Nonnegative int mAmperage,
-			@Nonnegative long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
+			@Nonnegative long maxInputVoltage, GTMTE_Impact_BlockBase<?> base) {
 		
 		byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
 		if (mTier == 0) {
@@ -60,7 +61,7 @@ public class OverclockCalculate {
 	
 	//TODO: 20.02.2021 Future
 	public static void calculateOverclockedNew(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage,
-			@Nonnegative long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
+			@Nonnegative long maxInputVoltage, GTMTE_Impact_BlockBase<?> base) {
 		byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
 		if (mTier == 0) {
 			//Long time calculation
@@ -106,7 +107,7 @@ public class OverclockCalculate {
 	}
 	
 	public static void calculateOverclockedNessMultiPefectOC(int aEUt, int aDuration, int mAmperage,
-			long maxInputVoltage, GT_MetaTileEntity_MultiParallelBlockBase base) {
+			long maxInputVoltage, GTMTE_Impact_BlockBase<?> base) {
 		byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
 		if (mTier == 0) {
 			//Long time calculation

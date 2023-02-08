@@ -5,8 +5,8 @@ import com.impact.common.oregeneration.OreVein;
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.core.Config;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +21,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -44,7 +45,7 @@ import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static space.impact.api.multiblocks.structure.StructureUtility.lazy;
 
-public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Mining_Coal> {
+public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal> {
 	
 	private static final int DEFAULT_WORK = 400;
 	private static final int INPUT_SLOT = 0;
@@ -118,10 +119,10 @@ public class GTMTE_Mining_Coal extends GT_MetaTileEntity_MultiParallelBlockBase<
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][50], new GT_RenderedTexture(aActive ?
+			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][50], TextureFactory.of(aActive ?
 					Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE)};
 		} else if (aSide == 1) {
-			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][50], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][50], TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
 		}
 		return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][50]};
 	}
