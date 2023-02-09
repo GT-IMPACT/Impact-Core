@@ -1,7 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
@@ -51,6 +49,8 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
 	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
+	
+	protected final MultiBlockRecipeBuilder<GTMTE_Impact_BlockBase<MULTIS>> RECIPE_BUILDER = new MultiBlockRecipeBuilder<>(this);
 	
 	public GTMTE_Impact_BlockBase(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -378,9 +378,12 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	
 	public abstract boolean machineStructure(IGregTechTileEntity thisController);
 	
+	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
 		clearHatches();
-		return machineStructure(thisController);
+		boolean check = machineStructure(thisController);
+		RECIPE_BUILDER.updateHatches();
+		return check;
 	}
 	
 	public void clearHatches() {
@@ -541,6 +544,27 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 				base.issueTextureUpdate();
 			}
 		}
+	}
+	
+	@Override
+	public boolean checkRecipe(ItemStack itemStack) {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null && te.isClientSide()) return false;
+		
+		MultiBlockRecipeBuilder<?> recipeBuilder = RECIPE_BUILDER.start().checkItemsBySeparateBus();
+		if (modeBuses == 0) {
+			for (int indexBus = 0; indexBus < recipeBuilder.startSeparateRecipe(); indexBus++) {
+				boolean isOk = checkRecipe(recipeBuilder.clear(), indexBus);
+				if (isOk) return true;
+			}
+		} else {
+			return checkRecipe(recipeBuilder.clear(), -1);
+		}
+		return false;
+	}
+	
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return false;
 	}
 	
 	@Override

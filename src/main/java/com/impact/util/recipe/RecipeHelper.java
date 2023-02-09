@@ -1,6 +1,7 @@
 package com.impact.util.recipe;
 
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
@@ -57,15 +58,20 @@ public class RecipeHelper {
     }
 
     public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase<?> base) {
-        return resizeItemStackSizeChance(tOut, tRecipe, base, true);
+        return resizeItemStackSizeChance(tOut, tRecipe, base.mCheckParallelCurrent, true, base.getBaseMetaTileEntity());
+    }
+    
+    public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase<?> base, boolean chance) {
+        return resizeItemStackSizeChance(tOut, tRecipe, base.mCheckParallelCurrent, chance, base.getBaseMetaTileEntity());
     }
 
-    public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, GT_MetaTileEntity_MultiParallelBlockBase<?> base, boolean chance) {
+    public static ItemStack[] resizeItemStackSizeChance(ItemStack[] tOut, GT_Recipe tRecipe, int currentParallel, boolean chance, IGregTechTileEntity te) {
+        if (tRecipe == null) return null;
         if (chance) {
             for (int f = 0; f < tOut.length; f++) {
                 if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-                    for (int g = 0; g < base.mCheckParallelCurrent; g++) {
-                        if (base.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(f)) {
+                    for (int g = 0; g < currentParallel; g++) {
+                        if (te.getRandomNumber(10000) < tRecipe.getOutputChance(f)) {
                             tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
                         }
                     }

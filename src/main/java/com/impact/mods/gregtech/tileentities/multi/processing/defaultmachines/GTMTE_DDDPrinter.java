@@ -1,17 +1,22 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import com.impact.mods.gregtech.GT_ItemList;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
+import com.impact.mods.gregtech.tileentities.multi.implement.MultiBlockRecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -101,8 +106,16 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	}
 	
 	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.check3DPrinterRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return recipeBuilder
+				.checkSizeHatches(false, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true, false)
+				.build();
 	}
 	
 	@Override
