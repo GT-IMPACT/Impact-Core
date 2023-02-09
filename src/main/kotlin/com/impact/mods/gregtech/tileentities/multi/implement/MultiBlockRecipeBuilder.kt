@@ -72,6 +72,11 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         recipe = null
         outputs.clear()
         outputsF.clear()
+
+        if (machine is GT_MetaTileEntity_MultiParallelBlockBase<*>) {
+            machine.mCheckParallelCurrent = 0
+        }
+
         return this
     }
 
@@ -214,10 +219,12 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     @JvmOverloads
     fun checkInputEquals(
         indexBus: Int = -1,
+        enabledChance: Boolean = false,
         decreaseStackSizeBySuccess: Boolean = true,
         checkStackSize: Boolean = true
     ): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
+        val recipe = recipe ?: return this
 
         val listItems =  if (indexBus == -1) {
             inputs.flatMap { it.value }.toTypedArray()
@@ -235,6 +242,25 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             listItems,
         )
 
+        if (isConfirm) {
+            for (h in 0 until recipe.mOutputs.size) {
+                val out = recipe.getOutput(h)
+                if (out != null) {
+                    if (enabledChance) {
+                        if (machine.baseMetaTileEntity.getRandomNumber(10000) < recipe.getOutputChance(h)) {
+                            outputs += out.copy()
+                        }
+                    } else {
+                        outputs += out.copy()
+                    }
+                }
+            }
+
+            for (i in 0 until recipe.mFluidOutputs.size) {
+                outputsF += recipe.getFluidOutput(i)
+            }
+        }
+
         recipeOk = if (isConfirm) {
             Utilits.checkInputs(
                 recipe,
@@ -244,12 +270,14 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 listItems,
             )
         } else false
+
         return this
     }
 
     @JvmOverloads
     fun checkInputEqualsParallel(
         indexBus: Int = -1,
+        enabledChance: Boolean = false,
         decreaseStackSizeBySuccess: Boolean = true,
         checkStackSize: Boolean = true
     ): MultiBlockRecipeBuilder<R> {
@@ -280,7 +308,13 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 for (h in 0 until recipe.mOutputs.size) {
                     val out = recipe.getOutput(h)
                     if (out != null) {
-                        outputs += out.copy().also { it.stackSize = 0 }
+                        if (enabledChance) {
+                            if (machine.baseMetaTileEntity.getRandomNumber(10000) < recipe.getOutputChance(h)) {
+                                outputs += out.copy()
+                            }
+                        } else {
+                            outputs += out.copy()
+                        }
                     }
                 }
 
@@ -383,7 +417,6 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     @JvmOverloads
     fun checkOutputs(
         default: Boolean = false,
-        enabledChance: Boolean = false,
         af: AdditionalFun? = null
     ): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
@@ -394,19 +427,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             machine.mOutputFluids = recipe.mFluidOutputs
             af?.get()
         } else {
-            if (machine is GT_MetaTileEntity_MultiParallelBlockBase<*>) {
-                machine.mOutputItems = outputs
-                    .toTypedArray()
-                    .let {
-                        RecipeHelper.resizeItemStackSizeChance(it, recipe, machine, enabledChance)
-                    } ?: emptyArray()
-            } else {
-                machine.mOutputItems = outputs
-                    .toTypedArray()
-                    .let {
-                        RecipeHelper.resizeItemStackSizeChance(it, recipe, 1, enabledChance, machine.baseMetaTileEntity)
-                    } ?: emptyArray()
-            }
+            machine.mOutputItems = outputs.sortedItems().toTypedArray()
             machine.mOutputFluids = outputsF.sortedFluids().toTypedArray()
             af?.get()
         }
@@ -416,16 +437,32 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
     fun build() : Boolean = recipeOk
 
+    private fun List<ItemStack>?.sortedItems(): List<ItemStack> {
+        if (this.isNullOrEmpty()) return emptyList()
+
+        val sortedList = mutableListOf<ItemStack>()
+        for (item in this) {
+            while (item.maxStackSize < item.stackSize) {
+                val candidate = item.copy()
+                candidate.stackSize = candidate.maxStackSize
+                item.stackSize = item.stackSize - item.maxStackSize
+                sortedList += candidate
+            }
+        }
+        sortedList += this
+        return sortedList.filter { it.stackSize > 0 }
+    }
+
     private fun List<FluidStack>?.sortedFluids(): List<FluidStack> {
         if (this.isNullOrEmpty()) return emptyList()
 
         val sortedList = mutableListOf<FluidStack>()
-        for (item in this) {
-            if (sortedList.contains(item)) {
-                val id = sortedList.indexOf(item)
-                sortedList[id].amount += item.amount
+        for (fluid in this) {
+            if (sortedList.contains(fluid)) {
+                val id = sortedList.indexOf(fluid)
+                sortedList[id].amount += fluid.amount
             } else {
-                sortedList.add(item)
+                sortedList.add(fluid)
             }
         }
         return sortedList

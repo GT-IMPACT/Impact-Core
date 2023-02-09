@@ -111,10 +111,10 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 				.checkSizeHatches(false, true, indexBus)
 				.checkVoltage()
 				.checkRecipeMap(indexBus)
-				.checkInputEquals(indexBus)
+				.checkInputEquals(indexBus, false)
 				.checkEfficiency()
 				.checkConsumption()
-				.checkOutputs(true, false)
+				.checkOutputs(true)
 				.build();
 	}
 	
