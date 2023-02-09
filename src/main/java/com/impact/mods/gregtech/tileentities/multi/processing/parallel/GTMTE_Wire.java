@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -188,8 +189,17 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 	}
 	
 	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkParallelMachinesRecipe(this, true, true);
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return recipeBuilder
+				.checkSizeHatches(false, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEqualsParallel(indexBus, true)
+				.checkWorldProperties(true, true)
+				.checkEfficiency()
+				.checkConsumptionParallel()
+				.checkOutputs(false)
+				.build();
 	}
 	
 	@Override
