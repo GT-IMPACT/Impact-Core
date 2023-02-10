@@ -9,6 +9,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 
 public class GTMTE_SemifluidGenerator
@@ -70,54 +71,54 @@ public class GTMTE_SemifluidGenerator
 
   public ITexture[] getFront(byte aColor) {
     return new ITexture[]{super.getFront(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT),
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_FRONT),
         Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
   }
 
   public ITexture[] getBack(byte aColor) {
     return new ITexture[]{super.getBack(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BACK)};
   }
 
   public ITexture[] getBottom(byte aColor) {
     return new ITexture[]{super.getBottom(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM)};
   }
 
   public ITexture[] getTop(byte aColor) {
     return new ITexture[]{super.getTop(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_TOP)};
   }
 
   public ITexture[] getSides(byte aColor) {
     return new ITexture[]{super.getSides(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE)};
   }
 
   public ITexture[] getFrontActive(byte aColor) {
     return new ITexture[]{super.getFrontActive(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE),
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE),
         Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
   }
 
   public ITexture[] getBackActive(byte aColor) {
     return new ITexture[]{super.getBackActive(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE)};
   }
 
   public ITexture[] getBottomActive(byte aColor) {
     return new ITexture[]{super.getBottomActive(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE)};
   }
 
   public ITexture[] getTopActive(byte aColor) {
     return new ITexture[]{super.getTopActive(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE)};
   }
 
   public ITexture[] getSidesActive(byte aColor) {
     return new ITexture[]{super.getSidesActive(aColor)[0],
-        new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE)};
+        TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE)};
   }
 
   @Override

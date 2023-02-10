@@ -4,6 +4,8 @@ import appeng.tile.AEBaseTile;
 import appeng.tile.crafting.TileCraftingTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
+import com.impact.api.multis.ISeparateBus;
+import com.impact.api.multis.ISwitchRecipeMap;
 import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
@@ -122,6 +124,17 @@ public class ImpactPlugin extends PluginBase {
         final boolean allowedToWork = tag.hasKey("isAllowedToWork") && tag.getBoolean("isAllowedToWork");
 
         if (tMeta != null) {
+    
+            if (tMeta instanceof ISwitchRecipeMap) {
+                String map = tag.getString("recipe_map_switch");
+                if (!map.isEmpty()) {
+                    currenttip.add("Recipe Map: " + EnumChatFormatting.YELLOW + map);
+                }
+            }
+            if (tMeta instanceof ISeparateBus && ((ISeparateBus) tMeta).hasSeparate()) {
+                boolean map = tag.getBoolean("is_separated");
+                currenttip.add("Separated Mode: " + (map ? EnumChatFormatting.GREEN + "Enabled" : EnumChatFormatting.RED + "Disabled"));
+            }
     
             if (tBaseMetaTile != null) {
                 if (getConfig("fluidFilter")){
@@ -444,6 +457,14 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
         
         if (tMeta != null) {
+            
+            if (tMeta instanceof ISwitchRecipeMap) {
+                tag.setString("recipe_map_switch", ((ISwitchRecipeMap) tMeta).getMapName());
+            }
+    
+            if (tMeta instanceof ISeparateBus && ((ISeparateBus) tMeta).hasSeparate()) {
+                tag.setBoolean("is_separated", ((ISeparateBus) tMeta).isSeparated());
+            }
     
             tag.setString("gt_colorization", Dyes.get(tBaseMetaTile.getColorization()).mName);
         

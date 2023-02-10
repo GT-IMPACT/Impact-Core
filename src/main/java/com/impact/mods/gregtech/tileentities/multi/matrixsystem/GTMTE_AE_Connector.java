@@ -15,6 +15,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -49,12 +50,12 @@ public class GTMTE_AE_Connector extends GT_MetaTileEntity_Hatch {
     
     @Override
     public ITexture[] getTexturesActive(ITexture iTexture) {
-        return new ITexture[]{iTexture, new GT_RenderedTexture(Texture.Icons.OVERLAY_AE_CONNECTOR_ACTIVE)};
+        return new ITexture[]{iTexture, TextureFactory.of(Texture.Icons.OVERLAY_AE_CONNECTOR_ACTIVE)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture iTexture) {
-        return new ITexture[]{iTexture, new GT_RenderedTexture(Texture.Icons.OVERLAY_AE_CONNECTOR_INACTIVE)};
+        return new ITexture[]{iTexture, TextureFactory.of(Texture.Icons.OVERLAY_AE_CONNECTOR_INACTIVE)};
     }
 
     @Override

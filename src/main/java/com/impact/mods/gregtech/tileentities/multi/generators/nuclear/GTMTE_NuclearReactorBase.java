@@ -247,6 +247,11 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 		}
 	}
 	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
+	
 	public void setFastDecayMode(boolean isFastDecay) {
 		this.isFastDecay = isFastDecay;
 	}

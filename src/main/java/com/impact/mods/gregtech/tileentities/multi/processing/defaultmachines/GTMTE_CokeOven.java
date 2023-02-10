@@ -8,6 +8,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
@@ -57,7 +58,7 @@ public class GTMTE_CokeOven extends GTMTE_MBBase {
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,
 								 byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][53], new GT_RenderedTexture(
+			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][53], TextureFactory.of(
 					aActive ? Textures.BlockIcons.OVERLAY_COKE_OVEN_BRICK_ACTIVE
 							: Textures.BlockIcons.OVERLAY_COKE_OVEN_BRICK)};
 		}

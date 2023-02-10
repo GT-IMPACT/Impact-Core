@@ -15,6 +15,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -192,15 +193,15 @@ public class GTMTE_DataReader extends GT_MetaTileEntity_BasicMachine {
 		if (aBaseMetaTileEntity.getWorld() == null) {
 			if (aSide == aFacing) {
 				return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-						aActive ? new GT_RenderedTexture(READER_ONLINE) : new GT_RenderedTexture(READER_OFFLINE)};
+						aActive ? TextureFactory.of(READER_ONLINE) : TextureFactory.of(READER_OFFLINE)};
 			}
 			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
 		}
 		if (aSide == mMainFacing) {
 			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-					aActive ? new GT_RenderedTexture(READER_ONLINE) : new GT_RenderedTexture(READER_OFFLINE)};
+					aActive ? TextureFactory.of(READER_ONLINE) : TextureFactory.of(READER_OFFLINE)};
 		} else if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
 		}
 		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
 	}

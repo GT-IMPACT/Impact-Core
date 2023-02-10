@@ -7,6 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,10 +56,10 @@ public class GT_MetaTileEntity_Primitive_Hatch_Output extends GT_MetaTileEntity_
     if (aSide == aFacing) {
       if (this.mTypeHatch == 0) {
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][53],
-            new GT_RenderedTexture(
+            TextureFactory.of(
                     Textures.BlockIcons.OVERLAY_PIPE_OUT)};
       }
-      return new ITexture[]{Textures.BlockIcons.casingTexturePages[3][23], new GT_RenderedTexture(
+      return new ITexture[]{Textures.BlockIcons.casingTexturePages[3][23], TextureFactory.of(
               Textures.BlockIcons.OVERLAY_PIPE_OUT)};
     } else {
       if (this.mTypeHatch == 0) {
@@ -72,13 +73,13 @@ public class GT_MetaTileEntity_Primitive_Hatch_Output extends GT_MetaTileEntity_
   @Override
   public ITexture[] getTexturesActive(ITexture aBaseTexture) {
     return new ITexture[]{aBaseTexture,
-        new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
   }
 
   @Override
   public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
     return new ITexture[]{aBaseTexture,
-        new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
   }
 
   @Override

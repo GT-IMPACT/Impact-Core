@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import com.google.common.collect.Lists;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -11,17 +12,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
+
+import java.util.List;
 
 import static com.impact.loader.ItemRegistery.SawMillBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
@@ -57,7 +58,9 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aBaseMetaTileEntity.getBackFacing() ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? SAW_ACTIVE : SAW)} : aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? SAW_FRONT_ACTIVE : SAW_FRONT)} : new ITexture[]{INDEX_CASE};
+		return aSide == aBaseMetaTileEntity.getBackFacing() ?
+				new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? SAW_ACTIVE : SAW)} : aSide == aFacing ?
+				new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? SAW_FRONT_ACTIVE : SAW_FRONT)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -184,26 +187,18 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 		return formationChecklist;
 	}
 	
+	@NotNull
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
+	public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {
+		return Lists.newArrayList(
+				GT_Recipe.GT_Recipe_Map.sSawMill0,
+				GT_Recipe.GT_Recipe_Map.sSawMill1,
+				GT_Recipe.GT_Recipe_Map.sSawMill2
+		);
 	}
 	
 	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sSawMill0 : mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sSawMill1 : GT_Recipe.GT_Recipe_Map.sSawMill2;
-	}
-	
-	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-		
-		mRecipeMode++;
-		if (mRecipeMode > 2) {
-			mRecipeMode = 0;
-		}
-		
-		String name = (mRecipeMode == 0 ? "Planks & Sawdust" : mRecipeMode == 1 ? "Wood Pulp & Sawdust" : "Only Sawdust");
-		GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + EnumChatFormatting.GREEN + name);
+	public boolean hasSwitchMap() {
+		return true;
 	}
 }

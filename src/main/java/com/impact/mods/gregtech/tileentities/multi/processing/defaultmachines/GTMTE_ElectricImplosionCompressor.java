@@ -18,7 +18,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -102,7 +101,7 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", "");
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
@@ -112,7 +111,7 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
 		ItemStack[] tInputs = null;
 		FluidStack[] tFluids = null;
 		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			if (modeBuses == 0) {
+			if (isSeparated()) {
 				ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
 				tBus.mRecipeMap = getRecipeMap();
 				if (isValidMetaTileEntity(tBus)) {
@@ -297,10 +296,5 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
 	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 500;
-	}
-	
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-		if (aPlayer.isSneaking()) ScrewClick(aSide, aPlayer, aX, aY, aZ);
 	}
 }

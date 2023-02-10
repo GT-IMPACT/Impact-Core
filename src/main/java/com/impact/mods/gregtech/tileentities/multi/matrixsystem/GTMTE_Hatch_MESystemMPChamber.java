@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -37,13 +38,13 @@ public class GTMTE_Hatch_MESystemMPChamber extends GT_MetaTileEntity_Hatch {
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Texture.Icons.OVERLAY_MCHAMBER_ITEM_OVERLAY)};
+				TextureFactory.of(Texture.Icons.OVERLAY_MCHAMBER_ITEM_OVERLAY)};
 	}
 
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Texture.Icons.OVERLAY_MCHAMBER_ITEM_OVERLAY)};
+				TextureFactory.of(Texture.Icons.OVERLAY_MCHAMBER_ITEM_OVERLAY)};
 	}
 
 	@Override

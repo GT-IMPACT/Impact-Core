@@ -1,6 +1,8 @@
-package com.impact.mods.gregtech.tileentities.multi.implement
+package com.impact.api.recipe
 
 import com.impact.core.Config
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
+import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.util.Utilits
 import com.impact.util.multis.OverclockCalculate
 import com.impact.util.multis.WorldProperties
@@ -139,7 +141,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
     fun checkItemsBySeparateBus(): MultiBlockRecipeBuilder<R> {
         inputs.clear()
-        val isSeparated = machine.modeBuses == 0
+        val isSeparated = machine.isSeparated()
         if (isSeparated) {
             itemHatches.forEachIndexed { index, bus ->
                 inputs[index] = bus.mInventory.filterNotNull().reversed()
@@ -164,7 +166,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         val isItemValid = inputs.isNotEmpty() && !inputs[realIndexBus].isNullOrEmpty()
         val isFluidValid = inputsF.isNotEmpty()
         recipeOk = when {
-            needCheckFluid && needCheckItems -> isFluidValid && isItemValid
+            needCheckFluid && needCheckItems -> isFluidValid || isItemValid
             needCheckFluid -> inputsF.isNotEmpty()
             needCheckItems -> isItemValid
             else -> isFluidValid || isItemValid

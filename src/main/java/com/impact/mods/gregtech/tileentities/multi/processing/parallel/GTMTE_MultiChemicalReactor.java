@@ -12,6 +12,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -66,7 +67,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == 1) {
-			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][48], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)};
+			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][48], TextureFactory.of(aActive ? Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)};
 		}
 		return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][48]};
 	}
@@ -103,7 +104,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 	}
 	
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", "");
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
@@ -113,19 +114,6 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 	
 	public boolean checkRecipe(ItemStack itemStack) {
 		return RecipeBuilder.checkParallelMachinesRecipe(this, false, true);
-	}
-	
-	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (aPlayer.isSneaking()) {
-			if (aSide == 1) {
-				modeBuses++;
-				if (modeBuses > 1) {
-					modeBuses = 0;
-				}
-				GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
-			}
-		}
 	}
 	
 	@Override

@@ -1,17 +1,12 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
-import com.impact.util.PositionObject;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-
-import static com.impact.core.Refstrings.MODID;
 
 public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT_MetaTileEntity_MultiParallelBlockBase<MULTIS>>
 		extends GTMTE_Impact_ReceiverBase<MULTIS> {
@@ -43,7 +38,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setInteger("mParallel", this.mParallel);
-		aNBT.setInteger("modeBuses", this.modeBuses);
 		aNBT.setInteger("mCheckParallelCurrent", this.mCheckParallelCurrent);
 		aNBT.setBoolean("isConnectParallel", this.isConnectParallel);
 		super.saveNBTData(aNBT);
@@ -52,7 +46,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		this.mParallel             = aNBT.getInteger("mParallel");
-		this.modeBuses             = aNBT.getInteger("modeBuses");
 		this.mCheckParallelCurrent = aNBT.getInteger("mCheckParallelCurrent");
 		this.isConnectParallel     = aNBT.getBoolean("isConnectParallel");
 		super.loadNBTData(aNBT);

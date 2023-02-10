@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
+import com.google.common.collect.Lists;
+import com.impact.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.MultiBlockRecipeBuilder;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -12,17 +12,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
+
+import java.util.List;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
@@ -30,7 +30,6 @@ import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
 public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Wire> {
 	
-	public String mModed;
 	static Block CASING = Casing_Helper.sCaseCore1;
 	static byte CASING_META = 9;
 	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
@@ -88,7 +87,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -99,12 +98,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", mModed);
-	}
-	
-	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sWiremillRecipes : GT_Recipe.GT_Recipe_Map.sWireAssemblerRecipes;
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
@@ -191,7 +185,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 	@Override
 	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
 		return recipeBuilder
-				.checkSizeHatches(false, true, indexBus)
+				.checkSizeHatches(true, true, indexBus)
 				.checkVoltage()
 				.checkRecipeMap(indexBus)
 				.checkInputEqualsParallel(indexBus, true)
@@ -202,21 +196,17 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 				.build();
 	}
 	
+	@NotNull
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
+	public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {
+		return Lists.newArrayList(
+				GT_Recipe.GT_Recipe_Map.sWiremillRecipes,
+				GT_Recipe.GT_Recipe_Map.sWireAssemblerRecipes
+		);
 	}
 	
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (aPlayer.isSneaking()) {
-			ScrewClick(aSide, aPlayer, aX, aY, aZ);
-		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mRecipeMode++;
-			if (mRecipeMode > 1) {
-				mRecipeMode = 0;
-			}
-			mModed = (mRecipeMode == 0 ? " WireMill " : " Wire Assembler ");
-			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
-		}
+	@Override
+	public boolean hasSwitchMap() {
+		return true;
 	}
 }

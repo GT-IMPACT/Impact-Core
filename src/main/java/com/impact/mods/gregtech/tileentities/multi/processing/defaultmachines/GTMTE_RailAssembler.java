@@ -13,6 +13,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -63,7 +64,7 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Texture.Icons.OVERLAY_RAIL_ASSEMBLER_ACTIVE : Texture.Icons.OVERLAY_RAIL_ASSEMBLER)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Texture.Icons.OVERLAY_RAIL_ASSEMBLER_ACTIVE : Texture.Icons.OVERLAY_RAIL_ASSEMBLER)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override

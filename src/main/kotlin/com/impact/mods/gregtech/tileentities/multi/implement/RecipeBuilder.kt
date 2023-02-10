@@ -19,7 +19,7 @@ object RecipeBuilder {
         for (mInputBuss: GT_MetaTileEntity_Hatch in busses) {
             recipe = MultiBlockRecipe(multis)
             recipe.apply {
-                sortItems(if (multis.modeBuses == 0) mInputBuss else null)
+                sortItems(if (multis.isSeparated()) mInputBuss else null)
                 sortFluids()
                 checkSizeHatches()
                 checkVoltage(vanila = true)
@@ -53,7 +53,7 @@ object RecipeBuilder {
         for (mInputBuss: GT_MetaTileEntity_Hatch in busses) {
             recipe = MultiBlockRecipe(multis)
             recipe.apply {
-                sortItems(if (multis.modeBuses == 0) mInputBuss else null)
+                sortItems(if (multis.isSeparated()) mInputBuss else null)
                 sortFluids()
                 checkSizeHatches()
                 checkVoltage(vanila = true)
@@ -95,7 +95,7 @@ object RecipeBuilder {
         for (mInputBuss: GT_MetaTileEntity_Hatch in busses) {
             recipe = MultiBlockRecipe(multis)
             recipe.apply {
-                sortItems(if (multis.modeBuses == 0) mInputBuss else null)
+                sortItems(if (multis.isSeparated()) mInputBuss else null)
                 sortFluids()
                 checkSizeHatches()
                 checkVoltage(vanila = false)

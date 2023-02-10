@@ -1,8 +1,13 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
+import com.impact.api.multis.ISeparateBus;
+import com.impact.api.multis.ISwitchRecipeMap;
+import com.impact.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
+import com.impact.network.IPacketString;
+import com.impact.network.ToClient_String;
 import com.impact.util.multis.EnergyHelper;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -13,13 +18,17 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.alignment.IAlignment;
@@ -31,21 +40,26 @@ import space.impact.api.multiblocks.alignment.enumerable.Flip;
 import space.impact.api.multiblocks.alignment.enumerable.Rotation;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import static com.impact.util.string.Lang.holo_details;
 import static gregtech.api.enums.GT_Values.V;
 
-public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBase<MULTIS>> extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable {
+public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBase<MULTIS>>
+		extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IPacketString {
 	
 	private static final AtomicReferenceArray<MultiBlockTooltipBuilder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
 	
 	private final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
 	private final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
 	
-	public int modeBuses = 0;
-	public byte mRecipeMode = -1;
+	private boolean isSeparated = true;
+	private byte mRecipeMode = 0;
+	private GT_Recipe.GT_Recipe_Map recipeMap = getRecipesMap().isEmpty() ? null : getRecipesMap().get(1);
+	private String mapName = "";
 	
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
 	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
@@ -78,14 +92,22 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		return getStackForm(1L);
 	}
 	
-	public void ScrewClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (aPlayer.isSneaking()) {
-			if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-				modeBuses++;
-				if (modeBuses > 1) {
-					modeBuses = 0;
+			if (hasSeparate()) {
+				if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+					onChangeSeparateMode(!isSeparated, aPlayer);
 				}
-				GT_Utility.sendChatToPlayer(aPlayer, "Buses separated " + (modeBuses == 0 ? "on" : "off"));
+			}
+		} else {
+			if (hasSwitchMap()) {
+				mRecipeMode++;
+				if (mRecipeMode > getRecipesMap().size() - 1) {
+					mRecipeMode = 0;
+				}
+				onChangeRecipeMap(getRecipesMap().get(mRecipeMode), aPlayer);
 			}
 		}
 	}
@@ -354,21 +376,26 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setByte("mRecipeMode", mRecipeMode);
-		aNBT.setInteger("modeBuses", this.modeBuses);
+		aNBT.setBoolean("isSeparated", this.isSeparated);
 		aNBT.setByte("eRotation", (byte) this.mExtendedFacing.getRotation().getIndex());
 		aNBT.setByte("eFlip", (byte) this.mExtendedFacing.getFlip().getIndex());
+		aNBT.setString("mapName", this.mapName);
+		
 		super.saveNBTData(aNBT);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		this.mRecipeMode           = aNBT.getByte("mRecipeMode");
-		this.modeBuses             = aNBT.getInteger("modeBuses");
-		this.mExtendedFacing       = ExtendedFacing.of(
+		this.mRecipeMode     = aNBT.getByte("mRecipeMode");
+		this.isSeparated     = aNBT.getBoolean("isSeparated");
+		this.mExtendedFacing = ExtendedFacing.of(
 				ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
 				Rotation.byIndex(aNBT.getByte("eRotation")),
 				Flip.byIndex(aNBT.getByte("eFlip"))
 		);
+		this.recipeMap = getRecipesMap().isEmpty() ? null : getRecipesMap().get(mRecipeMode);
+		this.mapName = aNBT.getString("mapName");
+		
 		super.loadNBTData(aNBT);
 	}
 	
@@ -551,8 +578,11 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		IGregTechTileEntity te = getBaseMetaTileEntity();
 		if (te != null && te.isClientSide()) return false;
 		
-		MultiBlockRecipeBuilder<?> recipeBuilder = RECIPE_BUILDER.start().checkItemsBySeparateBus();
-		if (modeBuses == 0) {
+		MultiBlockRecipeBuilder<?> recipeBuilder = RECIPE_BUILDER
+				.start()
+				.checkItemsBySeparateBus()
+				.checkFluidsByNotNull();
+		if (isSeparated) {
 			for (int indexBus = 0; indexBus < recipeBuilder.startSeparateRecipe(); indexBus++) {
 				boolean isOk = checkRecipe(recipeBuilder.clear(), indexBus);
 				if (isOk) return true;
@@ -590,5 +620,66 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		super.onFirstTick(aBaseMetaTileEntity);
 		if (aBaseMetaTileEntity.isClientSide())
 			ImpactAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+	}
+	
+	@NotNull
+	@Override
+	public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {
+		return Collections.emptyList();
+	}
+	
+	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return recipeMap;
+	}
+	
+	@Override
+	public void onChangeRecipeMap(@NotNull GT_Recipe.GT_Recipe_Map map, @NotNull EntityPlayer player) {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null && te.isServerSide()) {
+			recipeMap = map;
+			mapName = GT_LanguageManager.getTranslation(map.mUnlocalizedName);
+			GT_Utility.sendChatToPlayer(player, "Now " + EnumChatFormatting.YELLOW + mapName + EnumChatFormatting.RESET + " Mode");
+			if (player instanceof EntityPlayerMP) {
+				new ToClient_String(mapName).sendToPlayer((EntityPlayerMP) player);
+			}
+		}
+	}
+	
+	@Override
+	public void update(String... str) {
+		if (str != null && str.length > 0) {
+			mapName = str[0];
+		}
+	}
+	
+	@Override
+	public boolean hasSwitchMap() {
+		return false;
+	}
+	
+	@NotNull
+	@Override
+	public String getMapName() {
+		return mapName;
+	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return true;
+	}
+	
+	@Override
+	public void onChangeSeparateMode(boolean isSeparate, @NotNull EntityPlayer player) {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te != null && te.isServerSide()) {
+			isSeparated = isSeparate;
+			GT_Utility.sendChatToPlayer(player, "Buses separated " + EnumChatFormatting.GREEN + (isSeparated ? "on" : "off"));
+		}
+	}
+	
+	@Override
+	public boolean isSeparated() {
+		return isSeparated;
 	}
 }
