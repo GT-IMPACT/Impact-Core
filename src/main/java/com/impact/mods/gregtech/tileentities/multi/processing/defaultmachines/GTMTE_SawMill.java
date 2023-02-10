@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.google.common.collect.Lists;
+import com.impact.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -29,7 +29,7 @@ import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
 import static com.impact.mods.gregtech.enums.Texture.Icons.*;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_SawMill> {
+public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 	
 	static IStructureDefinition<GTMTE_SawMill> definition =
 			StructureDefinition.<GTMTE_SawMill>builder()
@@ -102,9 +102,18 @@ public class GTMTE_SawMill extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 	}
 	
 	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
 		noMaintenance();
-		boolean checkRecipe = RecipeBuilder.checkLowTierMachineRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
+		boolean checkRecipe = recipeBuilder
+				.checkSizeHatches(true, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus, false)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true)
+				.build();
+		
 		if (!checkRecipe) {
 			return false;
 		}

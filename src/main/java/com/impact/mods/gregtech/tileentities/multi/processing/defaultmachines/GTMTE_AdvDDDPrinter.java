@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 
+import com.impact.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -12,11 +12,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,7 +25,7 @@ import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvDDDPrinter> {
+public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrinter> {
 	
 	
 	static IStructureDefinition<GTMTE_AdvDDDPrinter> definition =
@@ -105,8 +103,16 @@ public class GTMTE_AdvDDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.check3DPrinterRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return recipeBuilder
+				.checkSizeHatches(false, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus, false)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true)
+				.build();
 	}
 	
 	@Override

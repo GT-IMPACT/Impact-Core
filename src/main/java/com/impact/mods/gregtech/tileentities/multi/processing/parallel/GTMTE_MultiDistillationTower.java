@@ -2,7 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -12,7 +11,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -105,10 +103,6 @@ public class GTMTE_MultiDistillationTower extends GT_MetaTileEntity_MultiParalle
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GT_Recipe_Map.sDistillationRecipes;
-	}
-	
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkParallelMachinesRecipe(this, false, true);
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -26,7 +27,7 @@ import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_DDDPrinter> {
+public class GTMTE_DDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_DDDPrinter> {
 	
 	static IStructureDefinition<GTMTE_DDDPrinter> definition =
 			StructureDefinition.<GTMTE_DDDPrinter>builder()

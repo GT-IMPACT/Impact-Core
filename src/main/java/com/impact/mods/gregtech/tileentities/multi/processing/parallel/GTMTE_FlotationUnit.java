@@ -2,7 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -142,10 +141,5 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
 		}
 		
 		return check;
-	}
-	
-	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkParallelMachinesRecipe(this, false, true);
 	}
 }

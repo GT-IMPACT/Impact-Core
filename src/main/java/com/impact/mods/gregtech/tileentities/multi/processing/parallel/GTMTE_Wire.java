@@ -182,20 +182,6 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
 		return formationChecklist;
 	}
 	
-	@Override
-	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-		return recipeBuilder
-				.checkSizeHatches(true, true, indexBus)
-				.checkVoltage()
-				.checkRecipeMap(indexBus)
-				.checkInputEqualsParallel(indexBus, true)
-				.checkWorldProperties(true, true)
-				.checkEfficiency()
-				.checkConsumptionParallel()
-				.checkOutputs(false)
-				.build();
-	}
-	
 	@NotNull
 	@Override
 	public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {

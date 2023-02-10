@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import com.impact.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -12,7 +12,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
@@ -28,7 +27,7 @@ import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_RailAssembler> {
+public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssembler> {
 	
 	public static final GT_Recipe.GT_Recipe_Map sTrackAssemblerRecipes = new GT_Recipe.GT_Recipe_Map(
 			new HashSet<GT_Recipe>(1000),
@@ -162,12 +161,15 @@ public class GTMTE_RailAssembler extends GT_MetaTileEntity_MultiParallelBlockBas
 	}
 	
 	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkLowTierMachineRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
-	}
-	
-	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return recipeBuilder
+				.checkSizeHatches(false, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus, false)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true)
+				.build();
 	}
 }

@@ -3,7 +3,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -11,12 +10,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -279,11 +275,6 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 		}
 		
 		return formationChecklist;
-	}
-	
-	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkParallelMachinesRecipe(this, true, true);
 	}
 	
 	@Override

@@ -202,12 +202,13 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 		super.onPostTick(iAm, aTick);
 		if (iAm.isServerSide() && aTick % 100 == 0) {
 			
+			
 			ArrayList<Boolean> checker = new ArrayList<>();
 			
 			for (GTMTE_CommunicationTower_Receiver ph : sCommunReceiver) {
 				checker.add(ph.hasConnected() && ph.getBaseMetaTileEntity().isActive());
 			}
-			boolean isConnect = checker.stream().filter(b -> b).count() == 4;
+			boolean isConnect = checker.stream().filter(b -> b).count() == 4 && iAm.isActive();
 			if (isConnect != isConnected) {
 				isConnected = isConnect;
 				notifyConnections();
@@ -296,5 +297,10 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 	
 	public boolean getConnectionStatus() {
 		return isConnected;
+	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
 	}
 }

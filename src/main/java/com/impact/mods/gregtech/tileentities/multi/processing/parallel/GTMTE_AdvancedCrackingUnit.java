@@ -2,7 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -116,10 +115,6 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 	@Override
 	public GT_Recipe_Map getRecipeMap() {
 		return GT_Recipe_Map.sCrakingRecipes;
-	}
-	
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkParallelMachinesRecipe(this, false, true);
 	}
 	
 	@Override
