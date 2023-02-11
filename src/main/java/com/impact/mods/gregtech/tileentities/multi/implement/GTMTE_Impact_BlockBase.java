@@ -97,9 +97,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (aPlayer.isSneaking()) {
 			if (hasSeparate()) {
-				if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-					onChangeSeparateMode(!isSeparated, aPlayer);
-				}
+				onChangeSeparateMode(!isSeparated, aPlayer);
 			}
 		} else {
 			if (hasSwitchMap()) {
