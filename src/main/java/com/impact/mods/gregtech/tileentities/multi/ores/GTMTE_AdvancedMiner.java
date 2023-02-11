@@ -1,9 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
-import com.impact.common.oregeneration.OreGenerator;
-import com.impact.common.oregeneration.OreVein;
-import com.impact.common.oregeneration.generator.OreChunkGenerator;
-import com.impact.common.oregeneration.generator.OreVeinGenerator;
 import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -23,6 +19,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import kotlin.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -30,6 +27,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
+import space.gtimpact.virtual_world.api.VirtualAPI;
+import space.gtimpact.virtual_world.api.VirtualOreComponent;
+import space.gtimpact.virtual_world.api.VirtualOreVein;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
@@ -48,9 +48,8 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	private final List<GTMTE_EnrichmentUnit> enrich = new ArrayList<>();
 	public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
-	public OreVeinGenerator oreVeinGenerator = null;
-	public List<OreChunkGenerator> chunksGenerator = new ArrayList<>();
-	public OreVein oreVein = OreGenerator.empty;
+	public List<Chunk> chunks = new ArrayList<>();
+	public VirtualOreVein oreVein;
 	public int layer = 1;
 	public double cashedDecrement = 0d;
 	static Block CASING = GregTech_API.sBlockCasings8;
@@ -99,48 +98,20 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 	public void increaseLayer(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
 			if (cycleIncrease <= 0) return;
-			for (OreChunkGenerator oreChunkGenerator : chunksGenerator) {
-				if (oreChunkGenerator.sizeOreChunk >= cycleIncrease) {
-					oreChunkGenerator.sizeOreChunk -= cycleIncrease;
-					cycleIncrease = 0;
-					checkEmptyChunk(oreChunkGenerator);
-					break;
-				} else {
-					int preSize = cycleIncrease - oreChunkGenerator.sizeOreChunk;
-					oreChunkGenerator.sizeOreChunk -= preSize;
-					cycleIncrease -= preSize;
-					checkEmptyChunk(oreChunkGenerator);
-				}
-			}
-		}
-	}
-	
-	private void checkEmptyChunk(OreChunkGenerator chunk) {
-		if (chunk.sizeOreChunk <= 0) {
-			chunk.sizeOreChunk = 0;
+			Chunk mainChunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			Pair<VirtualOreVein, Integer> pair = VirtualAPI.extractFromVein(mainChunk, layer, 0);
+			sizeVeinPreStart = pair.getSecond();
 		}
 	}
 	
 	public void initOreProperty(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
-			Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			chunks.clear();
 			cycleIncrease = 0;
-			sizeVeinPreStart = 0;
-			chunksGenerator.clear();
-			oreVeinGenerator = OreGenerator.getVein(ch, layer);
-			if (oreVeinGenerator != null) {
-				for (OreChunkGenerator oreChunkGenerator : oreVeinGenerator.oreChunkGenerators) {
-					sizeVeinPreStart += oreChunkGenerator.sizeOreChunk;
-					chunksGenerator.add(oreChunkGenerator);
-				}
-				if (sizeVeinPreStart > 0) {
-					oreVein = OreGenerator.getOreVein(te, layer);
-				} else {
-					oreVein = OreGenerator.empty;
-				}
-			} else {
-				oreVein = OreGenerator.empty;
-			}
+			Chunk mainChunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			Pair<VirtualOreVein, Integer> pair = VirtualAPI.extractFromVein(mainChunk, layer, 0);
+			oreVein = pair.getFirst();
+			sizeVeinPreStart = pair.getSecond();
 		}
 	}
 	
@@ -251,8 +222,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		if (hatch.get(0) == null) return false;
-		if (oreVeinGenerator == null) return false;
-		if (oreVein == OreGenerator.empty) return false;
+		if (oreVein == null) return false;
 		boolean check = hatch.get(0).ready;
 		if ((sizeVeinPreStart - cycleIncrease) <= 0) {
 			increaseLayer(getBaseMetaTileEntity());
@@ -271,22 +241,22 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
 			}
-			if (oreVein.specialFluid != null) {
-				if (!depleteInput(oreVein.specialFluid)) {
+			if (oreVein.getSpecial() != null) {
+				if (!depleteInput(oreVein.getSpecial())) {
 					return false;
 				}
 			}
-			List<ItemStack> is = oreVein.ores;
-			for (int ore = 0; ore < is.size(); ore++) {
-				if (te.getRandomNumber(10000) < oreVein.chanceOres[ore]) {
-					ItemStack drillHeadDrop = new ItemStack(is.get(ore).getItem(), byDrillHead(is.get(ore)), is.get(ore).getItemDamage());
+			
+			List<VirtualOreComponent> is = oreVein.getOres();
+			for (VirtualOreComponent component : is) {
+				if (te.getRandomNumber(10000) < component.getChance() * 100) {
+					ItemStack oreStack = component.getOre().copy();
+					ItemStack drillHeadDrop = new ItemStack(oreStack.getItem(), byDrillHead(oreStack), oreStack.getItemDamage());
 					outputEnrich.add(drillHeadDrop);
 					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
-							.findRecipe(getBaseMetaTileEntity(), cashedMaceratorRecipe, false, voltage, null, new ItemStack[]{is.get(ore)});
+							.findRecipe(getBaseMetaTileEntity(), cashedMaceratorRecipe, false, voltage, null, new ItemStack[]{oreStack});
 					if (tRecipe != null) {
 						cashedMaceratorRecipe = tRecipe;
-						if (voltage <= euTotal + startEU + tRecipe.mEUt) break;
-						euTotal += tRecipe.mEUt;
 						for (int i = 0; i < tRecipe.mOutputs.length; i++) {
 							ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
 							if (i == 0 && te.getRandomNumber(10000) < chancePrimary) {
