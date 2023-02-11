@@ -245,4 +245,9 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
 		b.addTypeGenerator().signAndFinalize();
 		return b;
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

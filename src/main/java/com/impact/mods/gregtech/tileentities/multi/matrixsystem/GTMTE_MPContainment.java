@@ -333,4 +333,9 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
 				"Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
 		};
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

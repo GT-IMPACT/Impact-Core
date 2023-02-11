@@ -320,4 +320,9 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
 	public void construct(ItemStack itemStack, boolean b) {
 	
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

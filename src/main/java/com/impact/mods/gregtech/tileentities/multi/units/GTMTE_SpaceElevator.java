@@ -290,6 +290,11 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
 		return STRUCTURE_DEFINITION;
 	}
 	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
+	
 	private static class GUI extends GUI_BASE {
 		
 		public GUI(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {

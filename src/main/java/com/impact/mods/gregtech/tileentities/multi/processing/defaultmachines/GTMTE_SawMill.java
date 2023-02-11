@@ -210,4 +210,9 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 	public boolean hasSwitchMap() {
 		return true;
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

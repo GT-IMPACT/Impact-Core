@@ -328,4 +328,9 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 	public void construct(ItemStack itemStack, boolean b) { // TODO: 02.12.2021
 		buildPiece(itemStack, b, 2, 9, 1);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

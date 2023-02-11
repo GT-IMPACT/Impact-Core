@@ -262,6 +262,11 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 	}
 	
 	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
+	
+	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new Container(aPlayerInventory, aBaseMetaTileEntity);
 	}

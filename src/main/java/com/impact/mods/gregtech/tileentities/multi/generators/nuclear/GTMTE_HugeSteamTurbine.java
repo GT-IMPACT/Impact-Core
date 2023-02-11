@@ -302,4 +302,10 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
 				"Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? EnumChatFormatting.GREEN + "No Problems" + EnumChatFormatting.RESET : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET),
 		};
 	}
+	
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

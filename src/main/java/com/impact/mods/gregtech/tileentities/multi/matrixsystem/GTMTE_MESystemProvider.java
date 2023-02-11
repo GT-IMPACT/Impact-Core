@@ -299,4 +299,10 @@ public class GTMTE_MESystemProvider extends GTMTE_Impact_BlockBase<GTMTE_MESyste
 				"Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
 		};
 	}
+	
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

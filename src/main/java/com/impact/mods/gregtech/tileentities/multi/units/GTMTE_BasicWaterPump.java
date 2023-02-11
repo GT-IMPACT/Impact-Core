@@ -424,4 +424,9 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 3, 2, 0);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

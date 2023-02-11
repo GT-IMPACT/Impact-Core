@@ -218,6 +218,12 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
 		return description;
 	}
 	
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
+	
 	public static class Runner implements Runnable {
 		
 		public int[] FUEL_PER_SECOND = new int[]{ //for 1A

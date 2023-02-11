@@ -283,4 +283,9 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 4, 8, 3);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }
