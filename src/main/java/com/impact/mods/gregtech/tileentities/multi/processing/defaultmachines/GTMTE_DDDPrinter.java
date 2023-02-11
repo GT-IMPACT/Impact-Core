@@ -2,8 +2,9 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
+import com.impact.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -12,6 +13,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +27,7 @@ import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore2;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_DDDPrinter> {
+public class GTMTE_DDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_DDDPrinter> {
 	
 	static IStructureDefinition<GTMTE_DDDPrinter> definition =
 			StructureDefinition.<GTMTE_DDDPrinter>builder()
@@ -66,7 +68,7 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -97,12 +99,20 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", "3x3 Crafting");
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.check3DPrinterRecipe(this); //TODO REPLACE TO BASIC RECIPE AND IMPLEMENT BASE
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return recipeBuilder
+				.checkSizeHatches(false, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus, false)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true)
+				.build();
 	}
 	
 	@Override
@@ -188,18 +198,5 @@ public class GTMTE_DDDPrinter extends GT_MetaTileEntity_MultiParallelBlockBase<G
 		}
 		
 		return formationChecklist;
-	}
-	
-	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
-	}
-	
-	
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-		if (aPlayer.isSneaking()) {
-			ScrewClick(aSide, aPlayer, aX, aY, aZ);
-		}
 	}
 }

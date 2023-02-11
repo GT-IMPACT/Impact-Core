@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
+import com.google.common.collect.Lists;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.RecipeBuilder;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -12,24 +12,24 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
+
+import java.util.List;
 
 import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
 public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ArcFurnace> {
 	
-	public static String mModed;
+	
 	Block CASING = Casing_Helper.sCaseCore1;
 	byte CASING_META = 13;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
@@ -56,7 +56,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, new GT_RenderedTexture(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
+		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
 	}
 	
 	@Override
@@ -101,12 +101,22 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", mModed);
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
+	}
+	
+	@NotNull
+	@Override
+	public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {
+		return Lists.newArrayList(
+				GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
+				GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes,
+				GT_RecipeMaps.sDryingOven
+		);
 	}
 	
 	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mRecipeMode == 0 ? GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes : mRecipeMode == 1 ? GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes : GT_RecipeMaps.sDryingOven;
+	public boolean hasSwitchMap() {
+		return true;
 	}
 	
 	@Override
@@ -239,24 +249,5 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
 	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 200;
-	}
-	
-	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		return RecipeBuilder.checkParallelMachinesRecipe(this, true, true);
-	}
-	
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (aPlayer.isSneaking()) {
-			ScrewClick(aSide, aPlayer, aX, aY, aZ);
-		} else if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
-			mRecipeMode++;
-			if (mRecipeMode > 2) {
-				mRecipeMode = 0;
-			}
-			
-			mModed = (mRecipeMode == 0 ? " Arc Furnace " : mRecipeMode == 1 ? " Alloy Smelter " : " Drying Oven ");
-			GT_Utility.sendChatToPlayer(aPlayer, "Now" + EnumChatFormatting.YELLOW + mModed + EnumChatFormatting.RESET + "Mode");
-		}
 	}
 }

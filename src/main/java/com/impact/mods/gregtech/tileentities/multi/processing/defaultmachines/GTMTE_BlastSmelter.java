@@ -14,7 +14,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -34,9 +34,7 @@ import static gregtech.api.enums.GT_Values.VN;
 public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 	
 	private int mHeatingCapacity = 0;
-	private int controllerY;
 	private final Block CASING = GregTech_API.sBlockCasings5;
-	private final FluidStack[] pollutionFluidStacks = new FluidStack[]{};
 	private GT_Recipe cashedRecipe = null;
 	
 	public GTMTE_BlastSmelter(int aID, String aNameRegional) {
@@ -77,7 +75,7 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 	
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][51], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
+			return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][51], TextureFactory.of(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
 		}
 		return new ITexture[]{Textures.BlockIcons.casingTexturePages[1][51]};
 	}

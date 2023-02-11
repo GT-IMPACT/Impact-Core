@@ -5,6 +5,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -60,11 +61,11 @@ public class GTMTE_Maintenance extends GT_MetaTileEntity_Hatch_Maintenance {
 
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(MAINTENANCE_OVERLAY)};
+		return new ITexture[]{aBaseTexture, TextureFactory.of(MAINTENANCE_OVERLAY)};
 	}
 	
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(MAINTENANCE_OVERLAY)};
+		return new ITexture[]{aBaseTexture, TextureFactory.of(MAINTENANCE_OVERLAY)};
 	}
 }

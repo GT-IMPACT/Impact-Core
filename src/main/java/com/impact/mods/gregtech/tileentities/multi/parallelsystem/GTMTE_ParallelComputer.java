@@ -11,7 +11,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,6 +19,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
+
+import java.util.HashSet;
 
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static net.minecraft.util.EnumChatFormatting.*;
@@ -44,6 +45,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 					.addElement('A', ofBlock(CASING, CASING_META))
 					.addElement('B', ofBlock(InsideBlock, 2))
 					.build();
+	
+	public final HashSet<GTMTE_ComputerRack> sComputerRack = new HashSet<>();
 	
 	@Override
 	public void construct(ItemStack itemStack, boolean b) {
@@ -167,6 +170,44 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 		mParallel      = setMax;
 	}
 	
+	public boolean addRackHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity == null) {
+				return false;
+			} else if (aMetaTileEntity instanceof GTMTE_ComputerRack) {
+				((GTMTE_ComputerRack) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return sComputerRack.add((GTMTE_ComputerRack) aMetaTileEntity);
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	public boolean addParallHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity == null) {
+				return false;
+			} else if (aMetaTileEntity instanceof GTMTE_ParallelHatch_Output) {
+				((GTMTE_ParallelHatch_Output) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return sParallHatchesOut.add((GTMTE_ParallelHatch_Output) aMetaTileEntity);
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	@Override
+	public void clearHatches() {
+		sComputerRack.clear();
+		super.clearHatches();
+	}
+	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
 		//region Structure
@@ -205,7 +246,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 					
 					//Racks
 					if (X == 1 && (Y == 0 || Y == 1)) {
-						if (!super.addRackHatch(currentTE, CASING_TEXTURE_ID)) {
+						if (!addRackHatch(currentTE, CASING_TEXTURE_ID)) {
 							if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING
 									&& thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META) {
 								RacksZ = Z;
@@ -219,7 +260,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 					}
 					//Parallels
 					if (X == 0 && (Y == 0 || Y == 1)) {
-						if (!super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
+						if (!addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)) {
 							if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
 									&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
 								ParallelsZ = Z;
@@ -290,8 +331,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 	}
 	
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
+	public boolean hasSeparate() {
+		return false;
 	}
 	
 	public String[] getInfoData() {

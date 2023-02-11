@@ -10,6 +10,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -218,13 +219,13 @@ public class GTMTE_LongDistancePipelineItem extends GTMTE_LongDistancePipelineBa
       byte aColorIndex, boolean aActive, boolean aRedstone) {
     if (aSide == aFacing) {
       return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-          new GT_RenderedTexture(OVERLAY_PIPELINE_ITEM_FRONT)};
+          TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT)};
     } else if (aSide == GT_Utility.getOppositeSide(aFacing)) {
       return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-          new GT_RenderedTexture(OVERLAY_PIPELINE_ITEM_BACK)};
+          TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK)};
     } else {
       return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-          new GT_RenderedTexture(OVERLAY_PIPELINE_ITEM_SIDE)};
+          TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE)};
     }
   }
 }

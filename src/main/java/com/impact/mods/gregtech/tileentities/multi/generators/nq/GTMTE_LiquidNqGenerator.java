@@ -442,6 +442,12 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
 		};
 	}
 	
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
+	
 	static class FuelNqGenerator implements Runnable {
 		
 		public int[] FUEL_PER_SECOND = new int[]{ //for 1A

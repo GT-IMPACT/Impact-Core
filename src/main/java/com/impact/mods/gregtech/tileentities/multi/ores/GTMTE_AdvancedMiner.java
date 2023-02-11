@@ -418,4 +418,9 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 3, 10, 1);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

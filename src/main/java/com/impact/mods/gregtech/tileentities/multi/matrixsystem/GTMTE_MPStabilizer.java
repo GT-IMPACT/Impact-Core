@@ -380,4 +380,9 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
 						: RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
 		};
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

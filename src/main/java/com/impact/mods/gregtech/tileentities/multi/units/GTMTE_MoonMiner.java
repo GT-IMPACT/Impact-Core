@@ -222,4 +222,9 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 2, 1, 1);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

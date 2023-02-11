@@ -106,7 +106,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
 	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png", " Pyrolyse ");
+		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
 	
 	@Override

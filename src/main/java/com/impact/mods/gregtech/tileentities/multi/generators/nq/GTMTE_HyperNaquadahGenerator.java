@@ -214,4 +214,9 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
 			}
 		}
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

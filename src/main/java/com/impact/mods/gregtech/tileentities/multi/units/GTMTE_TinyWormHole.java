@@ -259,4 +259,9 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 2, 6, 0);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

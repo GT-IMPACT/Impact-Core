@@ -31,6 +31,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -119,12 +120,12 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
 	
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(OVERLAY_MULTIHATCH)};
+		return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_MULTIHATCH)};
 	}
 	
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(OVERLAY_MULTIHATCH)};
+		return new ITexture[]{aBaseTexture, TextureFactory.of(OVERLAY_MULTIHATCH)};
 	}
 	
 	@Override

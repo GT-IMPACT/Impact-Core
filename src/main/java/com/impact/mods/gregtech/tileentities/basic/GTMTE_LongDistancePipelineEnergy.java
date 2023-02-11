@@ -8,6 +8,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_Utility.getOppositeSide;
@@ -84,7 +85,7 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
 		} else if (aSide == getOppositeSide(aFacing)) {
 			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]};
 		} else {
-			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Texture.Icons.OVERLAY_PIPELINE_ENERGY_SIDE)};
+			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(Texture.Icons.OVERLAY_PIPELINE_ENERGY_SIDE)};
 		}
 	}
 }

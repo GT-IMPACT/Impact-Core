@@ -51,7 +51,6 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 	static Block CASING = Casing_Helper.sCaseCore3;
 	static int CASING_META = 2;
 	static ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32];
-	static int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
 	
 	public GTMTE_TheMill(int aID, String aNameRegional) {
 		super(aID, "impact.multis.the_mill", aNameRegional, 5);
@@ -260,6 +259,11 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 	@Override
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 4, 3, 1);
+	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
 	}
 	
 	@Override

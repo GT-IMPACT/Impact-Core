@@ -15,6 +15,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,7 +107,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 								 boolean aActive, boolean aRedstone) {
 		return aSide == aFacing
 				? new ITexture[]{Textures.BlockIcons.casingTexturePages[1][48],
-				new GT_RenderedTexture(aActive
+				TextureFactory.of(aActive
 						? Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE
 						: Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)}
 				: new ITexture[]{Textures.BlockIcons.casingTexturePages[1][48]};

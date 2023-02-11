@@ -9,6 +9,7 @@ import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,13 +48,13 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Texture.Icons.OVERLAY_REACTOR_HATCH_ACTIVE)};
+				TextureFactory.of(Texture.Icons.OVERLAY_REACTOR_HATCH_ACTIVE)};
 	}
 	
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Texture.Icons.OVERLAY_REACTOR_HATCH_INACTIVE)};
+				TextureFactory.of(Texture.Icons.OVERLAY_REACTOR_HATCH_INACTIVE)};
 	}
 	
 	@Override

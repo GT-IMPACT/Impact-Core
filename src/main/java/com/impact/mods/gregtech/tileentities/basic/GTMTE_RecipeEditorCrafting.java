@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -119,7 +120,7 @@ public class GTMTE_RecipeEditorCrafting extends GT_MetaTileEntity_BasicTank {
 		return aSide != aFacing
 				? aSide == 1
 				? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_STANK)}
+				TextureFactory.of(Textures.BlockIcons.OVERLAY_STANK)}
 				: new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]}
 				: aActive
 				? getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1])
@@ -128,12 +129,12 @@ public class GTMTE_RecipeEditorCrafting extends GT_MetaTileEntity_BasicTank {
 	
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+				TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
 	}
 	
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+				TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
 	}
 	
 	public String[] getDescription() {

@@ -38,7 +38,7 @@ import static com.impact.loader.ItemRegistery.decorateBlock;
 
 public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
 	
-	public static String mModed;
+	
 	public int xMax, yMax, zMax;
 	public int xMin, yMin, zMin;
 	public int curX, curY, curZ;
@@ -319,5 +319,10 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
 	@Override
 	public void construct(ItemStack itemStack, boolean b) {
 	
+	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
 	}
 }

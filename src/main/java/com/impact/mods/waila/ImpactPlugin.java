@@ -4,6 +4,8 @@ import appeng.tile.AEBaseTile;
 import appeng.tile.crafting.TileCraftingTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
+import com.impact.api.multis.ISeparateBus;
+import com.impact.api.multis.ISwitchRecipeMap;
 import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
@@ -33,6 +35,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler_Solar;
@@ -55,6 +58,7 @@ import tterrag.wailaplugins.plugins.PluginBase;
 import java.text.NumberFormat;
 import java.util.List;
 
+import static com.impact.util.Utilits.translateGTItemStack;
 import static mcp.mobius.waila.api.SpecialChars.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -122,6 +126,17 @@ public class ImpactPlugin extends PluginBase {
         final boolean allowedToWork = tag.hasKey("isAllowedToWork") && tag.getBoolean("isAllowedToWork");
 
         if (tMeta != null) {
+    
+            if (tMeta instanceof ISwitchRecipeMap) {
+                String map = tag.getString("recipe_map_switch");
+                if (!map.isEmpty()) {
+                    currenttip.add("Recipe Map: " + EnumChatFormatting.YELLOW + map);
+                }
+            }
+            if (tMeta instanceof ISeparateBus && ((ISeparateBus) tMeta).hasSeparate()) {
+                boolean map = tag.getBoolean("is_separated");
+                currenttip.add("Separated Mode: " + (map ? EnumChatFormatting.GREEN + "Enabled" : EnumChatFormatting.RED + "Disabled"));
+            }
     
             if (tBaseMetaTile != null) {
                 if (getConfig("fluidFilter")){
@@ -204,8 +219,8 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (chestBase != null) {
-                if (!tag.getString("chestBaseItemName").equals("")) {
-                    currenttip.add(EnumChatFormatting.GREEN + tag.getString("chestBaseItemName") + ":");
+                if (!tag.getString("chestBaseItemName").isEmpty()) {
+                    currenttip.add(EnumChatFormatting.GREEN + tag.getString("chestBaseItemName"));
                     currenttip.add(NumberFormat.getNumberInstance().format(tag.getInteger("chestBaseSizeCurrent")) +
                             " / " + NumberFormat.getNumberInstance().format(tag.getInteger("chestBaseSizeMax")));
                 } else {
@@ -444,6 +459,14 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
         
         if (tMeta != null) {
+            
+            if (tMeta instanceof ISwitchRecipeMap) {
+                tag.setString("recipe_map_switch", ((ISwitchRecipeMap) tMeta).getMapName());
+            }
+    
+            if (tMeta instanceof ISeparateBus && ((ISeparateBus) tMeta).hasSeparate()) {
+                tag.setBoolean("is_separated", ((ISeparateBus) tMeta).isSeparated());
+            }
     
             tag.setString("gt_colorization", Dyes.get(tBaseMetaTile.getColorization()).mName);
         
@@ -506,7 +529,7 @@ public class ImpactPlugin extends PluginBase {
             if (chestBase != null) {
                 final int stackSizeCurrent = chestBase.getItemCount();
                 final int stackSizeMax = chestBase.getMaxItemCount();
-                final String itemName = chestBase.mInventory[2] != null ? chestBase.mInventory[2].getDisplayName() : "";
+                final String itemName = chestBase.mInventory[2] != null ? translateGTItemStack(chestBase.mInventory[2]) : "";
                 tag.setInteger("chestBaseSizeCurrent", stackSizeCurrent);
                 tag.setInteger("chestBaseSizeMax", stackSizeMax);
                 tag.setString("chestBaseItemName", itemName);

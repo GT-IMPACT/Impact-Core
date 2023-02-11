@@ -327,4 +327,9 @@ public class GTMTE_Aerostat extends GTMTE_Impact_BlockBase<GTMTE_Aerostat> imple
 	public void update(String... str) {
 		setLocationName(str[0]);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

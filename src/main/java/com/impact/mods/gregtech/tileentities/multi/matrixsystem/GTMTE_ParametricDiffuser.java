@@ -383,4 +383,9 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
 				"Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
 		};
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

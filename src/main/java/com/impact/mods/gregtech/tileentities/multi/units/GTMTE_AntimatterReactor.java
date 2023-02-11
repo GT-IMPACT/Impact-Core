@@ -290,4 +290,9 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
 	public void construct(ItemStack itemStack, boolean b) {
 		buildPiece(itemStack, b, 7, 7, 0);
 	}
+	
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }
