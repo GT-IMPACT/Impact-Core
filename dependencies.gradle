@@ -1,5 +1,5 @@
 dependencies {
-    provided('org.jetbrains.kotlin:kotlin-stdlib:1.6.10')
+    provided('org.jetbrains.kotlin:kotlin-stdlib:1.8.0')
     provided fileTree(dir: 'run/', include:'*.jar')
     compileOnly fileTree(dir: 'notRun/', include:'*.jar')
     annotationProcessor 'io.gitlab.hohserg.elegant.networking:annotation-processor:3.14'
