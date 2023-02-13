@@ -473,6 +473,11 @@ entity.impact.EntityCopperChestCart.name=Вагонетка с Сундуком 
 entity.impact.EntityIronChestCart.name=Вагонетка с Стальным Сундуком
 entity.impact.EntityGoldChestCart.name=Вагонетка с Алюминиевым Сундуком
 
+menu.website=Вебсайт
+menu.options=Настройки
+menu.discord=Дискорд
+menu.github=Гитхаб
+
 #WailaPlugin
 waila.eut=EU/t
 waila.eu=EU

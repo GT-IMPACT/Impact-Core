@@ -548,6 +548,7 @@ current_version=Current version
 welcome.0=Welcome to IMPACT
 welcome.1=Please bring comments to
 menu.website=Website
+menu.options=Options
 menu.discord=Discord
 menu.github=GitHub
 
