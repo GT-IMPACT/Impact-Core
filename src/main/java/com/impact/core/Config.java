@@ -23,6 +23,7 @@ public class Config {
 	public static boolean placedItems;
 	public static int saveTime;
 	public static int MiningWorldID;
+	public static boolean enabledAutoUpdateQuests;
 	
 	public static int MAX_TICK_RATE;
 	
@@ -92,6 +93,11 @@ public class Config {
 			cfg         = config.get("GENERAL", "Max tickrate multiblocks (only IMPACT)", 2);
 			cfg.comment = "MaxTickRate. [Default: 2]";
 			MAX_TICK_RATE = cfg.getInt(2);
+			General.add(cfg.getName());
+			
+			cfg         = config.get("GENERAL", "Enabled autodetect and update quests", true);
+			cfg.comment = "enabledAutoUpdateQuests [Default: true]";
+			enabledAutoUpdateQuests = cfg.getBoolean(true);
 			General.add(cfg.getName());
 			
 			//DEBUG
