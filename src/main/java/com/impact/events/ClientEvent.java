@@ -2,6 +2,7 @@ package com.impact.events;
 
 import com.impact.client.gui.ImpactGuiMainMenu;
 import com.impact.client.key.KeyBindings;
+import com.impact.client.render.models.DonateCapeRenderer;
 import com.impact.common.block.itemblock.IB_IGlass;
 import com.impact.core.Config;
 import com.impact.network.special.ToServer_MetaBlockGlass;
@@ -11,6 +12,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.render.GT_CapeRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -22,9 +24,16 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import org.lwjgl.input.Keyboard;
 
 public class ClientEvent {
+	
+	private final DonateCapeRenderer donateCapeRenderer;
+	
+	public ClientEvent() {
+		donateCapeRenderer = new DonateCapeRenderer();
+	}
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
@@ -63,5 +72,11 @@ public class ClientEvent {
 				}
 			}
 		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre e) {
+		donateCapeRenderer.render(e);
 	}
 }
