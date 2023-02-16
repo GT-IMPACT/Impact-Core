@@ -287,7 +287,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (machine !is GT_MetaTileEntity_MultiParallelBlockBase<*>) return this
         val recipe = recipe ?: return this
 
-        val listItems =  if (indexBus == -1) {
+        val listItems = if (indexBus == -1) {
             inputs.flatMap { it.value }.toTypedArray()
         } else {
             inputs[indexBus]?.toTypedArray() ?: emptyArray()
@@ -296,8 +296,12 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         val isValidFluid = inputsF.isNotEmpty()
         val isValidItems = inputs.isNotEmpty()
 
-        while ((isValidFluid || isValidItems) && (machine.mCheckParallelCurrent < machine.mParallel)) {
-            val isValidVoltage = (recipe.mEUt * (machine.mCheckParallelCurrent + 1L)) < voltageIn
+        for (currentParallel in 1..machine.parallel) {
+            if (!(isValidFluid || isValidItems)) break
+
+            val isValidVoltage = (recipe.mEUt * (currentParallel)) < voltageIn
+            if (!isValidVoltage) break
+
             val isValidInputs = Utilits.checkInputs(
                 recipe,
                 decreaseStackSizeBySuccess,
@@ -305,27 +309,26 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 inputsF.toTypedArray(),
                 listItems,
             )
-            if (isValidVoltage && isValidInputs) {
+            if (!isValidInputs) break
 
-                for (h in 0 until recipe.mOutputs.size) {
-                    val out = recipe.getOutput(h)
-                    if (out != null) {
-                        if (enabledChance) {
-                            if (machine.baseMetaTileEntity.getRandomNumber(10000) < recipe.getOutputChance(h)) {
-                                outputs += out.copy()
-                            }
-                        } else {
+            machine.mCheckParallelCurrent = currentParallel
+
+            for (h in 0 until recipe.mOutputs.size) {
+                val out = recipe.getOutput(h)
+                if (out != null) {
+                    if (enabledChance) {
+                        if (machine.baseMetaTileEntity.getRandomNumber(10000) < recipe.getOutputChance(h)) {
                             outputs += out.copy()
                         }
+                    } else {
+                        outputs += out.copy()
                     }
                 }
+            }
 
-                for (i in 0 until recipe.mFluidOutputs.size) {
-                    outputsF += recipe.getFluidOutput(i)
-                }
-
-                ++machine.mCheckParallelCurrent
-            } else break
+            for (i in 0 until recipe.mFluidOutputs.size) {
+                outputsF += recipe.getFluidOutput(i)
+            }
         }
         return this
     }
