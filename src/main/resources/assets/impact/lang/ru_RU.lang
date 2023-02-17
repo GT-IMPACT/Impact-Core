@@ -151,6 +151,9 @@ item.impact_item.44.name=Керамическая пыль LSCF
 item.impact_item.45.name=YSZ Керамика
 item.impact_item.46.name=GDC Керамика
 item.impact_item.47.name=LSCF Керамика
+item.impact_item.48.name=Пыль Циркония
+item.impact_item.49.name=Пыль Хлорида Циркония
+item.impact_item.50.name=Пыль нефтекокса
 
 #MetaItems.01
 item.impact_item2.0.name=Схема Чипа Ракеты 1-го Уровня
@@ -354,9 +357,7 @@ item.impact_item2.197.name=Пустая схема
 item.impact_item2.198.name=Лазерное Ядро MK I
 item.impact_item2.199.name=Лазерное Ядро MK II
 item.impact_item2.200.name=Лазерное Ядро MK III
-item.impact_item2.201.name=Корпус хранилища жидкостей
-item.impact_item2.202.name=Пыль нефтекокса
-item.impact_item2.203.name=Нефтяной кокс
+item.impact_item2.201.name=Нефтяной кокс
 
 item.impact_item3.0.name=Пустая Портативная Ячейка с Матричными Частицами
 item.impact_item3.1.name=Заполненная Портативная Ячейка с Матричными Частицами

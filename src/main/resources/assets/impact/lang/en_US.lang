@@ -165,6 +165,7 @@ item.impact_item.46.name=GDC Ceramic
 item.impact_item.47.name=LSCF Ceramic
 item.impact_item.48.name=Zircon Dust
 item.impact_item.49.name=Zirconium Chloride Dust
+item.impact_item.50.name=Petcoke Dust
 
 item.impact_item.100.name=Mineral Stone Dust
 item.impact_item.101.name=Metallic Stone Dust
@@ -372,9 +373,7 @@ item.impact_item2.197.name=Blank Pattern
 item.impact_item2.198.name=Laser Core MK I
 item.impact_item2.199.name=Laser Core MK II
 item.impact_item2.200.name=Laser Core MK III
-item.impact_item2.201.name=Fluid Storage Housing
-item.impact_item2.202.name=Petcoke Dust
-item.impact_item2.203.name=Petroleum Coke
+item.impact_item2.201.name=Petroleum Coke
 
 item.impact_item3.0.name=Empty Portable Cell with Matrix Particles
 item.impact_item3.1.name=Full Portable Cell with Matrix Particles
