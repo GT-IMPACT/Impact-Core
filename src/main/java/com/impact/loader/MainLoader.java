@@ -66,9 +66,6 @@ public class MainLoader {
 	
 	public static void preInit(FMLPreInitializationEvent event) {
 		
-		ItemRegistery.GregtechPump();
-		INFO("[preInit] Gregtech Pump - Loaded");
-		
 		ASP.preInit();
 		INFO("[preInit] Solar Panel - Loaded");
 		
@@ -90,8 +87,8 @@ public class MainLoader {
 		FakeCircuits.getInstance().registerItem();
 		INFO("[preInit] Fake Circuits - Loaded");
 		
-		KineticRotors.getInstance().registerItem();
-		INFO("[preInit] Kinetic Rotors - Loaded");
+//		KineticRotors.getInstance().registerItem();
+//		INFO("[preInit] Kinetic Rotors - Loaded");
 		
 		DrillHeads.getInstance().registerItem();
 		INFO("[preInit] Drill Heads - Loaded");

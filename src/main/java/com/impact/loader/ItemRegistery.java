@@ -4,9 +4,7 @@ import com.impact.common.armor.MaskOfVision;
 import com.impact.common.block.blocks.*;
 import com.impact.common.block.itemblock.FakeBlocksItem;
 import com.impact.common.item.Core_List_Items;
-import com.impact.common.item.GT_Pump.GregtechPump;
 import com.impact.core.Refstrings;
-import com.impact.mods.gregtech.items.tools.ConstructionLaser;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
@@ -35,7 +33,6 @@ public class ItemRegistery {
 			}, 2)
 	};
 	
-	public static GregtechPump GTPump;
 	public static Block lscLapotronicEnergyUnit, SawMillBlock, IGlassBlock, CoalBlock, UtilBlock,
 			NqTetherBlock, InsideBlock, FluidTankBlock, CeramicBlock, CollisionBlock,
 			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, Wind_rotor, TheWind, DryingRack;
@@ -113,16 +110,6 @@ public class ItemRegistery {
 		INFO("[Init] Hazmat Additions - Loaded");
 	}
 	
-	public static void GregtechPump() {
-		GTPump = new GregtechPump();
-		GTPump.registerPumpType(0, "LV Hand Pump", 0, 0);
-		GTPump.registerPumpType(1, "MV Hand Pump", 100000, 1);
-		GTPump.registerPumpType(2, "HV Hand Pump", 400000, 2);
-		GTPump.registerPumpType(3, "EV Hand Pump", 1600000, 3);
-		
-		ConstructionLaser.set(new ConstructionLaser("Construction Laser"));
-	}
-	
 	public static void registerBlocks() {
 		GameRegistry.registerBlock(decorateBlock[2], FakeBlocksItem.class, "FakeBlock");
 		lscLapotronicEnergyUnit = Block_LapotronicEnergyUnit.registerBlock();
@@ -167,5 +154,6 @@ public class ItemRegistery {
 		for (int i = 0; i <= 15; i++) {
 			hideItem(GT_ModHandler.getModItem("LogisticsPipes", "item.pipeComponents", 1L, i));
 		}
+		
 	}
 }
