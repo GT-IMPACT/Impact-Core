@@ -320,6 +320,13 @@ public enum Core_List_Items {
 	LaserCore3(200, 1),
     PetCokeGem(201, 1),
     MudBall(202, 1),
+    Processorx1(203, 1),
+    Processorx4(204, 1),
+    Processorx16(205, 1),
+    Processorx64(206, 1),
+    Processorx256(207, 1),
+    Processorx1024(208, 1),
+    Processorx4096(209, 1),
     
 
     WoodenBrickForm1(0, 2),

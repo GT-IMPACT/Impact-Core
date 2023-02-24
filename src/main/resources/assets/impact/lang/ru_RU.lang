@@ -359,6 +359,13 @@ item.impact_item2.199.name=Лазерное Ядро MK II
 item.impact_item2.200.name=Лазерное Ядро MK III
 item.impact_item2.201.name=Нефтяной кокс
 item.impact_item2.202.name=Комок грязи
+item.impact_item2.203.name=Процессор обработки создания
+item.impact_item2.204.name=4х ядерный процессор обработки создания
+item.impact_item2.205.name=16и ядерный процессор обработки создания
+item.impact_item2.206.name=64х ядерный процессор обработки создания
+item.impact_item2.207.name=256и ядерный процессор обработки создания
+item.impact_item2.208.name=1024х ядерный процессор обработки создания
+item.impact_item2.209.name=4096и ядерный процессор обработки создания
 
 item.impact_item3.0.name=Пустая Портативная Ячейка с Матричными Частицами
 item.impact_item3.1.name=Заполненная Портативная Ячейка с Матричными Частицами
