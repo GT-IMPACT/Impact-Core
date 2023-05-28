@@ -1,4 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 import java.util.concurrent.TimeUnit
@@ -24,7 +23,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.github.GT-IMPACT:ForgeGradle:1.2.4'
+        classpath("com.anatawa12.forge:ForgeGradle:1.2-1.1.+")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
     }
 }
@@ -34,7 +33,7 @@ plugins {
     id 'scala'
     id 'org.jetbrains.kotlin.jvm' version "1.6.10" apply false
     id("org.ajoberstar.grgit") version("3.1.1")
-    id("com.github.johnrengelman.shadow") version("4.0.4")
+    id("com.github.johnrengelman.shadow") version("8.1.1")
     id("com.palantir.git-version") version("0.12.3")
 }
 
@@ -42,8 +41,7 @@ apply plugin: 'forge'
 apply plugin: 'kotlin'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-configurations.getByName("runtime").canBeResolved true
+targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
 
 def projectJavaVersion = JavaLanguageVersion.of(8)
 
@@ -255,8 +253,8 @@ def mixingConfigRefMap = "mixins." + modId + ".refmap.json"
 def refMap = "${tasks.compileJava.temporaryDir}" + File.separator + mixingConfigRefMap
 def mixinSrg = "${tasks.reobf.temporaryDir}" + File.separator + "mixins.srg"
 
-task generateAssets {
-    if(usesMixins.toBoolean()) {
+tasks.register('generateAssets') {
+    if (usesMixins.toBoolean()) {
         new File(projectDir.toString() + "/src/main/resources/", "mixins." + modId + ".json").text = """{
   "required": true,
   "minVersion": "0.7.11",
@@ -270,11 +268,6 @@ task generateAssets {
     }
 }
 
-task relocateShadowJar(type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-    prefix = modGroup + ".shadow"
-}
-
 shadowJar {
     manifest {
         attributes(getManifestAttributes())
@@ -282,7 +275,6 @@ shadowJar {
 
     minimize()  // This will only allow shading for actually used classes
     configurations = [project.configurations.shadowImplementation]
-    dependsOn(relocateShadowJar)
 }
 
 jar {
@@ -363,6 +355,7 @@ processResources
             // this will ensure that this task is redone when the versions change.
             inputs.property "version", project.version
             inputs.property "mcversion", project.minecraft.version
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
             // replace stuff in mcmod.info, nothing else
             from(sourceSets.main.resources.srcDirs) {
@@ -427,13 +420,7 @@ task shadowDevJar(type: ShadowJar) {
     configurations = [project.configurations.shadowImplementation]
 }
 
-task relocateShadowDevJar(type: ConfigureShadowRelocation) {
-    target = tasks.shadowDevJar
-    prefix = modGroup + ".shadow"
-}
-
 task circularResolverJar(type: Jar) {
-    dependsOn(relocateShadowDevJar)
     dependsOn(shadowDevJar)
     enabled = false
 }
@@ -533,11 +520,11 @@ configure(updateBuildScript) {
 }
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8
+        freeCompilerArgs = [
+                "-Xinline-classes",
+                "-XXLanguage:+InlineClasses",
+                "-XXLanguage:+TrailingCommas"
+        ]
     }
 }
