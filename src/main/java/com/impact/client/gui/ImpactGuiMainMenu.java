@@ -32,40 +32,13 @@ import static com.impact.impact.ModPackVersion;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 @SideOnly(Side.CLIENT)
-public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
+public class ImpactGuiMainMenu extends GuiScreen {
 	
 	private static final Logger logger = LogManager.getLogger();
-	private static final String webSiteVersionHref = "https://gtimpact.space/version";
 	private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("impact", "textures/gui/title/title.png");
-	private static final String version = "";
-	private static final String pathBG = "/config/IMPACT/bg";
-	private static ArrayList<ResourceLocation> background = new ArrayList<ResourceLocation>() {{
-		add(new ResourceLocation("impact:textures/gui/bg/bg1.png"));
-	}};
-	
-	static {
-		background = parseBG().isEmpty() ? background : parseBG();
-	}
+	private static final ResourceLocation background = new ResourceLocation("impact", "textures/gui/bg/bg.jpeg");
 	
 	public ImpactGuiMainMenu() {
-	}
-	
-	private static ArrayList<ResourceLocation> parseBG() {
-		ArrayList<ResourceLocation> res = new ArrayList<>();
-		try {
-			String basePath = ((File) (FMLInjectionData.data()[6])).getAbsolutePath().replace(File.separatorChar, '/').replace("/.", "");
-			Path externalPath = Paths.get(basePath + pathBG);
-			File[] files = new File(String.valueOf(externalPath)).listFiles();
-			if (files != null) {
-				int count = 1;
-				for (File f : files) {
-					res.add(Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation("bg" + count, new DynamicTexture(ImageIO.read(f))));
-					count++;
-				}
-			}
-		} catch (Exception ignored) {
-		}
-		return res;
 	}
 	
 	public boolean doesGuiPauseGame() {
@@ -74,17 +47,20 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 	
 	@SuppressWarnings("unchecked")
 	public void initGui() {
+		int offsetX = 100;
+		int length = 160;
+		int height = 20;
 		int yButtons = this.height / 4 + 20;
-		int xButtons = this.width / 2 - 50;
 		
-		this.buttonList.add(new ImpactGuiButton(1, xButtons - 30, yButtons + 84 - 24 - 30, 160, 20, I18n.format("menu.singleplayer")));
-		this.buttonList.add(new ImpactGuiButton(2, xButtons - 30, yButtons + 84 - 2 - 30, 160, 20, I18n.format("menu.multiplayer")));
-		this.buttonList.add(new ImpactGuiButton(0, xButtons - 30, yButtons + 84 + 20 - 30, 160, 20, I18n.format("menu.options")));
-		this.buttonList.add(new ImpactGuiButton(4, xButtons - 30, yButtons + 84 + 95 - 52, 160, 20, I18n.format("menu.quit")));
+		this.buttonList.add(new ImpactGuiButton(1, offsetX, yButtons + 84 - 24 - 30, length, height, I18n.format("menu.singleplayer")));
+		this.buttonList.add(new ImpactGuiButton(2, offsetX, yButtons + 84 - 2 - 30, length, height, I18n.format("menu.multiplayer")));
+		this.buttonList.add(new ImpactGuiButton(0, offsetX, yButtons + 84 + 20 - 30, length, height, I18n.format(translateToLocal("menu.options"))));
+		this.buttonList.add(new ImpactGuiButton(4, offsetX, yButtons + 84 + 95 - 52, length, height, I18n.format("menu.quit")));
 		
-		this.buttonList.add(new ImpactGuiButton(20, xButtons - 25 - 5, yButtons + 84 + 42 - 25, 50, 20, I18n.format(translateToLocal("menu.website"))));
-		this.buttonList.add(new ImpactGuiButton(21, xButtons + 25, yButtons + 84 + 42 - 25, 50, 20, I18n.format(translateToLocal("menu.discord"))));
-		this.buttonList.add(new ImpactGuiButton(22, xButtons + 75 + 5, yButtons + 84 + 42 - 25, 50, 20, I18n.format(translateToLocal("menu.github"))));
+		int offsetRow = 30;
+		this.buttonList.add(new ImpactGuiButton(20, offsetX + offsetRow - 30, yButtons + 84 + 42 - 25, 50, 20, I18n.format(translateToLocal("menu.website"))));
+		this.buttonList.add(new ImpactGuiButton(21, offsetX + offsetRow + 25, yButtons + 84 + 42 - 25, 50, 20, I18n.format(translateToLocal("menu.discord"))));
+		this.buttonList.add(new ImpactGuiButton(22, offsetX + offsetRow + 80, yButtons + 84 + 42 - 25, 50, 20, I18n.format(translateToLocal("menu.github"))));
 	}
 	
 	protected void actionPerformed(GuiButton b) {
@@ -97,9 +73,6 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 		if (b.id == 2) {
 			this.mc.displayGuiScreen(new GuiMultiplayer(this));
 		}
-		if (b.id == 3) {
-			urlopen("https://forum.micdoodle8.com/index.php?threads/1-7-10-galaxy-space-stable.5298/");
-		}
 		if (b.id == 4) {
 			this.mc.shutdown();
 		}
@@ -110,7 +83,7 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 			this.mc.displayGuiScreen(new GuiModList(this));
 		}
 		if (b.id == 20) {
-			urlopen("https://gtimpact.space/");
+			urlopen("https://gt-impact.github.io/");
 		}
 		if (b.id == 21) {
 			urlopen("https://discord.gg/bMf2qvd");
@@ -132,9 +105,8 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 	
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		GL11.glEnable(3008);
-		
-		long tick = System.currentTimeMillis() / 10000;
-		this.mc.renderEngine.bindTexture(background.get((int) (tick % background.size())));
+
+		this.mc.renderEngine.bindTexture(background);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(0.0D, (this.height), this.zLevel, 0.0D, 1.0D);
@@ -147,11 +119,11 @@ public class ImpactGuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 		
 		this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		drawTexturedModalRect(this.width / 2 - 125, -50, 0, 0, 250, 250);
+		drawTexturedModalRect(50, -50, 0, 0, 250, 250);
 		
 		tessellator.setColorOpaque_I(-1);
 		GL11.glPushMatrix();
-		GL11.glTranslatef((this.width / 2F + 90F), 70.0F, 0.0F);
+		GL11.glTranslatef(50, 70.0F, 0.0F);
 		GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
 		
 		float f1 = 1.8F - MathHelper.abs(MathHelper.sin((float) (Minecraft.getSystemTime() % 1000L) / 1000.0F * 6.2831855F) * 0.1F);

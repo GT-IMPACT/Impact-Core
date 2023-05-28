@@ -1,7 +1,11 @@
 package com.impact.events;
 
 
+import betterquesting.core.BetterQuesting;
+import com.impact.core.Config;
+import com.impact.mods.better_quests.BQ_LoadQuests;
 import com.impact.util.string.Language;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.EntityList;
@@ -46,5 +50,9 @@ public class impactEvents {
 		event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + Language.translate("welcome.1", "Please bring comments to") + " " + EnumChatFormatting.AQUA + "https://discord.gg/bMf2qvd"));
 		event.player.addChatMessage(new ChatComponentText(" "));
 		event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
+		
+		if (Config.enabledAutoUpdateQuests && Loader.isModLoaded("betterquesting")) {
+			BQ_LoadQuests.load(event.player);
+		}
 	}
 }

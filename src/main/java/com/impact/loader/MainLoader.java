@@ -7,13 +7,11 @@ import com.impact.common.item.*;
 import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.te.*;
 import com.impact.impact;
-import com.impact.mods.asp.ASP;
 import com.impact.mods.gregtech.Basic_Register;
 import com.impact.mods.gregtech.GT_ItemRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
-import com.impact.mods.nei.impactplugin.RecipeProcessorLoader;
 import com.impact.mods.opencomputers.Driver_Register;
 import com.impact.mods.railcraft.carts.item.events.Module;
 import com.impact.mods.virtual_world.VirtualWorldIntegration;
@@ -44,9 +42,6 @@ public class MainLoader {
 		OreDictRegister.register_all();
 		INFO("[load] OreDict Register List - Loaded");
 		
-		ASP.load();
-		INFO("[load] Solar Panel 2 - Loaded");
-		
 		Block_QuantumStuff.run();
 		INFO("[load] Quantum Stuff registered");
 		
@@ -66,12 +61,7 @@ public class MainLoader {
 	}
 	
 	public static void preInit(FMLPreInitializationEvent event) {
-		
-		ItemRegistery.GregtechPump();
-		INFO("[preInit] Gregtech Pump - Loaded");
-		
-		ASP.preInit();
-		INFO("[preInit] Solar Panel - Loaded");
+
 		
 		Covers.getInstance().registerItem();
 		INFO("[preInit] Covers - Loaded");
@@ -91,8 +81,8 @@ public class MainLoader {
 		FakeCircuits.getInstance().registerItem();
 		INFO("[preInit] Fake Circuits - Loaded");
 		
-		KineticRotors.getInstance().registerItem();
-		INFO("[preInit] Kinetic Rotors - Loaded");
+//		KineticRotors.getInstance().registerItem();
+//		INFO("[preInit] Kinetic Rotors - Loaded");
 		
 		DrillHeads.getInstance().registerItem();
 		INFO("[preInit] Drill Heads - Loaded");

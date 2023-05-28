@@ -49,7 +49,7 @@ public enum Core_List_Items {
     ChargedQuartzDust(38, 0),
     SawDust(39, 0),
     DioxideYttrium(40, 0),
-    
+
     NULL41(41, 0, true), // пустой
 
     YSZdust(42, 0),
@@ -60,8 +60,8 @@ public enum Core_List_Items {
     LSFCCeramic(47, 0),
     Zircon(48, 0),
     ZirconiumChloride(49, 0),
-    
-    NULL50(50, 0, true),
+
+    PetcokeDust(50, 0),
     NULL51(51, 0, true),
     NULL52(52, 0, true),
     NULL53(53, 0, true),
@@ -318,9 +318,15 @@ public enum Core_List_Items {
 	LaserCore1(198, 1),
 	LaserCore2(199, 1),
 	LaserCore3(200, 1),
-    FluidStorageHousing(201, 1),
-    PetcokeDust(202, 1),
-    PetCokeGem(203, 1),
+    PetCokeGem(201, 1),
+    MudBall(202, 1),
+    Processorx1(203, 1),
+    Processorx4(204, 1),
+    Processorx16(205, 1),
+    Processorx64(206, 1),
+    Processorx256(207, 1),
+    Processorx1024(208, 1),
+    Processorx4096(209, 1),
     
 
     WoodenBrickForm1(0, 2),

@@ -50,6 +50,7 @@ public class ImpactGuiButton extends GuiButton {
 	}
 	
 	protected void mouseDragged(Minecraft p_146119_1_, int p_146119_2_, int p_146119_3_) {
+	
 	}
 	
 	public void mouseReleased(int p_146118_1_, int p_146118_2_) {
