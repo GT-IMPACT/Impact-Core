@@ -1,8 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
-import com.impact.common.oregeneration.OreGenerator;
-import com.impact.common.oregeneration.OreVein;
-import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -21,12 +18,16 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import kotlin.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
+import space.gtimpact.virtual_world.api.VirtualAPI;
+import space.gtimpact.virtual_world.api.VirtualOreComponent;
+import space.gtimpact.virtual_world.api.VirtualOreVein;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
@@ -59,8 +60,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 					.build();
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
-	public OreChunkGenerator oreChunkGenerator = null;
-	public OreVein oreVein = OreGenerator.empty;
+	public VirtualOreVein oreVein;
 	public int layer = 1;
 	public double cashedDecrement = 0d;
 	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
@@ -77,30 +77,22 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 	public void onFirstTick(IGregTechTileEntity te) {
 		super.onFirstTick(te);
 		initOreProperty(te);
-		increaseLayer(te);
 	}
 	
-	public void increaseLayer(IGregTechTileEntity te) {
+	public void increaseLayer(IGregTechTileEntity te, int reduce) {
 		if (te.isServerSide()) {
-			oreChunkGenerator.sizeOreChunk -= cycleIncrease;
-			if (oreChunkGenerator.sizeOreChunk <= 0) {
-				oreChunkGenerator.sizeOreChunk = 0;
-			}
-			cycleIncrease = 0;
+			Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			Pair<VirtualOreVein, Integer> pair = VirtualAPI.extractFromChunk(ch, layer, reduce);
+			sizeVeinPreStart = pair.getSecond();
 		}
 	}
 	
 	public void initOreProperty(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
-			oreChunkGenerator = OreGenerator.getChunkFromIGT(te, layer);
-			if (oreChunkGenerator != null) {
-				sizeVeinPreStart = oreChunkGenerator.sizeOreChunk;
-				if (sizeVeinPreStart > 0) {
-					oreVein = OreGenerator.getOreVein(te, layer);
-				} else {
-					oreVein = OreGenerator.empty;
-				}
-			}
+			Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			Pair<VirtualOreVein, Integer> pair = VirtualAPI.extractFromChunk(ch, 1, 0);
+			oreVein = pair.getFirst();
+			sizeVeinPreStart = pair.getSecond();
 		}
 	}
 	
@@ -193,11 +185,11 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		if (hatch.get(0) == null) return false;
-		if (oreChunkGenerator == null || oreChunkGenerator.sizeOreChunk <= 0) return false;
-		if (oreVein == OreGenerator.empty) return false;
+		if (sizeVeinPreStart <= 0) return false;
+		if (oreVein == null) return false;
 		boolean check = hatch.get(0).ready;
 		if ((sizeVeinPreStart - cycleIncrease) <= 0) {
-			increaseLayer(getBaseMetaTileEntity());
+			increaseLayer(getBaseMetaTileEntity(), 0);
 			initOreProperty(getBaseMetaTileEntity());
 			return false;
 		}
@@ -211,17 +203,18 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 			if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
 				return false;
 			}
-			if (oreVein.specialFluid != null) {
-				if (!depleteInput(oreVein.specialFluid)) {
+			if (oreVein.getSpecial() != null) {
+				if (!depleteInput(oreVein.getSpecial())) {
 					return false;
 				}
 			}
-			List<ItemStack> is = oreVein.ores;
-			for (int ore = 0; ore < is.size(); ore++) {
-				if (te.getRandomNumber(10000) < oreVein.chanceOres[ore]) {
-					ItemStack drillHeadDrop = new ItemStack(is.get(ore).getItem(), byDrillHead(is.get(ore)), is.get(ore).getItemDamage());
+			List<VirtualOreComponent> is = oreVein.getOres();
+			for (VirtualOreComponent component : is) {
+				if (te.getRandomNumber(10000) < component.getChance() * 100) {
+					ItemStack oreStack = component.getOre().copy();
+					ItemStack drillHeadDrop = new ItemStack(oreStack.getItem(), byDrillHead(oreStack), oreStack.getItemDamage());
 					output.add(drillHeadDrop);
-					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, voltage, null, is.get(ore));
+					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, voltage, null, oreStack);
 					if (tRecipe != null) {
 						for (int i = 0; i < tRecipe.mOutputs.length; i++) {
 							ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
@@ -255,7 +248,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 		
 		if (cycleIncrease >= 1) {
 			sizeVeinPreStart -= cycleIncrease;
-			increaseLayer(getBaseMetaTileEntity());
+			increaseLayer(getBaseMetaTileEntity(), 1);
 		}
 		return check;
 	}
@@ -313,7 +306,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
 		if (te.isServerSide()) {
 			if (!aPlayer.isSneaking()) {
-				increaseLayer(te);
+				increaseLayer(te, 1);
 				layer++;
 				if (layer >= OresRegionGenerator.layers) {
 					layer = 0;

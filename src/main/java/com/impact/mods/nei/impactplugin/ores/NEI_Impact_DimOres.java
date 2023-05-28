@@ -17,6 +17,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import space.gtimpact.virtual_world.api.VirtualOreComponent;
+import space.gtimpact.virtual_world.api.VirtualOreVein;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -84,7 +86,7 @@ public class NEI_Impact_DimOres extends TemplateRecipeHandler {
 		drawText(164 - GuiDraw.fontRenderer.getStringWidth("Use Shift"), 0, "Use Shift", new Color(84, 81, 81).hashCode());
 		List<String> dims = new ArrayList<>();
 		for (int i = 0; i < oreBuilderNEI.veins.size(); i++) {
-			dims.add((i + 1) + ". " + oreBuilderNEI.veins.get(i).nameVein);
+			dims.add((i + 1) + ". " + oreBuilderNEI.veins.get(i).getName());
 		}
 		ttDisplayed = false;
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -205,11 +207,11 @@ public class NEI_Impact_DimOres extends TemplateRecipeHandler {
 			super();
 			this.ore = ore;
 			List<ItemStack> s = new ArrayList<>();
-			for (OreVein vein : ore.veins) {
-				for (ItemStack stack : vein.ores) {
+			for (VirtualOreVein vein : ore.veins) {
+				for (VirtualOreComponent stack : vein.getOres()) {
 					if (stack != null) {
-						if (!s.contains(stack)) {
-							s.add(stack);
+						if (!s.contains(stack.component1())) {
+							s.add(stack.component1());
 							break;
 						}
 					}

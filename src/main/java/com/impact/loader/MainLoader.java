@@ -14,6 +14,7 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
 import com.impact.mods.opencomputers.Driver_Register;
 import com.impact.mods.railcraft.carts.item.events.Module;
+import com.impact.mods.virtual_world.VirtualWorldIntegration;
 import com.impact.util.string.Lang;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -129,7 +130,7 @@ public class MainLoader {
 		new Multi_Register().run();
 		new Basic_Register().run();
 		new ModLoader().run();
-		OreGenerator.register();
+		VirtualWorldIntegration.INSTANCE.init();
 		INFO(Lang.impact.eng + " Lang Loaded");
 		for (Module module : getModules()) {
 			if (module.getIsActive()) {

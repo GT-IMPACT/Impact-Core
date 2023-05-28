@@ -18,6 +18,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import space.gtimpact.virtual_world.api.VirtualOreComponent;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -70,18 +71,18 @@ public class NEI_Impact_Ores extends TemplateRecipeHandler {
 		if (ore == null) return;
 		
 		int clr = Color.BLACK.hashCode();
-		String vName = ore.name;
+		String vName = ore.vein.getName();
 		
 		drawText(4, 0, "Show All", new Color(84, 81, 81).hashCode());
 		drawText(4, 12, vName + " Vein", clr);
 		drawText(4, 48, "Need Special Fluid:", clr);
-		String sizeVein = GT_Utility.formatNumbers(ore.size[0]) + " - " + GT_Utility.formatNumbers(ore.size[1]);
+		String sizeVein = GT_Utility.formatNumbers(ore.vein.getRangeSize().getFirst()) + " - " + GT_Utility.formatNumbers(ore.vein.getRangeSize().getLast());
 		drawText(4, 84, "Size: " + sizeVein + "k cycles", clr);
 		
 		drawText(164 - GuiDraw.fontRenderer.getStringWidth("Use Shift"), 0, "Use Shift", new Color(84, 81, 81).hashCode());
 		List<String> dims = new ArrayList<>();
-		for (int i = 0; i < ore.dim.size(); i++) {
-			dims.add((i + 1) + ". " + ore.dim.get(i));
+		for (int i = 0; i < ore.dims.size(); i++) {
+			dims.add((i + 1) + ". " + ore.dims.get(i));
 		}
 		ttDisplayed = false;
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -202,17 +203,16 @@ public class NEI_Impact_Ores extends TemplateRecipeHandler {
 			super();
 			this.ore = ore;
 			int x = 0;
-			for (int i = 0; i < ore.stacks.size(); i++) {
+			for (int i = 0; i < ore.vein.getOres().size(); i++) {
 				if (i % 8 == 0) x++;
-				if (ore.stacks.get(i) != null) {
-					this.mOutputs.add(new FixedPositionedStack(ore.stacks.get(i), 5 + i * 18, 5 + x * 18, ore.chance[i]));
-				}
+				VirtualOreComponent component = ore.vein.getOres().get(i);
+				this.mOutputs.add(new FixedPositionedStack(component.getOre(), 5 + i * 18, 5 + x * 18, component.getChance() * 100));
 			}
 			
 			this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(new FluidStack(ItemList.sDrillingFluid, 50), true), 5, 41 + 18));
 			
-			if (ore.specialFluid != null) {
-				this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(ore.specialFluid, true), 5 + 18, 41 + 18));
+			if (ore.vein.getSpecial() != null) {
+				this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(ore.vein.getSpecial().copy(), true), 5 + 18, 41 + 18));
 			}
 		}
 		

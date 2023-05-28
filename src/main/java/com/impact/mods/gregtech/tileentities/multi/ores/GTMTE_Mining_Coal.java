@@ -1,7 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
-import com.impact.common.oregeneration.OreGenerator;
-import com.impact.common.oregeneration.OreVein;
+
 import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.core.Config;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
@@ -19,10 +18,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import kotlin.Pair;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
@@ -32,6 +31,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.chunk.Chunk;
+import space.gtimpact.virtual_world.api.VirtualAPI;
+import space.gtimpact.virtual_world.api.VirtualOreVein;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
@@ -67,7 +68,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 	public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
 	public int cycleIncrease = 0;
 	public OreChunkGenerator oreChunkGenerator = null;
-	public OreVein oreVein = OreGenerator.empty;
+	public VirtualOreVein oreVein;
 	
 	public GTMTE_Mining_Coal(int aID, String aNameRegional) {
 		super(aID, "impact.multis.miner.coal", aNameRegional);
@@ -93,26 +94,20 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 		initOreProperty(te);
 	}
 	
-	public void increaseLayer(IGregTechTileEntity te) {
+	public void increaseLayer(IGregTechTileEntity te, int reduce) {
 		if (te.isServerSide()) {
-			oreChunkGenerator.sizeOreChunk--;
-			if (oreChunkGenerator.sizeOreChunk <= 0) {
-				oreChunkGenerator.sizeOreChunk = 0;
-			}
+			Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			Pair<VirtualOreVein, Integer> pair = VirtualAPI.extractFromChunk(ch, 0, reduce);
+			sizeVeinPreStart = pair.getSecond();
 		}
 	}
 	
 	public void initOreProperty(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
-			oreChunkGenerator = OreGenerator.getChunkFromIGT(te, TIER_MINER);
-			if (oreChunkGenerator != null) {
-				sizeVeinPreStart = oreChunkGenerator.sizeOreChunk;
-				if (sizeVeinPreStart > 0) {
-					oreVein = OreGenerator.getOreVein(te, TIER_MINER);
-				} else {
-					oreVein = OreGenerator.empty;
-				}
-			}
+			Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
+			Pair<VirtualOreVein, Integer> pair = VirtualAPI.extractFromChunk(ch, 0, 0);
+			oreVein = pair.getFirst();
+			sizeVeinPreStart = pair.getSecond();
 		}
 	}
 	
@@ -220,7 +215,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 							mInventory[OUTPUT_SLOT].stackSize = 64;
 						}
 					} else {
-						ItemStack stack = oreVein.ores.get(0);
+						ItemStack stack = oreVein.getOres().get(0).getOre();
 						mInventory[OUTPUT_SLOT] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
 					}
 				}
@@ -257,7 +252,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		if (oreChunkGenerator == null || oreChunkGenerator.sizeOreChunk <= 0) return false;
-		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == OreGenerator.empty) {
+		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == null) {
 			return false;
 		}
 		if (sizeVeinPreStart < 1) {
@@ -270,8 +265,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 		} else {
 			return false;
 		}
-		increaseLayer(getBaseMetaTileEntity());
-		--sizeVeinPreStart;
+		increaseLayer(getBaseMetaTileEntity(), TIER_MINER);
 		return true;
 	}
 	
