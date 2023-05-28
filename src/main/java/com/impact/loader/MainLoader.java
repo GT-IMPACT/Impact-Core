@@ -4,7 +4,6 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
-import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.te.*;
 import com.impact.impact;
 import com.impact.mods.gregtech.Basic_Register;
@@ -21,6 +20,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -32,7 +32,6 @@ import static com.impact.core.impactLog.INFO;
 import static com.impact.impact.getModules;
 
 public class MainLoader {
-	
 	private MainLoader() {
 	}
 	
@@ -61,8 +60,6 @@ public class MainLoader {
 	}
 	
 	public static void preInit(FMLPreInitializationEvent event) {
-
-		
 		Covers.getInstance().registerItem();
 		INFO("[preInit] Covers - Loaded");
 		

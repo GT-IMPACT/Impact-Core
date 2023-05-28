@@ -5,6 +5,8 @@ import com.impact.mods.nei.impactplugin.ores.OreBuilderNEI
 import gregtech.api.enums.Materials
 import gregtech.api.enums.OrePrefixes
 import gregtech.api.util.GT_OreDictUnificator
+import space.gtimpact.virtual_world.api.VirtualFluidTypeComponent
+import space.gtimpact.virtual_world.api.VirtualFluidVein
 import space.gtimpact.virtual_world.api.VirtualOreComponent
 import space.gtimpact.virtual_world.api.VirtualOreVein
 import java.awt.Color
@@ -2193,7 +2195,46 @@ object VirtualWorldIntegration {
     }
 
     private fun registerFluidVeins() {
-
+        VirtualFluidVein(
+            id = 1,
+            depth = 1,
+            name = "Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = Materials.Oil.color(),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.Oil.getFluid(0).getFluid(), 50)
+        )
+        VirtualFluidVein(
+            id = 2,
+            depth = 1,
+            name = "Heavy Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = Materials.OilHeavy.color(),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.OilHeavy.getFluid(0).getFluid(), 50)
+        )
+        VirtualFluidVein(
+            id = 3,
+            depth = 1,
+            name = "Medium Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = Materials.OilMedium.color(),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.OilMedium.getFluid(0).getFluid(), 50)
+        )
+        VirtualFluidVein(
+            id = 4,
+            depth = 1,
+            name = "Light Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = Materials.OilLight.color(),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.OilLight.getFluid(0).getFluid(), 50)
+        )
     }
 
     private fun Materials.toOreComponent(chance: Int): VirtualOreComponent {

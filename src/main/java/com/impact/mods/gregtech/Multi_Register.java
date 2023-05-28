@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech;
 
+import com.impact.mods.gregtech.tileentities.multi.fluids.GTMTEOilDrilling;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOreSamplingMachine;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
@@ -123,6 +124,7 @@ public class Multi_Register {
 		AdvCrackUnit.set(new GTMTE_AdvancedCrackingUnit(ID++, "Advanced Cracking Unit").get());
 		OreSamplingMachine.set(new GTMTEOreSamplingMachine(ID++, "Ore Sampling Machine").get());
 		GTMTEOreSamplingMachine.Companion.addRecipe();
+		OilDrilling.set(new GTMTEOilDrilling(ID++, "Oil Drilling").get());
 		
 		INFO("[IMPACT-CORE] FINISH ADDED MULTIS | LAST ID: " + ID);
 		
