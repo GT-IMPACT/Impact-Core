@@ -2211,7 +2211,7 @@ object VirtualWorldIntegration {
             name = "Heavy Oil",
             weight = 16.0,
             rangeSize = 1..10,
-            color = Materials.OilHeavy.color(),
+            color = color(255, 0, 255),
             dimensions = listOf(Overworld).map { it.id },
             fluid = VirtualFluidTypeComponent(Materials.OilHeavy.getFluid(0).getFluid(), 50)
         )
@@ -2221,7 +2221,7 @@ object VirtualWorldIntegration {
             name = "Medium Oil",
             weight = 16.0,
             rangeSize = 1..10,
-            color = Materials.OilMedium.color(),
+            color = color(0, 255, 0),
             dimensions = listOf(Overworld).map { it.id },
             fluid = VirtualFluidTypeComponent(Materials.OilMedium.getFluid(0).getFluid(), 50)
         )
@@ -2231,7 +2231,7 @@ object VirtualWorldIntegration {
             name = "Light Oil",
             weight = 16.0,
             rangeSize = 1..10,
-            color = Materials.OilLight.color(),
+            color = color(255, 255, 0),
             dimensions = listOf(Overworld).map { it.id },
             fluid = VirtualFluidTypeComponent(Materials.OilLight.getFluid(0).getFluid(), 50)
         )
@@ -2242,6 +2242,10 @@ object VirtualWorldIntegration {
             chance = chance,
             ore = GT_OreDictUnificator.get(OrePrefixes.crushed, this, 1)
         )
+    }
+
+    private fun color(r: Int, g: Int, b: Int): Int {
+        return Color(r, g, b).hashCode()
     }
 
     private fun Materials.color(): Int {
