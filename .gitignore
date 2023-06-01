@@ -19,11 +19,13 @@ eclipse/
 out/
 build/
 idea/
+.idea/
 .gradle/
 *.psd
 *.jar1
 *.psd
 *.patch
 src/main/generated/
-
 src/main/resources/mixins.*.json
+impact/
+.gitattributes

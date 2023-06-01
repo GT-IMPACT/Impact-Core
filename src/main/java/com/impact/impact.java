@@ -23,6 +23,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import space.impact.BuildConfig;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
 
 @Mod(
-		modid = Tags.MODID,
-		name = Tags.MODNAME,
-		version = Tags.VERSION,
+		modid = BuildConfig.MODID,
+		name = BuildConfig.MODNAME,
+		version = BuildConfig.VERSION,
 		acceptedMinecraftVersions = "[1.7.10]",
 		dependencies = "required-after:Forge@[10.13.2.1291,);after:UndergroundBiomes")
 
@@ -45,7 +46,7 @@ public class impact {
 	public static CommonProxy proxy;
 	@Mod.Instance(MODID)
 	public static impact instance;
-	public static String ModPackVersion = "1.0.2.2";
+	public static String ModPackVersion = BuildConfig.VERSION;
 	public static Config mConfig;
 	public static IRecipeAdder I_RA;
 	
