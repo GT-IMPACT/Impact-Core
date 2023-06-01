@@ -1,4 +1,4 @@
-[![Build Status](https://jenkins.accident.space/buildStatus/icon?job=Impact-core)](https://jenkins.accident.space/job/Impact-core/)
+![JENKINS](https://jenkins.accident.space/buildStatus/icon?job=Impact-core)
 
 # CoreMod
 Core mod for ModPack
