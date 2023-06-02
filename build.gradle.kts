@@ -65,7 +65,7 @@ var identifiedVersion = runCatching {
 version = identifiedVersion
 val modVersion = identifiedVersion
 
-archivesName.set("$modId-$minecraftVersion-$modVersion")
+archivesName.set(modId)
 
 buildConfig {
     packageName("space.impact")
