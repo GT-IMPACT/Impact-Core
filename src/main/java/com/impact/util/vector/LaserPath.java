@@ -2,7 +2,9 @@ package com.impact.util.vector;
 
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Reflector;
-import com.impact.network.special.ToClient_LaserPush;
+import com.impact.network.GTNetworkHandler;
+import com.impact.network.NetworkPackets;
+import com.impact.network.special.LaserPushPacket;
 import com.impact.util.PositionObject;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
@@ -60,9 +62,16 @@ public class LaserPath {
 						reflector.setEUVar(reflector.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						new ToClient_LaserPush(te.getWorld().provider.dimensionId, new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash, 0).sendToClients();
-						return reflector.pushLaser();
 						
+						LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
+								te.getWorld().provider.dimensionId,
+								new PositionObject(te).toVec3i(),
+								new PositionObject(ReflectorOrLaserIn).toVec3i(),
+								colorHash,
+								0
+						);
+						GTNetworkHandler.sendToAllAround(te, packet, 256);
+						return reflector.pushLaser();
 					}
 				} else if (metaReflectorOrLaserIn instanceof GTMTE_LaserEnergy_In) {
 					GTMTE_LaserEnergy_In laserEnergyIn = (GTMTE_LaserEnergy_In) metaReflectorOrLaserIn;
@@ -80,7 +89,15 @@ public class LaserPath {
 						laserEnergyIn.setEUVar(laserEnergyIn.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						new ToClient_LaserPush(te.getWorld().provider.dimensionId, new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash, 0).sendToClients();
+						
+						LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
+								te.getWorld().provider.dimensionId,
+								new PositionObject(te).toVec3i(),
+								new PositionObject(ReflectorOrLaserIn).toVec3i(),
+								colorHash,
+								0
+						);
+						GTNetworkHandler.sendToAllAround(te, packet, 256);
 						return true;
 					}
 					return false;

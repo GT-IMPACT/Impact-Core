@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.impact.api.recipe.MultiBlockRecipeBuilder;
+import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

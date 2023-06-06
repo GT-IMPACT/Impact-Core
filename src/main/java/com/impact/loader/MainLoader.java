@@ -4,7 +4,6 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
-import com.impact.common.oregeneration.OreGenerator;
 import com.impact.common.te.*;
 import com.impact.impact;
 import com.impact.mods.gregtech.Basic_Register;
@@ -12,9 +11,9 @@ import com.impact.mods.gregtech.GT_ItemRegister;
 import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
-import com.impact.mods.opencomputers.Driver_Register;
-import com.impact.mods.railcraft.carts.item.events.Module;
-import com.impact.mods.virtual_world.VirtualWorldIntegration;
+import com.impact.addon.oc.Driver_Register;
+import com.impact.addon.rc.carts.item.events.Module;
+import com.impact.addon.vw.VirtualWorldIntegration;
 import com.impact.util.string.Lang;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -130,7 +129,7 @@ public class MainLoader {
 		new Multi_Register().run();
 		new Basic_Register().run();
 		new ModLoader().run();
-		VirtualWorldIntegration.INSTANCE.init();
+		VirtualWorldIntegration.init();
 		INFO(Lang.impact.eng + " Lang Loaded");
 		for (Module module : getModules()) {
 			if (module.getIsActive()) {

@@ -5,7 +5,9 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.matrixsystem.GT_Container_ParametricDiffuser;
 import com.impact.mods.gregtech.gui.matrixsystem.GUI_ParametricDiffuser;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.network.special.ToClient_LaserPush;
+import com.impact.network.GTNetworkHandler;
+import com.impact.network.NetworkPackets;
+import com.impact.network.special.LaserPushPacket;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
@@ -158,9 +160,25 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
 		if (iAm.isActive()) {
 			Vector3ic offset = rotateOffsetVector(forgeDirection, 1, 0, -1);
 			Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, rangeToStabilizer, 0, -1);
-			
-			new ToClient_LaserPush(iAm.getWorld().provider.dimensionId, new Vector3i(offset.x() + x, offset.y() + y, offset.z() + z),
-					new Vector3i(offsetToStabilizer.x() + x, offsetToStabilizer.y() + y, offsetToStabilizer.z() + z), 0x770ED0, 1, 20, 0, 1.3f).sendToClients();
+			LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
+					iAm.getWorld().provider.dimensionId,
+					new Vector3i(
+							offset.x() + x,
+							offset.y() + y,
+							offset.z() + z
+					),
+					new Vector3i(
+							offsetToStabilizer.x() + x,
+							offsetToStabilizer.y() + y,
+							offsetToStabilizer.z() + z
+					),
+					0x770ED0,
+					1,
+					20,
+					0,
+					1.3f
+			);
+			GTNetworkHandler.sendToAllAround(iAm, packet, 50);
 		}
 	}
 	

@@ -4,8 +4,7 @@ import com.impact.client.gui.ImpactGuiMainMenu;
 import com.impact.client.key.KeyBindings;
 import com.impact.common.block.itemblock.IB_IGlass;
 import com.impact.core.Config;
-import com.impact.network.special.ToServer_MetaBlockGlass;
-import com.impact.network.special.ToServer_PlacedItems;
+import com.impact.network.NetworkPackets;
 import com.impact.util.Utilits;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
@@ -15,14 +14,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import org.lwjgl.input.Keyboard;
+import space.impact.packet_network.network.NetworkHandler;
 
 public class ClientEvent {
 	
@@ -43,7 +41,10 @@ public class ClientEvent {
 			final ItemStack itemStack = entityPlayer.getHeldItem();
 			if (itemStack != null && itemStack.getItem() instanceof IB_IGlass) {
 				if (event.dwheel != 0) {
-					new ToServer_MetaBlockGlass(event.dwheel > 0).sendToServer();
+					NetworkHandler.sendToServer(
+							entityPlayer,
+							NetworkPackets.MetaBlockGlassPacket.transaction(event.dwheel > 0)
+					);
 				}
 				event.setCanceled(true);
 			}
@@ -59,7 +60,9 @@ public class ClientEvent {
 				WorldClient world = Minecraft.getMinecraft().theWorld;
 				MovingObjectPosition mop = Utilits.raytraceFromEntity(world, player, 4.5D);
 				if (mop != null) {
-					new ToServer_PlacedItems(mop.sideHit, mop.blockX, mop.blockY, mop.blockZ).sendToServer();
+					NetworkHandler.sendToServer(
+							player,
+							NetworkPackets.PlacedItemsPacket.transaction(mop.sideHit, mop.blockX, mop.blockY, mop.blockZ));
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package com.impact.core;
 
+import com.impact.addon.nei.impactplugin.RecipeProcessorRegister;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
 import com.impact.client.render.models.Model_DryingRack;
@@ -10,7 +11,6 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.blocks.Block_TheMill;
 import com.impact.common.te.*;
 import com.impact.events.ClientEvent;
-import com.impact.mods.nei.impactplugin.RecipeProcessorLoader;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -217,7 +217,7 @@ public class ClientProxy extends CommonProxy {
 	
 	public void postInit() {
 		ClientCommandHandler.instance.registerCommand(new Command_Run());
-		RecipeProcessorLoader.init();
+		RecipeProcessorRegister.register();
 	}
 	
 	public void init() {

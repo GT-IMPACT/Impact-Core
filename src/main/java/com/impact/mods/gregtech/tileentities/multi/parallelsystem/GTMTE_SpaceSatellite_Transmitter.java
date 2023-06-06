@@ -1,14 +1,14 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import com.google.common.collect.Sets;
-import com.impact.api.position.IPosition;
-import com.impact.api.satellite.IConnection;
-import com.impact.api.satellite.ISatellite;
-import com.impact.api.satellite.ISatelliteNetwork;
-import com.impact.api.satellite.SatelliteNetworkManager;
-import com.impact.api.satellite.gui.SatelliteNetworkContainer;
-import com.impact.api.satellite.gui.SatelliteNetworkGui;
-import com.impact.api.security.ISecurity;
+import com.impact.addon.gt.api.position.IPosition;
+import com.impact.addon.gt.api.satellite.IConnection;
+import com.impact.addon.gt.api.satellite.ISatellite;
+import com.impact.addon.gt.api.satellite.ISatelliteNetwork;
+import com.impact.addon.gt.api.satellite.SatelliteNetworkManager;
+import com.impact.addon.gt.api.satellite.gui.SatelliteNetworkContainer;
+import com.impact.addon.gt.api.satellite.gui.SatelliteNetworkGui;
+import com.impact.addon.gt.api.security.ISecurity;
 import com.impact.client.gui.GUIHandler;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;

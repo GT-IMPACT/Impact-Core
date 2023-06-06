@@ -12,8 +12,9 @@ import com.impact.loader.MainLoader;
 import com.impact.mods.gregtech.enums.IRecipeAdder;
 import com.impact.mods.gregtech.enums.RecipeAdder;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.railcraft.carts.item.ChestCartModule;
-import com.impact.mods.railcraft.carts.item.events.Module;
+import com.impact.addon.rc.carts.item.ChestCartModule;
+import com.impact.addon.rc.carts.item.events.Module;
+import com.impact.network.RegisterPackets;
 import com.impact.recipe.maps.RecipesJson;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -23,8 +24,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import space.impact.BuildConfig;
-
+import space.impact.impact.BuildConfigKt;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -33,11 +33,12 @@ import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
 
 @Mod(
-		modid = BuildConfig.MODID,
-		name = BuildConfig.MODNAME,
-		version = BuildConfig.VERSION,
+		modid = BuildConfigKt.MODID,
+		name = BuildConfigKt.MODNAME,
+		version = BuildConfigKt.VERSION,
 		acceptedMinecraftVersions = "[1.7.10]",
-		dependencies = "required-after:Forge@[10.13.2.1291,);after:UndergroundBiomes")
+		dependencies = "required-after:Forge@[10.13.2.1291,);after:UndergroundBiomes"
+)
 
 public class impact {
 	
@@ -46,11 +47,12 @@ public class impact {
 	public static CommonProxy proxy;
 	@Mod.Instance(MODID)
 	public static impact instance;
-	public static String ModPackVersion = BuildConfig.VERSION;
+	public static String ModPackVersion = BuildConfigKt.VERSION;
 	public static Config mConfig;
 	public static IRecipeAdder I_RA;
 	
 	public impact() {
+		RegisterPackets.register();
 		impact.I_RA = new RecipeAdder();
 		Texture.Icons.VOID.name();
 	}

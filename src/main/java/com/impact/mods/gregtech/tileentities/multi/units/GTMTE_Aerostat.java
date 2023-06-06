@@ -1,11 +1,11 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import com.google.common.io.ByteArrayDataInput;
 import com.impact.core.Impact_API;
 import com.impact.impact;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.network.IPacketString;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -25,8 +25,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
+import space.impact.packet_network.network.packets.IStreamPacketReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ import java.util.List;
 import static com.impact.mods.gregtech.blocks.Build_Casing_Helper.AEROSTATE_PLATFORM;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
-public class GTMTE_Aerostat extends GTMTE_Impact_BlockBase<GTMTE_Aerostat> implements IPacketString {
+public class GTMTE_Aerostat extends GTMTE_Impact_BlockBase<GTMTE_Aerostat> implements IStreamPacketReceiver {
 	
 	public final static int MAX_BUFFER = 100_000;
 	static Block CASING = Casing_Helper.sCaseCore3;
@@ -324,8 +326,8 @@ public class GTMTE_Aerostat extends GTMTE_Impact_BlockBase<GTMTE_Aerostat> imple
 	}
 	
 	@Override
-	public void update(String... str) {
-		setLocationName(str[0]);
+	public void receive(@NotNull ByteArrayDataInput data) {
+		setLocationName(data.readUTF());
 	}
 	
 	@Override
