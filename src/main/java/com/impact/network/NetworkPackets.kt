@@ -53,7 +53,6 @@ object NetworkPackets {
                         } ?: world.setBlockToAir(xx, yy, zz)
                     }
                 }
-                println("PACKET OK")
             }
         }
     }
