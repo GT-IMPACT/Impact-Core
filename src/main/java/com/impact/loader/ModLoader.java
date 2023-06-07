@@ -1,7 +1,7 @@
 package com.impact.loader;
 
-import com.impact.mods.gregtech.tectech.Holo_Impact;
-import com.impact.mods.gregtech.tectech.Holo_Vanila_GregTech;
+import com.impact.mods.gregtech.holo.Holo_Impact;
+import com.impact.mods.gregtech.holo.Holo_Vanila_GregTech;
 import cpw.mods.fml.common.Loader;
 
 public class ModLoader implements Runnable {

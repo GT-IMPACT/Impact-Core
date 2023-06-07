@@ -12,8 +12,6 @@ import com.impact.loader.MainLoader;
 import com.impact.mods.gregtech.enums.IRecipeAdder;
 import com.impact.mods.gregtech.enums.RecipeAdder;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.addon.rc.carts.item.ChestCartModule;
-import com.impact.addon.rc.carts.item.events.Module;
 import com.impact.network.RegisterPackets;
 import com.impact.recipe.maps.RecipesJson;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -26,8 +24,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import space.impact.impact.BuildConfigKt;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
@@ -41,8 +39,6 @@ import static com.impact.core.impactLog.INFO;
 )
 
 public class impact {
-	
-	private static final ArrayList<Module> MODULES_ENABLED = new ArrayList<>();
 	@SidedProxy(clientSide = "com.impact.core.ClientProxy", serverSide = "com.impact.core.CommonProxy")
 	public static CommonProxy proxy;
 	@Mod.Instance(MODID)
@@ -50,6 +46,7 @@ public class impact {
 	public static String ModPackVersion = BuildConfigKt.VERSION;
 	public static Config mConfig;
 	public static IRecipeAdder I_RA;
+	public static Random RANDOM = new Random();
 	
 	public impact() {
 		RegisterPackets.register();
@@ -65,13 +62,6 @@ public class impact {
 		IChatComponent c = new ChatComponentText(text);
 		c.getChatStyle().setColor(EnumChatFormatting.DARK_PURPLE);
 		impact.getServer().getConfigurationManager().sendChatMsgImpl(c, true);
-	}
-	
-	public static ArrayList<Module> getModules() {
-		if (MODULES_ENABLED.isEmpty()) {
-			MODULES_ENABLED.add(new ChestCartModule());
-		}
-		return MODULES_ENABLED;
 	}
 	
 	@Mod.EventHandler

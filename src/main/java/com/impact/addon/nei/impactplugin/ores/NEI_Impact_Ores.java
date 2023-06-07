@@ -122,7 +122,7 @@ public class NEI_Impact_Ores extends TemplateRecipeHandler {
 	}
 	
 	@Override
-	public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
+	public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
 		TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
 		if ((tObject instanceof CachedDefaultRecipe)) {
 			CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;

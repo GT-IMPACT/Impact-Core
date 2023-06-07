@@ -84,7 +84,7 @@ public class NEI_Impact_RailAssembler extends NEI_Impact_Default {
     }
   }
 
-  public java.util.List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, java.util.List<String> currenttip, int aRecipeIndex) {
+  public java.util.List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
     TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
     if ((tObject instanceof CachedDefaultRecipe)) {
       CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;

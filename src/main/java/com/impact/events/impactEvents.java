@@ -1,7 +1,5 @@
 package com.impact.events;
 
-import com.impact.addon.bq.BqLoadQuests;
-import com.impact.core.Config;
 import com.impact.util.string.Language;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -47,7 +45,5 @@ public class impactEvents {
 		event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + Language.translate("welcome.1", "Please bring comments to") + " " + EnumChatFormatting.AQUA + "https://discord.gg/bMf2qvd"));
 		event.player.addChatMessage(new ChatComponentText(" "));
 		event.player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "=================================================="));
-		
-		BqLoadQuests.load(event.player, Config.enabledAutoUpdateQuests);
 	}
 }

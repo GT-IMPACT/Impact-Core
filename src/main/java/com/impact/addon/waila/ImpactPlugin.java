@@ -1,9 +1,7 @@
 package com.impact.addon.waila;
 
 import appeng.tile.AEBaseTile;
-import appeng.tile.crafting.TileCraftingTile;
 import com.enderio.core.common.util.BlockCoord;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.impact.addon.gt.api.multis.ISeparateBus;
 import com.impact.addon.gt.api.multis.ISwitchRecipeMap;
 import com.impact.common.te.TE_DryingRack;
@@ -96,7 +94,6 @@ public class ImpactPlugin extends PluginBase {
         final GT_MetaTileEntity_MultiParallelBlockBase<?> MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase<?>) tMeta) : null;
         final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
         final GTMTE_LapPowerStation LapBuffer = tMeta instanceof GTMTE_LapPowerStation ? ((GTMTE_LapPowerStation) tMeta) : null;
-        final GT_MetaTileEntity_EM_research Research = tMeta instanceof GT_MetaTileEntity_EM_research ? ((GT_MetaTileEntity_EM_research) tMeta) : null;
         final GTMTE_TowerCommunication towerCommunication = tMeta instanceof GTMTE_TowerCommunication ? ((GTMTE_TowerCommunication) tMeta) : null;
         final GTMTE_NuclearReactorBase<?> reactor = tMeta instanceof GTMTE_NuclearReactorBase ? ((GTMTE_NuclearReactorBase<?>) tMeta) : null;
         final GTMTE_Reactor_Rod_Hatch reactorHatch = tMeta instanceof GTMTE_Reactor_Rod_Hatch ? ((GTMTE_Reactor_Rod_Hatch) tMeta) : null;
@@ -242,12 +239,6 @@ public class ImpactPlugin extends PluginBase {
                         .format(tag.getLong("Input")) + RESET + " " + trans("waila.eut"));
                 currenttip.add(trans("waila.lsc.out") + ": " + RED + NumberFormat.getNumberInstance()
                         .format(tag.getLong("Output")) + RESET + " " + trans("waila.eut"));
-            }
-
-            if (Research != null) {
-                currenttip.add(trans("waila.reseatch.computation") + ": " + GREEN + NumberFormat.getNumberInstance()
-                        .format(tag.getLong("computationRemaining")) + " / " + YELLOW + NumberFormat
-                        .getNumberInstance().format(tag.getInteger("computationRequired")));
             }
 
             if (multiBlockBaseImpact != null) {
@@ -403,17 +394,6 @@ public class ImpactPlugin extends PluginBase {
             }
         }
         //endregion
-
-        final AEBaseTile aeBaseTE = tile instanceof AEBaseTile ? (AEBaseTile) tile : null;
-        final TileCraftingTile cpu = aeBaseTE instanceof TileCraftingTile ? (TileCraftingTile) aeBaseTE : null;
-
-        if (aeBaseTE != null) {
-            if (cpu != null) {
-                if (tag.getBoolean("isBigAccelerator")) {
-                    currenttip.add("Acceleration: " + tag.getInteger("bigAcceleratorAmount") + " CPU");
-                }
-            }
-        }
         
         final TE_DryingRack dryingRack = tile instanceof TE_DryingRack ? (TE_DryingRack) tile : null;
         if (dryingRack != null) {
@@ -586,15 +566,6 @@ public class ImpactPlugin extends PluginBase {
                 tag.setLong("Output", Output);
             }
 
-            if (tMeta instanceof GT_MetaTileEntity_EM_research) {
-                GT_MetaTileEntity_EM_research mte = (GT_MetaTileEntity_EM_research) tMeta;
-                final long computationRemaining = mte.computationRemaining / 20L;
-                final long computationRequired = mte.computationRequired / 20L;
-
-                tag.setLong("computationRemaining", computationRemaining);
-                tag.setLong("computationRequired", computationRequired);
-            }
-
             if (multiBlockBaseImpact != null) {
                 final int problems =
                         multiBlockBaseImpact.getIdealStatus() - multiBlockBaseImpact.getRepairStatus();
@@ -669,18 +640,6 @@ public class ImpactPlugin extends PluginBase {
                     if(tBaseMetaTile.getCoverBehaviorAtSide(side) instanceof GT_Cover_Fluidfilter) {
                         tag.setString("filterInfo" + side, tBaseMetaTile.getCoverBehaviorAtSide(side).getDescription(side, tBaseMetaTile.getCoverIDAtSide(side), tBaseMetaTile.getCoverDataAtSide(side), tBaseMetaTile));
                     }
-                }
-            }
-        }
-
-        final AEBaseTile aeBaseTE = tile instanceof AEBaseTile ? (AEBaseTile) tile : null;
-        final TileCraftingTile cpu = aeBaseTE instanceof TileCraftingTile ? (TileCraftingTile) aeBaseTE : null;
-
-        if (aeBaseTE != null) {
-            if (cpu != null) {
-                if (cpu.isBigAccelerator()) {
-                    tag.setBoolean("isBigAccelerator", cpu.isBigAccelerator());
-                    tag.setInteger("bigAcceleratorAmount", cpu.getBigAccelerator());
                 }
             }
         }

@@ -1,7 +1,6 @@
 package com.impact.client.render.tesr;
 
-import com.github.technus.tectech.thing.block.QuantumStuffBlock;
-import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.blocks.Block_QuantumStuff_Red;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -38,7 +37,7 @@ public class TESR_SETether extends TileEntitySpecialRenderer {
 		byte b0 = 1;
 		double d3 = (double) f2 * 0.025D * (1.0D - (double) (b0 & 1) * 2.5D);
 		tessellator.startDrawingQuads();
-		if (te.getWorldObj().getBlock(posX, posY + 2, posZ) == Block_QuantumStuff.INSTANCE) {
+		if (te.getWorldObj().getBlock(posX, posY + 2, posZ) == Block_QuantumStuff_Red.INSTANCE) {
 			tessellator.setColorRGBA(121, 0, 1, 32);
 		} else {
 			tessellator.setColorRGBA(255, 255, 255, 32);
@@ -55,8 +54,7 @@ public class TESR_SETether extends TileEntitySpecialRenderer {
 		double d19 = 0.5D + Math.cos(d3 + 5.497787143782138D) * d5;
 		double d21 = 0.5D + Math.sin(d3 + 5.497787143782138D) * d5;
 		double d23;
-		if (te.getWorldObj().getBlock(posX, posY + 2, posZ) == Block_QuantumStuff.INSTANCE
-				|| te.getWorldObj().getBlock(posX, posY + 2, posZ) == QuantumStuffBlock.INSTANCE) {
+		if (te.getWorldObj().getBlock(posX, posY + 2, posZ) == Block_QuantumStuff_Red.INSTANCE) {
 			d23 = (-11.5F * 1);
 		} else {
 			d23 = 0;

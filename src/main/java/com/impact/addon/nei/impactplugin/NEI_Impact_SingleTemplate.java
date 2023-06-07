@@ -91,7 +91,7 @@ public class NEI_Impact_SingleTemplate extends TemplateRecipeHandler {
 	}
 	
 	@Override
-	public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
+	public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
 		currenttip.addAll(builder.getTooltip());
 		return currenttip;
 	}

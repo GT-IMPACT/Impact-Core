@@ -1,7 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
@@ -53,9 +51,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 	private static final int CASING_META = 8;
 	private static final ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16 + CASING_META];
 	private static final int CASING_TEXTURE_ID = CASING_META + 16 + 128 * 3;
-	
-	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
-	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
 	
 	private final Set<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
 	private final Set<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
@@ -178,8 +173,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 		// Clear TT hatches
 		mEnergyHatchesMulti.clear();
 		mDynamoHatchesMulti.clear();
-		mEnergyTunnelsTT.clear();
-		mDynamoTunnelsTT.clear();
 		mLaserIn.clear();
 		mLaserOut.clear();
 		
@@ -310,10 +303,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 				// Add GT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return super.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) mte);
-			} else if (mte instanceof GT_MetaTileEntity_Hatch_EnergyTunnel) {
-				// Add TT Laser hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mEnergyTunnelsTT.add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
 			} else if (mte instanceof GTMTE_LaserEnergy_In) {
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mLaserIn.add((GTMTE_LaserEnergy_In) mte);
@@ -337,10 +326,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 				// Add GT hatches
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return super.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) mte);
-			} else if (mte instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
-				// Add TT Laser hatches
-				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
-				return mDynamoTunnelsTT.add((GT_MetaTileEntity_Hatch_DynamoTunnel) mte);
 			} else if (mte instanceof GTMTE_LaserEnergy_Out) {
 				((GT_MetaTileEntity_Hatch) mte).updateTexture(aBaseCasingIndex);
 				return mLaserOut.add((GTMTE_LaserEnergy_Out) mte);
@@ -427,32 +412,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 				continue;
 			}
 			final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
-			if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
-				eDynamo.setEUVar(eDynamo.getEUVar() + power);
-				stored -= power;
-				outputLastTick += power;
-			}
-		}
-		// Draw energy from TT Laser hatches
-		for (GT_MetaTileEntity_Hatch_EnergyTunnel eHatch : mEnergyTunnelsTT) {
-			if (eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
-				continue;
-			}
-			final long ttLaserWattage = eHatch.maxEUInput() * eHatch.Amperes - (eHatch.Amperes / 20);
-			final long power = getPowerToDraw(ttLaserWattage);
-			if (eHatch.getEUVar() >= power) {
-				eHatch.setEUVar(eHatch.getEUVar() - power);
-				stored += power;
-				intputLastTick += power;
-			}
-		}
-		// Output energy to TT Laser hatches
-		for (GT_MetaTileEntity_Hatch_DynamoTunnel eDynamo : mDynamoTunnelsTT) {
-			if (eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
-				continue;
-			}
-			final long ttLaserWattage = eDynamo.maxEUOutput() * eDynamo.Amperes - (eDynamo.Amperes / 20);
-			final long power = getPowerToPush(ttLaserWattage);
 			if (power <= eDynamo.maxEUStore() - eDynamo.getEUVar()) {
 				eDynamo.setEUVar(eDynamo.getEUVar() + power);
 				stored -= power;

@@ -49,12 +49,7 @@ configure<PublishingExtension> {
         register("mavenJava", MavenPublication::class) {
             from(components["java"])
             pom.withXml {
-                val pomNode = asNode()
-
-                val dependencyNodes: NodeList = pomNode.get("dependencies") as NodeList
-                dependencyNodes.forEach {
-                    (it as Node).parent().remove(it)
-                }
+                removeRuntimeDependencies(asNode())
             }
             val devJar by tasks.registering(Jar::class) {
                 from(sourceSets["main"].output)
@@ -77,3 +72,18 @@ configure<PublishingExtension> {
     }
 }
 
+//hack https://youtrack.jetbrains.com/issue/KT-28355
+fun removeRuntimeDependencies(pomNode: Node) {
+    val dependencyNodes: NodeList = pomNode.get("dependencies") as NodeList
+    val dependencies = dependencyNodes.lastOrNull() as? Node
+    val removeCandidate = arrayListOf<Node>()
+    dependencies?.children()?.forEach { dependency ->
+        (dependency as? Node)?.children()
+            ?.mapNotNull { it as? Node }
+            ?.filter { (it.value() as? NodeList)?.lastOrNull() == "runtime" || it.value() == "org.jetbrains.kotlin" }
+            ?.forEach { removeCandidate += it.parent() }
+    }
+    removeCandidate.forEach {
+        it.parent().remove(it)
+    }
+}

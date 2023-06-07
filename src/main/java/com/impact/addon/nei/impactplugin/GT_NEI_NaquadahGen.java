@@ -168,8 +168,8 @@ public class GT_NEI_NaquadahGen extends TemplateRecipeHandler {
     return this.mRecipeMap.mNEIGUIPath;
   }
 
-  public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip,
-      int aRecipeIndex) {
+  public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip,
+                                        int aRecipeIndex) {
     return currenttip;
   }
 

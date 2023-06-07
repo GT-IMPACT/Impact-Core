@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nq;
 
 import com.impact.common.block.blocks.Block_NqTether;
-import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.blocks.Block_QuantumStuff_Red;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -16,7 +16,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -163,18 +162,10 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
 		IGregTechTileEntity base = getBaseMetaTileEntity();
 		if (base != null && base.getWorld() != null) {
 			Vector3ic vec = Structure.goBuild(base, 0, 13, -5);
-			Block block = Structure.getBlock(base, vec);
 			if (shouldExist) {
-				if (block != null) {
-					Structure.setBlock(base, vec, Block_QuantumStuff.INSTANCE, 0);
-				}
+				Structure.setBlock(base, vec, Block_QuantumStuff_Red.INSTANCE, 0);
 			} else {
-				try {
-					Block qStaff = Block.getBlockFromItem(GT_ModHandler.getModItem("tectech", "tile.quantumStuff", 1).getItem());
-					Structure.setBlock(base, vec, qStaff, 0);
-				} catch (Exception e) {
-					Structure.setBlock(base, vec, Block_QuantumStuff.INSTANCE, 0);
-				}
+				Structure.setAir(base, vec);
 			}
 		}
 	}

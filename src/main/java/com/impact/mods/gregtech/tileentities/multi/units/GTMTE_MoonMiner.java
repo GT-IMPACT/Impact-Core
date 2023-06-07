@@ -12,7 +12,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,7 +24,6 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 import java.util.Random;
 
 import static com.impact.loader.ItemRegistery.CollisionBlock;
-import static com.impact.util.Utilits.Blockstack;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
 public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
@@ -77,7 +75,7 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		Random rand = new Random();//3 4 5 (0-2)
 		if (aTick % 20 == 0 && getBaseMetaTileEntity().isActive()) {
-			addOutput(Blockstack(GCBlocks.blockMoon, (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())) - 1), rand.nextInt(3) + 3));
+//			addOutput(Blockstack(GCBlocks.blockMoon, (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())) - 1), rand.nextInt(3) + 3));
 		}
 	}
 	

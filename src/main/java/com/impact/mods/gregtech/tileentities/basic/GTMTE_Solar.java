@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import com.impact.addon.gc.DimensionsIDs;
 import cpw.mods.fml.common.Loader;
-import galaxyspace.core.configs.GSConfigDimensions;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -11,7 +11,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -76,8 +75,8 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
 		boolean rainWeather = this.wetBiome && (w.isRaining() || w.isThundering());
 		
 		if (Loader.isModLoaded("GalacticraftCore")) {
-			int Asteroids = ConfigManagerAsteroids.dimensionIDAsteroids;
-			int KuiperBelt = GSConfigDimensions.dimensionIDKuiperBelt;
+			int Asteroids = DimensionsIDs.ASTEROIDS;
+			int KuiperBelt = DimensionsIDs.KUIPER_BELT;
 			if (w.provider.dimensionId == Asteroids || w.provider.dimensionId == KuiperBelt) {
 				this.sunIsUp      = w.isDaytime();
 				this.skyIsVisible = w.canBlockSeeTheSky(te.getXCoord(), te.getYCoord() + 1, te.getZCoord());

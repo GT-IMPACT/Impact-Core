@@ -1,6 +1,6 @@
 package com.impact.loader;
 
-import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.blocks.Block_QuantumStuff_Red;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
@@ -12,7 +12,6 @@ import com.impact.mods.gregtech.Multi_Register;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.items.tools.GTMG_Tool_WorkRadius;
 import com.impact.addon.oc.Driver_Register;
-import com.impact.addon.rc.carts.item.events.Module;
 import com.impact.addon.vw.VirtualWorldIntegration;
 import com.impact.util.string.Lang;
 import cpw.mods.fml.common.Loader;
@@ -28,7 +27,6 @@ import static codechicken.nei.api.API.hideItem;
 import static com.impact.common.item.Core_List_Items.registerOreDictNames;
 import static com.impact.core.Config.DisableNether;
 import static com.impact.core.impactLog.INFO;
-import static com.impact.impact.getModules;
 
 public class MainLoader {
 	
@@ -41,14 +39,9 @@ public class MainLoader {
 		OreDictRegister.register_all();
 		INFO("[load] OreDict Register List - Loaded");
 		
-		Block_QuantumStuff.run();
+		Block_QuantumStuff_Red.run();
 		INFO("[load] Quantum Stuff registered");
-		
-		for (Module module : getModules()) {
-			if (module.getIsActive()) {
-				module.load(event);
-			}
-		}
+
 		new GTMG_Tool_WorkRadius.ProccessToolHead();
 		new GTMG_Tool_WorkRadius();
 		if (Loader.isModLoaded("OpenComputers")) {
@@ -102,18 +95,6 @@ public class MainLoader {
 			INFO("[preInit] Disabled Nether Portal - Loaded");
 		}
 		
-		for (Module module : getModules()) {
-			if (!module.areRequirementsMet() && module.getIsActive()) {
-				module.setIsActive(false);
-			}
-		}
-		
-		for (Module module : getModules()) {
-			if (module.getIsActive()) {
-				module.init(event);
-			}
-		}
-		
 		GameRegistry.registerTileEntity(TE_SpaceElevatorTether.class, "space_elevator_tether");
 		GameRegistry.registerTileEntity(TE_NqTether.class, "nq_tether");
 		GameRegistry.registerTileEntity(TilePlacedItem.class, "TilePlacedItem");
@@ -131,10 +112,5 @@ public class MainLoader {
 		new ModLoader().run();
 		VirtualWorldIntegration.init();
 		INFO(Lang.impact.eng + " Lang Loaded");
-		for (Module module : getModules()) {
-			if (module.getIsActive()) {
-				module.postInit(event);
-			}
-		}
 	}
 }

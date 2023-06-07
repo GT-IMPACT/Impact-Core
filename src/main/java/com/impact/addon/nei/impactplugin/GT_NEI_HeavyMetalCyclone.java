@@ -170,8 +170,8 @@ public class GT_NEI_HeavyMetalCyclone extends TemplateRecipeHandler {
     return "gregtech:textures/gui/basic/HeavyMetalCyclone.png";
   }
 
-  public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip,
-      int aRecipeIndex) {
+  public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip,
+                                        int aRecipeIndex) {
     return currenttip;
   }
 
