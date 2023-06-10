@@ -1,10 +1,6 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
-import com.google.common.base.Objects;
-import com.impact.common.oregeneration.OreGenerator;
-import com.impact.common.oregeneration.generator.OreVeinGenerator;
-import com.impact.common.oregeneration.generator.OresRegionGenerator;
-import com.impact.core.Impact_API;
+import com.impact.addon.vw.VirtualWorldScan;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -14,26 +10,19 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_UndergroundOil;
 import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-import java.util.List;
+import space.gtimpact.virtual_world.api.VirtualAPI;
 
 public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	
 	boolean ready = false;
-	public int mode = 0;
+	public int type = 0;
+	public int layer = 0;
 	
 	public GTMTE_Prospector(int aID, String aNameRegional, int aTier) {
 		super(aID, "impact.basic.prospector." + aTier, aNameRegional, aTier, 1, // amperage
@@ -74,32 +63,32 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setInteger("mode", mode);
+		aNBT.setInteger("type", type);
+		aNBT.setInteger("layer", layer);
 		aNBT.setBoolean("ready", ready);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		mode = aNBT.getInteger("mode");
+		type = aNBT.getInteger("type");
+		layer = aNBT.getInteger("layer");
 		ready = aNBT.getBoolean("ready");
 	}
 	
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		if (aPlayer.isSneaking()) {
-			this.mode++;
-			if (this.mode > 2) this.mode = 0;
-			switch (mode) {
-				case 0:
-					aPlayer.addChatMessage(new ChatComponentText("Mode: Ores Layer 0"));
-					break;
-				case 1:
-					aPlayer.addChatMessage(new ChatComponentText("Mode: Ores Layer 1"));
-					break;
-				case 2:
-					aPlayer.addChatMessage(new ChatComponentText("Mode: Underground Oils"));
-					break;
+			this.type++;
+			if (this.type > 1) this.type = 0;
+			this.layer = 0;
+			VirtualWorldScan.sendChatChangeType(aPlayer, type);
+			VirtualWorldScan.sendChatChangeLayer(aPlayer, layer);
+		} else {
+			this.layer++;
+			if (type == 0) {
+				if (this.layer >= VirtualAPI.getLAYERS_VIRTUAL_ORES()) this.layer = 0;
+				VirtualWorldScan.sendChatChangeLayer(aPlayer, layer);
 			}
 		}
 	}
@@ -112,6 +101,19 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	
 	@Override
 	public boolean onRightclick(IGregTechTileEntity te, EntityPlayer aPlayer) {
+		if (te.isServerSide()) {
+			ItemStack aStack = aPlayer.getCurrentEquippedItem();
+			if (!ready && (GT_Utility.consumeItems(aPlayer, aStack, Item.getItemFromBlock(Blocks.tnt), 16)
+					|| GT_Utility.consumeItems(aPlayer, aStack, Ic2Items.industrialTnt.getItem(), 8)
+					|| GT_Utility.consumeItems(aPlayer, aStack, Materials.Glyceryl, 4)
+					|| GT_Utility.consumeItems(aPlayer, aStack, ItemList.Block_Powderbarrel.getItem(), 2))) {
+				
+				this.ready = true;
+				this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 800);
+			} else if (ready && mMaxProgresstime == 0 && aStack == null) {
+				VirtualWorldScan.scanStart(te, mTier, type, layer, aPlayer);
+			}
+		}
 		return true;
 	}
 }

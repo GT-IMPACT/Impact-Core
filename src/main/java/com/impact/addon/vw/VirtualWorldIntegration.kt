@@ -5,6 +5,8 @@ import com.impact.addon.nei.impactplugin.ores.OreBuilderNEI
 import gregtech.api.enums.Materials
 import gregtech.api.enums.OrePrefixes
 import gregtech.api.util.GT_OreDictUnificator
+import space.gtimpact.virtual_world.api.VirtualFluidTypeComponent
+import space.gtimpact.virtual_world.api.VirtualFluidVein
 import space.gtimpact.virtual_world.api.VirtualOreComponent
 import space.gtimpact.virtual_world.api.VirtualOreVein
 import java.awt.Color
@@ -2194,7 +2196,46 @@ object VirtualWorldIntegration {
     }
 
     private fun registerFluidVeins() {
-
+        VirtualFluidVein(
+            id = 1,
+            depth = 1,
+            name = "Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = Materials.Oil.color(),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.Oil.getFluid(0).getFluid(), 50)
+        )
+        VirtualFluidVein(
+            id = 2,
+            depth = 1,
+            name = "Heavy Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = color(255, 0, 255),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.OilHeavy.getFluid(0).getFluid(), 50)
+        )
+        VirtualFluidVein(
+            id = 3,
+            depth = 1,
+            name = "Medium Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = color(0, 255, 0),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.OilMedium.getFluid(0).getFluid(), 50)
+        )
+        VirtualFluidVein(
+            id = 4,
+            depth = 1,
+            name = "Light Oil",
+            weight = 16.0,
+            rangeSize = 1..10,
+            color = color(255, 255, 0),
+            dimensions = listOf(Overworld).map { it.id },
+            fluid = VirtualFluidTypeComponent(Materials.OilLight.getFluid(0).getFluid(), 50)
+        )
     }
 
     private fun Materials.toOreComponent(chance: Int): VirtualOreComponent {
@@ -2202,6 +2243,10 @@ object VirtualWorldIntegration {
             chance = chance,
             ore = GT_OreDictUnificator.get(OrePrefixes.crushed, this, 1)
         )
+    }
+
+    private fun color(r: Int, g: Int, b: Int): Int {
+        return Color(r, g, b).hashCode()
     }
 
     private fun Materials.color(): Int {
