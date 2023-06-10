@@ -2,7 +2,7 @@ package com.impact.mods.gregtech.items.tools.behaviour;
 
 import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
-import com.impact.network.ToClient_String;
+import com.impact.network.NetworkPackets;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -14,10 +14,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import space.impact.packet_network.network.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Behaviour_Aerostat extends Behaviour_None {
 	
@@ -41,8 +41,10 @@ public class Behaviour_Aerostat extends Behaviour_None {
 					toClient.add(as.aerName);
 					toClient.addAll(names);
 					String[] pArray = new String[toClient.size()];
-					new ToClient_String(toClient.toArray(pArray)).sendToPlayer((EntityPlayerMP) aPlayer);
-					
+					NetworkHandler.sendToPlayer(
+							aPlayer,
+							NetworkPackets.StreamPacket.transaction(toClient.toArray(pArray))
+					);
 				} else {
 					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat + 1, gte);
 				}

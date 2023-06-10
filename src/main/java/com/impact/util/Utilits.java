@@ -1,7 +1,7 @@
 package com.impact.util;
 
+import com.impact.addon.gc.DimensionsIDs;
 import com.impact.core.Refstrings;
-import com.impact.register.SSBodies;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -261,12 +261,12 @@ public class Utilits {
 	}
 
 	public static boolean isLowGravity(int idDim) {
-		return idDim == SSBodies.dimensionIDOrbitEarth;
+		return idDim == DimensionsIDs.ORBIT_EARTH;
 	}
 
 	public static boolean isLowGravity(IGregTechTileEntity iAm) {
 		int dimId = iAm.getWorld().provider.dimensionId;
-		return dimId == SSBodies.dimensionIDOrbitEarth || isValidDim(dimId, "Orbit") || isValidDim(dimId, "Space") || isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation");
+		return dimId == DimensionsIDs.ORBIT_EARTH || isValidDim(dimId, "Orbit") || isValidDim(dimId, "Space") || isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation");
 	}
 
 	public static AxisAlignedBB setBoxAABB(IGregTechTileEntity igt, double radius) {

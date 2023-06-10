@@ -1,6 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
-import buildcraft.api.core.IAreaProvider;
 import com.impact.impact;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
@@ -266,12 +265,12 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
 				box = new Box(xMin, yMin, zMin, xMax, yMax, zMax);
 			}
 			TileEntity te = iAm.getTileEntityAtSide(iAm.getBackFacing());
-			if (Loader.isModLoaded("BuildCraft|Core") && te instanceof IAreaProvider) {
-				IAreaProvider mark = (IAreaProvider) te;
-				box = new Box(mark.xMin(), mark.yMin(), mark.zMin(), mark.xMax(), mark.yMax(), mark.zMax());
-				mark.removeFromWorld();
-				setBoxCoords(box);
-			}
+//			if (Loader.isModLoaded("BuildCraft|Core") && te instanceof IAreaProvider) {
+//				IAreaProvider mark = (IAreaProvider) te;
+//				box = new Box(mark.xMin(), mark.yMin(), mark.zMin(), mark.xMax(), mark.yMax(), mark.zMax());
+//				mark.removeFromWorld();
+//				setBoxCoords(box);
+//			}
 		}
 	}
 	

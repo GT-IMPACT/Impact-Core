@@ -1,24 +1,24 @@
 package com.impact.mods.gregtech.gui.aerostat;
 
+import com.google.common.io.ByteArrayDataInput;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
-import com.impact.network.IPacketString;
 import com.impact.util.PositionObject;
-import com.impact.util.Utilits;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
+import org.jetbrains.annotations.NotNull;
+import space.impact.packet_network.network.packets.IStreamPacketReceiver;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static net.minecraft.util.EnumChatFormatting.*;
 
-public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements IPacketString {
+public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements IStreamPacketReceiver {
 	
 	public String mName;
 	public String mStationName = "";
@@ -100,9 +100,12 @@ public class GUI_SelectAerostat extends GT_GUIContainerMT_Machine implements IPa
 	}
 	
 	@Override
-	public final void update(String... obj) {
-		this.playerName = obj[0];
-		this.mStationName = obj[1];
-		names.addAll(Arrays.asList(obj).subList(2, obj.length));
+	public void receive(@NotNull ByteArrayDataInput data) {
+		int size = data.readInt();
+		this.playerName   = data.readUTF();
+		this.mStationName = data.readUTF();
+		for (int i = 0; i < size - 2; i++) {
+			names.add(data.readUTF());
+		}
 	}
 }

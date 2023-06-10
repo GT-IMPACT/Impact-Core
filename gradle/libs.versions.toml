@@ -1,0 +1,18 @@
+[versions]
+kotlin = "1.8.21"
+minecraftVersion = "1.7.10"
+forge = "10.13.4.1614"
+minecraft-forge = "1.7.10-10.13.4.1614-1.7.10"
+
+[libraries]
+forge-gradle = { module = "com.anatawa12.forge:ForgeGradle", version = "1.2-1.1.+" }
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradle-gitversion = { module = "com.palantir.gradle.gitversion:gradle-git-version", version = "3.0.0" }
+gradle-buildconfig = { module = "com.github.gmazzo:gradle-buildconfig-plugin", version = "3.1.0" }
+
+[plugins]
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version = "3.1.0" }
+gitversion = { id = "com.palantir.git-version", version = "3.0.0" }
+shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

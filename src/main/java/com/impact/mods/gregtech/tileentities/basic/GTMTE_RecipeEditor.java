@@ -1,12 +1,10 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
 import com.impact.impact;
-import com.impact.network.ToClient_String;
 import com.impact.recipe.gui.RecipeContainer;
 import com.impact.recipe.gui.RecipeGuiContainer;
 import com.impact.recipe.json.RecipeJson;
 import com.impact.recipe.maps.RecipesJson;
-import com.impact.util.Utilits;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,8 +13,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -28,8 +24,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.impact.recipe.maps.RecipesJson.recipeTest;
 
 public class GTMTE_RecipeEditor extends GT_MetaTileEntity_BasicTank {
 	

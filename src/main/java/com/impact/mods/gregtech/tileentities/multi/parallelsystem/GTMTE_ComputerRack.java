@@ -1,17 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import static com.github.technus.tectech.util.Util.getUniqueIdentifier;
 import static com.impact.mods.gregtech.GT_ItemList.*;
 import static com.impact.mods.gregtech.enums.Texture.Icons.*;
 
 import com.impact.mods.gregtech.gui.parallelcomputer.GT_Container_Rack;
 import com.impact.mods.gregtech.gui.parallelcomputer.GT_GUIContainer_Rack;
 import com.impact.util.Utilits;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import java.util.HashMap;
@@ -131,7 +130,8 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
         if (stack == null || stack.stackSize != 1) {
           continue;
         }
-        Components comp = mMapItem.get(getUniqueIdentifier(stack));
+        String st = GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId + ':' + stack.getUnlocalizedName();
+        Components comp = mMapItem.get(st);
         if (comp == null) {
           continue;
         }

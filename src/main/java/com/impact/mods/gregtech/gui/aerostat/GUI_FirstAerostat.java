@@ -1,9 +1,10 @@
 package com.impact.mods.gregtech.gui.aerostat;
 
 
-import com.impact.network.ToServer_String;
+import com.impact.network.NetworkPackets;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static space.impact.packet_network.network.NetworkHandler.sendToServer;
 
 public class GUI_FirstAerostat extends GT_GUIContainerMetaTile_Machine {
 	
@@ -69,7 +71,10 @@ public class GUI_FirstAerostat extends GT_GUIContainerMetaTile_Machine {
 	
 	protected void actionPerformed(GuiButton btn) {
 		if (btn == apply) {
-			new ToServer_String(gui.getText()).sendToServer();
+			sendToServer(
+					Minecraft.getMinecraft().thePlayer,
+					NetworkPackets.StreamPacket.transaction(gui.getText())
+			);
 			mc.thePlayer.closeScreen();
 		}
 	}

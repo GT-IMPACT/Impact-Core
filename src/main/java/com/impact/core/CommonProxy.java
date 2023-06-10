@@ -1,7 +1,7 @@
 package com.impact.core;
 
 import com.impact.impact;
-import com.impact.api.satellite.SatelliteNetworkManager;
+import com.impact.addon.gt.api.satellite.SatelliteNetworkManager;
 import com.impact.util.files.JsonWorld;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.FMLCommonHandler;

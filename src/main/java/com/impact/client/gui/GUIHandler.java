@@ -1,7 +1,7 @@
 package com.impact.client.gui;
 
-import com.impact.api.security.SecurityContainer;
-import com.impact.api.security.SecurityGui;
+import com.impact.addon.gt.api.security.SecurityContainer;
+import com.impact.addon.gt.api.security.SecurityGui;
 import com.impact.impact;
 import com.impact.mods.gregtech.gui.aerostat.Container_FirstAerostat;
 import com.impact.mods.gregtech.gui.aerostat.Countainer_SelectAerostat;
@@ -11,8 +11,6 @@ import com.impact.mods.gregtech.gui.laptop.Container_LapTopSetting;
 import com.impact.mods.gregtech.gui.laptop.GUI_LapTopSetting;
 import com.impact.mods.gregtech.gui.regulatechest.Container_ValueRegulateChest;
 import com.impact.mods.gregtech.gui.regulatechest.GUI_ValueRegulateChest;
-import com.impact.mods.gregtech.tileentities.basic.ae.craftsup.GUI_SuppliersAE;
-import com.impact.mods.railcraft.carts.item.client.OpenableGUI;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -26,7 +24,7 @@ import static com.impact.core.impactLog.WARNING;
 
 public class GUIHandler implements IGuiHandler {
 	
-	public static final int GUI_ID_Solar = 0, GUI_ID_Carts = 2, GUI_ID_LapTop = 3, GUI_ID_FirstAerostat = 4, GUI_AE = 7, GUI_ID_Security = 8;
+	public static final int GUI_ID_LapTop = 3, GUI_ID_FirstAerostat = 4, GUI_ID_Security = 8;
 	
 	public GUIHandler() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, this);
@@ -38,10 +36,6 @@ public class GUIHandler implements IGuiHandler {
 		Entity e = world.getEntityByID(x);
 
 		switch (ID) {
-			case GUI_ID_Carts:
-				if (e instanceof OpenableGUI) {
-					return ((OpenableGUI) e).getServerGuiElement(ID, player, world, x, y, z);
-				}
 			case GUI_ID_LapTop:
 				if (te instanceof IGregTechTileEntity) {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
@@ -62,8 +56,6 @@ public class GUIHandler implements IGuiHandler {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
 					return new Container_ValueRegulateChest(player.inventory, gte);
 				}
-			case GUI_AE:
-				return new GUI_SuppliersAE.Server(x, y, z);
 			case GUI_ID_Security:
 				return new SecurityContainer(player);
 		}
@@ -77,10 +69,6 @@ public class GUIHandler implements IGuiHandler {
 		Entity e = world.getEntityByID(x);
 		
 		switch (ID) {
-			case GUI_ID_Carts:
-				if (e instanceof OpenableGUI) {
-					return ((OpenableGUI) e).getClientGuiElement(ID, player, world, x, y, z);
-				}
 			case GUI_ID_LapTop:
 				if (te instanceof IGregTechTileEntity) {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
@@ -101,8 +89,6 @@ public class GUIHandler implements IGuiHandler {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
 					return new GUI_ValueRegulateChest(player.inventory, gte);
 				}
-			case GUI_AE:
-				return new GUI_SuppliersAE.Client(new GUI_SuppliersAE.Server(x, y, z));
 			case GUI_ID_Security:
 				return new SecurityGui(player);
 		}

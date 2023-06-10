@@ -1,7 +1,6 @@
 package com.impact.mods.gregtech;
 
-import com.impact.mods.gregtech.tileentities.multi.fluids.GTMTEOilDrilling;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOreSamplingMachine;
+import com.impact.addon.gt.tiles.ore_mining.GTMTEOreSamplingMachine;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;

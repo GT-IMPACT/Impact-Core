@@ -1,8 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import com.impact.api.parallelsystem.IParallelIn;
-import com.impact.api.parallelsystem.IParallelOut;
-import com.impact.api.position.IPosition;
+import com.impact.addon.gt.api.parallel_system.IParallelIn;
+import com.impact.addon.gt.api.parallel_system.IParallelOut;
+import com.impact.addon.gt.api.position.IPosition;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;

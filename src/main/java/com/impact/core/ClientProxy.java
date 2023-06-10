@@ -1,16 +1,16 @@
 package com.impact.core;
 
+import com.impact.addon.nei.impactplugin.RecipeProcessorRegister;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
 import com.impact.client.render.models.Model_DryingRack;
 import com.impact.client.render.tesr.*;
 import com.impact.command.Command_Run;
 import com.impact.common.block.QuantumStuffRender;
-import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.common.block.blocks.Block_QuantumStuff_Red;
 import com.impact.common.block.blocks.Block_TheMill;
 import com.impact.common.te.*;
 import com.impact.events.ClientEvent;
-import com.impact.mods.nei.impactplugin.RecipeProcessorLoader;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -49,8 +49,9 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void registerRenderInfo() {
-		Block_QuantumStuff.renderID = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
+		Block_QuantumStuff_Red.renderID = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(Block_QuantumStuff_Red.renderID, new QuantumStuffRender());
+		
 		Block_TheMill.renderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(Block_TheMill.renderID, new Block_TheMill.BlockRender());
 		RenderingRegistry.registerBlockHandler(new Model_DryingRack());
@@ -217,7 +218,7 @@ public class ClientProxy extends CommonProxy {
 	
 	public void postInit() {
 		ClientCommandHandler.instance.registerCommand(new Command_Run());
-		RecipeProcessorLoader.init();
+		RecipeProcessorRegister.register();
 	}
 	
 	public void init() {

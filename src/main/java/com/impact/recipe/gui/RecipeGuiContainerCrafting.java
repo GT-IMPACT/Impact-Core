@@ -1,18 +1,12 @@
 package com.impact.recipe.gui;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
-import com.impact.client.gui.GuiIntegerBox;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
-import com.impact.network.IPacketString;
-import com.impact.network.ToServer_Integer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
