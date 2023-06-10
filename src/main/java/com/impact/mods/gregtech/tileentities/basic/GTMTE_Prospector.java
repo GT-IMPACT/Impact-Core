@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
-import com.impact.mods.virtual_world.VirtualWorldScan;
+import com.impact.addon.vw.VirtualWorldScan;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -82,13 +82,13 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 			this.type++;
 			if (this.type > 1) this.type = 0;
 			this.layer = 0;
-			VirtualWorldScan.INSTANCE.sendChatChangeType(aPlayer, type);
-			VirtualWorldScan.INSTANCE.sendChatChangeLayer(aPlayer, layer);
+			VirtualWorldScan.sendChatChangeType(aPlayer, type);
+			VirtualWorldScan.sendChatChangeLayer(aPlayer, layer);
 		} else {
 			this.layer++;
 			if (type == 0) {
 				if (this.layer >= VirtualAPI.getLAYERS_VIRTUAL_ORES()) this.layer = 0;
-				VirtualWorldScan.INSTANCE.sendChatChangeLayer(aPlayer, layer);
+				VirtualWorldScan.sendChatChangeLayer(aPlayer, layer);
 			}
 		}
 	}
@@ -111,7 +111,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 				this.ready = true;
 				this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 800);
 			} else if (ready && mMaxProgresstime == 0 && aStack == null) {
-				VirtualWorldScan.INSTANCE.scanStart(te, mTier, type, layer, aPlayer);
+				VirtualWorldScan.scanStart(te, mTier, type, layer, aPlayer);
 			}
 		}
 		return true;

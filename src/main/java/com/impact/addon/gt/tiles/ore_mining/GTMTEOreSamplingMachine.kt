@@ -49,6 +49,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         private const val LAYER = 1
         private const val DEFAULT_WORK = 60 * 20
 
+        @JvmStatic
         fun addRecipe() {
             RA.addAssemblerRecipe(
                 arrayOf(
