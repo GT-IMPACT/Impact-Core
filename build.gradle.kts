@@ -31,7 +31,7 @@ dependencies {
     api("space.impact:impactapi:0.0.+:dev") { isChanging = true }
     api("space.impact:wailaplugins:0.3.+:dev") { isChanging = true }
     api("space.impact:impact_vw:1.0.+:dev") { isChanging = true }
-    api("space.impact:gregtech:5.09.35.+:dev") { isChanging = true; isTransitive = false }
+    api("space.impact:gregtech:5.09.35.2:dev") { isChanging = true; isTransitive = false }
 
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.+:dev") { isChanging = true }
     api("com.github.GTNewHorizons:waila:1.6.0:dev") { isTransitive = false }
