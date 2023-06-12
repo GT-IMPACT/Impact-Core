@@ -3,6 +3,7 @@ package com.impact.util.vector;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -93,10 +94,44 @@ public class Structure {
 		return iAm.getTileEntityOffset(offset.x(), offset.y(), offset.z());
 	}
 	
+	public static Vector3ic getForgeDirection(int side) {
+		return new Vector3i(ForgeDirection.getOrientation(side).offsetX, ForgeDirection.getOrientation(side).offsetY, ForgeDirection.getOrientation(side).offsetZ);
+	}
+	
+	public static Vector3ic getVectorBySide(int side, int x, int y, int z) {
+		Vector3ic forgeDirection = Structure.getForgeDirection(side);
+		final Vector3i offset = new Vector3i();
+		if (forgeDirection.x() == 0 && forgeDirection.z() == -1) {
+			offset.x = x;
+			offset.y = y;
+			offset.z = z;
+		}
+		if (forgeDirection.x() == 0 && forgeDirection.z() == 1) {
+			offset.x = -x;
+			offset.y = y;
+			offset.z = -z;
+		}
+		if (forgeDirection.x() == -1 && forgeDirection.z() == 0) {
+			offset.x = z;
+			offset.y = y;
+			offset.z = -x;
+		}
+		if (forgeDirection.x() == 1 && forgeDirection.z() == 0) {
+			offset.x = -z;
+			offset.y = y;
+			offset.z = x;
+		}
+		if (forgeDirection.y() == -1) {
+			offset.x = x;
+			offset.y = z;
+			offset.z = y;
+		}
+		return offset;
+	}
+	
 	public static Vector3ic getForgeDirection(IGregTechTileEntity iAm) {
 		return new Vector3i(ForgeDirection.getOrientation(iAm.getBackFacing()).offsetX, ForgeDirection.getOrientation(iAm.getBackFacing()).offsetY, ForgeDirection.getOrientation(iAm.getBackFacing()).offsetZ);
 	}
-	
 	public static Vector3ic goBuild(IGregTechTileEntity iAm, int x, int y, int z) {
 		Vector3ic forgeDirection = Structure.getForgeDirection(iAm);
 		final Vector3i offset = new Vector3i();

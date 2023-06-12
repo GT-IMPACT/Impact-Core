@@ -169,6 +169,11 @@ public enum GT_ItemList implements IItemContainer {
 	
 	Maintenance,
 	
+	SpaceportMainController,
+	SpaceportObservatory,
+	SpaceportTechnical,
+	SpaceportLaunchPad,
+	
 	Wind_Generator, The_Mill,
 	
 	end;

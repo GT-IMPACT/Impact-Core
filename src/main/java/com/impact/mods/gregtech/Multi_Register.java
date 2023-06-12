@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech;
 
 import com.impact.addon.gt.tiles.ore_mining.GTMTEOreSamplingMachine;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOilDrilling;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
+import com.impact.addon.gt.tiles.spaceport.launch.SpaceportLaunchPad;
+import com.impact.addon.gt.tiles.spaceport.main.SpaceportControlCenter;
+import com.impact.addon.gt.tiles.spaceport.observatory.SpaceportObservatory;
+import com.impact.addon.gt.tiles.spaceport.technical.SpaceportAssemblyBuilding;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
@@ -20,6 +20,10 @@ import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MESystemPr
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_ParametricDiffuser;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOilDrilling;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
@@ -125,6 +129,10 @@ public class Multi_Register {
 		OreSamplingMachine.set(new GTMTEOreSamplingMachine(ID++, "Ore Sampling Machine").get());
 		GTMTEOreSamplingMachine.addRecipe();
 		OilDrilling.set(new GTMTEOilDrilling(ID++, "Oil Drilling").get());
+		SpaceportMainController.set(new SpaceportControlCenter(ID++).get());
+		SpaceportObservatory.set(new SpaceportObservatory(ID++).get());
+		SpaceportTechnical.set(new SpaceportAssemblyBuilding(ID++).get());
+		SpaceportLaunchPad.set(new SpaceportLaunchPad(ID++).get());
 		
 		INFO("[IMPACT-CORE] FINISH ADDED MULTIS | LAST ID: " + ID);
 		

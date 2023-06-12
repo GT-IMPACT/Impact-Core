@@ -106,12 +106,12 @@ public class BlockHintMega extends EntityFX {
 	@Override
 	public void renderParticle(Tessellator tes, float subTickTime, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
 		
-		float x1 = (float) (posX - EntityFX.interpPosX);
-		float y1 = (float) (posY - EntityFX.interpPosY);
-		float z1 = (float) (posZ - EntityFX.interpPosZ);
-		float x2 = (float) (xMax + 1D - EntityFX.interpPosX);
-		float y2 = (float) (yMax + 1D - EntityFX.interpPosY);
-		float z2 = (float) (zMax + 1D - EntityFX.interpPosZ);
+		float x1 =  (float) (posX - EntityFX.interpPosX);
+		float y1 =  (float) (posY - EntityFX.interpPosY);
+		float z1 =  (float) (posZ - EntityFX.interpPosZ);
+		float x2 = (float) (xMax - EntityFX.interpPosX);
+		float y2 = (float) (yMax - EntityFX.interpPosY);
+		float z2 = (float) (zMax - EntityFX.interpPosZ);
 		
 		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(x1, y1, z1, x2, y2, z2).expand(0.01D, 0.01D, 0.01D);
 		

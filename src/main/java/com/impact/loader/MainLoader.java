@@ -75,6 +75,7 @@ public class MainLoader {
 //		INFO("[preInit] Kinetic Rotors - Loaded");
 		
 		DrillHeads.getInstance().registerItem();
+		StructureWriterTool.INSTANCE.registerItem();
 		INFO("[preInit] Drill Heads - Loaded");
 		
 		registerOreDictNames();
