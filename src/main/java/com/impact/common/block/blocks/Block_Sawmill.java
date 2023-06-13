@@ -14,7 +14,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class Block_Sawmill extends gtUpdateBlockAPI {
+public class Block_Sawmill extends GTUpdateBlockAPI {
 
   private static final Block_Sawmill instance = new Block_Sawmill();
   @SideOnly(Side.CLIENT)

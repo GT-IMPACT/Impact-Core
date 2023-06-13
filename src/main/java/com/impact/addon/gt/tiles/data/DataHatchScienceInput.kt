@@ -52,7 +52,7 @@ class DataHatchScienceInput : DataHatchConnectorBase<ProvideDataScience> {
             this.data = null
         } else {
             val content = qIn.getContent()
-            if (content != null && content > 0L) {
+            if (content != null && content.content > 0L) {
                 this.data = qIn
                 delDelay = true
             } else {

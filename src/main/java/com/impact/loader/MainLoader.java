@@ -1,5 +1,6 @@
 package com.impact.loader;
 
+import com.impact.addon.gt.block.AllGTBlocksRegister;
 import com.impact.common.block.blocks.Block_QuantumStuff_Red;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
@@ -82,6 +83,7 @@ public class MainLoader {
 		INFO("[preInit] Meta Items OreDict List - Loaded");
 		
 		ItemRegistery.registerBlocks();
+		AllGTBlocksRegister.register();
 		INFO("[preInit] Meta Blocks - Loaded");
 		
 		for (byte i = 0; i <= 7; i++) {

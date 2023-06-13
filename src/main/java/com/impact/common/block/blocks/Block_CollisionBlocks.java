@@ -16,7 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Block_CollisionBlocks extends gtUpdateBlockAPI {
+public class Block_CollisionBlocks extends GTUpdateBlockAPI {
 
   private static final Block_CollisionBlocks instance = new Block_CollisionBlocks();
 

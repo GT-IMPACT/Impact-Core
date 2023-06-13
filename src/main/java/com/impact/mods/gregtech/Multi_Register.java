@@ -3,6 +3,8 @@ package com.impact.mods.gregtech;
 import com.impact.addon.gt.tiles.ore_mining.GTMTEOreSamplingMachine;
 import com.impact.addon.gt.tiles.spaceport.launch.SpaceportLaunchPad;
 import com.impact.addon.gt.tiles.spaceport.main.SpaceportControlCenter;
+import com.impact.addon.gt.tiles.spaceport.observatory.ObservatoryAtmosphericExplorer;
+import com.impact.addon.gt.tiles.spaceport.observatory.ObservatorySurfaceExplorer;
 import com.impact.addon.gt.tiles.spaceport.observatory.SpaceportObservatory;
 import com.impact.addon.gt.tiles.spaceport.technical.SpaceportAssemblyBuilding;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
@@ -131,6 +133,8 @@ public class Multi_Register {
 		OilDrilling.set(new GTMTEOilDrilling(ID++, "Oil Drilling").get());
 		SpaceportMainController.set(new SpaceportControlCenter(ID++).get());
 		SpaceportObservatory.set(new SpaceportObservatory(ID++).get());
+		SpaceportObservatorySurface.set(new ObservatorySurfaceExplorer(ID++).get());
+		SpaceportObservatoryAtmospheric.set(new ObservatoryAtmosphericExplorer(ID++).get());
 		SpaceportTechnical.set(new SpaceportAssemblyBuilding(ID++).get());
 		SpaceportLaunchPad.set(new SpaceportLaunchPad(ID++).get());
 		

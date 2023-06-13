@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IAxeWrenchable;
 import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 import net.minecraft.util.IIcon;
@@ -19,13 +20,13 @@ import static gregtech.api.util.GT_LanguageManager.addStringLocalization;
 public class Casing_3 extends GT_Block_Casings_Abstract implements IAxeWrenchable {
 
     private static final Build_Casing_Helper[] casing_helpers = {
-            ME_CASING, AEROSTATE_PLATFORM, MILL,
+            ME_CASING, AEROSTATE_PLATFORM, MILL, OBSERVATORY
     };
 
     public Casing_3() {
         super(IB_Casing_3.class, "gt.blockCase3", GT_Material_Casings.INSTANCE);
-        for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[3][b + 32] /** 48 */ = new GT_CopiedBlockTexture(this, 6, b);
+        for (byte b = 0; b < casing_helpers.length; b = (byte) (b + 1)) {
+            Textures.BlockIcons.casingTexturePages[3][b + 32] /* 48 */ = TextureFactory.of(this, b);
         }
         for (int i = 0; i < casing_helpers.length; i++) {
             addStringLocalization(getUnlocalizedName() + "." + i + ".name", casing_helpers[i].getName());
@@ -43,6 +44,8 @@ public class Casing_3 extends GT_Block_Casings_Abstract implements IAxeWrenchabl
                 return aSide == 1? PLATFORM_AEROSTATE_TOP.getIcon() : PLATFORM_AEROSTATE_SIDE.getIcon();
             case 2:
                 return MILL_CASING.getIcon();
+            case 3:
+                return OBSERVATORY_CASING.getIcon();
             default:
                 return null;
         }

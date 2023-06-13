@@ -3,26 +3,20 @@ package com.impact.common.block.blocks;
 import com.impact.common.block.itemblock.IB_TheMill;
 import com.impact.common.te.TE_TheMill;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.IAxeWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.Collections;
 
-
-public class Block_TheMill extends gtUpdateBlockAPI implements IAxeWrenchable {
+public class Block_TheMill extends GTUpdateBlockAPI implements IAxeWrenchable {
 	
 	public static Block_TheMill instance = new Block_TheMill();
 	public static int renderID;

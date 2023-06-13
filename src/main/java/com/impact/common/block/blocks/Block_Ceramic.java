@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class Block_Ceramic extends gtUpdateBlockAPI {
+public class Block_Ceramic extends GTUpdateBlockAPI {
 
   private static final Block_Ceramic instance = new Block_Ceramic();
 

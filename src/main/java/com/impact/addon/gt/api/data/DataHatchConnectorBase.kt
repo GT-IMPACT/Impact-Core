@@ -20,13 +20,13 @@ abstract class DataHatchConnectorBase<T : ProvideData<*>> : GT_MetaTileEntity_Ha
     constructor(aID: Int, aName: String, aNameRegional: String, aTier: Int, descr: String) : super(aID, aName, aNameRegional, aTier, 0, descr)
     constructor(aName: String?, aTier: Int, aDescription: String?, aTextures: Array<Array<Array<ITexture?>?>?>?) : super(aName, aTier, 0, aDescription, aTextures)
 
-    override fun getTexturesActive(aBaseTexture: ITexture) = arrayOf(
+    override fun getTexturesActive(aBaseTexture: ITexture?) = arrayOf(
         aBaseTexture,
         TextureFactory.of(Texture.Icons.DATA_CONNECTOR_ACTIVE, Dyes.getModulation(baseMetaTileEntity.colorization.toInt(), Dyes.MACHINE_METAL.rgba)),
         TextureFactory.of(Texture.Icons.DATA_CONNECTOR_CONNECT),
     )
 
-    override fun getTexturesInactive(aBaseTexture: ITexture) = arrayOf(
+    override fun getTexturesInactive(aBaseTexture: ITexture?) = arrayOf(
         aBaseTexture,
         TextureFactory.of(Texture.Icons.DATA_CONNECTOR_SIDE, Dyes.getModulation(baseMetaTileEntity.colorization.toInt(), Dyes.MACHINE_METAL.rgba)),
         TextureFactory.of(Texture.Icons.DATA_CONNECTOR_CONNECT),

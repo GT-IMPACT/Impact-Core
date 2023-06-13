@@ -10,7 +10,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Block_NqTether extends gtUpdateBlockAPI {
+public class Block_NqTether extends GTUpdateBlockAPI {
 
   public static final Block_NqTether INSTANCE = new Block_NqTether();
 

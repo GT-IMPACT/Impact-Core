@@ -168,13 +168,14 @@ public enum GT_ItemList implements IItemContainer {
 	ProspectorLV, ProspectorMV, ProspectorHV, ProspectorEV, ProspectorIV,
 	
 	Maintenance,
+	Wind_Generator, The_Mill,
 	
 	SpaceportMainController,
-	SpaceportObservatory,
+	SpaceportObservatory, ObservatoryWall,
+	SpaceportObservatorySurface,
+	SpaceportObservatoryAtmospheric,
 	SpaceportTechnical,
 	SpaceportLaunchPad,
-	
-	Wind_Generator, The_Mill,
 	
 	CableDataScience, HatchDataScienceInput, HatchDataScienceOutput,
 	

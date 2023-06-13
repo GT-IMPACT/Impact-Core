@@ -14,10 +14,13 @@ import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -83,6 +86,9 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	public GTMTE_Impact_BlockBase(final String aName) {
 		super(aName);
 	}
+	
+	@Override
+	abstract public ITexture[] getTexture(final IGregTechTileEntity te, final byte side, final byte facing, final byte colorIndex, final boolean active, final boolean redstone);
 	
 	public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
 		return aMetaTileEntity.getBaseMetaTileEntity() != null

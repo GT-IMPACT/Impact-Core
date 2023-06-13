@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class Block_LapotronicEnergyUnit extends gtUpdateBlockAPI {
+public class Block_LapotronicEnergyUnit extends GTUpdateBlockAPI {
 	
 	private static final Block_LapotronicEnergyUnit instance = new Block_LapotronicEnergyUnit();
 	

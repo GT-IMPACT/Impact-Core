@@ -16,7 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class Block_IGlass extends gtUpdateBlockAPI {
+public class Block_IGlass extends GTUpdateBlockAPI {
 
   public static final Block_IGlass IGlass = new Block_IGlass();
 

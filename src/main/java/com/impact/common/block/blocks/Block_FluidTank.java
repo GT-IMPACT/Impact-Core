@@ -11,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class Block_FluidTank extends gtUpdateBlockAPI {
+public class Block_FluidTank extends GTUpdateBlockAPI {
 
   private static final Block_FluidTank instance = new Block_FluidTank();
 

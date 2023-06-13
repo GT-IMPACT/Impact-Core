@@ -11,7 +11,7 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class Block_MatrixSystem extends gtUpdateBlockAPI {
+public class Block_MatrixSystem extends GTUpdateBlockAPI {
 	
 	private static final Block_MatrixSystem instance = new Block_MatrixSystem();
 	

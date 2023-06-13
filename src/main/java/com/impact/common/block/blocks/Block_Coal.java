@@ -13,7 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 
-public class Block_Coal extends gtUpdateBlockAPI {
+public class Block_Coal extends GTUpdateBlockAPI {
 
   public static final Block_Coal CoalBlock = new Block_Coal();
 

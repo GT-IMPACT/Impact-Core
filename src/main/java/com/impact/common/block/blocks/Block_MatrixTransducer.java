@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class Block_MatrixTransducer extends gtUpdateBlockAPI {
+public class Block_MatrixTransducer extends GTUpdateBlockAPI {
 	
 	private static final Block_MatrixTransducer instance = new Block_MatrixTransducer();
 	

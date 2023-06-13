@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class Block_SpaceElevatorTether extends gtUpdateBlockAPI {
+public class Block_SpaceElevatorTether extends GTUpdateBlockAPI {
 
   private static final Block_SpaceElevatorTether INSTANCE = new Block_SpaceElevatorTether();
 
