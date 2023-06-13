@@ -74,11 +74,11 @@ class SpaceportObservatory : GT_MetaTileEntity_MultiParallelBlockBase<SpaceportO
                     arrayOf("               ", "               ", "      EEE      ", "   EEE   EEE   ", "  E         E  ", "  E         E  ", "  E         E  ", "  E         E  ", "  EEEEEEEEEEE  "),
                     arrayOf("               ", "               ", "    EEEEEEE    ", "  EE       EE  ", " E           E ", " E           E ", " E           E ", " E           E ", " EEEEEEEEEEEEE "),
                     arrayOf("               ", "     EEEEE     ", "   EE     EE   ", "  E         E  ", " E           E ", " E           E ", " E           E ", " E           E ", " EEEEEEEEEEEEE "),
-                    arrayOf("      EEE      ", "    EEEEEEE    ", "   E  EEE  E   ", " EE   ECE   EE ", "E     ECE     E", "E     ECE     E", "E     E~E     E", "E     EEE     E", "EEEEEEEEEEEEEEE"),
-                    arrayOf("     EEEEE     ", "    EECCCEE    ", "  EE ECCCE EE  ", " E   ECCCE   E ", "E    ECCCE    E", "F    FCCCE    E", "E    ECCCE    E", "E    EEEEF    E", "EEEEEEEEEEEEEEE"),
-                    arrayOf("     EEDEE     ", "    EECDCEE    ", "  EE ECDCE EE  ", " E   CCDCC   E ", "E    CCDCC    E", "E    CCDCC    E", "E    CCDCC    E", "E    EEEEE    E", "EEEEEEEEEEEEEEE"),
-                    arrayOf("     EEEEE     ", "    EECCCEE    ", "  EE ECCCE EE  ", " E   ECCCE   E ", "E    ECCCE    E", "F    FCCCE    E", "E    ECCCE    E", "E    EEEEF    E", "EEEEEEEEEEEEEEE"),
-                    arrayOf("      EEE      ", "    EEEEEEE    ", "   E  EEE  E   ", " EE   ECE   EE ", "E     ECE     E", "E     ECE     E", "E     FCF     E", "E     FEF     E", "EEEEEEEEEEEEEEE"),
+                    arrayOf("      EEE      ", "    EEEEEEE    ", "   E  EEE  E   ", " EE   ECE   EE ", "EEE   ECE     E", "EEE   ECE     E", "EEE   E~E     E", "EEE   EEE     E", "EEEEEEEEEEEEEEE"),
+                    arrayOf("     EEEEE     ", "    EECCCEE    ", "  EE ECCCE EE  ", " E   ECCCE   E ", "EEE  ECCCE    E", "FGA  FCCCE    E", "EGA  ECCCE    E", "EEE  EEEEF    E", "EEEEEEEEEEEEEEE"),
+                    arrayOf("     EEDEE     ", "    EECDCEE    ", "  EE ECDCE EE  ", " E   CCDCC   E ", "EEE  CCDCC    E", "EEE  CCDCC    E", "EEE  CCDCC    E", "EEE  EEEEE    E", "EEEEEEEEEEEEEEE"),
+                    arrayOf("     EEEEE     ", "    EECCCEE    ", "  EE ECCCE EE  ", " E   ECCCE   E ", "EEE  ECCCE    E", "FGA  FCCCE    E", "EGA  ECCCE    E", "EEE  EEEEF    E", "EEEEEEEEEEEEEEE"),
+                    arrayOf("      EEE      ", "    EEEEEEE    ", "   E  EEE  E   ", " EE   ECE   EE ", "EEE   ECE     E", "EEE   ECE     E", "EEE   FCF     E", "EEE   FEF     E", "EEEEEEEEEEEEEEE"),
                     arrayOf("               ", "     EEEEE     ", "   EE     EE   ", "  E         E  ", " E           E ", " E           E ", " E           E ", " E           E ", " EEEEEEEEEEEEE "),
                     arrayOf("               ", "               ", "    EEEEEEE    ", "  EE       EE  ", " E           E ", " E           E ", " E           E ", " E           E ", " EEEEEEEEEEEEE "),
                     arrayOf("               ", "               ", "      EEE      ", "   EEE   EEE   ", "  E         E  ", "  E         E  ", "  E         E  ", "  E         E  ", "  EEEEEEEEEEE  "),
@@ -86,11 +86,13 @@ class SpaceportObservatory : GT_MetaTileEntity_MultiParallelBlockBase<SpaceportO
                     arrayOf("               ", "               ", "               ", "               ", "     EEEEE     ", "     EEEEE     ", "     EEEEE     ", "     EEEEE     ", "     EEEEE     "),
                 )
             )
+            .addElement('A', ofBlock(Blocks.stained_glass, 5))
             .addElement('B', ofBlock(Blocks.dirt, 0))
             .addElement('C', ofBlock(Blocks.glass, 0))
             .addElement('D', ofBlock(Blocks.stained_glass, 15))
             .addElement('E', ofBlock(ImpactAPI.getBlockHint(), 0))
             .addElement('F', ofBlock(Blocks.obsidian, 0))
+            .addElement('G', ofBlock(Blocks.glowstone, 0))
             .build()
     }
 }

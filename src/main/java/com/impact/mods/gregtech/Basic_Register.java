@@ -1,5 +1,8 @@
 package com.impact.mods.gregtech;
 
+import com.impact.addon.gt.tiles.data.CableDataScience;
+import com.impact.addon.gt.tiles.data.DataHatchScienceInput;
+import com.impact.addon.gt.tiles.data.DataHatchScienceOutput;
 import com.impact.mods.gregtech.tileentities.basic.*;
 import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
@@ -360,6 +363,15 @@ public class Basic_Register {
 		Steam_In_Hatch.set(new GT_MegaHatch_Input(ID2++, "Steam Input Hatch").getStackForm(1));
 		
 		INFO("Last ID Basic_Register.java: " + ID2);
+		//======================= ~15000 =======================
+		
+		
+		ID2 = 16000;
+		CableDataScience.set(new CableDataScience(ID2++).getStackForm(1));
+		HatchDataScienceInput.set(new DataHatchScienceInput(ID2++, "Optical Data Science Connector IN", 3).getStackForm(1));
+		HatchDataScienceOutput.set(new DataHatchScienceOutput(ID2++, "Optical Data Science Connector OUT", 3).getStackForm(1));
+		
+		INFO("Last ID New Tiles Basic: " + ID2);
 		
 		DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,
 				"impact.basicmachine.dustwasher.tier.00", "ULV Dust Washer", 0, "Washed your Dusts",

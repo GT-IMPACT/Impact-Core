@@ -176,6 +176,8 @@ public enum GT_ItemList implements IItemContainer {
 	
 	Wind_Generator, The_Mill,
 	
+	CableDataScience, HatchDataScienceInput, HatchDataScienceOutput,
+	
 	end;
 	private ItemStack mStack;
 	private boolean mHasNotBeenSet = true;
