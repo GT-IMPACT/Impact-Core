@@ -11,6 +11,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IProvideEnergyCover;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
@@ -36,7 +37,7 @@ import static net.minecraft.util.EnumChatFormatting.*;
  * Made by Kekzdealer Edit by 4gname
  */
 
-public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
+public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase implements IProvideEnergyCover {
 	
 	public static final long L_IV = 0x59682f00L * 4L;
 	public static final long L_LuV = 0x165a0bc00L * 4L;
@@ -499,5 +500,15 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack stack) {
 		return false;
+	}
+	
+	@Override
+	public long getStored() {
+		return stored;
+	}
+	
+	@Override
+	public long getMaxCapacity() {
+		return capacity;
 	}
 }

@@ -55,8 +55,8 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	
 	private static final AtomicReferenceArray<MultiBlockTooltipBuilder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
 	
-	private final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
-	private final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
+	public final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
+	public final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
 	
 	private boolean isSeparated = true;
 	private byte mRecipeMode = 0;

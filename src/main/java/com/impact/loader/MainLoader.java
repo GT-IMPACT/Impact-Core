@@ -19,6 +19,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,6 @@ import static com.impact.core.Config.DisableNether;
 import static com.impact.core.impactLog.INFO;
 
 public class MainLoader {
-	
 	private MainLoader() {
 	}
 	
@@ -53,8 +53,6 @@ public class MainLoader {
 	}
 	
 	public static void preInit(FMLPreInitializationEvent event) {
-
-		
 		Covers.getInstance().registerItem();
 		INFO("[preInit] Covers - Loaded");
 		

@@ -33,14 +33,14 @@ dependencies {
     api("space.impact:impactapi:0.0.+:dev") { isChanging = true }
     api("space.impact:wailaplugins:0.3.+:dev") { isChanging = true }
     api("space.impact:impact_vw:1.0.+:dev") { isChanging = true }
-    api("space.impact:gregtech:5.09.35.1:dev") { isTransitive = false }
+    api("space.impact:gregtech:5.09.35.2:dev") { isChanging = true; isTransitive = false }
 
     api("com.github.GTNewHorizons:ModularUI:1.1.10:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.+:dev") { isChanging = true }
-    api("com.github.GTNewHorizons:waila:1.6.0:dev")
+    api("com.github.GTNewHorizons:waila:1.6.0:dev") { isTransitive = false }
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:inventory-tweaks:1.5.+:api")
-    api("com.github.GTNewHorizons:EnderCore:0.2.+:dev")
+    api("com.github.GTNewHorizons:inventory-tweaks:1.5.+:api") { isTransitive = false }
+    api("com.github.GTNewHorizons:EnderCore:0.2.+:dev") { isTransitive = false }
 
     compileOnly("com.github.GTNewHorizons:NotEnoughEnergistics:1.4.2:dev") { isTransitive = false }
     runtimeOnly("com.github.GTNewHorizons:Nuclear-Control:2.4.+:dev") { isTransitive = false; isChanging = true }
