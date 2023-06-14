@@ -25,7 +25,7 @@ import static com.impact.util.Utilits.getTimeString;
  */
 public class JsonUtils {
 	
-	public static final Gson recipeDefaultGson = getRecipeGson().create();
+	public static final Gson recipeDefaultGson = getRecipeGson().setPrettyPrinting().create();
 	
 	public static GsonBuilder getRecipeGson() {
 		GsonBuilder builder = new GsonBuilder().setPrettyPrinting();

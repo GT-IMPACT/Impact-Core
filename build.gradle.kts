@@ -1,5 +1,7 @@
+
 plugins {
     alias(libs.plugins.buildconfig)
+    groovy
     id("minecraft")
     id("publish")
 }
@@ -8,7 +10,7 @@ repositories {
     maven("https://maven.accident.space/repository/maven-public/")
     maven("http://jenkins.usrv.eu:8081/nexus/content/groups/public/") { isAllowInsecureProtocol = true }
     maven("https://jitpack.io")
-    maven( "https://maven.ic2.player.to/") { metadataSources { mavenPom(); artifact() } }
+    maven("https://maven.ic2.player.to/") { metadataSources { mavenPom(); artifact() } }
     mavenCentral()
     mavenLocal()
 }
@@ -33,6 +35,7 @@ dependencies {
     api("space.impact:impact_vw:1.0.+:dev") { isChanging = true }
     api("space.impact:gregtech:5.09.35.2:dev") { isChanging = true; isTransitive = false }
 
+    api("com.github.GTNewHorizons:ModularUI:1.1.10:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.+:dev") { isChanging = true }
     api("com.github.GTNewHorizons:waila:1.6.0:dev") { isTransitive = false }
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
@@ -46,3 +49,5 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs/", "include" to listOf("*.jar"))))
     compileOnly(fileTree(mapOf("dir" to "libs/compile", "include" to listOf("*.jar"))))
 }
+
+apply(from = "runConf.gradle")

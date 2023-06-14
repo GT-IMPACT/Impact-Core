@@ -4,6 +4,7 @@ import com.impact.common.block.itemblock.IB_IGlass
 import com.impact.common.te.TilePlacedItem
 import com.impact.loader.ItemRegistery
 import com.impact.network.special.LaserPushPacket
+import com.impact.recipe.RecipeToolItem
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import net.minecraft.client.Minecraft
 import net.minecraftforge.common.util.ForgeDirection
@@ -75,4 +76,17 @@ object NetworkPackets {
 
     @JvmField
     val LaserPushPacket = LaserPushPacket(1003)
+
+    @JvmField
+    val RecipeToolPacket = createPacketStream(1004) { isServer, data ->
+       runCatching {
+           val player = serverPlayer ?: Minecraft.getMinecraft().thePlayer
+           player?.heldItem?.also { stack ->
+               val item = stack.item
+               if (item is RecipeToolItem) {
+                   item.updateMap(data.readInt())
+               }
+           }
+       }
+    }
 }
