@@ -16,6 +16,7 @@ fun BaseExtension.commonMinecraft(project: Project) {
 private fun BaseExtension.minecraftSettings() {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "runDir"
+
 }
 
 private fun Project.configureCompileOptions() {
@@ -35,6 +36,13 @@ fun DependencyHandler.api(dependencyNotation: Any): Dependency? =
 fun DependencyHandler.projectImplementation(depName: String) {
     add("implementation", (project(mapOf("path" to depName))))
 }
+
+fun DependencyHandler.annotationProcessor(dependencyNotation: Any): Dependency? =
+    add("annotationProcessor", dependencyNotation)
+
+fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
+    add("kapt", dependencyNotation)
+
 
 val Project.libs: LibrariesForLibs
     get() = the<LibrariesForLibs>()
