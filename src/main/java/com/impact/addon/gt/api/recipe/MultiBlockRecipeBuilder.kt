@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Utility
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
 import kotlin.math.abs
+import kotlin.math.max
 
 class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
@@ -198,7 +199,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     ): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
 
-        val listItems =  if (indexBus == -1) {
+        val listItems = if (indexBus == -1) {
             inputs.flatMap { it.value }.toTypedArray()
         } else {
             inputs[indexBus]?.toTypedArray() ?: emptyArray()
@@ -228,7 +229,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
-        val listItems =  if (indexBus == -1) {
+        val listItems = if (indexBus == -1) {
             inputs.flatMap { it.value }.toTypedArray()
         } else {
             inputs[indexBus]?.toTypedArray() ?: emptyArray()
@@ -364,27 +365,69 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         return this
     }
 
-    fun checkConsumption(): MultiBlockRecipeBuilder<R> {
+    @JvmOverloads
+    fun checkConsumption(isGTOverclock: Boolean = false): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
         var tEUt = recipe.mEUt
         var maxProgressTime = recipe.mDuration
 
-        while (tEUt <= GT_Values.V[tierFromVoltage - 1] && maxProgressTime > MAX_TICK_FOR_RECIPE) {
-            tEUt *= DEFAULT_OVERCLOCK_EU
-            maxProgressTime /= DEFAULT_OVERCLOCK_TIME
+        if (isGTOverclock) {
+
+            val tVoltage: Long = machine.getMaxInputVoltage()
+            calculateOverclockedNessGT(tEUt, maxProgressTime, 1, tVoltage)
+
+        } else {
+
+            while (tEUt <= GT_Values.V[tierFromVoltage - 1] && maxProgressTime > MAX_TICK_FOR_RECIPE) {
+                tEUt *= DEFAULT_OVERCLOCK_EU
+                maxProgressTime /= DEFAULT_OVERCLOCK_TIME
+            }
+
+            if (maxProgressTime < Config.MAX_TICK_RATE) {
+                maxProgressTime = Config.MAX_TICK_RATE
+                tEUt = recipe.mEUt * recipe.mDuration / DEFAULT_OVERCLOCK_TIME
+            }
+
+            machine.mEUt = -abs(tEUt)
+            machine.mMaxProgresstime = maxProgressTime
         }
-
-        if (maxProgressTime < Config.MAX_TICK_RATE) {
-            maxProgressTime = Config.MAX_TICK_RATE
-            tEUt = recipe.mEUt * recipe.mDuration / DEFAULT_OVERCLOCK_TIME
-        }
-
-        machine.mEUt = -abs(tEUt)
-        machine.mMaxProgresstime = maxProgressTime
-
         return this
+    }
+
+    private fun calculateOverclockedNessGT(eut: Int, duration: Int, amp: Int, maxVoltage: Long) {
+        val mTier = max(0, GT_Utility.getTier(maxVoltage).toInt())
+        var xEUt: Long
+        if (mTier == 0) {
+            xEUt = duration.toLong() shl 1
+            if (xEUt > Int.MAX_VALUE - 1) {
+                machine.mEUt = Int.MAX_VALUE - 1
+                machine.mMaxProgresstime = Int.MAX_VALUE - 1
+            } else {
+                machine.mEUt = eut shr 2
+                machine.mMaxProgresstime = xEUt.toInt()
+            }
+        } else {
+            xEUt = eut.toLong()
+            var tempEUt = if (xEUt < GT_Values.V[1]) GT_Values.V[1] else xEUt
+
+            machine.mMaxProgresstime = duration
+            while (tempEUt <= GT_Values.V[mTier - 1] * amp.toLong()) {
+                tempEUt = tempEUt shl 2
+                machine.mMaxProgresstime = machine.mMaxProgresstime shr 1
+                xEUt = if (machine.mMaxProgresstime == 0) xEUt shr 1 else xEUt shl 2
+            }
+
+            if (xEUt > Int.MAX_VALUE - 1) {
+                machine.mEUt = Int.MAX_VALUE - 1
+                machine.mMaxProgresstime = Int.MAX_VALUE - 1
+            } else {
+                machine.mEUt = xEUt.toInt()
+                if (machine.mEUt == 0) machine.mEUt = 1
+                if (machine.mMaxProgresstime == 0) machine.mMaxProgresstime = 1
+            }
+        }
     }
 
     fun checkConsumptionParallel(): MultiBlockRecipeBuilder<R> {
@@ -440,7 +483,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         return this
     }
 
-    fun build() : Boolean = recipeOk
+    fun build(): Boolean = recipeOk
 
     private fun List<ItemStack>?.sortedItems(): List<ItemStack> {
         if (this.isNullOrEmpty()) return emptyList()
