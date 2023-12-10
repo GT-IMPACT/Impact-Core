@@ -10,7 +10,7 @@ repositories {
     maven("https://maven.accident.space/repository/maven-public/")
     maven("http://jenkins.usrv.eu:8081/nexus/content/groups/public/") { isAllowInsecureProtocol = true }
     maven("https://jitpack.io")
-    maven("https://maven.ic2.player.to/") { metadataSources { mavenPom(); artifact() } }
+    maven("https://maven2.ic2.player.to/") { metadataSources { mavenPom(); artifact() } }
     mavenCentral()
     mavenLocal()
 }
