@@ -168,7 +168,7 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
 				.checkRecipeMap(indexBus)
 				.checkInputEquals(indexBus, false)
 				.checkEfficiency()
-				.checkConsumption(true)
+				.checkConsumption()
 				.checkOutputs(true)
 				.build();
 	}

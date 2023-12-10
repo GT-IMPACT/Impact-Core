@@ -5,6 +5,7 @@ import com.impact.command.Command_FixBQ;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.SaveManager;
+import com.impact.debug.recipes.DebugRecipes;
 import com.impact.events.EventDropBlock;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
@@ -111,6 +112,10 @@ public class impact {
 		proxy.postInit();
 		RecipesJson.load();
 		RecipesJson.loadCrafting();
+
+		if (BuildConfigKt.IS_DEBUG) {
+			DebugRecipes.INSTANCE.init();
+		}
 	}
 	
 	@Mod.EventHandler

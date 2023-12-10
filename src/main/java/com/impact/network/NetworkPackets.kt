@@ -78,7 +78,7 @@ object NetworkPackets {
     val LaserPushPacket = LaserPushPacket(1003)
 
     @JvmField
-    val RecipeToolPacket = createPacketStream(1004) { isServer, data ->
+    val RecipeToolPacket = createPacketStream(1004) { _, data ->
        runCatching {
            val player = serverPlayer ?: Minecraft.getMinecraft().thePlayer
            player?.heldItem?.also { stack ->

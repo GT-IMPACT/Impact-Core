@@ -110,7 +110,7 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 				.checkRecipeMap(indexBus)
 				.checkInputEquals(indexBus, false)
 				.checkEfficiency()
-				.checkConsumption(true)
+				.checkConsumption()
 				.checkOutputs(true)
 				.build();
 		

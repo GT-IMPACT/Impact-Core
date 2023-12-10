@@ -25,6 +25,7 @@ buildConfig {
     buildConfigField("String", "MODNAME", "\"${modName}\"")
     buildConfigField("String", "VERSION", "\"${project.version}\"")
     buildConfigField("String", "GROUPNAME", "\"${modGroup}\"")
+    buildConfigField("boolean", "IS_DEBUG", "${System.getenv("IMPACT_DEBUG") != null}")
     useKotlinOutput { topLevelConstants = true }
 }
 

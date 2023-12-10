@@ -110,7 +110,7 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
 				.checkRecipeMap(indexBus)
 				.checkInputEquals(indexBus, false)
 				.checkEfficiency()
-				.checkConsumption(true)
+				.checkConsumption()
 				.checkOutputs(true)
 				.build();
 	}

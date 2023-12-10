@@ -380,7 +380,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
         } else {
 
-            while (tEUt <= GT_Values.V[tierFromVoltage - 1] && maxProgressTime > MAX_TICK_FOR_RECIPE) {
+            while (tEUt * DEFAULT_OVERCLOCK_EU <= GT_Values.V[tierFromVoltage - 1] && maxProgressTime > MAX_TICK_FOR_RECIPE) {
                 tEUt *= DEFAULT_OVERCLOCK_EU
                 maxProgressTime /= DEFAULT_OVERCLOCK_TIME
             }
@@ -413,7 +413,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             var tempEUt = if (xEUt < GT_Values.V[1]) GT_Values.V[1] else xEUt
 
             machine.mMaxProgresstime = duration
-            while (tempEUt <= GT_Values.V[mTier - 1] * amp.toLong()) {
+            while (tempEUt shl 2 <= GT_Values.V[mTier - 1] * amp.toLong()) {
                 tempEUt = tempEUt shl 2
                 machine.mMaxProgresstime = machine.mMaxProgresstime shr 1
                 xEUt = if (machine.mMaxProgresstime == 0) xEUt shr 1 else xEUt shl 2
@@ -428,6 +428,8 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 if (machine.mMaxProgresstime == 0) machine.mMaxProgresstime = 1
             }
         }
+
+        machine.mEUt = -abs(machine.mEUt)
     }
 
     fun checkConsumptionParallel(): MultiBlockRecipeBuilder<R> {
