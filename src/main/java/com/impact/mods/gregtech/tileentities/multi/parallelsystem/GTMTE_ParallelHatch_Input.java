@@ -162,8 +162,12 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch implement
 		super.saveNBTData(aNBT);
 		aNBT.setInteger("mCurrentParallelIn", this.mCurrentParallelIn);
 		aNBT.setBoolean("isConnected", this.isConnected);
-		aNBT.setString("machineName", this.machineName);
-		aNBT.setString("address", this.address);
+
+		if (this.machineName != null && !this.machineName.isEmpty())
+			aNBT.setString("machineName", this.machineName);
+
+		if (this.address != null && !this.address.isEmpty())
+			aNBT.setString("address", this.address);
 	}
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
