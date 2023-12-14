@@ -140,7 +140,7 @@ public class ImpactPlugin extends PluginBase {
                         currenttip.add(tag.getString(filterKey));
                     }
                 }
-                if (!tag.getString("gt_colorization").equals("INVALID COLOR")) {
+                if (tag.hasKey("gt_colorization")) {
                     currenttip.add("Color: " + tag.getString("gt_colorization"));
                 }
             }
@@ -462,9 +462,12 @@ public class ImpactPlugin extends PluginBase {
             if (tMeta instanceof ISeparateBus && ((ISeparateBus) tMeta).hasSeparate()) {
                 tag.setBoolean("is_separated", ((ISeparateBus) tMeta).isSeparated());
             }
-    
-            tag.setString("gt_colorization", Dyes.get(tBaseMetaTile.getColorization()).mName);
-        
+
+            Dyes color = Dyes.get(tBaseMetaTile.getColorization());
+            if (color != Dyes._NULL) {
+                tag.setString("gt_colorization", color.mName);
+            }
+
             if (pipeline != null) {
                 tag.setLong("pipeline.distance", pipeline.getDistance());
                 tag.setBoolean("pipeline.isSender", pipeline.isSender());
