@@ -366,40 +366,37 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     }
 
     @JvmOverloads
-    fun checkConsumption(isGTOverclock: Boolean = false): MultiBlockRecipeBuilder<R> {
+    fun checkConsumption(): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
-        var tEUt = recipe.mEUt
-        var maxProgressTime = recipe.mDuration
+        calculateOverclockedNessGT(recipe.mEUt, recipe.mDuration)
 
-        if (isGTOverclock) {
-
-            val tVoltage: Long = machine.getMaxInputVoltage()
-            calculateOverclockedNessGT(tEUt, maxProgressTime, 1, tVoltage)
-
-        } else {
-
-            while (tEUt * DEFAULT_OVERCLOCK_EU <= GT_Values.V[tierFromVoltage - 1] && maxProgressTime > MAX_TICK_FOR_RECIPE) {
-                tEUt *= DEFAULT_OVERCLOCK_EU
-                maxProgressTime /= DEFAULT_OVERCLOCK_TIME
-            }
-
-            if (maxProgressTime < Config.MAX_TICK_RATE) {
-                maxProgressTime = Config.MAX_TICK_RATE
-                tEUt = recipe.mEUt * recipe.mDuration / DEFAULT_OVERCLOCK_TIME
-            }
-
-            machine.mEUt = -abs(tEUt)
-            machine.mMaxProgresstime = maxProgressTime
-        }
+//        if (!isGTOverclock) {
+//
+//            calculateOverclockedNessGT(tEUt, maxProgressTime)
+//
+//        } else {
+//
+//            while (tEUt * DEFAULT_OVERCLOCK_EU <= GT_Values.V[tierFromVoltage - 1]) {
+//                tEUt *= DEFAULT_OVERCLOCK_EU
+//                maxProgressTime /= DEFAULT_OVERCLOCK_TIME
+//            }
+//
+//            if (maxProgressTime < Config.MAX_TICK_RATE) {
+//                maxProgressTime = Config.MAX_TICK_RATE
+//                tEUt = recipe.mEUt * recipe.mDuration / DEFAULT_OVERCLOCK_TIME
+//            }
+//
+//            machine.mEUt = -abs(tEUt)
+//            machine.mMaxProgresstime = maxProgressTime
+//        }
         return this
     }
 
-    private fun calculateOverclockedNessGT(eut: Int, duration: Int, amp: Int, maxVoltage: Long) {
-        val mTier = max(0, GT_Utility.getTier(maxVoltage).toInt())
+    private fun calculateOverclockedNessGT(eut: Int, duration: Int) {
         var xEUt: Long
-        if (mTier == 0) {
+        if (tierFromVoltage == 0) {
             xEUt = duration.toLong() shl 1
             if (xEUt > Int.MAX_VALUE - 1) {
                 machine.mEUt = Int.MAX_VALUE - 1
@@ -413,8 +410,8 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             var tempEUt = if (xEUt < GT_Values.V[1]) GT_Values.V[1] else xEUt
 
             machine.mMaxProgresstime = duration
-            while (tempEUt shl 2 <= GT_Values.V[mTier - 1] * amp.toLong()) {
-                tempEUt = tempEUt shl 2
+            while (tempEUt <= GT_Values.V[tierFromVoltage - 1]) {
+                tempEUt = tempEUt shl 2 //increase x4
                 machine.mMaxProgresstime = machine.mMaxProgresstime shr 1
                 xEUt = if (machine.mMaxProgresstime == 0) xEUt shr 1 else xEUt shl 2
             }
@@ -425,7 +422,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             } else {
                 machine.mEUt = xEUt.toInt()
                 if (machine.mEUt == 0) machine.mEUt = 1
-                if (machine.mMaxProgresstime == 0) machine.mMaxProgresstime = 1
+                if (machine.mMaxProgresstime == 0) machine.mMaxProgresstime = Config.MAX_TICK_RATE
             }
         }
 

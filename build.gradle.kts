@@ -49,6 +49,9 @@ dependencies {
     implementation("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-219-GTNH-pre") { isTransitive = false }
     implementation(fileTree(mapOf("dir" to "libs/", "include" to listOf("*.jar"))))
     compileOnly(fileTree(mapOf("dir" to "libs/compile", "include" to listOf("*.jar"))))
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
 apply(from = "runConf.gradle")

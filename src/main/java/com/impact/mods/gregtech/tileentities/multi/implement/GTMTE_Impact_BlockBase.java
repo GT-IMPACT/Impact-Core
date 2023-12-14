@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.impact.addon.gt.api.multis.IMachineRecipe;
 import com.impact.addon.gt.api.multis.ISeparateBus;
 import com.impact.addon.gt.api.multis.ISwitchRecipeMap;
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
@@ -51,7 +52,8 @@ import static com.impact.util.string.Lang.holo_details;
 import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBase<MULTIS>>
-		extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IStreamPacketReceiver {
+		extends GT_MetaTileEntity_MultiBlockBase
+		implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IStreamPacketReceiver, IMachineRecipe {
 	
 	private static final AtomicReferenceArray<MultiBlockTooltipBuilder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
 	
@@ -682,5 +684,25 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	@Override
 	public boolean isSeparated() {
 		return isSeparated;
+	}
+
+	@Override
+	public int getEUt() {
+		return mEUt;
+	}
+
+	@Override
+	public void setEUt(int value) {
+		this.mEUt = value;
+	}
+
+	@Override
+	public int getMaxProgressTime() {
+		return mMaxProgresstime;
+	}
+
+	@Override
+	public void setMaxProgressTime(int value) {
+		this.mMaxProgresstime = value;
 	}
 }
