@@ -6,6 +6,7 @@ import com.impact.addon.gt.api.multis.ISeparateBus;
 import com.impact.addon.gt.api.multis.ISwitchRecipeMap;
 import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineBase;
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineEnergy;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_Solar;
 import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
@@ -179,14 +180,32 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (pipeline != null) {
+
+                currenttip.add(tag.getBoolean("pipeline.isSender")
+                        ? EnumChatFormatting.GOLD + trans("waila.pipeline.sender") + EnumChatFormatting.RESET
+                        : EnumChatFormatting.BLUE + trans("waila.pipeline.recipient") + EnumChatFormatting.RESET
+                );
+
                 final int facing = pipeline.getBaseMetaTileEntity().getFrontFacing();
-                currenttip.add("Distance: " + tag.getLong("pipeline.distance") + EnumChatFormatting.RESET);
+
+                long distance = tag.getLong("pipeline.distance");
+                currenttip.add(String.format(trans("waila.pipeline.distance"),
+                        distance < pipeline.getMinDistance() ? EnumChatFormatting.RED + trans("waila.pipeline.low_distance") : distance));
+
                 if (side == facing) {
                     currenttip.add(EnumChatFormatting.GOLD + trans("waila.pipeline.in") + EnumChatFormatting.RESET);
                 } else if (side == ForgeDirection.OPPOSITES[facing]) {
                     currenttip.add(EnumChatFormatting.BLUE + trans("waila.pipeline.out") + EnumChatFormatting.RESET);
                 } else {
                     currenttip.add(trans("waila.pipeline.side"));
+                }
+
+                if (pipeline instanceof GTMTE_LongDistancePipelineEnergy) {
+
+                    if (tag.hasKey("energyInput"))
+                        currenttip.add(trans("waila.input") + ": " + GREEN + GT_Utility.formatNumbers(tag.getLong("energyInput")) + RESET + " " + trans("waila.eut"));
+                    if (tag.hasKey("energyOutput"))
+                        currenttip.add(trans("waila.output") + ": " + RED + GT_Utility.formatNumbers(tag.getLong("energyOutput")) + RESET + " " + trans("waila.eut"));
                 }
             }
 
@@ -448,6 +467,14 @@ public class ImpactPlugin extends PluginBase {
         
             if (pipeline != null) {
                 tag.setLong("pipeline.distance", pipeline.getDistance());
+                tag.setBoolean("pipeline.isSender", pipeline.isSender());
+
+                if (pipeline instanceof GTMTE_LongDistancePipelineEnergy) {
+                    if (pipeline.isSender())
+                        tag.setLong("energyInput", pipeline.getBaseMetaTileEntity().getAverageElectricInput());
+                    else
+                        tag.setLong("energyOutput", pipeline.getBaseMetaTileEntity().getAverageElectricOutput());
+                }
             }
             
             if (adv_miner != null) {
@@ -624,8 +651,8 @@ public class ImpactPlugin extends PluginBase {
     
             if (bateryBuffer != null) {
                 long[] tmp = bateryBuffer.getStoredEnergy();
-                long nowStorage = tmp[0];
-                long maxStorage = tmp[1];
+                long nowStorage = tmp[0] - bateryBuffer.getBaseMetaTileEntity().getStoredEU();
+                long maxStorage = tmp[1] - bateryBuffer.getBaseMetaTileEntity().getEUCapacity();
         
                 long energyInput = bateryBuffer.getBaseMetaTileEntity().getAverageElectricInput();
                 long energyOutput = bateryBuffer.getBaseMetaTileEntity().getAverageElectricOutput();
