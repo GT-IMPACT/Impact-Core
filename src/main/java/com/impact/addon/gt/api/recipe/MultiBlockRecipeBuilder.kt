@@ -1,6 +1,5 @@
 package com.impact.addon.gt.api.recipe
 
-import com.impact.core.Config
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.util.Utilits
@@ -13,7 +12,6 @@ import gregtech.api.util.GT_Recipe
 import gregtech.api.util.GT_Utility
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
-import kotlin.math.abs
 
 @Suppress("unused")
 class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
