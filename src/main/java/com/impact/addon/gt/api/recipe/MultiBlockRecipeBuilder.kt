@@ -14,8 +14,8 @@ import gregtech.api.util.GT_Utility
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
 import kotlin.math.abs
-import kotlin.math.max
 
+@Suppress("unused")
 class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
     companion object {
@@ -297,7 +297,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         val isValidFluid = inputsF.isNotEmpty()
         val isValidItems = inputs.isNotEmpty()
 
-        for (currentParallel in 1..machine.parallel) {
+        for (currentParallel in 1..machine.maxParallel) {
             if (!(isValidFluid || isValidItems)) break
 
             val isValidVoltage = (recipe.mEUt * (currentParallel)) < voltageIn
@@ -365,32 +365,12 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         return this
     }
 
-    @JvmOverloads
     fun checkConsumption(): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
         calculateOverclockedNessGT(recipe.mEUt, recipe.mDuration)
 
-//        if (!isGTOverclock) {
-//
-//            calculateOverclockedNessGT(tEUt, maxProgressTime)
-//
-//        } else {
-//
-//            while (tEUt * DEFAULT_OVERCLOCK_EU <= GT_Values.V[tierFromVoltage - 1]) {
-//                tEUt *= DEFAULT_OVERCLOCK_EU
-//                maxProgressTime /= DEFAULT_OVERCLOCK_TIME
-//            }
-//
-//            if (maxProgressTime < Config.MAX_TICK_RATE) {
-//                maxProgressTime = Config.MAX_TICK_RATE
-//                tEUt = recipe.mEUt * recipe.mDuration / DEFAULT_OVERCLOCK_TIME
-//            }
-//
-//            machine.mEUt = -abs(tEUt)
-//            machine.mMaxProgresstime = maxProgressTime
-//        }
         return this
     }
 
@@ -492,7 +472,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             while (item.maxStackSize < item.stackSize) {
                 val candidate = item.copy()
                 candidate.stackSize = candidate.maxStackSize
-                item.stackSize = item.stackSize - item.maxStackSize
+                item.stackSize -= item.maxStackSize
                 sortedList += candidate
             }
         }

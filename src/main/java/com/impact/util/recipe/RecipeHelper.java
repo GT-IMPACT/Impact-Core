@@ -1,5 +1,6 @@
 package com.impact.util.recipe;
 
+import com.impact.addon.gt.api.multis.IMachineParallelRecipe;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
@@ -7,28 +8,26 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.impact.core.Config.MAX_TICK_RATE;
 
 public class RecipeHelper {
 
-    public static int calcTimeParallel(GT_MetaTileEntity_MultiParallelBlockBase base) {
+    public static int calcTimeParallel(IMachineParallelRecipe base) {
         int time;
-        switch (base.mParallel) {
+        switch (base.getMaxParallel()) {
             default:
-                time = base.mMaxProgresstime;
+                time = base.getMaxProgressTime();
                 break;
             case 16:
-                time = base.mMaxProgresstime / 2;
+                time = base.getMaxProgressTime() / 2;
                 break;
             case 64:
-                time = base.mMaxProgresstime / 3;
+                time = base.getMaxProgressTime() / 3;
                 break;
             case 256:
-                time = base.mMaxProgresstime / 4;
+                time = base.getMaxProgressTime() / 4;
                 break;
         }
         if (time < MAX_TICK_RATE) {
@@ -49,7 +48,7 @@ public class RecipeHelper {
                 }
             }
         }
-        if (overStacks.size() > 0) {
+        if (!overStacks.isEmpty()) {
             ItemStack[] tmp = new ItemStack[overStacks.size()];
             tmp = overStacks.toArray(tmp);
             tOut = ArrayUtils.addAll(tOut, tmp);

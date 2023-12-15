@@ -1,8 +1,10 @@
 package com.impact.models
 
-import com.impact.addon.gt.api.multis.IMachineRecipe
+import com.impact.addon.gt.api.multis.IMachineParallelRecipe
 
-class RecipeMachineModel(
+data class RecipeMachineModel(
     override var eUt: Int = 0,
     override var maxProgressTime: Int = 0,
-) : IMachineRecipe
+    override val currentParallel: Int = 1,
+    override val maxParallel: Int = 1,
+) : IMachineParallelRecipe

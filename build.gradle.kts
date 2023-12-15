@@ -29,6 +29,10 @@ buildConfig {
     useKotlinOutput { topLevelConstants = true }
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 dependencies {
     api("space.impact:packet_network:1.1.+:dev") { isChanging = true }
     api("space.impact:impactapi:0.0.+:dev") { isChanging = true }

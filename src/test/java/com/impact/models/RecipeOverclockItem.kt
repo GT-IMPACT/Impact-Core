@@ -7,10 +7,16 @@ data class RecipeOverclockItem(
     val recipeVoltage: Int,
     val hatchVoltage: Int,
     val hatchAmperes: Int,
-    val parallel: Int,
+    val maxParallel: Int,
+    val currentParallel: Int,
     val resultVoltage: Int,
     val resultProgress: Int,
 ) {
+
+    fun notParallelFilter(): Boolean {
+        return currentParallel == 1
+    }
+
     companion object {
         fun readParams(): List<RecipeOverclockItem> {
             val list = mutableListOf<RecipeOverclockItem>()
@@ -27,9 +33,10 @@ data class RecipeOverclockItem(
                     recipeVoltage = data[1],
                     hatchVoltage = data[2],
                     hatchAmperes = data[3],
-                    parallel = data[4],
-                    resultVoltage = data[5],
-                    resultProgress = data[6],
+                    maxParallel = data[4],
+                    currentParallel = data[5],
+                    resultVoltage = data[6],
+                    resultProgress = data[8],
                 )
             }
             return list

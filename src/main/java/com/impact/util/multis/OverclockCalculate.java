@@ -67,6 +67,8 @@ public class OverclockCalculate {
 			}
 		}
 	}
+
+
 	
 	//TODO: 20.02.2021 Future
 	public static void calculateOverclockedNew(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage,

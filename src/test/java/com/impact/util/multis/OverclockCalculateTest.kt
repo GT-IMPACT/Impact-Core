@@ -1,44 +1,66 @@
-package com.impact.util.multis;
+package com.impact.util.multis
 
-import com.impact.addon.gt.api.multis.IMachineRecipe;
-import com.impact.models.RecipeMachineModel;
-import com.impact.models.RecipeOverclockItem;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.impact.addon.gt.api.multis.IMachineParallelRecipe
+import com.impact.models.RecipeMachineModel
+import com.impact.models.RecipeOverclockItem
+import com.impact.models.RecipeOverclockItem.Companion.readParams
+import com.impact.util.recipe.RecipeHelper
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.RepetitionInfo
+import java.util.stream.Collectors
 
 class OverclockCalculateTest {
 
-    private static List<RecipeOverclockItem> ITEMS;
-
-    static {
-        ITEMS = RecipeOverclockItem.Companion.readParams();
-    }
-
-    IMachineRecipe model = new RecipeMachineModel();
+    val model = RecipeMachineModel()
 
     @BeforeEach
-    void setUp() {
-        model.setMaxProgressTime(0);
-        model.setEUt(0);
+    fun setUp() {
+        model.maxProgressTime = 0
+        model.eUt = 0
     }
 
-    @Test
-    void calculateOverclockedNessMultiTest() {
+    @RepeatedTest(value = 9)
+    fun calculateOverclockedNessMultiNotParallel(repetitionInfo: RepetitionInfo) {
 
-        assertFalse(ITEMS.isEmpty());
+        val item = NOT_PARALEL[repetitionInfo.currentRepetition - 1]
 
-        for (RecipeOverclockItem item : ITEMS) {
-            int eU = item.getRecipeVoltage();
-            int duration = item.getRecipeDuration();
-            long maxVoltage = (long) item.getHatchVoltage() * item.getHatchAmperes();
+        Assertions.assertNotNull(item)
 
-            OverclockCalculate.calculateOverclockedNessMulti(eU, duration, 1, maxVoltage, model);
+        val eU = item.recipeVoltage
+        val duration = item.recipeDuration
+        val maxVoltage = item.hatchVoltage.toLong() * item.hatchAmperes
 
-            assertEquals(model.getEUt(), item.getResultVoltage());
-            assertEquals(model.getMaxProgressTime(), item.getResultProgress());
-        }
+        OverclockCalculate.calculateOverclockedNessMulti(eU, duration, 1, maxVoltage, model)
+
+        Assertions.assertEquals(model.eUt, item.resultVoltage)
+        Assertions.assertEquals(model.maxProgressTime, item.resultProgress)
+    }
+
+    @RepeatedTest(value = 50)
+    fun calculateOverclockedNessMultiarallel(repetitionInfo: RepetitionInfo) {
+
+        val item = PARALLEL[repetitionInfo.currentRepetition - 1]
+
+        Assertions.assertNotNull(item)
+
+        val model2 = model.copy(currentParallel = item.currentParallel, maxParallel = item.maxParallel)
+
+        val eU = item.recipeVoltage * item.currentParallel
+        val duration = item.recipeDuration
+        val maxVoltage = item.hatchVoltage.toLong() * item.hatchAmperes
+
+        OverclockCalculate.calculateOverclockedNessMulti(eU, duration, 1, maxVoltage, model2)
+
+        model2.maxProgressTime = RecipeHelper.calcTimeParallel(model2)
+
+        Assertions.assertEquals(model2.eUt, item.resultVoltage)
+        Assertions.assertEquals(model2.maxProgressTime, item.resultProgress)
+    }
+
+    companion object {
+        private val NOT_PARALEL: List<RecipeOverclockItem> = readParams().filter { it.notParallelFilter() }
+        private val PARALLEL: List<RecipeOverclockItem> = readParams()
     }
 }
