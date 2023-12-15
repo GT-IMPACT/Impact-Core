@@ -370,6 +370,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         val recipe = recipe ?: return this
 
         OverclockCalculate.calculateOverclockedNessBasic(recipe.mEUt, recipe.mDuration, 1, voltageIn, machine)
+        machine.mEUt = if (machine.mEUt > 0) -machine.mEUt else machine.mEUt
 
         return this
     }
