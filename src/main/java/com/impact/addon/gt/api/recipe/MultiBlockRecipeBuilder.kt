@@ -369,44 +369,9 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
-        calculateOverclockedNessGT(recipe.mEUt, recipe.mDuration)
+        OverclockCalculate.calculateOverclockedNessBasic(recipe.mEUt, recipe.mDuration, 1, voltageIn, machine)
 
         return this
-    }
-
-    private fun calculateOverclockedNessGT(eut: Int, duration: Int) {
-        var xEUt: Long
-        if (tierFromVoltage == 0) {
-            xEUt = duration.toLong() shl 1
-            if (xEUt > Int.MAX_VALUE - 1) {
-                machine.mEUt = Int.MAX_VALUE - 1
-                machine.mMaxProgresstime = Int.MAX_VALUE - 1
-            } else {
-                machine.mEUt = eut shr 2
-                machine.mMaxProgresstime = xEUt.toInt()
-            }
-        } else {
-            xEUt = eut.toLong()
-            var tempEUt = if (xEUt < GT_Values.V[1]) GT_Values.V[1] else xEUt
-
-            machine.mMaxProgresstime = duration
-            while (tempEUt <= GT_Values.V[tierFromVoltage - 1]) {
-                tempEUt = tempEUt shl 2 //increase x4
-                machine.mMaxProgresstime = machine.mMaxProgresstime shr 1
-                xEUt = if (machine.mMaxProgresstime == 0) xEUt shr 1 else xEUt shl 2
-            }
-
-            if (xEUt > Int.MAX_VALUE - 1) {
-                machine.mEUt = Int.MAX_VALUE - 1
-                machine.mMaxProgresstime = Int.MAX_VALUE - 1
-            } else {
-                machine.mEUt = xEUt.toInt()
-                if (machine.mEUt == 0) machine.mEUt = 1
-                if (machine.mMaxProgresstime == 0) machine.mMaxProgresstime = Config.MAX_TICK_RATE
-            }
-        }
-
-        machine.mEUt = -abs(machine.mEUt)
     }
 
     fun checkConsumptionParallel(): MultiBlockRecipeBuilder<R> {
@@ -421,13 +386,13 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 tEUt /= DEFAULT_OVERCLOCK_TIME
                 divider++
             }
-            OverclockCalculate.calculateOverclockedNessMulti(
+            OverclockCalculate.calculateOverclockedNessBasic(
                 (tEUt / (divider * DEFAULT_OVERCLOCK_TIME)).toInt(),
                 recipe.mDuration * (divider * DEFAULT_OVERCLOCK_TIME),
                 1, voltageIn, machine
             )
         } else {
-            OverclockCalculate.calculateOverclockedNessMulti(
+            OverclockCalculate.calculateOverclockedNessBasic(
                 tEUt.toInt(), recipe.mDuration, 1, voltageIn, machine
             )
         }

@@ -172,7 +172,7 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
 						this.mEfficiencyIncrease = 10000;
 						long actualEUT = (tRecipe.mEUt * 1000L) * processed;
 						
-						OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+						OverclockCalculate.calculateOverclockedNessBasic((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 						
 						if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {
 							return false;

@@ -1,165 +1,59 @@
-package com.impact.util.multis;
+package com.impact.util.multis
 
-import com.impact.addon.gt.api.multis.IMachineRecipe;
-import com.impact.core.Config;
-import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import gregtech.api.util.GT_Utility;
+import com.impact.addon.gt.api.multis.IMachineRecipe
+import com.impact.core.Config
+import gregtech.api.enums.GT_Values
+import gregtech.api.util.GT_Utility
+import javax.annotation.Nonnegative
+import kotlin.math.max
 
-import javax.annotation.Nonnegative;
+object OverclockCalculate {
 
-import static gregtech.api.enums.GT_Values.V;
+    @JvmStatic
+    fun calculateOverclockedNessBasic(
+        @Nonnegative aEUt: Int,
+        @Nonnegative aDuration: Int,
+        @Nonnegative mAmperage: Int,
+        @Nonnegative maxInputVoltage: Long,
+        base: IMachineRecipe,
+    ) {
+        val mTier = max(0.0, GT_Utility.getTier(maxInputVoltage).toDouble()).toInt()
+        if (mTier == 0) {
 
-public class OverclockCalculate {
-	
-	public static void calculateOverclockedNessMulti(@Nonnegative int aEUt,
-			@Nonnegative int aDuration, @Nonnegative int mAmperage,
-			@Nonnegative long maxInputVoltage, IMachineRecipe base) {
-		
-		byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-		if (mTier == 0) {
-			//Long time calculation
-			long xMaxProgresstime = ((long) aDuration) << 1;
-			if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-				//make impossible if too long
-				base.setEUt(Integer.MAX_VALUE - 1);
-				base.setMaxProgressTime(Integer.MAX_VALUE - 1);
-			} else {
-				base.setEUt(aEUt >> 2);
-				base.setMaxProgressTime((int) xMaxProgresstime);
-			}
-		} else {
-			//Long EUt calculation
-			long xEUt = aEUt;
+            val xMaxProgresstime = aDuration.toLong() shl 1
 
-			//Isnt too low EUt check?
-			long tempEUt = Math.max(xEUt, V[1]);
-			base.setMaxProgressTime(aDuration);
+            if (xMaxProgresstime > Int.MAX_VALUE - 1) {
+                base.eUt = Int.MAX_VALUE - 1
+                base.maxProgressTime = Int.MAX_VALUE - 1
+            } else {
+                base.eUt = aEUt shr 2
+                base.maxProgressTime = xMaxProgresstime.toInt()
+            }
+        } else {
+            var xEUt = aEUt.toLong()
 
-			while (tempEUt <= V[mTier - 1] * mAmperage) {
+            var tempEUt = max(xEUt.toDouble(), GT_Values.V[1].toDouble()).toLong()
+            base.maxProgressTime = aDuration
 
-				tempEUt <<= 2; //this actually controls overclocking
+            while (tempEUt <= GT_Values.V[mTier - 1] * mAmperage) {
+                tempEUt = tempEUt shl 2
+                base.maxProgressTime = base.maxProgressTime shr 1
+                xEUt = if (base.maxProgressTime <= 0) xEUt shr 1 else xEUt shl 2
+            }
 
-				//xEUt *= 4; //this is effect of everclocking
+            while (xEUt > maxInputVoltage) {
+                xEUt = xEUt shr 2
+                base.maxProgressTime = base.maxProgressTime shl 1
+            }
 
-				base.setMaxProgressTime(base.getMaxProgressTime() >> 1); //this is effect of overclocking
-				xEUt = base.getMaxProgressTime() <= 0 ? xEUt >> 1 : xEUt << 2;
-				//U know, if the time is less than 1 tick make the machine use less power
-			}
-			while (xEUt > maxInputVoltage) {
-
-				xEUt >>= 2; //downclock one notch until we are good again, we have overshot.
-				base.setMaxProgressTime(base.getMaxProgressTime() << 1);
-
-			}
-			if (xEUt > Integer.MAX_VALUE - 1) {
-
-				base.setEUt(Integer.MAX_VALUE - 1);
-				base.setMaxProgressTime(Integer.MAX_VALUE - 1);
-
-			} else {
-
-				base.setEUt((int) xEUt);
-				if (base.getEUt() == 0) base.setEUt(1);
-
-				if (base.getMaxProgressTime() <= 0)
-					base.setMaxProgressTime(Config.MAX_TICK_RATE);
-			}
-		}
-	}
-
-
-	
-	//TODO: 20.02.2021 Future
-	public static void calculateOverclockedNew(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage,
-			@Nonnegative long maxInputVoltage, GTMTE_Impact_BlockBase<?> base) {
-		byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-		if (mTier == 0) {
-			//Long time calculation
-			long xMaxProgresstime = ((long) aDuration) << 1;
-			if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-				//make impossible if too long
-				base.mEUt = Integer.MAX_VALUE - 1;
-				base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-			} else {
-				base.mEUt = aEUt >> 2;
-				base.mMaxProgresstime = (int) xMaxProgresstime;
-			}
-		} else {
-			//Long EUt calculation
-			long xEUt = aEUt;
-			//Isnt too low EUt check?
-			long tempEUt = Math.max(xEUt, V[1]);
-			base.mMaxProgresstime = aDuration;
-			while (tempEUt <= V[mTier - 1] * mAmperage) {
-				tempEUt = (tempEUt << 2) * 3 / 2;
-				base.mMaxProgresstime >>= 2; //this is effect of overclocking
-				xEUt = base.mMaxProgresstime <= 0 ? (xEUt >> 2) * 3 / 2 : (xEUt << 2) * 3 / 2;
-				//U know, if the time is less than 1 tick make the machine use less power
-			}
-			while (xEUt > maxInputVoltage) {
-				//downclock one notch until we are good again, we have overshot.
-				xEUt = (xEUt << 2) * 3 / 2;
-				base.mMaxProgresstime <<= 2;
-			}
-			if (xEUt > Integer.MAX_VALUE - 1) {
-				base.mEUt = Integer.MAX_VALUE - 1;
-				base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-			} else {
-				base.mEUt = (int) xEUt;
-				if (base.mEUt == 0) {
-					base.mEUt = 1;
-				}
-				if (base.mMaxProgresstime <= 0) {
-					base.mMaxProgresstime = 1;
-				}
-			}
-		}
-	}
-	
-	public static void calculateOverclockedNessMultiPefectOC(int aEUt, int aDuration, int mAmperage,
-			long maxInputVoltage, GTMTE_Impact_BlockBase<?> base) {
-		byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-		if (mTier == 0) {
-			//Long time calculation
-			long xMaxProgresstime = ((long) aDuration) << 1;
-			if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-				//make impossible if too long
-				base.mEUt = Integer.MAX_VALUE - 1;
-				base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-			} else {
-				base.mEUt = aEUt >> 2;
-				base.mMaxProgresstime = (int) xMaxProgresstime;
-			}
-		} else {
-			long xEUt = aEUt;
-			//Isnt too low EUt check?
-			long tempEUt = Math.max(xEUt, V[1]);
-			base.mMaxProgresstime = aDuration;
-			while (tempEUt <= V[mTier - 1] * mAmperage) {
-				tempEUt <<= 1;//this actually controls overclocking
-				//this is effect of overclocking
-				xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1
-						: xEUt << 1;//U know, if the time is less than 1 tick make the machine use less power
-			}
-			while (xEUt > maxInputVoltage) {
-				//downclock one notch until we are good again, we have overshot.
-				xEUt >>= 1;
-				base.mMaxProgresstime <<= 1;
-			}
-			if (xEUt > Integer.MAX_VALUE - 1) {
-				base.mEUt = Integer.MAX_VALUE - 1;
-				base.mMaxProgresstime = Integer.MAX_VALUE - 1;
-			} else {
-				base.mEUt = (int) xEUt;
-				if (base.mEUt == 0) {
-					base.mEUt = 1;
-				}
-				if (base.mMaxProgresstime <= 0) {
-					base.mMaxProgresstime = 1;//set time to 1 tick
-				}
-			}
-		}
-	}
-	
+            if (xEUt > Int.MAX_VALUE - 1) {
+                base.eUt = Int.MAX_VALUE - 1
+                base.maxProgressTime = Int.MAX_VALUE - 1
+            } else {
+                base.eUt = xEUt.toInt()
+                if (base.eUt == 0) base.eUt = 1
+                if (base.maxProgressTime <= 0) base.maxProgressTime = Config.MAX_TICK_RATE
+            }
+        }
+    }
 }

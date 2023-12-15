@@ -1,6 +1,5 @@
 package com.impact.util.multis
 
-import com.impact.addon.gt.api.multis.IMachineParallelRecipe
 import com.impact.models.RecipeMachineModel
 import com.impact.models.RecipeOverclockItem
 import com.impact.models.RecipeOverclockItem.Companion.readParams
@@ -9,7 +8,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.RepetitionInfo
-import java.util.stream.Collectors
+import org.junit.jupiter.api.Test
 
 class OverclockCalculateTest {
 
@@ -32,10 +31,23 @@ class OverclockCalculateTest {
         val duration = item.recipeDuration
         val maxVoltage = item.hatchVoltage.toLong() * item.hatchAmperes
 
-        OverclockCalculate.calculateOverclockedNessMulti(eU, duration, 1, maxVoltage, model)
+        OverclockCalculate.calculateOverclockedNessBasic(eU, duration, 1, maxVoltage, model)
 
         Assertions.assertEquals(model.eUt, item.resultVoltage)
         Assertions.assertEquals(model.maxProgressTime, item.resultProgress)
+    }
+
+    @Test
+    fun calculateOverclockedNessMulti() {
+
+        val eU = 7680
+        val duration = 50
+        val maxVoltage = 32768 * 2L
+
+        OverclockCalculate.calculateOverclockedNessBasic(eU, duration, 1, maxVoltage, model)
+
+        Assertions.assertEquals(model.eUt, 30720)
+        Assertions.assertEquals(model.maxProgressTime, 24)
     }
 
     @RepeatedTest(value = 50)
@@ -51,7 +63,7 @@ class OverclockCalculateTest {
         val duration = item.recipeDuration
         val maxVoltage = item.hatchVoltage.toLong() * item.hatchAmperes
 
-        OverclockCalculate.calculateOverclockedNessMulti(eU, duration, 1, maxVoltage, model2)
+        OverclockCalculate.calculateOverclockedNessBasic(eU, duration, 1, maxVoltage, model2)
 
         model2.maxProgressTime = RecipeHelper.calcTimeParallel(model2)
 
