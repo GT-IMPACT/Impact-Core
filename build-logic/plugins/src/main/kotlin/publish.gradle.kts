@@ -5,6 +5,8 @@ import groovy.lang.Closure
 import groovy.util.Node
 import groovy.util.NodeList
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+import java.net.HttpURLConnection
+import java.net.URL
 
 plugins {
     kotlin("jvm")
@@ -16,6 +18,7 @@ plugins {
 val modId: String by extra
 val modName: String by extra
 val modGroup: String by extra
+val modFile: String? by extra
 val versionDetails: Closure<VersionDetails> by extra
 val gitDetails = versionDetails()
 group = modGroup
@@ -37,7 +40,44 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-archivesName.set(modId)
+tasks.register("deployImpact") {
+    doLast {
+        try {
+            val folder = File(buildDir, "libs")
+
+            val ignore = ".*-dev.jar".toRegex()
+            if (folder.isDirectory) {
+                val jar = folder.listFiles()?.find { !ignore.matches(it.name) } ?: throw NullPointerException("Not found jar file!")
+                println(jar.name)
+                val link = System.getenv("URL_MODPACK_MOD_UPDATE") ?: "http://impact.accident.space:25565/upload/impact1"
+                val url = URL("$link?name=${jar.name}&modid=${archivesName.get()}&version=$modVersion")
+                val conn = url.openConnection() as HttpURLConnection
+                conn.setReadTimeout(10000)
+                conn.setConnectTimeout(15000)
+                conn.setRequestMethod("POST")
+                conn.setUseCaches(false)
+                conn.setDoInput(true)
+                conn.setDoOutput(true)
+                conn.outputStream.use {
+                    it.write(jar.readBytes())
+                }
+                conn.connect()
+                val status = conn.getResponseCode()
+                println(status)
+                if (status != HttpURLConnection.HTTP_OK)
+                    throw NullPointerException("Error Upload")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    if (System.getenv("CI") == null)
+        dependsOn(tasks.test, tasks.build)
+    else
+        dependsOn(tasks.clean, tasks.test, tasks.publish)
+}
+
+archivesName.set(modFile ?: modId)
 
 tasks.withType<GenerateModuleMetadata> {
     enabled = false

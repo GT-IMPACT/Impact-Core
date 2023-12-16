@@ -43,7 +43,6 @@ fun DependencyHandler.annotationProcessor(dependencyNotation: Any): Dependency? 
 fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
     add("kapt", dependencyNotation)
 
-
 val Project.libs: LibrariesForLibs
     get() = the<LibrariesForLibs>()
 
