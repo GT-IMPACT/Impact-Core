@@ -1,9 +1,12 @@
 package com.impact.mods.gregtech.holo;
 
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_CokeOven;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.multi.*;
+import ic2.core.Ic2Items;
+import ic2.core.util.StackUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import space.impact.api.ImpactAPI;
@@ -1886,6 +1889,73 @@ public class Holo_Vanila_GregTech implements Runnable {
 						);
 					}
 					
+					@Override
+					public String[] getDescription(ItemStack stackSize) {
+						return desc;
+					}
+				}
+		);
+
+		registerTileClass(
+				GT_MetaTileEntity_AssemblyLine.class.getCanonicalName(),
+				new IMultiBlockInfoContainer<GT_MetaTileEntity_AssemblyLine>() {
+
+					private static final String STRUCTURE_PIECE_FIRST = "first";
+					private static final String STRUCTURE_PIECE_LATER = "later";
+					private static final String STRUCTURE_PIECE_LAST = "last";
+
+					//region Structure
+					private final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> definition =
+							StructureDefinition.<GT_MetaTileEntity_AssemblyLine>builder()
+									.addShape(
+											STRUCTURE_PIECE_FIRST,
+											transpose(new String[][] { { " ", "n", " " }, { "~", "l", "G" }, { "g", "m", "g" }, { "b", "i", "b" }, }))
+									.addShape(
+											STRUCTURE_PIECE_LATER,
+											transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "b", "I", "b" }, }))
+									.addShape(
+											STRUCTURE_PIECE_LAST,
+											transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "b", "o", "b" }, }))
+									.addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
+									.addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
+									.addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
+									.addElement('g', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
+									.addElement('e', ofBlock(GregTech_API.sBlockCasings2, 0))
+									.addElement('d', ofBlock(GregTech_API.sBlockCasings3, 10))
+									.addElement('b', ofBlock(GregTech_API.sBlockCasings2, 0))
+									.addElement('i', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+									.addElement('I', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.RED))
+									.addElement('o', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.BLUE))
+									.addElement('n', ofBlockHint(ImpactAPI.getBlockHint(), ImpactAPI.GREEN))
+									.build();
+					private final String[] desc = new String[]{
+							EnumChatFormatting.RED + "Impact Details:",
+							EnumChatFormatting.RED + "[]" + EnumChatFormatting.RESET + " - Any Input Bus",
+							EnumChatFormatting.BLUE + "[]" + EnumChatFormatting.RESET + " - Any Output Bus",
+							EnumChatFormatting.GREEN + "[]" + EnumChatFormatting.RESET + " - Any Energy Hatch",
+					};
+					//endregion
+
+					@Override
+					public void construct(ItemStack stackSize, boolean hintsOnly, GT_MetaTileEntity_AssemblyLine tileEntity, ExtendedFacing aSide) {
+						IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
+
+						definition.buildOrHints(tileEntity, stackSize, STRUCTURE_PIECE_FIRST, base.getWorld(), aSide,
+								base.getXCoord(), base.getYCoord(), base.getZCoord(),
+								0, 1, 0, hintsOnly);
+						int tLength = Math.min(stackSize.stackSize + 1, 16);
+						for (int i = 1; i < tLength - 1; i++) {
+							definition.buildOrHints(tileEntity, stackSize, STRUCTURE_PIECE_LATER, base.getWorld(), aSide,
+									base.getXCoord(), base.getYCoord(), base.getZCoord(),
+									-i, 1, 0, hintsOnly
+							);
+						}
+						definition.buildOrHints(tileEntity, stackSize, STRUCTURE_PIECE_LAST, base.getWorld(), aSide,
+								base.getXCoord(), base.getYCoord(), base.getZCoord(),
+								-tLength + 1, 1, 0, hintsOnly
+						);
+					}
+
 					@Override
 					public String[] getDescription(ItemStack stackSize) {
 						return desc;
