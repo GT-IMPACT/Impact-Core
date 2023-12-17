@@ -10,11 +10,8 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -26,7 +23,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer;
 import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
@@ -176,18 +172,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 				final int config = mInventory[0].getItemDamage();
 				final FluidStack storedFluid = mfh.getFluid(config);
 				// Sum available output capacity
-				int possibleOutput = 0;
-				for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
-					if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName()
-							.equals(storedFluid.getUnlocalizedName())) {
-						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-					} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName()
-							.equals(storedFluid.getUnlocalizedName())) {
-						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-					} else if (outputHatch.getFluid() == null) {
-						possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-					}
-				}
+				int possibleOutput = getPossibleOutput(storedFluid);
 				// Output as much as possible
 				final FluidStack tempStack = storedFluid.copy();
 				tempStack.amount = possibleOutput;
@@ -197,18 +182,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 			} else {
 				for (FluidStack storedFluid : mfh.getFluids()) {
 					// Sum available output capacity
-					int possibleOutput = 0;
-					for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
-						if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName()
-								.equals(storedFluid.getUnlocalizedName())) {
-							possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-						} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName()
-								.equals(storedFluid.getUnlocalizedName())) {
-							possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-						} else if (outputHatch.getFluid() == null) {
-							possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-						}
-					}
+					int possibleOutput = getPossibleOutput(storedFluid);
 					// output as much as possible
 					final FluidStack tempStack = storedFluid.copy();
 					tempStack.amount = possibleOutput;
@@ -220,7 +194,21 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 	}
-	
+
+	private int getPossibleOutput(FluidStack storedFluid) {
+		int possibleOutput = 0;
+		for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
+			if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName() != null && outputHatch.getLockedFluidName().equals(storedFluid.getUnlocalizedName())) {
+				possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+			} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName().equals(storedFluid.getUnlocalizedName())) {
+				possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+			} else if (outputHatch.getFluid() == null) {
+				possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+			}
+		}
+		return possibleOutput;
+	}
+
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
 		final Vector3i offset = new Vector3i();
 		
