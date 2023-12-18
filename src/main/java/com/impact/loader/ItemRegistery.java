@@ -7,6 +7,7 @@ import com.impact.common.item.Core_List_Items;
 import com.impact.core.Refstrings;
 import com.impact.mods.gregtech.items.tools.ConstructionLaser;
 import com.impact.recipe.RecipeToolItem;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_ModHandler;
@@ -132,8 +133,10 @@ public class ItemRegistery {
 		TheWind                 = Block_TheMill.registerBlock();
 		DryingRack              = Block_DryingRack.registerBlock();
 		maskVision              = MaskOfVision.registerItem();
-		
-		RecipeToolItem.recipeToolItem.registerItem();
+
+		if (Loader.isModLoaded("modularui"))
+			RecipeToolItem.recipeToolItem.registerItem();
+
 		INFO("[Init] Item Registery Blocks - Loaded");
 	}
 	
