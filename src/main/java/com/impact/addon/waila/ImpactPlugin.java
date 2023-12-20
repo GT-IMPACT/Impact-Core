@@ -19,9 +19,9 @@ import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabiliz
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
@@ -561,7 +561,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (towerCommunication != null) {
-                tag.setBoolean("towerCommunicationConnect", towerCommunication.getConnectionStatus());
+                tag.setBoolean("towerCommunicationConnect", towerCommunication.isSatelliteConnected());
             }
 
             if (reactor != null) {
@@ -578,7 +578,7 @@ public class ImpactPlugin extends PluginBase {
                 final int Parallel = MultiParallel.mParallel;
                 tag.setInteger("Parallel", Parallel);
                 tag.setInteger("currentParallel", MultiParallel.mCheckParallelCurrent);
-                tag.setBoolean("connectWithTower", MultiParallel.getConnectionStatus());
+                tag.setBoolean("connectWithTower", MultiParallel.isSatelliteConnected());
             }
 
             if (tMeta instanceof GTMTE_LapPowerStation) {

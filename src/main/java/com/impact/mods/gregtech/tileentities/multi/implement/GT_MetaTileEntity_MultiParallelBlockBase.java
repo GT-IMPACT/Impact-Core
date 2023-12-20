@@ -2,7 +2,8 @@ package com.impact.mods.gregtech.tileentities.multi.implement;
 
 import com.impact.addon.gt.api.multis.IMachineParallelRecipe;
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
@@ -112,11 +113,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
             }
             if (isDebug) {
                 isConnectParallel = true;
-                isConnected = true;
+                isSatelliteConnected = true;
                 setParallel(maxParallel);
                 return;
             }
-            if (!isConnectParallel || !isConnected) {
+            if (!isConnectParallel || !isSatelliteConnected) {
                 maxParallel = 1;
             }
             setParallel(maxParallel);

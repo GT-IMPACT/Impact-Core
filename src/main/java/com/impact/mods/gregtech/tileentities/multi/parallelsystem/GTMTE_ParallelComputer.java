@@ -136,7 +136,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 			
 			if (checkSum && ph.getBaseMetaTileEntity().isAllowedToWork()) {
 				mCurrentCapacityPP -= currentParallel;
-				parallelIsDone = isConnected && te.isActive();
+				parallelIsDone = isSatelliteConnected && te.isActive();
 			}
 			ph.updateStatus(parallelIsDone);
 		}

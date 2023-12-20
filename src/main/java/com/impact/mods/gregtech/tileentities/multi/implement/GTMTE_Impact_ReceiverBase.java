@@ -1,17 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.impact.addon.gt.api.satellite.IDistributor;
-import com.impact.addon.gt.api.satellite.IReceiver;
+import com.impact.addon.gt.api.parallel_system.INetworkMachine;
+import com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import org.jetbrains.annotations.NotNull;
 
-public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_ReceiverBase<MULTIS>> extends GTMTE_Impact_BlockBase<MULTIS> implements IReceiver {
+public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_ReceiverBase<MULTIS>> extends GTMTE_Impact_BlockBase<MULTIS> implements INetworkMachine {
 	
-	protected boolean isConnected;
-	protected IDistributor distributor = null;
-	
+	protected boolean isSatelliteConnected;
+
 	public GTMTE_Impact_ReceiverBase(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -30,43 +28,43 @@ public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_Rece
 	
 	@Override
 	public void inValidate() {
-		onDisconnect();
+		if (getBaseMetaTileEntity().isServerSide()) removeConnect();
 		super.inValidate();
 	}
-	
+
+	@Override
+	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+		super.onFirstTick(aBaseMetaTileEntity);
+		if (aBaseMetaTileEntity.isServerSide()) createConnect();
+	}
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setBoolean("isConnected", isConnected);
+		aNBT.setBoolean("isConnected", isSatelliteConnected);
 	}
 	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		isConnected = aNBT.getBoolean("isConnected");
+		isSatelliteConnected = aNBT.getBoolean("isConnected");
 	}
-	
+
 	@Override
-	public void updateConnectionStatus(boolean isConnected) {
-		this.isConnected = isConnected;
+	public boolean isSatelliteConnected() {
+		return isSatelliteConnected;
 	}
-	
+
 	@Override
-	public boolean getConnectionStatus() {
-		return isConnected;
+	public void setSatelliteConnected(boolean connect) {
+		isSatelliteConnected = connect;
 	}
-	
-	@Override
-	public boolean isValid() {
-		IGregTechTileEntity te = getBaseMetaTileEntity();
-		return te != null && !te.isDead();
-	}
-	
+
 	public abstract boolean hasConnectForce();
 	
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
-		if (hasConnectForce() && !getConnectionStatus()) {
+		if (hasConnectForce() && !isSatelliteConnected()) {
 			IGregTechTileEntity te = getBaseMetaTileEntity();
 			if (te != null) {
 				te.disableWorking();
@@ -74,18 +72,14 @@ public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_Rece
 		}
 		return super.onRunningTick(aStack);
 	}
-	
+
 	@Override
-	public void onDisconnect() {
-		if (distributor != null) {
-			distributor.disconnect(this);
-			distributor = null;
-			isConnected = false;
-		}
+	public void createConnect() {
+		SatelliteNetworkLogic.INSTANCE.reloadNetwork();
 	}
-	
+
 	@Override
-	public void createConnect(@NotNull IDistributor distributor) {
-		this.distributor = distributor;
+	public void removeConnect() {
+		SatelliteNetworkLogic.INSTANCE.reloadNetwork();
 	}
 }
