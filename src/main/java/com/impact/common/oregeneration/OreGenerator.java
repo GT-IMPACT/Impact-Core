@@ -7,15 +7,10 @@ import com.impact.core.Impact_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.world.chunk.Chunk;
 
-import java.util.Arrays;
 import java.util.Objects;
 
-import static com.impact.common.oregeneration.OreGenerator.Dimensions.*;
-import static com.impact.common.oregeneration.OreVeinBuilder.addVein;
-import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIDimOres;
-import static com.impact.mods.nei.impactplugin.ores.OreBuilderNEI.BuildNEIOres;
-import static gregtech.api.enums.Materials.*;
-import static gregtech.api.enums.OrePrefixes.dust;
+import static com.impact.addon.nei.impactplugin.ores.OreBuilderNEI.BuildNEIDimOres;
+import static com.impact.addon.nei.impactplugin.ores.OreBuilderNEI.BuildNEIOres;
 
 public class OreGenerator {
 	

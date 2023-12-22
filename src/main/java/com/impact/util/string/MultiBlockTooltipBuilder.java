@@ -31,6 +31,7 @@ public class MultiBlockTooltipBuilder {
 	public static final char GREEN = EnumChatFormatting.DARK_GREEN.getFormattingCode();
 	public static final char RED = EnumChatFormatting.RED.getFormattingCode();
 	public static final char BLACK = EnumChatFormatting.BLACK.getFormattingCode();
+	public static final String BLOCK = "[]";
 	private static final String TAB = "   ";
 	private final List<String> iLines;
 	private final List<String> sLines;
@@ -57,13 +58,7 @@ public class MultiBlockTooltipBuilder {
 	public String trans(String aKey, String aEnglish) {
 		return Language.transMTB(prefix + aKey, aEnglish);
 	}
-	
-	/**
-	 * Add a basic line of information about this structure
-	 *
-	 * @param // line The line to be added.
-	 * @return Instance this method was called on.
-	 */
+
 	public MultiBlockTooltipBuilder addInfo(String aKey, String aEnglish) {
 		iLines.add(trans(aKey, aEnglish));
 		return this;
@@ -154,17 +149,7 @@ public class MultiBlockTooltipBuilder {
 		iLines.add(single_analog.get());
 		return this;
 	}
-	
-	/**
-	 * Begin adding structural information by adding a line about the structure's dimensions and then
-	 * inserting a "Structure:" line.
-	 *
-	 * @param // w Structure width.
-	 * @param // h Structure height.
-	 * @param // l Structure depth/length.
-	 * @return Instance this method was called on.
-	 */
-	
+
 	public MultiBlockTooltipBuilder addParallelHatch(String aKey, String aEng) {
 		sLines.add(TAB + EnumChatFormatting.WHITE + parallel_hatch.get() + ": " + EnumChatFormatting.GRAY + trans(aKey, aEng));
 		return this;
@@ -194,7 +179,16 @@ public class MultiBlockTooltipBuilder {
 		cLines.add(TAB + trans(aKey, aEng));
 		return this;
 	}
-	
+
+	/**
+	 * Begin adding structural information by adding a line about the structure's dimensions and then
+	 * inserting a "Structure:" line.
+	 *
+	 * @param w Structure width.
+	 * @param h Structure height.
+	 * @param l Structure depth/length.
+	 * @return Instance this method was called on.
+	 */
 	public MultiBlockTooltipBuilder beginStructureBlock(int w, int h, int l) {
 //        sLines.add(begin_structure_block .get();
 		sLines.add(structure.get() + ":");
@@ -475,77 +469,77 @@ public class MultiBlockTooltipBuilder {
 	}
 	
 	public MultiBlockTooltipBuilder addWhiteHint(String aEng) {
-		sLines.add(EnumChatFormatting.WHITE + "▉" + EnumChatFormatting.RESET + " - " + trans("white", aEng));
+		sLines.add(EnumChatFormatting.WHITE + BLOCK + EnumChatFormatting.RESET + " - " + trans("white", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addOrangeHint(String aEng) {
-		sLines.add(EnumChatFormatting.GOLD + "▉" + EnumChatFormatting.RESET + " - " + trans("orange", aEng));
+		sLines.add(EnumChatFormatting.GOLD + BLOCK + EnumChatFormatting.RESET + " - " + trans("orange", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addMagentaHint(String aEng) {
-		sLines.add(EnumChatFormatting.DARK_RED + "▉" + EnumChatFormatting.RESET + " - " + trans("magenta", aEng));
+		sLines.add(EnumChatFormatting.DARK_RED + BLOCK + EnumChatFormatting.RESET + " - " + trans("magenta", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addLBlueHint(String aEng) {
-		sLines.add(EnumChatFormatting.BLUE + "▉" + EnumChatFormatting.RESET + " - " + trans("l_blue", aEng));
+		sLines.add(EnumChatFormatting.BLUE + BLOCK + EnumChatFormatting.RESET + " - " + trans("l_blue", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addYellowHint(String aEng) {
-		sLines.add(EnumChatFormatting.YELLOW + "▉" + EnumChatFormatting.RESET + " - " + trans("yellow", aEng));
+		sLines.add(EnumChatFormatting.YELLOW + BLOCK + EnumChatFormatting.RESET + " - " + trans("yellow", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addLimeHint(String aEng) {
-		sLines.add(EnumChatFormatting.GREEN + "▉" + EnumChatFormatting.RESET + " - " + trans("lime", aEng));
+		sLines.add(EnumChatFormatting.GREEN + BLOCK + EnumChatFormatting.RESET + " - " + trans("lime", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addPinkHint(String aEng) {
-		sLines.add(EnumChatFormatting.LIGHT_PURPLE + "▉" + EnumChatFormatting.RESET + " - " + trans("pink", aEng));
+		sLines.add(EnumChatFormatting.LIGHT_PURPLE + BLOCK + EnumChatFormatting.RESET + " - " + trans("pink", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addGrayHint(String aEng) {
-		sLines.add(EnumChatFormatting.DARK_GRAY + "▉" + EnumChatFormatting.RESET + " - " + trans("gray", aEng));
+		sLines.add(EnumChatFormatting.DARK_GRAY + BLOCK + EnumChatFormatting.RESET + " - " + trans("gray", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addLGrayHint(String aEng) {
-		sLines.add(EnumChatFormatting.GRAY + "▉" + EnumChatFormatting.RESET + " - " + trans("l_gray", aEng));
+		sLines.add(EnumChatFormatting.GRAY + BLOCK + EnumChatFormatting.RESET + " - " + trans("l_gray", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addCyanHint(String aEng) {
-		sLines.add(EnumChatFormatting.DARK_AQUA + "▉" + EnumChatFormatting.RESET + " - " + trans("cyan", aEng));
+		sLines.add(EnumChatFormatting.DARK_AQUA + BLOCK + EnumChatFormatting.RESET + " - " + trans("cyan", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addPurpleHint(String aEng) {
-		sLines.add(EnumChatFormatting.DARK_PURPLE + "▉" + EnumChatFormatting.RESET + " - " + trans("purple", aEng));
+		sLines.add(EnumChatFormatting.DARK_PURPLE + BLOCK + EnumChatFormatting.RESET + " - " + trans("purple", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addBlueHint(String aEng) {
-		sLines.add(EnumChatFormatting.DARK_BLUE + "▉" + EnumChatFormatting.RESET + " - " + trans("blue", aEng));
+		sLines.add(EnumChatFormatting.DARK_BLUE + BLOCK + EnumChatFormatting.RESET + " - " + trans("blue", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addGreenHint(String aEng) {
-		sLines.add(EnumChatFormatting.DARK_GREEN + "▉" + EnumChatFormatting.RESET + " - " + trans("green", aEng));
+		sLines.add(EnumChatFormatting.DARK_GREEN + BLOCK + EnumChatFormatting.RESET + " - " + trans("green", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addRedHint(String aEng) {
-		sLines.add(EnumChatFormatting.RED + "▉" + EnumChatFormatting.RESET + " - " + trans("red", aEng));
+		sLines.add(EnumChatFormatting.RED + BLOCK + EnumChatFormatting.RESET + " - " + trans("red", aEng));
 		return this;
 	}
 	
 	public MultiBlockTooltipBuilder addBlackHint(String aEng) {
-		sLines.add(EnumChatFormatting.BLACK + "▉" + EnumChatFormatting.RESET + " - " + trans("black", aEng));
+		sLines.add(EnumChatFormatting.BLACK + BLOCK + EnumChatFormatting.RESET + " - " + trans("black", aEng));
 		return this;
 	}
 	

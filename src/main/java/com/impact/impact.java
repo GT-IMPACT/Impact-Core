@@ -5,6 +5,7 @@ import com.impact.command.Command_FixBQ;
 import com.impact.core.CommonProxy;
 import com.impact.core.Config;
 import com.impact.core.SaveManager;
+import com.impact.debug.recipes.DebugRecipes;
 import com.impact.events.EventDropBlock;
 import com.impact.events.TickHandler;
 import com.impact.events.impactEvents;
@@ -12,8 +13,7 @@ import com.impact.loader.MainLoader;
 import com.impact.mods.gregtech.enums.IRecipeAdder;
 import com.impact.mods.gregtech.enums.RecipeAdder;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.railcraft.carts.item.ChestCartModule;
-import com.impact.mods.railcraft.carts.item.events.Module;
+import com.impact.network.RegisterPackets;
 import com.impact.recipe.maps.RecipesJson;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -23,34 +23,34 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import space.impact.BuildConfig;
-
+import space.impact.impact.BuildConfigKt;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 import static com.impact.core.Refstrings.MODID;
 import static com.impact.core.impactLog.INFO;
 
 @Mod(
-		modid = BuildConfig.MODID,
-		name = BuildConfig.MODNAME,
-		version = BuildConfig.VERSION,
+		modid = BuildConfigKt.MODID,
+		name = BuildConfigKt.MODNAME,
+		version = BuildConfigKt.VERSION,
 		acceptedMinecraftVersions = "[1.7.10]",
-		dependencies = "required-after:Forge@[10.13.2.1291,);after:UndergroundBiomes")
+		dependencies = "required-after:Forge@[10.13.2.1291,);after:UndergroundBiomes"
+)
 
 public class impact {
-	
-	private static final ArrayList<Module> MODULES_ENABLED = new ArrayList<>();
 	@SidedProxy(clientSide = "com.impact.core.ClientProxy", serverSide = "com.impact.core.CommonProxy")
 	public static CommonProxy proxy;
 	@Mod.Instance(MODID)
 	public static impact instance;
-	public static String ModPackVersion = BuildConfig.VERSION;
+	public static String ModPackVersion = BuildConfigKt.VERSION;
 	public static Config mConfig;
 	public static IRecipeAdder I_RA;
+	public static Random RANDOM = new Random();
 	
 	public impact() {
+		RegisterPackets.register();
 		impact.I_RA = new RecipeAdder();
 		Texture.Icons.VOID.name();
 	}
@@ -63,13 +63,6 @@ public class impact {
 		IChatComponent c = new ChatComponentText(text);
 		c.getChatStyle().setColor(EnumChatFormatting.DARK_PURPLE);
 		impact.getServer().getConfigurationManager().sendChatMsgImpl(c, true);
-	}
-	
-	public static ArrayList<Module> getModules() {
-		if (MODULES_ENABLED.isEmpty()) {
-			MODULES_ENABLED.add(new ChestCartModule());
-		}
-		return MODULES_ENABLED;
 	}
 	
 	@Mod.EventHandler
@@ -119,6 +112,10 @@ public class impact {
 		proxy.postInit();
 		RecipesJson.load();
 		RecipesJson.loadCrafting();
+
+		if (BuildConfigKt.IS_DEBUG) {
+			DebugRecipes.INSTANCE.init();
+		}
 	}
 	
 	@Mod.EventHandler

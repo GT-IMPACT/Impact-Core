@@ -1,0 +1,13 @@
+[
+  {
+    "modid": "${modId}",
+    "name": "${modName}",
+    "version": "${modVersion}",
+    "mcversion": "${minecraftVersion}",
+    "description": "",
+    "url": "",
+    "credits": "",
+    "authorList": ["IMPACT"],
+    "dependencies": []
+  }
+]

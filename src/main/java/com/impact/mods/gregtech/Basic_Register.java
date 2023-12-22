@@ -1,7 +1,6 @@
 package com.impact.mods.gregtech;
 
 import com.impact.mods.gregtech.tileentities.basic.*;
-import com.impact.mods.gregtech.tileentities.basic.ae.craftsup.GTMTE_AELevelEmitter;
 import com.impact.mods.gregtech.tileentities.hatches.*;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
@@ -104,8 +103,8 @@ public class Basic_Register {
 		
 		Creative_Tank.set(new GTMTE_DebugTank(ID2++, "impact.machine.creativetank", "Creative Tank", 5).getStackForm(1L));
 		
-		Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.quadruple", "Quadruple Input Hatch", 4).getStackForm(1L));
-		Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, "impact.hatch.nonuple", "Nonuple Input Hatch", 5).getStackForm(1L));
+		Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, 4,  "impact.hatch.quadruple", "Quadruple Input Hatch",4).getStackForm(1L));
+		Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++,  9, "impact.hatch.nonuple", "Nonuple Input Hatch", 5).getStackForm(1L));
 		
 		Nuclear_Hatch_Rod.set(new GTMTE_Reactor_Rod_Hatch(ID2++, "impact.hatch.nuclear.rod", "Nuclear Rod Hatch").getStackForm(1L));
 		
@@ -355,7 +354,7 @@ public class Basic_Register {
 		Solar_UEV.set(new GTMTE_Solar(ID2++, "UEV Solar Panel", 10).getStackForm(1L));
 		Solar_UIV.set(new GTMTE_Solar(ID2++, "UIV Solar Panel", 11).getStackForm(1L));
 		
-		Level_Emitter.set(new GTMTE_AELevelEmitter(ID2++, "Level Emitter").getStackForm(1));
+		ID2++; //Level Emitter
 		
 		Steam_Out_Hatch.set(new GT_MegaHatch_Output(ID2++, "Steam Output Hatch").getStackForm(1));
 		Steam_In_Hatch.set(new GT_MegaHatch_Input(ID2++, "Steam Input Hatch").getStackForm(1));

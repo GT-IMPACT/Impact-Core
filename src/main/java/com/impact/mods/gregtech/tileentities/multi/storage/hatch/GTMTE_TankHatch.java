@@ -25,12 +25,10 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.util.fluid.MultiFluidHandler;
 import com.impact.util.fluid.IMultiFluidWatcher;
 import cpw.mods.fml.common.Optional;
-import extracells.util.FluidUtil;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
@@ -74,6 +73,18 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
 	
 	public boolean modeOut = false;
 	public boolean lastLocked = false;
+	
+	public static IAEFluidStack createAEFluidStack(Fluid fluid, long amount) {
+		return createAEFluidStack(fluid.getID(), amount);
+	}
+	
+	public static IAEFluidStack createAEFluidStack(FluidStack fluid) {
+		return AEApi.instance().storage().createFluidStack(fluid);
+	}
+	
+	public static IAEFluidStack createAEFluidStack(int fluidId, long amount) {
+		return createAEFluidStack(new FluidStack(FluidRegistry.getFluid(fluidId), 1)).setStackSize(amount);
+	}
 	
 	public GTMTE_TankHatch(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, INV_SLOT_COUNT, new String[]{
@@ -206,7 +217,7 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
 			if (mfh.getFluids().isEmpty()) return out;
 			mfh.getFluids().forEach(fluidStack -> {
 				if (fluidStack != null)
-					out.add(FluidUtil.createAEFluidStack(fluidStack));
+					out.add(createAEFluidStack(fluidStack));
 			});
 			return out;
 		}
@@ -231,7 +242,7 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
 		FluidStack ready = drain(null, request.getFluidStack(), false);
 		if (ready != null) {
 			if (mode.equals(Actionable.MODULATE)) drain(null, request.getFluidStack(), true);
-			return FluidUtil.createAEFluidStack(ready.getFluid(), ready.amount);
+			return createAEFluidStack(ready.getFluid(), ready.amount);
 		}
 		else return null;
 	}

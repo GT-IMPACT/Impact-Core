@@ -1,15 +1,15 @@
 package com.impact.mods.gregtech.gui.regulatechest;
 
-
 import com.impact.client.gui.GuiIntegerBox;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_RegulateDigitalChest;
-import com.impact.network.ToServer_Integer;
-import com.impact.network.special.ToServer_RegulateDigitalChest;
+import com.impact.network.NetworkPackets;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
+import space.impact.packet_network.network.NetworkHandler;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -106,8 +106,10 @@ public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 	protected void actionPerformed(GuiButton btn) {
 		try {
 			if (btn == apply) {
-				new ToServer_RegulateDigitalChest(Integer.parseInt(amount.getText()), mContainer.mTileEntity.getXCoord(),
-						mContainer.mTileEntity.getYCoord(), mContainer.mTileEntity.getZCoord()).sendToServer();
+				NetworkHandler.sendToServer(
+						(TileEntity) mContainer.mTileEntity,
+						NetworkPackets.StreamPacket.transaction(Integer.parseInt(amount.getText()))
+				);
 				mc.thePlayer.closeScreen();
 			}
 			

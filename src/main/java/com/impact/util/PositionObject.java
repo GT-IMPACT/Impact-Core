@@ -1,6 +1,6 @@
 package com.impact.util;
 
-import com.impact.api.position.IPosition;
+import com.impact.addon.gt.api.position.IPosition;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

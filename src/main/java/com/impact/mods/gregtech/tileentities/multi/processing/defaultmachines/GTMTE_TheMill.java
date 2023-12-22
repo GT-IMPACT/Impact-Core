@@ -8,7 +8,7 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.network.ToClient_Integer;
+import com.impact.network.NetworkPackets;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
@@ -37,6 +37,7 @@ import net.minecraft.tileentity.TileEntity;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
+import space.impact.packet_network.network.NetworkHandler;
 
 import java.awt.*;
 
@@ -237,7 +238,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 				if (x == 0 && y == 0) {
 					TileEntity te = Structure.getTE(gt, vec);
 					if (te instanceof TE_TheMill) {
-						new ToClient_Integer(te.xCoord, te.yCoord, te.zCoord, gt.getFrontFacing()).sendToClients();
+						NetworkHandler.sendToAllAround(te, NetworkPackets.StreamPacket.transaction(gt.getFrontFacing()), 256);
 					} else {
 						return false;
 					}

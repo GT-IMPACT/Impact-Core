@@ -15,7 +15,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -154,7 +153,7 @@ public class GTMTE_MESystemProvider extends GTMTE_Impact_BlockBase<GTMTE_MESyste
 					long actualEUT = (long) (tRecipe.mEUt) * processed;
 					mMatrixParticlesSummary -= tRecipe.mSpecialValue * processed;
 					
-					OverclockCalculate.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+					OverclockCalculate.calculateOverclockedNessBasic((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
 					
 					this.mMaxProgresstime = this.mMaxProgresstime / this.mSpeedUp;
 					if (this.mMaxProgresstime < 1) this.mMaxProgresstime = 1;

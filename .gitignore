@@ -5,7 +5,6 @@
 *.iml
 *.ipr
 *.iws
-*.info
 *.xml
 *.launch
 *.prefs
@@ -27,5 +26,6 @@ idea/
 *.patch
 src/main/generated/
 src/main/resources/mixins.*.json
-impact/
+run/
+runDir/
 .gitattributes

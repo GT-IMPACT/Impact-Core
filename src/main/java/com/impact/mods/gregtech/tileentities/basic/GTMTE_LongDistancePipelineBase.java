@@ -38,271 +38,279 @@ import java.util.*;
  */
 
 public abstract class GTMTE_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
-	
-	protected GTMTE_LongDistancePipelineBase mTarget = null, mSender = null;
-	protected ChunkCoordinates mTargetPos = null;
-	
-	
-	protected long mDistance = 0;
-	
-	public GTMTE_LongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier,
-										  String aDescription) {
-		super(aID, aName, aNameRegional, aTier, aDescription);
-	}
-	
-	public GTMTE_LongDistancePipelineBase(String aName, int aTier, String aDescription,
-										  ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
-	}
-	
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		super.saveNBTData(aNBT);
-		if (mTargetPos != null && mTarget != this) {
-			aNBT.setBoolean("target", true);
-			aNBT.setInteger("target.x", mTargetPos.posX);
-			aNBT.setInteger("target.y", mTargetPos.posY);
-			aNBT.setInteger("target.z", mTargetPos.posZ);
-			aNBT.setLong("mDistance", mDistance);
-		}
-	}
-	
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
-		if (aNBT.hasKey("mDistance")) {
-			mDistance = aNBT.getInteger("mDistance");
-		}
-		if (aNBT.hasKey("target")) {
-			mTargetPos = new ChunkCoordinates(
-					aNBT.getInteger("target.x"),
-					aNBT.getInteger("target.y"),
-					aNBT.getInteger("target.z")
-			);
-		}
-	}
-	
-	public boolean isSameClass(GTMTE_LongDistancePipelineBase other) {
-		return false;
-	}
-	
-	@Override
-	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-		if (aBaseMetaTileEntity.isClientSide()) {
-			return true;
-		}
-		ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-		if (tCurrentItem != null) {
-			if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {
-				scanPipes();
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean isDead() {
-		return getBaseMetaTileEntity() == null || getBaseMetaTileEntity().isDead();
-	}
-	
-	public boolean checkTarget() {
-		final IGregTechTileEntity gt_tile = getBaseMetaTileEntity();
-		if (gt_tile == null || !gt_tile.isAllowedToWork() || gt_tile.isClientSide()) {
-			return false;
-		}
-		World world = gt_tile.getWorld();
-		
-		if (mTargetPos == null) {
-			// We don't have a target position, scan the pipes
-			scanPipes();
-		} else if (mTarget == null || mTarget.isDead()) {
-			// We don't have a target, or it's dead.  Try checking the target position
-			mTarget = null;
-			if (world.blockExists(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ)) {
-				// Only check if the target position is loaded
-				TileEntity te = world.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
-				final IMetaTileEntity tMeta;
-				if (te instanceof BaseMetaTileEntity &&
-						((tMeta = ((BaseMetaTileEntity) te)
-								.getMetaTileEntity()) instanceof GTMTE_LongDistancePipelineBase) &&
-						isSameClass((GTMTE_LongDistancePipelineBase) tMeta)) {
-					// It's the right type!
-					mTarget = (GTMTE_LongDistancePipelineBase) tMeta;
-				} else if (te != null) {
-					// It isn't the right type, kill the target position
-					mTargetPos = null;
-				}
-			}
-		}
-		if (mTarget == null || mTarget == this) {
-			return false;
-		}
-		if (mTarget.mSender == null || mTarget.mSender.isDead() || mTarget.mSender.mTarget == null
-				|| mTarget.mSender.mTarget.isDead()) {
-			mTarget.mSender = this;
-		}
-		
-		mTarget.mDistance = mDistance;
-		
-		return mTarget.mSender == this;
-	}
-	
-	@Override
-	public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity,
-												 EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
-		if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
-			final ChunkCoordinates coords = mSender.getCoords();
-			aList.addAll(Arrays.asList(
-					"Is the Target",
-					"Sender is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ
-			));
-		} else {
-			aList.addAll(
-					Arrays.asList(
-							checkTarget() ? "Has Target" : "Has no loaded Target",
-							"Target should be around: X: " + mTargetPos.posX + " Y: " + mTargetPos.posY + " Z: "
-									+ mTargetPos.posZ
-					));
-		}
-		
-		return aList;
-		
-	}
-	
-	public long getDistance() {
-		return mDistance;
-	}
-	
-	// What meta should the pipes for this pipeline have
-	public abstract int getPipeMeta();
-	
-	protected void scanPipes() {
-		if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
-			return;
-		}
-		//GT_Mod.GT_FML_LOGGER.info("ScanPipes()");
-		
-		// Check if we need to scan anything
-		final IGregTechTileEntity gtTile = getBaseMetaTileEntity();
-		if (gtTile == null) {
-			return;
-		}
-		
-		final World world = gtTile.getWorld();
-		if (world == null) {
-			return;
-		}
-		
-		mTargetPos = getCoords();
-		mTarget    = this;
-		mSender    = null;
-		mDistance  = 0;
-		
-		// Start scanning from the output side
-		Block aBlock = gtTile.getBlockAtSide(gtTile.getBackFacing());
-		
-		if (aBlock instanceof GT_Block_LongDistancePipe) {
-			byte aMetaData = gtTile.getMetaIDAtSide(gtTile.getBackFacing());
-			if (aMetaData != getPipeMeta()) {
-				return;
-			}
-			
-			HashSet<ChunkCoordinates>
-					tVisited = new HashSet<>(Collections.singletonList(getCoords())),
-					tWires = new HashSet<>();
-			Queue<ChunkCoordinates>
-					tQueue = new LinkedList<>(
-					Collections.singletonList(getFacingOffset(gtTile, gtTile.getBackFacing())));
-			mDistance = -1;
-			while (!tQueue.isEmpty()) {
-				
-				final ChunkCoordinates aCoords = tQueue.poll();
-				
-				if (world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ) == aBlock
-						&& world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == aMetaData) {
-					mDistance++;
-					// We've got another pipe/wire block
-					// TODO: Make sure it's the right type of pipe/wire via meta
-					ChunkCoordinates tCoords;
-					tWires.add(aCoords);
-					
-					// For each direction, if we haven't already visisted that coordinate, add it to the end of the queue
-					if (tVisited
-							.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ))) {
-						tQueue.add(tCoords);
-					}
-					if (tVisited
-							.add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ))) {
-						tQueue.add(tCoords);
-					}
-					if (tVisited
-							.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ))) {
-						tQueue.add(tCoords);
-					}
-					if (tVisited
-							.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ))) {
-						tQueue.add(tCoords);
-					}
-					if (tVisited
-							.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1))) {
-						tQueue.add(tCoords);
-					}
-					if (tVisited
-							.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1))) {
-						tQueue.add(tCoords);
-					}
-				} else {
-					// It's not a block - let's see if it's a tile entity
-					TileEntity tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-					if (
-							tTileEntity != gtTile && tTileEntity instanceof BaseMetaTileEntity &&
-									((BaseMetaTileEntity) tTileEntity)
-											.getMetaTileEntity() instanceof GTMTE_LongDistancePipelineBase) {
-						final GTMTE_LongDistancePipelineBase tGtTile = (GTMTE_LongDistancePipelineBase) ((BaseMetaTileEntity) tTileEntity)
-								.getMetaTileEntity();
-						if (isSameClass(tGtTile) && tWires.contains(
-								tGtTile.getFacingOffset(
-										(BaseMetaTileEntity) tTileEntity,
-										((BaseMetaTileEntity) tTileEntity).getFrontFacing()
-								)
-						)) {
-							// If it's the same class, and we've scanned a wire in front of it (the input side), we've found our target
-							mTarget    = tGtTile;
-							mTargetPos = tGtTile.getCoords();
-							return;
-						}
-						
-						// Remove this block from the visited because we might end up back here from another wire that IS connected to the
-						// input side
-						tVisited.remove(aCoords);
-					}
-				}
-			}
-		}
-		
-	}
-	
-	public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, byte aSide) {
-		return new ChunkCoordinates(
-				gt_tile.getOffsetX(aSide, 1), gt_tile.getOffsetY(aSide, 1), gt_tile.getOffsetZ(aSide, 1)
-		);
-		
-	}
-	
-	public ChunkCoordinates getCoords() {
-		final IGregTechTileEntity gt_tile = getBaseMetaTileEntity();
-		return new ChunkCoordinates(gt_tile.getXCoord(), gt_tile.getYCoord(), gt_tile.getZCoord());
-	}
-	
-	@Override
-	public void onMachineBlockUpdate() {
-		//GT_Mod.GT_FML_LOGGER.info("You're dead to me");
-		mTargetPos = null;
-		mSender    = null;
-	}
-	
-	@Override
-	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-		return new ITexture[0][0][0];
-	}
+
+    protected GTMTE_LongDistancePipelineBase mTarget = null, mSender = null;
+    protected ChunkCoordinates mTargetPos = null;
+
+
+    protected long mDistance = 0;
+
+    public GTMTE_LongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier,
+                                          String aDescription) {
+        super(aID, aName, aNameRegional, aTier, aDescription);
+    }
+
+    public GTMTE_LongDistancePipelineBase(String aName, int aTier, String aDescription,
+                                          ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
+    }
+
+    public boolean isSender() {
+        return mSender == null;
+    }
+
+    public int getMinDistance() {
+        return 0;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (mTargetPos != null && mTarget != this) {
+            aNBT.setBoolean("target", true);
+            aNBT.setInteger("target.x", mTargetPos.posX);
+            aNBT.setInteger("target.y", mTargetPos.posY);
+            aNBT.setInteger("target.z", mTargetPos.posZ);
+            aNBT.setLong("mDistance", mDistance);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("mDistance")) {
+            mDistance = aNBT.getInteger("mDistance");
+        }
+        if (aNBT.hasKey("target")) {
+            mTargetPos = new ChunkCoordinates(
+                    aNBT.getInteger("target.x"),
+                    aNBT.getInteger("target.y"),
+                    aNBT.getInteger("target.z")
+            );
+        }
+    }
+
+    public boolean isSameClass(GTMTE_LongDistancePipelineBase other) {
+        return false;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+        if (tCurrentItem != null) {
+            if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {
+                scanPipes();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isDead() {
+        return getBaseMetaTileEntity() == null || getBaseMetaTileEntity().isDead();
+    }
+
+    public boolean checkTarget() {
+        final IGregTechTileEntity gt_tile = getBaseMetaTileEntity();
+        if (gt_tile == null || !gt_tile.isAllowedToWork() || gt_tile.isClientSide()) {
+            return false;
+        }
+        World world = gt_tile.getWorld();
+
+        if (mTargetPos == null) {
+            // We don't have a target position, scan the pipes
+            scanPipes();
+        } else if (mTarget == null || mTarget.isDead()) {
+            // We don't have a target, or it's dead.  Try checking the target position
+            mTarget = null;
+            if (world.blockExists(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ)) {
+                // Only check if the target position is loaded
+                TileEntity te = world.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
+                final IMetaTileEntity tMeta;
+                if (te instanceof BaseMetaTileEntity &&
+                        ((tMeta = ((BaseMetaTileEntity) te)
+                                .getMetaTileEntity()) instanceof GTMTE_LongDistancePipelineBase) &&
+                        isSameClass((GTMTE_LongDistancePipelineBase) tMeta)) {
+                    // It's the right type!
+                    mTarget = (GTMTE_LongDistancePipelineBase) tMeta;
+                } else if (te != null) {
+                    // It isn't the right type, kill the target position
+                    mTargetPos = null;
+                }
+            }
+        }
+        if (mTarget == null || mTarget == this) {
+            return false;
+        }
+        if (mTarget.mSender == null || mTarget.mSender.isDead() || mTarget.mSender.mTarget == null
+                || mTarget.mSender.mTarget.isDead()) {
+            mTarget.mSender = this;
+        }
+
+        mTarget.mDistance = mDistance;
+
+        return mTarget.mSender == this;
+    }
+
+    @Override
+    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity,
+                                                 EntityPlayer aPlayer, int aLogLevel, ArrayList<String> aList) {
+        if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
+            final ChunkCoordinates coords = mSender.getCoords();
+            aList.addAll(Arrays.asList(
+                    "Is the Target",
+                    "Sender is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ
+            ));
+        } else {
+            aList.addAll(
+                    Arrays.asList(
+                            checkTarget() ? "Has Target" : "Has no loaded Target",
+                            "Target should be around: X: " + mTargetPos.posX + " Y: " + mTargetPos.posY + " Z: "
+                                    + mTargetPos.posZ
+                    ));
+        }
+
+        return aList;
+
+    }
+
+    public long getDistance() {
+        return mDistance;
+    }
+
+    // What meta should the pipes for this pipeline have
+    public abstract int getPipeMeta();
+
+    protected void scanPipes() {
+        if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
+            return;
+        }
+        //GT_Mod.GT_FML_LOGGER.info("ScanPipes()");
+
+        // Check if we need to scan anything
+        final IGregTechTileEntity gtTile = getBaseMetaTileEntity();
+        if (gtTile == null) {
+            return;
+        }
+
+        final World world = gtTile.getWorld();
+        if (world == null) {
+            return;
+        }
+
+        mTargetPos = getCoords();
+        mTarget = this;
+        mSender = null;
+        mDistance = 0;
+
+        // Start scanning from the output side
+        Block aBlock = gtTile.getBlockAtSide(gtTile.getBackFacing());
+
+        if (aBlock instanceof GT_Block_LongDistancePipe) {
+            byte aMetaData = gtTile.getMetaIDAtSide(gtTile.getBackFacing());
+            if (aMetaData != getPipeMeta()) {
+                return;
+            }
+
+            HashSet<ChunkCoordinates>
+                    tVisited = new HashSet<>(Collections.singletonList(getCoords())),
+                    tWires = new HashSet<>();
+            Queue<ChunkCoordinates>
+                    tQueue = new LinkedList<>(
+                    Collections.singletonList(getFacingOffset(gtTile, gtTile.getBackFacing())));
+            mDistance = -1;
+            while (!tQueue.isEmpty()) {
+
+                final ChunkCoordinates aCoords = tQueue.poll();
+
+                if (world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ) == aBlock
+                        && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == aMetaData) {
+                    mDistance++;
+                    // We've got another pipe/wire block
+                    // TODO: Make sure it's the right type of pipe/wire via meta
+                    ChunkCoordinates tCoords;
+                    tWires.add(aCoords);
+
+                    // For each direction, if we haven't already visisted that coordinate, add it to the end of the queue
+                    if (tVisited
+                            .add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (tVisited
+                            .add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (tVisited
+                            .add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (tVisited
+                            .add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (tVisited
+                            .add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1))) {
+                        tQueue.add(tCoords);
+                    }
+                    if (tVisited
+                            .add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1))) {
+                        tQueue.add(tCoords);
+                    }
+                } else {
+                    // It's not a block - let's see if it's a tile entity
+                    TileEntity tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
+                    if (
+                            tTileEntity != gtTile && tTileEntity instanceof BaseMetaTileEntity &&
+                                    ((BaseMetaTileEntity) tTileEntity)
+                                            .getMetaTileEntity() instanceof GTMTE_LongDistancePipelineBase) {
+                        final GTMTE_LongDistancePipelineBase tGtTile = (GTMTE_LongDistancePipelineBase) ((BaseMetaTileEntity) tTileEntity)
+                                .getMetaTileEntity();
+                        if (isSameClass(tGtTile) && tWires.contains(
+                                tGtTile.getFacingOffset(
+                                        (BaseMetaTileEntity) tTileEntity,
+                                        ((BaseMetaTileEntity) tTileEntity).getFrontFacing()
+                                )
+                        )) {
+                            // If it's the same class, and we've scanned a wire in front of it (the input side), we've found our target
+                            mTarget = tGtTile;
+                            mTargetPos = tGtTile.getCoords();
+                            return;
+                        }
+
+                        // Remove this block from the visited because we might end up back here from another wire that IS connected to the
+                        // input side
+                        tVisited.remove(aCoords);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, byte aSide) {
+        return new ChunkCoordinates(
+                gt_tile.getOffsetX(aSide, 1), gt_tile.getOffsetY(aSide, 1), gt_tile.getOffsetZ(aSide, 1)
+        );
+
+    }
+
+    public ChunkCoordinates getCoords() {
+        final IGregTechTileEntity gt_tile = getBaseMetaTileEntity();
+        return new ChunkCoordinates(gt_tile.getXCoord(), gt_tile.getYCoord(), gt_tile.getZCoord());
+    }
+
+    @Override
+    public void onMachineBlockUpdate() {
+        //GT_Mod.GT_FML_LOGGER.info("You're dead to me");
+        mTargetPos = null;
+        mSender = null;
+    }
+
+    @Override
+    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
+        return new ITexture[0][0][0];
+    }
 }

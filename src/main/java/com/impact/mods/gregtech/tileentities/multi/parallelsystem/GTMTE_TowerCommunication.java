@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import com.impact.api.satellite.IDistributor;
-import com.impact.api.satellite.IReceiver;
+import com.impact.addon.gt.api.satellite.IDistributor;
+import com.impact.addon.gt.api.satellite.IReceiver;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;

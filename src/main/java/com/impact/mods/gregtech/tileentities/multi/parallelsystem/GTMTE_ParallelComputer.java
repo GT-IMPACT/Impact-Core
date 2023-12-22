@@ -323,7 +323,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 	}
 	
 	@Override
-	public int getParallelCurrent() {
+	public int getCurrentParallel() {
 		if (getMaxCapacityPP() < 4) {
 			return -1;
 		}

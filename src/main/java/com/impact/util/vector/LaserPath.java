@@ -2,16 +2,16 @@ package com.impact.util.vector;
 
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Reflector;
-import com.impact.network.special.ToClient_LaserPush;
+import com.impact.network.GTNetworkHandler;
+import com.impact.network.NetworkPackets;
+import com.impact.network.special.LaserPushPacket;
 import com.impact.util.PositionObject;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
-import mods.railcraft.common.blocks.hidden.BlockHidden;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
@@ -29,7 +29,6 @@ public class LaserPath {
 			Block block = te.getBlockAtSideAndDistance(front, dist);
 			
 			if (block == Blocks.air) continue;
-			if (Loader.isModLoaded("Railcraft") && block instanceof BlockHidden) continue;
 			if (block != GregTech_API.sBlockMachines) return false;
 		
 			IGregTechTileEntity ReflectorOrLaserIn = te.getIGregTechTileEntityAtSideAndDistance(front, dist);
@@ -60,9 +59,16 @@ public class LaserPath {
 						reflector.setEUVar(reflector.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						new ToClient_LaserPush(te.getWorld().provider.dimensionId, new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash, 0).sendToClients();
-						return reflector.pushLaser();
 						
+						LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
+								te.getWorld().provider.dimensionId,
+								new PositionObject(te).toVec3i(),
+								new PositionObject(ReflectorOrLaserIn).toVec3i(),
+								colorHash,
+								0
+						);
+						GTNetworkHandler.sendToAllAround(te, packet, 256);
+						return reflector.pushLaser();
 					}
 				} else if (metaReflectorOrLaserIn instanceof GTMTE_LaserEnergy_In) {
 					GTMTE_LaserEnergy_In laserEnergyIn = (GTMTE_LaserEnergy_In) metaReflectorOrLaserIn;
@@ -80,7 +86,15 @@ public class LaserPath {
 						laserEnergyIn.setEUVar(laserEnergyIn.getBaseMetaTileEntity().getStoredEU() + diff);
 						short[] c = Dyes.get(color).mRGBa;
 						int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-						new ToClient_LaserPush(te.getWorld().provider.dimensionId, new PositionObject(te).toVec3i(), new PositionObject(ReflectorOrLaserIn).toVec3i(), colorHash, 0).sendToClients();
+						
+						LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
+								te.getWorld().provider.dimensionId,
+								new PositionObject(te).toVec3i(),
+								new PositionObject(ReflectorOrLaserIn).toVec3i(),
+								colorHash,
+								0
+						);
+						GTNetworkHandler.sendToAllAround(te, packet, 256);
 						return true;
 					}
 					return false;

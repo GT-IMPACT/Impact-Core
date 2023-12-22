@@ -6,7 +6,9 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.network.special.ToClient_LaserPush;
+import com.impact.network.GTNetworkHandler;
+import com.impact.network.NetworkPackets;
+import com.impact.network.special.LaserPushPacket;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -16,7 +18,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -137,8 +138,25 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
 			Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -1);
 			Vector3ic offsetToStabilizer = rotateOffsetVector(forgeDirection, mRangeToContainer - 1, 0, -1);
 			
-			new ToClient_LaserPush(iAm.getWorld().provider.dimensionId, new Vector3i(offset.x() + x, offset.y() + y, offset.z() + z),
-					new Vector3i(offsetToStabilizer.x() + x, offsetToStabilizer.y() + y, offsetToStabilizer.z() + z), 0x770ED0, 1, 20*2, 1, 1).sendToClients();
+			LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
+					iAm.getWorld().provider.dimensionId,
+					new Vector3i(
+							offset.x() + x,
+							offset.y() + y,
+							offset.z() + z
+					),
+					new Vector3i(
+							offsetToStabilizer.x() + x,
+							offsetToStabilizer.y() + y,
+							offsetToStabilizer.z() + z
+					),
+					0x770ED0,
+					1,
+					20 * 2,
+					1,
+					1
+			);
+			GTNetworkHandler.sendToAllAround(iAm, packet, 50);
 		}
 	}
 	

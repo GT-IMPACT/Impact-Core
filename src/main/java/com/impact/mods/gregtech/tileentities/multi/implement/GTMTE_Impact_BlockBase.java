@@ -1,13 +1,14 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.impact.api.multis.ISeparateBus;
-import com.impact.api.multis.ISwitchRecipeMap;
-import com.impact.api.recipe.MultiBlockRecipeBuilder;
+import com.google.common.io.ByteArrayDataInput;
+import com.impact.addon.gt.api.multis.IMachineRecipe;
+import com.impact.addon.gt.api.multis.ISeparateBus;
+import com.impact.addon.gt.api.multis.ISwitchRecipeMap;
+import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
-import com.impact.network.IPacketString;
-import com.impact.network.ToClient_String;
+import com.impact.network.NetworkPackets;
 import com.impact.util.multis.EnergyHelper;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
@@ -39,6 +40,8 @@ import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
 import space.impact.api.multiblocks.alignment.enumerable.Flip;
 import space.impact.api.multiblocks.alignment.enumerable.Rotation;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
+import space.impact.packet_network.network.NetworkHandler;
+import space.impact.packet_network.network.packets.IStreamPacketReceiver;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,12 +52,13 @@ import static com.impact.util.string.Lang.holo_details;
 import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBase<MULTIS>>
-		extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IPacketString {
+		extends GT_MetaTileEntity_MultiBlockBase
+		implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IStreamPacketReceiver, IMachineRecipe {
 	
 	private static final AtomicReferenceArray<MultiBlockTooltipBuilder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
 	
-	private final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
-	private final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
+	public final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
+	public final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
 	
 	private boolean isSeparated = true;
 	private byte mRecipeMode = 0;
@@ -639,16 +643,17 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			mapName = GT_LanguageManager.getTranslation(map.mUnlocalizedName);
 			GT_Utility.sendChatToPlayer(player, "Now " + EnumChatFormatting.YELLOW + mapName + EnumChatFormatting.RESET + " Mode");
 			if (player instanceof EntityPlayerMP) {
-				new ToClient_String(mapName).sendToPlayer((EntityPlayerMP) player);
+				NetworkHandler.sendToPlayer(
+						player,
+						NetworkPackets.StreamPacket.transaction(mapName)
+				);
 			}
 		}
 	}
 	
 	@Override
-	public void update(String... str) {
-		if (str != null && str.length > 0) {
-			mapName = str[0];
-		}
+	public void receive(@NotNull ByteArrayDataInput data) {
+		mapName = data.readUTF();
 	}
 	
 	@Override
@@ -679,5 +684,25 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	@Override
 	public boolean isSeparated() {
 		return isSeparated;
+	}
+
+	@Override
+	public int getEUt() {
+		return mEUt;
+	}
+
+	@Override
+	public void setEUt(int value) {
+		this.mEUt = value;
+	}
+
+	@Override
+	public int getMaxProgressTime() {
+		return mMaxProgresstime;
+	}
+
+	@Override
+	public void setMaxProgressTime(int value) {
+		this.mMaxProgresstime = value;
 	}
 }

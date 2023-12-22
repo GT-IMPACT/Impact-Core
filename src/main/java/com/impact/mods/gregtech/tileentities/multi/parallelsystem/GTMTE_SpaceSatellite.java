@@ -20,7 +20,6 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.HashSet;
 
-import static micdoodle8.mods.galacticraft.core.util.ConfigManagerCore.disableSpaceStationCreation;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
 public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSatellite> {
@@ -85,10 +84,7 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sps");
 		b
 				.addTypeMachine("name", "Space Satellite")
-				.addInfo(
-						disableSpaceStationCreation ? "info.0" : "info.1",
-						disableSpaceStationCreation ? "Installation on the Moon required" : "Installation on the Space Station required"
-				)
+				.addInfo("info.0", "Installation on the Space Station required")
 				.addController()
 				.addOtherStructurePartAny("other.0", "Communication Transmitter")
 				.addCasingInfo("case", "Space Satellite Casing", 48)

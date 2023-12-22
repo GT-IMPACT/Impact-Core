@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import com.impact.api.satellite.IDistributor;
-import com.impact.api.satellite.IReceiver;
+import com.impact.addon.gt.api.satellite.IDistributor;
+import com.impact.addon.gt.api.satellite.IReceiver;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

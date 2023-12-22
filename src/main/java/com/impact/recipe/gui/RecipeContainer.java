@@ -1,9 +1,9 @@
 package com.impact.recipe.gui;
 
+import com.google.common.io.ByteArrayDataInput;
 import com.impact.impact;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_RecipeEditor;
-import com.impact.network.IPacketInteger;
-import com.impact.network.ToClient_String;
+import com.impact.network.NetworkPackets;
 import com.impact.recipe.maps.RecipesJson;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -16,12 +16,15 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
+import space.impact.packet_network.network.NetworkHandler;
+import space.impact.packet_network.network.packets.IStreamPacketReceiver;
 
 import java.util.Arrays;
 
 import static com.impact.recipe.maps.RecipesJson.load;
 
-public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPacketInteger {
+public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IStreamPacketReceiver {
 	
 	
 	public RecipeContainer(InventoryPlayer aPlayerInventory, IGregTechTileEntity aTileEntity) {
@@ -161,9 +164,17 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 			GTMTE_RecipeEditor recipeEditor = (GTMTE_RecipeEditor) mTileEntity.getMetaTileEntity();
 			if (ticker % 20 == 0) {
 				if (recipeEditor.map != null) {
-					new ToClient_String(recipeEditor.nameGui, recipeEditor.map.mNEIName,
-							recipeEditor.voltage + "", recipeEditor.time + "", recipeEditor.special + ""
-					).sendToClients();
+					String[] params = new String[] {
+							recipeEditor.nameGui,
+							recipeEditor.map.mNEIName,
+							String.valueOf(recipeEditor.voltage),
+							String.valueOf(recipeEditor.time),
+							String.valueOf(recipeEditor.special)
+					};
+					NetworkHandler.sendToPlayer(
+							mPlayerInventory.player,
+							NetworkPackets.StreamPacket.transaction(params)
+					);
 				}
 			}
 			ticker++;
@@ -171,19 +182,10 @@ public class RecipeContainer extends GT_ContainerMetaTile_Machine implements IPa
 	}
 	
 	@Override
-	public void update(int... integer) {
+	public void receive(@NotNull ByteArrayDataInput data) {
 		GTMTE_RecipeEditor recipeEditor = (GTMTE_RecipeEditor) mTileEntity.getMetaTileEntity();
-		switch (integer.length) {
-			case 2:
-				recipeEditor.voltage = integer[0];
-				recipeEditor.time = integer[1];
-				recipeEditor.special = 0;
-				break;
-			case 3:
-				recipeEditor.voltage = integer[0];
-				recipeEditor.time = integer[1];
-				recipeEditor.special = integer[2];
-				break;
-		}
+		recipeEditor.voltage = data.readInt();
+		recipeEditor.time = data.readInt();
+		recipeEditor.special = data.readInt();
 	}
 }

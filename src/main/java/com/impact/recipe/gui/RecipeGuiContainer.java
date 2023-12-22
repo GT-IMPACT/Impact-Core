@@ -1,14 +1,17 @@
 package com.impact.recipe.gui;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
+import com.google.common.io.ByteArrayDataInput;
 import com.impact.client.gui.GuiIntegerBox;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
-import com.impact.network.IPacketString;
-import com.impact.network.ToServer_Integer;
+import com.impact.network.NetworkPackets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import org.jetbrains.annotations.NotNull;
+import space.impact.packet_network.network.NetworkHandler;
+import space.impact.packet_network.network.packets.IStreamPacketReceiver;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-public class RecipeGuiContainer extends GT_GUIContainerMT_Machine implements IPacketString {
+public class RecipeGuiContainer extends GT_GUIContainerMT_Machine implements IStreamPacketReceiver {
 	
 	GuiIntegerBox vol, time, special;
 	List<GuiTextField> boxes = new ArrayList<>();
@@ -143,7 +146,10 @@ public class RecipeGuiContainer extends GT_GUIContainerMT_Machine implements IPa
 			} else {
 				ints = new int[] {v, t};
 			}
-			new ToServer_Integer(ints).sendToServer();
+			NetworkHandler.sendToServer(
+					mc.thePlayer,
+					NetworkPackets.StreamPacket.transaction(ints)
+			);
 		} catch (Exception ignored) {
 		
 		}
@@ -151,11 +157,11 @@ public class RecipeGuiContainer extends GT_GUIContainerMT_Machine implements IPa
 	}
 	
 	@Override
-	public void update(String... str) {
-		name = str[0];
-		nameMap = str[1];
-		vol.setText(str[2]);
-		time.setText(str[3]);
-		special.setText(str[4]);
+	public void receive(@NotNull ByteArrayDataInput data) {
+		name = data.readUTF();
+		nameMap = data.readUTF();
+		vol.setText(data.readUTF());
+		time.setText(data.readUTF());
+		special.setText(data.readUTF());
 	}
 }

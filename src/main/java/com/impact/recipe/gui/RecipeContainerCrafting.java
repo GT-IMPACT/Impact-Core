@@ -1,19 +1,13 @@
 package com.impact.recipe.gui;
 
 import com.impact.impact;
-import com.impact.mods.gregtech.tileentities.basic.GTMTE_RecipeEditor;
 import com.impact.mods.gregtech.tileentities.basic.GTMTE_RecipeEditorCrafting;
-import com.impact.network.IPacketInteger;
-import com.impact.network.ToClient_String;
 import com.impact.recipe.maps.RecipesJson;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

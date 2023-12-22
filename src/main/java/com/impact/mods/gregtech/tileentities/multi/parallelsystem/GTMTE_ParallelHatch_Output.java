@@ -1,8 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
-import com.impact.api.parallelsystem.IParallelIn;
-import com.impact.api.parallelsystem.IParallelOut;
-import com.impact.api.position.IPosition;
+import com.impact.addon.gt.api.parallel_system.IParallelIn;
+import com.impact.addon.gt.api.parallel_system.IParallelOut;
+import com.impact.addon.gt.api.position.IPosition;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
@@ -168,9 +168,12 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch implemen
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setBoolean("isConnected", this.isConnected);
-		
-		aNBT.setString("machineName", this.machineName);
-		aNBT.setString("address", this.address);
+
+		if (this.machineName != null && !this.machineName.isEmpty())
+			aNBT.setString("machineName", this.machineName);
+
+		if (this.address != null && !this.address.isEmpty())
+			aNBT.setString("address", this.address);
 		
 		if (pinPos != null) {
 			aNBT.setTag("parallelIn", pinPos.saveToNBT());
