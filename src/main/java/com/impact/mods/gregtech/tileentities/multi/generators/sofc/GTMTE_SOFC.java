@@ -58,23 +58,7 @@ abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sofc" + getTier());
-		b.addInfo("info.0", "Oxidizes gas fuels to generate electricity without polluting the environment")
-				.addTypeGenerator()
-				.addTypeSteam()
-				.addInfo("info.1", "Steam production requires the SOFC to heat up completely first")
-				.addInfo("info.2", "Additionally requires Oxygen gas")
-				.addInfo("info.3", "Outputs Energy and Steam or SH Steam")
-				.addSeparator()
-				.beginStructureBlock(3, 3, 5)
-				.addController()
-				.addDynamoHatch("other.5" , "Single Amp. (max x2), Multi Amp. (max x1)")
-				.addCasingInfo("case", CASING_STRING[getTier()])
-				.addOtherStructurePart("other.0", CERAMIC_STRING[getTier()], "other.1", "3x, Center 1x1x3")
-				.addOtherStructurePart("other.2", "Reinforced Glass", "other.3", "6x, touching the electrolyte units on the horizontal sides")
-				.addMaintenanceHatch()
-				.addInputHatch("other.4" , "Any casing, required", 2)
-				.addOutputHatch()
-				.signAndFinalize();
+		b.addInfo("info.0", "Oxidizes gas fuels to generate electricity without polluting the environment").addTypeGenerator().addTypeSteam().addInfo("info.1", "Steam production requires the SOFC to heat up completely first").addInfo("info.2", "Additionally requires Oxygen gas").addInfo("info.3", "Outputs Energy and Steam or SH Steam").addSeparator().beginStructureBlock(3, 3, 5).addController().addDynamoHatch().addCasingInfo("case", CASING_STRING[getTier()]).addOtherStructurePart("other.0", CERAMIC_STRING[getTier()], "other.1", "3x, Center 1x1x3").addOtherStructurePart("other.2", "Reinforced Glass", "other.3", "6x, touching the electrolyte units on the horizontal sides").addMaintenanceHatch().addIOHatches().signAndFinalize();
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			return b.getInformation();
 		} else {
