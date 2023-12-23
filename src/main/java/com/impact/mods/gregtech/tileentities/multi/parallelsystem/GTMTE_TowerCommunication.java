@@ -5,7 +5,12 @@ import com.impact.addon.gt.api.parallel_system.INetworkTower;
 import com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.network.GTNetworkHandler;
+import com.impact.network.NetworkPackets;
+import com.impact.network.special.LaserPushPacket;
+import com.impact.util.PositionObject;
 import com.impact.util.string.MultiBlockTooltipBuilder;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -14,6 +19,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -61,6 +68,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     private final HashSet<INetworkMachine> connections = new HashSet<>();
     public final HashSet<GTMTE_CommunicationTower_Receiver> sCommunReceiver = new HashSet<>();
+    private boolean isShowConnections = false;
 
     public GTMTE_TowerCommunication(int aID, String aNameRegional) {
         super(aID, "impact.multis.communicationtower", aNameRegional);
@@ -94,6 +102,11 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
         return aSide == 1 ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? TOWER_OVERLAY_ACTIVE : TOWER_OVERLAY)} : new ITexture[]{INDEX_CASE};
+    }
+
+    @Override
+    public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        isShowConnections = !isShowConnections;
     }
 
     private boolean isConnected;
@@ -200,8 +213,40 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     @Override
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
-        if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
-            noMaintenance();
+        if (iAm.isServerSide()) {
+            if (aTick % 20 * 60 == 0) {
+                noMaintenance();
+            }
+            if (isShowConnections && aTick % 20 == 0) {
+                for (INetworkMachine connection : connections) {
+                    if (connection instanceof IMetaTileEntity) {
+                        IMetaTileEntity mte = (IMetaTileEntity) connection;
+                        IGregTechTileEntity gte = mte.getBaseMetaTileEntity();
+
+                        Dyes color = Dyes.dyeBlack;
+
+                        if (gte.isActive()) color = Dyes.dyeWhite;
+
+                        short[] c = color.mRGBa;
+                        int colorHash = new Color(c[0], c[1], c[2]).hashCode();
+
+                        PositionObject start = connection instanceof GTMTE_ParallelComputer ? new PositionObject(iAm.getXCoord(), iAm.getYCoord() + 13, iAm.getZCoord()) : new PositionObject(gte);
+                        PositionObject end = connection instanceof GTMTE_ParallelComputer ? new PositionObject(gte) : new PositionObject(iAm.getXCoord(), iAm.getYCoord() + 13, iAm.getZCoord());
+
+                        LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
+                                iAm.getWorld().provider.dimensionId,
+                                start.toVec3i(),
+                                end.toVec3i(),
+                                colorHash,
+                                1,
+                                20,
+                                3,
+                                1
+                        );
+                        GTNetworkHandler.sendToAllAround(iAm, packet, 512);
+                    }
+                }
+            }
         }
     }
 

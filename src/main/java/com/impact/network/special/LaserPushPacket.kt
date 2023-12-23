@@ -14,13 +14,13 @@ import space.impact.packet_network.network.packets.ImpactPacket
 class LaserPushPacket(
     packetId: Int,
     val dim: Int = 0,
-    val vec1: Vector3i = Vector3i(),
-    val vec2: Vector3i = Vector3i(),
+    private val vec1: Vector3i = Vector3i(),
+    private val vec2: Vector3i = Vector3i(),
     val color: Int = 0,
     val mode: Int = 0,
-    val lifeTime: Int = 20,
+    private val lifeTime: Int = 20,
     val type: Int = 1,
-    val endMode: Float = 1f,
+    private val endMode: Float = 1f,
 ) : ImpactPacket(packetId) {
 
     fun transaction(dim: Int, vec1: Vector3i, vec2: Vector3i, color: Int, mode: Int): LaserPushPacket {
@@ -92,7 +92,7 @@ class LaserPushPacket(
                         vec2.x() + translate,
                         vec2.y() + translate,
                         vec2.z() + translate, type,
-                        0x770ED0, false,
+                        color, false,
                         endMode, lifeTime
                     )
                 }

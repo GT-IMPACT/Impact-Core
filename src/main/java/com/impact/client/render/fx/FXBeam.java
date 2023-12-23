@@ -60,9 +60,9 @@ public class FXBeam extends EntityFX {
 		this.prevPitch      = this.rotPitch;
 		this.particleMaxAge = age;
 		EntityLivingBase renderentity = FMLClientHandler.instance().getClient().renderViewEntity;
-		int visibleDistance = 256;
+		int visibleDistance = 512;
 		if (!FMLClientHandler.instance().getClient().gameSettings.fancyGraphics) {
-			visibleDistance = 64;
+			visibleDistance = 128;
 		}
 		
 		if (renderentity.getDistance(this.posX, this.posY, this.posZ) > (double) visibleDistance) {
@@ -95,9 +95,9 @@ public class FXBeam extends EntityFX {
 		this.prevPitch      = this.rotPitch;
 		this.particleMaxAge = age;
 		EntityLivingBase renderentity = FMLClientHandler.instance().getClient().renderViewEntity;
-		int visibleDistance = 256;
+		int visibleDistance = 512;
 		if (!FMLClientHandler.instance().getClient().gameSettings.fancyGraphics) {
-			visibleDistance = 64;
+			visibleDistance = 128;
 		}
 		
 		if (renderentity.getDistance(this.posX, this.posY, this.posZ) > (double) visibleDistance) {
