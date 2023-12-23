@@ -1,6 +1,7 @@
 package com.impact.util;
 
 import com.impact.addon.gc.DimensionsIDs;
+import com.impact.core.Config;
 import com.impact.core.Refstrings;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -265,6 +266,7 @@ public class Utilits {
 	}
 
 	public static boolean isLowGravity(IGregTechTileEntity iAm) {
+		if (Config.isDebugDev) return true;
 		int dimId = iAm.getWorld().provider.dimensionId;
 		return dimId == DimensionsIDs.ORBIT_EARTH || isValidDim(dimId, "Orbit") || isValidDim(dimId, "Space") || isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation");
 	}

@@ -4,6 +4,7 @@ import cpw.mods.fml.common.FMLLog;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import org.apache.logging.log4j.Level;
+import space.impact.impact.BuildConfigKt;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,7 +25,9 @@ public class Config {
 	public static int saveTime;
 	public static int MiningWorldID;
 	public static boolean enabledAutoUpdateQuests;
-	
+	public static boolean isEnabledExperimentalMultiThreading;
+	public static boolean isDebugDev = BuildConfigKt.IS_DEBUG;
+
 	public static int MAX_TICK_RATE;
 	
 	public Config(File file) {
@@ -37,7 +40,8 @@ public class Config {
 	public static void syncConfig(boolean load) {
 		ArrayList<String> General = new ArrayList<>();
 		ArrayList<String> Debug = new ArrayList<>();
-		
+		ArrayList<String> experimental = new ArrayList<>();
+
 		try {
 			if (!config.isChild && load) {
 				config.load();
@@ -105,10 +109,17 @@ public class Config {
 			cfg.comment   = "Disabled Logger. [Default: true]";
 			disableLogger = cfg.getBoolean(true);
 			Debug.add(cfg.getName());
+
+			//EXPERIMENTAL
+			cfg           = config.get("EXPERIMENTAL", "enabledMultiThreading", false);
+			cfg.comment   = "Enabled Multi Threading. [Default: false]";
+			isEnabledExperimentalMultiThreading = cfg.getBoolean(false);
+			experimental.add(cfg.getName());
 			
 			config.setCategoryPropertyOrder("GENERAL", General);
 			config.setCategoryPropertyOrder("DEBUG", Debug);
-			
+			config.setCategoryPropertyOrder("EXPERIMENTAL", experimental);
+
 			if (config.hasChanged()) {
 				config.save();
 			}

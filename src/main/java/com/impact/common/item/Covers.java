@@ -1,13 +1,13 @@
 package com.impact.common.item;
 
 import com.impact.core.Refstrings;
+import com.impact.mods.gregtech.tileentities.covers.GTCDebugEnergy;
 import com.impact.mods.gregtech.tileentities.covers.GTC_AdvEUDetector;
 import com.impact.mods.gregtech.tileentities.covers.GTC_AdvFluidDetector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_MultiTexture;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Covers extends Item {
 	
-	public static int x = 2;  //количество предметов
+	public static int x = 3;  //количество предметов
 	
 	public static Covers covers = new Covers();
 	private final IIcon[] icons = new IIcon[x + 1];
@@ -39,6 +39,11 @@ public class Covers extends Item {
 				new ItemStack(getInstance(), 1, 1),
 				new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_ENERGYDETECTOR)),
 				new GTC_AdvEUDetector()
+		);
+		GregTech_API.registerCover(
+				new ItemStack(getInstance(), 1, 2),
+				new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_ENERGY_IN_MULTI)),
+				new GTCDebugEnergy()
 		);
 	}
 	
