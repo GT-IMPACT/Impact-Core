@@ -21,12 +21,10 @@ import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fluids.FluidStack
-import space.gtimpact.virtual_world.api.VirtualAPI.extractFluidFromChunk
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
 import space.impact.api.multiblocks.structure.StructureUtility.*
-import kotlin.random.Random
 
 class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
@@ -157,7 +155,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     override fun onPostTick(te: IGregTechTileEntity, tick: Long) {
         super.onPostTick(te, tick)
         if (te.isServerSide && tick % 100 == 0L) {
-            if (te.isActive) currentChunk?.also(::runningLogic)
+//            if (te.isActive) currentChunk?.also(::runningLogic)
             createDrill(te)
         }
     }
@@ -183,35 +181,35 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         }
     }
 
-    private fun runningLogic(chunk: Chunk) {
-        val (vein, reduceCoefficient) = extractFluidFromChunk(chunk)
-        if (vein != null && reduceCoefficient > 0) {
-            val waterConsume = 1000L * boostCoefficient / 2 // LV = 1000 * 0.5 = 500L
-            var outputOil = 0L
-            mixOutHatch?.also { mixOut ->
-                val isBoost = depleteInput(Materials.Water.getFluid(waterConsume))
-                val boost = boostCoefficient * if (isBoost) 2 else 1
-                outputOil = boost * 100L / 2  // LV = 0.5 * 100 = 50 or 1 * 100 = 100L
-                addOutputMix(mixOut, Materials.MixDirtOil.getFluid(outputOil))
-                if (isBoost) {
-                    val countWaterOutput = (waterConsume * if (mixInHatch != null) .3 else .6).toLong()
-                    addOutput(Materials.Water.getFluid(countWaterOutput))
-                }
-            }
-            mixInHatch?.also { mixIn ->
-                if (outputOil > 0) {
-                    val currentOil = mixIn.fluid
-                    var tLiquid = currentOil
-                    if (tLiquid != null && tLiquid.isFluidEqual(currentOil)) {
-                        tLiquid = mixIn.drain(currentOil.amount, false)
-                        if (tLiquid.amount >= currentOil.amount) mixIn.drain(currentOil.amount, true)
-                    }
-                    val countOilOutput = outputOil * Random.nextDouble(.3, 1.0)
-                    FluidStack(vein.fluid, countOilOutput.toInt()).also(::addOutput)
-                }
-            }
-        }
-    }
+//    private fun runningLogic(chunk: Chunk) {
+//        val (vein, reduceCoefficient) = extractFluidFromChunk(chunk)
+//        if (vein != null && reduceCoefficient > 0) {
+//            val waterConsume = 1000L * boostCoefficient / 2 // LV = 1000 * 0.5 = 500L
+//            var outputOil = 0L
+//            mixOutHatch?.also { mixOut ->
+//                val isBoost = depleteInput(Materials.Water.getFluid(waterConsume))
+//                val boost = boostCoefficient * if (isBoost) 2 else 1
+//                outputOil = boost * 100L / 2  // LV = 0.5 * 100 = 50 or 1 * 100 = 100L
+//                addOutputMix(mixOut, Materials.MixDirtOil.getFluid(outputOil))
+//                if (isBoost) {
+//                    val countWaterOutput = (waterConsume * if (mixInHatch != null) .3 else .6).toLong()
+//                    addOutput(Materials.Water.getFluid(countWaterOutput))
+//                }
+//            }
+//            mixInHatch?.also { mixIn ->
+//                if (outputOil > 0) {
+//                    val currentOil = mixIn.fluid
+//                    var tLiquid = currentOil
+//                    if (tLiquid != null && tLiquid.isFluidEqual(currentOil)) {
+//                        tLiquid = mixIn.drain(currentOil.amount, false)
+//                        if (tLiquid.amount >= currentOil.amount) mixIn.drain(currentOil.amount, true)
+//                    }
+//                    val countOilOutput = outputOil * Random.nextDouble(.3, 1.0)
+//                    FluidStack(vein.fluid, countOilOutput.toInt()).also(::addOutput)
+//                }
+//            }
+//        }
+//    }
 
     private fun addOutputMix(output: GT_MetaTileEntity_Hatch_Output, fluid: FluidStack) {
         val copiedFluidStack: FluidStack = fluid.copy()

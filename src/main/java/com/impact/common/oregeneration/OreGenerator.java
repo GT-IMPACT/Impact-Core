@@ -136,9 +136,9 @@ public class OreGenerator {
 		
 		Makemake(-2050, 7, "Makemake"), Pluto(-2003, 7, "Pluto"), Haumea(-2051, 7, "Haumea"), KuiperBelt(-2004, 7, "Kuiper Belt");
 		
-		public int id;
-		public int tier;
-		public String name;
+		public final int id;
+		public final int tier;
+		public final String name;
 		
 		Dimensions(int id, int tier, String name) {
 			this.id = id;

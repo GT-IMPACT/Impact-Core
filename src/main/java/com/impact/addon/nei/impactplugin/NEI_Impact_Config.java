@@ -66,10 +66,10 @@ public class NEI_Impact_Config implements IConfigureNEI {
 			new GT_NEI_HeavyMetalCyclone(GT_Recipe.GT_Recipe_Map.sCyclonRecipes);
 			new NEI_Impact_RailAssembler(GTMTE_RailAssembler.sTrackAssemblerRecipes);
 			new NEI_Impact_MEProvider(GT_RecipeMaps.sMESystemProvider);
-			new NEI_Impact_Ores(OreBuilderNEI.defaultOres, 1);
-			new NEI_Impact_DimOres(OreBuilderNEI.dimDefaultOres, 1);
-			new NEI_Impact_Ores(OreBuilderNEI.smallOres, 0);
-			new NEI_Impact_DimOres(OreBuilderNEI.dimSmallOres, 0);
+//			new NEI_Impact_Ores(OreBuilderNEI.defaultOres, 1);
+//			new NEI_Impact_DimOres(OreBuilderNEI.dimDefaultOres, 1);
+//			new NEI_Impact_Ores(OreBuilderNEI.smallOres, 0);
+//			new NEI_Impact_DimOres(OreBuilderNEI.dimSmallOres, 0);
 			new NEI_Impact_HammerDrop(Impact_API.dropsFromBlock);
 			new NEI_Impact_DryingRack();
 			registerSingle();

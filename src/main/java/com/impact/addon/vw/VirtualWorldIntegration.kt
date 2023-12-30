@@ -2,13 +2,17 @@ package com.impact.addon.vw
 
 import com.impact.common.oregeneration.OreGenerator.Dimensions.*
 import com.impact.addon.nei.impactplugin.ores.OreBuilderNEI
+import com.impact.common.oregeneration.OreGenerator
+import com.impact.mods.gregtech.GT_ItemList
+import gregtech.api.enums.ItemList
 import gregtech.api.enums.Materials
 import gregtech.api.enums.OrePrefixes
 import gregtech.api.util.GT_OreDictUnificator
-import space.gtimpact.virtual_world.api.VirtualFluidTypeComponent
-import space.gtimpact.virtual_world.api.VirtualFluidVein
-import space.gtimpact.virtual_world.api.VirtualOreComponent
-import space.gtimpact.virtual_world.api.VirtualOreVein
+import gregtech.api.util.GT_Utility
+import net.minecraft.item.ItemStack
+import net.minecraftforge.fluids.Fluid
+import net.minecraftforge.fluids.FluidStack
+import space.gtimpact.virtual_world.api.*
 import java.awt.Color
 
 object VirtualWorldIntegration {
@@ -18,8 +22,26 @@ object VirtualWorldIntegration {
         registerOre0()
         registerOre1()
         registerFluidVeins()
-        OreBuilderNEI.BuildNEIDimOres()
-        OreBuilderNEI.BuildNEIOres()
+//        OreBuilderNEI.BuildNEIDimOres()
+//        OreBuilderNEI.BuildNEIOres()
+
+
+        virtualWorldNeiFluidHandler = object : IFluidDisplayHandler {
+            override val isModified: Boolean = true
+            override val itemDisplay: ItemStack? = ItemList.Display_Fluid.get(1)
+
+            override fun getDrillFluid(): Fluid? = ItemList.sDrillingFluid
+
+            override fun getFluidFromStack(stack: ItemStack?): FluidStack? {
+                if (stack == null) return null
+                return GT_Utility.getFluidFromDisplayStack(stack)
+            }
+
+            override fun getItemFromFluid(stack: FluidStack?, useStackSize: Boolean): ItemStack? {
+                if (stack == null) return null
+                return GT_Utility.getFluidDisplayStack(stack, useStackSize)
+            }
+        }
     }
 
     private fun registerOre1() {
@@ -41,7 +63,7 @@ object VirtualWorldIntegration {
                 Ceres,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Uraninite.toOreComponent(90),
                 Materials.Uraninite.toOreComponent(60),
@@ -71,7 +93,7 @@ object VirtualWorldIntegration {
                 Makemake,
                 Titan,
                 Overworld
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Scheelite.toOreComponent(90),
                 Materials.Scheelite.toOreComponent(60),
@@ -91,7 +113,7 @@ object VirtualWorldIntegration {
                 Miranda,
                 Triton,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Orichalcum.toOreComponent(90),
                 Materials.Tanzanite.toOreComponent(60),
@@ -119,7 +141,7 @@ object VirtualWorldIntegration {
                 Asteroids,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Graphite.toOreComponent(90),
                 Materials.Graphite.toOreComponent(60),
@@ -140,7 +162,7 @@ object VirtualWorldIntegration {
                 Asteroids,
                 Deimos,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Lazurite.toOreComponent(90),
                 Materials.Sodalite.toOreComponent(60),
@@ -165,7 +187,7 @@ object VirtualWorldIntegration {
                 Ceres,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Wulfenite.toOreComponent(90),
                 Materials.Molybdenite.toOreComponent(60),
@@ -183,7 +205,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Overworld,
                 Europa
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Oilsands.toOreComponent(90),
                 Materials.Sulfur.toOreComponent(60),
@@ -204,7 +226,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Makemake,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Orichalcum.toOreComponent(90),
                 Materials.Tanzanite.toOreComponent(60),
@@ -226,7 +248,7 @@ object VirtualWorldIntegration {
                 Miranda,
                 Pluto,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Sheldonite.toOreComponent(90),
                 Materials.Osmirinigon.toOreComponent(60),
@@ -248,7 +270,7 @@ object VirtualWorldIntegration {
                 Asteroids,
                 Makemake,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Bentonite.toOreComponent(90),
                 Materials.Magnesite.toOreComponent(60),
@@ -270,7 +292,7 @@ object VirtualWorldIntegration {
                 Asteroids,
                 Makemake,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Nickel.toOreComponent(90),
                 Materials.Osmium.toOreComponent(60),
@@ -291,7 +313,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Triton,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Tungsten.toOreComponent(90),
                 Materials.Silicon.toOreComponent(60),
@@ -315,7 +337,7 @@ object VirtualWorldIntegration {
                 Mercury,
                 Haumea,
                 KuiperBelt
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Naqlatigon.toOreComponent(90),
                 Materials.Naquadah.toOreComponent(60),
@@ -330,7 +352,7 @@ object VirtualWorldIntegration {
             weight = 60.0,
             rangeSize = 50..200,
             color = Materials.Coal.color(),
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             ores = listOf(
                 Materials.Coal.toOreComponent(90),
                 Materials.Coal.toOreComponent(60),
@@ -353,7 +375,7 @@ object VirtualWorldIntegration {
                 Triton,
                 Ceres,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Grossular.toOreComponent(90),
                 Materials.Spessartine.toOreComponent(60),
@@ -375,7 +397,7 @@ object VirtualWorldIntegration {
                 Triton,
                 Makemake,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Desh.toOreComponent(90),
                 Materials.Desh.toOreComponent(60),
@@ -399,7 +421,7 @@ object VirtualWorldIntegration {
                 Triton,
                 Ceres,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Nickel.toOreComponent(90),
                 Materials.Iridium.toOreComponent(60),
@@ -423,7 +445,7 @@ object VirtualWorldIntegration {
                 Io,
                 Moon,
                 Phobos
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Quartzite.toOreComponent(90),
                 Materials.NetherQuartz.toOreComponent(60),
@@ -448,7 +470,7 @@ object VirtualWorldIntegration {
                 Io,
                 Makemake,
                 Phobos
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Pitchblende.toOreComponent(90),
                 Materials.Pitchblende.toOreComponent(60),
@@ -466,7 +488,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Haumea,
                 Triton
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Desh.toOreComponent(90),
                 Materials.Europium.toOreComponent(60),
@@ -488,7 +510,7 @@ object VirtualWorldIntegration {
                 Mercury,
                 Ganymede,
                 Miranda
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Redstone.toOreComponent(90),
                 Materials.Redstone.toOreComponent(60),
@@ -509,7 +531,7 @@ object VirtualWorldIntegration {
                 Haumea,
                 Proteus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Almandine.toOreComponent(90),
                 Materials.Pyrope.toOreComponent(60),
@@ -525,7 +547,7 @@ object VirtualWorldIntegration {
             rangeSize = 50..400,
             color = Materials.Uranium.color(),
             special = Materials.SulfuricAcid.getFluid(50),
-            dimensions = listOf(Makemake).map { it.id },
+            dimensions = listOf(Makemake).map { it.id to it.name },
             ores = listOf(
                 Materials.Uranium.toOreComponent(90),
                 Materials.Plutonium.toOreComponent(60),
@@ -551,7 +573,7 @@ object VirtualWorldIntegration {
                 Makemake,
                 Moon,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Bastnasite.toOreComponent(90),
                 Materials.Bastnasite.toOreComponent(60),
@@ -572,7 +594,7 @@ object VirtualWorldIntegration {
                 Ganymede,
                 Miranda,
                 Asteroids
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Mithril.toOreComponent(90),
                 Materials.GarnetRed.toOreComponent(60),
@@ -592,7 +614,7 @@ object VirtualWorldIntegration {
                 Haumea,
                 Pluto,
                 Triton
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Thorium.toOreComponent(90),
                 Materials.Europium.toOreComponent(60),
@@ -611,7 +633,7 @@ object VirtualWorldIntegration {
                 Haumea,
                 Pluto,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.BlackPlutonium.toOreComponent(90),
                 Materials.GarnetRed.toOreComponent(60),
@@ -635,7 +657,7 @@ object VirtualWorldIntegration {
                 Deimos,
                 Triton,
                 Phobos
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Garnierite.toOreComponent(90),
                 Materials.Nickel.toOreComponent(60),
@@ -660,7 +682,7 @@ object VirtualWorldIntegration {
                 Asteroids,
                 Moon,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Rutile.toOreComponent(90),
                 Materials.Chromite.toOreComponent(60),
@@ -685,7 +707,7 @@ object VirtualWorldIntegration {
                 Callisto,
                 Ceres,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Platinum.toOreComponent(90),
                 Materials.Chromite.toOreComponent(60),
@@ -704,7 +726,7 @@ object VirtualWorldIntegration {
                 Enceladus,
                 Miranda,
                 Triton
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.MysteriousCrystal.toOreComponent(90),
                 Materials.Mithril.toOreComponent(60),
@@ -722,7 +744,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Enceladus,
                 Pluto
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Diamond.toOreComponent(90),
                 Materials.Bentonite.toOreComponent(60),
@@ -741,7 +763,7 @@ object VirtualWorldIntegration {
                 Mercury,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Arsenic.toOreComponent(90),
                 Materials.Bismuth.toOreComponent(60),
@@ -764,7 +786,7 @@ object VirtualWorldIntegration {
                 Moon,
                 Ceres,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Chalcopyrite.toOreComponent(90),
                 Materials.Iron.toOreComponent(60),
@@ -783,7 +805,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Makemake,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Vanadium.toOreComponent(90),
                 Materials.Magnetite.toOreComponent(60),
@@ -810,7 +832,7 @@ object VirtualWorldIntegration {
                 Moon,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Bauxite.toOreComponent(90),
                 Materials.Ilmenite.toOreComponent(60),
@@ -825,7 +847,7 @@ object VirtualWorldIntegration {
             weight = 15.0,
             rangeSize = 4..25,
             color = Materials.Bauxite.color(),
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             ores = listOf(
                 Materials.Bauxite.toOreComponent(90),
                 Materials.Ilmenite.toOreComponent(60),
@@ -845,7 +867,7 @@ object VirtualWorldIntegration {
                 Oberon,
                 Miranda,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Soapstone.toOreComponent(90),
                 Materials.Talc.toOreComponent(60),
@@ -863,7 +885,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 KuiperBelt,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Neutronium.toOreComponent(90),
                 Materials.Adamantium.toOreComponent(60),
@@ -884,7 +906,7 @@ object VirtualWorldIntegration {
                 Triton,
                 Moon,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Stibnite.toOreComponent(90),
                 Materials.Tantalite.toOreComponent(60),
@@ -907,7 +929,7 @@ object VirtualWorldIntegration {
                 Callisto,
                 Triton,
                 Phobos
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Magnetite.toOreComponent(90),
                 Materials.Magnetite.toOreComponent(60),
@@ -931,7 +953,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Callisto,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.BrownLimonite.toOreComponent(90),
                 Materials.YellowLimonite.toOreComponent(60),
@@ -951,7 +973,7 @@ object VirtualWorldIntegration {
                 Haumea,
                 Pluto,
                 Triton
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Plutonium.toOreComponent(90),
                 Materials.Uranium.toOreComponent(60),
@@ -977,7 +999,7 @@ object VirtualWorldIntegration {
                 Makemake,
                 Ceres,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Beryllium.toOreComponent(90),
                 Materials.Beryllium.toOreComponent(60),
@@ -992,7 +1014,7 @@ object VirtualWorldIntegration {
             weight = 100.0,
             rangeSize = 50..400,
             color = Materials.Copper.color(),
-            dimensions = listOf(Makemake).map { it.id },
+            dimensions = listOf(Makemake).map { it.id to it.name },
             ores = listOf(
                 Materials.Copper.toOreComponent(90),
                 Materials.Antimony.toOreComponent(60),
@@ -1016,7 +1038,7 @@ object VirtualWorldIntegration {
                 Triton,
                 Moon,
                 Overworld
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Sheldonite.toOreComponent(90),
                 Materials.Palladium.toOreComponent(60),
@@ -1040,7 +1062,7 @@ object VirtualWorldIntegration {
                 Asteroids,
                 Deimos,
                 Overworld
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Tetrahedrite.toOreComponent(90),
                 Materials.Tetrahedrite.toOreComponent(60),
@@ -1063,7 +1085,7 @@ object VirtualWorldIntegration {
                 Ganymede,
                 Triton,
                 Moon
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Galena.toOreComponent(90),
                 Materials.Galena.toOreComponent(60),
@@ -1087,7 +1109,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Asteroids,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Naquadah.toOreComponent(90),
                 Materials.Naquadah.toOreComponent(60),
@@ -1102,7 +1124,7 @@ object VirtualWorldIntegration {
             weight = 60.0,
             rangeSize = 50..400,
             color = Materials.Apatite.color(),
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             ores = listOf(
                 Materials.Apatite.toOreComponent(90),
                 Materials.Apatite.toOreComponent(60),
@@ -1124,7 +1146,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Makemake,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Tantalite.toOreComponent(90),
                 Materials.Ilmenite.toOreComponent(60),
@@ -1139,7 +1161,7 @@ object VirtualWorldIntegration {
             weight = 5.0,
             rangeSize = 50..400,
             color = Materials.Chrome.color(),
-            dimensions = listOf(Europa).map { it.id },
+            dimensions = listOf(Europa).map { it.id to it.name },
             ores = listOf(
                 Materials.Chrome.toOreComponent(90),
                 Materials.Tungsten.toOreComponent(60),
@@ -1160,7 +1182,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Callisto,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Cassiterite.toOreComponent(90),
                 Materials.Ledox.toOreComponent(60),
@@ -1181,7 +1203,7 @@ object VirtualWorldIntegration {
                 Io,
                 Makemake,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Magnetite.toOreComponent(90),
                 Materials.Magnetite.toOreComponent(60),
@@ -1202,7 +1224,7 @@ object VirtualWorldIntegration {
                 Io,
                 Makemake,
                 Ceres
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.MeteoricIron.toOreComponent(90),
                 Materials.Ledox.toOreComponent(60),
@@ -1220,7 +1242,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Mars,
                 Overworld
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.RockSalt.toOreComponent(90),
                 Materials.Salt.toOreComponent(60),
@@ -1241,7 +1263,7 @@ object VirtualWorldIntegration {
                 Io,
                 Asteroids,
                 Miranda
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Tin.toOreComponent(90),
                 Materials.Tin.toOreComponent(60),
@@ -1263,7 +1285,7 @@ object VirtualWorldIntegration {
                 Io,
                 Phobos,
                 Overworld
-            ).map { it.id },
+            ).map { it.id to it.name },
             ores = listOf(
                 Materials.Sphalerite.toOreComponent(90),
                 Materials.Zinc.toOreComponent(60),
@@ -1284,7 +1306,7 @@ object VirtualWorldIntegration {
                 Triton,
                 Phobos,
                 Asteroids
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 32.0,
@@ -1304,7 +1326,7 @@ object VirtualWorldIntegration {
                 Titan,
                 Proteus,
                 Asteroids
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 32.0,
@@ -1324,7 +1346,7 @@ object VirtualWorldIntegration {
                 Io,
                 Proteus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1336,7 +1358,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 503,
             name = "Coal",
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 24.0,
@@ -1361,7 +1383,7 @@ object VirtualWorldIntegration {
                 Miranda,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 16.0,
@@ -1386,7 +1408,7 @@ object VirtualWorldIntegration {
                 Ceres,
                 Ganymede,
                 Deimos
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 16.0,
@@ -1408,7 +1430,7 @@ object VirtualWorldIntegration {
                 Ganymede,
                 Proteus,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 12.0,
@@ -1431,7 +1453,7 @@ object VirtualWorldIntegration {
                 Miranda,
                 Phobos,
                 Mercury
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1452,7 +1474,7 @@ object VirtualWorldIntegration {
                 Oberon,
                 Proteus,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1474,7 +1496,7 @@ object VirtualWorldIntegration {
                 Asteroids,
                 Ceres,
                 Deimos
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1493,7 +1515,7 @@ object VirtualWorldIntegration {
                 Enceladus,
                 Phobos,
                 Oberon
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 4.0,
@@ -1516,7 +1538,7 @@ object VirtualWorldIntegration {
                 Ceres,
                 Deimos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 2.0,
@@ -1534,7 +1556,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1552,7 +1574,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1570,7 +1592,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1588,7 +1610,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1606,7 +1628,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1624,7 +1646,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1642,7 +1664,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1660,7 +1682,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1678,7 +1700,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1696,7 +1718,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1714,7 +1736,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1732,7 +1754,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1758,7 +1780,7 @@ object VirtualWorldIntegration {
                 Ganymede,
                 Proteus,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1773,7 +1795,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Overworld,
                 Enceladus
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 20.0,
@@ -1794,7 +1816,7 @@ object VirtualWorldIntegration {
                 Proteus,
                 Enceladus,
                 Deimos
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1806,7 +1828,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 527,
             name = "Sulfur",
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 16.0,
@@ -1828,7 +1850,7 @@ object VirtualWorldIntegration {
                 Makemake,
                 Titan,
                 Oberon
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 1.0,
@@ -1860,7 +1882,7 @@ object VirtualWorldIntegration {
                 Deimos,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 32.0,
@@ -1880,7 +1902,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Deimos,
                 Phobos
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1892,7 +1914,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 531,
             name = "Neutronium",
-            dimensions = listOf(Makemake).map { it.id },
+            dimensions = listOf(Makemake).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1923,7 +1945,7 @@ object VirtualWorldIntegration {
                 Deimos,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1953,7 +1975,7 @@ object VirtualWorldIntegration {
                 Deimos,
                 Phobos,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1973,7 +1995,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Proteus,
                 Enceladus
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -1988,7 +2010,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Pluto,
                 Triton
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 6.0,
@@ -2005,7 +2027,7 @@ object VirtualWorldIntegration {
                 Ganymede,
                 Triton,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -2024,7 +2046,7 @@ object VirtualWorldIntegration {
                 Callisto,
                 Enceladus,
                 Oberon
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 4.0,
@@ -2039,7 +2061,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Pluto,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 6.0,
@@ -2055,7 +2077,7 @@ object VirtualWorldIntegration {
                 Haumea,
                 Pluto,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 4.0,
@@ -2078,7 +2100,7 @@ object VirtualWorldIntegration {
                 Makemake,
                 Phobos,
                 Mercury
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 6.0,
@@ -2093,7 +2115,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Mercury,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -2110,7 +2132,7 @@ object VirtualWorldIntegration {
                 Io,
                 Mercury,
                 Titan
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -2124,7 +2146,7 @@ object VirtualWorldIntegration {
                 Pluto,
                 Proteus,
                 Makemake
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 8.0,
@@ -2137,7 +2159,7 @@ object VirtualWorldIntegration {
             dimensions = listOf(
                 Miranda,
                 Proteus
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 6.0,
@@ -2147,7 +2169,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 545,
             name = "Naquadria",
-            dimensions = listOf(KuiperBelt).map { it.id },
+            dimensions = listOf(KuiperBelt).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 4.0,
@@ -2165,7 +2187,7 @@ object VirtualWorldIntegration {
                 Titan,
                 Proteus,
                 Enceladus
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 16.0,
@@ -2186,55 +2208,84 @@ object VirtualWorldIntegration {
                 Makemake,
                 Pluto,
                 Haumea
-            ).map { it.id },
+            ).map { it.id to it.name },
             rangeSize = 1..10,
             layer = 0,
             weight = 16.0,
             color = Materials.Platinum.color(),
             ores = listOf(Materials.Platinum.toOreComponent(100))
         )
+
+        VirtualOreVein(
+            id = 1000,
+            name = "Empty",
+            dimensions = OreGenerator.Dimensions.values().map { it.id to it.name },
+            rangeSize = 1..10,
+            layer = 0,
+            weight = 5.0,
+            color = Materials._NULL.color(),
+            ores = listOf(),
+            isHidden = true,
+        )
+        VirtualOreVein(
+            id = 1001,
+            name = "Empty",
+            dimensions = OreGenerator.Dimensions.values().map { it.id to it.name },
+            rangeSize = 1..10,
+            layer = 1,
+            weight = 5.0,
+            color = Materials._NULL.color(),
+            ores = listOf(),
+            isHidden = true,
+        )
     }
 
     private fun registerFluidVeins() {
         VirtualFluidVein(
+            id = 0,
+            name = "Empty",
+            weight = 5.0,
+            rangeSize = 1..10,
+            color = Materials._NULL.color(),
+            dimensions = OreGenerator.Dimensions.values().map { it.id to it.name },
+            fluid = VirtualFluidTypeComponent(Materials.Oil.getFluid(0).getFluid(), 50),
+            isHidden = true,
+        )
+        VirtualFluidVein(
             id = 1,
-            depth = 1,
             name = "Oil",
             weight = 16.0,
             rangeSize = 1..10,
             color = Materials.Oil.color(),
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             fluid = VirtualFluidTypeComponent(Materials.Oil.getFluid(0).getFluid(), 50)
         )
         VirtualFluidVein(
             id = 2,
-            depth = 1,
             name = "Heavy Oil",
             weight = 16.0,
             rangeSize = 1..10,
             color = color(255, 0, 255),
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             fluid = VirtualFluidTypeComponent(Materials.OilHeavy.getFluid(0).getFluid(), 50)
         )
         VirtualFluidVein(
             id = 3,
-            depth = 1,
             name = "Medium Oil",
             weight = 16.0,
             rangeSize = 1..10,
             color = color(0, 255, 0),
-            dimensions = listOf(Overworld).map { it.id },
+            dimensions = listOf(Overworld).map { it.id to it.name },
             fluid = VirtualFluidTypeComponent(Materials.OilMedium.getFluid(0).getFluid(), 50)
         )
         VirtualFluidVein(
             id = 4,
-            depth = 1,
             name = "Light Oil",
             weight = 16.0,
             rangeSize = 1..10,
             color = color(255, 255, 0),
-            dimensions = listOf(Overworld).map { it.id },
-            fluid = VirtualFluidTypeComponent(Materials.OilLight.getFluid(0).getFluid(), 50)
+            dimensions = listOf(Overworld).map { it.id to it.name },
+            fluid = VirtualFluidTypeComponent(Materials.OilLight.getFluid(0).getFluid(), 50),
         )
     }
 

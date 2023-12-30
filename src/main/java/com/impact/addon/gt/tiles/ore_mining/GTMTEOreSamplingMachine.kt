@@ -1,7 +1,5 @@
 package com.impact.addon.gt.tiles.ore_mining
 
-import com.impact.common.oregeneration.OreGenerator
-import com.impact.common.oregeneration.generator.OreChunkGenerator
 import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
@@ -25,6 +23,8 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
+import space.gtimpact.virtual_world.api.VirtualAPI
+import space.gtimpact.virtual_world.api.VirtualOreVein
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
@@ -47,7 +47,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             .build()
 
         private const val LAYER = 1
-        private const val DEFAULT_WORK = 60 * 20
+        private const val DEFAULT_WORK = 30 * 20
 
         @JvmStatic
         fun addRecipe() {
@@ -73,8 +73,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
 
     private val hatch: HashSet<GTMTE_OreHatch> = hashSetOf()
     private var sizeVeinPreStart = 0
-    private var oreChunkGenerator: OreChunkGenerator? = null
-    private var oreVein = OreGenerator.empty
+    private var vein: VirtualOreVein? = null
     private var isHanded = false
 
     private fun checkHatch(te: IGregTechTileEntity?, index: Short): Boolean {
@@ -97,27 +96,33 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
 
     private fun initOreProperty(te: IGregTechTileEntity) {
         if (te.isServerSide) {
-            oreChunkGenerator = OreGenerator.getChunkFromIGT(te, LAYER)
-            if (oreChunkGenerator != null) {
-                sizeVeinPreStart = oreChunkGenerator?.sizeOreChunk ?: 0
-                oreVein = if (sizeVeinPreStart > 0) {
-                    OreGenerator.getOreVein(te, LAYER)
-                } else {
-                    OreGenerator.empty
-                }
+            val chunk = te.world.getChunkFromBlockCoords(te.xCoord, te.zCoord)
+            VirtualAPI.getOreInfoChunk(chunk, LAYER)?.also {
+                sizeVeinPreStart = it.size
+                vein = it.vein
             }
         }
     }
 
-    override fun getTexture(aBaseMetaTileEntity: IGregTechTileEntity?, aSide: Byte, aFacing: Byte, aColorIndex: Byte, aActive: Boolean, aRedstone: Boolean): Array<ITexture> {
+    override fun getTexture(
+        aBaseMetaTileEntity: IGregTechTileEntity?,
+        aSide: Byte,
+        aFacing: Byte,
+        aColorIndex: Byte,
+        aActive: Boolean,
+        aRedstone: Boolean
+    ): Array<ITexture> {
         return if (aSide == 1.toByte())
-            arrayOf(INDEX_CASE, TextureFactory.of(if (aActive) Texture.Icons.ORE_SAMPLE_ACTIVE else Texture.Icons.ORE_SAMPLE))
+            arrayOf(
+                INDEX_CASE,
+                TextureFactory.of(if (aActive) Texture.Icons.ORE_SAMPLE_ACTIVE else Texture.Icons.ORE_SAMPLE)
+            )
         else
             arrayOf(INDEX_CASE)
     }
 
     override fun checkRecipe(aStack: ItemStack?): Boolean {
-        if (oreChunkGenerator == null || (oreChunkGenerator?.sizeOreChunk ?: 0) <= 0) return false
+        if (vein == null || sizeVeinPreStart <= 0) return false
         val oreHatch = hatch.firstOrNull() ?: return false
 
         if (sizeVeinPreStart < 1) {
@@ -131,7 +136,14 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         } else false
     }
 
-    override fun onRightclick(te: IGregTechTileEntity, p: EntityPlayer, side: Byte, aX: Float, aY: Float, aZ: Float): Boolean {
+    override fun onRightclick(
+        te: IGregTechTileEntity,
+        p: EntityPlayer,
+        side: Byte,
+        aX: Float,
+        aY: Float,
+        aZ: Float
+    ): Boolean {
         if (side != 1.toByte() || isHanded) return true
         isHanded = true
         checkRecipe(null)
@@ -144,12 +156,18 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             if (te.isActive) {
                 if (tick % 20 == 2L && hatch.size > 0) {
                     val oreHatch = hatch.first()
-                    oreHatch.cycleDrill(oreVein != null && oreHatch.ready)
+                    oreHatch.cycleDrill(vein != null && oreHatch.ready)
                 }
-                if (mProgresstime == DEFAULT_WORK - 1) {
+                if (mProgresstime == DEFAULT_WORK - 1 && vein != null) {
                     val multiplier = 0.05f
                     val w = te.world
-                    val droppedItem = EntityItem(w, te.xCoord.toDouble(), te.yCoord.toDouble(), te.zCoord.toDouble(), oreVein.ores.random())
+                    val droppedItem = EntityItem(
+                        w,
+                        te.xCoord.toDouble(),
+                        te.yCoord.toDouble(),
+                        te.zCoord.toDouble(),
+                        vein!!.ores.random().ore
+                    )
                     droppedItem.motionX = ((-0.5f + w.rand.nextFloat()) * multiplier).toDouble()
                     droppedItem.motionY = ((4 + w.rand.nextFloat()) * multiplier).toDouble()
                     droppedItem.motionZ = ((-0.5f + w.rand.nextFloat()) * multiplier).toDouble()
