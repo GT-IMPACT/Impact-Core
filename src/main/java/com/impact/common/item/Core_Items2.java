@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 
 public class Core_Items2 extends Item {
 
-  public static int x = 209; //количество предметов
+  public static int x = 211; //количество предметов
 
   private static Core_Items2 Core_Items2 = new Core_Items2();
   private final IIcon[] icons = new IIcon[x + 1];

@@ -327,6 +327,8 @@ public enum Core_List_Items {
     Processorx256(207, 1),
     Processorx1024(208, 1),
     Processorx4096(209, 1),
+    LeadMeitneriumCompressedPlate(210, 1),
+    OsmiumCompressedPlate(211, 1),
     
 
     WoodenBrickForm1(0, 2),
