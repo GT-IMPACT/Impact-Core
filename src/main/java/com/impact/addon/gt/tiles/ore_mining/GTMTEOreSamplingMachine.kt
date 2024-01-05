@@ -1,11 +1,13 @@
 package com.impact.addon.gt.tiles.ore_mining
 
+import com.impact.addon.vw.VirtualWorldScan
 import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch
 import com.impact.util.multis.GT_StructureUtility.ofFrame
 import com.impact.util.multis.GT_StructureUtility.ofHatchAdder
+import com.impact.util.multis.WorldProperties.chunk
 import com.impact.util.string.MultiBlockTooltipBuilder
 import gregtech.api.enums.GT_Values.RA
 import gregtech.api.enums.ItemList
@@ -21,10 +23,10 @@ import gregtech.api.util.GT_Utility
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import space.gtimpact.virtual_world.api.VirtualAPI
 import space.gtimpact.virtual_world.api.VirtualOreVein
+import space.gtimpact.virtual_world.api.OreVeinCount
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
@@ -72,8 +74,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity?) = GTMTEOreSamplingMachine(mName)
 
     private val hatch: HashSet<GTMTE_OreHatch> = hashSetOf()
-    private var sizeVeinPreStart = 0
-    private var vein: VirtualOreVein? = null
+    private var currentVeinCount: OreVeinCount? = null
     private var isHanded = false
 
     private fun checkHatch(te: IGregTechTileEntity?, index: Short): Boolean {
@@ -96,11 +97,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
 
     private fun initOreProperty(te: IGregTechTileEntity) {
         if (te.isServerSide) {
-            val chunk = te.world.getChunkFromBlockCoords(te.xCoord, te.zCoord)
-            VirtualAPI.getOreInfoChunk(chunk, LAYER)?.also {
-                sizeVeinPreStart = it.size
-                vein = it.vein
-            }
+            currentVeinCount = VirtualAPI.extractOreFromChunk(te.chunk, LAYER, 0)
         }
     }
 
@@ -122,13 +119,13 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     }
 
     override fun checkRecipe(aStack: ItemStack?): Boolean {
-        if (vein == null || sizeVeinPreStart <= 0) return false
-        val oreHatch = hatch.firstOrNull() ?: return false
-
-        if (sizeVeinPreStart < 1) {
+        val size = currentVeinCount?.size ?: 0
+        if (size <= 0) {
             stopMachine()
             return false
         }
+        val oreHatch = hatch.firstOrNull() ?: return false
+
         return if (isHanded && oreHatch.ready) {
             mMaxProgresstime = DEFAULT_WORK
             mEUt = 0
@@ -146,6 +143,8 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     ): Boolean {
         if (side != 1.toByte() || isHanded) return true
         isHanded = true
+        VirtualWorldScan.scanVeinOre(te.chunk, LAYER,  p)
+        currentVeinCount = VirtualAPI.extractOreFromChunk(te.chunk, LAYER, 1)
         checkRecipe(null)
         return true
     }
@@ -156,18 +155,12 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             if (te.isActive) {
                 if (tick % 20 == 2L && hatch.size > 0) {
                     val oreHatch = hatch.first()
-                    oreHatch.cycleDrill(vein != null && oreHatch.ready)
+                    oreHatch.cycleDrill(currentVeinCount != null && oreHatch.ready)
                 }
-                if (mProgresstime == DEFAULT_WORK - 1 && vein != null) {
+                if (mProgresstime == DEFAULT_WORK - 1 && currentVeinCount != null) {
                     val multiplier = 0.05f
                     val w = te.world
-                    val droppedItem = EntityItem(
-                        w,
-                        te.xCoord.toDouble(),
-                        te.yCoord.toDouble(),
-                        te.zCoord.toDouble(),
-                        vein!!.ores.random().ore
-                    )
+                    val droppedItem = EntityItem(w, te.xCoord.toDouble(), te.yCoord.toDouble(), te.zCoord.toDouble(), currentVeinCount?.vein?.ores.orEmpty().random().ore)
                     droppedItem.motionX = ((-0.5f + w.rand.nextFloat()) * multiplier).toDouble()
                     droppedItem.motionY = ((4 + w.rand.nextFloat()) * multiplier).toDouble()
                     droppedItem.motionZ = ((-0.5f + w.rand.nextFloat()) * multiplier).toDouble()
@@ -224,15 +217,6 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             .addRedHint("Miner Drill Hatch")
             .signAndFinalize()
         return b
-    }
-
-    override fun saveNBTData(aNBT: NBTTagCompound) {
-        aNBT.setInteger("sizeVeinPreStart", sizeVeinPreStart)
-    }
-
-    override fun loadNBTData(aNBT: NBTTagCompound) {
-        super.loadNBTData(aNBT)
-        sizeVeinPreStart = aNBT.getInteger("sizeVeinPreStart")
     }
 
     override fun getStructureDefinition(): IStructureDefinition<GTMTEOreSamplingMachine> = DEFINITION

@@ -3,10 +3,7 @@ package com.impact.util.files;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.impact.common.oregeneration.OreVeinRandomizer;
-import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.core.SaveManager;
-import com.impact.impact;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +32,6 @@ public class JsonWorld {
         saveCommunicationTowers();
         saveSpaceSatellite();
         saveAeroState();
-        saveOreGenerator();
         System.out.println("Impact Save files finished: (" + (System.currentTimeMillis() - start) + "ms)");
     }
     
@@ -48,7 +44,6 @@ public class JsonWorld {
                 saveCommunicationTowers();
                 saveSpaceSatellite();
                 saveAeroState();
-                saveOreGenerator();
                 return start;
             }
         }).thenAccept(start -> {
@@ -60,7 +55,6 @@ public class JsonWorld {
         loadCommunicationTowers();
         loadSpaceSatellite();
         loadAeroState();
-        loadOreGenerator();
     }
 
     //region CommunicationTowers
@@ -101,73 +95,5 @@ public class JsonWorld {
         JsonUtils.jsonFromMapStringIntArray(sAerostat, json.getPath(), AERO_STATES);
     }
     //endregion
-    
-    private static void loadOreGenerator() {
-        File json = SaveManager.get().oresDirectory;
-        Gson gson = new Gson();
-        JsonElement jsonElement = null;
-        try {
-            FileReader fr = new FileReader(json.getPath() + "\\" + ORES + ".json");
-            BufferedReader br = new BufferedReader(fr);
-            jsonElement = gson.fromJson(br, JsonElement.class);
-            Type listType = new TypeToken<List<OresRegionGenerator>>() {}.getType();
-            List<OresRegionGenerator> regionList = gson.fromJson(jsonElement, listType);
-            for (OresRegionGenerator o : regionList) {
-                regionsOres.put(Objects.hash(o.xRegion, o.zRegion, o.dim), o);
-            }
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        OreVeinRandomizer.resizeVeins();
-    }
-    
-    private static void saveOreGenerator() {
-        if (regionsOres.isEmpty()) return;
-        File json = SaveManager.get().oresDirectory;
-        Gson objGson = new Gson();
-        try (FileWriter writer = new FileWriter(json.getPath() + "\\" + ORES + ".json")) {
-            List<OresRegionGenerator> list = new ArrayList<>(regionsOres.values());
-            objGson.toJson(list, writer);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    //    private static void loadOreGenerator() {
-    //        File json = SaveManager.get().oresDirectory;
-    //        Gson gson = new Gson();
-    //        JsonElement jsonElement = null;
-    //        for (File fileEntry : Objects.requireNonNull(json.listFiles())) {
-    //            try {
-    //                FileReader fr = new FileReader(fileEntry);
-    //                BufferedReader br = new BufferedReader(fr);
-    //                jsonElement = gson.fromJson(br, JsonElement.class);
-    //                Type listType = new TypeToken<List<OresRegionGenerator>>(){}.getType();
-    //                List<OresRegionGenerator> regionList = gson.fromJson(jsonElement, listType);
-    //                for (OresRegionGenerator o : regionList) {
-    //                    regionsOres.put(Objects.hash(o.xRegion, o.zRegion, o.dim), o);
-    //                }
-    //                br.close();
-    //            } catch (Exception e) {
-    //                e.printStackTrace();
-    //            }
-    //            OreVeinRandomizer.resizeVeins();
-    //        }
-    //    }
-    //
-    //    private static void saveOreGenerator() {
-    //        if (regionsOres.isEmpty()) return;
-    //        File json = SaveManager.get().oresDirectory;
-    //        Gson objGson = new Gson();
-    //        regionsOres.forEach((dimID, region) -> {
-    //            String pathFile = "\\dimID" + region.dim;
-    //            try (FileWriter writer = new FileWriter(json.getPath() + "\\" + ORES + pathFile + ".json")) {
-    //                List<OresRegionGenerator> list = new ArrayList<>(regionsOres.values());
-    //                objGson.toJson(list, writer);
-    //            } catch (Exception e) {
-    //                e.printStackTrace();
-    //            }
-    //        });
-    //    }
+
 }

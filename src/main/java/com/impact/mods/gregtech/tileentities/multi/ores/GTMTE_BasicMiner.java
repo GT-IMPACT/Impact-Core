@@ -1,6 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
-import com.impact.common.oregeneration.generator.OresRegionGenerator;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
@@ -309,7 +308,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 			if (!aPlayer.isSneaking()) {
 				increaseLayer(te, 1);
 				layer++;
-				if (layer >= OresRegionGenerator.layers) {
+				if (layer >= 2) {
 					layer = 0;
 				}
 				initOreProperty(te);

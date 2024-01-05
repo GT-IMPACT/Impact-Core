@@ -10,6 +10,7 @@ repositories {
     maven("https://maven.accident.space/repository/maven-public/")
     maven("http://jenkins.usrv.eu:8081/nexus/content/groups/public/") { isAllowInsecureProtocol = true }
     maven("https://jitpack.io")
+    maven("https://cursemaven.com")
     maven("https://maven2.ic2.player.to/") { metadataSources { mavenPom(); artifact() } }
     mavenCentral()
     mavenLocal()
@@ -34,13 +35,18 @@ tasks.test {
 }
 
 dependencies {
-    api("space.impact:packet_network:1.1.+:dev") { isChanging = true }
+    api("space.impact:packet_network:1.1.3") { isChanging = true }
     api("space.impact:impactapi:0.0.+:dev") { isChanging = true }
     api("space.impact:wailaplugins:0.3.+:dev") { isChanging = true }
-    api("space.impact:impact_vw:1.0.+:dev") { isChanging = true }
+    api("space.impact:impact_vw:1.3.3:dev") {
+        exclude("io.github.legacymoddingmc")
+        isChanging = true
+    }
     api("space.impact:gregtech:5.09.35.9:dev") { isChanging = true; isTransitive = false }
 
-    api("com.github.GTNewHorizons:ModularUI:1.1.10:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.24:dev") {
+        isTransitive = false
+    }
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.+:dev") { isChanging = true }
     api("com.github.GTNewHorizons:waila:1.6.0:dev") { isTransitive = false }
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")

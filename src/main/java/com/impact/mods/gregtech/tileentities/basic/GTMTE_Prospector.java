@@ -92,7 +92,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 			}
 		}
 	}
-	
+
 	@Override
 	public void inValidate() {
 		this.ready = false;

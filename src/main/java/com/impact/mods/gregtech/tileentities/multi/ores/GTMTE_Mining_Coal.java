@@ -1,6 +1,5 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
-import com.impact.common.oregeneration.generator.OreChunkGenerator;
 import com.impact.core.Config;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -66,7 +65,6 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
 	public int cycleIncrease = 0;
-	public OreChunkGenerator oreChunkGenerator = null;
 	public VirtualOreVein oreVein = null;
 
 	public GTMTE_Mining_Coal(int aID, String aNameRegional) {
@@ -251,7 +249,6 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
-		if (oreChunkGenerator == null || oreChunkGenerator.sizeOreChunk <= 0) return false;
 		if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == null) {
 			return false;
 		}

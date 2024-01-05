@@ -24,7 +24,7 @@ val modId: String by extra
 val modGroup: String by extra
 
 val usesMixins: String by extra
-val useMixins = usesMixins.toBoolean()
+val forceUseMixins: String? by extra
 
 val mixinPlugin: String by extra
 val mixinsPackage: String by extra
@@ -43,14 +43,14 @@ tasks.processResources.configure {
             "modName" to modName,
         )
     }
-    if (useMixins) {
+    if (usesMixins.toBoolean()) {
         from(refMap)
         dependsOn(tasks["compileJava"])
     }
 }
 
 tasks.register("generateAssets") {
-    onlyIf { useMixins }
+    onlyIf { usesMixins.toBoolean() }
     doLast {
         val mixinConfigFile = getFile("/src/main/resources/mixins.$modId.json")
         if (!mixinConfigFile.exists()) {
@@ -79,7 +79,7 @@ tasks.register("generateAssets") {
 
 fun getManifestAttributes(): Map<String, Any> {
     val manifestAttributes = mutableMapOf<String, Any>()
-    if (useMixins) {
+    if (usesMixins.toBoolean()) {
         manifestAttributes["FMLCorePluginContainsFMLMod"] = true
         manifestAttributes["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
         manifestAttributes["MixinConfigs"] = "mixins.$modId.json"
@@ -105,25 +105,20 @@ tasks.named("runClient") {
     }
 }
 
-val mixinProviderGroup = "io.github.legacymoddingmc"
-val mixinProviderModule = "unimixins"
-val mixinProviderVersion = "0.1.7.1"
-val mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
-val mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
+val mixinProviderVersion = "0.1.14"
+val mixinProviderSpecNoClassifer = "com.github.LegacyModdingMC.UniMixins:unimixins-mixin-1.7.10:${mixinProviderVersion}"
 
 dependencies {
-    if (useMixins) {
+    if (usesMixins.toBoolean()) {
         annotationProcessor("org.ow2.asm:asm-debug-all:5.0.3")
         annotationProcessor("com.google.guava:guava:24.1.1-jre")
         annotationProcessor("com.google.code.gson:gson:2.8.6")
-        annotationProcessor(mixinProviderSpec)
-    }
-}
-
-pluginManager.withPlugin("org.jetbrains.kotlin.kapt") {
-    if (useMixins) {
-        dependencies {
-            kapt(mixinProviderSpec)
-        }
+        kapt(mixinProviderSpecNoClassifer)
+        kapt("com.github.LegacyModdingMC.UniMixins:unimixins-gtnhmixins-1.7.10:$mixinProviderVersion")
+        implementation("com.github.LegacyModdingMC.UniMixins:unimixins-gtnhmixins-1.7.10:$mixinProviderVersion:dev")
+        implementation("com.github.LegacyModdingMC.UniMixins:unimixins-spongemixins-1.7.10:$mixinProviderVersion:dev")
+        implementation(mixinProviderSpecNoClassifer)
+    } else if (forceUseMixins.toBoolean()) {
+        runtimeOnlyNonPublishable(mixinProviderSpecNoClassifer)
     }
 }
