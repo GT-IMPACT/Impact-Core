@@ -87,12 +87,12 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 		} else {
 			this.layer++;
 			if (type == 0) {
-				if (this.layer >= VirtualAPI.getLAYERS_VIRTUAL_ORES()) this.layer = 0;
+				if (this.layer >= VirtualAPI.LAYERS_VIRTUAL_ORES) this.layer = 0;
 				VirtualWorldScan.sendChatChangeLayer(aPlayer, layer);
 			}
 		}
 	}
-	
+
 	@Override
 	public void inValidate() {
 		this.ready = false;

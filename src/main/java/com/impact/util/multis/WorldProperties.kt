@@ -1,9 +1,11 @@
 package com.impact.util.multis
 
 import gregtech.GT_Mod
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase
 import gregtech.api.util.GT_Recipe
+import net.minecraft.world.chunk.Chunk
 
 object WorldProperties {
 
@@ -27,4 +29,7 @@ object WorldProperties {
         }
         return isNotSpace
     }
+
+    val IGregTechTileEntity.chunk: Chunk
+        get() = world.getChunkFromBlockCoords(xCoord, zCoord)
 }

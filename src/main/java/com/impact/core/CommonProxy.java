@@ -142,7 +142,6 @@ public class CommonProxy implements IGuiHandler {
 		Impact_API.sElevatorSpace.clear();
 		Impact_API.sCommunicationTower.clear();
 		Impact_API.sAerostat.clear();
-		Impact_API.regionsOres.clear();
 		SatelliteNetworkManager.INSTANCE.reload();
 		JsonWorld.load();
 	}
@@ -153,7 +152,6 @@ public class CommonProxy implements IGuiHandler {
 		Impact_API.sElevatorSpace.clear();
 		Impact_API.sCommunicationTower.clear();
 		Impact_API.sAerostat.clear();
-		Impact_API.regionsOres.clear();
 		SatelliteNetworkManager.INSTANCE.reload();
 		SatelliteNetworkLogic.INSTANCE.onStopServer();
 	}

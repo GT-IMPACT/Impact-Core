@@ -21,7 +21,7 @@ import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fluids.FluidStack
-import space.gtimpact.virtual_world.api.VirtualAPI.extractFluidFromChunk
+import space.gtimpact.virtual_world.api.VirtualAPI
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
@@ -184,8 +184,8 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     }
 
     private fun runningLogic(chunk: Chunk) {
-        val (vein, reduceCoefficient) = extractFluidFromChunk(chunk)
-        if (vein != null && reduceCoefficient > 0) {
+        val vein = VirtualAPI.extractFluidFromVein(chunk, 1)
+        if (vein != null && vein.size > 0) {
             val waterConsume = 1000L * boostCoefficient / 2 // LV = 1000 * 0.5 = 500L
             var outputOil = 0L
             mixOutHatch?.also { mixOut ->
@@ -207,7 +207,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                         if (tLiquid.amount >= currentOil.amount) mixIn.drain(currentOil.amount, true)
                     }
                     val countOilOutput = outputOil * Random.nextDouble(.3, 1.0)
-                    FluidStack(vein.fluid, countOilOutput.toInt()).also(::addOutput)
+                    FluidStack(vein.vein.fluid, countOilOutput.toInt()).also(::addOutput)
                 }
             }
         }
