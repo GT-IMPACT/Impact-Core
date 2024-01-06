@@ -407,6 +407,7 @@ public enum Core_List_Items {
         YSZCeramicPlate.setOreDictName("plateYSZ");
         GDCCeramicPlate.setOreDictName("plateGDC");
         LSFCCeramicPlate.setOreDictName("plateLSCF");
+        OsmiumCompressedPlate.setOreDictName("compressedOsmium");
     }
 
     private final int metaID;
