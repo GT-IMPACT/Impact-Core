@@ -7,6 +7,7 @@ import gregtech.api.enums.OrePrefixes
 import gregtech.api.util.GT_OreDictUnificator
 import gregtech.api.util.GT_Utility
 import com.impact.common.oregeneration.Dimensions.*
+import gregtech.api.util.GT_ModHandler
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
@@ -1209,12 +1210,11 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 54,
             layer = 1,
-            name = "Iron Magnetite",
+            name = "Meteoric Iron",
             weight = 60.0,
             rangeSize = 50..400,
             color = Materials.MeteoricIron.color(),
             dimensions = listOf(
-                Overworld,
                 Deimos,
                 Io,
                 Makemake,
@@ -2239,49 +2239,350 @@ object VirtualWorldIntegration {
         VirtualFluidVein(
             id = 0,
             name = "Empty",
-            weight = 5.0,
+            weight = 33.0,
             rangeSize = 1..10,
             color = Materials._NULL.color(),
             dimensions = Dimensions.values().map { it.id to "${it.name} (${it.tier})" },
-            fluid = Materials.Water.getFluid(0),
+            fluid = Materials.Water.getAnyFluid(),
             isHidden = true,
         )
         VirtualFluidVein(
             id = 1,
             name = "Oil",
-            weight = 16.0,
-            rangeSize = 1..10,
+            weight = 20.0,
+            rangeSize = 80..800,
             color = Materials.Oil.color(),
-            dimensions = listOf(Overworld).map { it.id to "${it.name} (${it.tier})" },
-            fluid = Materials.Oil.getFluid(0)
+            dimensions = listOf(Overworld, Callisto).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Oil.getAnyFluid()
         )
         VirtualFluidVein(
             id = 2,
             name = "Heavy Oil",
-            weight = 16.0,
-            rangeSize = 1..10,
+            weight = 20.0,
+            rangeSize = 70..800,
             color = color(255, 0, 255),
-            dimensions = listOf(Overworld).map { it.id to "${it.name} (${it.tier})" },
-            fluid = Materials.OilHeavy.getFluid(0)
+            dimensions = listOf(Overworld, Europa).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.OilHeavy.getAnyFluid()
         )
         VirtualFluidVein(
             id = 3,
             name = "Medium Oil",
-            weight = 16.0,
-            rangeSize = 1..10,
+            weight = 20.0,
+            rangeSize = 80..600,
             color = color(0, 255, 0),
             dimensions = listOf(Overworld).map { it.id to "${it.name} (${it.tier})" },
-            fluid = Materials.OilMedium.getFluid(0)
+            fluid = Materials.OilMedium.getAnyFluid()
         )
         VirtualFluidVein(
             id = 4,
             name = "Light Oil",
-            weight = 16.0,
-            rangeSize = 1..10,
+            weight = 20.0,
+            rangeSize = 90..650,
             color = color(255, 255, 0),
             dimensions = listOf(Overworld).map { it.id to "${it.name} (${it.tier})" },
-            fluid = Materials.OilLight.getFluid(0)
+            fluid = Materials.OilLight.getAnyFluid()
         )
+        VirtualFluidVein(
+            id = 5,
+            name = "Natural Gas",
+            weight = 20.0,
+            rangeSize = 100..700,
+            color = color(0, 255, 255),
+            dimensions = listOf(Overworld, Ganymede).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.NatruralGas.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 6,
+            name = "Helium-3",
+            weight = 15.0,
+            rangeSize = 100..650,
+            color = color(128, 32, 224),
+            dimensions = listOf(Moon, Mercury).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Helium_3.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 7,
+            name = "Salt Water",
+            weight = 10.0,
+            rangeSize = 1..650,
+            color = color(128, 255, 128),
+            dimensions = listOf(Moon, Mars, Europa).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.SaltWater.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 8,
+            name = "Chlorobenzene",
+            weight = 15.0,
+            rangeSize = 150..400,
+            color = color(64, 128, 64),
+            dimensions = listOf(Mars).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Chlorobenzene.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 9,
+            name = "Bacterial Sludge",
+            weight = 18.0,
+            rangeSize = 70..200,
+            color = color(80, 250, 80),
+            dimensions = listOf(Mars).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.BacterialSludge.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 10,
+            name = "Nitrogen",
+            weight = 15.0,
+            rangeSize = 70..200,
+            color = color(0, 128, 208),
+            dimensions = listOf(Deimos, Ceres, Haumea).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Nitrogen.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 11,
+            name = "Extra Heavy Oil",
+            weight = 15.0,
+            rangeSize = 80..400,
+            color = color(0, 0, 80),
+            dimensions = listOf(Europa).map { it.id to "${it.name} (${it.tier})" },
+            fluid = FluidStack(ItemList.sOilExtraHeavy, 0)
+        )
+        VirtualFluidVein(
+            id = 12,
+            name = "Distilled Water",
+            weight = 15.0,
+            rangeSize = 400..3500,
+            color = color(53, 96, 171),
+            dimensions = listOf(Europa).map { it.id to "${it.name} (${it.tier})" },
+            fluid = GT_ModHandler.getDistilledWater(0)
+        )
+        VirtualFluidVein(
+            id = 13,
+            name = "Oxygen",
+            weight = 20.0,
+            rangeSize = 80..200,
+            color = color(64, 64, 160),
+            dimensions = listOf(Callisto, Makemake).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Oxygen.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 14,
+            name = "Liquid Air",
+            weight = 5.0,
+            rangeSize = 10..300,
+            color = color(64, 128, 64),
+            dimensions = listOf(Callisto).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.LiquidAir.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 15,
+            name = "Helium",
+            weight = 10.0,
+            rangeSize = 1..400,
+            color = color(255, 255, 0),
+            dimensions = listOf(Ganymede, Makemake).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Helium.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 16,
+            name = "Fluorine",
+            weight = 15.0,
+            rangeSize = 5..400,
+            color = color(255, 255, 255),
+            dimensions = listOf(Pluto, Ceres).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Fluorine.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 17,
+            name = "Argon",
+            weight = 12.0,
+            rangeSize = 1..50,
+            color = color(0, 255, 0),
+            dimensions = listOf(Venus, Makemake).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Argon.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 18,
+            name = "Lead",
+            weight = 25.0,
+            rangeSize = 100..600,
+            color = color(208, 208, 208),
+            dimensions = listOf(Venus).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Lead.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 19,
+            name = "Carbon Dioxide",
+            weight = 15.0,
+            rangeSize = 5..1000,
+            color = color(169, 208, 245),
+            dimensions = listOf(Venus, Io).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.CarbonDioxide.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 20,
+            name = "Sulfuric Acid",
+            weight = 15.0,
+            rangeSize = 5..300,
+            color = color(255, 128, 0),
+            dimensions = listOf(Venus).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.SulfuricAcid.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 21,
+            name = "Lava",
+            weight = 25.0,
+            rangeSize = 600..2000,
+            color = color(255, 0, 0),
+            dimensions = listOf(Io).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Lava.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 22,
+            name = "Methane",
+            weight = 20.0,
+            rangeSize = 200..800,
+            color = color(128, 32, 32),
+            dimensions = listOf(Titan).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Methane.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 23,
+            name = "Ethane",
+            weight = 18.0,
+            rangeSize = 50..200,
+            color = color(64, 128, 32),
+            dimensions = listOf(Titan).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Ethane.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 24,
+            name = "Hydric Sulfide",
+            weight = 15.0,
+            rangeSize = 200..900,
+            color = color(255, 255, 255),
+            dimensions = listOf(Miranda).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.HydricSulfide.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 25,
+            name = "Sulfuric Light Fuel",
+            weight = 25.0,
+            rangeSize = 100..500,
+            color = color(255, 255, 0),
+            dimensions = listOf(Miranda).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.SulfuricLightFuel.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 26,
+            name = "Sulfuric Naphtha",
+            weight = 23.0,
+            rangeSize = 100..500,
+            color = color(255, 255, 0),
+            dimensions = listOf(Oberon).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.SulfuricNaphtha.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 27,
+            name = "Sulfuric Heavy Fuel",
+            weight = 23.0,
+            rangeSize = 100..500,
+            color = color(255, 255, 0),
+            dimensions = listOf(Oberon).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.SulfuricHeavyFuel.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 28,
+            name = "Radon",
+            weight = 5.0,
+            rangeSize = 1..200,
+            color = color(255, 0, 255),
+            dimensions = listOf(Enceladus, Haumea).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Radon.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 29,
+            name = "Sulfuric Gas",
+            weight = 25.0,
+            rangeSize = 200..500,
+            color = color(255, 255, 0),
+            dimensions = listOf(Enceladus).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.SulfuricGas.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 30,
+            name = "Glowstone",
+            weight = 25.0,
+            rangeSize = 1..400,
+            color = color(255, 255, 0),
+            dimensions = listOf(Enceladus).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Glowstone.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 31,
+            name = "Indium",
+            weight = 3.0,
+            rangeSize = 1..300,
+            color = color(64, 0, 128),
+            dimensions = listOf(Triton).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Indium.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 32,
+            name = "Naquadah",
+            weight = 3.0,
+            rangeSize = 50..200,
+            color = color(32, 32, 32),
+            dimensions = listOf(Triton).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Naquadah.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 33,
+            name = "Toluene",
+            weight = 30.0,
+            rangeSize = 50..200,
+            color = color(80, 29, 5),
+            dimensions = listOf(Proteus).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Toluene.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 34,
+            name = "Lutetium",
+            weight = 5.0,
+            rangeSize = 1..100,
+            color = color(0, 170, 255),
+            dimensions = listOf(Proteus).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Lutetium.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 35,
+            name = "Ethylene",
+            weight = 22.0,
+            rangeSize = 400..800,
+            color = color(208, 208, 208),
+            dimensions = listOf(Pluto).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Ethylene.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 36,
+            name = "Chlorine",
+            weight = 15.0,
+            rangeSize = 100..400,
+            color = color(255, 255, 255),
+            dimensions = listOf(Pluto).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Chlorine.getAnyFluid()
+        )
+        VirtualFluidVein(
+            id = 37,
+            name = "Enriched Naquadah",
+            weight = 5.0,
+            rangeSize = 50..200,
+            color = color(96, 96, 96),
+            dimensions = listOf(Makemake).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.NaquadahEnriched.getAnyFluid()
+        )
+    }
+    
+    private fun Materials.getAnyFluid(): FluidStack {
+        return getFluid(0) ?: getGas(0) ?: getMolten(0)!!
     }
 
     private fun Materials.toOreComponent(chance: Int): VirtualOreComponent {

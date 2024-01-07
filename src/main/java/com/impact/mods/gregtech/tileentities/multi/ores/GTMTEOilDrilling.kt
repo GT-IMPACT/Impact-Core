@@ -6,6 +6,7 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockB
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
 import com.impact.util.multis.GT_StructureUtility.ofFrame
 import com.impact.util.multis.GT_StructureUtility.ofHatchAdder
+import com.impact.util.multis.WorldProperties.chunk
 import com.impact.util.string.MultiBlockTooltipBuilder
 import gregtech.api.GregTech_API
 import gregtech.api.enums.Materials
@@ -21,11 +22,15 @@ import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fluids.FluidStack
+import space.gtimpact.virtual_world.api.ResourceGenerator.getVeinChunks
+import space.gtimpact.virtual_world.api.TypeFluidVein
 import space.gtimpact.virtual_world.api.VirtualAPI
+import space.gtimpact.virtual_world.config.Config
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
 import space.impact.api.multiblocks.structure.StructureUtility.*
+import kotlin.math.min
 import kotlin.random.Random
 
 class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
@@ -45,9 +50,9 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 )
             )
             .addElement('A', ofChain(ofBlock(GregTech_API.sBlockCasings2, 0), ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.GRAY)))
-            .addElement('B', ofChain(ofBlock(Blocks.air, 0), ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.BLACK))) //Optional Output Oil
+            .addElement('B', ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.BLACK)) //Output Oil
             .addElement('C', ofHatchAdder(GTMTEOilDrilling::checkMixHatch, 16, ImpactAPI.RED)) //Input Oil Dirt Mix
-            .addElement('D', ofChain(ofBlock(Blocks.air, 0), ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.BLUE))) //Optional Input Water
+            .addElement('D', ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.BLUE)) //Input Water
             .addElement('E', ofHatchAdder(GTMTEOilDrilling::checkMixHatch, 16, ImpactAPI.GREEN)) // Output Oil Dirt Mix
             .addElement('F', lazy { _ -> ofFrame(Materials.Steel) })
             .addElement('G', ofChain(ofBlock(Blocks.air, 0), ofBlock(ItemRegistery.CollisionBlock, 0)))
@@ -105,11 +110,20 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         return 25
     }
 
-    override fun machineStructure(thisController: IGregTechTileEntity?): Boolean {
+    override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
+
+        val size = thisController.chunk
+            .getVeinChunks()
+            .map { thisController.world.getChunkFromChunkCoords(it.chunkXPos, it.chunkZPos).chunkTileEntityMap.values }
+            .flatten()
+            .count { it is IGregTechTileEntity && it.metaTileEntity is GTMTEOilDrilling }
+
+        if (size > 1) return false
+
         val isBuild = checkPiece(3, 9, 0)
-        boostCoefficient = (getTier(maxInputVoltage) * 1.75).toInt()
+        boostCoefficient = tierEnergyHatch * 2
         return isBuild && hasRequireHatches(
-            energy = 2,
+            energy = 1,
             maintenance = 1,
             outputHatch = 4,
             inputHatch = 2,
@@ -122,8 +136,10 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
             addTypeMachine("name", "Oil Drilling")
                 .addSeparator()
                 .addController()
-                .addRedHint("Input Hatch for Oil Dirt Mix")
-                .addGreenHint("Output Hatch for Oil Dirt Mix")
+                .addRedHint("Input Hatch for Fluid Dirt Mix")
+                .addGreenHint("Output Hatch for Fluid Dirt Mix")
+                .addBlueHint("Input Hatch for Water")
+                .addBlackHint("Output Hatch for Oil/Gas/Other")
                 .addEnergyHatch(2)
                 .addMaintenanceHatch()
                 .addMuffler()
@@ -139,7 +155,9 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         if (mixInHatch == null && mixOutHatch == null) return false
         mEfficiency = getCurrentEfficiency(null)
         mEfficiencyIncrease = 10000
-        mEUt = 0
+        val tier = min(getTier(maxInputVoltageVanila).toInt(), 14)
+        mEUt = 3 * (2 shl (tier shl 1))
+        if (mEUt > 0) mEUt = -mEUt
         mProgresstime = 0
         mMaxProgresstime = 20 * 20
         return true
@@ -147,18 +165,23 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
     override fun onFirstTick(te: IGregTechTileEntity) {
         super.onFirstTick(te)
-        init(te)
+        currentChunk = te.chunk
     }
 
-    private fun init(te: IGregTechTileEntity) {
-        currentChunk = te.world.getChunkFromBlockCoords(te.xCoord, te.zCoord)
+    override fun onRemoval() {
+        baseMetaTileEntity?.also { te ->
+            te.isActive = false
+            createDrill(te)
+            mMufflerHatches.forEach { it.baseMetaTileEntity.isActive = te.isActive }
+        }
+        super.onRemoval()
     }
 
     override fun onPostTick(te: IGregTechTileEntity, tick: Long) {
         super.onPostTick(te, tick)
-        if (te.isServerSide && tick % 100 == 0L) {
-            if (te.isActive) currentChunk?.also(::runningLogic)
-            createDrill(te)
+        if (te.isServerSide) {
+            if (te.isActive && tick % 40 == 0L) currentChunk?.also(::runningLogic)
+            if (tick % 100 == 0L) createDrill(te)
         }
     }
 
@@ -186,17 +209,20 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     private fun runningLogic(chunk: Chunk) {
         val vein = VirtualAPI.extractFluidFromVein(chunk, 1)
         if (vein != null && vein.size > 0) {
-            val waterConsume = 1000L * boostCoefficient / 2 // LV = 1000 * 0.5 = 500L
+            val waterConsume = (boostCoefficient shr 1) * when(vein.typeVein) {
+                TypeFluidVein.LP -> Config.countWaterForLPDrill
+                TypeFluidVein.MP -> Config.countWaterForMPDrill
+                TypeFluidVein.HP -> Config.countWaterForHPDrill
+            }
             var outputOil = 0L
             mixOutHatch?.also { mixOut ->
-                val isBoost = depleteInput(Materials.Water.getFluid(waterConsume))
-                val boost = boostCoefficient * if (isBoost) 2 else 1
-                outputOil = boost * 100L / 2  // LV = 0.5 * 100 = 50 or 1 * 100 = 100L
+                val isPressured = depleteInput(Materials.Water.getFluid(waterConsume.toLong()))
+                if (!isPressured) stopMachine()
+
+                outputOil = ((boostCoefficient shl 6) * 2 * ((boostCoefficient / 2) shl 2) * .4).toLong()
                 addOutputMix(mixOut, Materials.MixDirtOil.getFluid(outputOil))
-                if (isBoost) {
-                    val countWaterOutput = (waterConsume * if (mixInHatch != null) .3 else .6).toLong()
-                    addOutput(Materials.Water.getFluid(countWaterOutput))
-                }
+                val countWaterOutput = (waterConsume * .4).toLong()
+                addOutput(Materials.Water.getFluid(countWaterOutput))
             }
             mixInHatch?.also { mixIn ->
                 if (outputOil > 0) {
@@ -206,11 +232,11 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                         tLiquid = mixIn.drain(currentOil.amount, false)
                         if (tLiquid.amount >= currentOil.amount) mixIn.drain(currentOil.amount, true)
                     }
-                    val countOilOutput = outputOil * Random.nextDouble(.3, 1.0)
+                    val countOilOutput = outputOil * Random.nextDouble(.5, .7)
                     FluidStack(vein.vein.fluid, countOilOutput.toInt()).also(::addOutput)
                 }
             }
-        }
+        } else stopMachine()
     }
 
     private fun addOutputMix(output: GT_MetaTileEntity_Hatch_Output, fluid: FluidStack) {
@@ -221,11 +247,11 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     private fun GT_MetaTileEntity_Hatch_Output.dumpFluid(fluid: FluidStack): Boolean {
         val tAmount: Int = fill(fluid, false)
         if (tAmount >= fluid.amount) {
-            val filled: Boolean = fill(fluid, true) >= fluid.amount
+            val filled = fill(fluid, true) >= fluid.amount
             onEmptyingContainerWhenEmpty()
             return filled
         } else if (tAmount > 0) {
-            fluid.amount = fluid.amount - fill(fluid, true)
+            fluid.amount -= fill(fluid, true)
             onEmptyingContainerWhenEmpty()
         }
         return false

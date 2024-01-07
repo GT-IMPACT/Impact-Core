@@ -38,7 +38,7 @@ dependencies {
     api("space.impact:packet_network:1.1.3") { isChanging = true }
     api("space.impact:impactapi:0.0.+:dev") { isChanging = true }
     api("space.impact:wailaplugins:0.3.+:dev") { isChanging = true }
-    api("space.impact:impact_vw:1.3.3:dev") {
+    api("space.impact:impact_vw:1.3.4:dev") {
         exclude("io.github.legacymoddingmc")
         isChanging = true
     }
