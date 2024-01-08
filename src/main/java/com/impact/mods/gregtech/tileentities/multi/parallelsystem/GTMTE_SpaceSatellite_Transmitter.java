@@ -45,7 +45,12 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch im
 	private final HashSet<ISatelliteNetwork> towers = Sets.newHashSet();
 	
 	public GTMTE_SpaceSatellite_Transmitter(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional, 3, 0, new String[]{Utilits.impactTag(), "Transmission of signals from orbit", "Used in Space Satellite", EnumChatFormatting.RED + "▉" + EnumChatFormatting.GRAY + " - Error", EnumChatFormatting.YELLOW + "▉" + EnumChatFormatting.GRAY + " - All Right"});
+		super(aID, aName, aNameRegional, 3, 0, new String[]{
+				Utilits.impactTag(),
+				"Transmission of signals from orbit", "Used in Space Satellite",
+				EnumChatFormatting.RED + "[]" + EnumChatFormatting.GRAY + " - Error",
+				EnumChatFormatting.YELLOW + "[]" + EnumChatFormatting.GRAY + " - All Right"
+		});
 	}
 	
 	public GTMTE_SpaceSatellite_Transmitter(String aName, String[] aDescription, ITexture[][][] aTextures) {

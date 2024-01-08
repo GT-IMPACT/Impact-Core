@@ -50,8 +50,8 @@ public class GTMTE_CommunicationTower_Receiver extends GT_MetaTileEntity_Hatch i
 				Utilits.impactTag(),
 				"Receiving signals from orbit",
 				"Used in Communication Tower",
-				EnumChatFormatting.RED + "▉" + EnumChatFormatting.GRAY + " - Error",
-				EnumChatFormatting.GREEN + "▉" + EnumChatFormatting.GRAY + " - All Right"
+				EnumChatFormatting.RED + "[]" + EnumChatFormatting.GRAY + " - Error",
+				EnumChatFormatting.GREEN + "[]" + EnumChatFormatting.GRAY + " - All Right"
 		});
 	}
 	
