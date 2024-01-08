@@ -155,7 +155,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
         MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("ttc");
         b
                 .addTypeMachine("name", "Communication Tower")
-                .addInfo("info.0", "Working radius 256 blocks")
+                .addInfo("info.0", "Working radius is 9x9 chunks square")
                 .addSeparator()
                 .addController()
                 .addOtherStructurePart("other.0", "Communication Receiver Hatch", "other.1", "Top")
