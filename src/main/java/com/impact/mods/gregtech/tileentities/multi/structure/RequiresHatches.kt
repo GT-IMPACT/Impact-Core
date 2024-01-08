@@ -6,6 +6,7 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_M
 object RequiresHatches {
 
     @JvmStatic
+    @JvmOverloads
     fun GTMTE_Impact_BlockBase<*>.hasRequireHatches(
         energy: Int = 0,
         dynamo: Int = 0,
@@ -27,7 +28,8 @@ object RequiresHatches {
     }
 
     @JvmStatic
-    fun GT_MetaTileEntity_MultiParallelBlockBase<*>.hasRequireHatches(
+    @JvmOverloads
+    fun GT_MetaTileEntity_MultiParallelBlockBase<*>.hasRequireParallelHatches(
         energy: Int = 0,
         dynamo: Int = 0,
         inputBuss: Int = 0,

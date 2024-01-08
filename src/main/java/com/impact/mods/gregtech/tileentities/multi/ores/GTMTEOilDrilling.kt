@@ -30,7 +30,10 @@ import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
 import space.impact.api.multiblocks.structure.StructureUtility.*
+import kotlin.math.log
+import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.random.Random
 
 class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
@@ -112,16 +115,13 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
     override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
 
-        val size = thisController.chunk
-            .getVeinChunks()
-            .map { thisController.world.getChunkFromChunkCoords(it.chunkXPos, it.chunkZPos).chunkTileEntityMap.values }
-            .flatten()
+        val size = thisController.chunk.chunkTileEntityMap.values
             .count { it is IGregTechTileEntity && it.metaTileEntity is GTMTEOilDrilling }
 
         if (size > 1) return false
 
         val isBuild = checkPiece(3, 9, 0)
-        boostCoefficient = tierEnergyHatch * 2
+        boostCoefficient = min(tierEnergyHatch, 14) * 2
         return isBuild && hasRequireHatches(
             energy = 1,
             maintenance = 1,
@@ -133,14 +133,18 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
     override fun createTooltip(): MultiBlockTooltipBuilder {
         return MultiBlockTooltipBuilder("oil_drilling_machine").apply {
-            addTypeMachine("name", "Oil Drilling")
-                .addSeparator()
+            addTypeMachine("name", "Underground Pump")
                 .addController()
-                .addRedHint("Input Hatch for Fluid Dirt Mix")
-                .addGreenHint("Output Hatch for Fluid Dirt Mix")
+                .addInfo("info.0", "Extracts underground fluids from a current vein")
+                .addInfo("info.1", "There can only be one machine in a Chunk")
+                .addInfo("info.2", "For operation of the machine, it is required to connect Input Hatch and Output Hatch by pipe to distill Dirty Fluid")
+                .addRedHint("Input Hatch for Fluid Dirty Mix")
+                .addGreenHint("Output Hatch for Fluid Dirty Mix")
                 .addBlueHint("Input Hatch for Water")
-                .addBlackHint("Output Hatch for Oil/Gas/Other")
-                .addEnergyHatch(2)
+                .addBlackHint("Output Hatch for Oil/Gas/Others")
+                .addOtherStructurePartAny("structure.1", "Steel Frame Box", 72)
+                .addOtherStructurePartAny("structure.2", "Solid Steel Machine Casing", 84)
+                .addEnergyHatch(1)
                 .addMaintenanceHatch()
                 .addMuffler()
                 .addOutputHatch(4)
@@ -155,7 +159,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         if (mixInHatch == null && mixOutHatch == null) return false
         mEfficiency = getCurrentEfficiency(null)
         mEfficiencyIncrease = 10000
-        val tier = min(getTier(maxInputVoltageVanila).toInt(), 14)
+        val tier = min(tierEnergyHatch, 14)
         mEUt = 3 * (2 shl (tier shl 1))
         if (mEUt > 0) mEUt = -mEUt
         mProgresstime = 0
@@ -180,7 +184,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     override fun onPostTick(te: IGregTechTileEntity, tick: Long) {
         super.onPostTick(te, tick)
         if (te.isServerSide) {
-            if (te.isActive && tick % 40 == 0L) currentChunk?.also(::runningLogic)
+            if (te.isActive && tick % 20 == 0L) currentChunk?.also(::runningLogic)
             if (tick % 100 == 0L) createDrill(te)
         }
     }
@@ -209,7 +213,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     private fun runningLogic(chunk: Chunk) {
         val vein = VirtualAPI.extractFluidFromVein(chunk, 1)
         if (vein != null && vein.size > 0) {
-            val waterConsume = (boostCoefficient shr 1) * when(vein.typeVein) {
+            val waterConsume = (boostCoefficient shr 1) * when (vein.typeVein) {
                 TypeFluidVein.LP -> Config.countWaterForLPDrill
                 TypeFluidVein.MP -> Config.countWaterForMPDrill
                 TypeFluidVein.HP -> Config.countWaterForHPDrill
@@ -218,8 +222,8 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
             mixOutHatch?.also { mixOut ->
                 val isPressured = depleteInput(Materials.Water.getFluid(waterConsume.toLong()))
                 if (!isPressured) stopMachine()
-
-                outputOil = ((boostCoefficient shl 6) * 2 * ((boostCoefficient / 2) shl 2) * .4).toLong()
+                val tier = boostCoefficient / 2
+                outputOil = ((boostCoefficient shl 6) * (tier shl 2) * (log(max(2.0, tier.toDouble()), 2.0).pow(.5))).toLong()
                 addOutputMix(mixOut, Materials.MixDirtOil.getFluid(outputOil))
                 val countWaterOutput = (waterConsume * .4).toLong()
                 addOutput(Materials.Water.getFluid(countWaterOutput))
@@ -232,7 +236,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                         tLiquid = mixIn.drain(currentOil.amount, false)
                         if (tLiquid.amount >= currentOil.amount) mixIn.drain(currentOil.amount, true)
                     }
-                    val countOilOutput = outputOil * Random.nextDouble(.5, .7)
+                    val countOilOutput = outputOil * Random.nextDouble(.4, .8)
                     FluidStack(vein.vein.fluid, countOilOutput.toInt()).also(::addOutput)
                 }
             }
