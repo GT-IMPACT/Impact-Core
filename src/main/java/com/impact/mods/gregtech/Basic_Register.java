@@ -126,9 +126,9 @@ public class Basic_Register {
 		Parallel_Hatch_Rack.set(new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack").getStackForm(1L));
 		
 		Regulate_Digital_Chest.set(new GTMTE_RegulateDigitalChest(ID2++, "impact.machine.regulatechest", "Regulate Digital Chest", 1).getStackForm(1L));
-		
-		BusHatch_Input.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input", "Input Item/Fluid Bus", 3).getStackForm(1L));
-		
+
+		BusHatch_Input_HV.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input.03", "Input Item/Fluid Bus HV", 3, 32_000).getStackForm(1L));
+
 		Regulate_One_Stack_Chest.set(new GTMTE_OneStackRegulateChest(ID2++, "impact.machine.onestackregulatechest", "One Stack Regulate Chest", 1).getStackForm(1L));
 		
 		Drying_Oven_LV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(ID2++, "basicmachine.dryingoven.tier.01", "LV Drying Oven", 1,
@@ -358,6 +358,10 @@ public class Basic_Register {
 		
 		Steam_Out_Hatch.set(new GT_MegaHatch_Output(ID2++, "Steam Output Hatch").getStackForm(1));
 		Steam_In_Hatch.set(new GT_MegaHatch_Input(ID2++, "Steam Input Hatch").getStackForm(1));
+
+		BusHatch_Input_EV.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input.04", "Input Item/Fluid Bus EV", 4, 64_000).getStackForm(1L));
+		BusHatch_Input_IV.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input.05", "Input Item/Fluid Bus IV", 5, 128_000).getStackForm(1L));
+		BusHatch_Input_LuV.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input.06", "Input Item/Fluid Bus LuV", 6, 256_000).getStackForm(1L));
 		
 		INFO("Last ID Basic_Register.java: " + ID2);
 		

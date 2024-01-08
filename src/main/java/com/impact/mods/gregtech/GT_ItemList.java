@@ -70,7 +70,12 @@ public enum GT_ItemList implements IItemContainer {
 	
 	Communication_Hatch_Transmitter, Communication_Hatch_Receiver, Parallel_Hatch_Rack,
 	
-	Nuclear_Hatch_Rod, Boxinator_Hatch_Input, BusHatch_Input,
+	Nuclear_Hatch_Rod, Boxinator_Hatch_Input,
+	BusHatch_Input_HV,
+	BusHatch_Input_EV,
+	BusHatch_Input_IV,
+	BusHatch_Input_LuV,
+
 	
 	AE_Hatch_Connector, MP_Hatch_Chamber,
 	
