@@ -59,12 +59,12 @@ public class GUI_NuclearReactor extends GT_GUIContainerMT_Machine {
 				fontRendererObj
 						.drawString("Input " + (container.isFastDecay ? "Coolant:" : " Water:"), 10, 95, 16448255);
 				fontRendererObj
-						.drawString(container.mInput < 0 ? "All Rods UP" : NumberFormat.getNumberInstance().format(container.mInput / 8.0) + " L/t", 10, 105, 16448255);
+						.drawString(container.mInput < 0 ? "All Rods UP" : NumberFormat.getNumberInstance().format(container.mInput / 2.0) + " L/t", 10, 105, 16448255);
 				
 				fontRendererObj
 						.drawString("Output " + (container.isFastDecay ? "Hot Coolant:" : container.isMoxFuel ? "SH Steam:" : "Steam:"), 10, 120, 16448255);
 				fontRendererObj
-						.drawString(container.mOutput < 0 ? "All Rods UP" : (NumberFormat.getNumberInstance().format(container.mOutput / 8.0) + " L/t"), 10, 130, 16448255);
+						.drawString(container.mOutput < 0 ? "All Rods UP" : (NumberFormat.getNumberInstance().format(container.mOutput / 2.0) + " L/t"), 10, 130, 16448255);
 				
 			}
 		}

@@ -211,7 +211,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 			tScale = tScale <= 0 ? 0 : tScale;
 			int temperature = (int) Math.min(((100 * tScale)), 100);
 			
-			if (aTick % 8 == 0 && temperature > 0) {
+			if (aTick % 2 == 0 && temperature > 0) {
 				if (!depleteInput(getInputFluid())) {
 					for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
 						rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
@@ -219,7 +219,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 				}
 			}
 			
-			if (aTick % 8 == 0 && temperature > 0) {
+			if (aTick % 2 == 0 && temperature > 0) {
 				addOutput(getOutputFluid());
 			}
 			
@@ -325,8 +325,8 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 		return new String[]{
 				"Temperature: " + EnumChatFormatting.RED + temperature + " / 100.0 %",
 				"Input: " + getInputFluid().getLocalizedName() + " " + EnumChatFormatting.RED
-						+ NumberFormat.getNumberInstance().format(mCurrentInput / 8.0) + EnumChatFormatting.RESET + " L/t",
-				"Output: " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN +  NumberFormat.getNumberInstance().format(mCurrentOutput / 8.0)
+						+ NumberFormat.getNumberInstance().format(mCurrentInput / 2.0) + EnumChatFormatting.RESET + " L/t",
+				"Output: " + getOutputFluid().getLocalizedName() + " " + EnumChatFormatting.GREEN +  NumberFormat.getNumberInstance().format(mCurrentOutput / 2.0)
 						+ EnumChatFormatting.RESET + " L/t"
 		};
 	}
