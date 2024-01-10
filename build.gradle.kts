@@ -35,14 +35,13 @@ tasks.test {
 }
 
 dependencies {
-    api("space.impact:packet_network:1.1.3") { isChanging = true }
+    api("space.impact:packet_network:1.1.3")
     api("space.impact:impactapi:0.0.+:dev") { isChanging = true }
     api("space.impact:wailaplugins:0.3.+:dev") { isChanging = true }
     api("space.impact:impact_vw:1.3.4:dev") {
         exclude("io.github.legacymoddingmc")
-        isChanging = true
     }
-    api("space.impact:gregtech:5.09.35.14:dev") { isChanging = true; isTransitive = false }
+    api("space.impact:gregtech:5.09.35.17:dev") { isTransitive = false }
 
     api("com.github.GTNewHorizons:ModularUI:1.1.24:dev") {
         isTransitive = false

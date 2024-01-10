@@ -103,8 +103,8 @@ public class Basic_Register {
 		
 		Creative_Tank.set(new GTMTE_DebugTank(ID2++, "impact.machine.creativetank", "Creative Tank", 5).getStackForm(1L));
 		
-		Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, 4,  "impact.hatch.quadruple", "Quadruple Input Hatch",4).getStackForm(1L));
-		Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++,  9, "impact.hatch.nonuple", "Nonuple Input Hatch", 5).getStackForm(1L));
+		Quadruple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++, 4,  "impact.hatch.quadruple", "Quadruple Input Hatch", 4, 64_000).getStackForm(1L));
+		Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++,  9, "impact.hatch.nonuple", "Nonuple Input Hatch", 5, 128_000).getStackForm(1L));
 		
 		Nuclear_Hatch_Rod.set(new GTMTE_Reactor_Rod_Hatch(ID2++, "impact.hatch.nuclear.rod", "Nuclear Rod Hatch").getStackForm(1L));
 		
