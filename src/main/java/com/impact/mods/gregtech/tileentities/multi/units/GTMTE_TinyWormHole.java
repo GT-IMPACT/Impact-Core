@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Dyes;
@@ -80,83 +81,18 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return sTinyWormHoleRecipes;
 	}
-	
+
 	@Override
-	public boolean checkRecipe(ItemStack aStack) {
-		ArrayList<ItemStack> tInputList = getStoredInputs();
-		int tInputList_sS = tInputList.size();
-		for (int i = 0; i < tInputList_sS - 1; i++) {
-			for (int j = i + 1; j < tInputList_sS; j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
-						tInputList_sS = tInputList.size();
-					} else {
-						tInputList.remove(i--);
-						tInputList_sS = tInputList.size();
-						break;
-					}
-				}
-			}
-		}
-		tInputList.add(mInventory[1]);
-		ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
-		
-		ArrayList<FluidStack> tFluidList = getStoredFluids();
-		int tFluidList_sS = tFluidList.size();
-		for (int i = 0; i < tFluidList_sS - 1; i++) {
-			for (int j = i + 1; j < tFluidList_sS; j++) {
-				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-						tFluidList.remove(j--);
-						tFluidList_sS = tFluidList.size();
-					} else {
-						tFluidList.remove(i--);
-						tFluidList_sS = tFluidList.size();
-						break;
-					}
-				}
-			}
-		}
-		FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
-		
-		if (inputs.length > 0 || fluids.length > 0) {
-			long voltage = getMaxInputVoltage();
-			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, false, GT_Values.V[tier], fluids, inputs);
-			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
-				
-				cashedRecipe = recipe;
-				
-				this.mEfficiency         = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-				this.mEfficiencyIncrease = 10000;
-				
-				int EUt = recipe.mEUt;
-				int maxProgresstime = recipe.mDuration;
-				
-				while (EUt <= GT_Values.V[tier - 1] && maxProgresstime > 2) {
-					EUt *= 4;
-					maxProgresstime /= 4;
-				}
-				if (maxProgresstime < 2) {
-					maxProgresstime = 2;
-					EUt             = recipe.mEUt * recipe.mDuration / 2;
-				}
-				
-				this.mEUt             = -EUt;
-				this.mMaxProgresstime = maxProgresstime;
-				this.mOutputItems     = new ItemStack[recipe.mOutputs.length];
-				for (int i = 0; i < recipe.mOutputs.length; i++) {
-					if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
-						this.mOutputItems[i] = recipe.getOutput(i);
-					}
-				}
-				this.mOutputFluids = recipe.mFluidOutputs;
-				this.updateSlots();
-				return true;
-			}
-		}
-		return false;
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return recipeBuilder
+				.checkSizeHatches(true, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus, true)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true)
+				.build();
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import gregtech.api.enums.Dyes;
@@ -96,84 +97,20 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return sTesseractRecipes;
 	}
-	
+
 	@Override
-	public boolean checkRecipe(ItemStack aStack) {
-		ArrayList<ItemStack> tInputList = getStoredInputs();
-		int tInputList_sS = tInputList.size();
-		for (int i = 0; i < tInputList_sS - 1; i++) {
-			for (int j = i + 1; j < tInputList_sS; j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
-						tInputList_sS = tInputList.size();
-					} else {
-						tInputList.remove(i--);
-						tInputList_sS = tInputList.size();
-						break;
-					}
-				}
-			}
-		}
-		tInputList.add(mInventory[1]);
-		ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
-		
-		ArrayList<FluidStack> tFluidList = getStoredFluids();
-		int tFluidList_sS = tFluidList.size();
-		for (int i = 0; i < tFluidList_sS - 1; i++) {
-			for (int j = i + 1; j < tFluidList_sS; j++) {
-				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-						tFluidList.remove(j--);
-						tFluidList_sS = tFluidList.size();
-					} else {
-						tFluidList.remove(i--);
-						tFluidList_sS = tFluidList.size();
-						break;
-					}
-				}
-			}
-		}
-		FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
-		
-		if (inputs.length > 0 || fluids.length > 0) {
-			long voltage = getMaxInputVoltage();
-			byte tier = (byte) Math.max(1, GT_Utility.getTier(voltage));
-			GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, false, GT_Values.V[tier], fluids, inputs);
-			if (recipe != null && recipe.isRecipeInputEqual(true, fluids, inputs)) {
-				
-				cashedRecipe = recipe;
-				
-				this.mEfficiency         = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-				this.mEfficiencyIncrease = 10000;
-				
-				int EUt = recipe.mEUt;
-				int maxProgresstime = recipe.mDuration;
-				
-				while (EUt <= GT_Values.V[tier - 1] && maxProgresstime > 2) {
-					EUt *= 4;
-					maxProgresstime /= 4;
-				}
-				if (maxProgresstime < 2) {
-					maxProgresstime = 2;
-					EUt             = recipe.mEUt * recipe.mDuration / 2;
-				}
-				
-				this.mEUt             = -EUt;
-				this.mMaxProgresstime = maxProgresstime;
-				this.mOutputItems     = new ItemStack[recipe.mOutputs.length];
-				for (int i = 0; i < recipe.mOutputs.length; i++) {
-					if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
-						this.mOutputItems[i] = recipe.getOutput(i);
-					}
-				}
-				this.mOutputFluids = recipe.mFluidOutputs;
-				this.updateSlots();
-				return true;
-			}
-		}
-		return false;
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		return recipeBuilder
+				.checkSizeHatches(true, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus, true)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true)
+				.build();
 	}
+
 	
 	@Override
 	protected MultiBlockTooltipBuilder createTooltip() {
@@ -203,32 +140,36 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
 				.signAndFinalize();
 		return b;
 	}
+
+	private static final IStructureDefinition<GTMTE_Tesseract> STRUCTURE = StructureDefinition.<GTMTE_Tesseract>builder()
+			.addShape("main", new String[][]{
+					{"000000000", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "000080000"},
+					{"0       0", " 1     1 ", "         ", "         ", "         ", "         ", "         ", " 1     1 ", "0       0"},
+					{"0       0", "         ", "  1   1  ", "    3    ", "   333   ", "    3    ", "  1   1  ", "         ", "0       0"},
+					{"0       0", "         ", "    2    ", "   141   ", "  34443  ", "   141   ", "    3    ", "    6    ", "0  7~7  0"},
+					{"0       0", "         ", "   232   ", "  34 43  ", "  34 43  ", "  34 43  ", "   333   ", "   656   ", "8  777  8"},
+					{"0       0", "         ", "    2    ", "   141   ", "  34443  ", "   141   ", "    3    ", "    6    ", "0  777  0"},
+					{"0       0", "         ", "  1   1  ", "    3    ", "   333   ", "    3    ", "  1   1  ", "         ", "0       0"},
+					{"0       0", " 1     1 ", "         ", "         ", "         ", "         ", "         ", " 1     1 ", "0       0"},
+					{"000000000", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "000080000"}
+			})
+			.addElement('0', ofBlock(sBlockCasings7, 0))
+			.addElement('1', ofBlock(sBlockCasings5, 14))
+			.addElement('2', ofChain(ofHatchAdder(GTMTE_Tesseract::addInputToMachineList, 141, ImpactAPI.RED), ofBlock(sBlockCasings5, 13)))
+			.addElement('3', ofBlock(sBlockCasings5, 13))
+			.addElement('4', ofBlock(sBlockCasings5, 15))
+			.addElement('5', ofBlock(sBlockCasings4, 7))
+			.addElement('6', ofBlock(sBlockCasings4, 8))
+			.addElement('7', ofChain(
+					ofHatchAdder(GTMTE_Tesseract::addOutputToMachineList, 192, ImpactAPI.GREEN),
+					ofHatchAdder(GTMTE_Tesseract::addMaintenanceToMachineList, 192, ImpactAPI.GREEN),
+					ofBlock(sBlockCasings7, 0)))
+			.addElement('8', ofChain(ofHatchAdder(GTMTE_Tesseract::addEnergyInputToMachineList, 192, ImpactAPI.YELLOW), ofBlock(sBlockCasings7, 0)))
+			.build();
 	
 	@Override
 	public IStructureDefinition<GTMTE_Tesseract> getStructureDefinition() {
-		return StructureDefinition.<GTMTE_Tesseract>builder()
-				.addShape("main", new String[][]{
-						{"000000000", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "000080000"},
-						{"0       0", " 1     1 ", "         ", "         ", "         ", "         ", "         ", " 1     1 ", "0       0"},
-						{"0       0", "         ", "  1   1  ", "    3    ", "   333   ", "    3    ", "  1   1  ", "         ", "0       0"},
-						{"0       0", "         ", "    2    ", "   141   ", "  34443  ", "   141   ", "    3    ", "    6    ", "0  7~7  0"},
-						{"0       0", "         ", "   232   ", "  34 43  ", "  34 43  ", "  34 43  ", "   333   ", "   656   ", "8  777  8"},
-						{"0       0", "         ", "    2    ", "   141   ", "  34443  ", "   141   ", "    3    ", "    6    ", "0  777  0"},
-						{"0       0", "         ", "  1   1  ", "    3    ", "   333   ", "    3    ", "  1   1  ", "         ", "0       0"},
-						{"0       0", " 1     1 ", "         ", "         ", "         ", "         ", "         ", " 1     1 ", "0       0"},
-						{"000000000", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "000080000"}
-				})
-				.addElement('0', ofBlock(sBlockCasings7, 0))
-				.addElement('1', ofBlock(sBlockCasings5, 14))
-				.addElement('2', ofChain(ofHatchAdder(GTMTE_Tesseract::addInputToMachineList, 141, ImpactAPI.RED), ofBlock(sBlockCasings5, 13)))
-				.addElement('3', ofBlock(sBlockCasings5, 13))
-				.addElement('4', ofBlock(sBlockCasings5, 15))
-				.addElement('5', ofBlock(sBlockCasings4, 7))
-				.addElement('6', ofBlock(sBlockCasings4, 8))
-				.addElement('7', ofChain(ofHatchAdder(GTMTE_Tesseract::addOutputToMachineList, 192, ImpactAPI.GREEN),
-						ofHatchAdder(GTMTE_Tesseract::addMaintenanceToMachineList, 192, ImpactAPI.GREEN), ofBlock(sBlockCasings7, 0)))
-				.addElement('8', ofChain(ofHatchAdder(GTMTE_Tesseract::addEnergyInputToMachineList, 192, ImpactAPI.YELLOW), ofBlock(sBlockCasings7, 0)))
-				.build();
+		return STRUCTURE;
 	}
 	
 	@Override
