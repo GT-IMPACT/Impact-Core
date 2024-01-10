@@ -218,9 +218,9 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
 	public static class Runner implements Runnable {
 		
 		public int[] FUEL_PER_SECOND = new int[]{ //for 1A
-				20,
 				10,
 				5,
+				2,
 		};
 		
 		public ItemStack[] FUEL_NAME = new ItemStack[]{

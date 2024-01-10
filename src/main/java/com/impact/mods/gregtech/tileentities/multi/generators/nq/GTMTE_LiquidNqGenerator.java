@@ -441,9 +441,9 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
 	static class FuelNqGenerator implements Runnable {
 		
 		public int[] FUEL_PER_SECOND = new int[]{ //for 1A
-				20,
 				10,
 				5,
+				2,
 		};
 		
 		public ItemStack[] FUEL_NAME = new ItemStack[]{
