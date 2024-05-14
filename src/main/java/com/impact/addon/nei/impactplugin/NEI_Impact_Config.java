@@ -65,6 +65,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
 			new NEI_Impact_MEProvider(GT_RecipeMaps.sMESystemProvider);
 			new NEI_Impact_HammerDrop(Impact_API.dropsFromBlock);
 			new NEI_Impact_DryingRack();
+			new GT_NEI_Pyro(GT_RecipeMaps.sPyrolyseOven);
 			registerSingle();
 			registerHandlerInfo();
 		}
@@ -90,7 +91,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
 		new HandlerInfoRegister(GT_RecipeMaps.sDryingOven, Drying_Oven_LV);
 		new HandlerInfoRegister(GT_RecipeMaps.sMESystemProvider, ME_System_Provider);
 		new HandlerInfoRegister(sTesseractRecipes, Machine_MultiblockTesseract);
-		new HandlerInfoRegister(sPyrolyseBasicVisual, Pyrolyse);
+		new HandlerInfoRegister(GT_RecipeMaps.sPyrolyseOven, Pyrolyse);
 		new HandlerInfoRegister(sLiquidENqGenerator, Naquadah_Liquid_Enriched);
 		new HandlerInfoRegister(sLiquidNqGenerator, Naquadah_Liquid_multi);
 		new HandlerInfoRegister(sHyperGenerator, Naquadah_multi);

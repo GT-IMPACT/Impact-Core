@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.enums;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeAdder implements IRecipeAdder {
 
@@ -33,11 +34,19 @@ public class RecipeAdder implements IRecipeAdder {
                 null, null, null, aDuration, aEUt, aMPAmount);
         return true;
     }
-    
+
     @Override
     public boolean addTheMillRecipes(ItemStack aInput, ItemStack[] aOutput, int[] chance, int aDuration) {
         GT_RecipeMaps.sTheMill.addRecipe(true, new ItemStack[]{aInput}, aOutput, null,
                 chance, null, null, aDuration, 0, 0);
+        return true;
+    }
+
+    @Override
+    public boolean addPyrolyseRecipes(ItemStack aInput, FluidStack[] fluids, ItemStack item) {
+        GT_RecipeMaps.sPyrolyseOven.addRecipe(
+                false, new ItemStack[]{aInput}, new ItemStack[]{item}, null,
+                null, null, fluids, 40 * 20, 20, 0);
         return true;
     }
 }

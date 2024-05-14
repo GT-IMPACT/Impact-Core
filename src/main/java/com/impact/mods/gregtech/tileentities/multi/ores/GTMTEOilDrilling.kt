@@ -17,12 +17,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output
 import gregtech.api.render.TextureFactory
-import gregtech.api.util.GT_Utility.getTier
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fluids.FluidStack
-import space.gtimpact.virtual_world.api.ResourceGenerator.getVeinChunks
 import space.gtimpact.virtual_world.api.TypeFluidVein
 import space.gtimpact.virtual_world.api.VirtualAPI
 import space.gtimpact.virtual_world.config.Config

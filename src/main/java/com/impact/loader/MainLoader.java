@@ -1,5 +1,6 @@
 package com.impact.loader;
 
+import com.impact.addon.gt.recipes.RecipeManager;
 import com.impact.common.block.blocks.Block_QuantumStuff_Red;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
@@ -108,6 +109,7 @@ public class MainLoader {
 		new Multi_Register().run();
 		new Basic_Register().run();
 		new ModLoader().run();
+		RecipeManager.addRecipes();
 		VirtualWorldIntegration.init();
 		INFO(Lang.impact.eng + " Lang Loaded");
 	}

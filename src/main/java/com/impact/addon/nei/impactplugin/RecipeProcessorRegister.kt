@@ -26,8 +26,8 @@ object RecipeProcessorRegister {
                     .hasValidClass("gregtech.nei.GT_NEI_SawMill")
 
                 RecipeProcessorBase
-                    .create(GT_Recipe.GT_Recipe_Map.sPyrolyseBasicVisual.mNEIName)
-                    .hasValidClass("gregtech.nei.GT_NEI_Pyro")
+                    .create(GT_RecipeMaps.sPyrolyseOven.mNEIName)
+                    .hasValidClass("com.impact.mods.nei.impactplugin.GT_NEI_Pyro")
 
                 RecipeProcessorBase
                     .create(GT_RecipeMaps.sMESystemProvider.mNEIName)
