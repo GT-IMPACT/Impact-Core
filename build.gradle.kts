@@ -41,7 +41,7 @@ dependencies {
     api("space.impact:impact_vw:1.3.4:dev") {
         exclude("io.github.legacymoddingmc")
     }
-    api("space.impact:gregtech:5.09.35.17:dev") { isTransitive = false }
+    api("space.impact:gregtech:5.09.35.18:dev") { isTransitive = false }
 
     api("com.github.GTNewHorizons:ModularUI:1.1.24:dev") {
         isTransitive = false
