@@ -10,4 +10,5 @@ interface IPosition {
 
     fun saveToNBT(): NBTTagCompound
     fun isEquals(pos: IPosition): Boolean
+    fun isInvalid(): Boolean
 }

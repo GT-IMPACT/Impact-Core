@@ -362,7 +362,9 @@ public class Basic_Register {
 		BusHatch_Input_EV.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input.04", "EV Input Item/Fluid Bus", 4, 64_000).getStackForm(1L));
 		BusHatch_Input_IV.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input.05", "IV Input Item/Fluid Bus", 5, 128_000).getStackForm(1L));
 		BusHatch_Input_LuV.set(new GTMTE_BusHatch_Input(ID2++, "impact.hatch.bushatch.input.06", "LuV Input Item/Fluid Bus", 6, 256_000).getStackForm(1L));
-		
+
+		CargoAerostatHatch.set(new GTMTEAerostatCargoHatch(ID2++, "Cargo Aerostat Hatch").getStackForm(1L));
+
 		INFO("Last ID Basic_Register.java: " + ID2);
 		
 		DustWasherULV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(13035,

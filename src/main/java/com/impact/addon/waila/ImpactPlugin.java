@@ -217,8 +217,15 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (aerostat != null) {
-                if (!tag.getString("aerostatName").isEmpty())
-                    currenttip.add(trans("waila.aerostat.namestation") + ": " + EnumChatFormatting.GOLD + tag.getString("aerostatName"));
+                String name = tag.getString("aerostatName");
+                if (!name.isEmpty())
+                    currenttip.add(trans("waila.aerostat.namestation") + ": " + EnumChatFormatting.GOLD + name);
+                else
+                    currenttip.add(EnumChatFormatting.RED + trans("waila.aerostat.no_valid_station"));
+
+                String owner = tag.getString("aerostatOwner");
+                if (!owner.isEmpty())
+                    currenttip.add(trans("waila.aerostat.owner") + ": " + EnumChatFormatting.GREEN + owner);
             }
 
             if (reactorHatch != null) {
@@ -520,7 +527,8 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (aerostat != null) {
-                tag.setString("aerostatName", aerostat.aerName);
+                tag.setString("aerostatName", aerostat.getName());
+                tag.setString("aerostatOwner", aerostat.getOwner());
             }
 
             if (reactorHatch != null) {

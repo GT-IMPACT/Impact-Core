@@ -1,5 +1,8 @@
 package com.impact.mods.gregtech.items.tools.behaviour;
 
+import com.gtnewhorizons.modularui.ModularUI;
+import com.impact.addon.gt.api.aerostat.IAeroStat;
+import com.impact.addon.gt.api.position.IPosition;
 import com.impact.client.gui.GUIHandler;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.network.NetworkPackets;
@@ -18,6 +21,9 @@ import space.impact.packet_network.network.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static space.gtimpact.virtual_world.extras.PlayerExtKt.send;
 
 public class Behaviour_Aerostat extends Behaviour_None {
 	
@@ -30,15 +36,18 @@ public class Behaviour_Aerostat extends Behaviour_None {
 			IMetaTileEntity aerostat = gte.getMetaTileEntity();
 			if (aerostat instanceof GTMTE_Aerostat && ((GTMTE_Aerostat) aerostat).mMachine) {
 				GTMTE_Aerostat as = (GTMTE_Aerostat) aerostat;
-				as.currentLocationPlatforms.clear();
-				as.currentLocationPlatforms.addAll(GTMTE_Aerostat.getRadiusAeroStates(as.playerName, gte));
 				if (!aPlayer.isSneaking()) {
+
 					Utilits.openGui(aPlayer, GUIHandler.GUI_ID_FirstAerostat, gte);
 					List<String> names = new ArrayList<>();
-					as.currentLocationPlatforms.forEach(a -> names.add(a.aerName));
+
+					for (IAeroStat pos : as.currentLocationPlatforms) {
+						names.add(pos.getName());
+					}
+
 					List<String> toClient = new ArrayList<>();
-					toClient.add(as.playerName);
-					toClient.add(as.aerName);
+					toClient.add(as.getOwner());
+					toClient.add(as.getName());
 					toClient.addAll(names);
 					String[] pArray = new String[toClient.size()];
 					NetworkHandler.sendToPlayer(

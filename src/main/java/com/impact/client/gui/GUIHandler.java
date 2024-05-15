@@ -4,9 +4,9 @@ import com.impact.addon.gt.api.security.SecurityContainer;
 import com.impact.addon.gt.api.security.SecurityGui;
 import com.impact.impact;
 import com.impact.mods.gregtech.gui.aerostat.Container_FirstAerostat;
-import com.impact.mods.gregtech.gui.aerostat.Countainer_SelectAerostat;
+import com.impact.mods.gregtech.gui.aerostat.ContainerSelectAerostat;
 import com.impact.mods.gregtech.gui.aerostat.GUI_FirstAerostat;
-import com.impact.mods.gregtech.gui.aerostat.GUI_SelectAerostat;
+import com.impact.mods.gregtech.gui.aerostat.GUISelectAerostat;
 import com.impact.mods.gregtech.gui.laptop.Container_LapTopSetting;
 import com.impact.mods.gregtech.gui.laptop.GUI_LapTopSetting;
 import com.impact.mods.gregtech.gui.regulatechest.Container_ValueRegulateChest;
@@ -44,7 +44,7 @@ public class GUIHandler implements IGuiHandler {
 			case GUI_ID_FirstAerostat:
 				if (te instanceof IGregTechTileEntity) {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
-					return new Countainer_SelectAerostat(player.inventory, gte);
+					return new ContainerSelectAerostat(player.inventory, gte);
 				}
 			case GUI_ID_FirstAerostat + 1:
 				if (te instanceof IGregTechTileEntity) {
@@ -77,7 +77,7 @@ public class GUIHandler implements IGuiHandler {
 			case GUI_ID_FirstAerostat:
 				if (te instanceof IGregTechTileEntity) {
 					IGregTechTileEntity gte = (IGregTechTileEntity) te;
-					return new GUI_SelectAerostat(player.inventory, gte, "Aerostat");
+					return new GUISelectAerostat(player.inventory, gte, "Aerostat");
 				}
 			case GUI_ID_FirstAerostat + 1:
 				if (te instanceof IGregTechTileEntity) {

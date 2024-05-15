@@ -1,5 +1,6 @@
 package com.impact.events;
 
+import com.impact.common.managers.AeroStateNetworkManager;
 import com.impact.core.Config;
 import com.impact.util.files.JsonWorld;
 import com.impact.util.vector.PlayerPos;
@@ -24,7 +25,7 @@ import static com.impact.core.Config.DisableTheEnd;
 public class TickHandler {
 	
 	private HashMap<UUID, PlayerPos> lastPlayerPosition = new HashMap<>();
-	public int saveTicker = 0;
+	public long worldTicker = 0;
 	
 	@SubscribeEvent
 	public void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
@@ -73,14 +74,19 @@ public class TickHandler {
 	
 	@SubscribeEvent
 	public void onWorldTick(TickEvent.WorldTickEvent e) {
+		worldTicker++;
+
+		if (worldTicker >= Long.MAX_VALUE)
+			worldTicker = 0L;
+
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
 			if (e.world.provider.dimensionId == 0) {
-				saveTicker++;
-				if (saveTicker >= ((1200 * Config.saveTime))) {
+				if (worldTicker % (1200 * Config.saveTime) == 0L) {
 					JsonWorld.saveAsync();
-					saveTicker = 0;
 				}
 			}
 		}
+
+		AeroStateNetworkManager.onWorldTick(e, worldTicker);
 	}
 }

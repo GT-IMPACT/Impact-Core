@@ -7,7 +7,6 @@ import org.gradle.internal.impldep.org.apache.commons.io.FileUtils.getFile
 plugins {
     id("forge")
     kotlin("jvm")
-    kotlin("kapt")
 }
 
 configure<BaseExtension> {
@@ -113,8 +112,8 @@ dependencies {
         annotationProcessor("org.ow2.asm:asm-debug-all:5.0.3")
         annotationProcessor("com.google.guava:guava:24.1.1-jre")
         annotationProcessor("com.google.code.gson:gson:2.8.6")
-        kapt(mixinProviderSpecNoClassifer)
-        kapt("com.github.LegacyModdingMC.UniMixins:unimixins-gtnhmixins-1.7.10:$mixinProviderVersion")
+        annotationProcessor(mixinProviderSpecNoClassifer)
+        annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-gtnhmixins-1.7.10:$mixinProviderVersion")
         implementation("com.github.LegacyModdingMC.UniMixins:unimixins-gtnhmixins-1.7.10:$mixinProviderVersion:dev")
         implementation("com.github.LegacyModdingMC.UniMixins:unimixins-spongemixins-1.7.10:$mixinProviderVersion:dev")
         implementation(mixinProviderSpecNoClassifer)

@@ -85,14 +85,11 @@ public class JsonWorld {
     
     //region SpaceSatellites
     private static void loadAeroState() {
-        File json = SaveManager.get().aerostateSystemDirectory;
-        JsonUtils.jsonToMapStringIntArray(sAerostat, json.getPath(), AERO_STATES);
+
     }
     
     private static void saveAeroState() {
-        if (sAerostat.isEmpty()) return;
-        File json = SaveManager.get().aerostateSystemDirectory;
-        JsonUtils.jsonFromMapStringIntArray(sAerostat, json.getPath(), AERO_STATES);
+
     }
     //endregion
 

@@ -85,6 +85,13 @@ public class PositionObject implements IPosition {
 		playerName = obj.playerName;
 		nameLocation = obj.nameLocation;
 	}
+
+	public PositionObject(IPosition obj) {
+		xPos = obj.getX();
+		yPos = obj.getY();
+		zPos = obj.getZ();
+		dPos = obj.getD();
+	}
 	
 	public Vector3ic toVec3() {
 		return new Vector3i(xPos, yPos, zPos);
@@ -180,6 +187,11 @@ public class PositionObject implements IPosition {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setTag("position_object", pos);
 		return tag;
+	}
+
+	@Override
+	public boolean isInvalid() {
+		return xPos == 0 && yPos == 0 && zPos == 0 && dPos == 0;
 	}
 	
 	@NotNull

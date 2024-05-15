@@ -76,6 +76,7 @@ public enum GT_ItemList implements IItemContainer {
 	BusHatch_Input_IV,
 	BusHatch_Input_LuV,
 
+	CargoAerostatHatch,
 	
 	AE_Hatch_Connector, MP_Hatch_Chamber,
 	
