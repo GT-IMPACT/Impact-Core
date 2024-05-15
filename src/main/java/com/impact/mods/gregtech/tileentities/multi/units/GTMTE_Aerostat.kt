@@ -201,19 +201,22 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
                 if (items.isNotEmpty()) {
                     val input = storedInputs[0]
 
-                    if (input != null && input.item != null && input.stackSize > 0) for (i in 0 until input.stackSize) {
-                        val burnTime = TileEntityFurnace.getItemBurnTime(ItemStack(input.item, 1, input.itemDamage))
+                    if (input != null && input.item != null && input.stackSize > 0) {
+                        for (i in 0 until input.stackSize) {
+                            val item = ItemStack(input.item, 1, input.itemDamage)
+                            val burnTime = TileEntityFurnace.getItemBurnTime(item)
 
-                        if (curBuffer < MAX_BUFFER - burnTime) {
-                            isFullBuffer = false
-                        }
+                            if (curBuffer < MAX_BUFFER - burnTime) {
+                                isFullBuffer = false
+                            }
 
-                        if (!isFullBuffer && burnTime > 0 && depleteInput(input)) {
-                            input.stackSize--
-                            curBuffer += burnTime
-                            if (curBuffer + burnTime > MAX_BUFFER) {
-                                curBuffer = MAX_BUFFER
-                                isFullBuffer = true
+                            if (!isFullBuffer && burnTime > 0 && depleteInput(item)) {
+                                input.stackSize--
+                                curBuffer += burnTime
+                                if (curBuffer + burnTime >= MAX_BUFFER) {
+                                    curBuffer = MAX_BUFFER
+                                    isFullBuffer = true
+                                }
                             }
                         }
                     }
