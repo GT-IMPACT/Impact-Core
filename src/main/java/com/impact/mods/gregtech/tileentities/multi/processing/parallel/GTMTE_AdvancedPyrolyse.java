@@ -18,7 +18,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import static com.impact.util.Utilits.isB;
 import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.recipe.RecipeHelper.resizeItemStackSize;
-import static com.impact.util.recipe.RecipeHelper.resizeItemStackSizeChance;
 import static gregtech.api.GregTech_API.sBlockCasings2;
 import static gregtech.api.GregTech_API.sBlockCasings8;
 import static gregtech.api.enums.GT_Values.V;
@@ -210,7 +208,8 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
 
-		if (cashedRecipe == null) return false;
+		if (cashedRecipe == null)
+			return super.onRunningTick(aStack);
 
 		FluidStack out = null;
 

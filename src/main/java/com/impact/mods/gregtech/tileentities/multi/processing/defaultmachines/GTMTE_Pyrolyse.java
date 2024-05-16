@@ -152,7 +152,8 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
 
-        if (cashedRecipe == null) return false;
+		if (cashedRecipe == null)
+			return super.onRunningTick(aStack);
 
         FluidStack out = null;
 
