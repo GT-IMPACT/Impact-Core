@@ -125,7 +125,9 @@ public class impact {
 	
 	@Mod.EventHandler
 	private void serverStopped(final FMLServerStoppedEvent event) {
-		Objects.requireNonNull(SaveManager.get()).onServerStopped();
+		SaveManager manager = SaveManager.get();
+		if (manager != null)
+			manager.onServerStopped();
 	}
 	
 	@Mod.EventHandler
