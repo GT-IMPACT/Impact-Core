@@ -34,9 +34,10 @@ class GUISelectAerostat(aInventoryPlayer: InventoryPlayer?, aTileEntity: IGregTe
         if (mContainer != null) {
             val container = mContainer as ContainerSelectAerostat
             if (mContainer.mTileEntity != null) {
+                val buffer = maxOf(0.0, min(container.curBuffer.toDouble() / GTMTE_Aerostat.MAX_BUFFER.toDouble(), 100.0))
                 getTooltip(
                     mouseX, mouseY, 9, 158 - 60, 60, 14, arrayOf(
-                        "Fuel Amount: ", NumberFormat.getNumberInstance().format((container.curBuffer.toDouble() / GTMTE_Aerostat.MAX_BUFFER.toDouble() * 100.0)) + "%"
+                        "Fuel Amount: ", NumberFormat.getNumberInstance().format(buffer) + "%"
                     )
                 )
             }
@@ -80,7 +81,7 @@ class GUISelectAerostat(aInventoryPlayer: InventoryPlayer?, aTileEntity: IGregTe
         val y = (this.height - this.ySize) / 2
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize)
         val container = mContainer as ContainerSelectAerostat
-        val tScale = container.curBuffer.toDouble() / GTMTE_Aerostat.MAX_BUFFER.toDouble()
+        val tScale = maxOf(0.0, min(container.curBuffer.toDouble() / GTMTE_Aerostat.MAX_BUFFER.toDouble(), 100.0))
         drawTexturedModalRect(x + 9, y + 158 - min(60.0, tScale * 60.0).toInt(), 242, 60 - min(60.0, tScale * 60.0).toInt(), 14, 60)
     }
 
