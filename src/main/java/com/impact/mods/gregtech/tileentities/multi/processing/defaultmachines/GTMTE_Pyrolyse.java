@@ -309,4 +309,9 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 5;
 	}
+
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

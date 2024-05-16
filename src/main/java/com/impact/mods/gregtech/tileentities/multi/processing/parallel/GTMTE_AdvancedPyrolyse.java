@@ -365,4 +365,9 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 200;
 	}
+
+	@Override
+	public boolean hasSeparate() {
+		return false;
+	}
 }

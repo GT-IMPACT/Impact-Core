@@ -220,4 +220,8 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     }
 
     override fun getStructureDefinition(): IStructureDefinition<GTMTEOreSamplingMachine> = DEFINITION
+
+    override fun hasSeparate(): Boolean {
+        return false
+    }
 }
