@@ -42,11 +42,8 @@ dependencies {
     api("space.impact:impact_vw:1.3.4:dev") {
         exclude("io.github.legacymoddingmc")
     }
-    api("space.impact:gregtech:5.09.35.18:dev") { isTransitive = false }
-
-    api("com.github.GTNewHorizons:ModularUI:1.1.24:dev") {
-        isTransitive = false
-    }
+    api("space.impact:gregtech:5.09.35.21:dev") { isTransitive = false }
+    api("com.github.GTNewHorizons:ModularUI:1.1.24:dev") { isTransitive = false }
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.+:dev") { isChanging = true }
     api("com.github.GTNewHorizons:waila:1.6.0:dev") { isTransitive = false }
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
@@ -56,7 +53,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:NotEnoughEnergistics:1.4.2:dev") { isTransitive = false }
     runtimeOnly("com.github.GTNewHorizons:Nuclear-Control:2.4.+:dev") { isTransitive = false; isChanging = true }
 
-    implementation("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-219-GTNH-pre") { isTransitive = false }
+    implementation("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-400-GTNH") { isTransitive = false }
     implementation(fileTree(mapOf("dir" to "libs/", "include" to listOf("*.jar"))))
     compileOnly(fileTree(mapOf("dir" to "libs/compile", "include" to listOf("*.jar"))))
 

@@ -59,15 +59,17 @@ public class TickHandler {
 	
 	@SubscribeEvent
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
-		EntityPlayerMP player = (EntityPlayerMP) e.entityPlayer;
-		if (e.before.dim != e.entityPlayer.dimension) {
-			if (e.entityPlayer.dimension == -1 && DisableNether) {
-				player.addChatComponentMessage(new ChatComponentTranslation(EnumChatFormatting.RED + "Teleport to " + EnumChatFormatting.BOLD + "The Nether" + EnumChatFormatting.RESET + EnumChatFormatting.RED + " is disabled"));
-				e.setCanceled(true);
-			}
-			if (e.entityPlayer.dimension == 1 && DisableTheEnd) {
-				player.addChatComponentMessage(new ChatComponentTranslation(EnumChatFormatting.RED + "Teleport to " + EnumChatFormatting.BOLD + "The End" + EnumChatFormatting.RESET + EnumChatFormatting.RED + " is disabled"));
-				e.setCanceled(true);
+		if (e.entityPlayer instanceof EntityPlayerMP) {
+			EntityPlayerMP player = (EntityPlayerMP) e.entityPlayer;
+			if (e.before.dim != e.entityPlayer.dimension) {
+				if (e.entityPlayer.dimension == -1 && DisableNether) {
+					player.addChatComponentMessage(new ChatComponentTranslation(EnumChatFormatting.RED + "Teleport to " + EnumChatFormatting.BOLD + "The Nether" + EnumChatFormatting.RESET + EnumChatFormatting.RED + " is disabled"));
+					e.setCanceled(true);
+				}
+				if (e.entityPlayer.dimension == 1 && DisableTheEnd) {
+					player.addChatComponentMessage(new ChatComponentTranslation(EnumChatFormatting.RED + "Teleport to " + EnumChatFormatting.BOLD + "The End" + EnumChatFormatting.RESET + EnumChatFormatting.RED + " is disabled"));
+					e.setCanceled(true);
+				}
 			}
 		}
 	}
