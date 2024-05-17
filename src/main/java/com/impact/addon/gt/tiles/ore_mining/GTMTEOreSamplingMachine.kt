@@ -141,6 +141,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         aY: Float,
         aZ: Float
     ): Boolean {
+        if (!mMachine) return true
         if (side != 1.toByte() || isHanded) return true
         isHanded = true
         VirtualWorldScan.scanVeinOre(te.chunk, LAYER,  p)
@@ -153,7 +154,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         super.onPostTick(te, tick)
         if (te.isServerSide) {
             if (te.isActive) {
-                if (tick % 20 == 2L && hatch.size > 0) {
+                if (tick % 20 == 2L && hatch.isNotEmpty()) {
                     val oreHatch = hatch.first()
                     oreHatch.cycleDrill(currentVeinCount != null && oreHatch.ready)
                 }
@@ -168,7 +169,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
                     isHanded = false
                 }
             } else {
-                if (tick % 20 == 2L && hatch.size > 0) {
+                if (tick % 20 == 2L && hatch.isNotEmpty()) {
                     hatch.firstOrNull()?.cycleDrill(false)
                 }
             }
