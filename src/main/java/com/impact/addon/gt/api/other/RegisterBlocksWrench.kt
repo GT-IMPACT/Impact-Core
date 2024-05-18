@@ -30,16 +30,13 @@ object RegisterBlocksWrench {
                             val aZ = te.zCoord
                             val getDropWithNBT = clazz.getMethod("getDropWithNBT", World::class.java, Int::class.java, Int::class.java, Int::class.java)
                             (getDropWithNBT.invoke(block, world, aX, aY, aZ) as? ItemStack)?.also { stack ->
-                                val dropBlockAsItem = Block::class.java.getDeclaredMethod(
-                                    "dropBlockAsItem",
-                                    World::class.java,
-                                    Int::class.java,
-                                    Int::class.java,
-                                    Int::class.java,
-                                    ItemStack::class.java
-                                )
-                                dropBlockAsItem.isAccessible = true
-                                dropBlockAsItem.invoke(block, world, aX, aY, aZ, stack)
+                                val f = 0.7f
+                                val x: Double = (world.rand.nextFloat() * f).toDouble() + (1.0f - f).toDouble() * 0.5
+                                val y: Double = (world.rand.nextFloat() * f).toDouble() + (1.0f - f).toDouble() * 0.5
+                                val z: Double = (world.rand.nextFloat() * f).toDouble() + (1.0f - f).toDouble() * 0.5
+                                val entityItem = EntityItem(world, aX.toDouble() + x, aY.toDouble() + y, aZ.toDouble() + z, stack)
+                                entityItem.delayBeforeCanPickup = 10
+                                world.spawnEntityInWorld(entityItem)
                                 world.setBlockToAir(aX, aY, aZ)
                             }
                         }
