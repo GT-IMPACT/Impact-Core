@@ -184,8 +184,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 				);
 			}
 		} else {
-			if (te.isActive() && (aTick & 0x7) == 0) {
-
+			if ((aTick & 0x7) == 0) {
 				IInventory tTileEntity = te.getIInventoryAtSide((byte) 1);
 				if (tTileEntity != null) {
 					if (mInventory[OUTPUT_SLOT] != null) {
@@ -194,11 +193,18 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 						);
 					}
 				}
+
+				if (sizeVeinPreStart <= 0) {
+					cBurnTime = 0;
+					maxBurnTime = 0;
+				}
 			}
-			if (cBurnTime > 0) {
+
+			if (cBurnTime > 0 && sizeVeinPreStart > 0) {
 				te.setActive(true);
 				cBurnTime--;
 			}
+
 			if (te.isActive()) {
 				if (cBurnTime <= 0 && !checkFuel()) {
 					mEfficiency = mProgresstime = mMaxProgresstime = mEfficiencyIncrease = 0;
