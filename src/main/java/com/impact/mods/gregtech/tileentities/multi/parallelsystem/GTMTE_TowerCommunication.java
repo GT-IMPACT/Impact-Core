@@ -222,7 +222,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
             if (aTick % 20 * 60 == 0) {
                 noMaintenance();
             }
-            if (isShowConnections && aTick % 20 == 0) {
+            if (isShowConnections && aTick % 20 == 5) {
                 for (INetworkMachine connection : connections) {
                     if (connection instanceof IMetaTileEntity) {
                         IMetaTileEntity mte = (IMetaTileEntity) connection;

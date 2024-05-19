@@ -168,7 +168,9 @@ public class GTMTE_CommunicationTower_Receiver extends GT_MetaTileEntity_Hatch i
 		super.saveNBTData(aNBT);
 		aNBT.setInteger("mFrequency", this.mFrequency);
 		aNBT.setBoolean("mIsReceive", this.isConnected);
-		aNBT.setString("security", this.security);
+
+		if (security != null && !security.isEmpty())
+			aNBT.setString("security", this.security);
 		
 		if (satellite != null) {
 			NBTTagCompound satelliteNbt = satellite.getPosition().saveToNBT();
