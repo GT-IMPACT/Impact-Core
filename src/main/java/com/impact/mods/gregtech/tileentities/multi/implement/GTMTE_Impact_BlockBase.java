@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.impact.addon.gt.api.multis.IMachineRecipe;
 import com.impact.addon.gt.api.multis.ISeparateBus;
 import com.impact.addon.gt.api.multis.ISwitchRecipeMap;
+import com.impact.addon.gt.api.other.IIndicatorProvider;
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
@@ -28,9 +29,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
+import space.gtimpact.virtual_world.api.ObjectIndicator;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.alignment.IAlignment;
 import space.impact.api.multiblocks.alignment.IAlignmentLimits;
@@ -53,7 +56,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBase<MULTIS>>
 		extends GT_MetaTileEntity_MultiBlockBase
-		implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IStreamPacketReceiver, IMachineRecipe {
+		implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IStreamPacketReceiver, IMachineRecipe, IIndicatorProvider {
 	
 	private static final AtomicReferenceArray<MultiBlockTooltipBuilder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
 	
@@ -95,7 +98,32 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	public ItemStack get() {
 		return getStackForm(1L);
 	}
-	
+
+	@NotNull
+	@Override
+	public String getLabel() {
+		return "gt.blockmachines." + this.mName + ".name";
+	}
+
+	@NotNull
+	@Override
+	public ItemStack getStack() {
+		return get();
+	}
+
+	@NotNull
+	@Override
+	public List<String> playersRecipients() {
+		IGregTechTileEntity te = getBaseMetaTileEntity();
+		if (te == null) return Collections.emptyList();
+		return Collections.singletonList(te.getOwnerName());
+	}
+
+	@Override
+	public boolean hasIndicator() {
+		return false;
+	}
+
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);

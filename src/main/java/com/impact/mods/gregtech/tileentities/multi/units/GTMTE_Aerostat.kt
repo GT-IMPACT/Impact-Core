@@ -5,6 +5,7 @@ import com.impact.addon.gt.api.aerostat.IAeroStat
 import com.impact.addon.gt.api.position.IPosition
 import com.impact.common.managers.AeroStateNetworkManager
 import com.impact.impact
+import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.blocks.Build_Casing_Helper
 import com.impact.mods.gregtech.blocks.Casing_Helper
 import com.impact.mods.gregtech.enums.Texture
@@ -80,6 +81,14 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     override var owner: String = ""
     override var name: String = ""
     var uuid: String = UUID.randomUUID().toString()
+
+    override fun hasIndicator(): Boolean {
+        return true
+    }
+
+    override fun getStack(): ItemStack {
+        return GT_ItemList.Aerostat.get(1)
+    }
 
     override fun getTexture(aBaseMetaTileEntity: IGregTechTileEntity, aSide: Byte, aFacing: Byte, aColorIndex: Byte, aActive: Boolean, aRedstone: Boolean): Array<ITexture> {
         return if (aSide.toInt() == 1) arrayOf(INDEX_CASE, TextureFactory.of(Texture.Icons.PLATFORM_AEROSTATE_OVERLAY)) else arrayOf(INDEX_CASE)

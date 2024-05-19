@@ -23,15 +23,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
-import space.gtimpact.virtual_world.api.OreVeinCount;
-import space.gtimpact.virtual_world.api.VirtualAPI;
-import space.gtimpact.virtual_world.api.VirtualOreComponent;
-import space.gtimpact.virtual_world.api.VirtualOreVein;
+import org.jetbrains.annotations.NotNull;
+import space.gtimpact.virtual_world.api.*;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.impact.util.multis.GT_StructureUtility.ofFrame;
@@ -70,6 +69,11 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 	
 	public GTMTE_BasicMiner(String aName) {
 		super(aName);
+	}
+
+	@Override
+	public boolean hasIndicator() {
+		return true;
 	}
 	
 	@Override

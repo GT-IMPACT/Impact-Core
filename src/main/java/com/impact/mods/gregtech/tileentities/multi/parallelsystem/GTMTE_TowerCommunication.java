@@ -78,6 +78,11 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
         super(aName);
     }
 
+    @Override
+    public boolean hasIndicator() {
+        return true;
+    }
+
     public boolean addCommunicationHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;

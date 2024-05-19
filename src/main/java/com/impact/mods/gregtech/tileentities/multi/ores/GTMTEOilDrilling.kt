@@ -262,4 +262,8 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     override fun hasSeparate(): Boolean {
         return false
     }
+
+    override fun hasIndicator(): Boolean {
+        return true
+    }
 }
