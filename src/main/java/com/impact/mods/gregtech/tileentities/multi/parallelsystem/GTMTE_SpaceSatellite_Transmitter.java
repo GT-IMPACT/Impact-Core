@@ -159,7 +159,8 @@ public class GTMTE_SpaceSatellite_Transmitter extends GT_MetaTileEntity_Hatch im
 		super.saveNBTData(aNBT);
 		aNBT.setBoolean("mIsTransmit", this.isConnected);
 		aNBT.setInteger("mFrequency", this.mFrequency);
-		aNBT.setString("security", this.security);
+		if (security != null && !security.isEmpty())
+			aNBT.setString("security", this.security);
 	}
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
