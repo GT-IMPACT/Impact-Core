@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
 import com.impact.mods.gregtech.enums.Texture;
+import com.impact.util.energy.EnergyUtil;
 import com.impact.util.string.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -16,7 +17,7 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
     public GTMTE_LongDistancePipelineEnergy(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier,
                 Language.transDesc("pipeline.energy.0", "Sends Energy over long distances") + ", " +
-                        Language.transDesc("pipeline.energy.1", "Max Amperage: 16, Loss: 0.05 EU / block, Min Distance: 32 blocks")
+                        Language.transDesc("pipeline.energy.1", "Max Amperage: 16, No Loss by Distance, Min Distance: 32 blocks")
         );
     }
 
@@ -46,7 +47,12 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
     public void onPostTick(IGregTechTileEntity inTE, long aTick) {
         super.onPostTick(inTE, aTick);
 
-        if (inTE.isServerSide() && checkTarget() && mDistance >= getMinDistance()) {
+        if (inTE.isServerSide() && mDistance >= getMinDistance()) {
+
+            if (aTick % 20L == 0) {
+                if (!checkTarget()) return;
+            }
+
             final IGregTechTileEntity outTE = mTarget.getBaseMetaTileEntity();
 
             IGregTechTileEntity in = inTE.getIGregTechTileEntityAtSide(inTE.getFrontFacing());
@@ -55,16 +61,10 @@ public class GTMTE_LongDistancePipelineEnergy extends GTMTE_LongDistancePipeline
             IGregTechTileEntity out = outTE.getIGregTechTileEntityAtSide(outTE.getBackFacing());
             if (out == null) return;
 
-            long amperes = in.getOutputAmperage();
             long tEU = in.getOutputVoltage();
-            long tOutputVoltage = tEU - Math.min(tEU, mDistance / 20);
+            long amperes = Math.min(in.getOutputAmperage(), 16L);
 
-            long tUsableAmperage = Math.min(inTE.getOutputAmperage(), (inTE.getStoredEU() - getMinimumStoredEU()) / tEU);
-            if (tUsableAmperage > 0) {
-                long amp = outTE.injectEnergyUnits((byte) 6, tOutputVoltage, amperes);
-                if (amp > 0)
-                    inTE.decreaseStoredEnergyUnits(tOutputVoltage * amp, false);
-            }
+            EnergyUtil.transferEnergy(in, out, amperes, tEU);
         }
     }
 

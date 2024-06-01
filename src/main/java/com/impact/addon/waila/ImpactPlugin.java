@@ -200,11 +200,6 @@ public class ImpactPlugin extends PluginBase {
                     long distance = tag.getLong("pipeline.distance");
                     currenttip.add(String.format(trans("waila.pipeline.distance"),
                             distance < pipeline.getMinDistance() ? EnumChatFormatting.RED + trans("waila.pipeline.low_distance") : distance));
-
-                    if (tag.hasKey("energyInput"))
-                        currenttip.add(trans("waila.input") + ": " + GREEN + GT_Utility.formatNumbers(tag.getLong("energyInput")) + RESET + " " + trans("waila.eut"));
-                    if (tag.hasKey("energyOutput"))
-                        currenttip.add(trans("waila.output") + ": " + RED + GT_Utility.formatNumbers(tag.getLong("energyOutput")) + RESET + " " + trans("waila.eut"));
                 }
             }
 
@@ -478,10 +473,6 @@ public class ImpactPlugin extends PluginBase {
                 if (pipeline instanceof GTMTE_LongDistancePipelineEnergy) {
                     tag.setLong("pipeline.distance", pipeline.getDistance());
                     tag.setBoolean("pipeline.isSender", pipeline.isSender());
-                    if (pipeline.isSender())
-                        tag.setLong("energyInput", pipeline.getBaseMetaTileEntity().getAverageElectricInput());
-                    else
-                        tag.setLong("energyOutput", pipeline.getBaseMetaTileEntity().getAverageElectricOutput());
                 }
             }
             
