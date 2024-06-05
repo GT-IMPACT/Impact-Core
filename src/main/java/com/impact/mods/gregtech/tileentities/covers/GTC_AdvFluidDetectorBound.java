@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GTC_AdvFluidDetector extends GT_CoverBehavior {
+public class GTC_AdvFluidDetectorBound extends GT_CoverBehavior {
 	
 	public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
 		if ((aTileEntity instanceof IFluidHandler)) {
@@ -118,6 +118,9 @@ public class GTC_AdvFluidDetector extends GT_CoverBehavior {
 		
 		public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
 			super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
+
+			this.header = "Fluid Detector - Bound";
+
 			this.side          = aSide;
 			this.coverID       = aCoverID;
 			this.coverVariable = aCoverVariable;

@@ -21,10 +21,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GTC_AdvEUDetector extends GT_CoverBehavior {
 	
@@ -41,7 +38,6 @@ public class GTC_AdvEUDetector extends GT_CoverBehavior {
 				maxCapacity = buffer.capacity;
 				tStored = buffer.stored;
 			} else if (mTileEntity instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
-				
 				maxCapacity = aTileEntity.getEUCapacity();
 				tStored = aTileEntity.getStoredEU();
 				GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mTileEntity;
@@ -131,6 +127,9 @@ public class GTC_AdvEUDetector extends GT_CoverBehavior {
 		
 		public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
 			super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
+
+			this.header = "Energy Detector - Bound";
+
 			this.side          = aSide;
 			this.coverID       = aCoverID;
 			this.coverVariable = aCoverVariable;
