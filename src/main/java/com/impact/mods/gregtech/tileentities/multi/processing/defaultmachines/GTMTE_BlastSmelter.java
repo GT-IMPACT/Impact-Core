@@ -55,7 +55,6 @@ public class GTMTE_BlastSmelter extends GT_MetaTileEntity_MultiBlockBase {
 		b
 				.addTypeMachine("name", "Blast Smelter")
 				.addPollution(20 * getPollutionPerTick(null))
-				.addSeparatedBus()
 				.addSeparator()
 				.addController()
 				.addEnergyHatch(4)
