@@ -51,7 +51,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	private final byte fluidSelector = 0;
 	private MultiFluidHandler mfh;
 	int CASING_TEXTURE_ID = 176;
-	private int runningCost = 0;
 	private boolean doVoidExcess = false;
 
 	public GTMTE_MultiTank(int aID, String aNameRegional) {
@@ -566,7 +565,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	public void saveNBTData(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
-		nbt.setInteger("runningCost", runningCost);
 		nbt.setBoolean("doVoidExcess", doVoidExcess);
 		
 		if (mfh != null) {
@@ -583,7 +581,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	public void loadNBTData(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
-		runningCost  = nbt.getInteger("runningCost");
 		doVoidExcess = nbt.getBoolean("doVoidExcess");
 		
 		mfh = new MultiFluidHandler(MAX_DISTINCT_FLUIDS);
