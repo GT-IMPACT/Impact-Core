@@ -82,7 +82,6 @@ public class GTMTE_DDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_DDDPrinter> {
 		b
 				.addInfo("info.0", "Assembler machines")
 				.addTypeMachine("name", "3x3 Crafting")
-				.addScrew()
 				.addSeparatedBus()
 				.addSeparator()
 				.addController()
