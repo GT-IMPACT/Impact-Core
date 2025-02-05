@@ -241,7 +241,6 @@ public class GTMTE_MESystemProvider extends GTMTE_Impact_BlockBase<GTMTE_MESyste
 					
 					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
 							&& !addMPChambers(currentTE, CASING_TEXTURE_ID)
 							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
