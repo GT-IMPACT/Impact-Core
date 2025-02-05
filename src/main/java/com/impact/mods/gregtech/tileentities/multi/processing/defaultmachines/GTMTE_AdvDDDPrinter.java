@@ -82,7 +82,6 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
 		b
 				.addInfo("info.0", "Assembler machines")
 				.addTypeMachine("name", "4x4 Crafting")
-				.addScrew()
 				.addSeparatedBus()
 				.addSeparator()
 				.addController()
