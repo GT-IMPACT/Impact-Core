@@ -1,8 +1,3 @@
-![JENKINS](https://jenkins.accident.space/buildStatus/icon?job=Impact-core)
+# IMPACT CoreMod
 
-
-# CoreMod
-Core mod for ModPack
-
-[LICENSE](https://github.com/GT-IMPACT/Impact-Core/blob/Release/LICENSE.md)
-
+[![Latest Release](https://img.shields.io/github/v/tag/GT-IMPACT/Impact-Core?label=Latest)](https://github.com/GT-IMPACT/Impact-Core/releases/latest)

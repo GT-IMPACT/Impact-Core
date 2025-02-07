@@ -1,7 +1,0 @@
-runClient {
-    args "--tweakClass", "org.spongepowered.asm.launch.MixinTweaker", "--username", "Developer"
-}
-
-runServer {
-    args "--tweakClass", "org.spongepowered.asm.launch.MixinTweaker", "--username", "Developer"
-}
