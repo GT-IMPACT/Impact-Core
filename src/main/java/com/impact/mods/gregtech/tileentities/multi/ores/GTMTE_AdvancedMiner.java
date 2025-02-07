@@ -111,7 +111,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 			chunks.clear();
 			cycleIncrease = 0;
 			Chunk mainChunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-			OreVeinCount pair = VirtualAPI.extractOreFromVein(mainChunk, 0, 0);
+			OreVeinCount pair = VirtualAPI.extractOreFromVein(mainChunk, layer, 0);
 			oreVein = pair != null ? pair.getVein() : null;
 			sizeVeinPreStart = pair != null ? pair.getSize() : 0;
 		}

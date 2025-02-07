@@ -94,7 +94,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 	public void initOreProperty(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
 			Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-			OreVeinCount pair = VirtualAPI.extractOreFromChunk(ch, 1, 0);
+			OreVeinCount pair = VirtualAPI.extractOreFromChunk(ch, layer, 0);
 			oreVein = pair != null ? pair.getVein() : null;
 			sizeVeinPreStart = pair != null ? pair.getSize() : 0;
 		}
