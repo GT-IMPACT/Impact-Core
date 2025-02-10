@@ -1,5 +1,6 @@
 package com.impact.core;
 
+import com.impact.addon.nei.impactplugin.RecipeCatalystRegister;
 import com.impact.addon.nei.impactplugin.RecipeProcessorRegister;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
@@ -219,6 +220,7 @@ public class ClientProxy extends CommonProxy {
 	public void postInit() {
 		ClientCommandHandler.instance.registerCommand(new Command_Run());
 		RecipeProcessorRegister.register();
+		RecipeCatalystRegister.register();
 	}
 	
 	public void init() {

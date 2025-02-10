@@ -82,16 +82,16 @@ public class ImpactPlugin extends PluginBase {
         MovingObjectPosition pos = accessor.getPosition();
         NBTTagCompound tag = accessor.getNBTData();
         final int side = (byte) accessor.getSide().ordinal();
-        
+
         //region gregtech
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
         final BaseMetaTileEntity mBaseMetaTileEntity = tile instanceof  BaseMetaTileEntity ? ((BaseMetaTileEntity) tile) : null;
-    
+
         final GT_MetaTileEntity_MultiBlockBase multiBlockBase = tMeta instanceof GT_MetaTileEntity_MultiBlockBase ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
         final GT_MetaTileEntity_BasicMachine BasicMachine = tMeta instanceof GT_MetaTileEntity_BasicMachine ? ((GT_MetaTileEntity_BasicMachine) tMeta) : null;
         final GT_MetaTileEntity_BasicBatteryBuffer bateryBuffer = tMeta instanceof GT_MetaTileEntity_BasicBatteryBuffer ? ((GT_MetaTileEntity_BasicBatteryBuffer) tMeta) : null;
-        
+
         final GT_MetaTileEntity_MultiParallelBlockBase<?> MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase<?>) tMeta) : null;
         final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
         final GTMTE_LapPowerStation LapBuffer = tMeta instanceof GTMTE_LapPowerStation ? ((GTMTE_LapPowerStation) tMeta) : null;
@@ -115,13 +115,13 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
         final GTMTE_SingleTank single_tank = tMeta instanceof GTMTE_SingleTank ? ((GTMTE_SingleTank) tMeta) : null;
         final GTMTE_MultiTank multi_tank = tMeta instanceof GTMTE_MultiTank ? ((GTMTE_MultiTank) tMeta) : null;
-    
+
         final boolean showTransformer = tMeta instanceof GT_MetaTileEntity_Transformer && getConfig("transformer");
         final boolean showSolar = tMeta instanceof GT_MetaTileEntity_Boiler_Solar && getConfig("solar");
         final boolean allowedToWork = tag.hasKey("isAllowedToWork") && tag.getBoolean("isAllowedToWork");
 
         if (tMeta != null) {
-    
+
             if (tMeta instanceof ISwitchRecipeMap) {
                 String map = tag.getString("recipe_map_switch");
                 if (!map.isEmpty()) {
@@ -132,7 +132,7 @@ public class ImpactPlugin extends PluginBase {
                 boolean map = tag.getBoolean("is_separated");
                 currenttip.add("Separated Mode: " + (map ? EnumChatFormatting.GREEN + "Enabled" : EnumChatFormatting.RED + "Disabled"));
             }
-    
+
             if (tBaseMetaTile != null) {
                 if (getConfig("fluidFilter")){
                     final String filterKey = "filterInfo" + side;
@@ -144,19 +144,31 @@ public class ImpactPlugin extends PluginBase {
                     currenttip.add("Color: " + tag.getString("gt_colorization"));
                 }
             }
-            
+
             if (adv_miner != null) {
-                currenttip.add("Vein Size: " + GT_Utility.formatNumbers(tag.getInteger("adv_miner.vein")));
+                String size = "?";
+                if (!tag.getBoolean("incompleteStructure")) {
+                    size = GT_Utility.formatNumbers(tag.getInteger("adv_miner.vein"));
+                }
+                currenttip.add("Chunk Size: " + size);
                 currenttip.add("Layer: " + tag.getInteger("adv_miner.layer"));
             }
-            
+
             if (basic_miner != null) {
-                currenttip.add("Chunk Size: " + GT_Utility.formatNumbers(tag.getInteger("basic_miner.vein")));
+                String size = "?";
+                if (!tag.getBoolean("incompleteStructure")) {
+                    size = GT_Utility.formatNumbers(tag.getInteger("basic_miner.vein"));
+                }
+                currenttip.add("Chunk Size: " + size);
                 currenttip.add("Layer: " + tag.getInteger("basic_miner.layer"));
             }
-            
+
             if (coal_miner != null) {
-                currenttip.add("Chunk Size: " + GT_Utility.formatNumbers(tag.getInteger("coal_miner.vein")));
+                String size = "?";
+                if (!tag.getBoolean("incompleteStructure")) {
+                    size = GT_Utility.formatNumbers(tag.getInteger("coal_miner.vein"));
+                }
+                currenttip.add("Chunk Size: " + size);
             }
 
             if (solar != null) {
@@ -338,7 +350,7 @@ public class ImpactPlugin extends PluginBase {
                             fs.getLocalizedName());
                 }
             }
-   
+
             String facingStr = "Facing";
             if (showTransformer && tag.hasKey("isAllowedToWork")) {
                 currenttip.add(
@@ -353,23 +365,23 @@ public class ImpactPlugin extends PluginBase {
                 );
                 facingStr = tag.getBoolean("isAllowedToWork") ? "Input" : "Output";
             }
-    
+
             if (showSolar && tag.hasKey("calcificationOutput")) {
                 currenttip.add(String.format((GOLD + "Solar Boiler Output: " + RESET + "%d/%d L/s"), tag.getInteger("calcificationOutput"), tag.getInteger("maxCalcificationOutput")));
             }
-    
+
             if (tMeta instanceof GT_MetaTileEntity_PrimitiveBlastFurnace) {
                 if(tag.getBoolean("incompleteStructurePrimitiveBlastFurnace")) {
                     currenttip.add(RED + trans("waila.incompletestructure") + RESET);
                 }
-        
+
                 if (tag.getInteger("progressPrimitiveBlastFurnace") <= 20 && tag.getInteger("maxProgressPrimitiveBlastFurnace") <= 20) {
                     currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progressPrimitiveBlastFurnace"), tag.getInteger("maxProgressPrimitiveBlastFurnace")));
                 } else {
                     currenttip.add(String.format(trans("waila.progress") + ": %d s / %d s", tag.getInteger("progressPrimitiveBlastFurnace") / 20, tag.getInteger("maxProgressPrimitiveBlastFurnace") / 20));
                 }
             }
-    
+
             if (mBaseMetaTileEntity != null && getConfig("machineFacing")) {
                 final int facing = mBaseMetaTileEntity.getFrontFacing();
                 if(showTransformer) {
@@ -382,9 +394,9 @@ public class ImpactPlugin extends PluginBase {
                     currenttip.add(String.format("%s: %s", facingStr, ForgeDirection.getOrientation(facing).name()));
                 }
             }
-    
+
             if (BasicMachine != null && getConfig("basicmachine")) {
-        
+
                 if (tag.getInteger("progressSingleBlock") <= 20 && tag.getInteger("maxProgressSingleBlock") <= 20 ) {
                     currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
                 } else {
@@ -392,20 +404,20 @@ public class ImpactPlugin extends PluginBase {
                 }
                 currenttip.add(trans("waila.consumption") + ": " + RED + tag.getInteger("EUOut") + RESET + " " + trans("waila.eut"));
             }
-    
+
             if(multiBlockBase != null && getConfig("multiblock")) {
                 if(tag.getBoolean("incompleteStructure")) {
                     currenttip.add(RED + trans("waila.incompletestructure") + RESET);
                 }
                 currenttip.add((tag.getBoolean("hasProblems") ? (RED + trans("waila.maintenance")) : GREEN + trans("waila.running")) + RESET + "  " + trans("waila.efficiency") + " : " + tag.getFloat("efficiency") + "%");
-        
+
                 if (tag.getInteger("progress") <= 20 && tag.getInteger("maxProgress") <= 20 ) {
                     currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progress"), tag.getInteger("maxProgress")));
                 } else {
                     currenttip.add(trans("waila.progress") + String.format(": %d s / %d s", tag.getInteger("progress") / 20, tag.getInteger("maxProgress") / 20));
                 }
             }
-    
+
             if(bateryBuffer != null && getConfig("basicmachine")) {
                 currenttip.add(trans("waila.usedcapacity") + ": " + GREEN + GT_Utility.formatNumbers(tag.getLong("nowStorage")) + RESET + " " + trans("waila.eu"));
                 currenttip.add(trans("waila.totalcapacity") + ": " + YELLOW + GT_Utility.formatNumbers(tag.getLong("maxStorage")) + RESET + " " + trans("waila.eu"));
@@ -414,7 +426,7 @@ public class ImpactPlugin extends PluginBase {
             }
         }
         //endregion
-        
+
         final TE_DryingRack dryingRack = tile instanceof TE_DryingRack ? (TE_DryingRack) tile : null;
         if (dryingRack != null) {
             currenttip.add((tag.getInteger("dryingRack.time") / 20) + " / " + (tag.getInteger("dryingRack.maxTime") / 20) + "s");
@@ -425,12 +437,12 @@ public class ImpactPlugin extends PluginBase {
     protected void getNBTData(TileEntity tile, NBTTagCompound tag, World world, BlockCoord pos) {
         final IGregTechTileEntity tBaseMetaTile = tile instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tile) : null;
         final IMetaTileEntity tMeta = tBaseMetaTile != null ? tBaseMetaTile.getMetaTileEntity() : null;
-    
+
         final TE_DryingRack dryingRack = tile instanceof TE_DryingRack ? (TE_DryingRack) tile : null;
-    
+
         final GT_MetaTileEntity_BasicMachine BasicMachine = tMeta instanceof GT_MetaTileEntity_BasicMachine ? ((GT_MetaTileEntity_BasicMachine) tMeta) : null;
         final GT_MetaTileEntity_BasicBatteryBuffer bateryBuffer = tMeta instanceof GT_MetaTileEntity_BasicBatteryBuffer ? ((GT_MetaTileEntity_BasicBatteryBuffer) tMeta) : null;
-        
+
         final GT_MetaTileEntity_MultiBlockBase multiBlockBase = tMeta instanceof GT_MetaTileEntity_MultiBlockBase ? ((GT_MetaTileEntity_MultiBlockBase) tMeta) : null;
         final GT_MetaTileEntity_MultiParallelBlockBase<?> MultiParallel = tMeta instanceof GT_MetaTileEntity_MultiParallelBlockBase ? ((GT_MetaTileEntity_MultiParallelBlockBase<?>) tMeta) : null;
         final GTMTE_MBBase multiBlockBaseImpact = tMeta instanceof GTMTE_MBBase ? ((GTMTE_MBBase) tMeta) : null;
@@ -451,15 +463,15 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
         final GTMTE_BasicMiner basic_miner = tMeta instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) tMeta) : null;
         final GTMTE_AdvancedMiner adv_miner = tMeta instanceof GTMTE_AdvancedMiner ? ((GTMTE_AdvancedMiner) tMeta) : null;
-    
+
         final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
-        
+
         if (tMeta != null) {
-            
+
             if (tMeta instanceof ISwitchRecipeMap) {
                 tag.setString("recipe_map_switch", ((ISwitchRecipeMap) tMeta).getMapName());
             }
-    
+
             if (tMeta instanceof ISeparateBus && ((ISeparateBus) tMeta).hasSeparate()) {
                 tag.setBoolean("is_separated", ((ISeparateBus) tMeta).isSeparated());
             }
@@ -475,17 +487,17 @@ public class ImpactPlugin extends PluginBase {
                     tag.setBoolean("pipeline.isSender", pipeline.isSender());
                 }
             }
-            
+
             if (adv_miner != null) {
                 tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart);
                 tag.setInteger("adv_miner.layer", adv_miner.layer);
             }
-    
+
             if (basic_miner != null) {
                 tag.setInteger("basic_miner.vein", basic_miner.sizeVeinPreStart);
                 tag.setInteger("basic_miner.layer", basic_miner.layer);
             }
-            
+
             if (coal_miner != null) {
                 tag.setInteger("coal_miner.vein", coal_miner.sizeVeinPreStart);
                 tag.setInteger("coal_miner.cycles", coal_miner.cycleIncrease);
@@ -606,7 +618,7 @@ public class ImpactPlugin extends PluginBase {
                 tag.setInteger("maxProgressImpact", maxProgress);
                 tag.setBoolean("incompleteStructureImpact", (tBaseMetaTile.getErrorDisplayID() & 64) != 0);
             }
-    
+
             if (tMeta instanceof GT_MetaTileEntity_Transformer) {
                 final GT_MetaTileEntity_Transformer transformer = (GT_MetaTileEntity_Transformer)tMeta;
                 tag.setBoolean("isAllowedToWork", tMeta.getBaseMetaTileEntity().isAllowedToWork());
@@ -626,20 +638,20 @@ public class ImpactPlugin extends PluginBase {
                 tag.setInteger("maxProgressPrimitiveBlastFurnace", maxProgress);
                 tag.setBoolean("incompleteStructurePrimitiveBlastFurnace", !blastFurnace.mMachine);
             }
-    
+
             if (multiBlockBase != null) {
                 final int problems = multiBlockBase.getIdealStatus() - multiBlockBase.getRepairStatus();
                 final float efficiency = multiBlockBase.mEfficiency / 100.0F;
                 final int progress = multiBlockBase.mProgresstime;
                 final int maxProgress = multiBlockBase.mMaxProgresstime;
-        
+
                 tag.setBoolean("hasProblems", problems > 0);
                 tag.setFloat("efficiency", efficiency);
                 tag.setInteger("progress", progress);
                 tag.setInteger("maxProgress", maxProgress);
                 tag.setBoolean("incompleteStructure", (tBaseMetaTile.getErrorDisplayID() & 64) != 0);
             }
-    
+
             if (BasicMachine != null) {
                 final int progressSingleBlock = BasicMachine.mProgresstime;
                 final int maxProgressSingleBlock = BasicMachine.mMaxProgresstime;
@@ -648,12 +660,12 @@ public class ImpactPlugin extends PluginBase {
                 tag.setInteger("maxProgressSingleBlock", maxProgressSingleBlock);
                 tag.setInteger("EUOut", EUOut);
             }
-    
+
             if (bateryBuffer != null) {
                 long[] tmp = bateryBuffer.getStoredEnergy();
                 long nowStorage = tmp[0] - bateryBuffer.getBaseMetaTileEntity().getStoredEU();
                 long maxStorage = tmp[1] - bateryBuffer.getBaseMetaTileEntity().getEUCapacity();
-        
+
                 long energyInput = bateryBuffer.getBaseMetaTileEntity().getAverageElectricInput();
                 long energyOutput = bateryBuffer.getBaseMetaTileEntity().getAverageElectricOutput();
                 tag.setLong("nowStorage", nowStorage);
@@ -661,7 +673,7 @@ public class ImpactPlugin extends PluginBase {
                 tag.setLong("energyInput", energyInput);
                 tag.setLong("energyOutput", energyOutput);
             }
-            
+
             if (tBaseMetaTile instanceof BaseMetaPipeEntity) {
                 for(byte side=0 ; side < 6 ; side++) {
                     if(tBaseMetaTile.getCoverBehaviorAtSide(side) instanceof GT_Cover_Fluidfilter) {
@@ -670,7 +682,7 @@ public class ImpactPlugin extends PluginBase {
                 }
             }
         }
-        
+
         if (dryingRack != null) {
             tag.setInteger("dryingRack.time", dryingRack.currentTime);
             tag.setInteger("dryingRack.maxTime", dryingRack.maxTime);

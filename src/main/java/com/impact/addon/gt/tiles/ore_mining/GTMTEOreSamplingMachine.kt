@@ -23,9 +23,10 @@ import gregtech.api.util.GT_Utility
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.server.MinecraftServer
 import net.minecraft.tileentity.TileEntity
 import space.gtimpact.virtual_world.api.VirtualAPI
-import space.gtimpact.virtual_world.api.VirtualOreVein
 import space.gtimpact.virtual_world.api.OreVeinCount
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
@@ -76,6 +77,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     private val hatch: HashSet<GTMTE_OreHatch> = hashSetOf()
     private var currentVeinCount: OreVeinCount? = null
     private var isHanded = false
+    private var playerHandler: EntityPlayer? = null
 
     private fun checkHatch(te: IGregTechTileEntity?, index: Short): Boolean {
         val mte = te?.metaTileEntity ?: return false
@@ -133,6 +135,20 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         } else false
     }
 
+    override fun saveNBTData(aNBT: NBTTagCompound) {
+        super.saveNBTData(aNBT)
+        playerHandler?.also { player ->
+            aNBT.setString("playerHandler", player.gameProfile.name)
+        }
+    }
+
+    override fun loadNBTData(aNBT: NBTTagCompound) {
+        super.loadNBTData(aNBT)
+        aNBT.getString("playerHandler")?.also { name ->
+            playerHandler = MinecraftServer.getServer().configurationManager.func_152612_a(name)
+        }
+    }
+
     override fun onRightclick(
         te: IGregTechTileEntity,
         p: EntityPlayer,
@@ -143,8 +159,8 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     ): Boolean {
         if (!mMachine) return true
         if (side != 1.toByte() || isHanded) return true
+        playerHandler = p
         isHanded = true
-        VirtualWorldScan.scanVeinOre(te.chunk, LAYER,  p)
         currentVeinCount = VirtualAPI.extractOreFromChunk(te.chunk, LAYER, 1)
         checkRecipe(null)
         return true
@@ -166,6 +182,10 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
                     droppedItem.motionY = ((4 + w.rand.nextFloat()) * multiplier).toDouble()
                     droppedItem.motionZ = ((-0.5f + w.rand.nextFloat()) * multiplier).toDouble()
                     w.spawnEntityInWorld(droppedItem)
+                    playerHandler?.also { player ->
+                        VirtualWorldScan.scanVeinOre(te.chunk, LAYER,  player)
+                        playerHandler = null
+                    }
                     isHanded = false
                 }
             } else {

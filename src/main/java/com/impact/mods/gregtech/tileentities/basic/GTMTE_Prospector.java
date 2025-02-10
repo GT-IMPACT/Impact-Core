@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import space.gtimpact.virtual_world.api.VirtualAPI;
 
 public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
@@ -23,7 +24,9 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	boolean ready = false;
 	public int type = 0;
 	public int layer = 0;
-	
+
+	private EntityPlayer playerHandler = null;
+
 	public GTMTE_Prospector(int aID, String aNameRegional, int aTier) {
 		super(aID, "impact.basic.prospector." + aTier, aNameRegional, aTier, 1, // amperage
 				"",
@@ -59,13 +62,17 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 		return new GTMTE_Prospector(this.mName, this.mTier, this.mDescriptionArray, this.mTextures,
 				this.mGUIName, this.mNEIName);
 	}
-	
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setInteger("type", type);
 		aNBT.setInteger("layer", layer);
 		aNBT.setBoolean("ready", ready);
+
+		if (playerHandler != null) {
+			aNBT.setString("playerHandler", playerHandler.getGameProfile().getName());
+		}
 	}
 	
 	@Override
@@ -74,6 +81,10 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 		type = aNBT.getInteger("type");
 		layer = aNBT.getInteger("layer");
 		ready = aNBT.getBoolean("ready");
+		String name = aNBT.getString("playerHandler");
+		if (name != null) {
+			playerHandler = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
+		}
 	}
 	
 	@Override
@@ -98,7 +109,22 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 		this.ready = false;
 		super.inValidate();
 	}
-	
+
+	@Override
+	public void onPostTick(IGregTechTileEntity te, long aTick) {
+		super.onPostTick(te, aTick);
+
+		if (te.isServerSide() && aTick % 20 == 0) {
+			if (ready && mMaxProgresstime == 0) {
+				if (playerHandler != null) {
+					VirtualWorldScan.scanStart(te, mTier, playerHandler);
+					playerHandler = null;
+					ready = false;
+				}
+			}
+		}
+	}
+
 	@Override
 	public boolean onRightclick(IGregTechTileEntity te, EntityPlayer aPlayer) {
 		if (te.isServerSide()) {
@@ -110,8 +136,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 				
 				this.ready = true;
 				this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 800);
-			} else if (ready && mMaxProgresstime == 0 && aStack == null) {
-				VirtualWorldScan.scanStart(te, mTier, type, layer, aPlayer);
+				playerHandler = aPlayer;
 			}
 		}
 		return true;

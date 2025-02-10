@@ -1,6 +1,5 @@
 package com.impact.addon.vw
 
-import com.impact.common.oregeneration.Dimensions
 import gregtech.api.enums.ItemList
 import gregtech.api.enums.Materials
 import gregtech.api.enums.OrePrefixes
@@ -2210,42 +2209,9 @@ object VirtualWorldIntegration {
             color = Materials.Platinum.color(),
             ores = listOf(Materials.Platinum.toOreComponent(100))
         )
-
-        VirtualOreVein(
-            id = 1000,
-            name = "Empty",
-            dimensions = Dimensions.values().map { it.id to "${it.name} (${it.tier})" },
-            rangeSize = 1..10,
-            layer = 0,
-            weight = 5.0,
-            color = Materials._NULL.color(),
-            ores = listOf(),
-            isHidden = true,
-        )
-        VirtualOreVein(
-            id = 1001,
-            name = "Empty",
-            dimensions = Dimensions.values().map { it.id to "${it.name} (${it.tier})" },
-            rangeSize = 1..10,
-            layer = 1,
-            weight = 5.0,
-            color = Materials._NULL.color(),
-            ores = listOf(),
-            isHidden = true,
-        )
     }
 
     private fun registerFluidVeins() {
-        VirtualFluidVein(
-            id = 0,
-            name = "Empty",
-            weight = 33.0,
-            rangeSize = 1..10,
-            color = Materials._NULL.color(),
-            dimensions = Dimensions.values().map { it.id to "${it.name} (${it.tier})" },
-            fluid = Materials.Water.getAnyFluid(),
-            isHidden = true,
-        )
         VirtualFluidVein(
             id = 1,
             name = "Oil",
@@ -2579,8 +2545,17 @@ object VirtualWorldIntegration {
             dimensions = listOf(Makemake).map { it.id to "${it.name} (${it.tier})" },
             fluid = Materials.NaquadahEnriched.getAnyFluid()
         )
+        VirtualFluidVein(
+            id = 38,
+            name = "Argon",
+            weight = 5.0,
+            rangeSize = 100..400,
+            color = Materials.Argon.color(),
+            dimensions = listOf(Makemake).map { it.id to "${it.name} (${it.tier})" },
+            fluid = Materials.Argon.getAnyFluid()
+        )
     }
-    
+
     private fun Materials.getAnyFluid(): FluidStack {
         return getFluid(0) ?: getGas(0) ?: getMolten(0)!!
     }

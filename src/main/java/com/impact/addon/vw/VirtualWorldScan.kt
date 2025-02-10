@@ -16,7 +16,7 @@ import space.gtimpact.virtual_world.extras.toTranslate
 object VirtualWorldScan {
 
     @JvmStatic
-    fun scanStart(te: IGregTechTileEntity, tierScanner: Int, type: Int, layer: Int, player: EntityPlayer) {
+    fun scanStart(te: IGregTechTileEntity, tierScanner: Int, player: EntityPlayer) {
         val radius = when (tierScanner) {
             2 -> 9
             3 -> 11
@@ -25,15 +25,14 @@ object VirtualWorldScan {
             else -> 7
         }
 
-        when (type) {
-            TYPE_ORES -> scanOres(te.world, layer, player as EntityPlayerMP, radius)
-            TYPE_FLUIDS -> scanFluids(te.world, player as EntityPlayerMP, radius)
-        }
+        scanOres(te.world, 0, player as EntityPlayerMP, radius)
+        scanOres(te.world, 1, player, radius)
+        scanFluids(te.world, player, radius)
     }
 
     @JvmStatic
-    fun scanVeinOre(chunk: Chunk, layer: Int, player: EntityPlayer, needShowGui: Boolean = false): OreVeinCount? {
-        scanOres(chunk.worldObj, layer, player, 4, needShowGui)
+    fun scanVeinOre(chunk: Chunk, layer: Int, player: EntityPlayer, needScanSize: Boolean = false): OreVeinCount? {
+        scanOres(chunk.worldObj, layer, player, 4, needScanSize = needScanSize)
         val list = arrayListOf<OreVeinCount?>()
         VirtualAPI.getVeinChunks(chunk).forEach {
             chunk.worldObj.getChunkFromChunkCoords(it.chunkXPos, it.chunkZPos)?.also { ch ->

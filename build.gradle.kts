@@ -29,13 +29,14 @@ repositories {
             includeGroupByRegex("space\\.impact\\..+")
         }
     }
+    mavenLocal()
 }
 
 dependencies {
     api("space.impact:Packet-Network:1.1.8")
     api("space.impact:Impact-API:0.0.4:dev")
     api("space.impact:WAILAPlugins:0.3.1:dev")
-    api("space.impact:VirtualWorld:1.4.1:dev")
+    api("space.impact:VirtualWorld:1.4.2:dev")
     api("space.impact:gregtech-impact:5.09.35.25:dev") { isTransitive = false }
     api("com.github.GTNewHorizons:ModularUI:1.1.24:dev") { isTransitive = false }
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.+:dev") { isChanging = true }
