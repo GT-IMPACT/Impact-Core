@@ -3,6 +3,7 @@ package com.impact.client.gui;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.impact.client.gui.button.ImpactGuiButton;
+import com.impact.core.Config;
 import cpw.mods.fml.client.GuiModList;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -137,7 +138,7 @@ public class ImpactGuiMainMenu extends GuiScreen {
 				drawString(this.fontRendererObj, brd, 2, this.height - 10 + i * (this.fontRendererObj.FONT_HEIGHT + 1), 16777215);
 			}
 		}
-		String eBug2 = translateToLocal("current_version") + ": " + EnumChatFormatting.YELLOW + ModPackVersion;
+		String eBug2 = translateToLocal("current_version") + ": " + EnumChatFormatting.YELLOW + Config.modpackVersion;
 		drawString(this.fontRendererObj, eBug2, this.width - this.fontRendererObj.getStringWidth(eBug2) - 10, this.height - 10, -1);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
