@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 
 public class FakeCircuits extends Item {
 
-  public static int x = 7; //количество предметов
+  public static int x = 10; //количество предметов
 
   private static FakeCircuits Core_Items2 = new FakeCircuits();
   private final IIcon[] icons = new IIcon[x + 1];

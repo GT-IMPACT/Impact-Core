@@ -341,6 +341,9 @@ public enum Core_List_Items {
     FakeUVCircuit(5, 3),
     FakeUHVCircuit(6, 3),
     FakeUEVCircuit(7, 3),
+    FakeUIVCircuit(8, 3),
+    FakeUMVCircuit(9, 3),
+    FakeUXVCircuit(9, 3),
 
     MPBufferEmpty(0, 4),
     MPBufferFull(1, 4),
@@ -404,6 +407,9 @@ public enum Core_List_Items {
         FakeUVCircuit.setOreDictName("circuitSuperconductor");
         FakeUHVCircuit.setOreDictName("circuitInfinite");
         FakeUEVCircuit.setOreDictName("circuitBio");
+        FakeUIVCircuit.setOreDictName("circuitNano");
+        FakeUMVCircuit.setOreDictName("circuitPiko");
+        FakeUXVCircuit.setOreDictName("circuitQuantum");
         YSZCeramicPlate.setOreDictName("plateYSZ");
         GDCCeramicPlate.setOreDictName("plateGDC");
         LSFCCeramicPlate.setOreDictName("plateLSCF");

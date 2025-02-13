@@ -85,7 +85,7 @@ public class MainLoader {
 		ItemRegistery.registerBlocks();
 		INFO("[preInit] Meta Blocks - Loaded");
 		
-		for (byte i = 0; i <= 7; i++) {
+		for (byte i = 0; i <= 10; i++) {
 			hideItem(new ItemStack(FakeCircuits.getInstance(), 1, i));
 		}
 		INFO("[preInit] Hide NEI Items - Loaded");
