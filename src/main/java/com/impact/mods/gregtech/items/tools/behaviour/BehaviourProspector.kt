@@ -42,17 +42,10 @@ class BehaviourProspector(
         return nbt.getInteger(key)
     }
 
-    fun changeLayer(player: EntityPlayer, stack: ItemStack) {
-        val type = stack.getNBTInt(NBT_TYPE)
-        if (type != TYPE_FLUIDS) {
-            var realLayer = stack.getNBTInt(NBT_LAYER) + 1
-            if (realLayer >= LAYERS_VIRTUAL_ORES) {
-                realLayer = 0
-            }
-            // Set ore layer #
-            player.send("scanner.change_layer".toTranslate() + realLayer)
-            stack.setNBT(realLayer, NBT_LAYER)
-        }
+    fun changeLayer(player: EntityPlayer, stack: ItemStack, layer: Int) {
+        // Set ore layer #
+        player.send("scanner.change_layer".toTranslate() + layer)
+        stack.setNBT(layer, NBT_LAYER)
     }
 
     override fun onItemUseFirst(
@@ -91,12 +84,18 @@ class BehaviourProspector(
                             type = 0
                         }
 
-                        when {
-                            type != TYPE_FLUIDS -> {
+                        when(type) {
+                            TYPE_ORES_0 -> {
                                 player.send("scanner.change_mode.0".toTranslate()) //Set mod: Underground Ores
-                                changeLayer(player, stack)
+                                changeLayer(player, stack, 0)
                             }
-                            type == TYPE_FLUIDS -> player.send("scanner.change_mode.1".toTranslate()) //Set mod: Underground Fluids
+                            TYPE_ORES_1 -> {
+                                player.send("scanner.change_mode.0".toTranslate()) //Set mod: Underground Ores
+                                changeLayer(player, stack, 1)
+                            }
+                            TYPE_FLUIDS -> {
+                                player.send("scanner.change_mode.1".toTranslate()) //Set mod: Underground Fluids
+                            }
                         }
                         stack.setNBT(type, NBT_TYPE)
                         return true
