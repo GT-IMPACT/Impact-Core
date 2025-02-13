@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumChatFormatting
 import net.minecraft.world.World
-import space.gtimpact.virtual_world.common.items.ScannerTool
 
 class BehaviourOreProbe : Behaviour_None() {
 

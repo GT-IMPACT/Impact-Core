@@ -1,6 +1,8 @@
 package com.impact.mods.gregtech;
+import com.impact.mods.gregtech.items.tools.behaviour.BehaviourProspector;
 import com.impact.mods.gregtech.items.tools.behaviour.Behaviour_Aerostat;
 import com.impact.mods.gregtech.items.tools.behaviour.BehaviourOreProbe;
+import gregtech.api.enums.GT_Values;
 import gregtech.common.items.GT_MetaGenerated_Item_04;
 
 public class GT_ItemRegister {
@@ -15,7 +17,16 @@ public class GT_ItemRegister {
   private void registerItems() {
     GT_ItemList.Aerostat.set(GT.addItem(6, "Aerostat", "", Behaviour_Aerostat.INSTANCE));
     GT_ItemList.OreProbe.set(GT.addItem(8, "Ore Sampling Tool", "Ore sampling tool in current Chunk (Only Layer 0)", BehaviourOreProbe.INSTANCE));
-    
+
+    GT_ItemList.HandProspectorEV.set(GT.addItem(100, "Underground Resource Scanner (EV)", "", new BehaviourProspector(4, 8)));
+    GT.setElectricStats(32100, 6_400_000, GT_Values.V[4], 4, -1L, false);
+    GT_ItemList.HandProspectorIV.set(GT.addItem(101, "Underground Resource Scanner (IV)", "",  new BehaviourProspector(5, 12)));
+    GT.setElectricStats(32101, 25_600_000, GT_Values.V[5], 5, -1L, false);
+    GT_ItemList.HandProspectorLuV.set(GT.addItem(102, "Underground Resource Scanner (LuV)", "",  new BehaviourProspector(6, 16)));
+    GT.setElectricStats(32102, 102_400_000, GT_Values.V[6], 6, -1L, false);
+    GT_ItemList.HandProspectorZPM.set(GT.addItem(103, "Underground Resource Scanner (ZPM)", "",  new BehaviourProspector(7, 20)));
+    GT.setElectricStats(32103, 409_600_000, GT_Values.V[7], 7, -1L, false);
+
     GT_ItemList.ULVPump.set(GT.addItem(395, "ULV Electric Pump", "640 L/sec"));
     GT_ItemList.ULVMotor.set(GT.addItem(396, "ULV Electric Motor", ""));
     GT_ItemList.ULVPiston.set(GT.addItem(397, "ULV Electric Piston", ""));

@@ -173,6 +173,17 @@ item.impact_item.100.name=Mineral Stone Dust
 item.impact_item.101.name=Metallic Stone Dust
 item.impact_item.102.name=Coal-Sulfur Stone Dust
 
+scanner.change_layer=Set ore layer #
+scanner.change_mode.0=Set mod: §aUnderground Ores
+scanner.change_mode.1=Set mod: §aUnderground Fluids
+scanner.tooltip.0=Change scanner mode: Shift + Right Click
+scanner.tooltip.1=Current scanner mode:
+scanner.tooltip.2=§aUnderground Ores
+scanner.tooltip.4=§aUnderground Fluids
+scanner.tooltip.5=To scan the area use Right Click
+scanner.tooltip.6=Current ore layer: §a#
+scanner.tooltip.7=Work radius: §e%s§7 chunks
+
 #MetaItems.01
 item.impact_item2.0.name=Schematics Rocket Tier 1 Chip
 item.impact_item2.1.name=Schematics Rocket Tier 2 Chip

@@ -86,23 +86,6 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 			playerHandler = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
 		}
 	}
-	
-	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (aPlayer.isSneaking()) {
-			this.type++;
-			if (this.type > 1) this.type = 0;
-			this.layer = 0;
-			VirtualWorldScan.sendChatChangeType(aPlayer, type);
-			VirtualWorldScan.sendChatChangeLayer(aPlayer, layer);
-		} else {
-			this.layer++;
-			if (type == 0) {
-				if (this.layer >= VirtualAPI.LAYERS_VIRTUAL_ORES) this.layer = 0;
-				VirtualWorldScan.sendChatChangeLayer(aPlayer, layer);
-			}
-		}
-	}
 
 	@Override
 	public void inValidate() {
@@ -113,7 +96,6 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	@Override
 	public void onPostTick(IGregTechTileEntity te, long aTick) {
 		super.onPostTick(te, aTick);
-
 		if (te.isServerSide() && aTick % 20 == 0) {
 			if (ready && mMaxProgresstime == 0) {
 				if (playerHandler != null) {
@@ -135,7 +117,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 					|| GT_Utility.consumeItems(aPlayer, aStack, ItemList.Block_Powderbarrel.getItem(), 2))) {
 				
 				this.ready = true;
-				this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 800);
+				this.mMaxProgresstime = (aPlayer.capabilities.isCreativeMode ? 20 : 1200);
 				playerHandler = aPlayer;
 			}
 		}

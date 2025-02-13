@@ -381,6 +381,17 @@ item.impact_item3.1.name=Заполненная Портативная Ячей�
 
 item.impact_WoodBrickFormTool.name=Деревянная Форма для Кирпича
 
+scanner.change_layer=Выбран рудный слой #
+scanner.change_mode.0=Выбран режим: §aПодземные Руды
+scanner.change_mode.1=Выбран режим: §aПодземные Жидкости
+scanner.tooltip.0=Изменить режим сканнера: Shift + Right Click
+scanner.tooltip.1=Текущий режим сканнера:
+scanner.tooltip.2=§aПодземные руды
+scanner.tooltip.4=§aПодземные жидкости
+scanner.tooltip.5=Сканировать территорию: Right Click
+scanner.tooltip.6=Текущий рудный слой: §a#
+scanner.tooltip.7=Радиус работы: §e%s§7  чанков
+
 item.impact_fake.0.name=Любая MV Схема
 item.impact_fake.1.name=Любая EV Схема
 item.impact_fake.2.name=Любая IV Схема
