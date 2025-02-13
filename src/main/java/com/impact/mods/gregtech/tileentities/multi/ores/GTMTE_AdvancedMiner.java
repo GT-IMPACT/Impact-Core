@@ -328,7 +328,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 				.addTypeMachine("name", "Miner")
 				.addInfo("info.1", "Mining takes place in 16 (4x4 zone) Chunks (Full Vein)")
 				.addInfo("info.2", "There is only ONE miner in one Chunk")
-				.addInfo("info.3", "Use a screwdriver to change the Ore Layer (0-2)")
+				.addInfo("info.3", "Use a screwdriver to change the Ore Layer (0-1)")
 				.addSeparator()
 				.addController()
 				.sizeStructure(7, 13, 7)

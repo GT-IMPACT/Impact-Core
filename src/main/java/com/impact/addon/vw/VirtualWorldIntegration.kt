@@ -99,7 +99,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 2,
             layer = 1,
-            name = "Orichalcum",
+            name = "Pure Orichalcum",
             weight = 40.0,
             rangeSize = 10..200,
             color = Materials.Orichalcum.color(),
@@ -211,7 +211,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 7,
             layer = 1,
-            name = "Orichalcum",
+            name = "Deep Orichalcum",
             weight = 40.0,
             rangeSize = 50..200,
             color = Materials.Orichalcum.color(),
@@ -232,7 +232,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 8,
             layer = 1,
-            name = "Sheldonite",
+            name = "Deep Sheldonite",
             weight = 20.0,
             rangeSize = 50..200,
             color = Materials.Sheldonite.color(),
@@ -276,7 +276,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 10,
             layer = 1,
-            name = "Nickel",
+            name = "Pure Nickel",
             weight = 10.0,
             rangeSize = 50..200,
             color = Materials.Nickel.color(),
@@ -381,7 +381,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 15,
             layer = 1,
-            name = "Desh",
+            name = "Deep Desh",
             weight = 30.0,
             rangeSize = 50..200,
             color = Materials.Desh.color(),
@@ -403,7 +403,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 16,
             layer = 1,
-            name = "Nickel",
+            name = "Deep Nickel",
             weight = 30.0,
             rangeSize = 50..200,
             color = Materials.Desh.color(),
@@ -476,7 +476,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 19,
             layer = 1,
-            name = "Desh",
+            name = "Pure Desh",
             weight = 40.0,
             rangeSize = 50..400,
             color = Materials.Desh.color(),
@@ -1020,7 +1020,7 @@ object VirtualWorldIntegration {
         VirtualOreVein(
             id = 45,
             layer = 1,
-            name = "Sheldonite",
+            name = "Pure Sheldonite",
             weight = 5.0,
             rangeSize = 50..400,
             color = Materials.Sheldonite.color(),

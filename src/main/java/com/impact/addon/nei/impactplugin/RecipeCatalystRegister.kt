@@ -8,11 +8,21 @@ object RecipeCatalystRegister {
 
     @JvmStatic
     fun register() {
-        listOf(ItemList.OilDrill1, ItemList.OilDrill2, ItemList.OilDrill3).forEach { item ->
+        listOf(
+            ItemList.OilDrill1,
+            ItemList.OilDrill2,
+            ItemList.OilDrill3,
+        ).forEach { item ->
             API.addRecipeCatalyst(item.get(1), "virtual_world_fluids_dim")
             API.addRecipeCatalyst(item.get(1), "virtual_world_fluids_all")
         }
-        listOf(GT_ItemList.CoalMiner, GT_ItemList.BasicMiner, GT_ItemList.AdvancedMiner).forEach { item ->
+        listOf(
+            GT_ItemList.OreProbe,
+            GT_ItemList.CoalMiner,
+            GT_ItemList.OreSamplingMachine,
+            GT_ItemList.BasicMiner,
+            GT_ItemList.AdvancedMiner,
+        ).forEach { item ->
             API.addRecipeCatalyst(item.get(1), "virtual_world_ores_dim")
             API.addRecipeCatalyst(item.get(1), "virtual_world_ores_all")
         }
