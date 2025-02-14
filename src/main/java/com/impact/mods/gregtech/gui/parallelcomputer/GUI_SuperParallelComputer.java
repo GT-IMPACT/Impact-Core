@@ -31,9 +31,9 @@ public class GUI_SuperParallelComputer extends GUI_BASE {
               - ((Container_SuperParallelComputer) mContainer).mCurrentParallelCapacity;
           String salaryText = salary < 0 ? EnumChatFormatting.RED + Integer.toString(salary)
               : EnumChatFormatting.YELLOW + Integer.toString(salary);
-          fontRendererObj.drawString("Current PP: "
+          fontRendererObj.drawString("Used PP: "
                   + salaryText, 10, 42, 16448255);
-          fontRendererObj.drawString("Usage PP: " + EnumChatFormatting.GREEN
+          fontRendererObj.drawString("Available PP: " + EnumChatFormatting.GREEN
               + ((Container_SuperParallelComputer) mContainer).mCurrentParallelCapacity, 10, 52, 16448255);
         }
       }

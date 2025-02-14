@@ -19,10 +19,7 @@ import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabiliz
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
@@ -254,12 +251,16 @@ public class ImpactPlugin extends PluginBase {
                 }
             }
 
-            if (MultiParallel != null && tag.getInteger("Parallel") > 1) {
+            if (MultiParallel != null && tag.getBoolean("hasShowConnect")) {
+
                 String str = tag.getBoolean("connectWithTower")
                         ? EnumChatFormatting.GREEN + trans("waila.connect.yes")
                         : EnumChatFormatting.RED + trans("waila.connect.no");
                 currenttip.add(str);
-                currenttip.add(trans("waila.parallel.point") + String.format(": %d/%d", tag.getInteger("currentParallel"), tag.getInteger("Parallel")));
+
+                if (!(MultiParallel instanceof GTMTE_ParallelComputer)) {
+                    currenttip.add(trans("waila.parallel.point") + String.format(": %d/%d", tag.getInteger("currentParallel"), tag.getInteger("Parallel")));
+                }
             }
 
             if (LapBuffer != null) {
@@ -586,9 +587,12 @@ public class ImpactPlugin extends PluginBase {
 
 
             if (MultiParallel != null) {
-                final int Parallel = MultiParallel.mParallel;
-                tag.setInteger("Parallel", Parallel);
-                tag.setInteger("currentParallel", MultiParallel.mCheckParallelCurrent);
+                if (!(MultiParallel instanceof GTMTE_ParallelComputer)) {
+                    final int Parallel = MultiParallel.mParallel;
+                    tag.setInteger("Parallel", Parallel);
+                    tag.setInteger("currentParallel", MultiParallel.mCheckParallelCurrent);
+                }
+                tag.setBoolean("hasShowConnect", MultiParallel.hasShowConnect());
                 tag.setBoolean("connectWithTower", MultiParallel.isSatelliteConnected());
             }
 

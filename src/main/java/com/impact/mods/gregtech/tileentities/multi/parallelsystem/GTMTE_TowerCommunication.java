@@ -362,6 +362,11 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     }
 
     @Override
+    public boolean hasShowConnect() {
+        return true;
+    }
+
+    @Override
     public void createTower() {
         SatelliteNetworkLogic.INSTANCE.createTower(this);
     }

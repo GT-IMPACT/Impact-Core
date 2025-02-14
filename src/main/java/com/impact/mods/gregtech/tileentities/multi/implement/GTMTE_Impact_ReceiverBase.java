@@ -56,6 +56,11 @@ public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_Rece
 	}
 
 	@Override
+	public boolean hasShowConnect() {
+		return true;
+	}
+
+	@Override
 	public void setSatelliteConnected(boolean connect) {
 		isSatelliteConnected = connect;
 	}

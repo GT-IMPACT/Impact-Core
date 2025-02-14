@@ -69,6 +69,8 @@ interface INetworkMachine {
 
     var isSatelliteConnected: Boolean
 
+    fun hasShowConnect(): Boolean
+
     /**
      * Добавить машину в сети и вызвать обновление всей сети
      */
