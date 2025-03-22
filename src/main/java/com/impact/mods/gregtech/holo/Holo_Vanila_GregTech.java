@@ -1426,7 +1426,7 @@ public class Holo_Vanila_GregTech implements Runnable {
 									.build();
 					private final String[] desc = new String[]{
 							EnumChatFormatting.RED + "Impact Details:",
-							"- Heat Proof Machine Casing",
+							"- Chemically Inert Machine Casing",
 							"- PTFE Pipe Casing",
 							"- Cupronickel Coil Block",
 						
