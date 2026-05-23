@@ -92,7 +92,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 				.addInfo("info.0", "Converts hydrocarbons into gases, wood tar and solid fuels")
 				.addInfo("info.1", "The process emits gases throughout the entire time:")
 				.addInfo("info.4", "Input/output of products depends of energy hatch, time does not change")
-				.addInfo("info.5", "LV - 1x, MV - 2x, HV - 3x and etc")
+				.addInfo("info.5", "Parallel recipes: 2x per energy hatch tier (LV - 2x, MV - 4x, HV - 6x and etc)")
 				.addPollution(100, "info.6", "x tier energy hatch")
 				.addSeparator()
 				.addController()
@@ -134,7 +134,6 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
 			if (tRecipe != null) {
 				cashedRecipe = tRecipe;
-				ArrayList<ItemStack> outputItems = new ArrayList<>();
 				ArrayList<FluidStack> outputFluids = new ArrayList<>();
 
 				boolean found_Recipe = false;
@@ -149,12 +148,8 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 							if (tRecipe.getOutput(h) != null) {
 								ItemStack old     = tRecipe.getOutput(h).copy();
 								tOut[h]           = old;
-								tOut[h].stackSize = old.stackSize * processed;
+								tOut[h].stackSize = old.stackSize * (processed + 1);
 							}
-						}
-
-						for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-							outputFluids.add(tRecipe.getFluidOutput(i));
 						}
 
 						++processed;
@@ -164,6 +159,14 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 					}
 				}
 				mParallelPoint = processed;
+				if (tRecipe.mFluidOutputs.length > 4) {
+					FluidStack fluid = tRecipe.getFluidOutput(4);
+					if (fluid != null) {
+						FluidStack fluidOut = fluid.copy();
+						fluidOut.amount *= processed;
+						outputFluids.add(fluidOut);
+					}
+				}
 
 				tOut = resizeItemStackSize(tOut);
 
@@ -211,25 +214,31 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 		if (cashedRecipe == null)
 			return super.onRunningTick(aStack);
 
-		FluidStack out = null;
+		int outIndex = -1;
 
 		switch (this.mProgresstime) {
 			case 7 * 20:
-				out = cashedRecipe.mFluidOutputs[0];
+				outIndex = 0;
 				break;
 			case 14 * 20:
-				out = cashedRecipe.mFluidOutputs[1];
+				outIndex = 1;
 				break;
 			case 21 * 20:
-				out = cashedRecipe.mFluidOutputs[2];
+				outIndex = 2;
 				break;
 			case 28 * 20:
-				out = cashedRecipe.mFluidOutputs[3];
+				outIndex = 3;
 				break;
 		}
 
-		if (out != null)
-			addOutput(new FluidStack(out.getFluid(), out.amount * mParallelPoint));
+		if (outIndex >= 0 && cashedRecipe.mFluidOutputs.length > outIndex) {
+			FluidStack out = cashedRecipe.mFluidOutputs[outIndex];
+			if (out != null) {
+				FluidStack outCopy = out.copy();
+				outCopy.amount *= mParallelPoint;
+				addOutput(outCopy);
+			}
+		}
 
 		return super.onRunningTick(aStack);
 	}
