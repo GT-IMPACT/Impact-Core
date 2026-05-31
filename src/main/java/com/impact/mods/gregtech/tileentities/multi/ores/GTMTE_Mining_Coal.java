@@ -1,10 +1,31 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
+import static com.impact.util.multis.GT_StructureUtility.ofFrame;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static space.impact.api.multiblocks.structure.StructureUtility.lazy;
+
+import com.impact.addon.vw.VirtualWorldScan;
 import com.impact.core.Config;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.util.string.MultiBlockTooltipBuilder;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.chunk.Chunk;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -19,33 +40,14 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.world.chunk.Chunk;
-import org.jetbrains.annotations.NotNull;
-import space.gtimpact.virtual_world.api.ObjectIndicator;
-import space.gtimpact.virtual_world.api.OreVeinCount;
 import space.gtimpact.virtual_world.api.VirtualAPI;
-import space.gtimpact.virtual_world.api.VirtualOreVein;
+import space.gtimpact.virtual_world.api.core.WorldPos;
+import space.gtimpact.virtual_world.api.resources.ores.OreVein;
+import space.gtimpact.virtual_world.api.services.mining.ores.OreMiningResult;
+import space.gtimpact.virtual_world.api.services.scanning.ores.OreChunkResult;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static com.impact.util.multis.GT_StructureUtility.ofFrame;
-import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-import static space.impact.api.multiblocks.structure.StructureUtility.lazy;
 
 public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal> {
 
@@ -68,7 +70,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
     private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
     public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
     public int cycleIncrease = 0;
-    public VirtualOreVein oreVein = null;
+    public OreVein oreVein = null;
 
     public GTMTE_Mining_Coal(int aID, String aNameRegional) {
         super(aID, "impact.multis.miner.coal", aNameRegional);
@@ -94,20 +96,29 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
         initOreProperty(te);
     }
 
-    public void increaseLayer(IGregTechTileEntity te, int reduce) {
+    public void increaseLayer(IGregTechTileEntity te) {
         if (te.isServerSide()) {
-            Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-            OreVeinCount pair = VirtualAPI.extractOreFromChunk(ch, 0, 1);
-            sizeVeinPreStart = pair != null ? pair.getSize() : 0;
+            WorldPos pos = new WorldPos(te.getXCoord(), te.getZCoord());
+            OreMiningResult result = VirtualAPI.INSTANCE.getMining()
+                    .mineOreAtBlock(te.getWorld().provider.dimensionId, pos, 0, 1);
+
+            oreVein = result != null ? result.getOre() : null;
+            sizeVeinPreStart = result != null ? (100 * result.getRemainingAmount() / oreVein.getRangeSize().getLast()) : 0;
         }
     }
 
     public void initOreProperty(IGregTechTileEntity te) {
         if (te.isServerSide()) {
-            Chunk ch = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-            OreVeinCount pair = VirtualAPI.extractOreFromChunk(ch, 0, 0);
-            oreVein = pair != null ? pair.getVein() : null;
-            sizeVeinPreStart = pair != null ? pair.getSize() : 0;
+            oreVein = null;
+            sizeVeinPreStart = 0;
+
+            OreChunkResult result = VirtualWorldScan
+                    .scanCurrentOreChunk(te.getWorld().provider.dimensionId, te.getXCoord(), te.getZCoord(), 0);
+
+            if (result != null) {
+                oreVein = result.getOre();
+                sizeVeinPreStart = 100 * result.getRemainingAmount() / oreVein.getRangeSize().getLast();
+            }
         }
     }
 
@@ -222,7 +233,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
                         }
                     } else {
                         if (oreVein != null) {
-                            ItemStack stack = oreVein.getOres().get(0).getOre();
+                            ItemStack stack = oreVein.getOres().get(0).getStack();
                             mInventory[OUTPUT_SLOT] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
                         }
                     }
@@ -271,7 +282,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
         } else {
             return false;
         }
-        increaseLayer(getBaseMetaTileEntity(), TIER_MINER);
+        increaseLayer(getBaseMetaTileEntity());
         return true;
     }
 

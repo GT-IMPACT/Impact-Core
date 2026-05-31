@@ -17,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import space.gtimpact.virtual_world.api.VirtualAPI;
 
 public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 	
@@ -99,7 +98,7 @@ public class GTMTE_Prospector extends GT_MetaTileEntity_BasicMachine {
 		if (te.isServerSide() && aTick % 20 == 0) {
 			if (ready && mMaxProgresstime == 0) {
 				if (playerHandler != null) {
-					VirtualWorldScan.scanStart(te, mTier, playerHandler);
+					VirtualWorldScan.scanAll(te, mTier, playerHandler);
 					playerHandler = null;
 					ready = false;
 				}

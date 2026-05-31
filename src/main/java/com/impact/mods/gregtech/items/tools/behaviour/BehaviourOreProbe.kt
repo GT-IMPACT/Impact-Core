@@ -1,6 +1,5 @@
 package com.impact.mods.gregtech.items.tools.behaviour
 
-import com.impact.addon.vw.VirtualWorldScan
 import com.impact.util.Utilits
 import gregtech.api.interfaces.IItemBehaviour
 import gregtech.api.items.GT_MetaBase_Item
@@ -11,6 +10,9 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumChatFormatting
 import net.minecraft.world.World
+import space.gtimpact.virtual_world.api.VirtualAPI
+import space.gtimpact.virtual_world.api.core.WorldPos
+import space.gtimpact.virtual_world.api.services.scanning.ScanMode
 
 class BehaviourOreProbe : Behaviour_None() {
 
@@ -22,10 +24,24 @@ class BehaviourOreProbe : Behaviour_None() {
         if (aPlayer is EntityPlayerMP) {
             val ch = aWorld.getChunkFromBlockCoords(aX, aZ)
 
-            val count = VirtualWorldScan.scanVeinOre(ch, 0, aPlayer)
+            val result = VirtualAPI.scanning.scanOreAroundBlock(
+                mode = ScanMode.WITH_AMOUNT,
+                layerIndex = 0,
+                radiusVeins = 0,
+                dimensionId = ch.worldObj.provider.dimensionId,
+                centerBlockPos = WorldPos(x = aX, z = aZ),
+            ).results.firstOrNull()
 
-            if (count != null) {
-                GT_Utility.sendChatToPlayer(aPlayer, "Presumably there is Ore here: " + EnumChatFormatting.YELLOW + Utilits.translateGTItemStack(count.vein.ores.first().ore))
+            if (result != null) {
+                VirtualAPI.scannerManager.scanOres(
+                    player = aPlayer,
+                    mode = ScanMode.BOUNDARY_ONLY,
+                    layer = 0,
+                    dimensionId = ch.worldObj.provider.dimensionId,
+                    radiusVeins = 0,
+                )
+                val labelVein = Utilits.translateGTItemStack(result.ore.ores.first().stack)
+                GT_Utility.sendChatToPlayer(aPlayer, "Presumably there is Ore here: " + EnumChatFormatting.YELLOW + labelVein)
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, "Not found Ores")
             }

@@ -20,7 +20,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import space.gtimpact.virtual_world.api.ObjectIndicator;
 import space.gtimpact.virtual_world.api.VirtualAPI;
 
 import java.util.HashMap;
@@ -110,9 +109,9 @@ public class TickHandler {
                 if (te instanceof IGregTechTileEntity) {
                     IGregTechTileEntity gte = (IGregTechTileEntity) te;
                     IMetaTileEntity mte = gte.getMetaTileEntity();
-                    if (mte instanceof IIndicatorProvider && ((IIndicatorProvider) mte).hasIndicator()) {
-                        VirtualAPI.addCustomObject(e.world, (ObjectIndicator) mte, e.x, e.z);
-                    }
+//                    if (mte instanceof IIndicatorProvider && ((IIndicatorProvider) mte).hasIndicator()) {
+//                        VirtualAPI.addCustomObject(e.world, (ObjectIndicator) mte, e.x, e.z);
+//                    }
                 }
             }
         }
@@ -126,9 +125,9 @@ public class TickHandler {
                 if (te instanceof IGregTechTileEntity) {
                     IGregTechTileEntity gte = (IGregTechTileEntity) te;
                     IMetaTileEntity mte = gte.getMetaTileEntity();
-                    if (mte instanceof IIndicatorProvider && ((IIndicatorProvider) mte).hasIndicator()) {
-                        VirtualAPI.removeCustomObject(e.world, (ObjectIndicator) mte, e.x, e.z);
-                    }
+//                    if (mte instanceof IIndicatorProvider && ((IIndicatorProvider) mte).hasIndicator()) {
+//                        VirtualAPI.removeCustomObject(e.world, (ObjectIndicator) mte, e.x, e.z);
+//                    }
                 }
             }
         }

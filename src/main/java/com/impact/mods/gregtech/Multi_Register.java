@@ -124,7 +124,7 @@ public class Multi_Register {
 		AdvCrackUnit.set(new GTMTE_AdvancedCrackingUnit(ID++, "Advanced Cracking Unit").get());
 		OreSamplingMachine.set(new GTMTEOreSamplingMachine(ID++, "Ore Sampling Machine").get());
 		GTMTEOreSamplingMachine.addRecipe();
-		OilDrilling.set(new GTMTEOilDrilling(ID++, "Oil Drilling").get());
+		ID++; // OilDrilling.set(new GTMTEOilDrilling(ID++, "Oil Drilling").get());
 		
 		INFO("[IMPACT-CORE] FINISH ADDED MULTIS | LAST ID: " + ID);
 		

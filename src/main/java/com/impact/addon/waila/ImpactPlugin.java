@@ -147,7 +147,7 @@ public class ImpactPlugin extends PluginBase {
                 if (!tag.getBoolean("incompleteStructure")) {
                     size = GT_Utility.formatNumbers(tag.getInteger("adv_miner.vein"));
                 }
-                currenttip.add("Chunk Size: " + size);
+                currenttip.add("Vein Size: " + size + "%");
                 currenttip.add("Layer: " + tag.getInteger("adv_miner.layer"));
             }
 
@@ -156,7 +156,7 @@ public class ImpactPlugin extends PluginBase {
                 if (!tag.getBoolean("incompleteStructure")) {
                     size = GT_Utility.formatNumbers(tag.getInteger("basic_miner.vein"));
                 }
-                currenttip.add("Chunk Size: " + size);
+                currenttip.add("Chunk Size: " + size + "%");
                 currenttip.add("Layer: " + tag.getInteger("basic_miner.layer"));
             }
 
@@ -165,7 +165,7 @@ public class ImpactPlugin extends PluginBase {
                 if (!tag.getBoolean("incompleteStructure")) {
                     size = GT_Utility.formatNumbers(tag.getInteger("coal_miner.vein"));
                 }
-                currenttip.add("Chunk Size: " + size);
+                currenttip.add("Chunk Size: " + size + "%");
             }
 
             if (solar != null) {
@@ -490,7 +490,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (adv_miner != null) {
-                tag.setInteger("adv_miner.vein", adv_miner.sizeVeinPreStart);
+                tag.setInteger("adv_miner.vein", (int) Math.round(100 * ((double) adv_miner.sizeVeinPreStart / (double) adv_miner.maxVeinSize)));
                 tag.setInteger("adv_miner.layer", adv_miner.layer);
             }
 

@@ -18,13 +18,13 @@ public class GT_ItemRegister {
     GT_ItemList.Aerostat.set(GT.addItem(6, "Aerostat", "", Behaviour_Aerostat.INSTANCE));
     GT_ItemList.OreProbe.set(GT.addItem(8, "Ore Sampling Tool", "Ore sampling tool in current Chunk (Only Layer 0)", BehaviourOreProbe.INSTANCE));
 
-    GT_ItemList.HandProspectorEV.set(GT.addItem(100, "Underground Resource Scanner (EV)", "", new BehaviourProspector(4, 8)));
+    GT_ItemList.HandProspectorEV.set(GT.addItem(100, "Underground Resource Scanner (EV)", "", new BehaviourProspector(4, 1)));
     GT.setElectricStats(32100, 6_400_000, GT_Values.V[4], 4, -1L, false);
-    GT_ItemList.HandProspectorIV.set(GT.addItem(101, "Underground Resource Scanner (IV)", "",  new BehaviourProspector(5, 12)));
+    GT_ItemList.HandProspectorIV.set(GT.addItem(101, "Underground Resource Scanner (IV)", "",  new BehaviourProspector(5, 3)));
     GT.setElectricStats(32101, 25_600_000, GT_Values.V[5], 5, -1L, false);
-    GT_ItemList.HandProspectorLuV.set(GT.addItem(102, "Underground Resource Scanner (LuV)", "",  new BehaviourProspector(6, 16)));
+    GT_ItemList.HandProspectorLuV.set(GT.addItem(102, "Underground Resource Scanner (LuV)", "",  new BehaviourProspector(6, 6)));
     GT.setElectricStats(32102, 102_400_000, GT_Values.V[6], 6, -1L, false);
-    GT_ItemList.HandProspectorZPM.set(GT.addItem(103, "Underground Resource Scanner (ZPM)", "",  new BehaviourProspector(7, 20)));
+    GT_ItemList.HandProspectorZPM.set(GT.addItem(103, "Underground Resource Scanner (ZPM)", "",  new BehaviourProspector(7, 9)));
     GT.setElectricStats(32103, 409_600_000, GT_Values.V[7], 7, -1L, false);
 
     GT_ItemList.ULVPump.set(GT.addItem(395, "ULV Electric Pump", "640 L/sec"));

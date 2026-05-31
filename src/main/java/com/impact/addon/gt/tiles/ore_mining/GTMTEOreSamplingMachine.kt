@@ -27,7 +27,10 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.server.MinecraftServer
 import net.minecraft.tileentity.TileEntity
 import space.gtimpact.virtual_world.api.VirtualAPI
-import space.gtimpact.virtual_world.api.OreVeinCount
+import space.gtimpact.virtual_world.api.core.WorldPos
+import space.gtimpact.virtual_world.api.services.mining.ores.OreMiningResult
+import space.gtimpact.virtual_world.api.services.scanning.ScanMode
+import space.gtimpact.virtual_world.api.services.scanning.ores.OreScanReport
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
@@ -75,15 +78,17 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity?) = GTMTEOreSamplingMachine(mName)
 
     private val hatch: HashSet<GTMTE_OreHatch> = hashSetOf()
-    private var currentVeinCount: OreVeinCount? = null
     private var isHanded = false
     private var playerHandler: EntityPlayer? = null
+
+    private var lastScanReport: OreScanReport? = null
+    private var oreProbe: OreMiningResult? = null
 
     private fun checkHatch(te: IGregTechTileEntity?, index: Short): Boolean {
         val mte = te?.metaTileEntity ?: return false
         return if (mte is GTMTE_OreHatch) {
             mte.updateTexture(index.toInt())
-            return hatch.add(mte)
+            hatch.add(mte)
         } else false
     }
 
@@ -97,9 +102,29 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         initOreProperty(te)
     }
 
+    private fun updateScanReport() {
+        val te = baseMetaTileEntity ?: return
+        lastScanReport = VirtualAPI.scanning.scanOreAroundBlock(
+            dimensionId = te.world.provider.dimensionId,
+            layerIndex = LAYER,
+            centerBlockPos = WorldPos(x = te.xCoord, z = te.zCoord),
+            mode = ScanMode.WITH_AMOUNT,
+        )
+    }
+
+    private fun extractOneOre() {
+        val te = baseMetaTileEntity ?: return
+        oreProbe = VirtualAPI.mining.mineOreAtBlock(
+            dimensionId = te.world.provider.dimensionId,
+            layerIndex = LAYER,
+            blockPos = WorldPos(x = te.xCoord, z = te.zCoord),
+            amount = 1,
+        )
+    }
+
     private fun initOreProperty(te: IGregTechTileEntity) {
         if (te.isServerSide) {
-            currentVeinCount = VirtualAPI.extractOreFromChunk(te.chunk, LAYER, 0)
+            updateScanReport()
         }
     }
 
@@ -121,7 +146,11 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     }
 
     override fun checkRecipe(aStack: ItemStack?): Boolean {
-        val size = currentVeinCount?.size ?: 0
+        val size = lastScanReport
+            ?.results
+            ?.sumOf { it.generatedAmount ?: 0 }
+            ?: 0
+
         if (size <= 0) {
             stopMachine()
             return false
@@ -161,7 +190,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         if (side != 1.toByte() || isHanded) return true
         playerHandler = p
         isHanded = true
-        currentVeinCount = VirtualAPI.extractOreFromChunk(te.chunk, LAYER, 1)
+        extractOneOre()
         checkRecipe(null)
         return true
     }
@@ -170,20 +199,27 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         super.onPostTick(te, tick)
         if (te.isServerSide) {
             if (te.isActive) {
+                val oreProbe = oreProbe
                 if (tick % 20 == 2L && hatch.isNotEmpty()) {
                     val oreHatch = hatch.first()
-                    oreHatch.cycleDrill(currentVeinCount != null && oreHatch.ready)
+                    oreHatch.cycleDrill(oreProbe != null && oreHatch.ready)
                 }
-                if (mProgresstime == DEFAULT_WORK - 1 && currentVeinCount != null) {
+                if (mProgresstime == DEFAULT_WORK - 1 && oreProbe != null) {
                     val multiplier = 0.05f
                     val w = te.world
-                    val droppedItem = EntityItem(w, te.xCoord.toDouble(), te.yCoord.toDouble(), te.zCoord.toDouble(), currentVeinCount?.vein?.ores.orEmpty().random().ore)
+                    val droppedItem = EntityItem(w, te.xCoord.toDouble(), te.yCoord.toDouble(), te.zCoord.toDouble(), oreProbe.ore.ores.random().stack)
                     droppedItem.motionX = ((-0.5f + w.rand.nextFloat()) * multiplier).toDouble()
                     droppedItem.motionY = ((4 + w.rand.nextFloat()) * multiplier).toDouble()
                     droppedItem.motionZ = ((-0.5f + w.rand.nextFloat()) * multiplier).toDouble()
                     w.spawnEntityInWorld(droppedItem)
                     playerHandler?.also { player ->
-                        VirtualWorldScan.scanVeinOre(te.chunk, LAYER,  player)
+                        VirtualAPI.scannerManager.scanOres(
+                            player = player,
+                            mode = ScanMode.WITH_AMOUNT,
+                            layer = LAYER,
+                            dimensionId = te.chunk.worldObj.provider.dimensionId,
+                            radiusVeins = 0,
+                        )
                         playerHandler = null
                     }
                     isHanded = false

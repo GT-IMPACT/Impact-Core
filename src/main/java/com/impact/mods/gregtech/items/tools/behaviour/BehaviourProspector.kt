@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import space.gtimpact.virtual_world.api.VirtualAPI
-import space.gtimpact.virtual_world.api.VirtualAPI.LAYERS_VIRTUAL_ORES
+import space.gtimpact.virtual_world.api.services.scanning.ScanMode
 import space.gtimpact.virtual_world.config.Config
 import space.gtimpact.virtual_world.extras.send
 import space.gtimpact.virtual_world.extras.toTranslate
@@ -59,23 +59,6 @@ class BehaviourProspector(
             val layer = stack.getNBTInt(NBT_LAYER)
 
             when (stack.stackSize) {
-                //for debug
-                2 -> VirtualAPI.addCustomObject(stack, "Test Point ${world.rand.nextInt(99)}", player)
-
-                in 3..64 -> if (Config.enableDebug && player.capabilities.isCreativeMode) {
-                    val chunk = world.getChunkFromBlockCoords(player.posX.toInt(), player.posZ.toInt())
-
-                    when (type) {
-                        TYPE_ORES_0, TYPE_ORES_1 -> VirtualAPI.extractOreFromChunk(chunk, layer, 1000 * stack.stackSize)?.also { data ->
-                            player.send("${data.vein.name}: ${data.size}")
-                        }
-
-                        TYPE_FLUIDS -> VirtualAPI.extractFluidFromVein(chunk, 1000 * stack.stackSize / 16)?.also { data ->
-                            player.send("${data.vein.name}: ${data.size}")
-                        }
-                    }
-                }
-
                 else -> {
                     if (player.isSneaking) {
                         type++
@@ -111,8 +94,23 @@ class BehaviourProspector(
                             aX.toDouble(), aY.toDouble(), aZ.toDouble()
                         )
                         when (type) {
-                            TYPE_ORES_0, TYPE_ORES_1 -> VirtualAPI.scanOres(world, layer, player, radiusWork, true)
-                            TYPE_FLUIDS -> VirtualAPI.scanFluids(world, player, radiusWork, true)
+                            TYPE_ORES_0, TYPE_ORES_1 -> {
+                                VirtualAPI.scannerManager.scanOres(
+                                    player = player,
+                                    mode = ScanMode.WITH_AMOUNT,
+                                    layer = layer,
+                                    dimensionId = world.provider.dimensionId,
+                                    radiusVeins = radiusWork,
+                                )
+                            }
+                            TYPE_FLUIDS -> {
+                                VirtualAPI.scannerManager.scanFluids(
+                                    player = player,
+                                    mode = ScanMode.WITH_AMOUNT,
+                                    dimensionId = world.provider.dimensionId,
+                                    radiusVeins = radiusWork,
+                                )
+                            }
                         }
                     }
                 }

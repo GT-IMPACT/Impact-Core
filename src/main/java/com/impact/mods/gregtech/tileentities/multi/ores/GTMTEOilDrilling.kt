@@ -21,18 +21,13 @@ import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fluids.FluidStack
-import space.gtimpact.virtual_world.api.TypeFluidVein
-import space.gtimpact.virtual_world.api.VirtualAPI
-import space.gtimpact.virtual_world.config.Config
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
-import space.impact.api.multiblocks.structure.StructureUtility.*
-import kotlin.math.log
-import kotlin.math.max
+import space.impact.api.multiblocks.structure.StructureUtility.lazy
+import space.impact.api.multiblocks.structure.StructureUtility.ofBlock
+import space.impact.api.multiblocks.structure.StructureUtility.ofChain
 import kotlin.math.min
-import kotlin.math.pow
-import kotlin.random.Random
 
 class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
@@ -181,10 +176,10 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
     override fun onPostTick(te: IGregTechTileEntity, tick: Long) {
         super.onPostTick(te, tick)
-        if (te.isServerSide) {
-            if (te.isActive && tick % 20 == 0L) currentChunk?.also(::runningLogic)
-            if (tick % 100 == 0L) createDrill(te)
-        }
+//        if (te.isServerSide) {
+//            if (te.isActive && tick % 20 == 0L) currentChunk?.also(::runningLogic)
+//            if (tick % 100 == 0L) createDrill(te)
+//        }
     }
 
     private fun createDrill(drilling: IGregTechTileEntity) {
@@ -208,38 +203,38 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         }
     }
 
-    private fun runningLogic(chunk: Chunk) {
-        val vein = VirtualAPI.extractFluidFromVein(chunk, 1)
-        if (vein != null && vein.size > 0) {
-            val waterConsume = (boostCoefficient shr 1) * when (vein.typeVein) {
-                TypeFluidVein.LP -> Config.countWaterForLPDrill
-                TypeFluidVein.MP -> Config.countWaterForMPDrill
-                TypeFluidVein.HP -> Config.countWaterForHPDrill
-            }
-            var outputOil = 0L
-            mixOutHatch?.also { mixOut ->
-                val isPressured = depleteInput(Materials.Water.getFluid(waterConsume.toLong()))
-                if (!isPressured) stopMachine()
-                val tier = boostCoefficient / 2
-                outputOil = ((boostCoefficient shl 6) * (tier shl 2) * (log(max(2.0, tier.toDouble()), 2.0).pow(.5))).toLong()
-                addOutputMix(mixOut, Materials.MixDirtOil.getFluid(outputOil))
-                val countWaterOutput = (waterConsume * .4).toLong()
-                addOutput(Materials.Water.getFluid(countWaterOutput))
-            }
-            mixInHatch?.also { mixIn ->
-                if (outputOil > 0) {
-                    val currentOil = mixIn.fluid
-                    var tLiquid = currentOil
-                    if (tLiquid != null && tLiquid.isFluidEqual(currentOil)) {
-                        tLiquid = mixIn.drain(currentOil.amount, false)
-                        if (tLiquid.amount >= currentOil.amount) mixIn.drain(currentOil.amount, true)
-                    }
-                    val countOilOutput = outputOil * Random.nextDouble(.4, .8)
-                    FluidStack(vein.vein.fluid, countOilOutput.toInt()).also(::addOutput)
-                }
-            }
-        } else stopMachine()
-    }
+//    private fun runningLogic(chunk: Chunk) {
+//        val vein = VirtualAPI.extractFluidFromVein(chunk, 1)
+//        if (vein != null && vein.size > 0) {
+//            val waterConsume = (boostCoefficient shr 1) * when (vein.typeVein) {
+//                TypeFluidVein.LP -> Config.countWaterForLPDrill
+//                TypeFluidVein.MP -> Config.countWaterForMPDrill
+//                TypeFluidVein.HP -> Config.countWaterForHPDrill
+//            }
+//            var outputOil = 0L
+//            mixOutHatch?.also { mixOut ->
+//                val isPressured = depleteInput(Materials.Water.getFluid(waterConsume.toLong()))
+//                if (!isPressured) stopMachine()
+//                val tier = boostCoefficient / 2
+//                outputOil = ((boostCoefficient shl 6) * (tier shl 2) * (log(max(2.0, tier.toDouble()), 2.0).pow(.5))).toLong()
+//                addOutputMix(mixOut, Materials.MixDirtOil.getFluid(outputOil))
+//                val countWaterOutput = (waterConsume * .4).toLong()
+//                addOutput(Materials.Water.getFluid(countWaterOutput))
+//            }
+//            mixInHatch?.also { mixIn ->
+//                if (outputOil > 0) {
+//                    val currentOil = mixIn.fluid
+//                    var tLiquid = currentOil
+//                    if (tLiquid != null && tLiquid.isFluidEqual(currentOil)) {
+//                        tLiquid = mixIn.drain(currentOil.amount, false)
+//                        if (tLiquid.amount >= currentOil.amount) mixIn.drain(currentOil.amount, true)
+//                    }
+//                    val countOilOutput = outputOil * Random.nextDouble(.4, .8)
+//                    FluidStack(vein.vein.fluid, countOilOutput.toInt()).also(::addOutput)
+//                }
+//            }
+//        } else stopMachine()
+//    }
 
     private fun addOutputMix(output: GT_MetaTileEntity_Hatch_Output, fluid: FluidStack) {
         val copiedFluidStack: FluidStack = fluid.copy()

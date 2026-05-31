@@ -1,10 +1,28 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
+import static com.impact.util.multis.GT_StructureUtility.ofFrame;
+import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
+import static space.impact.api.multiblocks.structure.StructureUtility.*;
+
+import com.impact.addon.vw.VirtualWorldScan;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_EnrichmentUnit;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.util.string.MultiBlockTooltipBuilder;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -18,36 +36,21 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
-import space.gtimpact.virtual_world.api.*;
+import javafx.util.Pair;
+import space.gtimpact.virtual_world.api.core.WorldPos;
+import space.gtimpact.virtual_world.api.resources.ores.OreVein;
+import space.gtimpact.virtual_world.api.services.scanning.ores.OreVeinScanResult;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static com.impact.util.multis.GT_StructureUtility.ofFrame;
-import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
-import static space.impact.api.multiblocks.structure.StructureUtility.*;
-
 public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMiner> {
-	
 
 	private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
 	private final List<GTMTE_EnrichmentUnit> enrich = new ArrayList<>();
-	public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
+	public int cycleIncrease = 0, sizeVeinPreStart = 0, maxVeinSize = 0,  drillLevel = 0;
 	public List<Chunk> chunks = new ArrayList<>();
-	public VirtualOreVein oreVein;
+	public OreVein oreVein;
 	public int layer = 1;
 	public double cashedDecrement = 0d;
 	static Block CASING = GregTech_API.sBlockCasings8;
@@ -100,9 +103,16 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 	public void increaseLayer(IGregTechTileEntity te) {
 		if (te.isServerSide()) {
 			if (cycleIncrease <= 0) return;
-			Chunk mainChunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-			OreVeinCount pair = VirtualAPI.extractOreFromVein(mainChunk, layer, cycleIncrease);
-			sizeVeinPreStart = pair != null ? pair.getSize() : 0;
+
+			WorldPos pos = new WorldPos(te.getXCoord(), te.getZCoord());
+
+			kotlin.Pair<Integer, Integer> pair = VirtualWorldScan
+					.mineVeinAndGetRemaining(te.getWorld().provider.dimensionId, pos, layer, cycleIncrease);
+
+			if (pair != null) {
+				sizeVeinPreStart = pair.getFirst();
+				maxVeinSize = pair.getSecond();
+			}
 		}
 	}
 	
@@ -110,10 +120,22 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 		if (te.isServerSide()) {
 			chunks.clear();
 			cycleIncrease = 0;
-			Chunk mainChunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-			OreVeinCount pair = VirtualAPI.extractOreFromVein(mainChunk, layer, 0);
-			oreVein = pair != null ? pair.getVein() : null;
-			sizeVeinPreStart = pair != null ? pair.getSize() : 0;
+
+			oreVein = null;
+			sizeVeinPreStart = 0;
+
+			OreVeinScanResult result = VirtualWorldScan
+					.scanCurrentOreVein(te.getWorld().provider.dimensionId, te.getXCoord(), te.getZCoord(), layer);
+
+			if (result != null) {
+				oreVein = result.getOre();
+				if (result.getRemainingAmount() != null) {
+					sizeVeinPreStart = result.getRemainingAmount();
+					maxVeinSize = VirtualWorldScan.getMaxOresInVein(result);
+				} else {
+					sizeVeinPreStart = 0;
+				}
+			}
 		}
 	}
 	
@@ -249,10 +271,10 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 				}
 			}
 			
-			List<VirtualOreComponent> is = oreVein.getOres();
-			for (VirtualOreComponent component : is) {
+			List<OreVein.OreVeinOut> is = oreVein.getOres();
+			for (OreVein.OreVeinOut component : is) {
 				if (te.getRandomNumber(10000) < component.getChance() * 100) {
-					ItemStack oreStack = component.getOre().copy();
+					ItemStack oreStack = component.getStack().copy();
 					ItemStack drillHeadDrop = new ItemStack(oreStack.getItem(), byDrillHead(oreStack), oreStack.getItemDamage());
 					outputEnrich.add(drillHeadDrop);
 					GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
