@@ -1,6 +1,6 @@
 package com.impact.events;
 
-import com.impact.client.gui.ImpactGuiMainMenu;
+import com.impact.client.gui.NewGuiMainMenu;
 import com.impact.client.key.KeyBindings;
 import com.impact.common.block.itemblock.IB_IGlass;
 import com.impact.core.Config;
@@ -28,7 +28,7 @@ public class ClientEvent {
 	@SubscribeEvent
 	public void onGuiOpenEvent(GuiOpenEvent event) {
 		if (Config.mainMenu && event.gui instanceof GuiMainMenu) {
-			event.gui = new ImpactGuiMainMenu();
+			event.gui = new NewGuiMainMenu();
 		}
 	}
 	
