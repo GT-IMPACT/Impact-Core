@@ -379,4 +379,9 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 	public boolean hasSeparate() {
 		return false;
 	}
+
+	@Override
+	public boolean hasShowConnect() {
+		return false;
+	}
 }

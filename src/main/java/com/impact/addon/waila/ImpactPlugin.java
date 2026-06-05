@@ -1,6 +1,9 @@
 package com.impact.addon.waila;
 
-import appeng.tile.AEBaseTile;
+import static com.impact.util.Utilits.translateGTItemStack;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static mcp.mobius.waila.api.SpecialChars.*;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.impact.addon.gt.api.multis.ISeparateBus;
 import com.impact.addon.gt.api.multis.ISwitchRecipeMap;
@@ -13,7 +16,7 @@ import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_Nucl
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_MBBase;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MESystemProvider;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
@@ -24,6 +27,20 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.text.NumberFormat;
+import java.util.List;
+
+import appeng.tile.AEBaseTile;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,23 +55,8 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PrimitiveBl
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaRegistrar;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import tterrag.wailaplugins.api.Plugin;
 import tterrag.wailaplugins.plugins.PluginBase;
-
-import java.text.NumberFormat;
-import java.util.List;
-
-import static com.impact.util.Utilits.translateGTItemStack;
-import static mcp.mobius.waila.api.SpecialChars.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 @Plugin(name = "Impact-core", deps = {"impact", "gregtech", "appliedenergistics2"})
 public class ImpactPlugin extends PluginBase {
@@ -104,7 +106,7 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_MPContainment tMatrixContainment = tMeta instanceof GTMTE_MPContainment ? ((GTMTE_MPContainment) tMeta) : null;
         final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
         final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch ? ((GT_MetaTileEntity_Hatch) tMeta) : null;
-        final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
+        final GTMTEMESystemProvider meSystemProvider = tMeta instanceof GTMTEMESystemProvider ? ((GTMTEMESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
@@ -178,7 +180,6 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (meSystemProvider != null) {
-                currenttip.add("Acceleration ME CPU and OC: " + tag.getInteger("mSpeedUp"));
                 currenttip.add("Matrix Particles : " + tag.getInteger("mMP") + " U");
             }
 
@@ -458,7 +459,7 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_MPStabilizer tMatrixStabilizer = tMeta instanceof GTMTE_MPStabilizer ? ((GTMTE_MPStabilizer) tMeta) : null;
         final GTMTE_MPContainment tMatrixContainment = tMeta instanceof GTMTE_MPContainment ? ((GTMTE_MPContainment) tMeta) : null;
         final GT_MetaTileEntity_Hatch hatch = tMeta instanceof GT_MetaTileEntity_Hatch ? ((GT_MetaTileEntity_Hatch) tMeta) : null;
-        final GTMTE_MESystemProvider meSystemProvider = tMeta instanceof GTMTE_MESystemProvider ? ((GTMTE_MESystemProvider) tMeta) : null;
+        final GTMTEMESystemProvider meSystemProvider = tMeta instanceof GTMTEMESystemProvider ? ((GTMTEMESystemProvider) tMeta) : null;
         final GTMTE_Wind_Generator wind_generator = tMeta instanceof GTMTE_Wind_Generator ? ((GTMTE_Wind_Generator) tMeta) : null;
         final GTMTE_Solar solar = tMeta instanceof GTMTE_Solar ? ((GTMTE_Solar) tMeta) : null;
         final GTMTE_Mining_Coal coal_miner = tMeta instanceof GTMTE_Mining_Coal ? ((GTMTE_Mining_Coal) tMeta) : null;
@@ -514,8 +515,7 @@ public class ImpactPlugin extends PluginBase {
             }
 
             if (meSystemProvider != null) {
-                tag.setInteger("mSpeedUp", meSystemProvider.mSpeedUp);
-                tag.setInteger("mMP", meSystemProvider.mMatrixParticlesSummary);
+                tag.setInteger("mMP", meSystemProvider.getMMatrixParticlesSummary());
             }
 
             if (tMatrixStabilizer != null) {

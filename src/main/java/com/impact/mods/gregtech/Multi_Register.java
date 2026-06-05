@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech;
 
 import com.impact.addon.gt.tiles.ore_mining.GTMTEOreSamplingMachine;
-import com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOilDrilling;
+import com.impact.mods.gregtech.tileentities.multi.matrixsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
@@ -16,10 +16,6 @@ import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_Nucl
 import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_I;
 import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_II;
 import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_III;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MESystemProvider;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer;
-import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_ParametricDiffuser;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
@@ -36,24 +32,24 @@ import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.*;
 
 public class Multi_Register {
-	
+
 	public void run() {
 		registerMachines();
 	}
-	
+
 	private void registerMachines() {
-		
+
 		Machine_CokeOven.set(new GTMTE_CokeOven(13002, "Coke Oven").getStackForm(1));
 		Machine_Multi_Farm.set(new GTMTE_Farm(13001, "Multiblock Farm").getStackForm(1));
-		
+
 		SOFC_Low.set(new GTMTE_SOFC_I(13101, "Solid-Oxide Generator Tier 1", 0).getStackForm(1));
 		SOFC_Medium.set(new GTMTE_SOFC_II(13102, "Solid-Oxide Generator Tier 2", 1).getStackForm(1));
 		SOFC_Huge.set(new GTMTE_SOFC_III(13103, "Solid-Oxide Generator Tier 3", 2).getStackForm(1));
 		Multi_Tank.set(new GTMTE_MultiTank(13104, "Multi-Tank").getStackForm(1));
 		Single_Tank.set(new GTMTE_SingleTank(13105, "Single-Tank").getStackForm(1));
-		
+
 		int ID = 14020;
-		
+
 		//MULTIBLOCKS
 		Machine_PBE.set(new GTMTE_PressBendExtrud(ID++, "Multi PBE Machine").get());
 		Machine_LaserEngraver.set(new GTMTE_LaserEng(ID++, "Multi Laser Engraver").get());
@@ -84,10 +80,10 @@ public class Multi_Register {
 		Naquadah_Liquid_multi.set(new GTMTE_LiquidNqGenerator(ID++, "Liquid Naquadah Generator").get());
 		Heavy_Metal_Cyclone.set(new GTMTE_HeavyMetalCyclone(ID++, "Heavy Metal Cyclone").get());
 		Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID++, "Liquid Enriched Naquadah Generator").getStackForm(1));
-		
+
 		Moon_Miner.set(new GTMTE_MoonMiner(ID++, "Moon Miner").get());
 		hideItem(Moon_Miner.get(1));
-		
+
 		Machine_AdvDDDPrinter.set(new GTMTE_AdvDDDPrinter(ID++, "Advanced 3D Printer").get());
 		Rail_Assembler.set(new GTMTE_RailAssembler(ID++, "Rail Assembler").get());
 		Space_Elevator.set(new GTMTE_SpaceElevator(ID++, "Space Elevator").get());
@@ -95,7 +91,7 @@ public class Multi_Register {
 		Nuclear_Reactor_II.set(new GTMTE_NuclearReactorII(ID++, "Nuclear Reactor II").get());
 		Nuclear_Reactor_III.set(new GTMTE_NuclearReactorIII(ID++, "Nuclear Reactor III").get());
 		Huge_Steam_Turbine.set(new GTMTE_HugeSteamTurbine(ID++, "Huge Steam Turbine").get());
-		
+
 		Parallel_Computer.set(new GTMTE_ParallelComputer(ID++, "Parallel Supercomputer").get());
 		Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "Communication Tower").getStackForm(1));
 		Space_Satellite.set(new GTMTE_SpaceSatellite(ID++, "Space Satellite").get());
@@ -103,20 +99,21 @@ public class Multi_Register {
 		Machine_ChemicalReactor.set(new GTMTE_MultiChemicalReactor(ID++, "Multi Chemical Reactor").get());
 		Machine_DistTower.set(new GTMTE_MultiDistillationTower(ID++, "Multi Distillation Tower").get());
 		Machine_ElectricImplosion.set(new GTMTE_ElectricImplosionCompressor(ID++, "Electric Implosion Compressor").get());
-		
+
 		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate Platform").get());
-		
+
 		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
 		hideItem(Filler.get(1));
-		
+
 		Parametric_Diffuser.set(new GTMTE_ParametricDiffuser(ID++, "Parametric Diffuser").get());
 		Matrix_Stabilizer.set(new GTMTE_MPStabilizer(ID++, "Matrix Particles Stabilizer").get());
 		Matrix_Containment.set(new GTMTE_MPContainment(ID++, "Matrix Particles Containment").get());
-		ME_System_Provider.set(new GTMTE_MESystemProvider(ID++, "ME System Provider").get());
-		
+//		ME_System_Provider.set(new GTMTE_MESystemProvider(ID++, "ME System Provider").get());
+		ME_System_Provider.set(new GTMTEMESystemProvider(ID++, "ME System Provider").get());
+
 		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, /*"Wind Generator", */"[WIP]").get());
 		hideItem(Wind_Generator.get(1));
-		
+
 		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Primitive Miner").get());
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
 		AdvancedMiner.set(new GTMTE_AdvancedMiner(ID++, "Advanced Electric Miner").get());
@@ -125,9 +122,9 @@ public class Multi_Register {
 		OreSamplingMachine.set(new GTMTEOreSamplingMachine(ID++, "Ore Sampling Machine").get());
 		GTMTEOreSamplingMachine.addRecipe();
 		ID++; // OilDrilling.set(new GTMTEOilDrilling(ID++, "Oil Drilling").get());
-		
+
 		INFO("[IMPACT-CORE] FINISH ADDED MULTIS | LAST ID: " + ID);
-		
+
 		ItemList.Machine_FlotationUnit.set(new GTMTE_FlotationUnit(12192, "Flotation Unit").get());
 		ItemList.Machine_MultiblockTesseract.set(new GTMTE_Tesseract(12195, "Tesseract").get());
 		ItemList.Machine_MultiblockTinyWormHole.set(new GTMTE_TinyWormHole(12197, "Tiny Wormhole").get());
