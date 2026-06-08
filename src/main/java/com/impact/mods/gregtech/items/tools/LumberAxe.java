@@ -131,21 +131,21 @@ public class LumberAxe extends GT_Tool implements IToolStats, IImpact_Tools {
 	public float getMaxDurabilityMultiplier() {
 		return 3.0F;
 	}
-	
+
 	public String getCraftingSound() {
-		return GregTech_API.sSoundList.get(106);
+		return null;
 	}
-	
+
 	public String getEntityHitSound() {
-		return GregTech_API.sSoundList.get(106);
+		return null;
 	}
-	
+
 	public String getBreakingSound() {
-		return GregTech_API.sSoundList.get(106);
+		return GregTech_API.sSoundList.get(0);
 	}
-	
+
 	public String getMiningSound() {
-		return GregTech_API.sSoundList.get(106);
+		return null;
 	}
 	
 	public boolean canBlock() {
