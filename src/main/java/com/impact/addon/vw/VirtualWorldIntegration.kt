@@ -2593,6 +2593,7 @@ object VirtualWorldIntegration {
         return DimensionGen(
             label = "$name (${tier})",
             id = id,
+            sort = tier,
         )
     }
 }

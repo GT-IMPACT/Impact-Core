@@ -165,6 +165,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     }
 
     override fun saveNBTData(aNBT: NBTTagCompound) {
+        noMaintenance()
         super.saveNBTData(aNBT)
         playerHandler?.also { player ->
             aNBT.setString("playerHandler", player.gameProfile.name)
@@ -197,6 +198,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
 
     override fun onPostTick(te: IGregTechTileEntity, tick: Long) {
         super.onPostTick(te, tick)
+
         if (te.isServerSide) {
             if (te.isActive) {
                 val oreProbe = oreProbe
@@ -279,6 +281,10 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     override fun getStructureDefinition(): IStructureDefinition<GTMTEOreSamplingMachine> = DEFINITION
 
     override fun hasSeparate(): Boolean {
+        return false
+    }
+
+    override fun hasShowConnect(): Boolean {
         return false
     }
 }
