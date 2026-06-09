@@ -1316,7 +1316,9 @@ object VirtualWorldIntegration {
                     Materials.Pyrite.toOreComponent(30),
                 )
             )
-        ).forEach(VirtualAPI.resourcesRegistry::registerOreVein)
+        ).forEach {
+            VirtualAPI.resourcesRegistry.registerOreVein(it.copy(rangeSize = it.rangeSize.first * 1000..it.rangeSize.last * 1000))
+        }
     }
 
     private fun registerOre0() {
