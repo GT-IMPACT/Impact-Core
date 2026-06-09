@@ -1,7 +1,29 @@
 package com.impact.addon.vw
 
 import com.impact.common.oregeneration.Dimensions
-import com.impact.common.oregeneration.Dimensions.*
+import com.impact.common.oregeneration.Dimensions.Asteroids
+import com.impact.common.oregeneration.Dimensions.Callisto
+import com.impact.common.oregeneration.Dimensions.Ceres
+import com.impact.common.oregeneration.Dimensions.Deimos
+import com.impact.common.oregeneration.Dimensions.Enceladus
+import com.impact.common.oregeneration.Dimensions.Europa
+import com.impact.common.oregeneration.Dimensions.Ganymede
+import com.impact.common.oregeneration.Dimensions.Haumea
+import com.impact.common.oregeneration.Dimensions.Io
+import com.impact.common.oregeneration.Dimensions.KuiperBelt
+import com.impact.common.oregeneration.Dimensions.Makemake
+import com.impact.common.oregeneration.Dimensions.Mars
+import com.impact.common.oregeneration.Dimensions.Mercury
+import com.impact.common.oregeneration.Dimensions.Miranda
+import com.impact.common.oregeneration.Dimensions.Moon
+import com.impact.common.oregeneration.Dimensions.Oberon
+import com.impact.common.oregeneration.Dimensions.Overworld
+import com.impact.common.oregeneration.Dimensions.Phobos
+import com.impact.common.oregeneration.Dimensions.Pluto
+import com.impact.common.oregeneration.Dimensions.Proteus
+import com.impact.common.oregeneration.Dimensions.Titan
+import com.impact.common.oregeneration.Dimensions.Triton
+import com.impact.common.oregeneration.Dimensions.Venus
 import gregtech.api.enums.ItemList
 import gregtech.api.enums.Materials
 import gregtech.api.enums.OrePrefixes
@@ -11,10 +33,12 @@ import gregtech.api.util.GT_Utility
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
-import space.gtimpact.virtual_world.api.*
+import space.gtimpact.virtual_world.api.IFluidDisplayHandler
+import space.gtimpact.virtual_world.api.VirtualAPI
 import space.gtimpact.virtual_world.api.core.DimensionGen
 import space.gtimpact.virtual_world.api.resources.fluids.FluidVein
 import space.gtimpact.virtual_world.api.resources.ores.OreVein
+import space.gtimpact.virtual_world.api.virtualWorldNeiFluidHandler
 import java.awt.Color
 
 object VirtualWorldIntegration {
@@ -2216,7 +2240,9 @@ object VirtualWorldIntegration {
                 color = Materials.Platinum.color(),
                 ores = listOf(Materials.Platinum.toOreComponent(100))
             )
-        ).forEach(VirtualAPI.resourcesRegistry::registerOreVein)
+        ).forEach {
+            VirtualAPI.resourcesRegistry.registerOreVein(it.copy(rangeSize = it.rangeSize.first * 1000..it.rangeSize.last * 1000))
+        }
     }
 
     private fun registerFluidVeins() {
@@ -2563,7 +2589,9 @@ object VirtualWorldIntegration {
                 dimensions = listOf(Makemake).map { it.toDimGen() }.toSet(),
                 fluid = Materials.Argon.getAnyFluid()
             )
-        ).forEach(VirtualAPI.resourcesRegistry::registerFluidVein)
+        ).forEach {
+            VirtualAPI.resourcesRegistry.registerFluidVein(it.copy(rangeSize = it.rangeSize.first * 1000..it.rangeSize.last * 1000))
+        }
     }
 
     private fun Materials.getAnyFluid(): FluidStack {

@@ -43,7 +43,7 @@ dependencies {
     api("space.impact:Packet-network:1.1.8.dirty")
     api("space.impact:ImpactAPI:0.0.4:dev")
     api("space.impact:WAILAPlugins:0.3.1.dirty:dev")
-    api("space.impact:VirtualWorld:2.0.0d.dirty:dev")
+    api("space.impact:VirtualWorld:2.0.1:dev")
     api("space.impact:gregtech-impact:5.09.35.31.dirty:dev") { isTransitive = false }
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
 
