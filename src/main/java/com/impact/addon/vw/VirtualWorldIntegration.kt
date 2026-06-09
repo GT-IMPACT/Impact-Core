@@ -2239,7 +2239,24 @@ object VirtualWorldIntegration {
                 weight = 16.0,
                 color = Materials.Platinum.color(),
                 ores = listOf(Materials.Platinum.toOreComponent(100))
-            )
+            ),
+            OreVein(
+                id = 548,
+                name = "Gyps",
+                dimensions = listOf(
+                    Overworld,
+                    Mars,
+                    Venus,
+                    Europa,
+                    Ganymede,
+                    Enceladus,
+                ).map { it.toDimGen() }.toSet(),
+                rangeSize = 1..10,
+                layer = 0,
+                weight = 25.0,
+                color = Materials.Gypsum.color(),
+                ores = listOf(Materials.Gypsum.toOreComponent(100)),
+            ),
         ).forEach {
             VirtualAPI.resourcesRegistry.registerOreVein(it.copy(rangeSize = it.rangeSize.first * 1000..it.rangeSize.last * 1000))
         }
