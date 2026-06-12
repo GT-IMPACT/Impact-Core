@@ -343,7 +343,7 @@ public enum Core_List_Items {
     FakeUEVCircuit(7, 3),
     FakeUIVCircuit(8, 3),
     FakeUMVCircuit(9, 3),
-    FakeUXVCircuit(9, 3),
+    FakeUXVCircuit(10, 3),
 
     MPBufferEmpty(0, 4),
     MPBufferFull(1, 4),
