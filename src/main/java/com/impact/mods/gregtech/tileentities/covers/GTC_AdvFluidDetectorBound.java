@@ -21,12 +21,16 @@ public class GTC_AdvFluidDetectorBound extends GT_CoverBehavior {
 		if ((aTileEntity instanceof IFluidHandler)) {
 			int tMax = 0;
 			int tUsed = 0;
-			FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
-			if (tTank != null) {
-				tMax = tTank.capacity;
-				FluidStack tLiquid = tTank.fluid;
-				if (tLiquid != null) {
-					tUsed = tLiquid.amount;
+			FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN);
+			if (tTanks != null) {
+				for (FluidTankInfo tTank : tTanks) {
+					if (tTank != null) {
+						tMax = tTank.capacity;
+						FluidStack tLiquid = tTank.fluid;
+						if (tLiquid != null) {
+							tUsed = tLiquid.amount;
+						}
+					}
 				}
 			}
 			if (tMax < aCoverVariable) {
@@ -130,9 +134,13 @@ public class GTC_AdvFluidDetectorBound extends GT_CoverBehavior {
 			fBox.setMaxStringLength(12);
 			this.pBox = new GT_GuiIntegerTextBox(this, 2, startX, startY + spaceY + 2, spaceX * 4 - 3, 12);
 			if ((aTileEntity instanceof IFluidHandler)) {
-				FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
-				if (tTank != null) {
-					maxCapacity = tTank.capacity;
+				FluidTankInfo[] tTanks = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN);
+					if (tTanks != null) {
+						for (FluidTankInfo tTank : tTanks) {
+							if (tTank != null) {
+							maxCapacity = tTank.capacity;
+						}
+					}
 				}
 			}
 			percent = (int) ((double) coverVariable / (double) maxCapacity * 100d);
