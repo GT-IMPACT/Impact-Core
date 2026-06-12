@@ -64,7 +64,7 @@ public class impact {
 		c.getChatStyle().setColor(EnumChatFormatting.DARK_PURPLE);
 		impact.getServer().getConfigurationManager().sendChatMsgImpl(c, true);
 	}
-	
+
 	@Mod.EventHandler
 	public void onServerStarted(FMLServerStartedEvent aEvent) {
 		proxy.onServerStarted();
@@ -72,6 +72,7 @@ public class impact {
 	
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent aEvent) {
+		proxy.onServerStarting(aEvent);
 		aEvent.registerServerCommand(new Command_FixBQ());
 	}
 	
@@ -120,6 +121,7 @@ public class impact {
 	
 	@Mod.EventHandler
 	public void serverAboutToStart(final FMLServerAboutToStartEvent event) {
+		proxy.serverAboutToStart();
 		SaveManager.onServerAboutToStart();
 	}
 	

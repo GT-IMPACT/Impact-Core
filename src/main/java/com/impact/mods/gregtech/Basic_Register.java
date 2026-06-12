@@ -12,6 +12,8 @@ import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_Enrichment
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
+import com.impact.workspace.draft.comms.integration.gt.executor.ExecutorCommunicationHatch;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -562,6 +564,8 @@ public class Basic_Register {
 		DynamoMulti64_UXV.set(new GT_MetaTileEntity_Hatch_DynamoMulti(15228, "UXV 64A Dynamo Hatch", 13, 64).getStackForm(1L));
 		
 		Machine_DataReader.set(new GTMTE_DataReader(15481, "Data Reader").getStackForm(1));
-		
+
+
+		CommsExecutorHatch.set(new ExecutorCommunicationHatch(16000, "Communication Transmitter Hatch").getStackForm(1));
 	}
 }

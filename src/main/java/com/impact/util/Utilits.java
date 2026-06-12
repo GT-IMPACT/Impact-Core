@@ -330,6 +330,10 @@ public class Utilits {
 		aPlayer.openGui(Refstrings.MODID, idGui, igt.getWorld(), igt.getXCoord(), igt.getYCoord(), igt.getZCoord());
 	}
 
+	public static void openGui(EntityPlayer aPlayer, int idGui, int x, int y, int z) {
+		aPlayer.openGui(Refstrings.MODID, idGui, aPlayer.worldObj, x, y, z);
+	}
+
 	public static boolean equalsIntArray(int[] int1, int[] int2) {
 		if (int1.length == int2.length) {
 			boolean check = true;

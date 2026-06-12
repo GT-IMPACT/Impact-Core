@@ -178,6 +178,10 @@ public enum GT_ItemList implements IItemContainer {
 	Maintenance,
 	
 	Wind_Generator, The_Mill,
+
+	TestCommsComputer, TestCommsSatellite, TestCommsExecutor,
+
+	CommsExecutorHatch,
 	
 	end;
 	private ItemStack mStack;

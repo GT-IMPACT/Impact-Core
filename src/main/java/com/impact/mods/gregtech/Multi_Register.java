@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech;
 
 import com.impact.addon.gt.tiles.ore_mining.GTMTEOreSamplingMachine;
+import com.impact.core.Config;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
@@ -18,13 +19,17 @@ import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_II
 import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_III;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_SpaceSatellite;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.*;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.*;
+import com.impact.workspace.draft.comms.integration.gt.computer.TestComputerCommunicationMachine;
+import com.impact.workspace.draft.comms.integration.gt.executor.TestExecutorMachine;
+import com.impact.workspace.draft.comms.integration.gt.satellite.TestSatelliteCommunicationMachine;
+import com.impact.workspace.draft.comms.integration.gt.tower.TowerCommunicationMachine;
+
 import gregtech.api.enums.ItemList;
 
 import static codechicken.nei.api.API.hideItem;
@@ -35,6 +40,10 @@ public class Multi_Register {
 
 	public void run() {
 		registerMachines();
+
+		if (Config.isDebugDev) {
+			registerTestMachines();
+		}
 	}
 
 	private void registerMachines() {
@@ -93,7 +102,8 @@ public class Multi_Register {
 		Huge_Steam_Turbine.set(new GTMTE_HugeSteamTurbine(ID++, "Huge Steam Turbine").get());
 
 		Parallel_Computer.set(new GTMTE_ParallelComputer(ID++, "Parallel Supercomputer").get());
-		Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "Communication Tower").getStackForm(1));
+//		Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "Communication Tower").getStackForm(1));
+		Communication_Tower.set(new TowerCommunicationMachine(ID++, "Communication Tower").getStackForm(1));
 		Space_Satellite.set(new GTMTE_SpaceSatellite(ID++, "Space Satellite").get());
 		Machine_EIF.set(new GTMTE_ElectromagneticInductionFurnace(ID++, "Electromagnetic Induction Furnace").get());
 		Machine_ChemicalReactor.set(new GTMTE_MultiChemicalReactor(ID++, "Multi Chemical Reactor").get());
@@ -129,5 +139,11 @@ public class Multi_Register {
 		ItemList.Machine_MultiblockTesseract.set(new GTMTE_Tesseract(12195, "Tesseract").get());
 		ItemList.Machine_MultiblockTinyWormHole.set(new GTMTE_TinyWormHole(12197, "Tiny Wormhole").get());
 		ItemList.Antimatter_Reactor.set(new GTMTE_AntimatterReactor(12071, "Antimatter Reactor").get());
+	}
+
+	private void registerTestMachines() {
+		TestCommsComputer.set(new TestComputerCommunicationMachine(15000, "Test Computer Comms Machine").get());
+		TestCommsSatellite.set(new TestSatelliteCommunicationMachine(15001, "Test Satellite Comms Machine").get());
+		TestCommsExecutor.set(new TestExecutorMachine(15002, "Test Executor Comms Machine").get());
 	}
 }

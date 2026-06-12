@@ -28,6 +28,7 @@ public class GUIHandler implements IGuiHandler {
 	
 	public GUIHandler() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, this);
+		NetworkRegistry.INSTANCE.registerGuiHandler(impact.instance, new GuiHandler());
 	}
 	
 	@Override

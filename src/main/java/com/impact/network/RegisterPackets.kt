@@ -9,6 +9,7 @@ import space.impact.packet_network.network.registerPacket
 object RegisterPackets {
     @JvmStatic
     fun register() {
+        Net.init()
         registerPacket(PlacedItemsPacket)
         registerPacket(MetaBlockGlassPacket)
         registerPacket(StreamPacket)

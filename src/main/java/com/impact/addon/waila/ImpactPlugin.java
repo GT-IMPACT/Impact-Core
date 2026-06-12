@@ -121,6 +121,10 @@ public class ImpactPlugin extends PluginBase {
 
         if (tMeta != null) {
 
+            if (tMeta instanceof WailaProvider) {
+                ((WailaProvider) tMeta).readInfoWaila(tag, currenttip);
+            }
+
             if (tMeta instanceof ISwitchRecipeMap) {
                 String map = tag.getString("recipe_map_switch");
                 if (!map.isEmpty()) {
@@ -469,6 +473,10 @@ public class ImpactPlugin extends PluginBase {
         final GTMTE_LongDistancePipelineBase pipeline = tMeta instanceof GTMTE_LongDistancePipelineBase ? ((GTMTE_LongDistancePipelineBase) tMeta) : null;
 
         if (tMeta != null) {
+
+            if (tMeta instanceof WailaProvider) {
+                ((WailaProvider) tMeta).writeInfoWaila(tag);
+            }
 
             if (tMeta instanceof ISwitchRecipeMap) {
                 tag.setString("recipe_map_switch", ((ISwitchRecipeMap) tMeta).getMapName());

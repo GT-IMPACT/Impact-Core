@@ -6,8 +6,12 @@ import com.impact.common.managers.AeroStateNetworkManager;
 import com.impact.impact;
 import com.impact.util.files.JsonWorld;
 import com.impact.util.vector.Vector3ic;
+import com.impact.workspace.draft.comms.CommsForgeEvents;
+import com.impact.workspace.draft.comms.debug.CommsDebugCommand;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -55,6 +59,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public void init() {
+		CommsForgeEvents.register();
 	}
 	
 	public void postInit() {
@@ -155,6 +160,19 @@ public class CommonProxy implements IGuiHandler {
 		AeroStateNetworkManager.onClear();
 		SatelliteNetworkManager.INSTANCE.reload();
 		SatelliteNetworkLogic.INSTANCE.onStopServer();
+
+		CommsForgeEvents.onServerStopping();
+	}
+
+	public void onServerStarting(FMLServerStartingEvent aEvent) {
+		CommsForgeEvents.onServerStarting();
+		if (Config.isDebugDev) {
+			aEvent.registerServerCommand(new CommsDebugCommand());
+		}
+	}
+
+	public void serverAboutToStart() {
+		CommsForgeEvents.serverAboutToStart();
 	}
 	
 	public void addChatFromServer(String text) {

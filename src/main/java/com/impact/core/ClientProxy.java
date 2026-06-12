@@ -5,6 +5,7 @@ import com.impact.addon.nei.impactplugin.RecipeProcessorRegister;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.fx.*;
 import com.impact.client.render.models.Model_DryingRack;
+import com.impact.client.render.special.SpecialRendersRegistry;
 import com.impact.client.render.tesr.*;
 import com.impact.command.Command_Run;
 import com.impact.common.block.QuantumStuffRender;
@@ -65,6 +66,8 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TE_DryingRack.class, new TESR_DryingRack());
 		
 		register_event(new ClientEvent());
+
+		SpecialRendersRegistry.registerRenders();
 	}
 	
 	public void addClientSideChatMessages(String... messages) {
@@ -218,20 +221,25 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	public void postInit() {
+		super.postInit();
 		ClientCommandHandler.instance.registerCommand(new Command_Run());
 		RecipeProcessorRegister.register();
 		RecipeCatalystRegister.register();
 	}
 	
 	public void init() {
+		super.init();
 	}
 	
 	public void preInit() {
+		super.init();
 		KeyBindings.init();
 	}
 	
 	@Override
-	public void addChatFromServer(String text) {}
+	public void addChatFromServer(String text) {
+		super.addChatFromServer(text);
+	}
 	
 	@Override
 	public void onLoadComplete(FMLLoadCompleteEvent event) {

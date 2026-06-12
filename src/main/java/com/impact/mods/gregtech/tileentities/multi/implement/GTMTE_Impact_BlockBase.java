@@ -55,44 +55,44 @@ import static gregtech.api.enums.GT_Values.V;
 public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBase<MULTIS>>
 		extends GT_MetaTileEntity_MultiBlockBase
 		implements IAlignment, IConstructable, ISwitchRecipeMap, ISeparateBus, IStreamPacketReceiver, IMachineRecipe, IIndicatorProvider {
-	
+
 	private static final AtomicReferenceArray<MultiBlockTooltipBuilder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
-	
+
 	public final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
 	public final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
-	
+
 	private boolean isSeparated = true;
 	private byte mRecipeMode = 0;
 	private GT_Recipe.GT_Recipe_Map recipeMap = getRecipesMap().isEmpty() ? null : getRecipesMap().get(1);
 	private String mapName = "";
-	
+
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
 	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
-	
+
 	protected final MultiBlockRecipeBuilder<GTMTE_Impact_BlockBase<MULTIS>> RECIPE_BUILDER = new MultiBlockRecipeBuilder<>(this);
-	
+
 	public GTMTE_Impact_BlockBase(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
-	
+
 	public GTMTE_Impact_BlockBase(final int aID, final String aName, final String aNameRegional, int slots) {
 		super(aID, aName, aNameRegional, slots);
 	}
-	
+
 	public GTMTE_Impact_BlockBase(final String aName, int slots) {
 		super(aName, slots);
 	}
-	
+
 	public GTMTE_Impact_BlockBase(final String aName) {
 		super(aName);
 	}
-	
+
 	public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
 		return aMetaTileEntity.getBaseMetaTileEntity() != null
 				&& aMetaTileEntity.getBaseMetaTileEntity().getMetaTileEntity() == aMetaTileEntity
 				&& !aMetaTileEntity.getBaseMetaTileEntity().isDead();
 	}
-	
+
 	public ItemStack get() {
 		return getStackForm(1L);
 	}
@@ -139,50 +139,50 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			}
 		}
 	}
-	
+
 	public boolean inputStack(IGregTechTileEntity te, int slotIndex, int side, ItemStack stack) {
 		return false;
 	}
-	
+
 	public boolean outputStack(IGregTechTileEntity te, int slotIndex, int side, ItemStack stack) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return outputStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
 	}
-	
+
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return inputStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
 	}
-	
+
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GTC_ImpactBase(aPlayerInventory, aBaseMetaTileEntity);
 	}
-	
+
 	public int getMaxEfficiency(ItemStack aStack) {
 		return 10000;
 	}
-	
+
 	public boolean isCorrectMachinePart(ItemStack aStack) {
 		return true;
 	}
-	
+
 	public boolean isFacingValid(byte aFacing) {
 		return aFacing > 1;
 	}
-	
+
 	public int getDamageToComponent(ItemStack aStack) {
 		return 0;
 	}
-	
+
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
 	}
-	
+
 	protected void noMaintenance() {
 		mWrench        = true;
 		mScrewdriver   = true;
@@ -191,10 +191,10 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		mSolderingTool = true;
 		mCrowbar       = true;
 	}
-	
+
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
 		final Vector3i offset = new Vector3i();
-		
+
 		// В любом направлении по оси Z
 		if (forgeDirection.x() == 0 && forgeDirection.z() == -1) {
 			offset.x = x;
@@ -225,7 +225,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return offset;
 	}
-	
+
 	public long getMaxInputVoltageVanila() {
 		long rVoltage = 0;
 		for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
@@ -245,7 +245,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return rVoltage;
 	}
-	
+
 	@Override
 	public boolean addEnergyOutput(long aEU) {
 		if (aEU <= 0) {
@@ -256,7 +256,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return super.addEnergyOutput(aEU);
 	}
-	
+
 	@Override
 	public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
 		int injected = 0;
@@ -282,7 +282,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 				totalOutput += aTotal;
 			}
 		}
-		
+
 		for (GTMTE_LaserEnergy_Out aDynamo : mLaserOut) {
 			if (aDynamo == null) {
 				return false;
@@ -302,7 +302,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 				totalOutput += aTotal;
 			}
 		}
-		
+
 		for (GT_MetaTileEntity_Hatch_DynamoMulti aDynamo : mDynamoHatchesMulti) {
 			if (aDynamo == null) {
 				return false;
@@ -322,12 +322,12 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 				totalOutput += aTotal;
 			}
 		}
-		
+
 		if (totalOutput < aEU || (aFoundMixedDynamos && !aAllowMixedVoltageDynamos)) {
 			explodeMultiblock();
 			return false;
 		}
-		
+
 		//xEUt *= 4;//this is effect of everclocking
 		for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
 			injected = EnergyHelper.getInjected(aEU, injected, isValidMetaTileEntity(aDynamo), aDynamo.maxEUOutput(), aDynamo.maxAmperesOut(), aDynamo.getBaseMetaTileEntity());
@@ -340,7 +340,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return injected > 0;
 	}
-	
+
 	public long getMaxInputVoltage() {
 		long rVoltage = 0;
 		for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
@@ -360,7 +360,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return rVoltage;
 	}
-	
+
 	public long getMaxOutputVoltage() {
 		long rVoltage = 0;
 		for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
@@ -380,7 +380,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return rVoltage;
 	}
-	
+
 	public int getTierEnergyHatch() {
 		int aTier = 0;
 		for (GT_MetaTileEntity_Hatch_Energy tEHatch : mEnergyHatches) {
@@ -400,7 +400,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return aTier;
 	}
-	
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setByte("mRecipeMode", mRecipeMode);
@@ -408,10 +408,10 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		aNBT.setByte("eRotation", (byte) this.mExtendedFacing.getRotation().getIndex());
 		aNBT.setByte("eFlip", (byte) this.mExtendedFacing.getFlip().getIndex());
 		aNBT.setString("mapName", this.mapName);
-		
+
 		super.saveNBTData(aNBT);
 	}
-	
+
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		this.mRecipeMode     = aNBT.getByte("mRecipeMode");
@@ -423,16 +423,16 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		);
 		this.recipeMap = getRecipesMap().isEmpty() ? null : getRecipesMap().get(mRecipeMode);
 		this.mapName = aNBT.getString("mapName");
-		
+
 		super.loadNBTData(aNBT);
 	}
-	
+
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 0;
 	}
-	
+
 	public abstract boolean machineStructure(IGregTechTileEntity thisController);
-	
+
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
 		clearHatches();
@@ -440,19 +440,19 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		RECIPE_BUILDER.updateHatches();
 		return check;
 	}
-	
+
 	public void clearHatches() {
 		mLaserIn.clear();
 		mLaserOut.clear();
 	}
-	
+
 	@Override
 	public void explodeMultiblock() {
 		for (MetaTileEntity tTileEntity : mLaserOut) tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
 		for (MetaTileEntity tTileEntity : mLaserIn) tTileEntity.getBaseMetaTileEntity().doExplosion(V[8]);
 		super.explodeMultiblock();
 	}
-	
+
 	@Override
 	public boolean drainEnergyInput(long aEU) {
 		for (GTMTE_LaserEnergy_In tHatch : mLaserIn) {
@@ -462,10 +462,10 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return super.drainEnergyInput(aEU);
 	}
-	
+
 	@Override
 	public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		
+
 		if (aTileEntity == null) return false;
 		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 		if (aMetaTileEntity == null) return false;
@@ -476,10 +476,10 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			return mLaserIn.add((GTMTE_LaserEnergy_In) aMetaTileEntity);
 		if (aMetaTileEntity instanceof GTMTE_LaserEnergy_Out)
 			return mLaserOut.add((GTMTE_LaserEnergy_Out) aMetaTileEntity);
-		
+
 		return super.addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
-	
+
 	@Override
 	public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
@@ -493,7 +493,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return super.addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
 	}
-	
+
 	@Override
 	public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
@@ -507,9 +507,9 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 	}
-	
+
 	protected abstract MultiBlockTooltipBuilder createTooltip();
-	
+
 	protected MultiBlockTooltipBuilder getTooltip() {
 		int tId = getBaseMetaTileEntity().getMetaTileID();
 		MultiBlockTooltipBuilder tooltip = tooltips.get(tId);
@@ -519,7 +519,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return tooltip;
 	}
-	
+
 	@Override
 	public String[] getDescription() {
 		if (getTooltip() == null) return new String[]{"Error Description"};
@@ -531,57 +531,61 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			return getTooltip().getInformation();
 		}
 	}
-	
+
 	@Override
-	public String[] getStructureDescription(ItemStack stackSize) {
-		String[] desc;
-		if (getTooltip() != null) {
-			desc    = new String[getTooltip().getStructureInformation().length];
-			desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
-			for (int i = 1; i < getTooltip().getStructureInformation().length; i++) {
-				desc[i] = getTooltip().getStructureInformation()[i];
-			}
-		} else {
-			desc    = new String[2];
-			desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
-			desc[1] = "No found description";
-		}
-		return desc;
-	}
-	
+    public String[] getStructureDescription(ItemStack stackSize) {
+        String[] desc;
+        if (getTooltip() != null) {
+            int lengthDesc = getTooltip().getStructureInformation().length;
+            if (lengthDesc <= 0) {
+                return new String[0];
+            }
+            desc = new String[lengthDesc];
+            desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
+            for (int i = 1; i < getTooltip().getStructureInformation().length; i++) {
+                desc[i] = getTooltip().getStructureInformation()[i];
+            }
+        } else {
+            desc = new String[2];
+            desc[0] = EnumChatFormatting.RED + holo_details.get() + ":";
+            desc[1] = "No found description";
+        }
+        return desc;
+    }
+
 	public abstract IStructureDefinition<MULTIS> getStructureDefinition();
-	
+
 	@Override
 	public abstract IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
-	
+
 	@SuppressWarnings("unchecked")
 	private IStructureDefinition<GTMTE_Impact_BlockBase<MULTIS>> getCastedStructureDefinition() {
 		return (IStructureDefinition<GTMTE_Impact_BlockBase<MULTIS>>) getStructureDefinition();
 	}
-	
+
 	protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset, int verticalOffset, int depthOffset) {
 		IGregTechTileEntity tTile = getBaseMetaTileEntity();
 		return getCastedStructureDefinition().buildOrHints(this, trigger, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, hintOnly);
 	}
-	
+
 	protected final boolean buildPiece(ItemStack trigger, boolean hintOnly, int x, int y, int z) {
 		return buildPiece("main", trigger, hintOnly, x, y, z);
 	}
-	
+
 	protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
 		IGregTechTileEntity tTile = getBaseMetaTileEntity();
 		return getCastedStructureDefinition().check(this, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, !mMachine);
 	}
-	
+
 	protected final boolean checkPiece(int x, int y, int z) {
 		return checkPiece("main", x, y, z);
 	}
-	
+
 	@Override
 	public ExtendedFacing getExtendedFacing() {
 		return mExtendedFacing;
 	}
-	
+
 	@Override
 	public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
 		if (mExtendedFacing != newExtendedFacing) {
@@ -600,12 +604,12 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
 		if (te != null && te.isClientSide()) return false;
-		
+
 		MultiBlockRecipeBuilder<?> recipeBuilder = RECIPE_BUILDER
 				.start()
 				.checkItemsBySeparateBus()
@@ -620,47 +624,47 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		return false;
 	}
-	
+
 	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
 		return false;
 	}
-	
+
 	@Override
 	public void onFacingChange() {
 		toolSetDirection(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));
 	}
-	
+
 	@Override
 	public IAlignmentLimits getAlignmentLimits() {
 		return mLimits;
 	}
-	
+
 	protected void setAlignmentLimits(IAlignmentLimits mLimits) {
 		this.mLimits = mLimits;
 	}
-	
+
 	protected IAlignmentLimits getInitialAlignmentLimits() {
 		return (d, r, f) -> r.isNotRotated() && f.isNotFlipped();
 	}
-	
+
 	@Override
 	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
 		super.onFirstTick(aBaseMetaTileEntity);
 		if (aBaseMetaTileEntity.isClientSide())
 			ImpactAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
 	}
-	
+
 	@NotNull
 	@Override
 	public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {
 		return Collections.emptyList();
 	}
-	
+
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return recipeMap;
 	}
-	
+
 	@Override
 	public void onChangeRecipeMap(@NotNull GT_Recipe.GT_Recipe_Map map, @NotNull EntityPlayer player) {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
@@ -676,28 +680,28 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			}
 		}
 	}
-	
+
 	@Override
 	public void receive(@NotNull ByteArrayDataInput data) {
 		mapName = data.readUTF();
 	}
-	
+
 	@Override
 	public boolean hasSwitchMap() {
 		return false;
 	}
-	
+
 	@NotNull
 	@Override
 	public String getMapName() {
 		return mapName;
 	}
-	
+
 	@Override
 	public boolean hasSeparate() {
 		return true;
 	}
-	
+
 	@Override
 	public void onChangeSeparateMode(boolean isSeparate, @NotNull EntityPlayer player) {
 		IGregTechTileEntity te = getBaseMetaTileEntity();
@@ -706,7 +710,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			GT_Utility.sendChatToPlayer(player, "Buses separated " + EnumChatFormatting.GREEN + (isSeparated ? "on" : "off"));
 		}
 	}
-	
+
 	@Override
 	public boolean isSeparated() {
 		return isSeparated;

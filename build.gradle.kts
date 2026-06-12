@@ -40,7 +40,7 @@ repositories {
 
 dependencies {
     // impact
-    api("space.impact:Packet-network:1.1.8.dirty")
+    api("space.impact:Packet-network:1.2.0")
     api("space.impact:ImpactAPI:0.0.4:dev")
     api("space.impact:WAILAPlugins:0.3.1.dirty:dev")
     api("space.impact:VirtualWorld:2.0.1:dev")
@@ -53,6 +53,7 @@ dependencies {
     }
     api("com.github.GTNewHorizons:modularui:1.1.24:dev") { isTransitive = false }
     api("com.github.GTNewHorizons:NotEnoughItems:2.6.0-GTNH:dev")
+    implementation("com.github.GTNewHorizons:ServerUtilities:2.0.92:dev")
     implementation("com.github.Azanor:Baubles:1.0.1.12")
     implementation("com.github.GTNewHorizons:waila:1.7.3:dev") { isTransitive = false }
     implementation("com.github.GTNewHorizons:EnderCore:0.2.7:dev") { isTransitive = false }
