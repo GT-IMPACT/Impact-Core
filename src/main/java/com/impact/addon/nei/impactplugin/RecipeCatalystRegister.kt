@@ -2,6 +2,7 @@ package com.impact.addon.nei.impactplugin
 
 import codechicken.nei.api.API
 import com.impact.mods.gregtech.GT_ItemList
+import com.impact.mods.gregtech.GT_RecipeMaps
 import gregtech.api.enums.ItemList
 
 object RecipeCatalystRegister {
@@ -26,5 +27,7 @@ object RecipeCatalystRegister {
             API.addRecipeCatalyst(item.get(1), "virtual_world_ores_dim")
             API.addRecipeCatalyst(item.get(1), "virtual_world_ores_all")
         }
+
+        API.addRecipeCatalyst(GT_ItemList.ME_System_Provider.get(1), GT_RecipeMaps.sMESystemProvider.mUnlocalizedName)
     }
 }

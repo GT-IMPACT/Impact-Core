@@ -46,6 +46,7 @@ dependencies {
     api("space.impact:VirtualWorld:2.0.1:dev")
     api("space.impact:gregtech-impact:5.09.35.31.dirty:dev") { isTransitive = false }
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
+    runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.0.5")
 
     // maven impact
     api("com.github.GTNewHorizons:CodeChickenCore:1.3.11:dev") {
