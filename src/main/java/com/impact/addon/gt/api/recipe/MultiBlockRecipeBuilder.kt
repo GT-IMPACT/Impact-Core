@@ -182,10 +182,10 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
         if (isGTVoltage) {
             voltageIn = machine.maxInputVoltageVanila
-            tierFromVoltage = 1.coerceAtLeast(GT_Utility.getTier(voltageIn).toInt())
+            tierFromVoltage = GT_Utility.getTier(voltageIn).toInt().coerceIn(0, 15)
         } else {
             voltageIn = machine.maxInputVoltage
-            tierFromVoltage = 1.coerceAtLeast(GT_Utility.getTier(voltageIn).toInt())
+            tierFromVoltage = GT_Utility.getTier(voltageIn).toInt().coerceIn(0, 15)
         }
         return this
     }
@@ -389,7 +389,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
         val simulateInit = (value - value / 16) * machine.mCheckParallelCurrent
 
-        var simulate = simulateInit
+        var simulate = if (tEUt > simulateInit) tEUt.toLong() else simulateInit
 
         val hasOverclock = simulate * 4 < voltageIn
 
@@ -415,12 +415,16 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 )
             }
 
-            val total = result.eut * tEUt / simulateInit.toInt()
+            val total = if (tEUt > simulateInit) {
+                result.eut
+            } else {
+                result.eut * tEUt / simulateInit.toInt()
+            }
 
-            machine.mEUt = total
+            machine.mEUt = total.coerceAtMost(Int.MAX_VALUE - 1)
             machine.mMaxProgresstime = result.time
         } else {
-            machine.mEUt = tEUt
+            machine.mEUt = tEUt.coerceAtMost(Int.MAX_VALUE - 1)
             machine.mMaxProgresstime = recipe.mDuration
         }
 
@@ -435,6 +439,9 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (recipeOk) {
             machine.mMaxProgresstime = RecipeHelper.calcTimeParallel(machine)
             machine.mEUt = if (machine.mEUt > 0) -machine.mEUt else machine.mEUt
+        } else {
+            machine.mMaxProgresstime = 0
+            machine.mEUt = 0
         }
         return this
     }
