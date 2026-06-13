@@ -137,10 +137,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
                 .checkWorldProperties(true, true)
                 .checkEfficiency()
                 .checkConsumptionParallel()
-                .checkOutputs(false)
+                .checkOutputs(false, indexBus)
                 .build();
     }
-
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
