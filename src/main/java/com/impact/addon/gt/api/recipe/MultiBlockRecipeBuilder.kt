@@ -415,7 +415,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 )
             }
 
-            val total = if (tEUt > simulateInit) {
+            val total = if (tEUt >= simulateInit) {
                 result.eut
             } else {
                 result.eut * tEUt / simulateInit.toInt()
