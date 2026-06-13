@@ -378,25 +378,47 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (machine !is GT_MetaTileEntity_MultiParallelBlockBase<*>) return this
         val recipe = recipe ?: return this
 
-        var tEUt = recipe.mEUt.toLong() * machine.mCheckParallelCurrent
-        if (tEUt > Int.MAX_VALUE) {
+        val tEUt = recipe.mEUt * machine.mCheckParallelCurrent
+        val index = GT_Values.V.indexOfFirst { recipe.mEUt < it  }
+        val value = GT_Values.V.getOrNull(index) ?: return this
+
+        val simulateInit = (value - value / 16) * machine.mCheckParallelCurrent
+
+        var simulate = simulateInit
+
+        val result = if (simulate > Int.MAX_VALUE) {
             var divider = 0
-            while (tEUt > Int.MAX_VALUE) {
-                tEUt /= DEFAULT_OVERCLOCK_TIME
+            while (simulate > Int.MAX_VALUE) {
+                simulate /= DEFAULT_OVERCLOCK_TIME
                 divider++
             }
-            OverclockCalculate.calculateOverclockedNessBasic(
-                (tEUt / (divider * DEFAULT_OVERCLOCK_TIME)).toInt(),
-                recipe.mDuration * (divider * DEFAULT_OVERCLOCK_TIME),
-                1, voltageIn, machine
+            OverclockCalculate.calculateOverclockedNessBasicResult(
+                aEUt = (simulate / (divider * DEFAULT_OVERCLOCK_TIME)).toInt(),
+                aDuration = recipe.mDuration * (divider * DEFAULT_OVERCLOCK_TIME),
+                mAmperage = 1,
+                maxInputVoltage = voltageIn,
             )
         } else {
-            OverclockCalculate.calculateOverclockedNessBasic(
-                tEUt.toInt(), recipe.mDuration, 1, voltageIn, machine
+            OverclockCalculate.calculateOverclockedNessBasicResult(
+                aEUt = simulate.toInt(),
+                aDuration = recipe.mDuration,
+                mAmperage = 1,
+                maxInputVoltage = voltageIn,
             )
         }
 
+        val total = result.eut * tEUt / simulateInit.toInt()
+
+        machine.mEUt = total
+        machine.mMaxProgresstime = result.time
+
         recipeOk = !(machine.mMaxProgresstime == Int.MAX_VALUE - 1 && machine.mEUt == Int.MAX_VALUE - 1)
+
+        if (machine.eUt < recipe.mEUt) {
+            machine.mMaxProgresstime = 0
+            machine.mEUt = 0
+            recipeOk = false
+        }
 
         if (recipeOk) {
             machine.mMaxProgresstime = RecipeHelper.calcTimeParallel(machine)
