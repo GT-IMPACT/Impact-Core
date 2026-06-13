@@ -147,10 +147,11 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             addController()
             addEnergyHatch(4)
             addMaintenanceHatch()
-            addInputBus(1)
-            addOutputBus(1)
+            addInputBus(2)
+            addOutputBus(2)
             addCasingInfo("case", "ME Construction Casing")
             addOtherStructurePart("other.2", "Matrix Particles Chamber", "other.3", "Any Casing (max x1)")
+            addOtherStructurePart("other.4", "I-Glass", "other.5", "Glass for structure")
             signAndFinalize()
         }
     }
