@@ -2416,7 +2416,7 @@ object VirtualWorldIntegration {
                 weight = 12.0,
                 rangeSize = 1..50,
                 color = color(0, 255, 0),
-                dimensions = listOf(Venus, Makemake).map { it.toDimGen() }.toSet(),
+                dimensions = listOf(Venus).map { it.toDimGen() }.toSet(),
                 fluid = Materials.Argon.getAnyFluid()
             ),
             FluidVein(
