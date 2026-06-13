@@ -72,10 +72,12 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     public GTMTE_TowerCommunication(int aID, String aNameRegional) {
         super(aID, "impact.multis.communicationtower", aNameRegional);
+        enabledMaintenance = false;
     }
 
     public GTMTE_TowerCommunication(String aName) {
         super(aName);
+        enabledMaintenance = false;
     }
 
     @Override
@@ -219,9 +221,6 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
         if (iAm.isServerSide()) {
-            if (aTick % 20 * 60 == 0) {
-                noMaintenance();
-            }
             if (isShowConnections && aTick % 20 == 5) {
                 for (INetworkMachine connection : connections) {
                     if (connection instanceof IMetaTileEntity) {

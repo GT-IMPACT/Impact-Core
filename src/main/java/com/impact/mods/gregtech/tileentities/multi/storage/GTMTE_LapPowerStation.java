@@ -65,10 +65,12 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase impl
 	
 	public GTMTE_LapPowerStation(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.supercapacitor", aNameRegional);
+		enabledMaintenance = false;
 	}
 	
 	public GTMTE_LapPowerStation(String aName) {
 		super(aName);
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -88,7 +90,6 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase impl
 				.addController()
 				.addDynamoHatch()
 				.addEnergyHatch()
-				.addMaintenanceHatch()
 				.addOtherStructurePart("other.0", "Lapotronic Capacitor Base", "other.1", "5x2x5 base (at least 17x)")
 				.addOtherStructurePart("other.2", "Capacitors", "other.3", "Center 3x(1-15)x3 above base (9-135 blocks)")
 				.addOtherStructurePart("other.4", "I-Glass", "other.5", "41-265x, Encase capacitor pillar")

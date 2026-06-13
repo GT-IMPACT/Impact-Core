@@ -61,10 +61,12 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
 	
 	public GTMTE_BasicWaterPump(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.basicwaterpump", aNameRegional);
+		enabledMaintenance = false;
 	}
 	
 	public GTMTE_BasicWaterPump(String aName) {
 		super(aName);
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -313,13 +315,6 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
 				formationChecklist = false;
 			}
 		}
-		
-		mWrench        = true;
-		mScrewdriver   = true;
-		mSoftHammer    = true;
-		mHardHammer    = true;
-		mSolderingTool = true;
-		mCrowbar       = true;
 		
 		if (getTierFluidHatch() > 2) {
 			formationChecklist = false;

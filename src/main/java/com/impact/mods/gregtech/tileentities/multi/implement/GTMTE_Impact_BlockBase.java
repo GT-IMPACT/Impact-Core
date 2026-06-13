@@ -182,16 +182,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
 	}
-	
-	protected void noMaintenance() {
-		mWrench        = true;
-		mScrewdriver   = true;
-		mSoftHammer    = true;
-		mHardHammer    = true;
-		mSolderingTool = true;
-		mCrowbar       = true;
-	}
-	
+
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
 		final Vector3i offset = new Vector3i();
 		

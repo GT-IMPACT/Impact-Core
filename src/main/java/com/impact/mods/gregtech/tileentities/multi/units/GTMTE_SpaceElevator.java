@@ -71,10 +71,12 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
 	
 	public GTMTE_SpaceElevator(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.spaceelevator", aNameRegional);
+		enabledMaintenance = false;
 	}
 	
 	public GTMTE_SpaceElevator(String aName) {
 		super(aName);
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -103,9 +105,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity thisController) {
-		boolean formationChecklist = checkPiece(3, 4, 3);
-		noMaintenance();
-		return formationChecklist;
+        return checkPiece(3, 4, 3);
 	}
 	
 	public boolean checkCurrentDimension(int dim) {

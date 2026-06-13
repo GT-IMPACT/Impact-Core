@@ -411,7 +411,14 @@ public class ImpactPlugin extends PluginBase {
                 if(tag.getBoolean("incompleteStructure")) {
                     currenttip.add(RED + trans("waila.incompletestructure") + RESET);
                 }
-                currenttip.add((tag.getBoolean("hasProblems") ? (RED + trans("waila.maintenance")) : GREEN + trans("waila.running")) + RESET + "  " + trans("waila.efficiency") + " : " + tag.getFloat("efficiency") + "%");
+
+                if (tag.getBoolean("hasProblems") && tag.getBoolean("hasMaintenance")) {
+                    String efficiency = trans("waila.efficiency") + " : " + tag.getFloat("efficiency") + "%";
+                    currenttip.add(RED + trans("waila.maintenance") + RESET + "  " + efficiency);
+                } else {
+                    String efficiency = trans("waila.efficiency") + " : " + tag.getFloat("efficiency") + "%";
+                    currenttip.add(GREEN + trans("waila.running") + RESET + "  " + efficiency);
+                }
 
                 if (tag.getInteger("progress") <= 20 && tag.getInteger("maxProgress") <= 20 ) {
                     currenttip.add(trans("waila.progress") + String.format(": %d t / %d t", tag.getInteger("progress"), tag.getInteger("maxProgress")));
@@ -650,6 +657,7 @@ public class ImpactPlugin extends PluginBase {
                 final int maxProgress = multiBlockBase.mMaxProgresstime;
 
                 tag.setBoolean("hasProblems", problems > 0);
+                tag.setBoolean("hasMaintenance", multiBlockBase.enabledMaintenance);
                 tag.setFloat("efficiency", efficiency);
                 tag.setInteger("progress", progress);
                 tag.setInteger("maxProgress", maxProgress);
