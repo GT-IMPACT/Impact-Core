@@ -74,10 +74,12 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 
     public GTMTE_Mining_Coal(int aID, String aNameRegional) {
         super(aID, "impact.multis.miner.coal", aNameRegional);
+        enabledMaintenance = false;
     }
 
     public GTMTE_Mining_Coal(String aName) {
         super(aName);
+        enabledMaintenance = false;
     }
 
     @Override
@@ -142,7 +144,6 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
     public boolean machineStructure(IGregTechTileEntity te) {
         int dimID = te.getWorld().provider.dimensionId;
         if (dimID != 0 && dimID != Config.MiningWorldID) return false;
-        noMaintenance();
         te.setFrontFacing((byte) 1);
         Chunk chunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
         int size = 0;

@@ -46,6 +46,9 @@ class NewGuiMainMenu : GuiScreen() {
                 .find(response)
                 ?.groupValues
                 ?.get(1)
+        } catch (e: Exception) {
+            connection.disconnect()
+            null
         } finally {
             connection.disconnect()
         }

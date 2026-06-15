@@ -43,10 +43,12 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 	
 	public GTMTE_SpaceSatellite(int aID, String aNameRegional) {
 		super(aID, "impact.multis.spacesatellite", aNameRegional);
+		enabledMaintenance = false;
 	}
 	
 	public GTMTE_SpaceSatellite(String aName) {
 		super(aName);
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -109,9 +111,6 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 				for (GTMTE_SpaceSatellite_Transmitter th : sCommunTransmitter) {
 					th.updateConnectionStatus(iAm.isActive());
 				}
-			}
-			if (iAm.isServerSide() && aTick % 20 * 60 == 0) {
-				noMaintenance();
 			}
 		}
 	}

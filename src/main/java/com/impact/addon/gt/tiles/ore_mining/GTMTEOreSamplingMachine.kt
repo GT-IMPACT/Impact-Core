@@ -1,6 +1,5 @@
 package com.impact.addon.gt.tiles.ore_mining
 
-import com.impact.addon.vw.VirtualWorldScan
 import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
@@ -34,7 +33,7 @@ import space.gtimpact.virtual_world.api.services.scanning.ores.OreScanReport
 import space.impact.api.ImpactAPI
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
-import space.impact.api.multiblocks.structure.StructureUtility.*
+import space.impact.api.multiblocks.structure.StructureUtility.lazy
 
 class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOreSamplingMachine> {
 
@@ -74,6 +73,10 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     constructor(aID: Int, aNameRegional: String) : super(aID, "impact.multis.miner.ore_sampling", aNameRegional)
 
     constructor(aName: String) : super(aName)
+
+    init {
+        enabledMaintenance = false
+    }
 
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity?) = GTMTEOreSamplingMachine(mName)
 
@@ -165,7 +168,6 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     }
 
     override fun saveNBTData(aNBT: NBTTagCompound) {
-        noMaintenance()
         super.saveNBTData(aNBT)
         playerHandler?.also { player ->
             aNBT.setString("playerHandler", player.gameProfile.name)
@@ -249,7 +251,6 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     }
 
     override fun machineStructure(te: IGregTechTileEntity): Boolean {
-        noMaintenance()
         val chunk = te.world.getChunkFromBlockCoords(te.xCoord, te.zCoord)
         var size = 0
         for (tile in chunk.chunkTileEntityMap.values) {

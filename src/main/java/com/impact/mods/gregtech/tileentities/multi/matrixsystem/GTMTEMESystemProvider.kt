@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem
 
+import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder
 import com.impact.loader.ItemRegistery
 import com.impact.mods.gregtech.GT_RecipeMaps
 import com.impact.mods.gregtech.blocks.Build_Casing_Helper
@@ -9,16 +10,13 @@ import com.impact.mods.gregtech.gui.base.GUI_BASE
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
 import com.impact.util.multis.GT_StructureUtility.ofHatchAdderOptional
-import com.impact.util.multis.OverclockCalculate.calculateOverclockedNessBasic
 import com.impact.util.string.MultiBlockTooltipBuilder
-import gregtech.api.enums.GT_Values
 import gregtech.api.enums.Textures
 import gregtech.api.interfaces.ITexture
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
 import gregtech.api.render.TextureFactory
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map
-import gregtech.api.util.GT_Utility
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -26,7 +24,6 @@ import net.minecraft.util.EnumChatFormatting
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
 import space.impact.api.multiblocks.structure.StructureUtility
-import kotlin.math.max
 
 class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESystemProvider> {
 
@@ -147,10 +144,11 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             addController()
             addEnergyHatch(4)
             addMaintenanceHatch()
-            addInputBus(1)
-            addOutputBus(1)
+            addInputBus(2)
+            addOutputBus(2)
             addCasingInfo("case", "ME Construction Casing")
             addOtherStructurePart("other.2", "Matrix Particles Chamber", "other.3", "Any Casing (max x1)")
+            addOtherStructurePart("other.4", "I-Glass", "other.5", "Glass for structure")
             signAndFinalize()
         }
     }
@@ -159,52 +157,20 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         return GT_RecipeMaps.sMESystemProvider
     }
 
-    override fun checkRecipe(aStack: ItemStack?): Boolean {
-        val tInputs: Array<ItemStack?>?
-
-        val tInputList = this.getStoredInputs()
-        tInputs = tInputList.toTypedArray<ItemStack?>()
-
-        if (tInputList.isNotEmpty()) {
-            val nominalV = getMaxInputVoltage()
-            val tTier = max(1, GT_Utility.getTier(nominalV).toInt()).toByte()
-            val tRecipe = recipeMap.findRecipe(baseMetaTileEntity, false, GT_Values.V[tTier.toInt()], null, *tInputs)
-            if (tRecipe != null && (mMatrixParticlesSummary - tRecipe.mSpecialValue >= 0)) {
-                val outputItems = java.util.ArrayList<ItemStack?>()
-                var foundRecipe = false
-                var processed = 0
-                while ((this.getStoredFluids().size or this.getStoredInputs().size) > 0 && processed < 1) {
-                    if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe.isRecipeInputEqual(true, null, *tInputs)) {
-                        foundRecipe = true
-
-                        for (i in tRecipe.mOutputs.indices) {
-                            outputItems.add(tRecipe.getOutput(i))
-                        }
-                        ++processed
-                    } else {
-                        break
-                    }
-                }
-                if (foundRecipe) {
-                    this.mEfficiency = (10000 - (this.idealStatus - this.repairStatus) * 1000)
-                    this.mEfficiencyIncrease = 10000
-                    val actualEUT = (tRecipe.mEUt).toLong() * processed
-                    mMatrixParticlesSummary -= tRecipe.mSpecialValue * processed
-
-                    calculateOverclockedNessBasic(actualEUT.toInt(), tRecipe.mDuration, 1, nominalV, this)
-
-                    this.mMaxProgresstime /= this.mSpeedUp
-                    if (this.mMaxProgresstime < 1) this.mMaxProgresstime = 1
-                    if (this.mMaxProgresstime == Int.MAX_VALUE - 1 && this.mEUt == Int.MAX_VALUE - 1) return false
-                    if (this.mEUt > 0) this.mEUt = (-this.mEUt)
-
-                    this.mOutputItems = outputItems.toTypedArray<ItemStack?>()
-                    this.updateSlots()
-                    return true
-                }
+    override fun checkRecipe(recipeBuilder: MultiBlockRecipeBuilder<*>?, indexBus: Int): Boolean {
+        return recipeBuilder!!
+            .checkSizeHatches(needCheckFluid = false, needCheckItems = true, indexBus = indexBus)
+            .checkVoltage()
+            .checkRecipeMap(indexBus = indexBus)
+            .checkInputEquals(indexBus = indexBus, enabledChance = false) { recipe ->
+                mMatrixParticlesSummary - recipe.mSpecialValue >= 0
             }
-        }
-        return false
+            .checkEfficiency()
+            .checkConsumption()
+            .checkOutputs(default = true, indexBus = indexBus) { recipe ->
+                mMatrixParticlesSummary -= recipe.mSpecialValue
+            }
+            .build()
     }
 
     override fun onPostTick(iAm: IGregTechTileEntity, aTick: Long) {

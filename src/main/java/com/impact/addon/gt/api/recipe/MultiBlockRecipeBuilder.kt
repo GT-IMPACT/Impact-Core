@@ -3,7 +3,7 @@ package com.impact.addon.gt.api.recipe
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.util.Utilits
-import com.impact.util.multis.OverclockCalculate
+import com.impact.util.multis.ProgressiveOverclock
 import com.impact.util.multis.WorldProperties
 import com.impact.util.recipe.RecipeHelper
 import gregtech.api.enums.GT_Values
@@ -12,6 +12,7 @@ import gregtech.api.util.GT_Recipe
 import gregtech.api.util.GT_Utility
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
+import kotlin.math.min
 
 @Suppress("unused")
 class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
@@ -35,6 +36,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
     private var recipeOk: Boolean = false
     private var voltageIn: Long = 0L
+    private var ampsIn: Int = 0
     private var tierFromVoltage: Int = 0
     private var recipe: GT_Recipe? = null
 
@@ -56,6 +58,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         machine.updateSlots()
         recipeOk = false
         voltageIn = 0L
+        ampsIn = 0
         tierFromVoltage = 0
         recipe = null
         inputs.clear()
@@ -69,6 +72,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         machine.updateSlots()
         recipeOk = false
         voltageIn = 0L
+        ampsIn = 0
         tierFromVoltage = 0
         recipe = null
         outputs.clear()
@@ -151,6 +155,21 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         return this
     }
 
+    fun addFakeItems(indexBus: Int, vararg items: ItemStack): MultiBlockRecipeBuilder<R> {
+
+        if (indexBus == -1) {
+            val list = inputs[0].orEmpty().toMutableList()
+            list += items
+            inputs[0] = list
+        } else {
+            val list = inputs[indexBus].orEmpty().toMutableList()
+            list += items
+            inputs[indexBus] = list
+        }
+
+        return this
+    }
+
     fun startSeparateRecipe(): Int {
         return inputs.keys.size
     }
@@ -181,10 +200,12 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
         if (isGTVoltage) {
             voltageIn = machine.maxInputVoltageVanila
-            tierFromVoltage = 1.coerceAtLeast(GT_Utility.getTier(voltageIn).toInt())
+            ampsIn = 1
+            tierFromVoltage = GT_Utility.getTier(voltageIn).toInt().coerceIn(0, 15)
         } else {
-            voltageIn = machine.maxInputVoltage
-            tierFromVoltage = 1.coerceAtLeast(GT_Utility.getTier(voltageIn).toInt())
+            voltageIn = machine.inputsVoltage
+            ampsIn = machine.inputsAmperage
+            tierFromVoltage = GT_Utility.getTier(voltageIn).toInt().coerceIn(0, 15)
         }
         return this
     }
@@ -222,7 +243,8 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         indexBus: Int = -1,
         enabledChance: Boolean = false,
         decreaseStackSizeBySuccess: Boolean = true,
-        checkStackSize: Boolean = true
+        checkStackSize: Boolean = true,
+        special: SpecialInput? = null,
     ): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
@@ -235,9 +257,11 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
 
         val inputFl = inputsF.toTypedArray()
 
-        val isConfirm = Utilits.checkInputs(
+        val isSpecialConfirm = special?.check(recipe) ?: true
+
+        val isConfirm = isSpecialConfirm && Utilits.checkInputs(
             recipe,
-            !decreaseStackSizeBySuccess,
+            false,
             !checkStackSize,
             inputFl,
             listItems,
@@ -279,8 +303,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     fun checkInputEqualsParallel(
         indexBus: Int = -1,
         enabledChance: Boolean = false,
-        decreaseStackSizeBySuccess: Boolean = true,
-        checkStackSize: Boolean = true
+        checkStackSize: Boolean = true,
     ): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
         if (machine !is GT_MetaTileEntity_MultiParallelBlockBase<*>) return this
@@ -289,30 +312,47 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         val listItems = if (indexBus == -1) {
             inputs.flatMap { it.value }.toTypedArray()
         } else {
-            inputs[indexBus]?.toTypedArray() ?: emptyArray()
+            inputs[indexBus]?.toTypedArray().orEmpty()
         }
 
-        val isValidFluid = inputsF.isNotEmpty()
-        val isValidItems = inputs.isNotEmpty()
+        val simulateItems = arrayOfNulls<ItemStack>(listItems.size).apply {
+            listItems.forEachIndexed { index, stack ->
+                this[index] = stack.copy()
+            }
+        }
+        val simulateFluids = arrayOfNulls<FluidStack>(inputsF.size).apply {
+            inputsF.forEachIndexed { index, stack ->
+                this[index] = stack.copy()
+            }
+        }
+
+        val isValidItems = simulateItems.isNotEmpty()
+        val isValidFluid = simulateFluids.isNotEmpty()
+
+        val maxEUt = min(voltageIn * ampsIn, GT_Values.V.last())
+        val simulatedRecipeEUt = ProgressiveOverclock.simulatedRecipeEUt(recipe.mEUt.toLong())
 
         for (currentParallel in 1..machine.maxParallel) {
             if (!(isValidFluid || isValidItems)) break
 
-            val isValidVoltage = (recipe.mEUt * (currentParallel)) < voltageIn
-            if (!isValidVoltage) break
+            val simulatedTotalEUt = simulatedRecipeEUt * currentParallel
+
+            // Проверка только для симуляции кривых рецептов.
+            // Реальное потребление recipe.mEUt не меняем.
+            if (simulatedTotalEUt > maxEUt) break
 
             val isValidInputs = Utilits.checkInputs(
                 recipe,
-                decreaseStackSizeBySuccess,
+                true,
                 !checkStackSize,
-                inputsF.toTypedArray(),
-                listItems,
+                simulateFluids,
+                simulateItems,
             )
             if (!isValidInputs) break
 
             machine.mCheckParallelCurrent = currentParallel
 
-            for (h in 0 until recipe.mOutputs.size) {
+            for (h in recipe.mOutputs.indices) {
                 val out = recipe.getOutput(h)
                 if (out != null) {
                     if (enabledChance) {
@@ -325,7 +365,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
                 }
             }
 
-            for (i in 0 until recipe.mFluidOutputs.size) {
+            for (i in recipe.mFluidOutputs.indices) {
                 outputsF += recipe.getFluidOutput(i)
             }
         }
@@ -340,7 +380,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
-        if (needCleanRoom) {
+        if (!needCleanRoom) {
             recipeOk = WorldProperties.needCleanroom(recipe, machine)
             if (!recipeOk) return this
         }
@@ -367,8 +407,31 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
-        OverclockCalculate.calculateOverclockedNessBasic(recipe.mEUt, recipe.mDuration, 1, voltageIn, machine)
-        machine.mEUt = if (machine.mEUt > 0) -machine.mEUt else machine.mEUt
+        val result = ProgressiveOverclock.calculateOverclock(
+            recipeEUt = recipe.mEUt,
+            recipeDuration = recipe.mDuration,
+            parallels = 1,
+            maxVoltage = voltageIn,
+            amperage = ampsIn,
+        )
+
+        machine.mEUt = result?.eut ?: 0
+        machine.mMaxProgresstime = result?.duration ?: 0
+
+        recipeOk = machine.mEUt != 0 && machine.mMaxProgresstime != 0
+
+        if (machine.eUt < recipe.mEUt) {
+            machine.mMaxProgresstime = 0
+            machine.mEUt = 0
+            recipeOk = false
+        }
+
+        if (recipeOk) {
+            machine.mEUt = if (machine.mEUt > 0) -machine.mEUt else machine.mEUt
+        } else {
+            machine.mMaxProgresstime = 0
+            machine.mEUt = 0
+        }
 
         return this
     }
@@ -378,29 +441,31 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (machine !is GT_MetaTileEntity_MultiParallelBlockBase<*>) return this
         val recipe = recipe ?: return this
 
-        var tEUt = recipe.mEUt.toLong() * machine.mCheckParallelCurrent
-        if (tEUt > Int.MAX_VALUE) {
-            var divider = 0
-            while (tEUt > Int.MAX_VALUE) {
-                tEUt /= DEFAULT_OVERCLOCK_TIME
-                divider++
-            }
-            OverclockCalculate.calculateOverclockedNessBasic(
-                (tEUt / (divider * DEFAULT_OVERCLOCK_TIME)).toInt(),
-                recipe.mDuration * (divider * DEFAULT_OVERCLOCK_TIME),
-                1, voltageIn, machine
-            )
-        } else {
-            OverclockCalculate.calculateOverclockedNessBasic(
-                tEUt.toInt(), recipe.mDuration, 1, voltageIn, machine
-            )
-        }
+        val result = ProgressiveOverclock.calculateOverclock(
+            recipeEUt = recipe.mEUt,
+            recipeDuration = recipe.mDuration,
+            parallels = machine.mCheckParallelCurrent,
+            maxVoltage = voltageIn,
+            amperage = ampsIn,
+        )
 
-        recipeOk = !(machine.mMaxProgresstime == Int.MAX_VALUE - 1 && machine.mEUt == Int.MAX_VALUE - 1)
+        machine.mEUt = result?.eut ?: 0
+        machine.mMaxProgresstime = result?.duration ?: 0
+
+        recipeOk = machine.mEUt != 0 && machine.mMaxProgresstime != 0
+
+        if (machine.eUt < recipe.mEUt) {
+            machine.mMaxProgresstime = 0
+            machine.mEUt = 0
+            recipeOk = false
+        }
 
         if (recipeOk) {
             machine.mMaxProgresstime = RecipeHelper.calcTimeParallel(machine)
             machine.mEUt = if (machine.mEUt > 0) -machine.mEUt else machine.mEUt
+        } else {
+            machine.mMaxProgresstime = 0
+            machine.mEUt = 0
         }
         return this
     }
@@ -408,19 +473,38 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     @JvmOverloads
     fun checkOutputs(
         default: Boolean = false,
-        af: AdditionalFun? = null
+        indexBus: Int = -1,
+        special: SpecialOutput? = null
     ): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
+
+        if (machine is GT_MetaTileEntity_MultiParallelBlockBase<*>) {
+            val listItems = if (indexBus == -1) {
+                inputs.flatMap { it.value }.toTypedArray()
+            } else {
+                inputs[indexBus]?.toTypedArray() ?: emptyArray()
+            }
+            repeat(machine.mCheckParallelCurrent) {
+                Utilits.checkInputs(
+                    recipe,
+                    true,
+                    false,
+                    inputsF.toTypedArray(),
+                    listItems,
+                )
+            }
+        }
+
         if (default) {
             machine.mOutputItems = recipe.mOutputs
             machine.mOutputFluids = recipe.mFluidOutputs
-            af?.get()
+            special?.output(recipe)
         } else {
             machine.mOutputItems = outputs.sortedItems().toTypedArray()
             machine.mOutputFluids = outputsF.sortedFluids().toTypedArray()
-            af?.get()
+            special?.output(recipe)
         }
         machine.updateSlots()
         return this
@@ -459,7 +543,11 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         return sortedList
     }
 
-    fun interface AdditionalFun {
-        fun get()
+    fun interface SpecialOutput {
+        fun output(recipe: GT_Recipe)
+    }
+
+    fun interface SpecialInput {
+        fun check(recipe: GT_Recipe): Boolean
     }
 }

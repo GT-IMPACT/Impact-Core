@@ -43,10 +43,12 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase<GTMTE_Nucl
 	
 	public GTMTE_NuclearReactorIII(int aID, String aNameRegional) {
 		super(aID, "impact.multis.nuclear3", aNameRegional);
+		enabledMaintenance = false;
 	}
 	
 	public GTMTE_NuclearReactorIII(String aName) {
 		super(aName);
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -81,12 +83,6 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase<GTMTE_Nucl
 
 	
 	public boolean checkMachineFunction(IGregTechTileEntity thisController) {
-		this.mWrench        = true;
-		this.mScrewdriver   = true;
-		this.mSoftHammer    = true;
-		this.mHardHammer    = true;
-		this.mSolderingTool = true;
-		this.mCrowbar       = true;
 		boolean checkStructure = true;
 		int x, y, z;
 		int ID = 0;

@@ -183,15 +183,6 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		return false;
 	}
 
-	protected void noMaintenance() {
-		mWrench        = true;
-		mScrewdriver   = true;
-		mSoftHammer    = true;
-		mHardHammer    = true;
-		mSolderingTool = true;
-		mCrowbar       = true;
-	}
-
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
 		final Vector3i offset = new Vector3i();
 
@@ -244,6 +235,46 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 			}
 		}
 		return rVoltage;
+	}
+
+	public long getInputsVoltage() {
+		long rVoltage = 0;
+		for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+			}
+		}
+		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesMulti) {
+			if (isValidMetaTileEntity(tHatch)) {
+				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+			}
+		}
+		for (GTMTE_LaserEnergy_In tHatch : mLaserIn) {
+			if (isValidMetaTileEntity(tHatch)) {
+				rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+			}
+		}
+		return rVoltage;
+	}
+
+	public int getInputsAmperage() {
+		int amps = 0;
+		for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				amps += tHatch.mAmpers;
+			}
+		}
+		for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : mEnergyHatchesMulti) {
+			if (isValidMetaTileEntity(tHatch)) {
+				amps += tHatch.Amp;
+			}
+		}
+		for (GTMTE_LaserEnergy_In tHatch : mLaserIn) {
+			if (isValidMetaTileEntity(tHatch)) {
+				amps += tHatch.Amp;
+			}
+		}
+		return amps;
 	}
 
 	@Override
@@ -628,7 +659,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
 		return false;
 	}
-
+	
 	@Override
 	public void onFacingChange() {
 		toolSetDirection(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));

@@ -50,10 +50,12 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 	
 	public GTMTE_SawMill(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.sawmill", aNameRegional);
+		enabledMaintenance = false;
 	}
 	
 	public GTMTE_SawMill(String aName) {
 		super(aName);
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -103,7 +105,6 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 	
 	@Override
 	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-		noMaintenance();
 		boolean checkRecipe = recipeBuilder
 				.checkSizeHatches(true, true, indexBus)
 				.checkVoltage()
@@ -192,7 +193,6 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 		if (this.mEnergyHatches.size() != 1) {
 			formationChecklist = false;
 		}
-		noMaintenance();
 		return formationChecklist;
 	}
 	

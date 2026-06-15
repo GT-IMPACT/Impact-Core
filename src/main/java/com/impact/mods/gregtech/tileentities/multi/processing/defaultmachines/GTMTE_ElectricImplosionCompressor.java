@@ -1,34 +1,29 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+
+import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.util.multis.OverclockCalculate;
-import com.impact.util.multis.WorldProperties;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
-
-import java.util.ArrayList;
-
-import static gregtech.api.enums.GT_Values.V;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 
 public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GTMTE_ElectricImplosionCompressor> {
 	
@@ -103,100 +98,22 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
 	}
-	
+
 	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		ArrayList<ItemStack> tInputList = null;
-		ArrayList<FluidStack> tFluidList = null;
-		ItemStack[] tInputs = null;
-		FluidStack[] tFluids = null;
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			if (isSeparated()) {
-				ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-				tBus.mRecipeMap = getRecipeMap();
-				if (isValidMetaTileEntity(tBus)) {
-					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-						}
-					}
-				}
-				tInputList = this.getStoredInputs();
-				tFluidList = this.getStoredFluids();
-				tBusItems.add(GT_ModHandler.getIC2Item("industrialTnt", 64, null));
-				tInputs = tBusItems.toArray(new ItemStack[]{});
-				tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-			} else {
-				tInputList = this.getStoredInputs();
-				tInputList.add(GT_ModHandler.getIC2Item("industrialTnt", 64, null));
-				tFluidList = this.getStoredFluids();
-				tInputs    = tInputList.toArray(new ItemStack[tInputList.size()]);
-				tFluids    = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-			}
-			if (tInputList.size() > 0 || tFluidList.size() > 0) {
-				long nominalV = getMaxInputVoltage();
-				byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-				
-				GT_Recipe tRecipe;
-				tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
-				
-				if (tRecipe != null) {
-					cashedRecipe = tRecipe;
-					if (!WorldProperties.needCleanroom(tRecipe, this)) {
-						return false;
-					}
-					if (!WorldProperties.needSpace(tRecipe, this)) {
-						return false;
-					}
-					
-					ArrayList<ItemStack> outputItems = new ArrayList<>();
-					ArrayList<FluidStack> outputFluids = new ArrayList<>();
-					boolean found_Recipe = false;
-					int processed = 0;
-					while ((this.getStoredFluids().size() | this.getStoredInputs().size()) > 0 && processed < 1) {
-						if ((tRecipe.mEUt * 1000 * (processed + 1L)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-							found_Recipe = true;
-							for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-								outputItems.add(tRecipe.getOutput(i));
-							}
-							for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-								outputFluids.add(tRecipe.getFluidOutput(i));
-							}
-							++processed;
-						} else {
-							break;
-						}
-					}
-					if (found_Recipe) {
-						this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-						this.mEfficiencyIncrease = 10000;
-						long actualEUT = (tRecipe.mEUt * 1000L) * processed;
-						
-						OverclockCalculate.calculateOverclockedNessBasic((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
-						
-						if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {
-							return false;
-						}
-						if (this.mEUt > 0) {
-							this.mEUt = (-this.mEUt);
-						}
-						mOutputItems = new ItemStack[tRecipe.mOutputs.length];
-						for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-							if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
-								this.mOutputItems[i] = tRecipe.getOutput(i);
-							}
-						}
-						this.mOutputFluids = new FluidStack[outputFluids.size()];
-						this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
-						this.updateSlots();
-						return true;
-					}
-				}
-			}
-		}
-		return false;
+	public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
+		ItemStack specialInput = GT_ModHandler.getIC2Item("industrialTnt", 64, null);
+		return recipeBuilder
+				.addFakeItems(indexBus, specialInput)
+				.checkSizeHatches(false, true, indexBus)
+				.checkVoltage()
+				.checkRecipeMap(indexBus)
+				.checkInputEquals(indexBus, false)
+				.checkEfficiency()
+				.checkConsumption()
+				.checkOutputs(true)
+				.build();
 	}
-	
+
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GT_Recipe.GT_Recipe_Map.sImplosionRecipes;

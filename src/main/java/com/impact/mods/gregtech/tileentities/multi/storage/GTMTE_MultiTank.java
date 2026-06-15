@@ -57,11 +57,13 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	public GTMTE_MultiTank(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.multifluidtank", aNameRegional);
 		run();
+		enabledMaintenance = false;
 	}
 	
 	public GTMTE_MultiTank(String aName) {
 		super(aName);
 		run();
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -134,13 +136,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 			mfh.setFilterFluids(guiSlotItem);
 			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
 		}
-
-		this.mWrench        = true;
-		this.mScrewdriver   = true;
-		this.mSoftHammer    = true;
-		this.mHardHammer    = true;
-		this.mSolderingTool = true;
-		this.mCrowbar       = true;
 		
 		return true;
 	}
@@ -441,12 +436,6 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 				mh.setMultiFluidHandler(mfh);
 			}
 		}
-		this.mWrench        = true;
-		this.mScrewdriver   = true;
-		this.mSoftHammer    = true;
-		this.mHardHammer    = true;
-		this.mSolderingTool = true;
-		this.mCrowbar       = true;
 		return formationChecklist;
 	}
 	

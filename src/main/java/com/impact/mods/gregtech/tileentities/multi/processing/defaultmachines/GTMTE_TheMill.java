@@ -55,6 +55,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 	
 	public GTMTE_TheMill(int aID, String aNameRegional) {
 		super(aID, "impact.multis.the_mill", aNameRegional, 5);
+		enabledMaintenance = false;
 		impact.I_RA.addTheMillRecipes(
 				DropCrashedStone.get(1),
 				new ItemStack[]{
@@ -84,6 +85,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 	
 	public GTMTE_TheMill(String aName) {
 		super(aName, 5);
+		enabledMaintenance = false;
 	}
 	
 	@Override
@@ -229,7 +231,6 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 	
 	@Override
 	public boolean machineStructure(IGregTechTileEntity gt) {
-		this.noMaintenance();
 		boolean check = checkPiece(4, 3, 1);
 		if (!check) return false;
 		for (int x = -6; x < 6; x++) {
