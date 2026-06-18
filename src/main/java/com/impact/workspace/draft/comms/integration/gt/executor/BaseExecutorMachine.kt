@@ -57,6 +57,7 @@ abstract class BaseExecutorMachine<T : BaseExecutorMachine<T>>
 
     override fun inValidate() {
         part.invalidate()
+        communicationHatches.forEach { it.bindParent(null) }
         super.inValidate()
     }
 
@@ -120,12 +121,14 @@ abstract class BaseExecutorMachine<T : BaseExecutorMachine<T>>
     }
 
     override fun isCommsActive(): Boolean {
-        return part.hasConnected && lastCommsHatchCount > 0
+        return part.hasConnected && communicationHatches.isNotEmpty()
     }
 
     fun addCommunicationHatch(te: IGregTechTileEntity?, caseIndex: Short): Boolean {
         val mte = te?.metaTileEntity as? ExecutorCommunicationHatch ?: return false
+        if (!mte.checkParent(part.commsId)) return false
         mte.updateTexture(caseIndex.toInt())
+        mte.bindParent(part.commsId)
         te.isActive = true
         return communicationHatches.add(mte)
     }

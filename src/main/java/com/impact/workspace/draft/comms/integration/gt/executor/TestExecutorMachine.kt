@@ -4,6 +4,7 @@ import com.impact.loader.ItemRegistery
 import com.impact.mods.gregtech.blocks.Casing_Helper
 import com.impact.util.multis.GT_StructureUtility
 import com.impact.util.string.MultiBlockTooltipBuilder
+import com.impact.workspace.draft.parallel_processing.integration.gt.processing.BaseParallelProcessingMachine
 import gregtech.api.enums.Textures
 import gregtech.api.interfaces.ITexture
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity
@@ -17,10 +18,14 @@ import space.impact.api.multiblocks.structure.StructureDefinition
 import space.impact.api.multiblocks.structure.StructureUtility
 
 class TestExecutorMachine
-    : BaseExecutorMachine<TestExecutorMachine> {
+    : BaseParallelProcessingMachine<TestExecutorMachine> {
 
     constructor(id: Int, aNameRegional: String) : super(id, "impact.multis.test_executor_comms", aNameRegional)
     constructor(aName: String) : super(aName)
+
+    init {
+        enabledMaintenance = false
+    }
 
     override fun getTexture(
         aBaseMetaTileEntity: IGregTechTileEntity,
@@ -44,8 +49,6 @@ class TestExecutorMachine
 
     override fun machineStructure(thisController: IGregTechTileEntity?): Boolean {
         var formationCheckList = checkPiece(1, 1, 0)
-
-        noMaintenance()
 
         if (communicationHatches.size > 1) {
             formationCheckList = false

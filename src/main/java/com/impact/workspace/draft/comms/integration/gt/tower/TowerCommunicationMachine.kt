@@ -55,6 +55,10 @@ class TowerCommunicationMachine : GTMTE_Impact_BlockBase<TowerCommunicationMachi
 
     constructor(aName: String) : super(aName)
 
+    init {
+        enabledMaintenance = false
+    }
+
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity?): IMetaTileEntity {
         return TowerCommunicationMachine(mName)
     }
@@ -163,9 +167,6 @@ class TowerCommunicationMachine : GTMTE_Impact_BlockBase<TowerCommunicationMachi
     override fun onPostTick(te: IGregTechTileEntity, tick: Long) {
         super.onPostTick(te, tick)
         if (!te.isServerSide) return
-        if (tick % 20 * 60 == 0L) {
-            noMaintenance()
-        }
 
         if (tick % 40 == 0L && lastActive != te.isActive) {
             lastActive = te.isActive

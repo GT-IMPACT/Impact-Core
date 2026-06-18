@@ -29,6 +29,7 @@ import com.impact.workspace.draft.comms.integration.gt.computer.TestComputerComm
 import com.impact.workspace.draft.comms.integration.gt.executor.TestExecutorMachine;
 import com.impact.workspace.draft.comms.integration.gt.satellite.TestSatelliteCommunicationMachine;
 import com.impact.workspace.draft.comms.integration.gt.tower.TowerCommunicationMachine;
+import com.impact.workspace.draft.parallel_processing.integration.gt.computing.ParallelComputingMachine;
 
 import gregtech.api.enums.ItemList;
 
@@ -101,7 +102,8 @@ public class Multi_Register {
 		Nuclear_Reactor_III.set(new GTMTE_NuclearReactorIII(ID++, "Nuclear Reactor III").get());
 		Huge_Steam_Turbine.set(new GTMTE_HugeSteamTurbine(ID++, "Huge Steam Turbine").get());
 
-		Parallel_Computer.set(new GTMTE_ParallelComputer(ID++, "Parallel Supercomputer").get());
+//		Parallel_Computer.set(new GTMTE_ParallelComputer(ID++, "Parallel Supercomputer").get());
+		Parallel_Computer.set(new ParallelComputingMachine(ID++, "Parallel Processing Computer").get());
 //		Communication_Tower.set(new GTMTE_TowerCommunication(ID++, "Communication Tower").getStackForm(1));
 		Communication_Tower.set(new TowerCommunicationMachine(ID++, "Communication Tower").getStackForm(1));
 		Space_Satellite.set(new GTMTE_SpaceSatellite(ID++, "Space Satellite").get());

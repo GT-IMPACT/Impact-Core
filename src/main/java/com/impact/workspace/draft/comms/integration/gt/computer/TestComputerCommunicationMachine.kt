@@ -20,6 +20,10 @@ class TestComputerCommunicationMachine
     constructor(id: Int, aNameRegional: String) : super(id, "impact.multis.test_computer_comms", aNameRegional)
     constructor(aName: String) : super(aName)
 
+    init {
+        enabledMaintenance = false
+    }
+
     override fun getTexture(
         aBaseMetaTileEntity: IGregTechTileEntity,
         aSide: Byte,
@@ -42,8 +46,6 @@ class TestComputerCommunicationMachine
 
     override fun machineStructure(thisController: IGregTechTileEntity?): Boolean {
         var formationCheckList = checkPiece(0, 2, 0)
-
-        noMaintenance()
 
         return formationCheckList
     }

@@ -13,6 +13,9 @@ import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import com.impact.workspace.draft.comms.integration.gt.executor.ExecutorCommunicationHatch;
+import com.impact.workspace.draft.parallel_processing.integration.gt.computing.hatch.OutputParallelComputingHatch;
+import com.impact.workspace.draft.parallel_processing.integration.gt.computing.hatch.RackParallelComputingHatch;
+import com.impact.workspace.draft.parallel_processing.integration.gt.processing.hatch.InputParallelComputingHatch;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -109,23 +112,23 @@ public class Basic_Register {
 		Nonuple_Input_Hatch.set(new GTMTE_Multi_Hatch_Input(ID2++,  9, "impact.hatch.nonuple", "Nonuple Input Hatch", 5, 128_000).getStackForm(1L));
 		
 		Nuclear_Hatch_Rod.set(new GTMTE_Reactor_Rod_Hatch(ID2++, "impact.hatch.nuclear.rod", "Nuclear Rod Hatch").getStackForm(1L));
-		
-		Parallel_Hatch_IN4.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.4", "Parallel Receiver 4P", 5, 4).getStackForm(1L));
-		Parallel_Hatch_OUT4.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.4", "Parallel Transmitter 4P", 5, 4).getStackForm(1L));
-		
-		Parallel_Hatch_IN16.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.16", "Parallel Receiver 16P", 6, 16).getStackForm(1L));
-		Parallel_Hatch_OUT16.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.16", "Parallel Transmitter 16P", 6, 16).getStackForm(1L));
-		
-		Parallel_Hatch_IN64.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.64", "Parallel Receiver 64P", 7, 64).getStackForm(1L));
-		Parallel_Hatch_OUT64.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.64", "Parallel Transmitter 64P", 7, 64).getStackForm(1L));
-		
-		Parallel_Hatch_IN256.set(new GTMTE_ParallelHatch_Input(ID2++, "impact.machine.parallelhatch.in.256", "Parallel Receiver 256P", 8, 256).getStackForm(1L));
-		Parallel_Hatch_OUT256.set(new GTMTE_ParallelHatch_Output(ID2++, "impact.machine.parallelhatch.out.256", "Parallel Transmitter 256P", 8, 256).getStackForm(1L));
+
+		Parallel_Hatch_IN4.set(new InputParallelComputingHatch(ID2++, "Parallel Receiver 4 PPU", 5, 4).getStackForm(1L));
+		Parallel_Hatch_OUT4.set(new OutputParallelComputingHatch(ID2++, "Parallel Transmitter 4 PPU", 5, 4).getStackForm(1L));
+
+		Parallel_Hatch_IN16.set(new InputParallelComputingHatch(ID2++, "Parallel Receiver 16 PPU", 6, 16).getStackForm(1L));
+		Parallel_Hatch_OUT16.set(new OutputParallelComputingHatch(ID2++, "Parallel Transmitter 16 PPU", 6, 16).getStackForm(1L));
+
+		Parallel_Hatch_IN64.set(new InputParallelComputingHatch(ID2++, "Parallel Receiver 64 PPU", 7, 64).getStackForm(1L));
+		Parallel_Hatch_OUT64.set(new OutputParallelComputingHatch(ID2++, "Parallel Transmitter 64 PPU", 7, 64).getStackForm(1L));
+
+		Parallel_Hatch_IN256.set(new InputParallelComputingHatch(ID2++, "Parallel Receiver 256 PPU", 8, 256).getStackForm(1L));
+		Parallel_Hatch_OUT256.set(new OutputParallelComputingHatch(ID2++, "Parallel Transmitter 256 PPU", 8, 256).getStackForm(1L));
 		
 		Communication_Hatch_Transmitter.set(new GTMTE_SpaceSatellite_Transmitter(ID2++, "impact.machine.communicationhatch.transmitter", "Communication Transmitter").getStackForm(1L));
 		Communication_Hatch_Receiver.set(new GTMTE_CommunicationTower_Receiver(ID2++, "impact.machine.communicationhatch.receiver", "Communication Receiver").getStackForm(1L));
 		
-		Parallel_Hatch_Rack.set(new GTMTE_ComputerRack(ID2++, "impact.machine.rack", "Parallel Computer Rack").getStackForm(1L));
+		Parallel_Hatch_Rack.set(new RackParallelComputingHatch(ID2++, "Parallel Computer Rack").getStackForm(1L));
 		
 		Regulate_Digital_Chest.set(new GTMTE_RegulateDigitalChest(ID2++, "impact.machine.regulatechest", "Regulate Digital Chest", 1).getStackForm(1L));
 

@@ -19,7 +19,6 @@ import com.impact.workspace.draft.comms.satellite.CommsSatelliteEndpoint
 import com.impact.workspace.draft.comms.satellite.CommsSatelliteRegistry
 import com.impact.workspace.draft.security.SecurityApi
 import com.impact.workspace.draft.security.common.SecurityAction
-import scala.collection.parallel.`ThreadPoolTasks$class`.executor
 
 import java.util.UUID
 
@@ -290,6 +289,8 @@ class CommsWorldNetwork(
 
             tower.commsNetworkState = CommsNetworkState.CONNECTING
 
+            var hasSatellite = false
+
             for (satellite in aliveSatellites) {
                 if (!satellite.canAcceptCommsTower(tower)) continue
                 if (!canLink(tower, satellite)) continue
@@ -299,6 +300,12 @@ class CommsWorldNetwork(
                     to = satellite.commsId,
                     type = CommsLinkType.TOWER_TO_SATELLITE
                 )
+                hasSatellite = true
+            }
+
+            if (!hasSatellite) {
+                tower.commsNetworkState = CommsNetworkState.DISCONNECTED
+                continue
             }
 
             for (computer in computers.values) {

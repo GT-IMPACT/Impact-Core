@@ -18,6 +18,10 @@ class TestSatelliteCommunicationMachine : BaseSatelliteCommunicationMachine<Test
     constructor(id: Int, aNameRegional: String) : super(id, "impact.multis.test_satellite_comms", aNameRegional)
     constructor(aName: String) : super(aName)
 
+    init {
+        enabledMaintenance = false
+    }
+
     override fun getTexture(
         aBaseMetaTileEntity: IGregTechTileEntity,
         aSide: Byte,
@@ -40,8 +44,6 @@ class TestSatelliteCommunicationMachine : BaseSatelliteCommunicationMachine<Test
 
     override fun machineStructure(thisController: IGregTechTileEntity?): Boolean {
         var formationCheckList = checkPiece(2, 2, 1)
-
-        noMaintenance()
 
         return formationCheckList
     }

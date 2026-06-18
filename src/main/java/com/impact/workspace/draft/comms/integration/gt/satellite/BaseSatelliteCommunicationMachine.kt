@@ -21,6 +21,10 @@ abstract class BaseSatelliteCommunicationMachine<T : BaseSatelliteCommunicationM
     constructor(id: Int, aName: String, aNameRegional: String) : super(id, aName, aNameRegional)
     constructor(aName: String) : super(aName)
 
+    init {
+        enabledMaintenance = false
+    }
+
     override val part by lazy {
         SatelliteCommsMachinePart(
             access = baseMetaTileEntity.access,
@@ -57,10 +61,6 @@ abstract class BaseSatelliteCommunicationMachine<T : BaseSatelliteCommunicationM
     override fun onPostTick(te: IGregTechTileEntity, tick: Long) {
         super.onPostTick(te, tick)
         if (!te.isServerSide) return
-
-        if (tick % 20 * 60 == 0L) {
-            noMaintenance()
-        }
 
         if (tick % 40 == 0L && lastActive != te.isActive) {
             lastActive = te.isActive
