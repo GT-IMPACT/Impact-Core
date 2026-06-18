@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
@@ -25,20 +25,16 @@ import net.minecraft.world.IBlockAccess;
 
 public class Casing_9 extends GT_Block_Casings_Abstract {
 
-
-  public static boolean mConnectedMachineTextures = true;
-
   public Casing_9() {
     super(IB_Casing_9.class, "gt.blockcasingsSC", GT_Material_Casings.INSTANCE);
     GT_Utility.addTexturePage((byte) 8);
     for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-      Textures.BlockIcons.casingTexturePages[8][b + 64] = new GT_CopiedBlockTexture(this, 6, b);
+      Textures.BlockIcons.casingTexturePages[8][b + 64] = TextureFactory.of(this, b);
     }
+
     GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Farm Casing");
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".4.name", "Huge Turbine Casing");
-    GT_LanguageManager
-        .addStringLocalization(getUnlocalizedName() + ".5.name", "Space Satellite Casing");
+    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Huge Turbine Casing");
+    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Space Satellite Casing");
 
     GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tower Casing");
     GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Computer Casing");
