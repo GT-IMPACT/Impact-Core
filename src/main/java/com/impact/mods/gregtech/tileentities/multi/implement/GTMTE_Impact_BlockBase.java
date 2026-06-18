@@ -401,7 +401,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 		}
 		for (GTMTE_LaserEnergy_Out tHatch : mLaserOut) {
 			if (isValidMetaTileEntity(tHatch)) {
-				rVoltage += tHatch.getBaseMetaTileEntity().getOutputVoltage() * tHatch.Amp;
+				rVoltage += tHatch.maxEUOutput();
 			}
 		}
 		for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : mDynamoHatchesMulti) {
