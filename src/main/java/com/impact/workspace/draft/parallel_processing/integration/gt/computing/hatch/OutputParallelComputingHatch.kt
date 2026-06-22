@@ -3,11 +3,13 @@ package com.impact.workspace.draft.parallel_processing.integration.gt.computing.
 import com.impact.addon.waila.WailaProvider
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.util.Utilits
+import com.impact.workspace.draft.parallel_processing.common.ParallelProcessingServer
 import gregtech.api.interfaces.ITexture
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.render.TextureFactory
 import net.minecraft.nbt.NBTTagCompound
+import java.util.UUID
 
 class OutputParallelComputingHatch : BaseParallelComputingHatch, WailaProvider {
 
@@ -65,6 +67,7 @@ class OutputParallelComputingHatch : BaseParallelComputingHatch, WailaProvider {
 
     override fun onFirstTick(te: IGregTechTileEntity) {
         super.onFirstTick(te)
+        refreshBinding()
     }
 
     override fun inValidate() {
@@ -78,7 +81,32 @@ class OutputParallelComputingHatch : BaseParallelComputingHatch, WailaProvider {
     }
 
     fun removeBinding() {
-        // TODO Remove link
+        ParallelProcessingServer.unregisterOutputHatch(this)
+    }
+
+    override fun bindParent(parentId: UUID?) {
+        val previousParentId = getParentId()
+        super.bindParent(parentId)
+
+        if (!baseMetaTileEntity.isServerSide) return
+        if (previousParentId == parentId) return
+
+        if (parentId == null) {
+            removeBinding()
+        } else {
+            refreshBinding()
+        }
+    }
+
+    fun refreshBinding() {
+        if (!baseMetaTileEntity.isServerSide) return
+
+        if (getParentId() == null) {
+            removeBinding()
+            return
+        }
+
+        ParallelProcessingServer.registerOutputHatch(this)
     }
 
     companion object {

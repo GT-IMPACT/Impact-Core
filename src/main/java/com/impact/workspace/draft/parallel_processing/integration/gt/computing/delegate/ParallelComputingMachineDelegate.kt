@@ -2,6 +2,7 @@ package com.impact.workspace.draft.parallel_processing.integration.gt.computing.
 
 import com.impact.workspace.draft.parallel_processing.integration.gt.computing.hatch.OutputParallelComputingHatch
 import com.impact.workspace.draft.parallel_processing.integration.gt.computing.hatch.RackParallelComputingHatch
+import com.impact.workspace.draft.parallel_processing.common.ParallelProcessingServer
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import java.util.UUID
 
@@ -37,6 +38,7 @@ class ParallelComputingMachineDelegate {
     fun inactiveCommunication() {
         ppuOutHatches.forEach { hatch ->
             hatch.baseMetaTileEntity.isActive = false
+            ParallelProcessingServer.getLinkedMachine(hatch)?.applyReceivedPpu(0)
         }
     }
 
@@ -50,7 +52,7 @@ class ParallelComputingMachineDelegate {
     fun removeBindings() {
         inactive()
         ppuOutHatches.forEach { hatch ->
-            // TODO Remove links
+            hatch.removeBinding()
         }
     }
 
@@ -69,7 +71,16 @@ class ParallelComputingMachineDelegate {
         var tempPpu = initialPpu
 
         ppuOutHatches.forEach { hatch ->
-            // TODO transmit ppu logic
+            val machine = ParallelProcessingServer.getLinkedMachine(hatch)
+            if (machine == null) {
+                hatch.baseMetaTileEntity.isActive = false
+                return@forEach
+            }
+
+            val transferredPpu = tempPpu.coerceAtMost(hatch.maxPpuTransfer)
+            machine.applyReceivedPpu(transferredPpu)
+            hatch.baseMetaTileEntity.isActive = transferredPpu > 0
+            tempPpu -= transferredPpu
         }
 
         return tempPpu

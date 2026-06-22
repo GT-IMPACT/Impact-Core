@@ -46,6 +46,11 @@ abstract class BaseExecutorMachine<T : BaseExecutorMachine<T>>
     }
 
     override fun addLinkComputer(id: UUID?) {
+        setLinkComputerInternal(id)
+    }
+
+    protected fun setLinkComputerInternal(id: UUID?) {
+        if (computerId == id) return
         computerId = id
         commsMarkUpdateNetwork()
     }

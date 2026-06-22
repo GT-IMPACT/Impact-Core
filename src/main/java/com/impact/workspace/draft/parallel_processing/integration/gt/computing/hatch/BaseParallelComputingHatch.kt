@@ -40,11 +40,15 @@ abstract class BaseParallelComputingHatch : GT_MetaTileEntity_Hatch {
         return true
     }
 
-    fun bindParent(parentId: UUID?) {
-        this.parentId = parentId ?: return
+    open fun bindParent(parentId: UUID?) {
+        this.parentId = parentId
     }
 
     fun checkParent(parentId: UUID?): Boolean {
         return this.parentId == parentId
+    }
+
+    fun getParentId(): UUID? {
+        return parentId
     }
 }
