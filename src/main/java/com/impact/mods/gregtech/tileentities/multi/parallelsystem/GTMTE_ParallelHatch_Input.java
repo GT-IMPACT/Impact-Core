@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 import com.impact.addon.gt.api.parallel_system.IParallelIn;
 import com.impact.addon.gt.api.parallel_system.IParallelOut;
 import com.impact.addon.gt.api.position.IPosition;
+import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Dyes;
@@ -37,6 +38,24 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch implement
 	
 	public IParallelOut pout = null;
 	public boolean isConnected;
+	private GT_MetaTileEntity_MultiParallelBlockBase<?> controller;
+
+	public boolean claimController(GT_MetaTileEntity_MultiParallelBlockBase<?> machine) {
+		if (controller != null && controller != machine) {
+			IGregTechTileEntity te = controller.getBaseMetaTileEntity();
+			if (te != null && !te.isDead() && te.getMetaTileEntity() == controller) {
+				return false;
+			}
+		}
+		controller = machine;
+		return true;
+	}
+
+	public void releaseController(GT_MetaTileEntity_MultiParallelBlockBase<?> machine) {
+		if (controller == machine) {
+			controller = null;
+		}
+	}
 	
 	public GTMTE_ParallelHatch_Input(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
 		super(aID, aName, aNameRegional, aTier, 0, new String[]{

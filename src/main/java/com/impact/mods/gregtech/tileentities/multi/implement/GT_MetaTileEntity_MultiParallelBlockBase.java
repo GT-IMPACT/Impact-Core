@@ -71,8 +71,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
             if (aMetaTileEntity == null) {
                 return false;
             } else if (aMetaTileEntity instanceof GTMTE_ParallelHatch_Input) {
-                ((GTMTE_ParallelHatch_Input) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return sParallHatchesIn.add((GTMTE_ParallelHatch_Input) aMetaTileEntity);
+                GTMTE_ParallelHatch_Input hatch = (GTMTE_ParallelHatch_Input) aMetaTileEntity;
+                if (!hatch.claimController(this)) {
+                    return false;
+                }
+                hatch.updateTexture(aBaseCasingIndex);
+                return sParallHatchesIn.add(hatch);
             } else {
                 return false;
             }
@@ -91,8 +95,28 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     @Override
     public void clearHatches() {
         super.clearHatches();
+        for (GTMTE_ParallelHatch_Input hatch : sParallHatchesIn) {
+            hatch.releaseController(this);
+        }
         sParallHatchesOut.clear();
         sParallHatchesIn.clear();
+        isConnectParallel = false;
+        setParallel(1);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        boolean formed = super.checkMachine(thisController, guiSlotItem);
+        if (!formed) {
+            clearHatches();
+        }
+        return formed;
+    }
+
+    @Override
+    public void inValidate() {
+        clearHatches();
+        super.inValidate();
     }
 
     @Override
