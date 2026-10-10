@@ -420,6 +420,7 @@ tile.impact_inside_block.3.name=Активный Корпус Турбины
 tile.impact_inside_block.4.name=Неактивный Корпус Турбины
 tile.impact_inside_block.5.name=Электромагнитная Камера
 tile.impact_nqtether_block.name=Ядро Предела
+block_quantum_stuff_red.name=Квантовая материя
 tile.impact_collision_block.0.name=Блок Экскаватора
 tile.impact_spaceelevatortether_block.name=Подъемник Космического Лифта
 

@@ -18,13 +18,22 @@ import net.minecraft.world.World;
 
 import static space.impact.impact.BuildConfigKt.MODID;
 
-public class Block_QuantumStuff_Red extends Block {
+public class Block_QuantumStuff extends Block {
 	
+	// Keep metadata 0 active for existing worlds containing the former red block.
+	public static final int ACTIVE_META = 0;
+	public static final int INACTIVE_META = 1;
+
+	public static boolean isActive(IBlockAccess world, int x, int y, int z) {
+		return world.getBlock(x, y, z) == INSTANCE
+				&& world.getBlockMetadata(x, y, z) == ACTIVE_META;
+	}
+
 	public static IIcon stuff;
 	public static int renderID;
-	public static Block_QuantumStuff_Red INSTANCE;
+	public static Block_QuantumStuff INSTANCE;
 	
-	public Block_QuantumStuff_Red() {
+	public Block_QuantumStuff() {
 		super(Material.iron);
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 		setHarvestLevel("wrench", 0);
@@ -35,7 +44,8 @@ public class Block_QuantumStuff_Red extends Block {
 	}
 	
 	public static void run() {
-		INSTANCE = new Block_QuantumStuff_Red();
+		INSTANCE = new Block_QuantumStuff();
+		// Preserve the registry ID so existing worlds keep their core blocks.
 		GameRegistry.registerBlock(INSTANCE, "block_quantum_stuff_red");
 	}
 	

@@ -1,7 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nq;
 
 import com.impact.common.block.blocks.Block_NqTether;
-import com.impact.common.block.blocks.Block_QuantumStuff_Red;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -410,15 +410,51 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
 		return false;
 	}
 	
-	private void quantumStuff(boolean shouldExist) {
+	@Override
+	public void onPostTick(IGregTechTileEntity base, long tick) {
+		super.onPostTick(base, tick);
+		if (base.isServerSide() && mStartUpCheck < 0) {
+			quantumStuff(base.isActive());
+		}
+	}
+
+	@Override
+	public void stopMachine() {
+		super.stopMachine();
+		quantumStuff(false);
+	}
+
+	@Override
+	public void onRemoval() {
+		quantumStuff(false, false);
+		super.onRemoval();
+	}
+
+	private void quantumStuff(boolean active) {
+		quantumStuff(mMachine, active);
+	}
+
+	private void quantumStuff(boolean shouldExist, boolean active) {
 		IGregTechTileEntity base = getBaseMetaTileEntity();
-		if (base != null && base.getWorld() != null) {
+		if (base != null && base.isServerSide() && base.getWorld() != null) {
 			Vector3ic vec = Structure.goBuild(base, 0, 0, -3);
+			Block current = Structure.getBlock(base, vec);
 			if (shouldExist) {
-				Structure.setBlock(base, vec, Block_QuantumStuff_Red.INSTANCE, 0);
+				int meta = active ? Block_QuantumStuff.ACTIVE_META : Block_QuantumStuff.INACTIVE_META;
+				if (current == Block_QuantumStuff.INSTANCE) {
+					if (base.getMetaIDOffset(vec.x(), vec.y(), vec.z()) == meta) return;
+				} else if (!base.getWorld().isAirBlock(base.getXCoord() + vec.x(), base.getYCoord() + vec.y(), base.getZCoord() + vec.z())) {
+					return;
+				}
+				Structure.setBlock(base, vec, Block_QuantumStuff.INSTANCE, meta);
 			} else {
+				if (current != Block_QuantumStuff.INSTANCE) return;
 				Structure.setAir(base, vec);
 			}
+			int x = base.getXCoord() + vec.x();
+			int y = base.getYCoord() + vec.y();
+			int z = base.getZCoord() + vec.z();
+			base.getWorld().markBlockRangeForRenderUpdate(x - 2, y - 2, z - 2, x + 2, y + 2, z + 2);
 		}
 	}
 	

@@ -2,7 +2,7 @@ package com.impact.loader;
 
 import com.impact.addon.gt.api.other.RegisterBlocksWrench;
 import com.impact.addon.gt.recipes.RecipeManager;
-import com.impact.common.block.blocks.Block_QuantumStuff_Red;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.netherportal.BlockHandler;
 import com.impact.common.block.netherportal.BlockNullPortal;
 import com.impact.common.item.*;
@@ -41,7 +41,7 @@ public class MainLoader {
 		OreDictRegister.register_all();
 		INFO("[load] OreDict Register List - Loaded");
 		
-		Block_QuantumStuff_Red.run();
+		Block_QuantumStuff.run();
 		INFO("[load] Quantum Stuff registered");
 
 		new GTMG_Tool_WorkRadius.ProccessToolHead();

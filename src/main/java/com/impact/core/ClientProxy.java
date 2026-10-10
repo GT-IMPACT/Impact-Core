@@ -8,7 +8,7 @@ import com.impact.client.render.models.Model_DryingRack;
 import com.impact.client.render.tesr.*;
 import com.impact.command.Command_Run;
 import com.impact.common.block.QuantumStuffRender;
-import com.impact.common.block.blocks.Block_QuantumStuff_Red;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.block.blocks.Block_TheMill;
 import com.impact.common.te.*;
 import com.impact.events.ClientEvent;
@@ -50,8 +50,8 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void registerRenderInfo() {
-		Block_QuantumStuff_Red.renderID = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(Block_QuantumStuff_Red.renderID, new QuantumStuffRender());
+		Block_QuantumStuff.renderID = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(Block_QuantumStuff.renderID, new QuantumStuffRender());
 		
 		Block_TheMill.renderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(Block_TheMill.renderID, new Block_TheMill.BlockRender());

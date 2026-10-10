@@ -43,13 +43,13 @@ public class Block_NqTether extends gtUpdateBlockAPI {
 
   @Override
   public IIcon getIcon(IBlockAccess aWorld, int posX, int posY, int posZ, int aSide) {
-      if (aWorld.getBlock(posX, posY + 2, posZ) == Block_QuantumStuff_Red.INSTANCE) {
+      if (Block_QuantumStuff.isActive(aWorld, posX, posY + 2, posZ)) {
           return this.on;
       }
-      if (aWorld.getBlock(posX, posY, posZ - 2) == Block_QuantumStuff_Red.INSTANCE
-          || aWorld.getBlock(posX, posY, posZ + 2) == Block_QuantumStuff_Red.INSTANCE
-          || aWorld.getBlock(posX - 2, posY, posZ) == Block_QuantumStuff_Red.INSTANCE
-          || aWorld.getBlock(posX + 2, posY, posZ) == Block_QuantumStuff_Red.INSTANCE
+      if (Block_QuantumStuff.isActive(aWorld, posX, posY, posZ - 2)
+          || Block_QuantumStuff.isActive(aWorld, posX, posY, posZ + 2)
+          || Block_QuantumStuff.isActive(aWorld, posX - 2, posY, posZ)
+          || Block_QuantumStuff.isActive(aWorld, posX + 2, posY, posZ)
       ) {
           return this.on;
       }

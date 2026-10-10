@@ -1,6 +1,6 @@
 package com.impact.common.block;
 
-import com.impact.common.block.blocks.Block_QuantumStuff_Red;
+import com.impact.common.block.blocks.Block_QuantumStuff;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -21,7 +21,7 @@ public class QuantumStuffRender implements ISimpleBlockRenderingHandler {
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		GL11.glPushMatrix();
 		//Get icons from custom register (useful for renderers and fluids)
-		IIcon side = Block_QuantumStuff_Red.stuff;
+		IIcon side = Block_QuantumStuff.stuff;
 		tes.startDrawingQuads();
 		tes.setNormal(0.0F, -1.0F, 0.0F);
 		renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, side);
@@ -56,10 +56,17 @@ public class QuantumStuffRender implements ISimpleBlockRenderingHandler {
 		GL11.glPushMatrix();
 		tes.setNormal(0F, 1F, 0F);
 		tes.setBrightness(15728880);
-		IIcon side = Block_QuantumStuff_Red.stuff;
+		IIcon side = Block_QuantumStuff.stuff;
+		boolean active = Block_QuantumStuff.isActive(world, x, y, z);
 		for (int i = 0; i < 6; i++) {
-			float f = RANDOM.nextFloat(), g = f - RANDOM.nextFloat() / 2f, r = g - RANDOM.nextFloat() / 3f - 0.25f;
-			tes.setColorOpaque_F(RANDOM.nextFloat(), 0, 0);
+			if (active) {
+				tes.setColorOpaque_F(RANDOM.nextFloat(), 0, 0);
+			} else {
+				float blue = 1 - RANDOM.nextFloat() / 4f;
+				float green = blue - RANDOM.nextFloat() / 4f;
+				float red = green - RANDOM.nextFloat() / 4f - 0.25f;
+				tes.setColorOpaque_F(red, green, blue);
+			}
 			float rotX = RANDOM.nextFloat() * 2 * (float) Math.PI, rotY = RANDOM.nextFloat() * 2 * (float) Math.PI, rotZ = RANDOM.nextFloat() * 2 * (float) Math.PI;
 			tesAbuse(x, y, z, -1.425f, -1.425f, .1f, rotX, rotY, rotZ, side.getMinU(), side.getMaxV());
 			tesAbuse(x, y, z, -1.425f, 1.425f, .1f, rotX, rotY, rotZ, side.getMinU(), side.getMinV());
@@ -94,6 +101,6 @@ public class QuantumStuffRender implements ISimpleBlockRenderingHandler {
 	
 	@Override
 	public int getRenderId() {
-		return Block_QuantumStuff_Red.renderID;
+		return Block_QuantumStuff.renderID;
 	}
 }
