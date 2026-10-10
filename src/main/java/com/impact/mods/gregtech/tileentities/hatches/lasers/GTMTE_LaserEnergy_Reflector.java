@@ -1,9 +1,6 @@
 package com.impact.mods.gregtech.tileentities.hatches.lasers;
 
-import com.google.common.io.ByteArrayDataInput;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.network.GTNetworkHandler;
-import com.impact.network.NetworkPackets;
 import com.impact.util.vector.LaserPath;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -15,14 +12,12 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
-import space.impact.packet_network.network.packets.IStreamPacketReceiver;
 
 import static com.impact.util.Utilits.getColorTier;
 import static com.impact.util.Utilits.getColorToRGBA;
 import static gregtech.api.enums.GT_Values.V;
 
-public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull implements IStreamPacketReceiver {
+public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull {
 	
 	public final int mAmp;
 	public byte mSide = 0;
@@ -130,15 +125,13 @@ public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull imp
 	}
 	
 	@Override
-	public void onPostTick(IGregTechTileEntity te, long aTick) {
-		super.onPostTick(te, aTick);
-		if (te.isServerSide() && aTick == 63) {
-			sendServerSide(te);
-		}
+	public byte getUpdateData() {
+		return mSide;
 	}
 	
-	private void sendServerSide(IGregTechTileEntity te) {
-		GTNetworkHandler.sendToAllAround(te, NetworkPackets.StreamPacket.transaction(mSide), 50);
+	@Override
+	public void onValueUpdate(byte aValue) {
+		mSide = aValue;
 	}
 	
 	@Override
@@ -147,7 +140,7 @@ public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull imp
 		IGregTechTileEntity te = getBaseMetaTileEntity();
 		if (te.isServerSide()) {
 			mSide = aPlayer.isSneaking() ? 6 : aSide;
-			sendServerSide(te);
+			te.issueClientUpdate();
 			
 			if (mSide < 6) {
 				GT_Utility.sendChatToPlayer(aPlayer, "Input side: " + ForgeDirection.getOrientation(mSide).name());
@@ -170,8 +163,4 @@ public class GTMTE_LaserEnergy_Reflector extends GT_MetaTileEntity_BasicHull imp
 		return getBaseMetaTileEntity().getFrontFacing();
 	}
 	
-	@Override
-	public void receive(@NotNull ByteArrayDataInput data) {
-		mSide = (byte) data.readInt();
-	}
 }
