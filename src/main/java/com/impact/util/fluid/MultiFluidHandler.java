@@ -2,20 +2,19 @@ package com.impact.util.fluid;
 
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.items.IUpgradeModule;
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.storage.data.IItemList;
 import appeng.api.storage.ICellWorkbenchItem;
-import com.impact.util.fluid.IMultiFluidWatcher;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+/**
+ * Общее хранилище жидкостей с ёмкостью на тип, фильтром, блокировкой, уничтожением избытка и наблюдателями.
+ */
 public class MultiFluidHandler {
 
   public int maxDistinctFluids = 1;
@@ -32,14 +31,26 @@ public class MultiFluidHandler {
 
   public FluidFilter filter = new FluidFilter();
 
+	/**
+	 * Разрешающий или запрещающий список типов жидкостей, заданный предметами контроллера.
+	 */
 	private class FluidFilter {
     private final int MAX_FILTERED_FLUIDS = 64;
 
 		public HashSet<FluidStack> fluidList = new HashSet<>();
-    public boolean block = false;
+    public boolean block = true;
 
+		/**
+		 * Создаёт пустой запрещающий список, который допускает любые жидкости.
+		 */
 		public FluidFilter() {}
 
+    /**
+     * Сохраняет режим фильтра и список типов жидкостей под числовыми ключами.
+     *
+     * @param nbt NBT-компаунд состояния
+     * @return заполненный компаунд; при входном {@code null} создаётся новый
+     */
     public NBTTagCompound saveNBTData(NBTTagCompound nbt) {
       nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
@@ -52,6 +63,11 @@ public class MultiFluidHandler {
       return nbt;
     }
 
+    /**
+     * Восстанавливает режим фильтра и до 64 последовательно записанных типов жидкостей.
+     *
+     * @param nbt NBT-компаунд состояния
+     */
     public void loadNBTData(NBTTagCompound nbt) {
       block = nbt.getBoolean("block");
       fluidList.clear();
@@ -65,7 +81,10 @@ public class MultiFluidHandler {
     }
 
     /**
-     * Evaluate the filter
+     * Проверяет тип жидкости по разрешающему или запрещающему списку; количество и NBT стека не участвуют в выборе типа.
+     *
+     * @param fs жидкость, для которой выполняется операция
+     * @return {@code true}, если фильтр разрешает жидкость
      */
     public boolean allowFluid(FluidStack fs) {
       FluidStack fluid = new FluidStack(fs.getFluid(), 0);
@@ -76,7 +95,10 @@ public class MultiFluidHandler {
     }
 
     /**
-     * Retain fluids in the allow list.
+     * Проверяет, следует ли сохранять пустой слот жидкости, явно указанной в разрешающем списке.
+     *
+     * @param fs жидкость, для которой выполняется операция
+     * @return {@code true}, если опустошённый слот должен оставаться в хранилище
      */
     public boolean keepFluid(FluidStack fs) {
       FluidStack fluid = new FluidStack(fs.getFluid(), 0);
@@ -84,7 +106,10 @@ public class MultiFluidHandler {
     }
 
     /**
-     * Set the filter based on AE and/or fluid cell(s)
+     * Пересоздаёт фильтр из конфигурации ячеек AE2 или заполненных контейнеров.
+     * Карта инверсии задаёт запрещающий список; отсутствие подходящих предметов снимает ограничения.
+     *
+     * @param list ячейки AE2 и заполненные контейнеры, задающие фильтр
      */
     public void setFilter(ItemStack[] list) {
       // Default to empty block list.
@@ -134,29 +159,53 @@ public class MultiFluidHandler {
 	  }
   }
 	
+  /**
+   * Создаёт заблокированное хранилище с заданным пределом типов; ёмкость задаётся позднее.
+   *
+   * @param aFluids максимальное число различных жидкостей
+   */
   public MultiFluidHandler(int aFluids) {
     this.maxDistinctFluids = aFluids;
   }
 
+  /**
+   * Создаёт заблокированное хранилище с заданным пределом типов и ёмкостью на тип.
+   *
+   * @param capacityPerFluid ёмкость для каждой жидкости в литрах
+   * @param aFluids максимальное число различных жидкостей
+   */
   public MultiFluidHandler(int capacityPerFluid, int aFluids) {
     this.capacityPerFluid = capacityPerFluid;
     this.maxDistinctFluids = aFluids;
   }
 
+  /**
+   * Создаёт заблокированное хранилище с заданным пределом типов и начальным содержимым.
+   *
+   * @param capacityPerFluid ёмкость для каждой жидкости в литрах
+   * @param fluids начальные жидкости; список копируется, сами FluidStack остаются общими
+   * @param aFluids максимальное число различных жидкостей
+   */
   public MultiFluidHandler(int capacityPerFluid, List<FluidStack> fluids, int aFluids) {
     this.capacityPerFluid = capacityPerFluid;
     this.fluids.addAll(fluids);
     this.maxDistinctFluids = aFluids;
   }
   /**
-   * Lock internal tanks in case T.F.F.T is not running.
+   * Переключает доступ к жидкостям без удаления сохранённого содержимого.
    *
-   * @param state Lock state.
+   * @param state {@code true} для запрета чтения, вставки и извлечения жидкостей
    */
   public void setLock(boolean state) {
     locked = state;
   }
 
+  /**
+   * Обновляет фильтр по предмету контроллера, удаляет ненужные пустые слоты и добавляет разрешённые типы.
+   * На время обновления снимает блокировку, затем восстанавливает её прежнее состояние.
+   *
+   * @param is предмет фильтра или {@code null} для снятия ограничений
+   */
   public void setFilterFluids(ItemStack is) {
     filter.setFilter(new ItemStack[]{is});
 
@@ -164,7 +213,7 @@ public class MultiFluidHandler {
     boolean lastLocked = locked;
     locked = false;
     if (!filter.block) {
-      for (FluidStack fluid : fluids) {
+      for (FluidStack fluid : new ArrayList<>(fluids)) {
         pullFluid(new FluidStack(fluid.getFluid(), 0), true);
       }
       for (FluidStack fluid : filter.fluidList) {
@@ -175,47 +224,100 @@ public class MultiFluidHandler {
   }
 
   /**
-   * Void excess for matching fluids.
+   * Переключает уничтожение объёма сверх ёмкости; ограничения фильтра и числа типов остаются действующими.
+   *
+   * @param state {@code true} для уничтожения принимаемого избытка
    */
   public void setVoidExcess(boolean state) {
     voidExcess = state;
   }
 
+  /**
+   * Удаляет одну подписку наблюдателя на изменения жидкостей.
+   *
+   * @param watcher наблюдатель за изменениями жидкостей
+   */
   public void removeFluidWatcher(IMultiFluidWatcher watcher) {
     watchers.remove(watcher);
   }
 
+  /**
+   * Добавляет наблюдателя за изменением количества или удалением жидкости.
+   *
+   * @param watcher наблюдатель за изменениями жидкостей
+   */
   public void addFluidWatcher(IMultiFluidWatcher watcher) {
     watchers.add(watcher);
   }
 
+  /**
+   * Синхронно передаёт всем подписанным наблюдателям изменившуюся жидкость и её новое количество.
+   *
+   * @param fs жидкость, для которой выполняется операция
+   * @param newAmount новое количество жидкости в хранилище; ноль означает опустошение
+   */
   public void notifyWatchers(FluidStack fs, int newAmount) {
     watchers.forEach(watcher -> {
       watcher.onMultiFluidChange(fs, newAmount);
     });
   }
 
+  /**
+   * Возвращает состояние режима уничтожения избытка.
+   *
+   * @return {@code true}, если объём сверх ёмкости считается принятым и уничтожается
+   */
   public boolean getVoidExcess() {
     return voidExcess;
   }
 
+  /**
+   * Проверяет наличие совпадающего типа и NBT жидкости в доступном хранилище; количество не сравнивается.
+   *
+   * @param fluid жидкость для операции
+   * @return {@code true}, если слот найден и обработчик не заблокирован
+   */
   public boolean contains(FluidStack fluid) {
     return !locked && fluids.contains(fluid);
   }
 
+  /**
+   * Возвращает максимальный сохраняемый объём для каждой жидкости.
+   *
+   * @return ёмкость одного жидкостного слота в литрах
+   */
   public int getCapacity() {
     return capacityPerFluid;
   }
 
+  /**
+   * Предоставляет текущий список жидкостей только при снятой блокировке.
+   * Возвращаемый доступный список является внутренним: удаление слотов при обходе требует снимка списка.
+   *
+   * @return внутренний список при открытом доступе, иначе новый пустой список
+   */
   public List<FluidStack> getFluids() {
     return (!locked) ? fluids : new ArrayList<FluidStack>();
   }
 
+  /**
+   * Возвращает доступный стек по индексу фактически существующего слота.
+   *
+   * @param slot индекс жидкостного слота, начиная с нуля
+   * @return внутренний FluidStack либо {@code null} при блокировке или неверном индексе
+   */
   public FluidStack getFluid(int slot) {
-    return (!locked && fluids.size() > 0 && slot >= 0 && slot < maxDistinctFluids)
+    return (!locked && slot >= 0 && slot < fluids.size())
         ? fluids.get(slot) : null;
   }
 
+  /**
+   * Сохраняет ёмкость, режим уничтожения избытка, фильтр и все жидкости в плоский NBT-компаунд.
+   * Жидкостные записи имеют числовые ключи; контроллер помещает результат в свой тег {@code fluids}.
+   *
+   * @param nbt NBT-компаунд состояния
+   * @return заполненный компаунд; при входном {@code null} создаётся новый
+   */
   public NBTTagCompound saveNBTData(NBTTagCompound nbt) {
     nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
@@ -230,38 +332,47 @@ public class MultiFluidHandler {
     return nbt;
   }
 
+  /**
+   * Восстанавливает жидкости, ёмкость, режим уничтожения избытка и фильтр.
+   * Принимает плоское состояние обработчика или NBT контроллера с тегом {@code fluids}; пропускает неизвестные жидкости.
+   *
+   * @param nbt NBT-компаунд состояния
+   */
   public void loadNBTData(NBTTagCompound nbt) {
     nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 
-    capacityPerFluid = nbt.getInteger("capacityPerFluid");
-    if (nbt.hasKey("voidExcess")) {
-      voidExcess = nbt.getBoolean("voidExcess");
+    // Controllers wrap the handler's flat fluid entries in a "fluids" compound.
+    // Also accept a handler compound directly for save/load round trips.
+    final NBTTagCompound fluidsTag = nbt.hasKey("fluids", 10) ? nbt.getCompoundTag("fluids") : nbt;
+    capacityPerFluid = fluidsTag.hasKey("capacityPerFluid")
+        ? fluidsTag.getInteger("capacityPerFluid") : nbt.getInteger("capacityPerFluid");
+    if (fluidsTag.hasKey("voidExcess")) {
+      voidExcess = fluidsTag.getBoolean("voidExcess");
     }
-
-    final NBTTagCompound filterTag = (NBTTagCompound) nbt.getTag("filter");
-    if (filterTag != null) {
-      filter.loadNBTData(filterTag);
+    if (fluidsTag.hasKey("filter", 10)) {
+      filter.loadNBTData(fluidsTag.getCompoundTag("filter"));
+    } else if (nbt.hasKey("filter", 10)) {
+      filter.loadNBTData(nbt.getCompoundTag("filter"));
     }
 
     fluids.clear();
-    final NBTTagCompound fluidsTag = (NBTTagCompound) nbt.getTag("fluids");
-    for (int i = 0; i < this.maxDistinctFluids; i++) {
-      final NBTTagCompound fnbt = (NBTTagCompound) fluidsTag.getTag("" + i);
-      if (fnbt == null) {
-        break;
-      }
-      fluids.add(FluidStack.loadFluidStackFromNBT(fnbt));
+    for (int i = 0; i < maxDistinctFluids; i++) {
+      if (!fluidsTag.hasKey("" + i, 10)) continue;
+      FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluidsTag.getCompoundTag("" + i));
+      if (fluid != null) fluids.add(fluid);
     }
   }
 
   /**
-   * Fill fluid into a tank.
+   * Заполняет совпадающий слот либо создаёт новый с учётом фильтра, блокировки и лимита типов.
+   * При симуляции содержимое не меняется; нулевой объём допускается для резервирования типа фильтром.
    *
-   * @param push   Fluid type and quantity to be inserted.
-   * @param doPush If false, fill will only be simulated.
-   * @return Amount of fluid that was (or would have been, if simulated) filled.
+   * @param push жидкость и количество для заполнения
+   * @param doPush изменять хранилище; при {@code false} только рассчитать результат
+   * @return принятый объём в литрах; при уничтожении избытка может превышать сохранённый объём
    */
   public int pushFluid(FluidStack push, boolean doPush) {
+    if (push == null || push.amount < 0) return 0;
     if (locked) {
       return 0;
     }
@@ -272,10 +383,12 @@ public class MultiFluidHandler {
         return 0;
       }
       // Add new fluid
-      final int remcap = getCapacity();
+      final int remcap = Math.max(0, getCapacity());
       final int fit = Math.min(remcap, push.amount);
       if (doPush) {
-        fluids.add(new FluidStack(push.getFluid(), fit));
+        FluidStack stored = push.copy();
+        stored.amount = fit;
+        fluids.add(stored);
         notifyWatchers(push, fit);
       }
       return voidExcess ? push.amount : fit;
@@ -286,7 +399,7 @@ public class MultiFluidHandler {
       }
       // Add to existing fluid
       final FluidStack fs = fluids.get(fluids.indexOf(push));
-      final int remcap = getCapacity() - fs.amount;
+      final int remcap = Math.max(0, getCapacity() - fs.amount);
       final int fit = Math.min(remcap, push.amount);
       if (doPush && fit != 0) {
         fs.amount += fit;
@@ -297,18 +410,20 @@ public class MultiFluidHandler {
   }
 
   /**
-   * Fill fluid into the specified tank.
+   * Заполняет только указанный существующий слот совпадающей жидкостью с учётом фильтра и блокировки.
+   * При симуляции содержимое не меняется; режим уничтожения избытка учитывается при расчёте принятого объёма.
    *
-   * @param push   Fluid type and quantity to be inserted.
-   * @param slot   Tank the fluid should go into.
-   * @param doPush If false, fill will only be simulated.
-   * @return Amount of fluid that was (or would have been, if simulated) filled.
+   * @param push жидкость и количество для заполнения
+   * @param slot индекс жидкостного слота, начиная с нуля
+   * @param doPush изменять хранилище; при {@code false} только рассчитать результат
+   * @return принятый объём в литрах; при уничтожении избытка может превышать сохранённый объём
    */
   public int pushFluid(FluidStack push, int slot, boolean doPush) {
+    if (push == null || push.amount < 0) return 0;
     if (locked) {
       return 0;
     }
-    if (slot < 0 || slot >= maxDistinctFluids) {
+    if (slot < 0 || slot >= fluids.size()) {
       return 0;
     }
     if (!fluids.get(slot).equals(push)) {
@@ -319,7 +434,7 @@ public class MultiFluidHandler {
         return 0;
       }
       final FluidStack fs = fluids.get(slot);
-      final int remcap = getCapacity() - fs.amount;
+      final int remcap = Math.max(0, getCapacity() - fs.amount);
       final int fit = Math.min(remcap, push.amount);
       if (doPush && fit != 0) {
         fs.amount += fit;
@@ -330,13 +445,15 @@ public class MultiFluidHandler {
   }
 
   /**
-   * Drains fluid out of the internal tanks.
+   * Извлекает доступный объём совпадающей жидкости, учитывая блокировку.
+   * При реальном извлечении удаляет опустошённый слот, если фильтр не требует его сохранить; симуляция не меняет список.
    *
-   * @param pull   Fluid type and quantity to be pulled.
-   * @param doPull If false, drain will only be simulated.
-   * @return Amount of fluid that was (or would have been, if simulated) pulled.
+   * @param pull жидкость и количество для извлечения
+   * @param doPull изменять хранилище; при {@code false} только рассчитать результат
+   * @return извлечённый объём в литрах или ноль, если операция недоступна
    */
   public int pullFluid(FluidStack pull, boolean doPull) {
+    if (pull == null || pull.amount < 0) return 0;
     if (locked) {
       return 0;
     }
@@ -349,7 +466,7 @@ public class MultiFluidHandler {
         src.amount -= rec;
         notifyWatchers(src, src.amount);
       }
-      if (src.amount == 0 && !filter.keepFluid(src)) {
+      if (doPull && src.amount == 0 && !filter.keepFluid(src)) {
         fluids.remove(src);
         notifyWatchers(src, 0);
       }
@@ -358,18 +475,20 @@ public class MultiFluidHandler {
   }
 
   /**
-   * Drains fluid out of the specified internal tank.
+   * Извлекает жидкость только из указанного существующего слота при совпадении типа и NBT.
+   * При симуляции список не меняется; при опустошении слот сохраняется только по требованию фильтра.
    *
-   * @param pull   Fluid type and quantity to be pulled.
-   * @param slot   Tank fluid should be drained from.
-   * @param doPull If false, drain will only be simulated.
-   * @return Amount of fluid that was (or would have been, if simulated) pulled.
+   * @param pull жидкость и количество для извлечения
+   * @param slot индекс жидкостного слота, начиная с нуля
+   * @param doPull изменять хранилище; при {@code false} только рассчитать результат
+   * @return извлечённый объём в литрах или ноль, если операция недоступна
    */
   public int pullFluid(FluidStack pull, int slot, boolean doPull) {
+    if (pull == null || pull.amount < 0) return 0;
     if (locked) {
       return 0;
     }
-    if (slot < 0 || slot >= maxDistinctFluids) {
+    if (slot < 0 || slot >= fluids.size()) {
       return 0;
     }
     if (!fluids.get(slot).equals(pull)) {
@@ -381,7 +500,7 @@ public class MultiFluidHandler {
         src.amount -= rec;
         notifyWatchers(src, src.amount);
       }
-      if (src.amount == 0 && !filter.keepFluid(src)) {
+      if (doPull && src.amount == 0 && !filter.keepFluid(src)) {
         fluids.remove(src);
         notifyWatchers(src, 0);
       }
@@ -390,25 +509,12 @@ public class MultiFluidHandler {
   }
 
   /**
-   * Test whether the given fluid type and quantity can be inserted into the internal tanks.
+   * Симулирует вставку положительного объёма с учётом фильтра, блокировки и уничтожения избытка.
    *
-   * @param push Fluid type and quantity to be tested
-   * @return True if there is sufficient space
+   * @param push жидкость и количество для заполнения
+   * @return {@code true}, если можно принять хотя бы часть жидкости
    */
   public boolean couldPush(FluidStack push) {
-    if (locked) {
-      return false;
-    }
-    if (fluids.size() == maxDistinctFluids && !contains(push)) {
-      return false;
-    } else if (fluids.size() < maxDistinctFluids && !contains(push)) {
-      if (!filter.allowFluid(push)) {
-        return false;
-      }
-      return Math.min(getCapacity(), push.amount) > 0;
-    } else {
-      final int remcap = getCapacity() - fluids.get(fluids.indexOf(push)).amount;
-      return Math.min(remcap, push.amount) > 0;
-    }
+    return push != null && push.amount > 0 && pushFluid(push, false) > 0;
   }
 }

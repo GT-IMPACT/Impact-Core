@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -41,6 +42,9 @@ import static space.impact.api.multiblocks.alignment.constructable.IMultiBlockIn
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
 import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAnyMeta;
 
+/**
+ * Контроллер многоблочного бака на 25 типов жидкостей с общим хранилищем и подключаемыми хэтчами.
+ */
 public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	
 	public final int MAX_DISTINCT_FLUIDS = 25;
@@ -54,24 +58,46 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	private int runningCost = 0;
 	private boolean doVoidExcess = false;
 
+	/**
+	 * Регистрирует контроллер бака, описание структуры и отключает обслуживание.
+	 *
+	 * @param aID идентификатор регистрации или интерфейса GregTech
+	 * @param aNameRegional локализованное имя для регистрации
+	 */
 	public GTMTE_MultiTank(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.multifluidtank", aNameRegional);
 		run();
 		enabledMaintenance = false;
 	}
 	
+	/**
+	 * Создаёт экземпляр контроллера бака, регистрирует описание структуры и отключает обслуживание.
+	 *
+	 * @param aName внутреннее имя метасущности
+	 */
 	public GTMTE_MultiTank(String aName) {
 		super(aName);
 		run();
 		enabledMaintenance = false;
 	}
 	
+	/**
+	 * Создаёт отдельный экземпляр метасущности с теми же регистрационными настройками.
+	 *
+	 * @param var1 предмет или тайл-сущность из контракта GregTech; в этом методе не используется
+	 * @return новый экземпляр для размещённого блока
+	 */
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
 		run();
 		return new GTMTE_MultiTank(super.mName);
 	}
 	
+	/**
+	 * Возвращает описание бака; при удержании левого Shift показывает требования к структуре.
+	 *
+	 * @return строки подсказки для выбранного режима
+	 */
 	@Override
 	public String[] getDescription() {
 		final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_tank");
@@ -99,6 +125,17 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		}
 	}
 	
+	/**
+	 * Выбирает текстуру корпуса и накладку контроллера с учётом стороны и активности.
+	 *
+	 * @param aBaseMetaTileEntity базовая тайл-сущность блока
+	 * @param aSide сторона блока
+	 * @param aFacing направление лицевой стороны
+	 * @param aColorIndex индекс окраски корпуса
+	 * @param aActive признак активности машины
+	 * @param aRedstone состояние красного камня; в этом методе не используется
+	 * @return слои текстуры отображаемой стороны
+	 */
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,
 								 byte aColorIndex,
@@ -111,6 +148,14 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 				: new ITexture[]{Textures.BlockIcons.casingTexturePages[1][48]};
 	}
 	
+	/**
+	 * Создаёт клиентский интерфейс контроллера многоблочного бака.
+	 *
+	 * @param aID идентификатор регистрации или интерфейса GregTech
+	 * @param aPlayerInventory инвентарь игрока для интерфейса
+	 * @param aBaseMetaTileEntity базовая тайл-сущность блока
+	 * @return экран интерфейса бака
+	 */
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
 							   IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity,
@@ -119,11 +164,23 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		);
 	}
 	
+	/**
+	 * Разрешает работу без обязательного предмета в слоте контроллера.
+	 *
+	 * @param var1 предмет или тайл-сущность из контракта GregTech; в этом методе не используется
+	 * @return {@code true}: проверка специального компонента не требуется
+	 */
 	@Override
 	public boolean isCorrectMachinePart(ItemStack var1) {
 		return true;
 	}
 
+	/**
+	 * Настраивает рабочий цикл хранения, обновляет фильтр и блокировку доступа к жидкостям.
+	 *
+	 * @param guiSlotItem предмет в слоте контроллера, задающий фильтр жидкостей
+	 * @return {@code true}: бак не требует рецепта переработки
+	 */
 	@Override
 	public boolean checkRecipe(ItemStack guiSlotItem) {
 		
@@ -140,6 +197,13 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		return true;
 	}
 	
+	/**
+	 * После базового тика обновляет блокировку по активности, принимает жидкости входных хэтчей и заполняет выходные.
+	 * Схема в слоте контроллера выбирает индекс жидкости для вывода; без схемы обходится снимок всех жидкостей.
+	 *
+	 * @param aBaseMetaTileEntity базовая тайл-сущность блока
+	 * @param aTick номер игрового тика
+	 */
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -161,49 +225,54 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 				}
 			}
 			
-			// Push out fluids
-			if (mInventory[0] != null && mInventory[0].getUnlocalizedName()
-					.equals("gt.integrated_circuit")) {
-				final int config = mInventory[0].getItemDamage();
-				final FluidStack storedFluid = mfh.getFluid(config);
-				// Sum available output capacity
-				int possibleOutput = getPossibleOutput(storedFluid);
-				// Output as much as possible
-				final FluidStack tempStack = storedFluid.copy();
-				tempStack.amount = possibleOutput;
-				tempStack.amount = mfh.pullFluid(tempStack, config, true);
-				super.addOutput(tempStack);
-				
+			if (mInventory[0] != null && mInventory[0].getUnlocalizedName().equals("gt.integrated_circuit")) {
+				outputFluid(mfh.getFluid(mInventory[0].getItemDamage()));
 			} else {
-				for (FluidStack storedFluid : mfh.getFluids()) {
-					// Sum available output capacity
-					int possibleOutput = getPossibleOutput(storedFluid);
-					// output as much as possible
-					final FluidStack tempStack = storedFluid.copy();
-					tempStack.amount = possibleOutput;
-					// TODO possible concurrent modification exception as pullFluid calls remove() without an iterator
-					tempStack.amount = mfh.pullFluid(tempStack, true);
-					super.addOutput(tempStack);
+				for (FluidStack storedFluid : new ArrayList<>(mfh.getFluids())) {
+					outputFluid(storedFluid);
 				}
 			}
 		}
 		
 	}
 
-	private int getPossibleOutput(FluidStack storedFluid) {
-		int possibleOutput = 0;
-		for (GT_MetaTileEntity_Hatch_Output outputHatch : super.mOutputHatches) {
-			if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName() != null && outputHatch.getLockedFluidName().equals(storedFluid.getUnlocalizedName())) {
-				possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-			} else if (outputHatch.getFluid() != null && outputHatch.getFluid().getUnlocalizedName().equals(storedFluid.getUnlocalizedName())) {
-				possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
-			} else if (outputHatch.getFluid() == null) {
-				possibleOutput += outputHatch.getCapacity() - outputHatch.getFluidAmount();
+	/**
+	 * Передаёт жидкость в допустимые выходные хэтчи, начиная с ограниченных.
+	 * Из бака списывается только фактически принятый объём; учитываются блокировка жидкости и режим пара.
+	 *
+	 * @param storedFluid жидкость из общего хранилища
+	 */
+	private void outputFluid(FluidStack storedFluid) {
+		if (storedFluid == null || storedFluid.amount <= 0) return;
+		// Prefer restrictive hatches, as the multiblock output helper does.
+		for (int pass = 0; pass < 2; pass++) {
+			for (GT_MetaTileEntity_Hatch_Output outputHatch : mOutputHatches) {
+				if (!isValidMetaTileEntity(outputHatch) || (pass == 0 && outputHatch.mMode == 0)) continue;
+				if (GT_ModHandler.isSteam(storedFluid) ? !outputHatch.outputsSteam() : !outputHatch.outputsLiquids()) continue;
+				if (outputHatch.isFluidLocked() && outputHatch.getLockedFluidName() != null
+						&& !outputHatch.getLockedFluidName().equals(storedFluid.getUnlocalizedName())) continue;
+				final FluidStack offered = storedFluid.copy();
+				offered.amount = mfh.pullFluid(offered, false);
+				if (offered.amount <= 0) return;
+				final int filled = outputHatch.fill(offered, true);
+				if (filled > 0) {
+					offered.amount = filled;
+					mfh.pullFluid(offered, true);
+					outputHatch.onEmptyingContainerWhenEmpty();
+				}
 			}
 		}
-		return possibleOutput;
 	}
 
+	/**
+	 * Преобразует локальное смещение структуры в смещение мира по направлению контроллера.
+	 *
+	 * @param forgeDirection вектор направления задней стороны контроллера
+	 * @param x локальное смещение по оси X
+	 * @param y локальное смещение по оси Y
+	 * @param z локальное смещение по оси Z
+	 * @return повёрнутый вектор смещения
+	 */
 	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
 		final Vector3i offset = new Vector3i();
 		
@@ -239,6 +308,14 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		return offset;
 	}
 	
+	/**
+	 * Проверяет корпус, стекло, блоки хранения и хэтчи.
+	 * При успешной проверке обновляет ёмкость и связывает I/O-хэтчи с общим обработчиком без замены содержимого.
+	 *
+	 * @param thisController тайл-сущность проверяемого контроллера
+	 * @param guiSlotItem предмет слота контроллера; при проверке структуры не используется
+	 * @return {@code true}, если структура соответствует требованиям
+	 */
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
 		sMultiHatches.clear();
@@ -428,10 +505,9 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 			if (mfh == null) {
 				mfh = new MultiFluidHandler(capacityPerFluid, MAX_DISTINCT_FLUIDS);
 			} else {
-				if (mfh.getCapacity() != capacityPerFluid) {
-					mfh = new MultiFluidHandler(capacityPerFluid, mfh.getFluids(), MAX_DISTINCT_FLUIDS);
-				}
+				mfh.capacityPerFluid = capacityPerFluid;
 			}
+			mfh.setVoidExcess(doVoidExcess);
 			for (GTMTE_TankHatch mh : sMultiHatches) {
 				mh.setMultiFluidHandler(mfh);
 			}
@@ -439,6 +515,9 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		return formationChecklist;
 	}
 	
+	/**
+	 * Регистрирует описание структуры и обработчики строительства или визуальных подсказок для этого типа бака.
+	 */
 	public void run() {
 		registerTileClass(GTMTE_MultiTank.class.getCanonicalName(), new IMultiBlockInfoContainer<GTMTE_MultiTank>() {
 			//region Structure
@@ -469,6 +548,14 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 			};
 			
 			//endregion
+			/**
+			 * Размещает структуру бака либо показывает её подсказки через зарегистрированное описание.
+			 *
+			 * @param stackSize предмет, переданный системой подсказок структуры
+			 * @param hintsOnly показывать только подсказки вместо размещения блоков
+			 * @param tileEntity контроллер, для которого строится структура
+			 * @param aSide ориентация структуры относительно контроллера
+			 */
 			@Override
 			public void construct(ItemStack stackSize, boolean hintsOnly, GTMTE_MultiTank tileEntity, ExtendedFacing aSide) {
 				IGregTechTileEntity base = tileEntity.getBaseMetaTileEntity();
@@ -478,6 +565,12 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 				);
 			}
 			
+			/**
+			 * Возвращает описание материалов и допустимых хэтчей для системы строительства структуры.
+			 *
+			 * @param stackSize предмет, переданный системой подсказок структуры
+			 * @return строки подсказки о составе структуры
+			 */
 			@Override
 			public String[] getDescription(ItemStack stackSize) {
 				return desc;
@@ -486,6 +579,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		
 	}
 	
+	/**
+	 * Возвращает данные доступных жидкостных слотов; заблокированный бак не раскрывает содержимое.
+	 *
+	 * @return массив сведений о жидкостях или {@code null}, если обработчик отсутствует
+	 */
 	public FluidTankInfo[] getMultiTankInfo() {
 		if (mfh == null) {
 			return null;
@@ -500,6 +598,13 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		return tankInfo;
 	}
 	
+	/**
+	 * Добавляет I/O-хэтч в список структуры и назначает ему текстуру корпуса.
+	 *
+	 * @param aTileEntity кандидат на включение в список I/O-хэтчей
+	 * @param aBaseCasingIndex индекс текстуры корпуса для хэтча
+	 * @return {@code true}, если найден подходящий хэтч и он добавлен впервые
+	 */
 	public boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
@@ -516,6 +621,15 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		}
 	}
 	
+	/**
+	 * Переключает уничтожение избытка жидкости, передаёт настройку обработчику и сообщает её игроку.
+	 *
+	 * @param aSide сторона блока
+	 * @param aPlayer игрок, взаимодействующий с блоком
+	 * @param aX координата клика по оси X внутри блока
+	 * @param aY координата клика по оси Y внутри блока
+	 * @param aZ координата клика по оси Z внутри блока
+	 */
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
 										float aZ) {
@@ -527,6 +641,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 				.sendChatToPlayer(aPlayer, doVoidExcess ? "Auto-voiding enabled" : "Auto-voiding disabled");
 	}
 	
+	/**
+	 * Формирует диагностические строки о сохранённых жидкостях, ёмкости и режиме уничтожения избытка.
+	 *
+	 * @return строки информации о состоянии бака
+	 */
 	@Override
 	public String[] getInfoData() {
 		final ArrayList<String> ll = new ArrayList<>();
@@ -551,6 +670,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		return ll.toArray(a);
 	}
 	
+	/**
+	 * Сохраняет настройки контроллера и полное содержимое обработчика в тег {@code fluids}, затем состояние базовой машины.
+	 *
+	 * @param nbt NBT-компаунд состояния
+	 */
 	@Override
 	public void saveNBTData(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
@@ -568,6 +692,11 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		super.saveNBTData(nbt);
 	}
 	
+	/**
+	 * Восстанавливает настройки и содержимое бака, применяет режим уничтожения избытка и переподключает известные I/O-хэтчи.
+	 *
+	 * @param nbt NBT-компаунд состояния
+	 */
 	@Override
 	public void loadNBTData(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
@@ -577,32 +706,62 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		
 		mfh = new MultiFluidHandler(MAX_DISTINCT_FLUIDS);
 		mfh.loadNBTData(nbt);
+		mfh.setVoidExcess(doVoidExcess);
 		for (GTMTE_TankHatch mh : sMultiHatches) {
 			mh.setMultiFluidHandler(mfh);
 		}
 		super.loadNBTData(nbt);
 	}
 	
+	/**
+	 * Разрешает получение диагностической информации о баке.
+	 *
+	 * @return {@code true}: бак предоставляет данные состояния
+	 */
 	@Override
 	public boolean isGivingInformation() {
 		return true;
 	}
 	
+	/**
+	 * Задаёт максимальную эффективность рабочего цикла хранения.
+	 *
+	 * @param var1 предмет или тайл-сущность из контракта GregTech; в этом методе не используется
+	 * @return 10000, что соответствует 100 процентам эффективности GregTech
+	 */
 	@Override
 	public int getMaxEfficiency(ItemStack var1) {
 		return 10000;
 	}
 	
+	/**
+	 * Задаёт загрязнение от рабочего цикла бака.
+	 *
+	 * @param var1 предмет или тайл-сущность из контракта GregTech; в этом методе не используется
+	 * @return ноль: хранение жидкостей не создаёт загрязнение
+	 */
 	@Override
 	public int getPollutionPerTick(ItemStack var1) {
 		return 0;
 	}
 	
+	/**
+	 * Задаёт износ компонента при работе бака.
+	 *
+	 * @param var1 предмет или тайл-сущность из контракта GregTech; в этом методе не используется
+	 * @return ноль: компоненты не изнашиваются
+	 */
 	@Override
 	public int getDamageToComponent(ItemStack var1) {
 		return 0;
 	}
 	
+	/**
+	 * Определяет реакцию бака на поломку компонента.
+	 *
+	 * @param var1 предмет или тайл-сущность из контракта GregTech; в этом методе не используется
+	 * @return {@code false}: поломка компонента не вызывает взрыв
+	 */
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack var1) {
 		return false;
