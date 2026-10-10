@@ -35,9 +35,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     private val outputsF: ArrayList<FluidStack> = arrayListOf()
 
     private var recipeOk: Boolean = false
-    private var voltageIn: Long = 0L
-    private var ampsIn: Int = 0
-    private var tierFromVoltage: Int = 0
+    private var powerBudget: Long = 0L
     private var recipe: GT_Recipe? = null
 
     fun updateHatches() {
@@ -57,9 +55,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     fun start(): MultiBlockRecipeBuilder<R> {
         machine.updateSlots()
         recipeOk = false
-        voltageIn = 0L
-        ampsIn = 0
-        tierFromVoltage = 0
+        powerBudget = 0L
         recipe = null
         inputs.clear()
         outputs.clear()
@@ -71,9 +67,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
     fun clear(): MultiBlockRecipeBuilder<R> {
         machine.updateSlots()
         recipeOk = false
-        voltageIn = 0L
-        ampsIn = 0
-        tierFromVoltage = 0
+        powerBudget = 0L
         recipe = null
         outputs.clear()
         outputsF.clear()
@@ -192,21 +186,11 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         return this
     }
 
-    @JvmOverloads
-    fun checkVoltage(
-        isGTVoltage: Boolean = false
-    ): MultiBlockRecipeBuilder<R> {
+    fun checkVoltage(): MultiBlockRecipeBuilder<R> {
         if (!recipeOk) return this
 
-        if (isGTVoltage) {
-            voltageIn = machine.maxInputVoltageVanila
-            ampsIn = 1
-            tierFromVoltage = GT_Utility.getTier(voltageIn).toInt().coerceIn(0, 15)
-        } else {
-            voltageIn = machine.inputsVoltage
-            ampsIn = machine.inputsAmperage
-            tierFromVoltage = GT_Utility.getTier(voltageIn).toInt().coerceIn(0, 15)
-        }
+        // This legacy getter returns sum(voltage * amperage), not voltage.
+        powerBudget = machine.maxInputVoltage
         return this
     }
 
@@ -230,7 +214,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             cashedRecipe,
             false,
             !checkStackSize,
-            GT_Values.V[tierFromVoltage],
+            powerBudget,
             inputsF.toTypedArray(),
             listItems,
         )
@@ -329,7 +313,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         val isValidItems = simulateItems.isNotEmpty()
         val isValidFluid = simulateFluids.isNotEmpty()
 
-        val maxEUt = min(voltageIn * ampsIn, GT_Values.V.last())
+        val maxEUt = min(powerBudget, GT_Values.V.last())
         val simulatedRecipeEUt = ProgressiveOverclock.simulatedRecipeEUt(recipe.mEUt.toLong())
 
         for (currentParallel in 1..machine.maxParallel) {
@@ -411,8 +395,8 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             recipeEUt = recipe.mEUt,
             recipeDuration = recipe.mDuration,
             parallels = 1,
-            maxVoltage = voltageIn,
-            amperage = ampsIn,
+            maxVoltage = powerBudget,
+            amperage = 1,
         )
 
         machine.mEUt = result?.eut ?: 0
@@ -445,8 +429,8 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
             recipeEUt = recipe.mEUt,
             recipeDuration = recipe.mDuration,
             parallels = machine.mCheckParallelCurrent,
-            maxVoltage = voltageIn,
-            amperage = ampsIn,
+            maxVoltage = powerBudget,
+            amperage = 1,
         )
 
         machine.mEUt = result?.eut ?: 0

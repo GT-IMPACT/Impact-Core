@@ -5,6 +5,102 @@ import org.junit.jupiter.api.Test
 
 class ProgressiveOverclockTest {
 
+    @Test
+    fun shouldPreserveAmperageOverclockWhenPassingPowerBudget() {
+        for (amps in listOf(2, 4, 8, 16, 64)) {
+            val original = ProgressiveOverclock.calculateOverclock(
+                recipeEUt = 32_768,
+                recipeDuration = 12_000,
+                parallels = 1,
+                maxVoltage = 32_768L,
+                amperage = amps,
+            )
+            val withPowerBudget = ProgressiveOverclock.calculateOverclock(
+                recipeEUt = 32_768,
+                recipeDuration = 12_000,
+                parallels = 1,
+                maxVoltage = 32_768L * amps,
+                amperage = 1,
+            )
+
+            assertNotNull(original)
+            assertEquals(original, withPowerBudget, "LuV ${amps}A")
+        }
+    }
+
+    @Test
+    fun shouldRunRecipeAboveHatchVoltageWithinPowerBudget() {
+        val result = ProgressiveOverclock.calculateOverclock(
+            recipeEUt = 38_000,
+            recipeDuration = 12_000,
+            parallels = 1,
+            maxVoltage = 32_768L * 4,
+            amperage = 1,
+        )
+
+        assertNotNull(result)
+        assertEquals(38_000, result!!.eut)
+        assertEquals(12_000, result.duration)
+        assertEquals(0, result.overclocks)
+    }
+
+    @Test
+    fun shouldShareLuv16AmpBudgetBetweenParallelsAndOverclocks() {
+        // parallels, overclocks, total EU/t, duration in ticks
+        val cases = listOf(
+            listOf(1, 2, 524_288, 3_000),
+            listOf(2, 1, 262_144, 6_000),
+            listOf(4, 1, 524_288, 6_000),
+            listOf(8, 0, 262_144, 12_000),
+            listOf(16, 0, 524_288, 12_000),
+        )
+        for ((parallels, overclocks, eut, duration) in cases) {
+            val result = ProgressiveOverclock.calculateOverclock(
+                recipeEUt = 32_768,
+                recipeDuration = 12_000,
+                parallels = parallels,
+                maxVoltage = 32_768L * 16,
+                amperage = 1,
+            )
+
+            assertNotNull(result)
+            assertEquals(overclocks, result!!.overclocks, "$parallels parallels")
+            assertEquals(eut, result.eut, "$parallels parallels")
+            assertEquals(duration, result.duration, "$parallels parallels")
+        }
+
+        assertNull(ProgressiveOverclock.calculateOverclock(
+            recipeEUt = 32_768,
+            recipeDuration = 12_000,
+            parallels = 17,
+            maxVoltage = 32_768L * 16,
+            amperage = 1,
+        ))
+    }
+
+    @Test
+    fun shouldReject33ParallelsExceedingTwoUev2AmpHatches() {
+        val powerBudget = 2L * 8_388_608 * 2
+        val result = ProgressiveOverclock.calculateOverclock(
+            recipeEUt = 2_000_000,
+            recipeDuration = 12_000,
+            parallels = 16,
+            maxVoltage = powerBudget,
+            amperage = 1,
+        )
+
+        assertNotNull(result)
+        assertEquals(32_000_000, result!!.eut)
+        assertEquals(0, result.overclocks)
+        assertNull(ProgressiveOverclock.calculateOverclock(
+            recipeEUt = 2_000_000,
+            recipeDuration = 12_000,
+            parallels = 33,
+            maxVoltage = powerBudget,
+            amperage = 1,
+        ))
+    }
+
     /**
      * Проверяет, что нулевой EU/t рецепта считается невалидным.
      */
