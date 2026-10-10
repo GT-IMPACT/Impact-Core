@@ -771,9 +771,9 @@ object VirtualWorldIntegration {
                 ).map { it.toDimGen() }.toSet(),
                 ores = listOf(
                     Materials.Diamond.toOreComponent(90),
-                    Materials.Bentonite.toOreComponent(60),
+                    Materials.Phosphate.toOreComponent(60),
                     Materials.Diamond.toOreComponent(60),
-                    Materials.Bentonite.toOreComponent(30),
+                    Materials.Phosphate.toOreComponent(30),
                 )
             ),
             OreVein(
