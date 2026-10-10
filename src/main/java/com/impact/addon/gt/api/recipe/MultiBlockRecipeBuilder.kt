@@ -380,7 +380,7 @@ class MultiBlockRecipeBuilder<R : GTMTE_Impact_BlockBase<*>>(val machine: R) {
         if (!recipeOk) return this
         val recipe = recipe ?: return this
 
-        if (!needCleanRoom) {
+        if (needCleanRoom) {
             recipeOk = WorldProperties.needCleanroom(recipe, machine)
             if (!recipeOk) return this
         }
