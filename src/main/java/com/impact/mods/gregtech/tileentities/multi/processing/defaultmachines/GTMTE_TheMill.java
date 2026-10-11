@@ -8,7 +8,6 @@ import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.network.NetworkPackets;
 import com.impact.util.Utilits;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Structure;
@@ -37,7 +36,6 @@ import net.minecraft.tileentity.TileEntity;
 import space.impact.api.ImpactAPI;
 import space.impact.api.multiblocks.structure.IStructureDefinition;
 import space.impact.api.multiblocks.structure.StructureDefinition;
-import space.impact.packet_network.network.NetworkHandler;
 
 import java.awt.*;
 
@@ -163,7 +161,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 			}
 		}
 		super.onPostTick(iAm, aTick);
-		if ((aTick % 20) == 0) {
+		if (iAm.isServerSide() && (aTick % 20) == 0) {
 			IInventory tTileEntity = iAm.getIInventoryAtSide(iAm.getBackFacing());
 			if (tTileEntity != null) {
 				GT_Utility.moveOneItemStack(iAm, tTileEntity, (byte) 1, (byte) 1, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
@@ -185,6 +183,12 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 		}
 	}
 	
+	@Override
+	public boolean isValidSlot(int aIndex) {
+		// Slot 0 is an input here and must also drop when the controller is broken.
+		return aIndex >= 0 && aIndex < mInventory.length;
+	}
+
 	@Override
 	public boolean inputStack(IGregTechTileEntity te, int slotIndex, int side, ItemStack stack) {
 		return slotIndex == 0;
@@ -239,7 +243,10 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 				if (x == 0 && y == 0) {
 					TileEntity te = Structure.getTE(gt, vec);
 					if (te instanceof TE_TheMill) {
-						NetworkHandler.sendToAllAround(te, NetworkPackets.StreamPacket.transaction(gt.getFrontFacing()), 256);
+						TE_TheMill rotor = (TE_TheMill) te;
+						if (gt.isServerSide() && rotor.getFacing() != gt.getFrontFacing()) {
+							rotor.setFacing(gt.getFrontFacing());
+						}
 					} else {
 						return false;
 					}

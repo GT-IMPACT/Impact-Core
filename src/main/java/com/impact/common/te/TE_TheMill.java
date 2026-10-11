@@ -152,7 +152,10 @@ public class TE_TheMill extends TileEntity implements IWrenchable, INetworkDataP
 	@Override
 	public void setFacing(short side) {
 		facing = side;
-		NetworkHelper.updateTileEntityField(this, "facing");
+		markDirty();
+		if (worldObj != null && !worldObj.isRemote) {
+			NetworkHelper.updateTileEntityField(this, "facing");
+		}
 	}
 	
 	@Override
