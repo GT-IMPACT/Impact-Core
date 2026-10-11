@@ -70,6 +70,17 @@ object RecipeCatalystRegister {
             API.addRecipeCatalyst(it.get(1), GT_Recipe.GT_Recipe_Map.sSemifluidFuels.mUnlocalizedName)
         }
 
+        listOf(
+            GT_ItemList.DustWasherLV,
+            GT_ItemList.DustWasherMV,
+            GT_ItemList.DustWasherHV,
+            GT_ItemList.DustWasherEV,
+            GT_ItemList.DustWasherIV,
+        ).forEach {
+            API.addRecipeCatalyst(it.get(1), GT_Recipe.GT_Recipe_Map.sDustWashRecipes.mUnlocalizedName)
+
+        }
+
         API.addRecipeCatalyst(GT_ItemList.Machine_Wire.get(1), GT_Recipe.GT_Recipe_Map.sWiremillRecipes.mUnlocalizedName, -1)
 
         API.addRecipeCatalyst(GT_ItemList.SawMill.get(1), GT_Recipe.GT_Recipe_Map.sSawMillVisual.mUnlocalizedName)
@@ -118,5 +129,7 @@ object RecipeCatalystRegister {
 
         API.addRecipeCatalyst(ItemList.Machine_MultiblockElectrolyzer.get(1), GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.mUnlocalizedName)
         API.addRecipeCatalyst(GT_ItemList.Machine_Electrolyzer.get(1), GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.mUnlocalizedName)
+
+        API.addRecipeCatalyst(GT_ItemList.Machine_Supply.get(1), GT_Recipe.GT_Recipe_Map.sDustWashRecipes.mUnlocalizedName)
     }
 }

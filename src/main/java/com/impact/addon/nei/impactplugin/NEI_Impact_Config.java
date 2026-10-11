@@ -9,6 +9,7 @@ import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
 
 import java.util.Objects;
@@ -80,6 +81,7 @@ public class NEI_Impact_Config implements IConfigureNEI {
 		new HandlerInfoRegister(sMultiblockCentrifugeRecipes, Machine_MultiblockCentrifuge);
 		new HandlerInfoRegister(sFlotationUnitRecipes, Machine_FlotationUnit);
 		new HandlerInfoRegister(sIndustrialPulverizerRecipes, Machine_IndustrialPulverizer);
+		new HandlerInfoRegister(sDustWashRecipes, DustWasherLV);
 		new HandlerInfoRegister(sSawMillVisual, SawMill);
 		new HandlerInfoRegister(sImplosionRecipes, Machine_Multi_ImplosionCompressor);
 		new HandlerInfoRegister(sWireAssemblerRecipes, Machine_LV_WireAssembler);

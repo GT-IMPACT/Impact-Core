@@ -2,9 +2,10 @@ package com.impact.addon.nei.impactplugin
 
 import codechicken.nei.PositionedStack
 import codechicken.nei.recipe.IRecipeHandler
-import com.github.vfyjxf.nee.processor.GregTech5RecipeProcessor.getFluidFromDisplayStack
+
 import com.github.vfyjxf.nee.processor.IRecipeProcessor
 import com.github.vfyjxf.nee.processor.RecipeProcessor
+import com.github.vfyjxf.nee.utils.ItemUtils.getFluidFromDisplayStack
 import com.impact.addon.nei.impactplugin.util.FixedPositionedStack
 import gregtech.api.util.GT_Utility
 
