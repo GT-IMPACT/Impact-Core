@@ -106,9 +106,9 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 		
 		if (reachingVoidOrBedrock()) {
 			if (BiomeDictionary.isBiomeOfType(getBaseMetaTileEntity().getBiome(), OCEAN)) {
-				addOutput(Materials.SaltWater.getFluid((((1L << this.mtier) * 2L) * 20 * 2) * 20));
+				addOutput(Materials.SaltWater.getFluid(getWaterOutputPerTick() * 20));
 			} else {
-				addOutput(GT_ModHandler.getWater((((1L << this.mtier) * 2L) * getWaterInBiomes() * 2) * 20));
+				addOutput(GT_ModHandler.getWater(getWaterOutputPerTick() * 20));
 			}
 		}
 		if (mEfficiency == 10000) {
@@ -140,13 +140,22 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 	}
 	
 	@Override
+	protected int getWaterInBiomes() {
+		return BiomeDictionary.isBiomeOfType(getBaseMetaTileEntity().getBiome(), OCEAN) ? 20 : super.getWaterInBiomes();
+	}
+
+	private long getWaterOutputPerTick() {
+		return (1L << this.mtier) * 2L * getWaterInBiomes() * 2;
+	}
+
+	@Override
 	public String[] getInfoData() {
 		EnumChatFormatting GREEN = EnumChatFormatting.GREEN;
 		EnumChatFormatting RESET = EnumChatFormatting.RESET;
 		EnumChatFormatting YELLOW = EnumChatFormatting.YELLOW;
 		EnumChatFormatting RED = EnumChatFormatting.RED;
 		return new String[]{
-				"Water Drilling: " + YELLOW + (((1 << this.mtier) * 2) * getWaterInBiomes()) + RESET + " L/t",
+				"Water Drilling: " + YELLOW + getWaterOutputPerTick() + RESET + " L/t",
 				"Biome Coefficient: " + GREEN + getWaterInBiomes() + RESET + " L/t",
 				"Usage Energy: " + RED + -mEUt + RESET + " EU/t",
 				"Max Voltage: " + YELLOW + getMaxInputVoltage() + RESET + " EU/t " + YELLOW + VN[GT_Utility.getTier(getMaxInputVoltage())] + RESET,
