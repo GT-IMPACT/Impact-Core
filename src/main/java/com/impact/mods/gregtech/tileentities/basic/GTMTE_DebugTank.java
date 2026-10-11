@@ -1,12 +1,10 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
-import com.impact.util.string.Language;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_StorageTank;
-import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,38 +55,52 @@ public class GTMTE_DebugTank extends GT_MetaTileEntity_StorageTank {
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
 		this.OutputFluid = aNBT.getBoolean("OutputFluid");
+		refill();
 	}
 	
+	private void refill() {
+		if (mFluid != null) mFluid.amount = getCapacity();
+	}
+
+	@Override
+	public FluidStack setFillableStack(FluidStack aFluid) {
+		mFluid = aFluid == null ? null : aFluid.copy();
+		refill();
+		return mFluid;
+	}
+
+	@Override
+	public FluidStack drain(int maxDrain, boolean doDrain) {
+		if (mFluid == null || maxDrain <= 0 || !canTankBeEmptied()) return null;
+		FluidStack drained = mFluid.copy();
+		drained.amount = Math.min(maxDrain, getCapacity());
+		return drained;
+	}
+
+	@Override
+	public boolean isFluidChangingAllowed() {
+		return false;
+	}
+
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		if (aBaseMetaTileEntity.isServerSide()) refill();
+		super.onPreTick(aBaseMetaTileEntity, aTick);
+		if (aBaseMetaTileEntity.isServerSide()) refill();
+	}
+
+	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		this.OutputFluid = true;
-		super.onPostTick(aBaseMetaTileEntity, aTick);
-		if (this.getBaseMetaTileEntity().isServerSide()) {
-			IFluidHandler tTileEntity = aBaseMetaTileEntity
-					.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-			if (tTileEntity != null) {
-				
-				if (this.OutputFluid) {
-					for (boolean temp = true; temp && mFluid != null; ) {
-						mFluid.amount = 1000000;
-						temp          = false;
-						FluidStack tDrained = mFluid.copy();
-						int tFilledAmount = tTileEntity
-								.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-										tDrained, false
-								);
-						if (tFilledAmount > 0) {
-							temp = true;
-							tTileEntity.fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-									aBaseMetaTileEntity
-											.drain(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
-													tFilledAmount, true
-											), true
-							);
-						}
-					}
-				}
-			}
-		}
+		// The storage tank's repeated drain loop cannot terminate for an infinite source.
+		if (!aBaseMetaTileEntity.isServerSide()) return;
+		refill();
+		if (mFluid == null) return;
+		IFluidHandler target = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+		if (target == null) return;
+		ForgeDirection side = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing());
+		int accepted = target.fill(side, mFluid.copy(), false);
+		if (accepted > 0) target.fill(side, drain(accepted, true), true);
 	}
 	
 	@Override
@@ -193,6 +205,6 @@ public class GTMTE_DebugTank extends GT_MetaTileEntity_StorageTank {
 	
 	@Override
 	public int getCapacity() {
-		return 10000000;
+		return 2_000_000_000;
 	}
 }
