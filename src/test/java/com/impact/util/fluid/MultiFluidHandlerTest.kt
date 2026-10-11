@@ -1,7 +1,7 @@
 package com.impact.util.fluid
 
 import appeng.api.config.Actionable
-import appeng.util.item.AEFluidStack
+import appeng.api.storage.data.IAEFluidStack
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch
@@ -221,12 +221,29 @@ class MultiFluidHandlerTest {
             assertNull(hatch.drain(1_000, true))
         }
 
+        /** Моделирует контракт стека AE2 без запуска реестров и блоков всего мода. */
+        private fun aeFluidStack(fluid: FluidStack, amount: Long = fluid.amount.toLong()): IAEFluidStack {
+            var stackSize = amount
+            return Proxy.newProxyInstance(
+                IAEFluidStack::class.java.classLoader,
+                arrayOf(IAEFluidStack::class.java),
+            ) { proxy, method, args ->
+                when (method.name) {
+                    "getStackSize" -> stackSize
+                    "setStackSize" -> { stackSize = args[0] as Long; proxy }
+                    "getFluidStack" -> fluid.copy().apply { this.amount = stackSize.toInt() }
+                    "copy" -> aeFluidStack(fluid, stackSize)
+                    else -> throw AssertionError("Unexpected call: ${method.name}")
+                }
+            } as IAEFluidStack
+        }
+
         /** Проверяет остаток ME-вставки, неизменность входа и явное уничтожение избытка. */
         fun meInsertionReturnsPartialRemainderWithoutVoiding() {
             val tank = tank()
             tank.pushFluid(FluidStack(FluidRegistry.WATER, 63_000), true)
             val hatch = hatch(tank)
-            val input = AEFluidStack.create(FluidStack(FluidRegistry.WATER, 8_000))
+            val input = aeFluidStack(FluidStack(FluidRegistry.WATER, 8_000))
             assertEquals(7_000L, hatch.injectItems(input, Actionable.SIMULATE, null).stackSize)
             assertEquals(63_000, tank.getFluid(0).amount)
             assertEquals(7_000L, hatch.injectItems(input, Actionable.MODULATE, null).stackSize)

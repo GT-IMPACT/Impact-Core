@@ -66,6 +66,8 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    // Интерфейс стеков AE2 ссылается на клиент Minecraft, использующий LWJGL.
+    testRuntimeOnly("org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209")
 }
 
 tasks.test {
