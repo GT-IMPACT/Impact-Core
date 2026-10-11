@@ -19,6 +19,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 	
 	private GuiIntegerBox amount;
+	private boolean amountInitialized;
 	private GuiButton apply;
 	private GuiButton plus1;
 	private GuiButton plus10;
@@ -54,7 +55,18 @@ public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 		amount.setTextColor(16777215);
 		amount.setVisible(true);
 		amount.setFocused(true);
-		amount.setText("64");
+		amountInitialized = false;
+		amount.setText(Integer.toString(((Container_ValueRegulateChest) mContainer).mMaxCapacity));
+	}
+
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+		Container_ValueRegulateChest container = (Container_ValueRegulateChest) mContainer;
+		if (!amountInitialized && container.capacitySynced) {
+			amount.setText(Integer.toString(container.mMaxCapacity));
+			amountInitialized = true;
+		}
 	}
 	
 	protected final void drawGuiContainerBackgroundLayer(float f, int x, int y) {
@@ -64,7 +76,7 @@ public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 		
 		try {
 			Long.parseLong(amount.getText());
-			apply.enabled = (amount.getText().length() > 0);
+			apply.enabled = amountInitialized && (amount.getText().length() > 0);
 		} catch (NumberFormatException e) {
 			apply.enabled = false;
 		}
@@ -105,7 +117,7 @@ public class GUI_ValueRegulateChest extends GT_GUIContainerMetaTile_Machine {
 	
 	protected void actionPerformed(GuiButton btn) {
 		try {
-			if (btn == apply) {
+			if (btn == apply && amountInitialized) {
 				NetworkHandler.sendToServer(
 						(TileEntity) mContainer.mTileEntity,
 						NetworkPackets.StreamPacket.transaction(Integer.parseInt(amount.getText()))

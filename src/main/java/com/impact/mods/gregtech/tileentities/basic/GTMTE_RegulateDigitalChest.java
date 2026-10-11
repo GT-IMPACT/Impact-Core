@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import com.google.common.io.ByteArrayDataInput;
 import com.impact.util.Utilits;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -8,8 +9,10 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import org.jetbrains.annotations.NotNull;
+import space.impact.packet_network.network.packets.IStreamPacketReceiver;
 
-public class GTMTE_RegulateDigitalChest extends GT_MetaTileEntity_DigitalChestBase {
+public class GTMTE_RegulateDigitalChest extends GT_MetaTileEntity_DigitalChestBase implements IStreamPacketReceiver {
 	
 	public static final int MAX_COUNT = 4_000_000;
 	public int mItemCount = 0;
@@ -63,6 +66,14 @@ public class GTMTE_RegulateDigitalChest extends GT_MetaTileEntity_DigitalChestBa
 	public int getMaxItemCount() {
 		return mMaxItemCount;
 	}
+
+	@Override
+	public void receive(@NotNull ByteArrayDataInput data) {
+		if (getBaseMetaTileEntity().isServerSide()) {
+			mMaxItemCount = Math.max(1, Math.min(MAX_COUNT, data.readInt()));
+			getBaseMetaTileEntity().markDirty();
+		}
+	}
 	
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
@@ -79,6 +90,7 @@ public class GTMTE_RegulateDigitalChest extends GT_MetaTileEntity_DigitalChestBa
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		mMaxItemCount = aNBT.getInteger("mMaxItemCount");
+		mMaxItemCount = aNBT.hasKey("mMaxItemCount")
+				? Math.max(1, Math.min(MAX_COUNT, aNBT.getInteger("mMaxItemCount"))) : 64;
 	}
 }
