@@ -36,7 +36,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import javafx.util.Pair;
 import space.gtimpact.virtual_world.api.core.WorldPos;
 import space.gtimpact.virtual_world.api.resources.ores.OreVein;
 import space.gtimpact.virtual_world.api.services.scanning.ores.OreVeinScanResult;

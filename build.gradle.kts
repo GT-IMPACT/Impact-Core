@@ -1,41 +1,31 @@
-import settings.getVersionMod
-
 plugins {
-    alias(libs.plugins.setup.minecraft)
-    alias(libs.plugins.setup.publish)
-    id(libs.plugins.buildconfig.get().pluginId)
+    id("minecraft-setup")
+    id("publish-setup")
 }
 
-val modId: String by extra
-val modName: String by extra
-val modGroup: String by extra
+impactMod {
+    modId.set("impact")
+    modName.set("IMPACT CORE")
+    modGroup.set("com.impact")
+    mavenGroup.set("space.impact")
+    mavenUrl.set("https://maven.accident.space/repository/maven-releases/")
+}
 
-extra.set("modVersion",getVersionMod())
+val modId = impactMod.modId.get()
+val modName = impactMod.modName.get()
+val modGroup = impactMod.modGroup.get()
 
 buildConfig {
     packageName("space.impact.$modId")
     buildConfigField("String", "MODID", "\"${modId}\"")
     buildConfigField("String", "MODNAME", "\"${modName}\"")
-    buildConfigField("String", "VERSION", "\"${getVersionMod()}\"")
+    buildConfigField("String", "VERSION", "\"${project.version}\"")
     buildConfigField("String", "GROUPNAME", "\"${modGroup}\"")
     buildConfigField("boolean", "IS_DEBUG", "${System.getenv("IMPACT_DEBUG") != null}")
-    useKotlinOutput { topLevelConstants = true }
-}
-
-repositories {
-    maven("https://maven.accident.space/repository/maven-public/") {
-        mavenContent {
-            includeGroup("space.impact")
-            includeGroup("com.github.GTNewHorizons")
-            includeGroup("com.github.Azanor")
-            includeGroupByRegex("space\\.impact\\..+")
-        }
-        credentials {
-            username = System.getenv("MAVEN_USER") ?: "NONE"
-            password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
-        }
+    useKotlinOutput {
+        topLevelConstants = true
+        internalVisibility = false
     }
-    mavenLocal()
 }
 
 dependencies {
@@ -66,10 +56,15 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.8.1")
     // Интерфейс стеков AE2 ссылается на клиент Minecraft, использующий LWJGL.
     testRuntimeOnly("org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209")
 }
 
 tasks.test {
     useJUnitPlatform()
+    // Forge 1.7.10 tests require the Java 8 URLClassLoader.
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    })
 }
