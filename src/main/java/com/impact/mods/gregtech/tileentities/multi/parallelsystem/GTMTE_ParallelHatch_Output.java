@@ -157,9 +157,9 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch implemen
 			IGregTechTileEntity dest = PositionObject.getIGregTechTileEntity(te, pos);
 			
 			if (dest != null && dest.getMetaTileEntity() != null && dest.getMetaTileEntity() instanceof IParallelIn) {
-				pin = (IParallelIn) dest.getMetaTileEntity();
-				if (pin.getParallel() == getParallel()) {
-					pin.onConnect(this);
+				IParallelIn target = (IParallelIn) dest.getMetaTileEntity();
+				if (target.getParallel() == getParallel()) {
+					onConnect(target);
 				}
 			}
 		}
@@ -187,16 +187,30 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch implemen
 		machineName = aNBT.getString("machineName");
 		address = aNBT.getString("address");
 		
-		NBTTagCompound parallelIn = aNBT.getCompoundTag("parallelIn");
-		if (parallelIn != null) {
-			pinPos = PositionObject.loadFromNBT(parallelIn);
-		}
+		pinPos = aNBT.hasKey("parallelIn")
+				? PositionObject.loadFromNBT(aNBT.getCompoundTag("parallelIn")) : null;
 	}
 	
 	@Override
 	public void onConnect(@NotNull IParallelIn pin) {
+		if (this.pin != null && this.pin != pin) {
+			IParallelIn previous = this.pin;
+			this.pin = null;
+			previous.onDisconnect();
+		}
 		this.pin = pin;
 		this.pinPos = pin.getPosition();
+		pin.onConnect(this);
+		pin.updateConnectionStatus(isConnected);
+	}
+
+	void disconnect(IParallelIn receiver, boolean forgetPosition) {
+		if (pin == receiver) {
+			onPostDisconnect();
+			if (forgetPosition) {
+				pinPos = null;
+			}
+		}
 	}
 	
 	@Override
@@ -215,8 +229,11 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch implemen
 	public void onPostDisconnect() {
 		machineName = "No target machine";
 		address = "no target address";
-		if (pin != null) {
-			pin.updateConnectionStatus(false);
+		IParallelIn previous = pin;
+		pin = null;
+		updateStatus(false);
+		if (previous != null) {
+			previous.onDisconnect();
 		}
 	}
 	

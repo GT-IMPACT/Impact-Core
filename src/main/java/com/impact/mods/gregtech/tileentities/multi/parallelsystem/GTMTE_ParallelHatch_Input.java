@@ -144,11 +144,11 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch implement
 			IGregTechTileEntity dest = PositionObject.getIGregTechTileEntity(te, pos);
 			
 			if (dest != null && dest.getMetaTileEntity() != null && dest.getMetaTileEntity() instanceof IParallelOut) {
-				pout = (IParallelOut) dest.getMetaTileEntity();
+				IParallelOut target = (IParallelOut) dest.getMetaTileEntity();
 				
-				if (pout.getParallel() == getParallel()) {
-					pout.onConnect(this);
-					pout.updateData(getMachineName(), getMachineAddress());
+				if (target.getParallel() == getParallel()) {
+					target.onConnect(this);
+					onConnect(target);
 					return true;
 				}
 			}
@@ -191,8 +191,10 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch implement
 	
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		mCurrentParallelIn = aNBT.getInteger("mCurrentParallelIn");
-		isConnected = aNBT.getBoolean("isConnected");
+		// A saved flag is not proof of a live transmitter connection.
+		mCurrentParallelIn = 1;
+		isConnected = false;
+		pout = null;
 		machineName = aNBT.getString("machineName");
 		address = aNBT.getString("address");
 	}
@@ -232,8 +234,18 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch implement
 	
 	@Override
 	public void onDisconnect() {
-		if (pout != null) {
-			pout.onPostDisconnect();
+		disconnect(false);
+	}
+
+	private void disconnect(boolean forgetPosition) {
+		IParallelOut previous = pout;
+		pout = null;
+		updateConnectionStatus(false);
+		mCurrentParallelIn = 1;
+		if (previous instanceof GTMTE_ParallelHatch_Output) {
+			((GTMTE_ParallelHatch_Output) previous).disconnect(this, forgetPosition);
+		} else if (previous != null) {
+			previous.onPostDisconnect();
 		}
 	}
 	
@@ -259,6 +271,9 @@ public class GTMTE_ParallelHatch_Input extends GT_MetaTileEntity_Hatch implement
 	
 	@Override
 	public void onConnect(@NotNull IParallelOut pout) {
+		if (this.pout != null && this.pout != pout) {
+			disconnect(true);
+		}
 		this.pout = pout;
 		this.pout.updateData(getMachineName(), getMachineAddress());
 	}
