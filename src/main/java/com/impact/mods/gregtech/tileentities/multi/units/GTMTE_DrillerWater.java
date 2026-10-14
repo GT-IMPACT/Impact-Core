@@ -19,8 +19,6 @@ import static net.minecraftforge.common.BiomeDictionary.Type.OCEAN;
 
 public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 	
-	private int mtier = 0;
- 
 	public GTMTE_DrillerWater(int aID, String aNameRegional) {
 		super(aID, "impact.multimachine.waterdrill", aNameRegional);
 	}
@@ -85,8 +83,8 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 	protected void setElectricityStats() {
 		this.mEfficiencyIncrease = 10000;
 		this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-		this.mtier               = Math.max(0, getTierEnergyHatch());
-		this.mEUt                = -7 << (this.mtier << 1);//(1/4) A of current tier when at bottom (7/8) A of current tier while mining
+		int tier                 = Math.max(0, getTierEnergyHatch());
+		this.mEUt                = -7 << (tier << 1);//(1/4) A of current tier when at bottom (7/8) A of current tier while mining
 		this.mMaxProgresstime    = 20;
 	}
 	
@@ -145,7 +143,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase {
 	}
 
 	private long getWaterOutputPerTick() {
-		return (1L << this.mtier) * 2L * getWaterInBiomes() * 2;
+		return (1L << Math.max(0, getTierEnergyHatch())) * 2L * getWaterInBiomes() * 2;
 	}
 
 	@Override
