@@ -5,9 +5,7 @@ import codechicken.nei.recipe.IRecipeHandler
 
 import com.github.vfyjxf.nee.processor.IRecipeProcessor
 import com.github.vfyjxf.nee.processor.RecipeProcessor
-import com.github.vfyjxf.nee.utils.ItemUtils.getFluidFromDisplayStack
 import com.impact.addon.nei.impactplugin.util.FixedPositionedStack
-import gregtech.api.util.GT_Utility
 
 class RecipeProcessorBase(
     private val idOverlays: Set<String>,
@@ -19,8 +17,8 @@ class RecipeProcessorBase(
 
     private var validClass: Class<*>? = null
 
-    fun hasValidClass(clazz: String): RecipeProcessorBase {
-        validClass = Class.forName(clazz)
+    fun hasValidClass(clazz: Class<out IRecipeHandler>): RecipeProcessorBase {
+        validClass = clazz
         RecipeProcessor.recipeProcessors.add(this)
         return this
     }
@@ -36,7 +34,7 @@ class RecipeProcessorBase(
         validClass?.let { clazz ->
             if (clazz.isInstance(recipe)) {
                 recipeInputs += recipe.getIngredientStacks(recipeIndex)
-                recipeInputs.removeIf { GT_Utility.getFluidFromDisplayStack(it.items[0]) != null || it.item.stackSize == 0 }
+                recipeInputs.removeIf { it.item.stackSize == 0 }
             }
         }
         return recipeInputs
@@ -47,7 +45,6 @@ class RecipeProcessorBase(
         validClass?.let { clazz ->
             if (clazz.isInstance(recipe)) {
                 recipeOutputs += recipe.getOtherStacks(recipeIndex)
-                recipeOutputs.removeIf { getFluidFromDisplayStack(it.items[0]) != null }
                 recipeOutputs.removeIf { it is FixedPositionedStack && it.mChance != 10000 && it.mChance > 0 }
             }
         }
