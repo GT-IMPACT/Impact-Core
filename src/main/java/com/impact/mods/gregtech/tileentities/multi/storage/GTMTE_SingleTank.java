@@ -23,7 +23,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import org.lwjgl.input.Keyboard;
 import space.impact.api.multiblocks.alignment.constructable.IMultiBlockInfoContainer;
 import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
@@ -33,7 +32,6 @@ import space.impact.api.multiblocks.structure.StructureDefinition;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import static com.impact.loader.ItemRegistery.FluidTankBlock;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
@@ -52,10 +50,8 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 	private final Block glassIC2 = IGlassBlock;
 	private final Block CASING = sBlockCasings8;
 	private final Block CASING_TANK = FluidTankBlock;
-	private final byte fluidSelector = 0;
 	private MultiFluidHandler mfh;
 	int CASING_TEXTURE_ID = 176;
-	private int runningCost = 0;
 	private boolean doVoidExcess = false;
 	
 	/**
@@ -319,7 +315,6 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 		);
 		int minCasingAmount = 20;
 		boolean formationChecklist = true; // If this is still true at the end, machine is good to go :)
-		float runningCostAcc = 0;
 		double fluidCapacityAcc = 0;
 		
 		// Front segment
@@ -377,27 +372,21 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING_TANK) {
 							switch (meta) {
 								case 0:
-									runningCostAcc += 1.0f;
 									fluidCapacityAcc += 16000000f; //80kk L
 									break;
 								case 1:
-									runningCostAcc += 2.0f;
 									fluidCapacityAcc += 32000000f; //160kk L
 									break;
 								case 2:
-									runningCostAcc += 4.0f;
 									fluidCapacityAcc += 64000000f; //320kk L
 									break;
 								case 3:
-									runningCostAcc += 8.0f;
 									fluidCapacityAcc += 128000000f; //640kk L
 									break;
 								case 4:
-									runningCostAcc += 16.0f;
 									fluidCapacityAcc += 256000000f; //1.28kkk L
 									break;
 								case 5:
-									runningCostAcc += 32.0f;
 									fluidCapacityAcc += 400000000f; //2kkk L
 									break;
 							}
@@ -480,7 +469,6 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		if (formationChecklist) {
-			runningCost = Math.round(-runningCostAcc);
 			
 			// Update MultiFluidHandler in case storage cells have been changed
 			final int capacityPerFluid = (int) Math.round(fluidCapacityAcc);
@@ -556,25 +544,6 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 				return desc;
 			}
 		});
-	}
-	
-	/**
-	 * Возвращает данные доступных жидкостных слотов; заблокированный бак не раскрывает содержимое.
-	 *
-	 * @return массив сведений о жидкостях или {@code null}, если обработчик отсутствует
-	 */
-	public FluidTankInfo[] getMultiTankInfo() {
-		if (mfh == null) {
-			return null;
-		}
-		
-		final List<FluidStack> fluids = mfh.getFluids();
-		final FluidTankInfo[] tankInfo = new FluidTankInfo[fluids.size()];
-		for (int i = 0; i < tankInfo.length; i++) {
-			tankInfo[i] = new FluidTankInfo(fluids.get(i), mfh.getCapacity());
-		}
-		
-		return tankInfo;
 	}
 	
 	/**
@@ -658,7 +627,6 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 	public void saveNBTData(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
-		nbt.setInteger("runningCost", runningCost);
 		nbt.setBoolean("doVoidExcess", doVoidExcess);
 		
 		if (mfh != null) {
@@ -680,7 +648,6 @@ public class GTMTE_SingleTank extends GT_MetaTileEntity_MultiBlockBase {
 	public void loadNBTData(NBTTagCompound nbt) {
 		nbt = (nbt == null) ? new NBTTagCompound() : nbt;
 		
-		runningCost  = nbt.getInteger("runningCost");
 		doVoidExcess = nbt.getBoolean("doVoidExcess");
 		
 		mfh = new MultiFluidHandler(MAX_DISTINCT_FLUIDS);
