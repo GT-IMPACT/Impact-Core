@@ -10,10 +10,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import static com.impact.util.math.PackUnpackValues.unpackFloat1;
@@ -24,26 +21,16 @@ public class GTC_AdvFluidDetectorRange extends GT_CoverBehavior {
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aTimer % 20 == 0) {
 
-            int tMax = 0;
-            int tUsed = 0;
-
-            if ((aTileEntity instanceof IFluidHandler)) {
-
-                FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
-
-                if (tTank != null) {
-                    FluidStack tLiquid = tTank.fluid;
-                    tMax = tTank.capacity;
-                    if (tLiquid != null) {
-                        tUsed = tLiquid.amount;
-                    }
-                }
+            FluidDetectorTankData tanks = FluidDetectorTankData.read(aTileEntity);
+            if (tanks.capacity == 0) {
+                aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
+                return aCoverVariable;
             }
 
-            int startBound = (int) ((double) unpackFloat1(aCoverVariable) / 100 * tMax);
-            int endBound = (int) ((double) unpackFloat2(aCoverVariable) / 100 * tMax);
+            long startBound = (long) ((double) unpackFloat1(aCoverVariable) / 100 * tanks.capacity);
+            long endBound = (long) ((double) unpackFloat2(aCoverVariable) / 100 * tanks.capacity);
 
-            byte power = (byte) (startBound <= tUsed && tUsed <= endBound ? 15 : 0);
+            byte power = (byte) (startBound <= tanks.amount && tanks.amount <= endBound ? 15 : 0);
 
             aTileEntity.setOutputRedstoneSignal(aSide, power);
         }
@@ -111,8 +98,8 @@ public class GTC_AdvFluidDetectorRange extends GT_CoverBehavior {
         private final int coverID;
         private final GT_GuiIntegerTextBox startBoundValue, startBoundPercent, endBoundValue, endBoundPercent;
 
-        private int coverVariable, maxCapacity;
-        private int valueStart, valueEnd;
+        private int coverVariable;
+        private long maxCapacity, valueStart, valueEnd;
         private float percentStart, percentEnd;
 
         public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
@@ -123,7 +110,6 @@ public class GTC_AdvFluidDetectorRange extends GT_CoverBehavior {
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
-            this.maxCapacity = 1;
             this.startBoundValue = new GT_GuiIntegerTextBox(this, 1, startX, startY + 2, spaceX * 4 - 3, 12);
             this.endBoundValue = new GT_GuiIntegerTextBox(this, 3, startX, startY + 6 + spaceY * 2, spaceX * 4 - 3, 12);
 
@@ -131,24 +117,18 @@ public class GTC_AdvFluidDetectorRange extends GT_CoverBehavior {
             this.startBoundPercent = new GT_GuiIntegerTextBox(this, 2, startX, startY + spaceY + 2, spaceX * 4 - 3, 12);
             this.endBoundPercent = new GT_GuiIntegerTextBox(this, 4, startX, startY + 6 + spaceY * 3, spaceX * 4 - 3, 12);
 
-            if ((aTileEntity instanceof IFluidHandler)) {
-                FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
-                if (tTank != null) {
-                    maxCapacity = tTank.capacity;
-                }
-            }
-//			percentStart = (int) ((double) valueStart / (double) maxCapacity * 100d);
+            this.maxCapacity = FluidDetectorTankData.read(aTileEntity).guiCapacity();
+
             percentStart = unpackFloat1(coverVariable);
             startBoundPercent.setText(String.valueOf(Math.abs((int) percentStart)));
             startBoundPercent.setMaxStringLength(3);
 
-//			percentEnd = (int) ((double) valueEnd / (double) maxCapacity * 100d);
             percentEnd = unpackFloat2(coverVariable);
             endBoundPercent.setText(String.valueOf(Math.abs((int) percentEnd)));
             endBoundPercent.setMaxStringLength(3);
 
-            valueStart = (int) ((double) percentStart / 100 * maxCapacity);
-            valueEnd = (int) ((double) percentEnd / 100 * maxCapacity);
+            valueStart = (long) ((double) percentStart / 100 * maxCapacity);
+            valueEnd = (long) ((double) percentEnd / 100 * maxCapacity);
 
             startBoundValue.setText(String.valueOf(Math.abs(valueStart)));
             startBoundValue.setMaxStringLength(12);
@@ -184,8 +164,9 @@ public class GTC_AdvFluidDetectorRange extends GT_CoverBehavior {
                         return;
                     }
                     i = i + step;
-                    if (i > Integer.MAX_VALUE)
-                        i = Integer.MAX_VALUE;
+                    long maxValue = box.id == 1 || box.id == 3 ? maxCapacity : Integer.MAX_VALUE;
+                    if (i > maxValue)
+                        i = maxValue;
                     else if (i < Integer.MIN_VALUE)
                         i = Integer.MIN_VALUE;
 
@@ -205,31 +186,29 @@ public class GTC_AdvFluidDetectorRange extends GT_CoverBehavior {
                 resetTextBox(box);
                 return;
             }
-            if (i > Integer.MAX_VALUE) {
-                i = Integer.MAX_VALUE;
-            } else if (i < Integer.MIN_VALUE) {
+            if (i < Integer.MIN_VALUE) {
                 i = Integer.MIN_VALUE;
             }
 
             switch (box.id) {
                 case 1:
-                    valueStart = Math.min((int) i, maxCapacity);
+                    valueStart = Math.min(i, maxCapacity);
                     percentStart = (int) ((double) valueStart / (double) maxCapacity * 100d);
                     coverVariable = PackUnpackValues.packFloats(percentStart, percentEnd);
                     break;
                 case 2:
-                    percentStart = Math.min((int) i, 100);
-                    valueStart = (int) ((double) percentStart * (double) maxCapacity / 100d);
+                    percentStart = Math.min(i, 100);
+                    valueStart = (long) ((double) percentStart * (double) maxCapacity / 100d);
                     coverVariable = PackUnpackValues.packFloats(percentStart, percentEnd);
                     break;
                 case 3:
-                    valueEnd = Math.min((int) i, maxCapacity);
+                    valueEnd = Math.min(i, maxCapacity);
                     percentEnd = (int) ((double) valueEnd / (double) maxCapacity * 100d);
                     coverVariable = PackUnpackValues.packFloats(percentStart, percentEnd);
                     break;
                 case 4:
-                    percentEnd = Math.min((int) i, 100);
-                    valueEnd = (int) ((double) percentEnd * (double) maxCapacity / 100d);
+                    percentEnd = Math.min(i, 100);
+                    valueEnd = (long) ((double) percentEnd * (double) maxCapacity / 100d);
                     coverVariable = PackUnpackValues.packFloats(percentStart, percentEnd);
                     break;
             }

@@ -9,47 +9,24 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class GTC_AdvFluidDetectorBound extends GT_CoverBehavior {
 	
 	public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
-		if ((aTileEntity instanceof IFluidHandler)) {
-			int tMax = 0;
-			int tUsed = 0;
-			FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
-			if (tTank != null) {
-				tMax = tTank.capacity;
-				FluidStack tLiquid = tTank.fluid;
-				if (tLiquid != null) {
-					tUsed = tLiquid.amount;
-				}
-			}
-			if (tMax < aCoverVariable) {
-				aCoverVariable = tMax;
-			} else {
-				if (aCoverVariable > 0) {
-					if (tUsed >= aCoverVariable) {
-						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 15);
-					} else {
-						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
-					}
-				} else {
-					int abs = Math.abs(aCoverVariable);
-					if (tUsed <= abs) {
-						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 15);
-					} else {
-						aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
-					}
-				}
-			}
-		} else {
+		FluidDetectorTankData tanks = FluidDetectorTankData.read(aTileEntity);
+		if (tanks.capacity == 0) {
 			aTileEntity.setOutputRedstoneSignal(aSide, (byte) 0);
+			return aCoverVariable;
 		}
+		if (tanks.capacity < aCoverVariable) {
+			aCoverVariable = (int) tanks.capacity;
+		}
+		boolean active = aCoverVariable > 0
+				? tanks.amount >= aCoverVariable
+				: tanks.amount <= Math.abs((long) aCoverVariable);
+		aTileEntity.setOutputRedstoneSignal(aSide, (byte) (active ? 15 : 0));
 		return aCoverVariable;
 	}
 
@@ -114,7 +91,8 @@ public class GTC_AdvFluidDetectorBound extends GT_CoverBehavior {
 		private final byte side;
 		private final int coverID;
 		private final GT_GuiIntegerTextBox fBox, pBox;
-		private int coverVariable, percent, maxCapacity;
+		private int coverVariable, percent;
+		private long maxCapacity;
 		
 		public GUI(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
 			super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
@@ -124,17 +102,11 @@ public class GTC_AdvFluidDetectorBound extends GT_CoverBehavior {
 			this.side          = aSide;
 			this.coverID       = aCoverID;
 			this.coverVariable = aCoverVariable;
-			this.maxCapacity   = 1;
 			this.fBox          = new GT_GuiIntegerTextBox(this, 1, startX, startY + 2, spaceX * 4 - 3, 12);
 			fBox.setText(String.valueOf(Math.abs(coverVariable)));
 			fBox.setMaxStringLength(12);
 			this.pBox = new GT_GuiIntegerTextBox(this, 2, startX, startY + spaceY + 2, spaceX * 4 - 3, 12);
-			if ((aTileEntity instanceof IFluidHandler)) {
-				FluidTankInfo tTank = ((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN)[0];
-				if (tTank != null) {
-					maxCapacity = tTank.capacity;
-				}
-			}
+			this.maxCapacity = FluidDetectorTankData.read(aTileEntity).guiCapacity();
 			percent = (int) ((double) coverVariable / (double) maxCapacity * 100d);
 			pBox.setText(String.valueOf(Math.abs(percent)));
 			pBox.setMaxStringLength(3);
@@ -193,7 +165,7 @@ public class GTC_AdvFluidDetectorBound extends GT_CoverBehavior {
 			}
 			
 			if (box.id == 1) {
-				coverVariable = Math.min((int) i, maxCapacity);
+				coverVariable = (int) Math.min(i, maxCapacity);
 				percent       = (int) ((double) coverVariable / (double) maxCapacity * 100d);
 			} else if (box.id == 2) {
 				percent       = Math.min((int) i, 100);
