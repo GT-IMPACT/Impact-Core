@@ -224,12 +224,12 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
 				.addOutputHatch("hatches.1", "(UV or better)", 2)
 				.addInputBus("hatches.2", "(UV or better)", 1)
 				.addOutputBus("hatches.3", "(UV or better)", 1)
-				.addDynamoHatch("hatches.4", "Back centered", 1)
+				.addDynamoHatch("hatches.4", "(ZPM or better), back centered", 1)
 				.addCasingInfo("case.1", "Radiation Proof Casing", 89)
 				.addCasingInfo("case.5", "Intermix Chamber Casing", 6)
 				.addCasingInfo("case.0", "Magnetic Coil Block", 116)
 				.addCasingInfo("case.2", "Dyson Ring Casing", 60)
-				.addCasingInfo("case.3", "Fusion Machine Casing MK II", 44)
+				.addCasingInfo("case.3", "Fusion Machine Casing MK II", 40)
 				.addCasingInfo("case.4", "Core Chamber Casing", 6)
 				.addHints()
 				.addRedHint("Input Hatch or Intermix Chamber Casing")
@@ -247,6 +247,27 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
 		
 		boolean check = checkPiece(7, 7, 0);
 		
+		for (GT_MetaTileEntity_Hatch_Dynamo mDynamoHatch : this.mDynamoHatches) {
+			if (mDynamoHatch.mTier < 7) { // ZPM
+				check = false;
+				break;
+			}
+		}
+
+		for (GT_MetaTileEntity_Hatch_DynamoMulti mDynamoHatch : this.mDynamoHatchesMulti) {
+			if (mDynamoHatch.mTier < 7) { // ZPM
+				check = false;
+				break;
+			}
+		}
+
+		for (GT_MetaTileEntity_Hatch_DynamoMulti mDynamoHatch : this.mLaserOut) {
+			if (mDynamoHatch.mTier < 7) { // ZPM
+				check = false;
+				break;
+			}
+		}
+
 		for (GT_MetaTileEntity_Hatch_Energy mEnergyHatch : this.mEnergyHatches) {
 			if (mEnergyHatch.mTier < 8) {
 				check = false;
