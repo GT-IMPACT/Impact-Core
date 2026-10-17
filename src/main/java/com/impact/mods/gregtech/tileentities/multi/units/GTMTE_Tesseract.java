@@ -177,35 +177,35 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
 		boolean check = checkPiece(4, 8, 3);
 		
 		for (GT_MetaTileEntity_Hatch_Energy mEnergyHatch : this.mEnergyHatches) {
-			if (mEnergyHatch.mTier < 8) {
+			if (mEnergyHatch.mTier < 9) {
 				check = false;
 				break;
 			}
 		}
 		
 		for (GT_MetaTileEntity_Hatch_InputBus mInputBuss : this.mInputBusses) {
-			if (mInputBuss.mTier < 8) {
+			if (mInputBuss.mTier < 9) {
 				check = false;
 				break;
 			}
 		}
 		
 		for (GT_MetaTileEntity_Hatch_OutputBus mOutputBuss : this.mOutputBusses) {
-			if (mOutputBuss.mTier < 8) {
+			if (mOutputBuss.mTier < 9) {
 				check = false;
 				break;
 			}
 		}
 		
 		for (GT_MetaTileEntity_Hatch_Input mInputHatch : this.mInputHatches) {
-			if (mInputHatch.mTier < 8) {
+			if (mInputHatch.mTier < 9) {
 				check = false;
 				break;
 			}
 		}
 		
 		for (GT_MetaTileEntity_Hatch_Output mOutputHatch : this.mOutputHatches) {
-			if (mOutputHatch.mTier < 8) {
+			if (mOutputHatch.mTier < 9) {
 				check = false;
 				break;
 			}

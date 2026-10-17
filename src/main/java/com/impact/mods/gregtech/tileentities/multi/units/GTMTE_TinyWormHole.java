@@ -174,7 +174,7 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 				.addSeparator()
 				.addController()
 				.sizeStructure(5,7,5)
-				.addInputBus("hatches.0", "(UV or better)", 1)
+				.addInputHatch("hatches.0", "(UV or better)", 1)
 				.addOutputBus("hatches.1", "(UV or better)", 1)
 				.addEnergyHatch("hatches.2", "(UV or better)", 2)
 				.addMaintenanceHatch()
@@ -182,11 +182,11 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 				.addCasingInfo("case.5", "Intermix Chamber Casing", 9)
 				.addCasingInfo("case.1", "Dyson Ring Casing", 20)
 				.addCasingInfo("case.2", "Fusion Casing MKII", 18)
-				.addCasingInfo("case.3", "Fusion Coil Block", 1)
-				.addCasingInfo("case.4", "Core Chamber Casing", 56)
+				.addCasingInfo("case.3", "Core Chamber Casing", 1)
+				.addCasingInfo("case.4", "Reinforced Glass", 56)
 				.addHints()
 				.addRedHint("Output Bus / Energy Hatch / Maintenance or Robust Naquadah Alloy Machine Casing")
-				.addGreenHint("Input Bus or Intermix Chamber Casing")
+				.addGreenHint("Input Hatch or Intermix Chamber Casing")
 				.signAndFinalize();
 		return b;
 	}
