@@ -480,10 +480,10 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
                              IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        String size = "?";
-        if (!tag.getBoolean("incompleteStructure")) {
-            size = GT_Utility.formatNumbers(tag.getInteger("coal_miner.vein"));
+        if (tag.getBoolean("incompleteStructure")) {
+            return;
         }
+        String size = GT_Utility.formatNumbers(tag.getInteger("coal_miner.vein"));
         tooltip.add(translateToLocalFormatted("impact.waila.miner.chunk_size", size));
     }
 

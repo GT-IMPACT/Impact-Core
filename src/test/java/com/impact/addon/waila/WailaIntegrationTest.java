@@ -1,6 +1,7 @@
 package com.impact.addon.waila;
 
 import com.impact.common.te.TE_DryingRack;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.util.fluid.MultiFluidHandler;
@@ -18,6 +19,7 @@ import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.init.Bootstrap;
+import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StringTranslate;
@@ -73,6 +75,11 @@ class WailaIntegrationTest {
         check("tankSynchronizesFluidsAndSkipsUnknownFluid");
     }
 
+    @Test
+    void minerShowsOreRemainingOnlyWhenStructureIsComplete() throws Throwable {
+        check("minerShowsOreRemainingOnlyWhenStructureIsComplete");
+    }
+
     public static class Scenarios {
         public void initialize() {
             Loader.injectData("7", "10", "99", "99", "1.7.10", "9.05", new File("."), Collections.emptyList());
@@ -100,6 +107,24 @@ class WailaIntegrationTest {
             return (IWailaConfigHandler) Proxy.newProxyInstance(
                     IWailaConfigHandler.class.getClassLoader(), new Class<?>[]{IWailaConfigHandler.class},
                     (proxy, method, args) -> false);
+        }
+
+        public void minerShowsOreRemainingOnlyWhenStructureIsComplete() throws Exception {
+            Field hintBlock = Class.forName("space.impact.api.Main").getDeclaredField("blockHint");
+            hintBlock.setAccessible(true);
+            hintBlock.set(null, Blocks.stone);
+            GTMTE_Mining_Coal miner = new GTMTE_Mining_Coal("test");
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setBoolean("incompleteStructure", true);
+            tag.setInteger("coal_miner.vein", 42);
+            List<String> tooltip = new ArrayList<>();
+            tooltip.add("Existing GT tooltip");
+            miner.getWailaBody(null, tooltip, accessor(tag), config());
+            assertEquals(Collections.singletonList("Existing GT tooltip"), tooltip);
+
+            tag.setBoolean("incompleteStructure", false);
+            miner.getWailaBody(null, tooltip, accessor(tag), config());
+            assertEquals("Chunk Size: 42%", tooltip.get(1));
         }
 
         public void rackSynchronizesProgressWithoutSavingInventory() {

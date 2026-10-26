@@ -431,10 +431,10 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                              IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        String size = "?";
-        if (!tag.getBoolean("incompleteStructure")) {
-            size = GT_Utility.formatNumbers(tag.getInteger("adv_miner.vein"));
+        if (tag.getBoolean("incompleteStructure")) {
+            return;
         }
+        String size = GT_Utility.formatNumbers(tag.getInteger("adv_miner.vein"));
         tooltip.add(translateToLocalFormatted("impact.waila.miner.vein_size", size));
         tooltip.add(translateToLocalFormatted("impact.waila.miner.layer", tag.getInteger("adv_miner.layer")));
     }

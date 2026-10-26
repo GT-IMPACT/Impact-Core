@@ -362,10 +362,10 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                              IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        String size = "?";
-        if (!tag.getBoolean("incompleteStructure")) {
-            size = GT_Utility.formatNumbers(tag.getInteger("basic_miner.vein"));
+        if (tag.getBoolean("incompleteStructure")) {
+            return;
         }
+        String size = GT_Utility.formatNumbers(tag.getInteger("basic_miner.vein"));
         tooltip.add(translateToLocalFormatted("impact.waila.miner.chunk_size", size));
         tooltip.add(translateToLocalFormatted("impact.waila.miner.layer", tag.getInteger("basic_miner.layer")));
     }
