@@ -32,9 +32,8 @@ dependencies {
     // impact
     api("space.impact:Packet-network:1.1.8.dirty")
     api("space.impact:ImpactAPI:0.0.4:dev")
-    api("space.impact:WAILAPlugins:0.3.1.dirty:dev")
     api("space.impact:VirtualWorld:2.0.4:dev")
-    api("space.impact:gregtech-impact:5.09.35.38:dev") { isTransitive = false }
+    api("space.impact:gregtech-impact:5.09.35.45:dev") { isTransitive = false }
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
     runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.0.5") { isTransitive = false }
     runtimeOnlyNonPublishable("space.impact:GregTechBridge:1.0.2:dev") { isTransitive = false }
