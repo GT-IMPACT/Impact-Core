@@ -9,6 +9,7 @@ impactMod {
     modGroup.set("com.impact")
     mavenGroup.set("space.impact")
     mavenUrl.set("https://maven.accident.space/repository/maven-releases/")
+    usesMixins.set(true)
 }
 
 val modId = impactMod.modId.get()

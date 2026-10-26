@@ -25,7 +25,6 @@ idea/
 *.psd
 *.patch
 src/main/generated/
-src/main/resources/mixins.*.json
 run/
 runDir/
 .gitattributes
