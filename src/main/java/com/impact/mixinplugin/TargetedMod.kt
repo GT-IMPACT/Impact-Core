@@ -12,6 +12,10 @@ public enum class TargetedMod(private val targetBuilder: TargetModBuilder) : ITa
     GALAXY_SPACE(
         TargetModBuilder()
             .setModId("GalaxySpace"),
+    ),
+    GALACTICRAFT_PLANETS(
+        TargetModBuilder()
+            .setModId("GalacticraftMars"),
     );
 
     override fun getBuilder(): TargetModBuilder {

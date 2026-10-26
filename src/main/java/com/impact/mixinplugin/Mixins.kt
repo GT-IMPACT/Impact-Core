@@ -19,6 +19,16 @@ public enum class Mixins(private val mixinBuilder: MixinBuilder) : IMixins {
             .setApplyIf {
                 true
             },
+    ),
+    TIERED_CANISTER_CAPACITY(
+        MixinBuilder("Preserve T2 and T3 canister capacity when changing fluids")
+            .setPhase(Phase.LATE)
+            .addRequiredMod(TargetedMod.GALACTICRAFT)
+            .addRequiredMod(TargetedMod.GALACTICRAFT_PLANETS)
+            .addCommonMixins("galacticraft.TieredCanisterMixin")
+            .setApplyIf {
+                true
+            },
     );
 
     override fun getBuilder(): MixinBuilder {
