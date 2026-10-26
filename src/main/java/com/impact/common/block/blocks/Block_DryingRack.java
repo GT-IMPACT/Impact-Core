@@ -11,7 +11,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -73,7 +73,7 @@ public class Block_DryingRack extends BlockContainer {
 	
 	@Override
 	public int getRenderBlockPass() {
-		return 1;
+		return 0;
 	}
 	
 	@Override
@@ -83,7 +83,8 @@ public class Block_DryingRack extends BlockContainer {
 		return meta;
 	}
 	
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving living, ItemStack stack) {
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 		int meta = world.getBlockMetadata(x, y, z);
 		if (meta == 0) {
 			int l = MathHelper.floor_double((double) (living.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
@@ -94,13 +95,9 @@ public class Block_DryingRack extends BlockContainer {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		String[] textureNames = getTextureNames();
-		this.icons = new IIcon[textureNames.length];
-		
-		for (int i = 0; i < this.icons.length; ++i) {
-			this.icons[i] = iconRegister.registerIcon(getTextureDomain(i) + ":" + textureNames[i]);
-		}
+		blockIcon = Blocks.planks.getIcon(0, 0);
 	}
 	
 	@Override
