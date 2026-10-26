@@ -1,5 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import gregtech.api.util.GT_Utility;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.Casing_Helper;
@@ -403,4 +414,22 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
 	public boolean hasSeparate() {
 		return false;
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        tooltip.add(translateToLocalFormatted("impact.waila.matrix.particles",
+                GT_Utility.formatNumbers(tag.getInteger("mMPSummary"))));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("mMPSummary", mMPSummary);
+    }
 }

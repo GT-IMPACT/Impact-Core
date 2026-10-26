@@ -1,5 +1,17 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import com.impact.mods.gregtech.tileentities.basic.GTMTE_LongDistancePipelineEnergy;
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.impact.mods.gregtech.blocks.other.GT_Block_LongDistancePipe;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -312,5 +324,46 @@ public abstract class GTMTE_LongDistancePipelineBase extends GT_MetaTileEntity_B
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return new ITexture[0][0][0];
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        final int side = accessor.getSide().ordinal();
+        final int facing = tag.getInteger("facing");
+
+        if (side == facing) {
+            tooltip.add(EnumChatFormatting.GOLD + translateToLocal("impact.waila.pipeline.in") + EnumChatFormatting.RESET);
+        } else if (side == ForgeDirection.OPPOSITES[facing]) {
+            tooltip.add(EnumChatFormatting.BLUE + translateToLocal("impact.waila.pipeline.out") + EnumChatFormatting.RESET);
+        } else {
+            tooltip.add(translateToLocal("impact.waila.pipeline.side"));
+        }
+
+        if (this instanceof GTMTE_LongDistancePipelineEnergy) {
+
+            tooltip.add(tag.getBoolean("pipeline.isSender")
+                    ? EnumChatFormatting.GOLD + translateToLocal("impact.waila.pipeline.sender") + EnumChatFormatting.RESET
+                    : EnumChatFormatting.BLUE + translateToLocal("impact.waila.pipeline.recipient") + EnumChatFormatting.RESET);
+
+            long distance = tag.getLong("pipeline.distance");
+            tooltip.add(translateToLocalFormatted("impact.waila.pipeline.distance",
+                    distance < tag.getInteger("pipeline.minDistance") ? EnumChatFormatting.RED + translateToLocal("impact.waila.pipeline.low_distance") : distance));
+        }
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (this instanceof GTMTE_LongDistancePipelineEnergy) {
+            tag.setLong("pipeline.distance", getDistance());
+            tag.setInteger("pipeline.minDistance", getMinDistance());
+            tag.setBoolean("pipeline.isSender", isSender());
+        }
     }
 }

@@ -1,5 +1,13 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+
 import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
 import static space.impact.api.multiblocks.structure.StructureUtility.*;
@@ -346,5 +354,28 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     @Override
     public boolean hasSeparate() {
         return false;
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        String size = "?";
+        if (!tag.getBoolean("incompleteStructure")) {
+            size = GT_Utility.formatNumbers(tag.getInteger("basic_miner.vein"));
+        }
+        tooltip.add(translateToLocalFormatted("impact.waila.miner.chunk_size", size));
+        tooltip.add(translateToLocalFormatted("impact.waila.miner.layer", tag.getInteger("basic_miner.layer")));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("basic_miner.vein", sizeVeinPreStart);
+        tag.setInteger("basic_miner.layer", layer);
     }
 }

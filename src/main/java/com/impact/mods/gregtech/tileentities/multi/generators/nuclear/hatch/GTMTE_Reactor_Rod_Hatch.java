@@ -1,5 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.nuclear.GT_Container_Reactor_Rod;
 import com.impact.mods.gregtech.gui.nuclear.GT_GUIContainer_Reactor_Rod;
@@ -244,4 +255,34 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 	public boolean isValidSlot(int aIndex) {
 		return true;
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        tooltip.add(translateToLocalFormatted("impact.waila.reactorhatch.id", tag.getInteger("wIDhatch")));
+        tooltip.add(translateToLocalFormatted("impact.waila.reactorhatch.level",
+                EnumChatFormatting.YELLOW.toString() + (tag.getInteger("wDownRod") * 10) + EnumChatFormatting.RESET));
+        ItemStack rod = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("wRod"));
+        if (rod != null) {
+            tooltip.add(EnumChatFormatting.GREEN + rod.getDisplayName());
+        }
+        tooltip.add(translateToLocalFormatted("impact.waila.reactorhatch.decay", EnumChatFormatting.RED.toString()
+                + (tag.getInteger("wSpeedDecay") * tag.getInteger("wDownRod")) + EnumChatFormatting.RESET));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("wIDhatch", mIDhatch + 1);
+        tag.setInteger("wDownRod", mDownRod);
+        if (mStartReactor) tag.setInteger("wSpeedDecay", mSpeedDecay);
+        if (mInventory[0] != null) {
+            tag.setTag("wRod", mInventory[0].writeToNBT(new NBTTagCompound()));
+        }
+    }
 }

@@ -16,6 +16,7 @@ import com.impact.util.Utilits
 import com.impact.util.string.MultiBlockTooltipBuilder
 import com.impact.util.vector.Vector3i
 import com.impact.util.vector.Vector3ic
+import cpw.mods.fml.common.Optional
 import gregtech.api.enums.Materials
 import gregtech.api.enums.Textures
 import gregtech.api.interfaces.ITexture
@@ -24,20 +25,95 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
 import gregtech.api.render.TextureFactory
 import gregtech.api.util.GT_Utility
+import java.util.Arrays
+import java.util.UUID
+import mcp.mobius.waila.api.IWailaConfigHandler
+import mcp.mobius.waila.api.IWailaDataAccessor
 import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.tileentity.TileEntityFurnace
+import net.minecraft.util.EnumChatFormatting
+import net.minecraft.util.StatCollector.translateToLocal
+import net.minecraft.util.StatCollector.translateToLocalFormatted
+import net.minecraft.world.World
 import net.minecraftforge.common.util.ForgeDirection
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
 import space.impact.api.multiblocks.structure.StructureUtility
 import space.impact.packet_network.network.packets.IStreamPacketReceiver
-import java.util.*
 
 class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketReceiver, IAeroStat {
+
+    @Optional.Method(modid = "Waila")
+    public override fun getWailaBody(
+        stack: ItemStack,
+        tooltip: MutableList<String>,
+        accessor: IWailaDataAccessor,
+        config: IWailaConfigHandler,
+    ) {
+        super.getWailaBody(
+            stack,
+            tooltip,
+            accessor,
+            config,
+        )
+        val tag = accessor.nbtData
+        val stationName = tag.getString("aerostatName")
+        if (stationName.isNotEmpty()) {
+            tooltip.add(
+                translateToLocalFormatted(
+                    "impact.waila.aerostat.namestation",
+                    EnumChatFormatting.GOLD.toString() + stationName + EnumChatFormatting.RESET,
+                )
+            )
+        } else {
+            tooltip.add(EnumChatFormatting.RED.toString() + translateToLocal("impact.waila.aerostat.no_valid_station"))
+        }
+
+        val stationOwner = tag.getString("aerostatOwner")
+        if (stationOwner.isNotEmpty()) {
+            tooltip.add(
+                translateToLocalFormatted(
+                    "impact.waila.aerostat.owner",
+                    EnumChatFormatting.GREEN.toString() + stationOwner + EnumChatFormatting.RESET,
+                )
+            )
+        }
+    }
+
+    @Optional.Method(modid = "Waila")
+    public override fun getWailaNBTData(
+        player: EntityPlayerMP,
+        tile: TileEntity,
+        tag: NBTTagCompound,
+        world: World,
+        x: Int,
+        y: Int,
+        z: Int,
+    ) {
+        super.getWailaNBTData(
+            player,
+            tile,
+            tag,
+            world,
+            x,
+            y,
+            z,
+        )
+        tag.setString(
+            "aerostatName",
+            name,
+        )
+        tag.setString(
+            "aerostatOwner",
+            owner,
+        )
+    }
 
     companion object {
         const val MAX_BUFFER = 50_000

@@ -1,5 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.impact.addon.gt.api.parallel_system.IParallelIn;
 import com.impact.addon.gt.api.parallel_system.IParallelOut;
 import com.impact.addon.gt.api.position.IPosition;
@@ -254,4 +265,41 @@ public class GTMTE_ParallelHatch_Output extends GT_MetaTileEntity_Hatch implemen
 		this.address = address;
 		this.machineName = name;
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        String machineKey = tag.getString("ppOutMachineNameKey");
+        String machine = machineKey.isEmpty() ? tag.getString("ppOutMachineName") : translateToLocal(machineKey);
+        tooltip.add(machine.isEmpty() || machine.equals("Not target machine") || machine.equals("No target machine")
+                ? translateToLocal("impact.waila.parallel.no_machine") : machine);
+        String machineAddress = tag.getString("ppOutMachineAddress");
+        if (machineAddress.isEmpty() || machineAddress.equals("no target address")) {
+            machineAddress = translateToLocal("impact.waila.parallel.no_address");
+        }
+        tooltip.add(translateToLocalFormatted("impact.waila.parallel.address",
+                EnumChatFormatting.YELLOW + machineAddress + EnumChatFormatting.RESET));
+        String str = tag.getBoolean("isParallelOUT")
+                ? EnumChatFormatting.GREEN + translateToLocal("impact.waila.connect.yes")
+                : EnumChatFormatting.RED + translateToLocal("impact.waila.connect.no");
+        tooltip.add(str);
+        tooltip.add(translateToLocalFormatted("impact.waila.parallel.point", tag.getInteger("ppHatchOut")));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        final boolean isParallelOUT = isConnected;
+        tag.setBoolean("isParallelOUT", isParallelOUT);
+        tag.setInteger("ppHatchOut", mMaxParallel);
+        tag.setString("ppOutMachineName", machineName == null ? "" : machineName);
+        tag.setString("ppOutMachineNameKey", pin instanceof GTMTE_ParallelHatch_Input
+                ? ((GTMTE_ParallelHatch_Input) pin).getMachineTranslationKey() : "");
+        tag.setString("ppOutMachineAddress", address == null ? "" : address);
+    }
 }

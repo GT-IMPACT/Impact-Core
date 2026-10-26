@@ -92,6 +92,7 @@ public class impact {
 	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		FMLInterModComms.sendMessage("Waila", "register", "com.impact.addon.waila.ImpactPlugin.callbackRegister");
 		mConfig = new Config(new File("config/IMPACT/impact.cfg"));
 		INFO("Config Loaded");
 		

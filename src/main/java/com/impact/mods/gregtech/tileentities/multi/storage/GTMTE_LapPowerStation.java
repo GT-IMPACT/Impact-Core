@@ -1,5 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
 import com.impact.mods.gregtech.blocks.Casing_Helper;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
@@ -512,4 +523,31 @@ public class GTMTE_LapPowerStation extends GT_MetaTileEntity_MultiBlockBase impl
 	public long getMaxCapacity() {
 		return capacity;
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        tooltip.add(translateToLocalFormatted("impact.waila.lsc.stored", EnumChatFormatting.GREEN
+                + NumberFormat.getNumberInstance().format(tag.getLong("Stored")) + EnumChatFormatting.RESET));
+        tooltip.add(translateToLocalFormatted("impact.waila.lsc.capacity", EnumChatFormatting.YELLOW
+                + NumberFormat.getNumberInstance().format(tag.getLong("Capacity")) + EnumChatFormatting.RESET));
+        tooltip.add(translateToLocalFormatted("impact.waila.lsc.in", EnumChatFormatting.GREEN
+                + NumberFormat.getNumberInstance().format(tag.getLong("Input")) + EnumChatFormatting.RESET));
+        tooltip.add(translateToLocalFormatted("impact.waila.lsc.out", EnumChatFormatting.RED
+                + NumberFormat.getNumberInstance().format(tag.getLong("Output")) + EnumChatFormatting.RESET));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("Capacity", capacity);
+        tag.setLong("Stored", stored);
+        tag.setLong("Input", intputLastTick);
+        tag.setLong("Output", outputLastTick);
+    }
 }

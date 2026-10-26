@@ -1,5 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.impact.mods.gregtech.gui.nuclear.GT_Container_NuclearReactor;
 import com.impact.mods.gregtech.gui.nuclear.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
@@ -330,4 +341,37 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 						+ EnumChatFormatting.RESET + " L/t"
 		};
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        int temp = tag.getInteger("reactorTemp");
+        EnumChatFormatting[] color = {
+                EnumChatFormatting.BLUE,
+                EnumChatFormatting.AQUA,
+                EnumChatFormatting.YELLOW,
+                EnumChatFormatting.RED,
+        };
+        String colorTemp = "" + (temp > 75 ? color[3] : temp > 50 ? color[2] : temp > 25 ? color[1] : color[0]) + temp;
+        String str = translateToLocalFormatted("impact.waila.reactor.temp", colorTemp + EnumChatFormatting.RESET);
+        tooltip.add(str);
+        if (tag.getBoolean("wMox")) tooltip.add(color[3] + translateToLocal("impact.waila.reactor.mox"));
+        if (tag.getBoolean("wFastDecay")) tooltip.add(color[2] + translateToLocal("impact.waila.reactor.fastdecay"));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        double tScale = (double) mCurrentTemp / (double) maxTemperature();
+        tScale = tScale <= 0 ? 0 : tScale;
+        int temperature = Math.min(((int) (100 * tScale)), 100);
+        tag.setInteger("reactorTemp", temperature);
+        tag.setBoolean("wMox", isMoxFuel);
+        tag.setBoolean("wFastDecay", isFastDecay);
+    }
 }

@@ -1,5 +1,18 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.impact.addon.gt.api.multis.IMachineParallelRecipe;
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
@@ -179,4 +192,37 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 	public int getMaxParallel() {
 		return mParallel;
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        if (tag.getBoolean("hasShowConnect")) {
+            String str = tag.getBoolean("connectWithTower")
+                    ? EnumChatFormatting.GREEN + translateToLocal("impact.waila.connect.yes")
+                    : EnumChatFormatting.RED + translateToLocal("impact.waila.connect.no");
+            tooltip.add(str);
+
+            if (!(this instanceof GTMTE_ParallelComputer)) {
+                tooltip.add(translateToLocalFormatted("impact.waila.parallel.progress",
+                        tag.getInteger("currentParallel"), tag.getInteger("Parallel")));
+            }
+        }
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (!(this instanceof GTMTE_ParallelComputer)) {
+            final int Parallel = mParallel;
+            tag.setInteger("Parallel", Parallel);
+            tag.setInteger("currentParallel", mCheckParallelCurrent);
+        }
+        tag.setBoolean("hasShowConnect", hasShowConnect());
+        tag.setBoolean("connectWithTower", isSatelliteConnected());
+    }
 }

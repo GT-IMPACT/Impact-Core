@@ -1,5 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.impact.addon.gt.api.parallel_system.INetworkTower;
 import com.impact.addon.gt.api.position.IPosition;
 import com.impact.addon.gt.api.satellite.IConnection;
@@ -277,4 +287,25 @@ public class GTMTE_CommunicationTower_Receiver extends GT_MetaTileEntity_Hatch i
 		this.tower = tower;
 	}
 
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        String str = tag.getBoolean("isActiveTowerReciver")
+                ? EnumChatFormatting.GREEN + translateToLocal("impact.waila.connect.yes")
+                : EnumChatFormatting.RED + translateToLocal("impact.waila.connect.no");
+        tooltip.add(str);
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        final boolean isActiveTowerReciver = isConnected;
+        tag.setBoolean("isActiveTowerReciver", isActiveTowerReciver);
+    }
 }

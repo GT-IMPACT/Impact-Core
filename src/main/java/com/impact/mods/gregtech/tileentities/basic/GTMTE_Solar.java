@@ -1,5 +1,15 @@
 package com.impact.mods.gregtech.tileentities.basic;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
 import com.impact.addon.gc.DimensionsIDs;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
@@ -162,4 +172,22 @@ public class GTMTE_Solar extends GT_MetaTileEntity_BasicGenerator {
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
 		return new GTMTE_Solar(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        tooltip.add(translateToLocalFormatted("impact.waila.energy.generation",
+                GT_Utility.formatNumbers(tag.getInteger("solar.mOutputSalary"))));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("solar.mOutputSalary", (int) maxEUOutput());
+    }
 }

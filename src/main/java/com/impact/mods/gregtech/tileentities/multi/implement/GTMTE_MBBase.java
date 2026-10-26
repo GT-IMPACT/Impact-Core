@@ -1,5 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
@@ -1227,4 +1238,43 @@ public abstract class GTMTE_MBBase extends MetaTileEntity {
       ItemStack aStack) {
     return false;
   }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        if (!config.getConfig("gregtech.multiblock", true)) {
+            return;
+        }
+        if (tag.getBoolean("incompleteStructureImpact")) {
+            tooltip.add(EnumChatFormatting.RED + translateToLocal("impact.waila.multis.incomplete") + EnumChatFormatting.RESET);
+        }
+        String status = tag.getBoolean("hasProblemsImpact")
+                ? EnumChatFormatting.RED + translateToLocal("impact.waila.multis.maintenance")
+                : EnumChatFormatting.GREEN + translateToLocal("impact.waila.multis.running");
+        tooltip.add(translateToLocalFormatted("impact.waila.multis.status", status + EnumChatFormatting.RESET,
+                tag.getFloat("efficiencyImpact")));
+        tooltip.add(translateToLocalFormatted("impact.waila.multis.progress",
+                tag.getInteger("progressImpact"), tag.getInteger("maxProgressImpact")));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        final int problems =
+                getIdealStatus() - getRepairStatus();
+        final float efficiency = mEfficiency / 100.0F;
+        final int progress = mProgresstime / 20;
+        final int maxProgress = mMaxProgresstime / 20;
+
+        tag.setBoolean("hasProblemsImpact", problems > 0);
+        tag.setFloat("efficiencyImpact", efficiency);
+        tag.setInteger("progressImpact", progress);
+        tag.setInteger("maxProgressImpact", maxProgress);
+        tag.setBoolean("incompleteStructureImpact", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+    }
 }

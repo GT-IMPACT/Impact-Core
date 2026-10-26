@@ -1,5 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.impact.addon.gt.api.multis.IMachineRecipe;
 import com.impact.addon.gt.api.multis.ISeparateBus;
@@ -762,4 +772,36 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 	public void setMaxProgressTime(int value) {
 		this.mMaxProgresstime = value;
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        String map = tag.getString("recipe_map_switch");
+        if (!map.isEmpty()) {
+            tooltip.add(translateToLocalFormatted("impact.waila.recipe_map",
+                    EnumChatFormatting.YELLOW + GT_LanguageManager.getTranslation(map) + EnumChatFormatting.RESET));
+        }
+        if (tag.getBoolean("hasSeparate")) {
+            boolean separated = tag.getBoolean("is_separated");
+            tooltip.add(translateToLocalFormatted("impact.waila.separated_mode",
+                    (separated ? EnumChatFormatting.GREEN + translateToLocal("impact.waila.enabled")
+                            : EnumChatFormatting.RED + translateToLocal("impact.waila.disabled")) + EnumChatFormatting.RESET));
+        }
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        GT_Recipe.GT_Recipe_Map map = getRecipeMap();
+        tag.setString("recipe_map_switch", map == null ? "" : map.mUnlocalizedName);
+        tag.setBoolean("hasSeparate", hasSeparate());
+        if (hasSeparate()) {
+            tag.setBoolean("is_separated", isSeparated());
+        }
+    }
 }

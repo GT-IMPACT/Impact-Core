@@ -1,5 +1,15 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import com.impact.util.fluid.MultiFluidHandler;
 import com.impact.util.string.MultiBlockTooltipBuilder;
@@ -736,4 +746,38 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		return false;
 	}
 	
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        int capacity = tag.getInteger("capacityPerFluid");
+        NBTTagCompound fluids = tag.getCompoundTag("fluids");
+        for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
+            FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluids.getCompoundTag(Integer.toString(i)));
+            if (fluid != null) {
+                tooltip.add(translateToLocalFormatted("impact.waila.tank.fluid",
+                        NumberFormat.getNumberInstance().format(fluid.amount),
+                        NumberFormat.getNumberInstance().format(capacity), fluid.getLocalizedName()));
+            }
+        }
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        NBTTagCompound fluids = new NBTTagCompound();
+        if (mfh != null) {
+            tag.setInteger("capacityPerFluid", mfh.getCapacity());
+            int index = 0;
+            for (FluidStack fluid : mfh.fluids) {
+                fluids.setTag(Integer.toString(index++), fluid.writeToNBT(new NBTTagCompound()));
+            }
+        }
+        tag.setTag("fluids", fluids);
+    }
 }

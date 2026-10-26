@@ -11,21 +11,74 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_M
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
 import com.impact.util.multis.GT_StructureUtility.ofHatchAdderOptional
 import com.impact.util.string.MultiBlockTooltipBuilder
+import cpw.mods.fml.common.Optional
 import gregtech.api.enums.Textures
 import gregtech.api.interfaces.ITexture
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
 import gregtech.api.render.TextureFactory
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map
+import mcp.mobius.waila.api.IWailaConfigHandler
+import mcp.mobius.waila.api.IWailaDataAccessor
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumChatFormatting
+import net.minecraft.util.StatCollector.translateToLocalFormatted
+import net.minecraft.world.World
 import space.impact.api.multiblocks.structure.IStructureDefinition
 import space.impact.api.multiblocks.structure.StructureDefinition
 import space.impact.api.multiblocks.structure.StructureUtility
 
 class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESystemProvider> {
+
+    @Optional.Method(modid = "Waila")
+    public override fun getWailaBody(
+        stack: ItemStack,
+        tooltip: MutableList<String>,
+        accessor: IWailaDataAccessor,
+        config: IWailaConfigHandler,
+    ) {
+        super.getWailaBody(
+            stack,
+            tooltip,
+            accessor,
+            config,
+        )
+        tooltip.add(
+            translateToLocalFormatted(
+                "impact.waila.matrix.stored",
+                accessor.nbtData.getInteger("mMP"),
+            )
+        )
+    }
+
+    @Optional.Method(modid = "Waila")
+    public override fun getWailaNBTData(
+        player: EntityPlayerMP,
+        tile: TileEntity,
+        tag: NBTTagCompound,
+        world: World,
+        x: Int,
+        y: Int,
+        z: Int,
+    ) {
+        super.getWailaNBTData(
+            player,
+            tile,
+            tag,
+            world,
+            x,
+            y,
+            z,
+        )
+        tag.setInteger(
+            "mMP",
+            mMatrixParticlesSummary,
+        )
+    }
 
     companion object {
         private val CASING_META: Int = Build_Casing_Helper.ME_CASING.meta

@@ -1,5 +1,14 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.green;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import cpw.mods.fml.common.Optional;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+
 import com.impact.common.item.ITieredDamagedItems;
 import com.impact.common.te.TE_WindMill;
 import com.impact.loader.ItemRegistery;
@@ -250,4 +259,25 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
 	public boolean hasSeparate() {
 		return false;
 	}
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        tooltip.add(translateToLocalFormatted("impact.waila.energy.generation",
+                GT_Utility.formatNumbers(tag.getInteger("wind_generator.mOutputSalary"))));
+        tooltip.add(translateToLocalFormatted("impact.waila.energy.buffer",
+                GT_Utility.formatNumbers(tag.getInteger("wind_generator.mCapacity")), GT_Utility.formatNumbers(1_000_000)));
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
+                                World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("wind_generator.mOutputSalary", mOutputSalary);
+        tag.setInteger("wind_generator.mCapacity", mCapacity);
+    }
 }
