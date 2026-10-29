@@ -3,6 +3,10 @@ package com.impact.util.fluid;
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.storage.ICellWorkbenchItem;
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IAEStack;
+import appeng.tile.inventory.IAEStackInventory;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -164,11 +168,18 @@ public class MultiFluidHandler {
             }
           }
 
-          final IInventory config = cwi.getConfigInventory(item);
+          // Legacy IInventory скрывает жидкостные записи современных ячеек AE2.
+          final IAEStackInventory config = cwi.getConfigAEInventory(item);
           for (int x = 0; x < config.getSizeInventory(); x++) {
-            final ItemStack is = config.getStackInSlot(x);
-            if (is == null) { continue; }
-            final FluidStack fluidStack = GT_Utility.getFluidForFilledItem(is, true);
+            final IAEStack<?> configured = config.getAEStackInSlot(x);
+            final FluidStack fluidStack;
+            if (configured instanceof IAEFluidStack) {
+              fluidStack = ((IAEFluidStack) configured).getFluidStack();
+            } else if (configured instanceof IAEItemStack) {
+              fluidStack = GT_Utility.getFluidForFilledItem(((IAEItemStack) configured).getItemStack(), true);
+            } else {
+              continue;
+            }
             if (fluidStack != null) {
               fluidList.add(new FluidStack(fluidStack.getFluid(), 0));
             }

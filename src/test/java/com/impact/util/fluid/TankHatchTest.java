@@ -3,6 +3,9 @@ package com.impact.util.fluid;
 import appeng.api.AEApi;
 import appeng.api.IAppEngApi;
 import appeng.api.config.Actionable;
+import appeng.api.config.FuzzyMode;
+import appeng.api.config.Upgrades;
+import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridBlock;
@@ -10,9 +13,12 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCellArrayUpdate;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.StorageChannel;
+import appeng.api.storage.ICellWorkbenchItem;
 import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEStackType;
 import appeng.api.storage.data.IItemList;
 import appeng.core.api.ApiStorage;
+import appeng.tile.inventory.IAEStackInventory;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
@@ -25,6 +31,10 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Config;
 import net.minecraft.init.Bootstrap;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
@@ -40,6 +50,9 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import gregtech.api.util.GT_Utility;
 import org.junit.jupiter.api.*;
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
@@ -121,6 +134,15 @@ class TankHatchTest {
     }
     @Test void proxyLoadsBeforeReadyAndRestartsAfterUnload() throws Throwable {
         check("proxyLoadsBeforeReadyAndRestartsAfterUnload");
+    }
+    @Test void configuredFluidCellAllowsMeInsertionInBothControllers() throws Throwable {
+        check("configuredFluidCellAllowsMeInsertionInBothControllers");
+    }
+    @Test void fluidCellSupportsMultipleEntriesAndInverter() throws Throwable {
+        check("fluidCellSupportsMultipleEntriesAndInverter");
+    }
+    @Test void configuredContainersAndDirectContainersStillFilter() throws Throwable {
+        check("configuredContainersAndDirectContainersStillFilter");
     }
 
     public static class Scenarios {
@@ -430,12 +452,92 @@ class TankHatchTest {
             assertEquals(42, reloaded.getCompoundTag("proxy").getInteger("testOwner"));
         }
 
+        public void configuredFluidCellAllowsMeInsertionInBothControllers() throws Exception {
+            for (boolean multi : new boolean[]{false, true}) {
+                Harness h = new Harness(multi);
+                Hatch hatch = h.hatch(new Network(), 0);
+                ConfiguredCell cell = new ConfiguredCell();
+                IAEFluidStack sample = GTMTE_TankHatch.createAEFluidStack(water(1_000));
+                cell.config.putAEStackInSlot(0, sample);
+                ItemStack filter = new ItemStack(cell);
+                assertNull(cell.getConfigInventory(filter).getStackInSlot(0), "Старый API не видит жидкостную запись");
+                if (multi) ((GTMTE_MultiTank) h.owner).checkRecipe(filter);
+                else ((GTMTE_SingleTank) h.owner).checkRecipe(filter);
+                IAEFluidStack input = GTMTE_TankHatch.createAEFluidStack(water(2_000));
+                IAEFluidStack refused = GTMTE_TankHatch.createAEFluidStack(FluidRegistry.LAVA, 2_000);
+                assertNull(hatch.injectItems(input, Actionable.SIMULATE, null));
+                assertEquals(0, h.storage.getFluid(0).amount);
+                assertNull(hatch.injectItems(input, Actionable.MODULATE, null));
+                assertSame(refused, hatch.injectItems(refused, Actionable.MODULATE, null));
+                assertEquals(2_000, h.storage.getFluid(0).amount);
+                assertEquals(1_000, sample.getStackSize(), "Образец фильтра не расходуется");
+                MultiFluidHandler restored = new MultiFluidHandler(multi ? 25 : 1);
+                restored.loadNBTData(h.storage.saveNBTData(null));
+                restored.setLock(false);
+                assertEquals(100, restored.pushFluid(water(100), true));
+                assertEquals(0, restored.pushFluid(new FluidStack(FluidRegistry.LAVA, 100), true));
+            }
+        }
+
+        public void fluidCellSupportsMultipleEntriesAndInverter() throws Exception {
+            Harness h = new Harness(true);
+            Hatch hatch = h.hatch(new Network(), 0);
+            ConfiguredCell cell = new ConfiguredCell();
+            cell.config.putAEStackInSlot(0, GTMTE_TankHatch.createAEFluidStack(water(1_000)));
+            cell.config.putAEStackInSlot(1, GTMTE_TankHatch.createAEFluidStack(FluidRegistry.LAVA, 1_000));
+            FluidRegistry.registerFluid(new Fluid("tank_filter_unlisted"));
+            IAEFluidStack unlisted = GTMTE_TankHatch.createAEFluidStack(FluidRegistry.getFluid("tank_filter_unlisted"), 500);
+            ItemStack filter = new ItemStack(cell);
+            ((GTMTE_MultiTank) h.owner).checkRecipe(filter);
+            assertNull(hatch.injectItems(GTMTE_TankHatch.createAEFluidStack(water(500)), Actionable.MODULATE, null));
+            assertNull(hatch.injectItems(GTMTE_TankHatch.createAEFluidStack(FluidRegistry.LAVA, 500), Actionable.MODULATE, null));
+            assertSame(unlisted, hatch.injectItems(unlisted, Actionable.MODULATE, null));
+            cell.upgrades.setInventorySlotContents(0, new ItemStack(new InverterCard()));
+            ((GTMTE_MultiTank) h.owner).checkRecipe(filter);
+            assertFalse(hatch.canAccept(GTMTE_TankHatch.createAEFluidStack(water(1))));
+            assertFalse(hatch.canAccept(GTMTE_TankHatch.createAEFluidStack(FluidRegistry.LAVA, 1)));
+            assertNull(hatch.injectItems(unlisted, Actionable.MODULATE, null));
+            h.storage.setFilterFluids(null);
+            assertTrue(hatch.canAccept(GTMTE_TankHatch.createAEFluidStack(water(1))));
+        }
+
+        public void configuredContainersAndDirectContainersStillFilter() {
+            ItemStack bucket = new ItemStack(Items.water_bucket);
+            GT_Utility.addFluidContainerData(new FluidContainerRegistry.FluidContainerData(
+                    water(1_000), bucket, new ItemStack(Items.bucket)));
+            ConfiguredCell cell = new ConfiguredCell();
+            cell.config.putAEStackInSlot(0, AEApi.instance().storage().createItemStack(bucket));
+            for (ItemStack filter : new ItemStack[]{bucket, new ItemStack(cell)}) {
+                MultiFluidHandler tank = new MultiFluidHandler(64_000, 25);
+                tank.setLock(false);
+                tank.setFilterFluids(filter);
+                assertEquals(1_000, tank.pushFluid(water(1_000), true));
+                assertEquals(0, tank.pushFluid(new FluidStack(FluidRegistry.LAVA, 1_000), true));
+                assertSame(Items.water_bucket, bucket.getItem());
+            }
+        }
+
         private static FluidStack water(int amount) { return new FluidStack(FluidRegistry.WATER, amount); }
         private static void setField(Class<?> type, Object owner, String name, Object value) throws Exception {
             Field field = type.getDeclaredField(name);
             field.setAccessible(true);
             field.set(owner, value);
         }
+    }
+
+    public static class ConfiguredCell extends Item implements ICellWorkbenchItem {
+        final IAEStackInventory config = new IAEStackInventory(null, 63);
+        final IInventory upgrades = new InventoryBasic("test.cell.upgrades", false, 2);
+        @Override public boolean isEditable(ItemStack stack) { return true; }
+        @Override public IInventory getUpgradesInventory(ItemStack stack) { return upgrades; }
+        @Override public IAEStackInventory getConfigAEInventory(ItemStack stack) { return config; }
+        @Override public IAEStackType<?> getStackType() { return null; }
+        @Override public FuzzyMode getFuzzyMode(ItemStack stack) { return FuzzyMode.IGNORE_ALL; }
+        @Override public void setFuzzyMode(ItemStack stack, FuzzyMode mode) {}
+    }
+
+    public static class InverterCard extends Item implements IUpgradeModule {
+        @Override public Upgrades getType(ItemStack stack) { return Upgrades.INVERTER; }
     }
 
     public static class Harness {
