@@ -12,17 +12,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
-
 @SideOnly(Side.CLIENT)
 public class TESR_WindMill extends TileEntitySpecialRenderer {
 	
-	private Model_Rotor model;
+	// Keep the model alive so ModelRenderer reuses its OpenGL display lists.
+	private final Model_Rotor model = new Model_Rotor(12 * 3 * 2);
+	private final ResourceLocation texture = new ResourceLocation(model.getRenderTexture());
 	
 	public void renderBlockRotor(TE_WindMill tileEntity, World world, int posX, int posY, int posZ) {
 		if (tileEntity == null) return;
 		if (!tileEntity.hasRotorHidden()) {
-			model = new Model_Rotor(12 * 3 * 2);
 			Tessellator tessellator = Tessellator.instance;
 			float brightness = world.getBlockLightValue(posX, posY, posZ);
 			int skyBrightness = world.getLightBrightnessForSkyBlocks(posX, posY + 2, posZ, 0);
@@ -47,9 +46,9 @@ public class TESR_WindMill extends TileEntitySpecialRenderer {
 				GL11.glRotatef(360 - System.currentTimeMillis() / speed % 360, 1.0F, 0.0F, 0.0F);
 			}
 			GL11.glTranslatef(-0.25F, 0.0F, 0.0F);
-			bindTexture(new ResourceLocation(model.getRenderTexture()));
-			Color color = new Color(tileEntity.getRGB(), false);
-			GL11.glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+			bindTexture(texture);
+			int color = tileEntity.getRGB();
+			GL11.glColor3f((color >> 16 & 255) / 255f, (color >> 8 & 255) / 255f, (color & 255) / 255f);
 			model.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
 		}
