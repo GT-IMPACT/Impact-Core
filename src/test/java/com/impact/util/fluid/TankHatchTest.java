@@ -52,6 +52,8 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -67,6 +69,7 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldSettings;
@@ -206,6 +209,21 @@ class TankHatchTest {
     @Test
     void configuredContainersAndDirectContainersStillFilter() throws Throwable {
         check("configuredContainersAndDirectContainersStillFilter");
+    }
+
+    @Test
+    void wailaShowsCurrentReservationsWithoutChangingStorage() throws Throwable {
+        check("wailaShowsCurrentReservationsWithoutChangingStorage");
+    }
+
+    @Test
+    void wailaMergesStoredFluidsAndExcludesBlacklistReservations() throws Throwable {
+        check("wailaMergesStoredFluidsAndExcludesBlacklistReservations");
+    }
+
+    @Test
+    void wailaShowsCapsuleReservationBeforeTankFormation() throws Throwable {
+        check("wailaShowsCapsuleReservationBeforeTankFormation");
     }
 
     public static class Scenarios {
@@ -595,6 +613,131 @@ class TankHatchTest {
                 assertEquals(0, tank.pushFluid(new FluidStack(FluidRegistry.LAVA, 1_000), true));
                 assertSame(Items.water_bucket, bucket.getItem());
             }
+        }
+
+        public void wailaShowsCurrentReservationsWithoutChangingStorage() {
+            for (boolean multi : new boolean[] { false, true }) {
+                Harness h = new Harness(multi);
+                ConfiguredCell cell = new ConfiguredCell();
+                cell.config.putAEStackInSlot(0, GTMTE_TankHatch.createAEFluidStack(water(0)));
+                h.owner.mInventory[1] = new ItemStack(cell);
+                h.controller.setActive(false);
+                h.storage.setLock(true);
+                int[] changes = { 0 };
+                h.storage.addFluidWatcher((fluid, amount) -> {
+                    changes[0]++;
+                });
+                NBTTagCompound before = h.storage.saveNBTData(null);
+                h.world.chunk.isModified = false;
+
+                NBTTagCompound tag = wailaData(h);
+                assertEquals(1, tag.getInteger("tankFluidCount"));
+                FluidStack displayed = FluidStack
+                        .loadFluidStackFromNBT(tag.getCompoundTag("fluids").getCompoundTag("0"));
+                assertSame(FluidRegistry.WATER, displayed.getFluid());
+                assertEquals(0, displayed.amount);
+                assertEquals(64_000, tag.getInteger("capacityPerFluid"));
+
+                try {
+                    StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/en_US.lang"));
+                    List<String> english = wailaTooltip(h, tag);
+                    assertEquals(1, english.size());
+                    assertTrue(english.get(0).startsWith("0 L / "));
+                    assertTrue(english.get(0).endsWith("(reserved)"));
+
+                    StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/ru_RU.lang"));
+                    List<String> russian = wailaTooltip(h, tag);
+                    assertEquals(1, russian.size());
+                    assertTrue(russian.get(0).startsWith("0 л / "));
+                    assertTrue(russian.get(0).endsWith("(зарезервировано)"));
+                } finally {
+                    StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/en_US.lang"));
+                }
+
+                assertEquals(before, h.storage.saveNBTData(null));
+                assertEquals(0, changes[0], "Чтение Waila не должно уведомлять ME об изменении жидкости");
+                assertFalse(h.world.chunk.isModified);
+                assertTrue(h.storage.fluids.isEmpty(), "Подсказка не должна создавать слоты хранилища");
+            }
+        }
+
+        public void wailaMergesStoredFluidsAndExcludesBlacklistReservations() {
+            StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/en_US.lang"));
+            for (boolean multi : new boolean[] { false, true }) {
+                Harness h = new Harness(multi);
+                h.storage.pushFluid(water(1_000), true);
+                if (multi) {
+                    h.storage.fluids.add(new FluidStack(FluidRegistry.LAVA, 0));
+                }
+                ConfiguredCell cell = new ConfiguredCell();
+                cell.config.putAEStackInSlot(0, GTMTE_TankHatch.createAEFluidStack(water(1_000)));
+                cell.config.putAEStackInSlot(1, GTMTE_TankHatch.createAEFluidStack(FluidRegistry.LAVA, 1_000));
+                h.owner.mInventory[1] = new ItemStack(cell);
+
+                List<String> tooltip = wailaTooltip(h, wailaData(h));
+                assertEquals(2, tooltip.size(), "Фильтр не должен дублировать уже хранящуюся жидкость");
+                assertTrue(tooltip.get(0).contains(water(0).getLocalizedName()));
+                assertFalse(tooltip.get(0).endsWith("(reserved)"));
+                assertTrue(tooltip.get(1).contains(new FluidStack(FluidRegistry.LAVA, 0).getLocalizedName()));
+                assertTrue(tooltip.get(1).endsWith("(reserved)"));
+
+                cell.upgrades.setInventorySlotContents(0, new ItemStack(new InverterCard()));
+                tooltip = wailaTooltip(h, wailaData(h));
+                assertEquals(1, tooltip.size());
+                assertFalse(tooltip.get(0).endsWith("(reserved)"));
+
+                h.owner.mInventory[1] = null;
+                tooltip = wailaTooltip(h, wailaData(h));
+                assertEquals(1, tooltip.size(), "Пустые слоты без фильтра не являются резервом");
+            }
+        }
+
+        public void wailaShowsCapsuleReservationBeforeTankFormation() throws Exception {
+            GT_Utility.addFluidContainerData(new FluidContainerRegistry.FluidContainerData(water(1_000),
+                    new ItemStack(Items.water_bucket), new ItemStack(Items.bucket)));
+            StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/en_US.lang"));
+            for (boolean multi : new boolean[] { false, true }) {
+                Harness h = new Harness(multi);
+                setField(multi ? GTMTE_MultiTank.class : GTMTE_SingleTank.class, h.owner, "mfh", null);
+                ItemStack bucket = new ItemStack(Items.water_bucket);
+                h.owner.mInventory[1] = bucket;
+
+                NBTTagCompound tag = wailaData(h);
+                assertEquals(0, tag.getInteger("capacityPerFluid"));
+                assertEquals(1, tag.getInteger("tankFluidCount"));
+                List<String> tooltip = wailaTooltip(h, tag);
+                assertEquals(1, tooltip.size());
+                assertTrue(tooltip.get(0).startsWith("0 L / 0 L: "));
+                assertTrue(tooltip.get(0).endsWith("(reserved)"));
+                assertNull(((IMultiFluidTank) h.owner).getMultiFluidHandler());
+                assertSame(bucket, h.owner.mInventory[1]);
+                assertSame(Items.water_bucket, bucket.getItem());
+            }
+        }
+
+        private static NBTTagCompound wailaData(Harness h) {
+            NBTTagCompound tag = new NBTTagCompound();
+            h.owner.getWailaNBTData(null, h.controller, tag, h.world, 32, 64, 0);
+            return tag;
+        }
+
+        private static List<String> wailaTooltip(Harness h, NBTTagCompound tag) {
+            IWailaDataAccessor accessor = (IWailaDataAccessor) Proxy.newProxyInstance(
+                    IWailaDataAccessor.class.getClassLoader(), new Class<?>[] { IWailaDataAccessor.class },
+                    (proxy, method, args) -> {
+                        if (method.getName().equals("getNBTData")) {
+                            return tag;
+                        }
+                        throw new AssertionError("Unexpected Waila accessor call: " + method.getName());
+                    });
+            IWailaConfigHandler config = (IWailaConfigHandler) Proxy.newProxyInstance(
+                    IWailaConfigHandler.class.getClassLoader(), new Class<?>[] { IWailaConfigHandler.class },
+                    (proxy, method, args) -> {
+                        return false;
+                    });
+            List<String> tooltip = new ArrayList<>();
+            h.owner.getWailaBody(null, tooltip, accessor, config);
+            return tooltip;
         }
 
         private static FluidStack water(int amount) {

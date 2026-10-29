@@ -529,6 +529,7 @@ impact.waila.matrix.particles=%s particles
 impact.waila.matrix.stored=Matrix Particles: %s U
 impact.waila.drying_rack.progress=%s / %s s
 impact.waila.tank.fluid=%s L / %s L: %s
+impact.waila.tank.reserved=%s L / %s L: %s (reserved)
 impact.waila.connect.yes=Connection Established
 impact.waila.connect.no=No Connection
 impact.waila.pipeline.in=Pipeline Input

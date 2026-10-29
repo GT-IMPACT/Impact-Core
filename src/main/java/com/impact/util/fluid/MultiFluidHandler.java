@@ -15,6 +15,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -50,6 +51,30 @@ public class MultiFluidHandler {
         return new ArrayList<>(watchers);
     }
 
+    /** Снимок содержимого и текущего белого списка без создания слотов и изменения рабочего фильтра. */
+    public static List<FluidStack> getDisplayFluids(List<FluidStack> storedFluids, ItemStack filterItem) {
+        FluidFilter displayFilter = new FluidFilter();
+        displayFilter.setFilter(new ItemStack[] { filterItem });
+
+        List<FluidStack> displayFluids = new ArrayList<>();
+        HashSet<Fluid> displayedTypes = new HashSet<>();
+        for (FluidStack fluid : storedFluids) {
+            if (fluid != null && fluid.amount > 0) {
+                displayFluids.add(fluid.copy());
+                displayedTypes.add(fluid.getFluid());
+            }
+        }
+
+        if (!displayFilter.block) {
+            for (FluidStack fluid : displayFilter.fluidList) {
+                if (displayedTypes.add(fluid.getFluid())) {
+                    displayFluids.add(new FluidStack(fluid.getFluid(), 0));
+                }
+            }
+        }
+        return displayFluids;
+    }
+
     public void setCapacity(int capacity) {
         if (capacityPerFluid == capacity) {
             return;
@@ -68,7 +93,7 @@ public class MultiFluidHandler {
     /**
      * Разрешающий или запрещающий список типов жидкостей, заданный предметами контроллера.
      */
-    private class FluidFilter {
+    private static class FluidFilter {
         private final int MAX_FILTERED_FLUIDS = 64;
 
         public HashSet<FluidStack> fluidList = new HashSet<>();

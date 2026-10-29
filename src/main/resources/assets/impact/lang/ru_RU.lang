@@ -522,6 +522,7 @@ impact.waila.matrix.particles=%s частиц
 impact.waila.matrix.stored=Матричные частицы: %s ед.
 impact.waila.drying_rack.progress=%s / %s с
 impact.waila.tank.fluid=%s л / %s л: %s
+impact.waila.tank.reserved=%s л / %s л: %s (зарезервировано)
 impact.waila.connect.yes=Соединение установлено
 impact.waila.connect.no=Нет соединения
 impact.waila.pipeline.in=Вход трубопровода

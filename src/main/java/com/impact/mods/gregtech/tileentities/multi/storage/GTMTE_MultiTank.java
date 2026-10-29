@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.storage;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -792,12 +793,14 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
         NBTTagCompound tag = accessor.getNBTData();
         int capacity = tag.getInteger("capacityPerFluid");
         NBTTagCompound fluids = tag.getCompoundTag("fluids");
-        for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
+        int fluidCount = tag.hasKey("tankFluidCount") ? tag.getInteger("tankFluidCount") : MAX_DISTINCT_FLUIDS;
+        for (int i = 0; i < fluidCount; i++) {
             FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluids.getCompoundTag(Integer.toString(i)));
             if (fluid != null) {
-                tooltip.add(translateToLocalFormatted("impact.waila.tank.fluid",
-                        NumberFormat.getNumberInstance().format(fluid.amount),
-                        NumberFormat.getNumberInstance().format(capacity), fluid.getLocalizedName()));
+                String translationKey = fluid.amount == 0 ? "impact.waila.tank.reserved" : "impact.waila.tank.fluid";
+                tooltip.add(
+                        translateToLocalFormatted(translationKey, NumberFormat.getNumberInstance().format(fluid.amount),
+                                NumberFormat.getNumberInstance().format(capacity), fluid.getLocalizedName()));
             }
         }
     }
@@ -808,12 +811,13 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements
             int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         NBTTagCompound fluids = new NBTTagCompound();
-        if (mfh != null) {
-            tag.setInteger("capacityPerFluid", mfh.getCapacity());
-            int index = 0;
-            for (FluidStack fluid : mfh.fluids) {
-                fluids.setTag(Integer.toString(index++), fluid.writeToNBT(new NBTTagCompound()));
-            }
+        List<FluidStack> displayFluids = MultiFluidHandler
+                .getDisplayFluids(mfh == null ? Collections.emptyList() : mfh.fluids, mInventory[1]);
+        tag.setInteger("capacityPerFluid", mfh == null ? 0 : mfh.getCapacity());
+        tag.setInteger("tankFluidCount", displayFluids.size());
+        int index = 0;
+        for (FluidStack fluid : displayFluids) {
+            fluids.setTag(Integer.toString(index++), fluid.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("fluids", fluids);
     }
