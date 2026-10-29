@@ -27,7 +27,33 @@ public class MultiFluidHandler {
 
   public boolean voidExcess = false;
 
-  public List<IMultiFluidWatcher> watchers = new ArrayList<>();
+  private final List<IMultiFluidWatcher> watchers = new ArrayList<>();
+  private Runnable storageChangeListener = () -> {};
+
+  public void setStorageChangeListener(Runnable listener) {
+    storageChangeListener = listener;
+  }
+
+  public void markDirty() {
+    storageChangeListener.run();
+  }
+
+  public List<IMultiFluidWatcher> getFluidWatchers() {
+    return new ArrayList<>(watchers);
+  }
+
+  public void setCapacity(int capacity) {
+    if (capacityPerFluid == capacity) return;
+    capacityPerFluid = capacity;
+    markDirty();
+    notifyStateChange();
+  }
+
+  private void notifyStateChange() {
+    for (IMultiFluidWatcher watcher : getFluidWatchers()) {
+      watcher.onMultiFluidStateChange();
+    }
+  }
 
   public FluidFilter filter = new FluidFilter();
 
@@ -197,7 +223,9 @@ public class MultiFluidHandler {
    * @param state {@code true} для запрета чтения, вставки и извлечения жидкостей
    */
   public void setLock(boolean state) {
+    if (locked == state) return;
     locked = state;
+    notifyStateChange();
   }
 
   /**
@@ -207,7 +235,9 @@ public class MultiFluidHandler {
    * @param is предмет фильтра или {@code null} для снятия ограничений
    */
   public void setFilterFluids(ItemStack is) {
+    NBTTagCompound previous = filter.saveNBTData(null);
     filter.setFilter(new ItemStack[]{is});
+    if (previous.equals(filter.saveNBTData(null))) return;
 
     // Add/remove empty fluids.
     boolean lastLocked = locked;
@@ -221,6 +251,8 @@ public class MultiFluidHandler {
       }
     }
     locked = lastLocked;
+    markDirty();
+    notifyStateChange();
   }
 
   /**
@@ -229,7 +261,10 @@ public class MultiFluidHandler {
    * @param state {@code true} для уничтожения принимаемого избытка
    */
   public void setVoidExcess(boolean state) {
+    if (voidExcess == state) return;
     voidExcess = state;
+    markDirty();
+    notifyStateChange();
   }
 
   /**
@@ -247,7 +282,7 @@ public class MultiFluidHandler {
    * @param watcher наблюдатель за изменениями жидкостей
    */
   public void addFluidWatcher(IMultiFluidWatcher watcher) {
-    watchers.add(watcher);
+    if (!watchers.contains(watcher)) watchers.add(watcher);
   }
 
   /**
@@ -257,7 +292,8 @@ public class MultiFluidHandler {
    * @param newAmount новое количество жидкости в хранилище; ноль означает опустошение
    */
   public void notifyWatchers(FluidStack fs, int newAmount) {
-    watchers.forEach(watcher -> {
+    markDirty();
+    getFluidWatchers().forEach(watcher -> {
       watcher.onMultiFluidChange(fs, newAmount);
     });
   }

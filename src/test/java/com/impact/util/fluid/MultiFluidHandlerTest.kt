@@ -1,6 +1,7 @@
 package com.impact.util.fluid
 
 import appeng.api.config.Actionable
+import appeng.api.networking.IGridNode
 import appeng.api.storage.data.IAEFluidStack
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank
@@ -16,6 +17,7 @@ import net.minecraft.init.Bootstrap
 import net.minecraft.launchwrapper.LaunchClassLoader
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.config.Configuration
+import net.minecraftforge.common.util.ForgeDirection
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidRegistry
 import net.minecraftforge.fluids.FluidStack
@@ -87,9 +89,11 @@ class MultiFluidHandlerTest {
     @Test
     fun shrinkingCapacityDoesNotDrainFluidDuringFill() = check("shrinkingCapacityDoesNotDrainFluidDuringFill")
 
-    /** Проверяет доступ I/O-хэтча к общему хранилищу без предметных слотов. */
+    /** Проверяет запрет Forge-доступа и отсутствие предметных слотов. */
     @Test
-    fun ioHatchUsesSharedStorageAndHasNoItemSlots() = check("ioHatchUsesSharedStorageAndHasNoItemSlots")
+    fun aeOnlyHatchRejectsForgeAndHasNoItemSlots() {
+        check("aeOnlyHatchRejectsForgeAndHasNoItemSlots")
+    }
 
     /** Проверяет возврат остатка при частичном заполнении через ME-сеть. */
     @Test
@@ -110,11 +114,27 @@ class MultiFluidHandlerTest {
         /** Создаёт разблокированное хранилище на 25 типов по 64 ведра. */
         private fun tank() = MultiFluidHandler(64_000, 25).apply { setLock(false) }
 
-        /** Подключает тестовый I/O-хэтч напрямую, обходя инициализацию ME-сети. */
-        private fun hatch(tank: MultiFluidHandler) =
-            GTMTE_TankHatch("test.tank.hatch", 5, emptyArray<String>(), emptyArray<Array<Array<ITexture>>>()).apply {
-                mfh = tank
+        /** Изолирует арифметику AE-вставки от подключения к игровому миру. */
+        private fun hatch(tank: MultiFluidHandler): GTMTE_TankHatch {
+            return object : GTMTE_TankHatch(
+                "test.tank.hatch",
+                5,
+                emptyArray<String>(),
+                emptyArray<Array<Array<ITexture>>>(),
+            ) {
+                override fun getStorage(): MultiFluidHandler {
+                    return tank
+                }
+
+                override fun isExportingStorage(): Boolean {
+                    return true
+                }
+
+                override fun getGridNode(side: ForgeDirection?): IGridNode? {
+                    return null
+                }
             }
+        }
 
         /** Полностью извлекает воду и проверяет сохранность лавы. */
         fun preservesOtherFluidsWhenOneIsDrained() {
@@ -201,26 +221,59 @@ class MultiFluidHandlerTest {
             assertEquals(64_000, tank.getFluid(0).amount)
         }
 
-        /** Проверяет обе перегрузки заполнения, симуляцию извлечения и блокировку I/O-хэтча. */
-        fun ioHatchUsesSharedStorageAndHasNoItemSlots() {
+        /** Forge/GT не должны получать доступ даже к заполненному и разблокированному баку. */
+        fun aeOnlyHatchRejectsForgeAndHasNoItemSlots() {
             val tank = tank()
             val hatch = hatch(tank)
-            assertEquals(0, hatch.sizeInventory)
+            val water = FluidStack(
+                FluidRegistry.WATER,
+                64_000,
+            )
+            tank.pushFluid(
+                water,
+                true,
+            )
+            assertEquals(
+                0,
+                hatch.sizeInventory,
+            )
             assertFalse(hatch.doesEmptyContainers())
             assertFalse(hatch.doesFillContainers())
-            assertEquals(64_000, hatch.fill(FluidStack(FluidRegistry.WATER, 64_000), true))
-            assertEquals(0, hatch.fill(null, FluidStack(FluidRegistry.WATER, 8_000), true))
-            assertEquals(64_000, tank.getFluid(0).amount)
-            assertEquals(8_000, hatch.drain(8_000, false).amount)
-            assertEquals(64_000, tank.getFluid(0).amount)
-            assertEquals(8_000, hatch.drain(8_000, true).amount)
-            assertEquals(56_000, tank.getFluid(0).amount)
-            assertNull(hatch.drain(null, FluidStack(FluidRegistry.LAVA, 1_000), true))
-            tank.setLock(true)
-            assertEquals(0, hatch.fill(FluidStack(FluidRegistry.WATER, 1_000), true))
-            assertNull(hatch.drain(1_000, true))
+            assertFalse(hatch.canTankBeFilled())
+            assertFalse(hatch.canTankBeEmptied())
+            assertEquals(
+                0,
+                hatch.fill(
+                    water,
+                    true,
+                ),
+            )
+            assertEquals(
+                0,
+                hatch.fill(
+                    null,
+                    water,
+                    true,
+                ),
+            )
+            assertNull(
+                hatch.drain(
+                    8_000,
+                    true,
+                ),
+            )
+            assertNull(
+                hatch.drain(
+                    null,
+                    water,
+                    true,
+                ),
+            )
+            assertEquals(
+                64_000,
+                tank.getFluid(0).amount,
+            )
         }
-
         /** Моделирует контракт стека AE2 без запуска реестров и блоков всего мода. */
         private fun aeFluidStack(fluid: FluidStack, amount: Long = fluid.amount.toLong()): IAEFluidStack {
             var stackSize = amount

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import com.impact.util.fluid.MultiFluidHandler;
+import com.impact.util.fluid.IMultiFluidTank;
 import com.impact.util.string.MultiBlockTooltipBuilder;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -53,7 +54,7 @@ import static space.impact.api.multiblocks.structure.StructureUtility.ofBlockAny
 /**
  * Контроллер многоблочного бака на 25 типов жидкостей с общим хранилищем и подключаемыми хэтчами.
  */
-public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
+public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase implements IMultiFluidTank {
 	
 	public final int MAX_DISTINCT_FLUIDS = 25;
 	private final HashSet<GTMTE_TankHatch> sMultiHatches = new HashSet<>();
@@ -63,6 +64,34 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	private MultiFluidHandler mfh;
 	int CASING_TEXTURE_ID = 176;
 	private boolean doVoidExcess = false;
+
+	@Override
+	public MultiFluidHandler getMultiFluidHandler() {
+		return mfh;
+	}
+
+	private void markTankDirty() {
+		IGregTechTileEntity base = getBaseMetaTileEntity();
+		if (base != null && base.getWorld() != null && base.isServerSide()) markStorageDirty();
+	}
+
+	private void detachHatches() {
+		for (GTMTE_TankHatch hatch : sMultiHatches) hatch.detachFromController(getBaseMetaTileEntity());
+		sMultiHatches.clear();
+	}
+
+	@Override
+	public void onRemoval() {
+		detachHatches();
+		super.onRemoval();
+	}
+
+	@Override
+	public void inValidate() {
+		detachHatches();
+		super.inValidate();
+	}
+
 
 	/**
 	 * Регистрирует контроллер бака, описание структуры и отключает обслуживание.
@@ -213,6 +242,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+		if (!aBaseMetaTileEntity.isServerSide()) return;
 		if (mfh != null) {
 			mfh.setLock(!super.getBaseMetaTileEntity().isActive());
 		}
@@ -324,6 +354,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	 */
 	@Override
 	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+		HashSet<GTMTE_TankHatch> previousHatches = new HashSet<>(sMultiHatches);
 		sMultiHatches.clear();
 		// Figure out the vector for the direction the back face of the controller is facing
 		final Vector3ic forgeDirection = new Vector3i(
@@ -504,14 +535,24 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 			final int capacityPerFluid = (int) Math.round(fluidCapacityAcc / (float)MAX_DISTINCT_FLUIDS);
 			if (mfh == null) {
 				mfh = new MultiFluidHandler(capacityPerFluid, MAX_DISTINCT_FLUIDS);
+				mfh.setStorageChangeListener(this::markTankDirty);
+				markTankDirty();
 			} else {
-				mfh.capacityPerFluid = capacityPerFluid;
+				mfh.setCapacity(capacityPerFluid);
 			}
 			mfh.setVoidExcess(doVoidExcess);
 			for (GTMTE_TankHatch mh : sMultiHatches) {
-				mh.setMultiFluidHandler(mfh);
+				mh.setMultiFluidHandler(mfh, getBaseMetaTileEntity());
 			}
 		}
+		if (formationChecklist) {
+			previousHatches.removeAll(sMultiHatches);
+		} else {
+			previousHatches.addAll(sMultiHatches);
+			sMultiHatches.clear();
+			if (mfh != null) mfh.setLock(true);
+		}
+		for (GTMTE_TankHatch hatch : previousHatches) hatch.detachFromController(thisController);
 		return formationChecklist;
 	}
 	
@@ -615,6 +656,7 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY,
 										float aZ) {
 		doVoidExcess = !doVoidExcess;
+		markTankDirty();
 		if (mfh != null) {
 			mfh.setVoidExcess(doVoidExcess);
 		}
@@ -685,9 +727,10 @@ public class GTMTE_MultiTank extends GT_MetaTileEntity_MultiBlockBase {
 		
 		mfh = new MultiFluidHandler(MAX_DISTINCT_FLUIDS);
 		mfh.loadNBTData(nbt);
+		mfh.setStorageChangeListener(this::markTankDirty);
 		mfh.setVoidExcess(doVoidExcess);
 		for (GTMTE_TankHatch mh : sMultiHatches) {
-			mh.setMultiFluidHandler(mfh);
+			mh.setMultiFluidHandler(mfh, getBaseMetaTileEntity());
 		}
 		super.loadNBTData(nbt);
 	}
