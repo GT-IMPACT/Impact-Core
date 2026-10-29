@@ -1,5 +1,11 @@
 package com.impact.mods.gregtech.tileentities.multi.storage.hatch;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -45,12 +51,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_MULTIHATCH;
 
 /** Доступ к общему хранилищу бака только через AE2. Локального буфера и предметных слотов нет. */
@@ -59,8 +59,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.OVERLAY_MULTIHATCH;
         @Optional.Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2", striprefs = true),
         @Optional.Interface(iface = "appeng.api.storage.IMEInventory", modid = "appliedenergistics2", striprefs = true),
         @Optional.Interface(iface = "appeng.api.storage.IMEInventoryHandler", modid = "appliedenergistics2", striprefs = true),
-        @Optional.Interface(iface = "appeng.api.storage.ICellContainer", modid = "appliedenergistics2", striprefs = true),
-})
+        @Optional.Interface(iface = "appeng.api.storage.ICellContainer", modid = "appliedenergistics2", striprefs = true), })
 public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridProxyable, IActionHost, ICellContainer,
         IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack>, IMultiFluidWatcher {
 
@@ -75,7 +74,7 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     private Map<FluidStack, Long> publishedContents = new HashMap<>();
 
     public GTMTE_TankHatch(int id, String name, String regionalName, int tier) {
-        super(id, name, regionalName, tier, 0, new String[]{"ME access for the High-Tech fluid tank"});
+        super(id, name, regionalName, tier, 0, new String[] { "ME access for the High-Tech fluid tank" });
     }
 
     public GTMTE_TankHatch(String name, int tier, String description, ITexture[][][] textures) {
@@ -102,7 +101,9 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     }
 
     public void setMultiFluidHandler(MultiFluidHandler storage, IGregTechTileEntity owner) {
-        if (mfh == storage && controller == owner) return;
+        if (mfh == storage && controller == owner) {
+            return;
+        }
         detachStorage();
         mfh = storage;
         controller = owner;
@@ -115,7 +116,9 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     }
 
     public void detachFromController(IGregTechTileEntity owner) {
-        if (controller == owner) detachStorage();
+        if (controller == owner) {
+            detachStorage();
+        }
     }
 
     private void detachStorage() {
@@ -131,19 +134,29 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
 
     private static void markSharedTopologyDirty(MultiFluidHandler storage) {
         for (IMultiFluidWatcher watcher : storage.getFluidWatchers()) {
-            if (watcher instanceof GTMTE_TankHatch) ((GTMTE_TankHatch) watcher).topologyDirty = true;
+            if (watcher instanceof GTMTE_TankHatch) {
+                ((GTMTE_TankHatch) watcher).topologyDirty = true;
+            }
         }
     }
 
     /** Проверка не загружает чанк контроллера и отсекает обработчики от предыдущего loadNBTData. */
     protected MultiFluidHandler getStorage() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (mfh == null || base == null || controller == null) return null;
+        if (mfh == null || base == null || controller == null) {
+            return null;
+        }
         World world = base.getWorld();
-        if (world == null || world.isRemote || controller.getWorld() != world) return null;
-        if (!isLoadedTile(world, base) || !isLoadedTile(world, controller)) return null;
+        if (world == null || world.isRemote || controller.getWorld() != world) {
+            return null;
+        }
+        if (!isLoadedTile(world, base) || !isLoadedTile(world, controller)) {
+            return null;
+        }
         IMetaTileEntity owner = controller.getMetaTileEntity();
-        if (!(owner instanceof IMultiFluidTank)) return null;
+        if (!(owner instanceof IMultiFluidTank)) {
+            return null;
+        }
         return controller.isActive() && ((IMultiFluidTank) owner).getMultiFluidHandler() == mfh ? mfh : null;
     }
 
@@ -162,13 +175,21 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     protected boolean isExportingStorage() {
         MultiFluidHandler storage = getStorage();
         IGrid grid = activeGrid();
-        if (storage == null || grid == null) return false;
+        if (storage == null || grid == null) {
+            return false;
+        }
         GTMTE_TankHatch selected = null;
         for (IMultiFluidWatcher watcher : storage.getFluidWatchers()) {
-            if (!(watcher instanceof GTMTE_TankHatch)) continue;
+            if (!(watcher instanceof GTMTE_TankHatch)) {
+                continue;
+            }
             GTMTE_TankHatch hatch = (GTMTE_TankHatch) watcher;
-            if (hatch.getStorage() != storage || hatch.activeGrid() != grid) continue;
-            if (selected == null || hatch.priority > selected.priority) selected = hatch;
+            if (hatch.getStorage() != storage || hatch.activeGrid() != grid) {
+                continue;
+            }
+            if (selected == null || hatch.priority > selected.priority) {
+                selected = hatch;
+            }
         }
         return selected == this;
     }
@@ -221,9 +242,13 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
         MultiFluidHandler storage = getStorage();
         if (storage != null && isExportingStorage()) {
             for (FluidStack fluid : storage.getFluids()) {
-                if (fluid == null || fluid.amount <= 0) continue;
+                if (fluid == null || fluid.amount <= 0) {
+                    continue;
+                }
                 IAEFluidStack stack = exportStack(fluid);
-                if (stack != null) out.add(stack);
+                if (stack != null) {
+                    out.add(stack);
+                }
             }
         }
         return out;
@@ -233,14 +258,24 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     @Optional.Method(modid = "appliedenergistics2")
     public IAEFluidStack injectItems(IAEFluidStack input, Actionable mode, BaseActionSource source) {
         MultiFluidHandler storage = getStorage();
-        if (input == null || input.getStackSize() <= 0 || storage == null || !isExportingStorage()) return input;
+        if (input == null || input.getStackSize() <= 0 || storage == null || !isExportingStorage()) {
+            return input;
+        }
         FluidStack fluid = input.getFluidStack().copy();
-        if (fluid.tag != null && exportStack(fluid) == null) return input;
+        if (fluid.tag != null && exportStack(fluid) == null) {
+            return input;
+        }
         fluid.amount = (int) Math.min(Integer.MAX_VALUE, input.getStackSize());
-        if (mode == Actionable.MODULATE) prepareNetworkOperation();
+        if (mode == Actionable.MODULATE) {
+            prepareNetworkOperation();
+        }
         int accepted = storage.pushFluid(fluid, mode == Actionable.MODULATE);
-        if (accepted <= 0) return input;
-        if (mode == Actionable.MODULATE) acknowledgeNetworkChange(fluid, accepted);
+        if (accepted <= 0) {
+            return input;
+        }
+        if (mode == Actionable.MODULATE) {
+            acknowledgeNetworkChange(fluid, accepted);
+        }
         return accepted == input.getStackSize() ? null : input.copy().setStackSize(input.getStackSize() - accepted);
     }
 
@@ -248,14 +283,24 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     @Optional.Method(modid = "appliedenergistics2")
     public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource source) {
         MultiFluidHandler storage = getStorage();
-        if (request == null || request.getStackSize() <= 0 || storage == null || !isExportingStorage()) return null;
+        if (request == null || request.getStackSize() <= 0 || storage == null || !isExportingStorage()) {
+            return null;
+        }
         FluidStack fluid = request.getFluidStack().copy();
-        if (fluid.tag != null && exportStack(fluid) == null) return null;
+        if (fluid.tag != null && exportStack(fluid) == null) {
+            return null;
+        }
         fluid.amount = (int) Math.min(Integer.MAX_VALUE, request.getStackSize());
-        if (mode == Actionable.MODULATE) prepareNetworkOperation();
+        if (mode == Actionable.MODULATE) {
+            prepareNetworkOperation();
+        }
         int extracted = storage.pullFluid(fluid, mode == Actionable.MODULATE);
-        if (extracted <= 0) return null;
-        if (mode == Actionable.MODULATE) acknowledgeNetworkChange(fluid, -extracted);
+        if (extracted <= 0) {
+            return null;
+        }
+        if (mode == Actionable.MODULATE) {
+            acknowledgeNetworkChange(fluid, -extracted);
+        }
         return request.copy().setStackSize(extracted);
     }
 
@@ -270,26 +315,35 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
             publishedContents = current;
             topologyDirty = false;
             contentDirty = false;
-            if (previous != null && previous != grid) previous.postEvent(new MENetworkCellArrayUpdate());
-            if (grid != null) grid.postEvent(new MENetworkCellArrayUpdate());
+            if (previous != null && previous != grid) {
+                previous.postEvent(new MENetworkCellArrayUpdate());
+            }
+            if (grid != null) {
+                grid.postEvent(new MENetworkCellArrayUpdate());
+            }
             return;
         }
-        if (!contentDirty || grid == null || !exporting) return;
+        if (!contentDirty || grid == null || !exporting) {
+            return;
+        }
         IStorageGrid storage = grid.getCache(IStorageGrid.class);
-        if (storage == null) return;
+        if (storage == null) {
+            return;
+        }
         Map<FluidStack, Long> changes = new HashMap<>(current);
         for (Map.Entry<FluidStack, Long> entry : publishedContents.entrySet()) {
             changes.merge(entry.getKey(), -entry.getValue(), Long::sum);
         }
         List<IAEFluidStack> deltas = new ArrayList<>();
         for (Map.Entry<FluidStack, Long> entry : changes.entrySet()) {
-            if (entry.getValue() != 0) deltas.add(createAEFluidStack(entry.getKey()).setStackSize(entry.getValue()));
+            if (entry.getValue() != 0) {
+                deltas.add(createAEFluidStack(entry.getKey()).setStackSize(entry.getValue()));
+            }
         }
         publishedContents = current;
         contentDirty = false;
         if (!deltas.isEmpty()) {
-            storage.postAlterationOfStoredItems(StorageChannel.FLUIDS, deltas,
-                    new MachineSource(this));
+            storage.postAlterationOfStoredItems(StorageChannel.FLUIDS, deltas, new MachineSource(this));
         }
     }
 
@@ -307,20 +361,26 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     @Optional.Method(modid = "appliedenergistics2")
     public void updateChannels(MENetworkChannelsChanged event) {
         topologyDirty = true;
-        if (mfh != null) markSharedTopologyDirty(mfh);
+        if (mfh != null) {
+            markSharedTopologyDirty(mfh);
+        }
     }
 
     @MENetworkEventSubscribe
     @Optional.Method(modid = "appliedenergistics2")
     public void powerChange(MENetworkPowerStatusChange event) {
         topologyDirty = true;
-        if (mfh != null) markSharedTopologyDirty(mfh);
+        if (mfh != null) {
+            markSharedTopologyDirty(mfh);
+        }
     }
 
     @Override
     public void gridChanged() {
         topologyDirty = true;
-        if (mfh != null) markSharedTopologyDirty(mfh);
+        if (mfh != null) {
+            markSharedTopologyDirty(mfh);
+        }
     }
 
     @Override
@@ -332,13 +392,17 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
 
                 @Override
                 public void readFromNBT(NBTTagCompound data) {
-                    if (data != null) savedData = (NBTTagCompound) data.copy();
+                    if (data != null) {
+                        savedData = (NBTTagCompound) data.copy();
+                    }
                     super.readFromNBT(data);
                 }
 
                 @Override
                 public void writeToNBT(NBTTagCompound data) {
-                    if (savedData.hasKey("proxy", 10)) data.setTag("proxy", savedData.getCompoundTag("proxy").copy());
+                    if (savedData.hasKey("proxy", 10)) {
+                        data.setTag("proxy", savedData.getCompoundTag("proxy").copy());
+                    }
                     super.writeToNBT(data);
                 }
 
@@ -370,11 +434,14 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     @Override
     public void onPostTick(IGregTechTileEntity base, long tick) {
         super.onPostTick(base, tick);
-        if (!base.isServerSide()) return;
+        if (!base.isServerSide()) {
+            return;
+        }
         // При остановке связь сохраняется: содержимое снова появится после запуска контроллера.
-        if (mfh != null && controller != null && (!isLoadedTile(base.getWorld(), controller)
-                || !(controller.getMetaTileEntity() instanceof IMultiFluidTank)
-                || ((IMultiFluidTank) controller.getMetaTileEntity()).getMultiFluidHandler() != mfh)) {
+        if (mfh != null && controller != null
+                && (!isLoadedTile(base.getWorld(), controller)
+                        || !(controller.getMetaTileEntity() instanceof IMultiFluidTank)
+                        || ((IMultiFluidTank) controller.getMetaTileEntity()).getMultiFluidHandler() != mfh)) {
             detachStorage();
         }
         if (Loader.isModLoaded("appliedenergistics2") && (contentDirty || topologyDirty || tick % 20 == 0)) {
@@ -398,19 +465,24 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     public void saveNBTData(NBTTagCompound nbt) {
         super.saveNBTData(nbt);
         nbt.setInteger("mAEPriority", priority);
-        if (Loader.isModLoaded("appliedenergistics2") && gridProxy != null) gridProxy.writeToNBT(nbt);
+        if (Loader.isModLoaded("appliedenergistics2") && gridProxy != null) {
+            gridProxy.writeToNBT(nbt);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt) {
         super.loadNBTData(nbt);
         priority = nbt.getInteger("mAEPriority");
-        if (Loader.isModLoaded("appliedenergistics2")) getProxy().readFromNBT(nbt);
+        if (Loader.isModLoaded("appliedenergistics2")) {
+            getProxy().readFromNBT(nbt);
+        }
         topologyDirty = true;
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte side, byte wrenchSide, EntityPlayer player, float x, float y, float z) {
+    public boolean onSolderingToolRightClick(byte side, byte wrenchSide, EntityPlayer player, float x, float y,
+            float z) {
         if (getBaseMetaTileEntity().isServerSide()) {
             long next = (long) priority + (player.isSneaking() ? -100 : 100);
             setPriority((int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, next)));
@@ -420,89 +492,241 @@ public class GTMTE_TankHatch extends GT_MetaTileEntity_Hatch implements IGridPro
     }
 
     public void setPriority(int value) {
-        if (priority == value) return;
+        if (priority == value) {
+            return;
+        }
         priority = value;
         IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base != null && base.isServerSide()) markStorageDirty();
+        if (base != null && base.isServerSide()) {
+            markStorageDirty();
+        }
         topologyDirty = true;
-        if (mfh != null) markSharedTopologyDirty(mfh);
+        if (mfh != null) {
+            markSharedTopologyDirty(mfh);
+        }
     }
 
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public void saveChanges(IMEInventory inventory) {
+    public void saveChanges(IMEInventory inventory) {
         MultiFluidHandler storage = getStorage();
-        if (storage != null) storage.markDirty();
+        if (storage != null) {
+            storage.markDirty();
+        }
     }
 
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public IGridNode getGridNode(ForgeDirection side) { return getProxy().getNode(); }
+    public IGridNode getGridNode(ForgeDirection side) {
+        return getProxy().getNode();
+    }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public IGridNode getActionableNode() { return getGridNode(ForgeDirection.UNKNOWN); }
+    public IGridNode getActionableNode() {
+        return getGridNode(ForgeDirection.UNKNOWN);
+    }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public AECableType getCableConnectionType(ForgeDirection side) { return AECableType.SMART; }
+    public AECableType getCableConnectionType(ForgeDirection side) {
+        return AECableType.SMART;
+    }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public DimensionalCoord getLocation() {
+    public DimensionalCoord getLocation() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         return new DimensionalCoord(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
     }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public void securityBreak() {}
-    @Optional.Method(modid = "appliedenergistics2")
-    @Override public StorageChannel getChannel() { return StorageChannel.FLUIDS; }
-    @Optional.Method(modid = "appliedenergistics2")
-    @Override public AccessRestriction getAccess() { return AccessRestriction.READ_WRITE; }
-    @Optional.Method(modid = "appliedenergistics2")
-    @Override public boolean isPrioritized(IAEFluidStack input) { return true; }
-    @Optional.Method(modid = "appliedenergistics2")
-    @Override public boolean canAccept(IAEFluidStack input) {
-        return input != null && input.getStackSize() > 0
-                && injectItems(input, Actionable.SIMULATE, null) != input;
+    public void securityBreak() {
     }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public List<IMEInventoryHandler> getCellArray(StorageChannel channel) {
-        return channel == StorageChannel.FLUIDS && isExportingStorage()
-                ? Collections.singletonList(this) : Collections.emptyList();
+    public StorageChannel getChannel() {
+        return StorageChannel.FLUIDS;
     }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public int getPriority() { return priority; }
+    public AccessRestriction getAccess() {
+        return AccessRestriction.READ_WRITE;
+    }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public int getSlot() { return 0; }
+    public boolean isPrioritized(IAEFluidStack input) {
+        return true;
+    }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public boolean validForPass(int pass) { return true; }
+    public boolean canAccept(IAEFluidStack input) {
+        return input != null && input.getStackSize() > 0 && injectItems(input, Actionable.SIMULATE, null) != input;
+    }
+
+    @Override
     @Optional.Method(modid = "appliedenergistics2")
-    @Override public void blinkCell(int slot) {}
+    public List<IMEInventoryHandler> getCellArray(StorageChannel channel) {
+        return channel == StorageChannel.FLUIDS && isExportingStorage() ? Collections.singletonList(this)
+                : Collections.emptyList();
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public int getPriority() {
+        return priority;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public int getSlot() {
+        return 0;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean validForPass(int pass) {
+        return true;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public void blinkCell(int slot) {
+    }
 
     // Все Forge/GT-пути закрыты, в том числе прямые вызовы без стороны и доступ через covers.
-    @Override public int getCapacity() { return 0; }
-    @Override public FluidTankInfo[] getTankInfo(ForgeDirection side) { return new FluidTankInfo[0]; }
-    @Override public int fill(FluidStack fluid, boolean fill) { return 0; }
-    @Override public int fill(ForgeDirection side, FluidStack fluid, boolean fill) { return 0; }
-    @Override public FluidStack drain(int amount, boolean drain) { return null; }
-    @Override public FluidStack drain(ForgeDirection side, int amount, boolean drain) { return null; }
-    @Override public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean drain) { return null; }
-    @Override public boolean canFill(ForgeDirection side, Fluid fluid) { return false; }
-    @Override public boolean canDrain(ForgeDirection side, Fluid fluid) { return false; }
-    @Override public boolean isLiquidInput(byte side) { return false; }
-    @Override public boolean isLiquidOutput(byte side) { return false; }
-    @Override public boolean isFluidInputAllowed(FluidStack fluid) { return false; }
-    @Override public boolean canTankBeFilled() { return false; }
-    @Override public boolean canTankBeEmptied() { return false; }
-    @Override public boolean doesEmptyContainers() { return false; }
-    @Override public boolean doesFillContainers() { return false; }
-    @Override public boolean displaysItemStack() { return false; }
-    @Override public boolean displaysStackSize() { return false; }
-    @Override public boolean allowPullStack(IGregTechTileEntity base, int index, byte side, ItemStack stack) { return false; }
-    @Override public boolean allowPutStack(IGregTechTileEntity base, int index, byte side, ItemStack stack) { return false; }
-    @Override public ITexture[] getTexturesActive(ITexture base) {
-        return new ITexture[]{base, TextureFactory.of(OVERLAY_MULTIHATCH)};
+    @Override
+    public int getCapacity() {
+        return 0;
     }
-    @Override public ITexture[] getTexturesInactive(ITexture base) {
-        return new ITexture[]{base, TextureFactory.of(OVERLAY_MULTIHATCH)};
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        return new FluidTankInfo[0];
     }
-    @Override public boolean isSimpleMachine() { return true; }
-    @Override public boolean isFacingValid(byte facing) { return true; }
-    @Override public boolean isAccessAllowed(EntityPlayer player) { return true; }
-    @Override public IMetaTileEntity newMetaEntity(IGregTechTileEntity base) {
+
+    @Override
+    public int fill(FluidStack fluid, boolean fill) {
+        return 0;
+    }
+
+    @Override
+    public int fill(ForgeDirection side, FluidStack fluid, boolean fill) {
+        return 0;
+    }
+
+    @Override
+    public FluidStack drain(int amount, boolean drain) {
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, int amount, boolean drain) {
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean drain) {
+        return null;
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection side, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection side, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public boolean isLiquidInput(byte side) {
+        return false;
+    }
+
+    @Override
+    public boolean isLiquidOutput(byte side) {
+        return false;
+    }
+
+    @Override
+    public boolean isFluidInputAllowed(FluidStack fluid) {
+        return false;
+    }
+
+    @Override
+    public boolean canTankBeFilled() {
+        return false;
+    }
+
+    @Override
+    public boolean canTankBeEmptied() {
+        return false;
+    }
+
+    @Override
+    public boolean doesEmptyContainers() {
+        return false;
+    }
+
+    @Override
+    public boolean doesFillContainers() {
+        return false;
+    }
+
+    @Override
+    public boolean displaysItemStack() {
+        return false;
+    }
+
+    @Override
+    public boolean displaysStackSize() {
+        return false;
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity base, int index, byte side, ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity base, int index, byte side, ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public ITexture[] getTexturesActive(ITexture base) {
+        return new ITexture[] { base, TextureFactory.of(OVERLAY_MULTIHATCH) };
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture base) {
+        return new ITexture[] { base, TextureFactory.of(OVERLAY_MULTIHATCH) };
+    }
+
+    @Override
+    public boolean isSimpleMachine() {
+        return true;
+    }
+
+    @Override
+    public boolean isFacingValid(byte facing) {
+        return true;
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer player) {
+        return true;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity base) {
         return new GTMTE_TankHatch(mName, mTier, mDescriptionArray, mTextures);
     }
 }

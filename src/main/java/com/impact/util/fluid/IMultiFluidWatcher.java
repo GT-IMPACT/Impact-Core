@@ -13,7 +13,8 @@ public interface IMultiFluidWatcher {
      * @param fluid жидкость для операции
      * @param newAmount новое количество жидкости в хранилище; ноль означает опустошение
      */
-    public void onMultiFluidChange(FluidStack fluid, int newAmount);
+    void onMultiFluidChange(FluidStack fluid, int newAmount);
 
-    default void onMultiFluidStateChange() {}
+    default void onMultiFluidStateChange() {
+    }
 }
