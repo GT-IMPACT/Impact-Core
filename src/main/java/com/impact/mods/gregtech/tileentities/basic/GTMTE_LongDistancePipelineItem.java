@@ -57,8 +57,8 @@ public class GTMTE_LongDistancePipelineItem extends GTMTE_LongDistancePipelineBa
 
 
   public IInventory getInventory() {
-    final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
-    TileEntity invTile = tTile.getTileEntityAtSide(tTile.getBackFacing());
+    final IGregTechTileEntity receiverTile = mTarget.getBaseMetaTileEntity();
+    TileEntity invTile = receiverTile.getTileEntityAtSide(receiverTile.getBackFacing());
     if (invTile instanceof IInventory) {
       return (IInventory) invTile;
     } else {
@@ -174,10 +174,12 @@ public class GTMTE_LongDistancePipelineItem extends GTMTE_LongDistancePipelineBa
   @Override
   public int[] getAccessibleSlotsFromSide(int aSide) {
     if (checkTarget()) {
-      final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
+      final IGregTechTileEntity receiverTile = mTarget.getBaseMetaTileEntity();
       IInventory iInventory = getInventory();
       if (iInventory instanceof ISidedInventory) {
-        return ((ISidedInventory) iInventory).getAccessibleSlotsFromSide(tTile.getBackFacing());
+        // Inventory sides are world directions viewed from the inventory at the receiver's back.
+        final byte inventorySide = GT_Utility.getOppositeSide(receiverTile.getBackFacing());
+        return ((ISidedInventory) iInventory).getAccessibleSlotsFromSide(inventorySide);
       }
       if (iInventory != null) {
         int[] tReturn = new int[iInventory.getSizeInventory()];
@@ -194,10 +196,11 @@ public class GTMTE_LongDistancePipelineItem extends GTMTE_LongDistancePipelineBa
   @Override
   public boolean canInsertItem(int aSlot, ItemStack aStack, int aSide) {
     if (checkTarget()) {
-      final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
+      final IGregTechTileEntity receiverTile = mTarget.getBaseMetaTileEntity();
       IInventory iInventory = getInventory();
       if (iInventory instanceof ISidedInventory) {
-        return ((ISidedInventory) iInventory).canInsertItem(aSlot, aStack, tTile.getBackFacing());
+        final byte inventorySide = GT_Utility.getOppositeSide(receiverTile.getBackFacing());
+        return ((ISidedInventory) iInventory).canInsertItem(aSlot, aStack, inventorySide);
       }
       return iInventory != null;
     }

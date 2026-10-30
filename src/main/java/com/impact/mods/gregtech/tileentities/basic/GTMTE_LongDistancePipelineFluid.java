@@ -57,8 +57,8 @@ public class GTMTE_LongDistancePipelineFluid extends GTMTE_LongDistancePipelineB
   }
 
   public IFluidHandler getTank() {
-    final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
-    TileEntity tankTile = tTile.getTileEntityAtSide(tTile.getBackFacing());
+    final IGregTechTileEntity receiverTile = mTarget.getBaseMetaTileEntity();
+    TileEntity tankTile = receiverTile.getTileEntityAtSide(receiverTile.getBackFacing());
     if (tankTile instanceof IFluidHandler) {
       return (IFluidHandler) tankTile;
     } else {
@@ -69,9 +69,12 @@ public class GTMTE_LongDistancePipelineFluid extends GTMTE_LongDistancePipelineB
   @Override
   public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
     if (checkTarget()) {
+      final IGregTechTileEntity receiverTile = mTarget.getBaseMetaTileEntity();
       final IFluidHandler tankTile = getTank();
       if (tankTile != null) {
-        return tankTile.getTankInfo(aSide);
+        // Forge expects the tank's touching face, opposite the receiver's outward direction.
+        final ForgeDirection tankSide = ForgeDirection.getOrientation(receiverTile.getBackFacing()).getOpposite();
+        return tankTile.getTankInfo(tankSide);
       }
 
     }
@@ -86,11 +89,11 @@ public class GTMTE_LongDistancePipelineFluid extends GTMTE_LongDistancePipelineB
   @Override
   public int fill(ForgeDirection aSide, FluidStack aFluid, boolean aDoFill) {
     if (checkTarget()) {
-      final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
+      final IGregTechTileEntity receiverTile = mTarget.getBaseMetaTileEntity();
       final IFluidHandler tankTile = getTank();
       if (tankTile != null) {
-        return tankTile
-            .fill(ForgeDirection.getOrientation(tTile.getFrontFacing()), aFluid, aDoFill);
+        final ForgeDirection tankSide = ForgeDirection.getOrientation(receiverTile.getBackFacing()).getOpposite();
+        return tankTile.fill(tankSide, aFluid, aDoFill);
       }
     }
     return 0;
