@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.structure
 
+import com.impact.mods.gregtech.blocks.HatchCounts
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 
@@ -17,11 +18,11 @@ object RequiresHatches {
         maintenance: Int = 0,
         muffler: Int = 0,
     ): Boolean {
-        return mEnergyHatches.size + mEnergyHatchesMulti.size + mLaserIn.size + mLaserOut.size <= energy &&
-                mDynamoHatches.size + mDynamoHatchesMulti.size <= dynamo &&
-                mInputBusses.size + mInputBusHatches.size <= inputBuss &&
+        return HatchCounts.energyHatches(this) <= energy &&
+                HatchCounts.dynamoHatches(this) <= dynamo &&
+                HatchCounts.inputBuses(this) <= inputBuss &&
                 mOutputBusses.size <= outputBuss &&
-                mInputHatches.size + mQuadrInputHatches.size <= inputHatch &&
+                HatchCounts.inputHatches(this) <= inputHatch &&
                 mOutputHatches.size <= outputHatch &&
                 mMaintenanceHatches.size <= maintenance &&
                 mMufflerHatches.size <= muffler
@@ -42,7 +43,14 @@ object RequiresHatches {
         parallelOut: Int = 0,
     ): Boolean {
         return hasRequireHatches(
-            energy, dynamo, inputBuss, outputBuss, inputHatch, outputHatch, maintenance, muffler
+            energy = energy,
+            dynamo = dynamo,
+            inputBuss = inputBuss,
+            outputBuss = outputBuss,
+            inputHatch = inputHatch,
+            outputHatch = outputHatch,
+            maintenance = maintenance,
+            muffler = muffler,
         ) && sParallHatchesIn.size <= parallelIn && sParallHatchesOut.size <= parallelOut
     }
 }
