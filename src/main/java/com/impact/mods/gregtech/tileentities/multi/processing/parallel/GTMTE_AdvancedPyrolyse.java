@@ -1,387 +1,310 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.GT_RecipeMaps;
+import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.string.MultiBlockTooltipBuilder;
-import com.impact.util.vector.Vector3i;
-import com.impact.util.vector.Vector3ic;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.StructureRequirements;
+import java.util.ArrayList;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import space.impact.api.multiblocks.structure.IStructureDefinition;
-import space.impact.api.multiblocks.structure.StructureDefinition;
+import space.impact.structures.hint.HintColor;
+import space.impact.structures.structure.IStructureDefinition;
+import space.impact.structures.structure.ISurvivalBuildEnvironment;
+import space.impact.structures.structure.StructureDefinition;
 
-import java.util.ArrayList;
-
-import static com.impact.util.Utilits.isB;
-import static com.impact.util.multis.GT_StructureUtility.ofFrame;
 import static com.impact.util.recipe.RecipeHelper.resizeItemStackSize;
-import static gregtech.api.GregTech_API.sBlockCasings2;
-import static gregtech.api.GregTech_API.sBlockCasings8;
 import static gregtech.api.enums.GT_Values.V;
-import static space.impact.api.multiblocks.structure.StructureUtility.lazy;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofChain;
+import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedPyrolyse> {
 
-	public int mParallelPoint = 1;
-	Block CASING = GregTech_API.sBlockCasings8;
-	byte CASING_META = 3;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[1][48 + CASING_META];
-	int CASING_TEXTURE_ID = CASING_META + 48 + 128;
-	int frameId = 4096 + Materials.HSLA.mMetaItemSubID;
-	int frameMeta = GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
-	static IStructureDefinition<GTMTE_AdvancedPyrolyse> definition =
-			StructureDefinition.<GTMTE_AdvancedPyrolyse>builder()
-					.addShapeOldApi("main", new String[][]{
-							{"000.00000", ".00.00000", "1.1.1...1",},
-							{"000.00000", "02222...0", "....00000",},
-							{"000.00000", "000.00000", "1.1.1...1",},
-					})
-					.addElement('0', ofBlock(sBlockCasings8, 3))
-					.addElement('1', lazy(t -> ofFrame(Materials.HSLA)))
-					.addElement('2', ofBlock(sBlockCasings2, 13))
-					.build();
+    public int mParallelPoint = 1;
 
-	public GTMTE_AdvancedPyrolyse(int aID, String aNameRegional) {
-		super(aID, "impact.multimachine.advpyrolyse", aNameRegional);
-	}
+    private static final ICasing CASING = Casings.HSLA;
 
-	public GTMTE_AdvancedPyrolyse(String aName) {
-		super(aName);
-	}
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+    private static IStructureDefinition<GTMTE_AdvancedPyrolyse> definition;
 
-	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER)} : new ITexture[]{INDEX_CASE};
-	}
+    public GTMTE_AdvancedPyrolyse(int aID, String aNameRegional) {
+        super(aID, "impact.multimachine.advpyrolyse", aNameRegional);
+    }
 
-	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_AdvancedPyrolyse(this.mName);
-	}
+    public GTMTE_AdvancedPyrolyse(String aName) {
+        super(aName);
+    }
 
-	@Override
-	public IStructureDefinition<GTMTE_AdvancedPyrolyse> getStructureDefinition() {
-		return definition;
-	}
+    @Override
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return aSide == aFacing
+                ? new ITexture[] { CASING.getTexture(),
+                        TextureFactory.of(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE
+                                : Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER) }
+                : new ITexture[] { CASING.getTexture() };
+    }
 
-	@Override
-	public void construct(ItemStack itemStack, boolean b) {
-		buildPiece(itemStack, b, 0, 1, 0);
-	}
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GTMTE_AdvancedPyrolyse(this.mName);
+    }
 
-	@Override
-	protected MultiBlockTooltipBuilder createTooltip() {
-		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("adv_pyrolyse_oven");
-		b
-				.addTypeMachine(".name", "Pyrolyse oven")
-				.addInfo("info.0", "Converts hydrocarbons into gases, wood tar and solid fuels")
-				.addInfo("info.1", "The process emits gases throughout the entire time:")
-				.addInfo("info.4", "Input/output of products depends of energy hatch, time does not change")
-				.addInfo("info.5", "Parallel recipes: 2x per energy hatch tier (LV - 2x, MV - 4x, HV - 6x and etc)")
-				.addPollution(100, "info.6", "x tier energy hatch")
-				.addSeparator()
-				.addController()
-				.addEnergyHatch(1)
-				.addMaintenanceHatch()
-				.addMuffler()
-				.addInputBus(1)
-				.addOutputBus(1)
-				.addOutputHatch(1)
-				.addCasingInfo("case", "HSLA Casing", 40)
-				.addOtherStructurePart("other.0", "Steel Pipe Casing", "other.1", "Middle line")
-				.addOtherStructurePart("adv_other.0", "HSLA Frame", "adv_other.1", "Bottom angles")
-				.signAndFinalize();
-		return b;
-	}
+    @Override
+    public IStructureDefinition<GTMTE_AdvancedPyrolyse> getStructureDefinition() {
+        if (definition == null) {
+            int frameId = 4096 + Materials.HSLA.mMetaItemSubID;
+            int frameMeta = GregTech_API.METATILEENTITIES[frameId] == null ? 32767
+                    : GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
+            definition = StructureDefinition.<GTMTE_AdvancedPyrolyse>builder()
+                    .addShape("main", new String[][] {
+                            { "EEE EEEEE", "~EE EEEEE", "B B B   B" },
+                            { "EEE EEEEE", "EDDDD   E", "    CCCCC" },
+                            { "EEE EEEEE", "EEE EEEEE", "B B B   B" }
+                    })
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addElement('C', CASING.asElement())
+                    .addElement('D', Casings.STEEL_PIPE.asElement())
+                    .addElement('B', ofChain(ofFrame(Materials.HSLA), ofBlock(GregTech_API.sBlockMachines, frameMeta)))
+                    .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvancedPyrolyse.class)
+                            .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
+                                    HatchElement.Output)
+                            .buildAndChain(SHELL), HintColor.GREEN))
+                    .build();
+        }
+        return definition;
+    }
 
-	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-	}
+    @Override
+    public void construct(ItemStack itemStack, boolean b) {
+        buildPiece(itemStack, b, 0, 1, 0);
+    }
 
-	@Override
-	public boolean checkRecipe(ItemStack itemStack) {
-		int xPar = tierHatch() * 2;
+    @Override
+    public int survivalConstruct(ItemStack trigger, int budget,
+            ISurvivalBuildEnvironment environment) {
+        return survivalBuildPiece("main", trigger, 0, 1, 0, budget, environment);
+    }
 
-		ArrayList<ItemStack> tInputList = getStoredInputs();
-		ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-		ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-		FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder(mName)
+                .addMachineType("Pyrolyse oven")
+                .addInfo("Converts hydrocarbons into gases, wood tar and solid fuels")
+                .addInfo("The process emits gases throughout the entire time:")
+                .addInfo("Input/output of products depends of energy hatch, time does not change")
+                .addInfo("Parallel recipes: 2x per energy hatch tier (LV - 2x, MV - 4x, HV - 6x and etc)")
+                .addInfo("Pollution per second: 100 x tier energy hatch")
+                .addSeparator()
+                .addController("See the structure hologram")
+                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
+                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
+                .addOtherStructurePart("Output Hatch", "Any casing; maximum 1")
+                .addRequirements(SHELL, "Any casing position")
+                .addOtherStructurePart("Steel Pipe Casing", "Middle line")
+                .addOtherStructurePart("HSLA Frame", "Bottom angles")
+                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .toolTipFinisher();
+    }
 
-		if (!tInputList.isEmpty() || !tFluidList.isEmpty()) {
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
+    }
 
-			GT_Recipe tRecipe;
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        int xPar = tierHatch() * 2;
 
-			long nominalV = getMaxInputVoltage();
-			byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
+        ArrayList<ItemStack> tInputList = getStoredInputs();
+        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+        ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
+        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
 
-			tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids, tInputs);
+        if (!tInputList.isEmpty() || !tFluidList.isEmpty()) {
 
-			if (tRecipe != null) {
-				cashedRecipe = tRecipe;
-				ArrayList<FluidStack> outputFluids = new ArrayList<>();
+            GT_Recipe tRecipe;
 
-				boolean found_Recipe = false;
+            long nominalV = getMaxInputVoltage();
+            byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
 
-				ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-				int processed = 0;
-				while ((!tFluidList.isEmpty() || !tInputList.isEmpty()) && processed < xPar) {
-					if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe
-							.isRecipeInputEqual(true, tFluids, tInputs)) {
-						found_Recipe = true;
-						for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-							if (tRecipe.getOutput(h) != null) {
-								ItemStack old     = tRecipe.getOutput(h).copy();
-								tOut[h]           = old;
-								tOut[h].stackSize = old.stackSize * (processed + 1);
-							}
-						}
+            tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids,
+                    tInputs);
 
-						++processed;
+            if (tRecipe != null) {
+                cashedRecipe = tRecipe;
+                ArrayList<FluidStack> outputFluids = new ArrayList<>();
 
-					} else {
-						break;
-					}
-				}
-				mParallelPoint = processed;
-				if (tRecipe.mFluidOutputs.length > 4) {
-					FluidStack fluid = tRecipe.getFluidOutput(4);
-					if (fluid != null) {
-						FluidStack fluidOut = fluid.copy();
-						fluidOut.amount *= processed;
-						outputFluids.add(fluidOut);
-					}
-				}
+                boolean found_Recipe = false;
 
-				tOut = resizeItemStackSize(tOut);
+                ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
+                int processed = 0;
+                while ((!tFluidList.isEmpty() || !tInputList.isEmpty()) && processed < xPar) {
+                    if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe
+                            .isRecipeInputEqual(true, tFluids, tInputs)) {
+                        found_Recipe = true;
+                        for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+                            if (tRecipe.getOutput(h) != null) {
+                                ItemStack old = tRecipe.getOutput(h).copy();
+                                tOut[h] = old;
+                                tOut[h].stackSize = old.stackSize * (processed + 1);
+                            }
+                        }
 
-				if (found_Recipe) {
+                        ++processed;
 
-					this.mEfficiency         = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-					this.mEfficiencyIncrease = 10000;
+                    } else {
+                        break;
+                    }
+                }
+                mParallelPoint = processed;
+                if (tRecipe.mFluidOutputs.length > 4) {
+                    FluidStack fluid = tRecipe.getFluidOutput(4);
+                    if (fluid != null) {
+                        FluidStack fluidOut = fluid.copy();
+                        fluidOut.amount *= processed;
+                        outputFluids.add(fluidOut);
+                    }
+                }
 
-					this.mEUt = (tRecipe.mEUt) * processed * tierHatch() / 2;
+                tOut = resizeItemStackSize(tOut);
 
-					this.mEUt = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
+                if (found_Recipe) {
 
-					this.mMaxProgresstime = tRecipe.mDuration;
+                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+                    this.mEfficiencyIncrease = 10000;
 
-					this.mOutputItems  = tOut;
-					this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
+                    this.mEUt = (tRecipe.mEUt) * processed * tierHatch() / 2;
 
-					this.updateSlots();
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+                    this.mEUt = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
 
-	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_RecipeMaps.sPyrolyseOven;
-	}
+                    this.mMaxProgresstime = tRecipe.mDuration;
 
-	public int tierHatch() {
-		int Tier = 0;
-		for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-			if (isValidMetaTileEntity(tHatch)) {
-				Tier = tHatch.mTier;
-			}
-		}
-		setParallel(Math.max(Tier, 1));
-		return Math.max(Tier, 1);
-	}
+                    this.mOutputItems = tOut;
+                    this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
 
-	@Override
-	public boolean onRunningTick(ItemStack aStack) {
+                    this.updateSlots();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-		if (cashedRecipe == null)
-			return super.onRunningTick(aStack);
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_RecipeMaps.sPyrolyseOven;
+    }
 
-		int outIndex = -1;
+    public int tierHatch() {
+        int Tier = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                Tier = tHatch.mTier;
+            }
+        }
+        setParallel(Math.max(Tier, 1));
+        return Math.max(Tier, 1);
+    }
 
-		switch (this.mProgresstime) {
-			case 7 * 20:
-				outIndex = 0;
-				break;
-			case 14 * 20:
-				outIndex = 1;
-				break;
-			case 21 * 20:
-				outIndex = 2;
-				break;
-			case 28 * 20:
-				outIndex = 3;
-				break;
-		}
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
 
-		if (outIndex >= 0 && cashedRecipe.mFluidOutputs.length > outIndex) {
-			FluidStack out = cashedRecipe.mFluidOutputs[outIndex];
-			if (out != null) {
-				FluidStack outCopy = out.copy();
-				outCopy.amount *= mParallelPoint;
-				addOutput(outCopy);
-			}
-		}
+        if (cashedRecipe == null)
+            return super.onRunningTick(aStack);
 
-		return super.onRunningTick(aStack);
-	}
+        int outIndex = -1;
 
-	@Override
-	public boolean machineStructure(IGregTechTileEntity thisController) {
-		final Vector3ic forgeDirection = new Vector3i(
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
-		);
+        switch (this.mProgresstime) {
+        case 7 * 20:
+            outIndex = 0;
+            break;
+        case 14 * 20:
+            outIndex = 1;
+            break;
+        case 21 * 20:
+            outIndex = 2;
+            break;
+        case 28 * 20:
+            outIndex = 3;
+            break;
+        }
 
-		boolean formationChecklist = true; // Если все ок, машина собралась
+        if (outIndex >= 0 && cashedRecipe.mFluidOutputs.length > outIndex) {
+            FluidStack out = cashedRecipe.mFluidOutputs[outIndex];
+            if (out != null) {
+                FluidStack outCopy = out.copy();
+                outCopy.amount *= mParallelPoint;
+                addOutput(outCopy);
+            }
+        }
 
-		for (byte X = 0; X <= 8; X++) {
-			for (byte Z = 0; Z >= -2; Z--) {
+        return super.onRunningTick(aStack);
+    }
 
-				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, -1, Z);
+    @Override
+    public boolean machineStructure(IGregTechTileEntity thisController) {
 
-				if (isB(Z, -1) && isB(X, 4, 8)) {
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-					} else {
-						formationChecklist = false;
-					}
-					continue;
-				}
-				if ((isB(Z, 0) || isB(Z, -2)) && (isB(X, 1) || isB(X, 3) || isB(X, 5, 7))) {
-					continue;
-				}
-				if (isB(Z, -1, 3)) {
-					continue;
-				}
+        boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, 0);
 
-				if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == GregTech_API.sBlockMachines)
-						&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == frameMeta)) {
-				} else {
-					formationChecklist = false;
-				}
-			}
-		}
+        if (this.mInputBusses.size() > 1) {
+            formationChecklist = false;
+        }
+        if (this.mInputHatches.size() > 1) {
+            formationChecklist = false;
+        }
+        if (this.mOutputHatches.size() > 1) {
+            formationChecklist = false;
+        }
+        if (this.mOutputBusses.size() > 1) {
+            formationChecklist = false;
+        }
+        if (this.mEnergyHatches.size() > 1) {
+            formationChecklist = false;
+        }
+        if (this.mMaintenanceHatches.size() != 1) {
+            formationChecklist = false;
+        }
+        if (this.mMufflerHatches.size() != 1) {
+            formationChecklist = false;
+        }
+        return formationChecklist;
+    }
 
-		for (byte X = 0; X <= 8; X++) {
-			for (byte Z = 0; Z >= -2; Z--) {
-				if (X == 0 && Z == 0) {
-					continue;
-				}
+    @Override
+    public int getPollutionPerTick(ItemStack aStack) {
+        return 200;
+    }
 
-				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 0, Z);
+    @Override
+    public boolean hasSeparate() {
+        return false;
+    }
 
-				if (isB(Z, -1) && isB(X, 1, 4)) {
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == GregTech_API.sBlockCasings2)
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 13)) {
-					} else {
-						formationChecklist = false;
-					}
-					continue;
-				}
-
-				if ((isB(Z, 0) || isB(Z, -2)) && isB(X, 3)) {
-					continue;
-				}
-				if (isB(Z, -1) && isB(X, 5, 7)) {
-					continue;
-				}
-
-				IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-				if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-					} else {
-						formationChecklist = false;
-					}
-				}
-			}
-		}
-//
-		for (byte X = 0; X <= 8; X++) {
-			for (byte Z = 0; Z >= -2; Z--) {
-
-				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 1, Z);
-
-				if (isB(X, 3)) {
-					continue;
-				}
-
-				IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-				if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == 3)) {
-					} else {
-						formationChecklist = false;
-					}
-				}
-			}
-		}
-
-		if (this.mInputBusses.size() > 1) {
-			formationChecklist = false;
-		}
-		if (this.mInputHatches.size() > 1) {
-			formationChecklist = false;
-		}
-		if (this.mOutputHatches.size() > 1) {
-			formationChecklist = false;
-		}
-		if (this.mOutputBusses.size() > 1) {
-			formationChecklist = false;
-		}
-		if (this.mEnergyHatches.size() > 1) {
-			formationChecklist = false;
-		}
-		if (this.mMaintenanceHatches.size() != 1) {
-			formationChecklist = false;
-		}
-		if (this.mMufflerHatches.size() != 1) {
-			formationChecklist = false;
-		}
-		return formationChecklist;
-	}
-
-	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 200;
-	}
-
-	@Override
-	public boolean hasSeparate() {
-		return false;
-	}
-
-	@Override
-	public boolean hasShowConnect() {
-		return false;
-	}
+    @Override
+    public boolean hasShowConnect() {
+        return false;
+    }
 }
