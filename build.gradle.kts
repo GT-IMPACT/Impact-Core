@@ -29,12 +29,26 @@ buildConfig {
     }
 }
 
+repositories {
+    mavenLocal {
+        content {
+            includeVersion(
+                "space.impact",
+                "gregtech-impact",
+                "5.09.36.1",
+            )
+        }
+    }
+}
+
 dependencies {
     // impact
-    api("space.impact:Packet-network:1.1.8.dirty")
-    api("space.impact:ImpactAPI:0.0.4:dev")
-    api("space.impact:VirtualWorld:2.0.4:dev")
-    api("space.impact:gregtech-impact:5.09.35.45:dev") { isTransitive = false }
+    implementation("space.impact:Packet-network:1.1.8.dirty")
+    implementation("space.impact:ImpactStructures:1.1.0:dev")
+    implementation("space.impact:VirtualWorld:2.0.4:dev")
+    implementation("space.impact:gregtech-impact:5.09.36.1:dev") {
+        isTransitive = false
+    }
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
     runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.0.5") { isTransitive = false }
     runtimeOnlyNonPublishable("space.impact:GregTechBridge:1.0.2:dev") { isTransitive = false }
