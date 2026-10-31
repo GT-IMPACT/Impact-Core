@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.generators.nq;
 
 import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
@@ -42,14 +43,15 @@ import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static gregtech.api.enums.GT_Values.RA;
 import static java.text.NumberFormat.getNumberInstance;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_LiquidEnrichedNqGenerator> {
 
     private static final ICasing CASING = ImpactCasings.NQ_CASING;
 
-    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(ImpactCasings.NQ_CASING, 5)
+    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(ImpactCasings.NQ_CASING, 94)
             .build();
 
     private static IStructureDefinition<GTMTE_LiquidEnrichedNqGenerator> STRUCTURE_DEFINITION;
@@ -125,7 +127,8 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
     @Override
     public boolean machineStructure(IGregTechTileEntity iGregTechTileEntity) {
         casingCount = 0;
-        boolean check = checkPiece(5, 12, 0);
+        boolean check = checkPiece(5, 12, 0)
+                && mMaintenanceHatches.size() <= 1 && HatchCounts.inputHatches(this) <= 3;
         if (!HATCHES_A.isSatisfied(this, casingCount))
             check = false;
         return check;
@@ -225,10 +228,12 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
                 .addOtherStructurePart("Dynamo Hatch", "Any casing")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 3")
-                .addCasing("", CASING, false)
-                .addOtherStructurePart("Naquadah Chamber Casing", "inside structure")
-                .addOtherStructurePart("Tether Core", "for contain core Nq")
+                .addCasingInfoMin(ImpactCasings.NQ_CASING, HATCHES_A.getMinimumCasings(), false)
+                .addOtherStructurePart(new ItemStack(InsideBlock, 1, 0), "inside structure", 13)
+                .addOtherStructurePart("Tether Core", "1x, see the structure hologram")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 93")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 60)
                 .toolTipFinisher();
     }
 
