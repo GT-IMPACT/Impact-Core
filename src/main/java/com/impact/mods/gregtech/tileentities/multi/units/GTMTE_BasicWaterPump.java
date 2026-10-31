@@ -33,8 +33,21 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraftforge.common.BiomeDictionary.Type.*;
-import static space.impact.structures.structure.StructureUtility.*;
+import static net.minecraftforge.common.BiomeDictionary.Type.BEACH;
+import static net.minecraftforge.common.BiomeDictionary.Type.CONIFEROUS;
+import static net.minecraftforge.common.BiomeDictionary.Type.FOREST;
+import static net.minecraftforge.common.BiomeDictionary.Type.HILLS;
+import static net.minecraftforge.common.BiomeDictionary.Type.JUNGLE;
+import static net.minecraftforge.common.BiomeDictionary.Type.MESA;
+import static net.minecraftforge.common.BiomeDictionary.Type.MOUNTAIN;
+import static net.minecraftforge.common.BiomeDictionary.Type.PLAINS;
+import static net.minecraftforge.common.BiomeDictionary.Type.SANDY;
+import static net.minecraftforge.common.BiomeDictionary.Type.SAVANNA;
+import static net.minecraftforge.common.BiomeDictionary.Type.SNOWY;
+import static net.minecraftforge.common.BiomeDictionary.Type.SWAMP;
+import static net.minecraftforge.common.BiomeDictionary.Type.WATER;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofChain;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWaterPump> {
@@ -91,8 +104,9 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
                 .addControlInfo("   Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
                 .addSeparator()
                 .addController("See the structure hologram")
-                .addCasing("", CASING, false)
+                .addCasingInfoMin(CASING, 10, false)
                 .addStructureHint("Pump deck or output hatch", HintColor.BLUE)
+                .addOtherStructurePart("Wood Frame Box", "10; see the structure hologram")
                 .toolTipFinisher();
     }
 
