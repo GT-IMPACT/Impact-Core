@@ -33,7 +33,9 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 
     private static final ICasing CASING = ImpactCasings.SPACE_SATELLITE_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0).build();
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 25).build();
     private static IStructureDefinition<GTMTE_SpaceSatellite> definition;
 
     public GTMTE_SpaceSatellite(int aID, String aNameRegional) {
@@ -71,7 +73,7 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_SpaceSatellite.class)
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     Transmitter.INSTANCE)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -108,8 +110,9 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
                 .addInfo("Installation on the Space Station required")
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Communication Transmitter", "Any casing")
-                .addCasingInfoMin(CASING, 48, false)
+                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 24")
                 .toolTipFinisher();
     }
 
@@ -136,7 +139,8 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        return Utilits.isLowGravity(thisController) && checkPiece(2, 2, 1);
+        casingCount = 0;
+        return Utilits.isLowGravity(thisController) && checkPiece(2, 2, 1) && SHELL.isSatisfied(this, casingCount);
     }
 
     @Override
