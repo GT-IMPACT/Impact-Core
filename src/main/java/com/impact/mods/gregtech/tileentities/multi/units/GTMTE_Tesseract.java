@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.Casings;
@@ -11,7 +12,11 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
@@ -25,16 +30,19 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static gregtech.api.GregTech_API.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sTesseractRecipes;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
 
-    private static final StructureRequirements HATCHES_2 = StructureRequirements.builder(Casings.INTERMIX_CHAMBER, 0)
+    private int casingCount;
+    private int intermixCount;
+
+    private static final StructureRequirements HATCHES_2 = StructureRequirements.builder(Casings.INTERMIX_CHAMBER, 28)
             .build();
     private static final StructureRequirements HATCHES_7 = StructureRequirements
-            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 0).build();
+            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 95).build();
     private static final StructureRequirements HATCHES_8 = StructureRequirements
             .builder(Casings.ROBUST_NAQUADAH_ALLOY, 0).build();
 
@@ -140,12 +148,12 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                 .addOtherStructurePart("Output Bus", "(UHV or better); maximum 1")
                 .addOtherStructurePart("Energy Hatch", "(UHV or better); maximum 2")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin("Robust Naquadah Alloy Machine Casing", 95, false)
-                .addCasingInfoMin("Intermix Chamber Casing", 23, false)
-                .addCasingInfoMin("Dyson Ring Casing", 24, false)
-                .addCasingInfoMin("Fusion Casing MKII", 4, false)
-                .addCasingInfoMin("Fusion Coil Block", 1, false)
-                .addCasingInfoMin("Core Chamber Casing", 16, false)
+                .addCasingInfoMin(Casings.ROBUST_NAQUADAH_ALLOY, HATCHES_7.getMinimumCasings(), false)
+                .addCasingInfoMin(Casings.INTERMIX_CHAMBER, HATCHES_2.getMinimumCasings(), false)
+                .addCasingInfoMin(Casings.DYSON_RING, 24, false)
+                .addCasingInfoMin(Casings.FUSION_MK_II, 4, false)
+                .addCasingInfoMin(Casings.FUSION_COIL, 1, false)
+                .addCasingInfoMin(Casings.CORE_CHAMBER, 16, false)
 
                 .addStructureHint("Input Bus / Input Hatch or Intermix Chamber Casing", HintColor.RED)
                 .addStructureHint("Output Hatch / Output Bus / Maintenance Hatch or Robust Naquadah Alloy Machine Casing", HintColor.GREEN)
@@ -171,21 +179,21 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                             { "0       0", " 1     1 ", "         ", "         ", "         ", "         ", "         ", " 1     1 ", "0       0" },
                             { "000000000", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "000080000" }
                     })
-                    .addElement('0', Casings.ROBUST_NAQUADAH_ALLOY.asElement())
+                    .addElement('0', onElementPass(machine -> machine.casingCount++, Casings.ROBUST_NAQUADAH_ALLOY.asElement()))
                     .addElement('1', Casings.DYSON_RING.asElement())
                     .addElement('2', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Input)
-                            .buildAndChain(HATCHES_2), HintColor.RED))
-                    .addElement('3', Casings.INTERMIX_CHAMBER.asElement())
+                            .buildAndChain(HATCHES_2, machine -> machine.intermixCount++), HintColor.RED))
+                    .addElement('3', onElementPass(machine -> machine.intermixCount++, Casings.INTERMIX_CHAMBER.asElement()))
                     .addElement('4', Casings.CORE_CHAMBER.asElement())
                     .addElement('5', Casings.FUSION_COIL.asElement())
                     .addElement('6', Casings.FUSION_MK_II.asElement())
                     .addElement('7', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Output, HatchElement.Maintenance)
-                            .buildAndChain(HATCHES_7), HintColor.GREEN))
+                            .buildAndChain(HATCHES_7, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('8', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput)
-                            .buildAndChain(HATCHES_8), HintColor.YELLOW))
+                            .buildAndChain(HATCHES_8, machine -> machine.casingCount++), HintColor.YELLOW))
                     .build();
         }
         return STRUCTURE;
@@ -193,7 +201,12 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean check = checkPiece(4, 8, 3);
+        casingCount = 0;
+        intermixCount = 0;
+        boolean check = checkPiece(4, 8, 3)
+                && HATCHES_7.isSatisfied(this, casingCount)
+                && HATCHES_2.isSatisfied(this, intermixCount)
+                && mMaintenanceHatches.size() <= 1;
 
         for (GT_MetaTileEntity_Hatch_Energy mEnergyHatch : this.mEnergyHatches) {
             if (mEnergyHatch.mTier < 9) {
@@ -230,15 +243,15 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
             }
         }
 
-        if (mInputHatches.size() > 1)
+        if (HatchCounts.inputHatches(this) > 1)
             check = false;
         if (mOutputHatches.size() > 1)
             check = false;
-        if (mInputBusses.size() > 1)
+        if (HatchCounts.inputBuses(this) > 1)
             check = false;
         if (mOutputBusses.size() > 1)
             check = false;
-        if (mEnergyHatches.size() > 2)
+        if (HatchCounts.energyHatches(this) > 2)
             check = false;
 
         return check;
