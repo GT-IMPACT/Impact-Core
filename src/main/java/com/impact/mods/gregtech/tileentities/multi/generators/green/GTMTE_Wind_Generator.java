@@ -55,7 +55,9 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
     public int mOutputSalary = 0;
     public int mCapacity = 0;
     private static final ICasing CASING = ImpactCasings.ME_CASING;
-    private static final StructureRequirements SUPPORT = StructureRequirements.builder(CASING, 0).build();
+    private int casingCount;
+
+    private static final StructureRequirements SUPPORT = StructureRequirements.builder(CASING, 1).build();
 
     public GTMTE_Wind_Generator(int aID, String aNameRegional) {
         super(aID, "impact.multis.generator.wind_generator", aNameRegional);
@@ -67,7 +69,8 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
 
     @Override
     public boolean machineStructure(IGregTechTileEntity base) {
-        return checkPiece(0, 2, 0);
+        casingCount = 0;
+        return checkPiece(0, 2, 0) && SUPPORT.isSatisfied(this, casingCount);
     }
 
     @Override
@@ -367,6 +370,8 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder(mName)
                 .addMachineType("Generator").addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addCasingInfoMin(CASING, SUPPORT.getMinimumCasings(), false)
+                .addStructureInfo("Hatches replacing casings: at most 1")
                 .toolTipFinisher();
     }
 
