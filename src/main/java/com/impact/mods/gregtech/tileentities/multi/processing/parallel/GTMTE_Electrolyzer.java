@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -30,7 +31,9 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
 
     private static final ICasing CASING = ImpactCasings.ELECTROLYZER_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 10)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
     private static IStructureDefinition<GTMTE_Electrolyzer> definition;
 
@@ -83,7 +86,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Electrolyzer.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -108,6 +111,8 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 31")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 9)
                 .toolTipFinisher();
     }
 
@@ -122,12 +127,13 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationChecklist = checkPiece(1, 2, 0) && SHELL.isSatisfied(this, 0);
+        casingCount = 0;
+        boolean formationChecklist = checkPiece(1, 2, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 9) {
+        if (HatchCounts.inputBuses(this) > 9) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 6) {
+        if (HatchCounts.inputHatches(this) > 6) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 3) {
@@ -139,7 +145,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
         if (this.mMufflerHatches.size() != 1) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 4) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
