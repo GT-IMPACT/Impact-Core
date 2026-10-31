@@ -15,7 +15,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import gregtech.common.GT_Pollution;
-import gregtech.common.tileentities.machines.multi.*;
 import java.util.ArrayList;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,13 +26,11 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static gregtech.api.GregTech_API.*;
-import static space.impact.structures.structure.StructureUtility.*;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
     private static final ICasing CASING = Casings.COKE_OVEN_BRICKS;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 16).build();
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 22).build();
     private int casingCount;
 
     private static IStructureDefinition<GTMTE_CokeOven> STRUCTURE;
@@ -87,11 +84,12 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
                 .addPollutionAmount(25)
                 .addSeparator()
                 .addController("See the structure hologram")
-                .addCasingInfoMin("Coke Oven Bricks", 16, false)
+                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addOtherStructurePart("Primitive Input Bus", "Maximum 1")
                 .addOtherStructurePart("Primitive Output Bus", "Maximum 1")
                 .addOtherStructurePart("Primitive Output Hatch", "Maximum 1")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 3")
                 .toolTipFinisher();
     }
 
@@ -217,7 +215,8 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
         mOutputBusses1.clear();
         mOutputHatches1.clear();
         casingCount = 0;
-        boolean formed = checkPiece("main", 1, 1, 0) && SHELL.isSatisfied(this, casingCount);
+        boolean formed = checkPiece("main", 1, 1, 0) && SHELL.isSatisfied(this, casingCount)
+                && mInputBusses1.size() <= 1 && mOutputBusses1.size() <= 1 && mOutputHatches1.size() <= 1;
         if (formed) {
             mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
         }
