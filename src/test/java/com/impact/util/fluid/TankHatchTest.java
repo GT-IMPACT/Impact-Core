@@ -1,5 +1,7 @@
 package com.impact.util.fluid;
 
+import com.impact.loader.ItemRegistery;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -101,7 +103,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/** Проверяет настоящее хранилище и стеки AE2; сетевой транспорт и мир заменены стендом. */
+/**
+ * Проверяет настоящее хранилище и стеки AE2; сетевой транспорт и мир заменены
+ * стендом.
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TankHatchTest {
     private LaunchClassLoader loader;
@@ -230,7 +235,12 @@ class TankHatchTest {
         public void initialize() throws Exception {
             Loader.injectData("7", "10", "99", "99", "1.7.10", "9.05", new File("."), Collections.emptyList());
             Bootstrap.func_151354_b();
+            GregTech_API.sBlockCasings8 = Blocks.wool;
+            ItemRegistery.IGlassBlock = Blocks.glass;
+            ItemRegistery.FluidTankBlock = Blocks.iron_block;
             Launch.classLoader = (LaunchClassLoader) getClass().getClassLoader();
+            Launch.blackboard = new HashMap<>();
+            Launch.blackboard.put("fml.deobfuscatedEnvironment", false);
             ModMetadata metadata = new ModMetadata();
             metadata.modId = "appliedenergistics2";
             DummyModContainer container = new DummyModContainer(metadata);
@@ -367,7 +377,8 @@ class TankHatchTest {
             h.storage.pushFluid(water(10_000), true);
             hatch.tick();
             network.clear();
-            // Внешнее изменение до ME-операции в том же тике нельзя потерять при подтверждении дельты.
+            // Внешнее изменение до ME-операции в том же тике нельзя потерять при
+            // подтверждении дельты.
             h.storage.pushFluid(water(500), true);
             hatch.extractItems(GTMTE_TankHatch.createAEFluidStack(water(1_000)), Actionable.MODULATE, null);
             hatch.tick();
@@ -799,15 +810,7 @@ class TankHatchTest {
         MultiFluidHandler storage;
 
         Harness(boolean multi) {
-            owner = multi ? new GTMTE_MultiTank("test.multi") {
-                @Override
-                public void run() {
-                }
-            } : new GTMTE_SingleTank("test.single") {
-                @Override
-                public void run() {
-                }
-            };
+            owner = multi ? new GTMTE_MultiTank("test.multi") : new GTMTE_SingleTank("test.single");
             controller = tile(owner, 32);
             owner.loadNBTData(saved(0));
             storage = ((IMultiFluidTank) owner).getMultiFluidHandler();
@@ -968,7 +971,10 @@ class TankHatchTest {
         }
     }
 
-    /** Исключает регистрацию блоков всего AE2; ApiStorage и AEFluidStack остаются настоящими. */
+    /**
+     * Исключает регистрацию блоков всего AE2; ApiStorage и AEFluidStack остаются
+     * настоящими.
+     */
     public static class ApiFactoryTransformer implements IClassTransformer {
         @Override
         public byte[] transform(String name, String transformedName, byte[] bytes) {

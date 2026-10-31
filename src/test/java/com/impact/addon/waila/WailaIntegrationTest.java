@@ -49,7 +49,8 @@ class WailaIntegrationTest {
 
     @AfterAll
     void closeLoader() throws Exception {
-        if (loader != null) loader.close();
+        if (loader != null)
+            loader.close();
     }
 
     private void check(String method) throws Throwable {
@@ -87,32 +88,32 @@ class WailaIntegrationTest {
             StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/en_US.lang"));
             GregTech_API.sMachineFile = new GT_Config(new Configuration() {
                 @Override
-                public void load() {}
+                public void load() {
+                }
 
                 @Override
-                public void save() {}
+                public void save() {
+                }
             });
         }
 
         private IWailaDataAccessor accessor(NBTTagCompound tag) {
             return (IWailaDataAccessor) Proxy.newProxyInstance(
-                    IWailaDataAccessor.class.getClassLoader(), new Class<?>[]{IWailaDataAccessor.class},
+                    IWailaDataAccessor.class.getClassLoader(), new Class<?>[] { IWailaDataAccessor.class },
                     (proxy, method, args) -> {
-                        if (method.getName().equals("getNBTData")) return tag;
+                        if (method.getName().equals("getNBTData"))
+                            return tag;
                         throw new AssertionError("Unexpected accessor call: " + method.getName());
                     });
         }
 
         private IWailaConfigHandler config() {
             return (IWailaConfigHandler) Proxy.newProxyInstance(
-                    IWailaConfigHandler.class.getClassLoader(), new Class<?>[]{IWailaConfigHandler.class},
+                    IWailaConfigHandler.class.getClassLoader(), new Class<?>[] { IWailaConfigHandler.class },
                     (proxy, method, args) -> false);
         }
 
         public void minerShowsOreRemainingOnlyWhenStructureIsComplete() throws Exception {
-            Field hintBlock = Class.forName("space.impact.api.Main").getDeclaredField("blockHint");
-            hintBlock.setAccessible(true);
-            hintBlock.set(null, Blocks.stone);
             GTMTE_Mining_Coal miner = new GTMTE_Mining_Coal("test");
             NBTTagCompound tag = new NBTTagCompound();
             tag.setBoolean("incompleteStructure", true);
@@ -171,12 +172,7 @@ class WailaIntegrationTest {
         }
 
         public void tankSynchronizesFluidsAndSkipsUnknownFluid() throws Exception {
-            GTMTE_SingleTank tank = new GTMTE_SingleTank("test") {
-                @Override
-                public void run() {
-                    // Structure registration requires a running mod environment.
-                }
-            };
+            GTMTE_SingleTank tank = new GTMTE_SingleTank("test");
             MultiFluidHandler fluids = new MultiFluidHandler(10000, 1);
             fluids.fluids.add(new FluidStack(FluidRegistry.WATER, 1234));
             Field storage = GTMTE_SingleTank.class.getDeclaredField("mfh");

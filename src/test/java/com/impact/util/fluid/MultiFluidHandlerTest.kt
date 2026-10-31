@@ -630,14 +630,8 @@ public class MultiFluidHandlerTest {
                 },
             )
             val controllers = listOf<GT_MetaTileEntity_MultiBlockBase>(
-                object : GTMTE_MultiTank("test.multi.tank") {
-                    public override fun run() {
-                    }
-                },
-                object : GTMTE_SingleTank("test.single.tank") {
-                    public override fun run() {
-                    }
-                },
+                GTMTE_MultiTank("test.multi.tank"),
+                GTMTE_SingleTank("test.single.tank"),
             )
             for (controller in controllers) {
                 val tank = tank()
@@ -673,7 +667,7 @@ public class MultiFluidHandlerTest {
                 } else {
                     tank.maxDistinctFluids = 1
                 }
-                val controllerClass = controller.javaClass.superclass
+                val controllerClass = controller.javaClass
                 controllerClass.getDeclaredField("mfh").apply {
                     isAccessible = true
                     set(
