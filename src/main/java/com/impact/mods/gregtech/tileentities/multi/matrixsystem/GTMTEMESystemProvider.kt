@@ -89,6 +89,8 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         )
     }
 
+    private var casingCount: Int = 0
+
     companion object {
 
         private val CASING: ICasing = ImpactCasings.ME_CASING
@@ -120,7 +122,7 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
 
         private val SHELL: StructureRequirements = StructureRequirements.builder(
             CASING,
-            0,
+            39,
         )
             .atLeast(MP_CHAMBER)
             .build()
@@ -152,7 +154,9 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
                                 HatchElement.Energy,
                                 ImpactHatchElement.LaserInput,
                             )
-                            .buildAndChain(SHELL),
+                            .buildAndChain(SHELL) { machine ->
+                                machine.casingCount++
+                            },
                         HintColor.GREEN,
                     ),
                 )
@@ -208,12 +212,16 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
 
 
     public override fun machineStructure(te: IGregTechTileEntity): Boolean {
+        casingCount = 0
         mpChambers.clear()
         mSpeedUp = 1
         var formationChecklist = checkPiece(
             5,
             2,
             1,
+        ) && SHELL.isSatisfied(
+            this,
+            casingCount,
         )
 
         if (mpChambers.size != 1) {
@@ -288,6 +296,7 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             addOtherStructurePart("Matrix Particles Chamber", "Any Casing (max x1)")
             addOtherStructurePart("I-Glass", "Glass for structure")
             addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+            addStructureInfo("Hatches replacing casings: at most 10")
             toolTipFinisher()
         }
     }
