@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.generators.nq;
 
 import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
@@ -39,7 +40,8 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static gregtech.api.enums.GT_Values.RA;
 import static java.text.NumberFormat.getNumberInstance;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_HyperNaquadahGenerator> {
@@ -48,7 +50,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
 
     private static final ICasing CASING = ImpactCasings.NQ_CASING;
 
-    private static final StructureRequirements HATCHES_C = StructureRequirements.builder(ImpactCasings.NQ_CASING, 5)
+    private static final StructureRequirements HATCHES_C = StructureRequirements.builder(ImpactCasings.NQ_CASING, 64)
             .build();
 
     public boolean Stuff;
@@ -75,7 +77,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
                             { "      CCC      ", "    CCBBBCC    ", "   CBBAAABBC   ", "  CBAA   AABC  ", " CBA       ABC ", " CBA       ABC ", "CBA         ABC", "CBA         ABC", "CBA         ABC", " CBA       ABC ", " CBA       ABC ", "  CBAA   AABC  ", "   CBBAAABBC   ", "    CCBBBCC    ", "      CCC      " },
                             { "               ", "      CCC      ", "    CC   CC    ", "   C       C   ", "  C         C  ", "  C         C  ", " C           C ", " C           C ", " C           C ", "  C         C  ", "  C         C  ", "   C       C   ", "    CC   CC    ", "      CCC      ", "               " }
                     })
-                    .addElement('A', ImpactCasings.NQ_CASING.asElement())
+                    .addElement('A', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('B', ofBlock(Block_NqTether.INSTANCE, 0))
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HyperNaquadahGenerator.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
@@ -114,7 +116,8 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
     @Override
     public boolean machineStructure(IGregTechTileEntity iGregTechTileEntity) {
         casingCount = 0;
-        boolean check = checkPiece(7, 13, 0);
+        boolean check = checkPiece(7, 13, 0)
+                && mMaintenanceHatches.size() <= 1 && HatchCounts.inputHatches(this) <= 3;
         if (!HATCHES_C.isSatisfied(this, casingCount))
             check = false;
         return check;
@@ -214,9 +217,10 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
                 .addOtherStructurePart("Dynamo Hatch", "Any casing")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 3")
-                .addCasing("", CASING, false)
-                .addOtherStructurePart("Tether Core", "for contain core Nq")
+                .addCasingInfoMin(ImpactCasings.NQ_CASING, HATCHES_C.getMinimumCasings(), false)
+                .addOtherStructurePart("Tether Core", "32x, see the structure hologram")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 63")
                 .toolTipFinisher();
     }
 
