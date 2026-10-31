@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.google.common.collect.Lists;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -33,7 +34,9 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
 
     private static final ICasing CASING = ImpactCasings.EXTRADIFICATION_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 31)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_Extradifier> definition;
 
@@ -86,7 +89,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Extradifier.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -111,6 +114,8 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 30")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 16)
                 .toolTipFinisher();
     }
 
@@ -135,12 +140,13 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationChecklist = checkPiece(2, 4, 0) && SHELL.isSatisfied(this, 0);
+        casingCount = 0;
+        boolean formationChecklist = checkPiece(2, 4, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 6) {
+        if (HatchCounts.inputBuses(this) > 6) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 6) {
+        if (HatchCounts.inputHatches(this) > 6) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 6) {
@@ -149,7 +155,7 @@ public class GTMTE_Extradifier extends GT_MetaTileEntity_MultiParallelBlockBase<
         if (this.mOutputHatches.size() > 6) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 4) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
