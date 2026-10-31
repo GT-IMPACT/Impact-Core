@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
 import com.impact.addon.vw.VirtualWorldScan;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -48,12 +49,14 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.lazy;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 
-    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(Casings.SOLID_STEEL, 0)
+    private int casingCount;
+
+    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(Casings.SOLID_STEEL, 8)
             .build();
 
     private static IStructureDefinition<GTMTE_BasicMiner> definition;
@@ -142,7 +145,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
-                            .buildAndChain(HATCHES_A), HintColor.GREEN))
+                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -154,6 +157,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     }
 
     public boolean machineStructure(IGregTechTileEntity te) {
+        casingCount = 0;
         te.setFrontFacing((byte) 1);
         Chunk chunk = te.getWorld().getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
         int size = 0;
@@ -171,7 +175,12 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
         if (size > 1)
             return false;
         hatch.clear();
-        boolean check = checkPiece(2, 9, 1);// TODO: 02.12.2021
+        boolean check = checkPiece(2, 9, 1)
+                && mMaintenanceHatches.size() <= 1
+                && mOutputBusses.size() <= 1
+                && HatchCounts.inputHatches(this) <= 1
+                && HatchCounts.energyHatches(this) <= 2
+                && HATCHES_A.isSatisfied(this, casingCount);// TODO: 02.12.2021
         if (hatch.size() != 1)
             check = false;
         return check;
@@ -294,10 +303,11 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 2")
-                .addCasingInfoMin("Solid Steel Machine Casing", 11, false)
+                .addCasingInfoMin(Casings.SOLID_STEEL, HATCHES_A.getMinimumCasings(), false)
                 .addCasingInfoMin("Steel Frame Box", 51, false)
                 .addStructureHint("Miner Drill Hatch", HintColor.RED)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 7")
                 .toolTipFinisher();
     }
 
