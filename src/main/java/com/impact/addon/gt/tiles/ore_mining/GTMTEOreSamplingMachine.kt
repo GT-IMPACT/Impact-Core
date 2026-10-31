@@ -4,52 +4,110 @@ import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch
-import com.impact.util.multis.GT_StructureUtility.ofFrame
-import com.impact.util.multis.GT_StructureUtility.ofHatchAdder
 import com.impact.util.multis.WorldProperties.chunk
-import com.impact.util.string.MultiBlockTooltipBuilder
+import gregtech.api.enums.Casings
 import gregtech.api.enums.GT_Values.RA
 import gregtech.api.enums.ItemList
 import gregtech.api.enums.Materials
 import gregtech.api.enums.OrePrefixes
-import gregtech.api.enums.Textures
+import gregtech.api.interfaces.ICasing
+import gregtech.api.interfaces.IHatchElement
 import gregtech.api.interfaces.ITexture
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase
 import gregtech.api.objects.XSTR
 import gregtech.api.render.TextureFactory
+import gregtech.api.util.GTStructureUtility
+import gregtech.api.util.GTStructureUtility.ofFrame
 import gregtech.api.util.GT_OreDictUnificator
 import gregtech.api.util.GT_Utility
+import gregtech.api.util.MultiblockTooltipBuilder
+import gregtech.api.util.StructureRequirements
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.server.MinecraftServer
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.StatCollector
+import net.minecraftforge.common.util.ForgeDirection
 import space.gtimpact.virtual_world.api.VirtualAPI
 import space.gtimpact.virtual_world.api.core.WorldPos
 import space.gtimpact.virtual_world.api.services.mining.ores.OreMiningResult
 import space.gtimpact.virtual_world.api.services.scanning.ScanMode
 import space.gtimpact.virtual_world.api.services.scanning.ores.OreScanReport
-import space.impact.api.ImpactAPI
-import space.impact.api.multiblocks.structure.IStructureDefinition
-import space.impact.api.multiblocks.structure.StructureDefinition
-import space.impact.api.multiblocks.structure.StructureUtility.lazy
+import space.impact.structures.alignment.IAlignmentLimits
+import space.impact.structures.hint.HintColor
+import space.impact.structures.structure.IStructureDefinition
+import space.impact.structures.structure.ISurvivalBuildEnvironment
+import space.impact.structures.structure.StructureDefinition
 
 class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOreSamplingMachine> {
 
     companion object {
-        private val INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16]
-        private val DEFINITION = StructureDefinition.builder<GTMTEOreSamplingMachine>()
-            .addShape(
-                "main", arrayOf(
-                    arrayOf("   ", " ~ ", "   "),
-                    arrayOf(" A ", "ABA", " A "),
-                    arrayOf(" A ", "A A", " A ")
-                )
-            )
-            .addElement('A', lazy { _ -> ofFrame(Materials.Steel) })
-            .addElement('B', ofHatchAdder(GTMTEOreSamplingMachine::checkHatch, 16, ImpactAPI.RED))
+
+        private val CASING: ICasing = Casings.SOLID_STEEL
+        private val ORE_HATCH: IHatchElement = object : IHatchElement {
+
+            override fun matches(tile: IMetaTileEntity?): Boolean {
+                return tile is GTMTE_OreHatch
+            }
+
+            override fun count(machine: GT_MetaTileEntity_MultiBlockBase): Int {
+                return (machine as? GTMTEOreSamplingMachine)?.hatch?.size ?: 0
+            }
+
+            override fun add(
+                machine: GT_MetaTileEntity_MultiBlockBase,
+                tile: IGregTechTileEntity,
+                textureIndex: Int,
+            ): Boolean {
+                val controller = machine as? GTMTEOreSamplingMachine ?: return false
+                val hatch = tile.metaTileEntity as? GTMTE_OreHatch ?: return false
+                hatch.updateTexture(textureIndex)
+                return controller.hatch.add(hatch)
+            }
+
+            override fun getDescription(): String {
+                return StatCollector.translateToLocal("impact.structure.hatch.ore")
+            }
+        }
+
+        private val ORE_POSITION: StructureRequirements = StructureRequirements.builder(
+            CASING,
+            0,
+        )
+            .atLeast(ORE_HATCH)
             .build()
+
+        private val DEFINITION: IStructureDefinition<GTMTEOreSamplingMachine> by lazy {
+            StructureDefinition.builder<GTMTEOreSamplingMachine>()
+                .addShape(
+                    "main",
+                    arrayOf(
+                        arrayOf("   ", " ~ ", "   "),
+                        arrayOf(" A ", "ABA", " A "),
+                        arrayOf(" A ", "A A", " A "),
+                    ),
+                )
+                .addChannel(
+                    GTStructureUtility.HATCH_CHANNEL,
+                    1,
+                    1,
+                )
+                .addElement(
+                    'A',
+                    ofFrame(Materials.Steel),
+                )
+                .addElement(
+                    'B',
+                    GTStructureUtility.buildHatchAdder(GTMTEOreSamplingMachine::class.java)
+                        .hint(HintColor.RED)
+                        .build(ORE_POSITION),
+                )
+                .build()
+        }
 
         private const val LAYER = 1
         private const val DEFAULT_WORK = 30 * 20
@@ -87,16 +145,12 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     private var lastScanReport: OreScanReport? = null
     private var oreProbe: OreMiningResult? = null
 
-    private fun checkHatch(te: IGregTechTileEntity?, index: Short): Boolean {
-        val mte = te?.metaTileEntity ?: return false
-        return if (mte is GTMTE_OreHatch) {
-            mte.updateTexture(index.toInt())
-            hatch.add(mte)
-        } else false
-    }
 
-    override fun isFacingValid(aFacing: Byte): Boolean {
-        return aFacing.toInt() == 1
+
+    public override fun getInitialAlignmentLimits(): IAlignmentLimits {
+        return IAlignmentLimits { direction, rotation, flip ->
+            direction == ForgeDirection.UP && rotation.isNotRotated && flip.isNotFlipped
+        }
     }
 
     override fun onFirstTick(te: IGregTechTileEntity) {
@@ -131,21 +185,27 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         }
     }
 
-    override fun getTexture(
+    public override fun getTexture(
         aBaseMetaTileEntity: IGregTechTileEntity?,
         aSide: Byte,
         aFacing: Byte,
         aColorIndex: Byte,
         aActive: Boolean,
-        aRedstone: Boolean
+        aRedstone: Boolean,
     ): Array<ITexture> {
-        return if (aSide == 1.toByte())
+        return if (aSide == 1.toByte()) {
+            val overlay = if (aActive) {
+                Texture.Icons.ORE_SAMPLE_ACTIVE
+            } else {
+                Texture.Icons.ORE_SAMPLE
+            }
             arrayOf(
-                INDEX_CASE,
-                TextureFactory.of(if (aActive) Texture.Icons.ORE_SAMPLE_ACTIVE else Texture.Icons.ORE_SAMPLE)
+                CASING.texture,
+                TextureFactory.of(overlay),
             )
-        else
-            arrayOf(INDEX_CASE)
+        } else {
+            arrayOf(CASING.texture)
+        }
     }
 
     override fun checkRecipe(aStack: ItemStack?): Boolean {
@@ -246,12 +306,41 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         }
     }
 
-    override fun construct(stack: ItemStack, hintOnly: Boolean) {
-        buildPiece(stack, hintOnly, 1, 1, 0)
+    public override fun construct(
+        stack: ItemStack,
+        hintOnly: Boolean,
+    ) {
+        buildPiece(
+            stack,
+            hintOnly,
+            1,
+            1,
+            0,
+        )
     }
 
-    override fun machineStructure(te: IGregTechTileEntity): Boolean {
-        val chunk = te.world.getChunkFromBlockCoords(te.xCoord, te.zCoord)
+    public override fun survivalConstruct(
+        trigger: ItemStack,
+        budget: Int,
+        environment: ISurvivalBuildEnvironment,
+    ): Int {
+        return survivalBuildPiece(
+            "main",
+            trigger,
+            1,
+            1,
+            0,
+            budget,
+            environment,
+        )
+    }
+
+
+    public override fun machineStructure(te: IGregTechTileEntity): Boolean {
+        val chunk = te.world.getChunkFromBlockCoords(
+            te.xCoord,
+            te.zCoord,
+        )
         var size = 0
         for (tile in chunk.chunkTileEntityMap.values) {
             if (tile is TileEntity && tile is IGregTechTileEntity && tile.metaTileEntity is GTMTEOreSamplingMachine) {
@@ -260,26 +349,31 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         }
         if (size > 1) return false
         hatch.clear()
-        var check = checkPiece(1, 1, 0)
+        var check = checkPiece(
+            1,
+            1,
+            0,
+        )
         if (hatch.size != 1) check = false
         return check
     }
 
-    override fun createTooltip(): MultiBlockTooltipBuilder {
-        val b = MultiBlockTooltipBuilder("ore_sampling_machine")
-        b.addInfo("info.0", "WHO are you, Mr.Ore??")
-            .addTypeMachine("name", "Ore Sampling")
-            .addInfo("info.1", "Mining takes place in current Chunk by manually")
+    public override fun createTooltip(): MultiblockTooltipBuilder {
+        return MultiblockTooltipBuilder(mName)
+            .addInfo("WHO are you, Mr.Ore??")
+            .addMachineType("Ore Sampling")
+            .addInfo("Mining takes place in current Chunk by manually")
             .addSeparator()
-            .addController()
-            .sizeStructure(3, 3, 3)
-            .addOtherStructurePartAny("case.0", "Steel Frame Box", 8)
-            .addRedHint("Miner Drill Hatch")
-            .signAndFinalize()
-        return b
+            .addController("See the structure hologram")
+            .beginStructureBlock(3, 3, 3, false)
+            .addOtherStructurePart("Steel Frame Box", "At least 8")
+            .addStructureHint("Miner Drill Hatch", HintColor.RED)
+            .toolTipFinisher()
     }
 
-    override fun getStructureDefinition(): IStructureDefinition<GTMTEOreSamplingMachine> = DEFINITION
+    public override fun getStructureDefinition(): IStructureDefinition<GTMTEOreSamplingMachine> {
+        return DEFINITION
+    }
 
     override fun hasSeparate(): Boolean {
         return false
