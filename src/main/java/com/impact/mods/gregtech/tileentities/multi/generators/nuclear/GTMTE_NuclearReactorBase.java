@@ -51,9 +51,10 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 
     private static final int SPEED_DECAY = 5;
     private final int[] AMOUNT_NUCLEAR_HATCHES = { 1, 9, 25 };
-    private final int[] AMOUNT_INPUT_HATCHES = { 1, 3, 6 };
+    private final int[] AMOUNT_INPUT_HATCHES = { 2, 3, 6 };
     private final int[] AMOUNT_OUTPUT_HATCHES = { 6, 12, 24 };
-    private final int[] AMOUNT_CASE = { 36, 100, 121 };
+    private static final int[] SHELL_POSITIONS = { 48, 125, 177 };
+    protected int casingCount;
     public ArrayList<GTMTE_Reactor_Rod_Hatch> mRodHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_BasicHull> mMachineHull = new ArrayList<>();
     public boolean mFirstStart = false;
@@ -65,6 +66,16 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
     public boolean stopTemp = false;
     protected static final ICasing CASING = Casings.RADIATION_PROOF;
     protected static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0).build();
+    private static final StructureRequirements[] SHELLS = {
+            StructureRequirements.builder(CASING, 24).build(),
+            StructureRequirements.builder(CASING, 63).build(),
+            StructureRequirements.builder(CASING, 89).build()
+    };
+
+    protected StructureRequirements shellRequirements() {
+        return SHELLS[tierReactor() - 1];
+    }
+
     protected static final StructureRequirements RODS = StructureRequirements.builder(CASING, 0)
             .atLeast(ReactorHatch.Rod).build();
 
@@ -103,12 +114,13 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
                 .addOtherStructurePart("Nuclear Rod Hatch", "Any top middle casing; maximum " + AMOUNT_NUCLEAR_HATCHES[tierReactor() - 1])
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum " + AMOUNT_INPUT_HATCHES[tierReactor() - 1])
                 .addOtherStructurePart("Output Hatch", "Any casing; maximum " + AMOUNT_OUTPUT_HATCHES[tierReactor() - 1])
-                .addRequirements(SHELL, "Radiation shielding")
-                .addOtherStructurePart("Steel Pipe Casing", "pipes!")
+                .addRequirements(shellRequirements(), "Radiation shielding")
+                .addOtherStructurePart(Casings.STEEL_PIPE, "Internal pipes", 8 << (tierReactor() - 1))
                 .addOtherStructurePart("Machine Hull", "what? yes, its for AE2 provider (max x1)")
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureHint("Casing, compatible hatch or machine hull", HintColor.CYAN)
                 .addStructureHint(tierReactor() == 1 ? "Reactor rod" : "Casing or reactor rod", tierReactor() == 1 ? HintColor.RED : HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most " + (SHELL_POSITIONS[tierReactor() - 1] - shellRequirements().getMinimumCasings()))
                 .toolTipFinisher();
     }
 
@@ -327,7 +339,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         if (acceptsHull) {
             builder.allow(ReactorHatch.Hull);
         }
-        return withHint(builder.buildAndChain(SHELL), acceptsHull ? HintColor.CYAN : HintColor.BLUE);
+        return withHint(builder.buildAndChain(shellRequirements(), machine -> machine.casingCount++), acceptsHull ? HintColor.CYAN : HintColor.BLUE);
     }
 
     protected enum ReactorHatch implements IHatchElement {
@@ -390,9 +402,10 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
+        casingCount = 0;
         mRodHatches.clear();
         mMachineHull.clear();
-        boolean formed = checkMachineFunction(thisController);
+        boolean formed = checkMachineFunction(thisController) && shellRequirements().isSatisfied(this, casingCount);
         // Keep the existing left-to-right, front-to-back rod IDs independently of
         // traversal order.
         mRodHatches.sort(Comparator.comparingInt(this::rodPosition));
