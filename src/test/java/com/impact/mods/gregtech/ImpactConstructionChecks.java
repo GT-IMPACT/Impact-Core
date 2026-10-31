@@ -6,6 +6,11 @@ import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorIII;
+import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_I;
+import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_II;
+import com.impact.mods.gregtech.tileentities.multi.generators.sofc.GTMTE_SOFC_III;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_ParametricDiffuser;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
@@ -33,6 +38,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GTStructureUtility;
 import ic2.core.Ic2Items;
 import ic2.core.init.BlocksItems;
@@ -119,6 +125,39 @@ public class ImpactConstructionChecks {
         assertEquals(5, new GTMTE_TheMill("mill-test").mInventory.length);
         assertEquals(2, new GTMTE_CokeOven("coke-test").mInventory.length);
         checkAllControllerHints(hints);
+        ImpactCasingChecks.checkLimits();
+        checkGeneratorCasingLimits(hints);
+    }
+
+    private static void checkGeneratorCasingLimits(HintRecorder hints) throws Exception {
+        GT_MetaTileEntity_EnhancedMultiBlockBase<?>[] generators = {
+                new GTMTE_NuclearReactorII("reactor-ii-casing-test"),
+                new GTMTE_NuclearReactorIII("reactor-iii-casing-test"),
+                new GTMTE_SOFC_I("sofc-i-casing-test", 0),
+                new GTMTE_SOFC_II("sofc-ii-casing-test", 1),
+                new GTMTE_SOFC_III("sofc-iii-casing-test", 2)
+        };
+        int[] totals = { 125, 177, 35, 35, 35 };
+        int[] minimums = { 63, 89, 18, 18, 18 };
+        for (int index = 0; index < generators.length; index++) {
+            TestWorld world = new TestWorld();
+            GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = generators[index];
+            controller(world, machine);
+            ItemStack trigger = new ItemStack(Items.stick);
+            world.isRemote = true;
+            hints.clear();
+            machine.construct(trigger, true);
+            List<String> positions = new ArrayList<>();
+            boolean sofc = index >= 2;
+            hints.frames.forEach((position, color) -> {
+                if (sofc || color == HintColor.BLUE || color == HintColor.CYAN) {
+                    positions.add(position);
+                }
+            });
+            world.isRemote = false;
+            machine.construct(trigger, false);
+            ImpactCasingChecks.checkGeneratorLimits(world, machine, positions, totals[index], minimums[index], sofc);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -165,6 +204,7 @@ public class ImpactConstructionChecks {
                     machine = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) type.getConstructor(String.class)
                             .newInstance(name);
                 }
+                ImpactCasingChecks.checkTooltip(machine);
                 int orientations = 0;
                 for (ExtendedFacing facing : ExtendedFacing.VALUES) {
                     if (!machine.isNewExtendedFacingValid(facing)) {
@@ -636,6 +676,22 @@ public class ImpactConstructionChecks {
                             "maintenance", 1, "", new ITexture[0][][], false));
                     assertTrue(machine.recheck(), "Computer length " + length + " facing " + direction);
                     assertTrue(machine.recheck(), "Repeated computer check");
+                    List<String> shell = new ArrayList<>();
+                    hints.frames.forEach((position, color) -> {
+                        if (color == HintColor.GREEN && !position.equals(maintenance)) {
+                            shell.add(position);
+                        }
+                    });
+                    int hatchLimit = 7 + 2 * (length - 2);
+                    for (int i = 0; i < hatchLimit - 1; i++) {
+                        putHatch(world, shell.get(i), new GT_MetaTileEntity_Hatch_Output(
+                                "output", 4, "", new ITexture[0][][]));
+                    }
+                    assertTrue(machine.recheck(), "Minimum casings for computer length " + length);
+                    assertTrue(machine.recheck(), "Repeated minimum-casing check");
+                    putHatch(world, shell.get(hatchLimit - 1), new GT_MetaTileEntity_Hatch_Output(
+                            "output", 4, "", new ITexture[0][][]));
+                    assertFalse(machine.recheck(), "One casing below minimum for computer length " + length);
                 }
             }
             for (int layers : new int[] { 0, 1, 17 }) {
