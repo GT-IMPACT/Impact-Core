@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.google.common.collect.Lists;
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -26,14 +27,19 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.SawMillBlock;
-import static com.impact.mods.gregtech.enums.Texture.Icons.*;
+import static com.impact.mods.gregtech.enums.Texture.Icons.SAW;
+import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_ACTIVE;
+import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_FRONT;
+import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_FRONT_ACTIVE;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 
     private static final ICasing CASING = ImpactCasings.SAW_CASING;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 10)
             .atLeast(ImpactHatchElement.RegularEnergy).build();
     private static IStructureDefinition<GTMTE_SawMill> definition;
 
@@ -90,7 +96,7 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
                     .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_SawMill.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -105,11 +111,12 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing")
                 .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
+                .addOtherStructurePart("Output Bus", "Any casing; maximum 2")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 1")
-                .addCasing("", CASING, false)
+                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addOtherStructurePart("Saw Mill Conveyor", "Bottom middle")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 9")
                 .toolTipFinisher();
     }
 
@@ -140,18 +147,19 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, 0);
+        casingCount = 0;
+        boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 1) {
+        if (HatchCounts.inputBuses(this) > 1) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 1) {
+        if (HatchCounts.inputHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 2) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() != 1) {
+        if (HatchCounts.energyHatches(this) != 1) {
             formationChecklist = false;
         }
         return formationChecklist;
