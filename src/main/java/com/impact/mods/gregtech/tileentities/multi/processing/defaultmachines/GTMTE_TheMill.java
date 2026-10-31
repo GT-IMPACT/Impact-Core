@@ -24,7 +24,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tools.GT_Tool_Axe;
-import java.awt.*;
+import java.awt.Color;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -39,7 +39,9 @@ import space.impact.structures.structure.IStructureElement;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static com.impact.common.item.Core_List_Items.*;
+import static com.impact.common.item.Core_List_Items.DropCrashedCoal;
+import static com.impact.common.item.Core_List_Items.DropCrashedMetallic;
+import static com.impact.common.item.Core_List_Items.DropCrashedStone;
 import static com.impact.loader.ItemRegistery.TheWind;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
@@ -90,7 +92,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
                 .addSeparator()
                 .addController("See the structure hologram")
                 .beginStructureBlock(9, 12, 9, false)
-                .addCasingInfoMin("The Mill Wood Planks", 260, false)
+                .addCasingInfoExactly(CASING, 262, false)
                 .addStructureHint("The Mill Rotor", HintColor.GREEN)
                 .toolTipFinisher();
     }
