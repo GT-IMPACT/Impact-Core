@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -26,7 +27,9 @@ import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_FlotationUnit> {
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(Casings.STABLE_TITANIUM, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(Casings.STABLE_TITANIUM, 6)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
 
     private static IStructureDefinition<GTMTE_FlotationUnit> definition;
@@ -79,7 +82,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                     .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_FlotationUnit.class)
                             .allow(ImpactHatchElement.Parallel, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Input)
-                            .buildAndChain(SHELL), HintColor.RED))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.RED))
                     .addElement('1', Casings.TITANIUM_PIPE.asElement())
                     .addElement('2', HeatingCoil.NICHROME.asElement())
                     .build();
@@ -104,10 +107,11 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                 .addOtherStructurePart("Output Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(Casings.STABLE_TITANIUM, 6, false)
+                .addCasingInfoMin(Casings.STABLE_TITANIUM, SHELL.getMinimumCasings(), false)
                 .addOtherStructurePart("Titanium Pipe Casing", "Any casing")
                 .addOtherStructurePart("Nichrome Coil", "Any casing")
                 .addStructureHint("Casing or compatible hatch", HintColor.RED)
+                .addStructureInfo("Hatches replacing casings: at most 11")
                 .toolTipFinisher();
     }
 
@@ -123,12 +127,13 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean check = checkPiece(1, 3, 0);
+        casingCount = 0;
+        boolean check = checkPiece(1, 3, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 2) {
+        if (HatchCounts.inputBuses(this) > 2) {
             check = false;
         }
-        if (this.mInputHatches.size() > 2) {
+        if (HatchCounts.inputHatches(this) > 2) {
             check = false;
         }
         if (this.mOutputBusses.size() > 1) {
@@ -137,7 +142,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
         if (this.mOutputHatches.size() > 1) {
             check = false;
         }
-        if (this.mEnergyHatches.size() > 2) {
+        if (HatchCounts.energyHatches(this) > 2) {
             check = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
