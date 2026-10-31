@@ -1,47 +1,60 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.sofc;
 
-import com.impact.util.string.MultiBlockTooltipBuilder;
-import com.impact.util.vector.Vector3i;
-import com.impact.util.vector.Vector3ic;
-import gregtech.api.GregTech_API;
+import com.impact.mods.gregtech.blocks.ImpactHatchElement;
+import gregtech.api.enums.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
+import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.StructureRequirements;
+import ic2.core.Ic2Items;
+import ic2.core.util.StackUtil;
+import java.util.ArrayList;
+import java.util.Collection;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import space.impact.structures.alignment.constructable.ISurvivalConstructable;
+import space.impact.structures.hint.HintColor;
+import space.impact.structures.structure.AutoPlaceEnvironment;
+import space.impact.structures.structure.IStructureDefinition;
+import space.impact.structures.structure.IStructureElement;
+import space.impact.structures.structure.ISurvivalBuildEnvironment;
+import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.CeramicBlock;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
+import static space.impact.structures.structure.StructureUtility.withHint;
 
-abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
+abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
+        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>
+        implements ISurvivalConstructable {
 
-    public final Block CASING = GregTech_API.sBlockCasings4;
-    public final Block CERAMIC = CeramicBlock;
-    public final int[] CERAMIC_META = new int[]{0, 1, 2};
-    public final int[] CASING_META = new int[]{1, 2, 0};
-    public final int[] CASING_TEXTURE_ID = new int[]{49, 50, 48};
+    private static final ICasing[] CASINGS = {
+            Casings.CLEAN_STAINLESS_STEEL, Casings.STABLE_TITANIUM, Casings.ROBUST_TUNGSTENSTEEL
+    };
+    private IStructureDefinition<T> structure;
 
-    public final int[] OXYGEN_PER_SEC = new int[]{400, 1200, 2000};
-    public final int[] EU_PER_TICK = new int[]{2048, 8192, 32768};
+    public final int[] OXYGEN_PER_SEC = new int[] { 400, 1200, 2000 };
+    public final int[] EU_PER_TICK = new int[] { 2048, 8192, 32768 };
 
-    public final String[] CASING_STRING = new String[]{"Clean Stainless Steel Casing", "Stable Titanium Machine Casing", "Robust Tungstensteel Machine Casing"};
-    public final String[] CERAMIC_STRING = new String[]{"YSZ Ceramic Unit", "GDC Ceramic Unit", "LSCF Ceramic Unit"};
+    public final String[] CERAMIC_STRING = new String[] { "YSZ Ceramic Unit", "GDC Ceramic Unit", "LSCF Ceramic Unit" };
     public int fuelConsumption = 0;
 
     public GTMTE_SOFC(int aID, String aName, String aNameRegional) {
@@ -55,42 +68,42 @@ abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
     abstract int getTier();
 
     @Override
-    public String[] getDescription() {
-		int tier = getTier();
-        final MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("sofc" + tier);
-        b.addInfo("info.0", "Oxidizes gas fuels to generate electricity without polluting the environment")
-                .addTypeGenerator()
-                .addTypeSteam()
-                .addInfo("info.1", "Steam production requires the SOFC to heat up completely first")
-                .addInfo("info.2", "Additionally requires Oxygen gas")
-                .addInfo("info.3", "Outputs Energy and Steam or SH Steam")
+    protected MultiblockTooltipBuilder createTooltip() {
+        int tier = getTier();
+        return new MultiblockTooltipBuilder(mName)
+                .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+                .addMachineType("Generator")
+                .addMachineType("Steam Producer")
+                .addInfo("Steam production requires the SOFC to heat up completely first")
+                .addInfo("Additionally requires Oxygen gas")
+                .addInfo("Outputs Energy and Steam or SH Steam")
                 .addSeparator()
-                .beginStructureBlock(3, 3, 5)
-                .addController()
-                .addDynamoHatch()
-                .addCasingInfo("case", CASING_STRING[tier])
-                .addOtherStructurePart("other.0", CERAMIC_STRING[tier], "other.1", "3x, Center 1x1x3")
-                .addOtherStructurePart("other.2", "Reinforced Glass", "other.3", "6x, touching the electrolyte units on the horizontal sides")
-                .addMaintenanceHatch()
-                .addIOHatches()
-                .signAndFinalize();
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return b.getInformation();
-        } else {
-            return b.getStructureInformation();
-        }
+                .beginStructureBlock(3, 3, 5, false)
+                .addController("See the structure hologram")
+                .addOtherStructurePart("Dynamo Hatch", "Any casing")
+                .addRequirements(requirements(), "Any casing position")
+                .addOtherStructurePart(CERAMIC_STRING[tier], "3x, Center 1x1x3")
+                .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
+                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("I/O Hatch", "Any casing")
+                .addStructureHint("Casing or I/O or maintenance hatch", HintColor.GREEN)
+                .addStructureHint("Casing or I/O, maintenance or dynamo hatch", HintColor.BLUE)
+                .toolTipFinisher();
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{
-                Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID[getTier()]],
-                TextureFactory.of(aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)
-        } : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID[getTier()]]};
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return aSide == aFacing ? new ITexture[] {
+                CASINGS[getTier()].getTexture(),
+                TextureFactory.of(aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE
+                        : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)
+        } : new ITexture[] { CASINGS[getTier()].getTexture() };
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, "SO Generator " + (getTier() + 1), "MultiblockDisplay.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity,
+                "SO Generator " + (getTier() + 1), "MultiblockDisplay.png");
     }
 
     public int calculateSteamOutput() {
@@ -118,7 +131,8 @@ abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
                 for (GT_Recipe aFuel : recipeList) {
 
                     FluidStack liquid;
-                    if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null && hatchFluid.isFluidEqual(liquid)) {
+                    if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
+                            && hatchFluid.isFluidEqual(liquid)) {
 
                         fuelConsumption = liquid.amount = (EU_PER_TICK[getTier()] * 20) / aFuel.mSpecialValue;
 
@@ -137,7 +151,8 @@ abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
                                 if (getTier() == 0) {
                                     super.addOutput(GT_ModHandler.getSteam(calculateSteamOutput()));
                                 } else {
-                                    super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", calculateSteamOutput()));
+                                    super.addOutput(
+                                            FluidRegistry.getFluidStack("ic2superheatedsteam", calculateSteamOutput()));
                                 }
                             }
                             return true;
@@ -152,157 +167,106 @@ abstract class GTMTE_SOFC extends GT_MetaTileEntity_MultiBlockBase {
         return false;
     }
 
-    public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-        final Vector3i offset = new Vector3i();
-
-        // either direction on z-axis
-        if (forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-            offset.x = x;
-            offset.y = y;
-            offset.z = z;
-        }
-        if (forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-            offset.x = -x;
-            offset.y = y;
-            offset.z = -z;
-        }
-        // either direction on x-axis
-        if (forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-            offset.x = z;
-            offset.y = y;
-            offset.z = -x;
-        }
-        if (forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-            offset.x = -z;
-            offset.y = y;
-            offset.z = x;
-        }
-        // either direction on y-axis
-        if (forgeDirection.y() == -1) {
-            offset.x = x;
-            offset.y = z;
-            offset.z = y;
-        }
-
-        return offset;
+    private StructureRequirements requirements() {
+        return StructureRequirements.builder(CASINGS[getTier()], 0)
+                .atLeast(HatchElement.Maintenance)
+                .atLeast(ImpactHatchElement.FluidInput, 2).build();
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
-        // Figure out the vector for the direction the back face of the controller is facing
-        final Vector3ic forgeDirection = new Vector3i(ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX, ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY, ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
-        int minCasingAmount = 12;
-        boolean formationChecklist = true; // if this is still true at the end, machine is good to go :)
+    public IStructureDefinition<T> getStructureDefinition() {
+        if (structure == null) {
+            structure = StructureDefinition.<T>builder()
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addShape("main", new String[][] {
+                            { "CCC", "C~C", "CCC" },
+                            { "CCC", "GEG", "CCC" },
+                            { "CCC", "GEG", "CCC" },
+                            { "CCC", "GEG", "CCC" },
+                            { "DDD", "DDD", "DDD" }
+                    })
+                    .addElement('C', withHint(new HatchElementBuilder<T>()
+                            .allow(HatchElement.Input, HatchElement.Output).buildAndChain(requirements()),
+                            HintColor.GREEN))
+                    .addElement('D', withHint(new HatchElementBuilder<T>()
+                            .allow(HatchElement.Input, HatchElement.Output, ImpactHatchElement.Dynamo)
+                            .buildAndChain(requirements()), HintColor.BLUE))
+                    .addElement('E', ceramicElement())
+                    .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
+                    .build();
+        }
+        return structure;
+    }
 
-        // Front slice
-        for (int X = -1; X <= 1; X++) {
-            for (int Y = -1; Y <= 1; Y++) {
-                if (X == 0 && Y == 0) {
-                    continue; // is controller
-                }
-
-                // Get next TE
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
-                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-
-                // Tries to add TE as either of those kinds of hatches.
-                // The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID[getTier()]) && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID[getTier()]) && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID[getTier()])) {
-
-                    // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META[getTier()])) {
-                        // Seems to be valid casing. Decrement counter.
-                        minCasingAmount--;
-                    } else {
-                        formationChecklist = false;
-                    }
-                }
+    private IStructureElement<T> ceramicElement() {
+        int metadata = getTier();
+        IStructureElement<T> ceramic = ofBlock(CeramicBlock, metadata);
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T machine, World world, int x, int y, int z) {
+                // Existing structures allow any ceramic tier or another block with the tier's
+                // metadata.
+                return world.getBlock(x, y, z) == CeramicBlock || world.getBlockMetadata(x, y, z) == metadata;
             }
-        }
 
-        // Middle three slices
-        for (int X = -1; X <= 1; X++) {
-            for (int Y = -1; Y <= 1; Y++) {
-                for (int Z = -1; Z >= -3; Z--) {
-                    final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-                    if (X == 0 && Y == 0) {
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) != CERAMIC) && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) != CERAMIC_META[getTier()])) {
-                            formationChecklist = false;
-                        }
-                        continue;
-                    }
-                    if (Y == 0 && (X == -1 || X == 1)) {
-                        if (!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName().equals("blockAlloyGlass")) {
-                            formationChecklist = false;
-                        }
-                        continue;
-                    }
-                    // Get next TE
-                    IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-
-                    // Tries to add TE as either of those kinds of hatches.
-                    // The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-                    if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID[getTier()]) && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID[getTier()]) && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID[getTier()])) {
-
-                        // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-                        if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META[getTier()])) {
-                            // Seems to be valid casing. Decrement counter.
-                            minCasingAmount--;
-                        } else {
-                            formationChecklist = false;
-                        }
-                    }
-                }
+            @Override
+            public boolean couldBeValid(T machine, World world, int x, int y, int z, ItemStack trigger) {
+                return check(machine, world, x, y, z);
             }
-        }
 
-        // Back slice
-        for (int X = -1; X <= 1; X++) {
-            for (int Y = -1; Y <= 1; Y++) {
-                // Get next TE
-                final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -4);
-                IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-
-                // Tries to add TE as either of those kinds of hatches.
-                // The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-                if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID[getTier()]) && !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID[getTier()]) && !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID[getTier()]) && !super.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID[getTier()])) {
-
-                    // If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META[getTier()])) {
-                        // Seems to be valid casing. Decrement counter.
-                        minCasingAmount--;
-                    } else {
-                        formationChecklist = false;
-                    }
-                }
+            @Override
+            public boolean spawnHint(T machine, World world, int x, int y, int z, ItemStack trigger) {
+                return ceramic.spawnHint(machine, world, x, y, z, trigger);
             }
-        }
 
-        if (this.mInputHatches.size() < 2) {
-            formationChecklist = false;
-        }
-        if (this.mMaintenanceHatches.isEmpty()) {
-            formationChecklist = false;
-        }
-        if (this.mDynamoHatches.size() > 2) {
-            formationChecklist = false;
-        }
-        if (this.mDynamoHatchesMulti.size() > 1) {
-            formationChecklist = false;
-        }
+            @Override
+            public boolean placeBlock(T machine, World world, int x, int y, int z, ItemStack trigger) {
+                return check(machine, world, x, y, z) || ceramic.placeBlock(machine, world, x, y, z, trigger);
+            }
 
-        return formationChecklist;
+            @Override
+            public BlocksToPlace getBlocksToPlace(T machine, World world, int x, int y, int z,
+                    ItemStack trigger, AutoPlaceEnvironment environment) {
+                return ceramic.getBlocksToPlace(machine, world, x, y, z, trigger, environment);
+            }
+        };
+    }
+
+    @Override
+    public void construct(ItemStack trigger, boolean hintsOnly) {
+        buildPiece("main", trigger, hintsOnly, 1, 1, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack trigger, int budget, ISurvivalBuildEnvironment environment) {
+        return survivalBuildPiece("main", trigger, 1, 1, 0, budget, environment);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity controller, ItemStack stack) {
+        return checkPiece("main", 1, 1, 0) && requirements().isSatisfied(this, 0)
+                && mDynamoHatches.size() <= 2 && mDynamoHatchesMulti.size() <= 1;
     }
 
     public String[] getInfoData() {
 
-        return new String[]{
-                StatCollector.translateToLocal("GT5U.engine.output") + ": " + EnumChatFormatting.GREEN + this.mEUt * this.mEfficiency / 10000 + EnumChatFormatting.RESET + " EU/t",
-                StatCollector.translateToLocal("GT5U.engine.efficiency") + ": " + EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F + EnumChatFormatting.YELLOW + " %",
-                (getTier() == 0 ? "Output Steam: " : "Output SH Steam: ") + (((float) this.mEfficiency / 100.0F == 100) ? EnumChatFormatting.GREEN + "" + calculateSteamOutput() + EnumChatFormatting.RESET + " L/s" : EnumChatFormatting.GREEN + "0" + EnumChatFormatting.RESET + " L/s"),
-                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus()) ? EnumChatFormatting.GREEN + "No Problems" + EnumChatFormatting.RESET : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET),
-                "Fuel supply: " + ((this.mEUt * this.mEfficiency / 10000 >= 1) ? EnumChatFormatting.RED + "" + fuelConsumption + EnumChatFormatting.RESET + " L/s" : EnumChatFormatting.RED + "0" + EnumChatFormatting.RESET + " L/s"),
-                "Oxygen supply: " + ((this.mEUt * this.mEfficiency / 10000 >= 1) ? EnumChatFormatting.RED + "" + OXYGEN_PER_SEC[getTier()] + EnumChatFormatting.RESET + " L/s" : EnumChatFormatting.RED + "0" + EnumChatFormatting.RESET + " L/s")
+        return new String[] {
+                StatCollector.translateToLocal("GT5U.engine.output") + ": " + EnumChatFormatting.GREEN
+                        + this.mEUt * this.mEfficiency / 10000 + EnumChatFormatting.RESET + " EU/t",
+                StatCollector.translateToLocal("GT5U.engine.efficiency") + ": " + EnumChatFormatting.YELLOW
+                        + (float) this.mEfficiency / 100.0F + EnumChatFormatting.YELLOW + " %",
+                (getTier() == 0 ? "Output Steam: " : "Output SH Steam: ") + (((float) this.mEfficiency / 100.0F == 100)
+                        ? EnumChatFormatting.GREEN + "" + calculateSteamOutput() + EnumChatFormatting.RESET + " L/s"
+                        : EnumChatFormatting.GREEN + "0" + EnumChatFormatting.RESET + " L/s"),
+                "Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
+                        ? EnumChatFormatting.GREEN + "No Problems" + EnumChatFormatting.RESET
+                        : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET),
+                "Fuel supply: " + ((this.mEUt * this.mEfficiency / 10000 >= 1)
+                        ? EnumChatFormatting.RED + "" + fuelConsumption + EnumChatFormatting.RESET + " L/s"
+                        : EnumChatFormatting.RED + "0" + EnumChatFormatting.RESET + " L/s"),
+                "Oxygen supply: " + ((this.mEUt * this.mEfficiency / 10000 >= 1)
+                        ? EnumChatFormatting.RED + "" + OXYGEN_PER_SEC[getTier()] + EnumChatFormatting.RESET + " L/s"
+                        : EnumChatFormatting.RED + "0" + EnumChatFormatting.RESET + " L/s")
         };
     }
 
