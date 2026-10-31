@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -32,11 +33,13 @@ import static space.impact.structures.structure.StructureUtility.withHint;
 public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedCrackingUnit> {
 
     private static final ICasing CASING = Casings.CLEAN_STAINLESS_STEEL;
+    private int casingCount;
+
     private static final StructureRequirements MUFFLER_POSITION = StructureRequirements.builder(CASING, 0)
             .atLeast(TopMuffler.INSTANCE).build();
     private boolean topMufflerPresent;
 
-    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 0)
+    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 32)
             .atLeast(HatchElement.Maintenance).build();
 
     private static IStructureDefinition<GTMTE_AdvancedCrackingUnit> definition;
@@ -66,7 +69,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                             .allow(ImpactHatchElement.Parallel, HatchElement.Input, HatchElement.Output,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
-                            .buildAndChain(HATCHES_A), HintColor.GREEN))
+                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('B', HeatingCoil.NAQUADAH.asElement())
                     .addElement('C', Casings.PTFE_PIPE.asElement())
                     .addElement('D',
@@ -124,11 +127,12 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                 .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Naquadah Coil", "around Pipe Machine Casing")
-                .addOtherStructurePart("PTFE Pipe Machine Casing", "inside the hollow")
-                .addCasingInfoMin(CASING, 10, false)
+                .addOtherStructurePart(HeatingCoil.NAQUADAH, "around Pipe Machine Casing", 40)
+                .addOtherStructurePart(Casings.PTFE_PIPE, "inside the hollow", 5)
+                .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
                 .addStructureHint("Muffler Hatch", HintColor.RED)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 32")
                 .toolTipFinisher();
     }
 
@@ -143,14 +147,16 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
+        casingCount = 0;
 
         topMufflerPresent = false;
-        boolean formationChecklist = checkPiece(2, 6, 0);
+        boolean formationChecklist = checkPiece(2, 6, 0)
+                && mMufflerHatches.size() <= 1 && HATCHES_A.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 8) {
+        if (HatchCounts.inputBuses(this) > 8) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 16) {
+        if (HatchCounts.inputHatches(this) > 16) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 3) {
@@ -159,7 +165,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
         if (this.mOutputHatches.size() > 8) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 4) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
