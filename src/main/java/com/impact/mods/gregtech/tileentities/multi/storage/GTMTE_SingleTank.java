@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import com.impact.util.fluid.IMultiFluidTank;
 import com.impact.util.fluid.MultiFluidHandler;
@@ -64,7 +65,7 @@ public class GTMTE_SingleTank
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SingleTank>
         implements ISurvivalConstructable, IMultiFluidTank {
     private static final ICasing CASING = Casings.CHEMICALLY_INERT;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0).build();
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 9).build();
     private static IStructureDefinition<GTMTE_SingleTank> STRUCTURE;
     private double fluidCapacityAcc;
     private int casingCount;
@@ -247,6 +248,8 @@ public class GTMTE_SingleTank
                 .addInfo("I/O Tank Hatch for information and used EC2, OC systems")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureHint("Glass or input hatch/bus / output hatch/bus / tank hatch", HintColor.ORANGE)
+                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
+                .addStructureInfo("Hatches in the top and bottom casing layers: at most 8")
                 .toolTipFinisher();
     }
 
@@ -420,7 +423,7 @@ public class GTMTE_SingleTank
         mEnergyHatchesMulti.clear();
         boolean formationChecklist = checkPiece("main", 1, 1, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mEnergyHatches.size() > 0) {
+        if (HatchCounts.energyHatches(this) > 0) {
             formationChecklist = false;
         }
 
