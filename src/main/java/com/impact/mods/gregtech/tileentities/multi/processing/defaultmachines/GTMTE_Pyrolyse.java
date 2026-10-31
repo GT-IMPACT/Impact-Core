@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.GT_RecipeMaps;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -30,13 +31,16 @@ import space.impact.structures.structure.StructureDefinition;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.ofChain;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
 
     private static final ICasing CASING = Casings.SOLID_STEEL;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 39)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
     private static IStructureDefinition<GTMTE_Pyrolyse> definition;
 
@@ -77,12 +81,12 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', Casings.STEEL_PIPE.asElement())
-                    .addElement('D', CASING.asElement())
+                    .addElement('D', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('B', ofChain(ofFrame(Materials.Steel), ofBlock(GregTech_API.sBlockMachines, frameMeta)))
                     .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Pyrolyse.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -116,9 +120,10 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
                 .addOtherStructurePart("Output Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
-                .addOtherStructurePart("Steel Pipe Casing", "Middle line")
+                .addOtherStructurePart(Casings.STEEL_PIPE, "Middle line", 4)
                 .addOtherStructurePart("Steel Frame", "Bottom angles")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 7")
                 .toolTipFinisher();
     }
 
@@ -198,13 +203,14 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
+        casingCount = 0;
 
-        boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, 0);
+        boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 1) {
+        if (HatchCounts.inputBuses(this) > 1) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 1) {
+        if (HatchCounts.inputHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mOutputHatches.size() > 1) {
@@ -213,7 +219,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
         if (this.mOutputBusses.size() > 1) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 1) {
+        if (HatchCounts.energyHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
