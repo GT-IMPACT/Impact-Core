@@ -3,21 +3,26 @@ package com.impact.mods.gregtech.tileentities.multi.matrixsystem
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder
 import com.impact.loader.ItemRegistery
 import com.impact.mods.gregtech.GT_RecipeMaps
-import com.impact.mods.gregtech.blocks.Build_Casing_Helper
-import com.impact.mods.gregtech.blocks.Casing_Helper
+import com.impact.mods.gregtech.blocks.ImpactCasings
+import com.impact.mods.gregtech.blocks.ImpactHatchElement
 import com.impact.mods.gregtech.gui.base.GTC_ImpactBase
 import com.impact.mods.gregtech.gui.base.GUI_BASE
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
-import com.impact.util.multis.GT_StructureUtility.ofHatchAdderOptional
-import com.impact.util.string.MultiBlockTooltipBuilder
 import cpw.mods.fml.common.Optional
+import gregtech.api.enums.HatchElement
 import gregtech.api.enums.Textures
+import gregtech.api.interfaces.ICasing
+import gregtech.api.interfaces.IHatchElement
 import gregtech.api.interfaces.ITexture
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase
 import gregtech.api.render.TextureFactory
+import gregtech.api.util.GTStructureUtility
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map
+import gregtech.api.util.MultiblockTooltipBuilder
+import gregtech.api.util.StructureRequirements
 import mcp.mobius.waila.api.IWailaConfigHandler
 import mcp.mobius.waila.api.IWailaDataAccessor
 import net.minecraft.entity.player.EntityPlayerMP
@@ -26,11 +31,15 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumChatFormatting
+import net.minecraft.util.StatCollector
 import net.minecraft.util.StatCollector.translateToLocalFormatted
 import net.minecraft.world.World
-import space.impact.api.multiblocks.structure.IStructureDefinition
-import space.impact.api.multiblocks.structure.StructureDefinition
-import space.impact.api.multiblocks.structure.StructureUtility
+import space.impact.structures.hint.HintColor
+import space.impact.structures.structure.IStructureDefinition
+import space.impact.structures.structure.ISurvivalBuildEnvironment
+import space.impact.structures.structure.StructureDefinition
+import space.impact.structures.structure.StructureUtility
+import space.impact.structures.structure.StructureUtility.withHint
 
 class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESystemProvider> {
 
@@ -81,30 +90,79 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
     }
 
     companion object {
-        private val CASING_META: Int = Build_Casing_Helper.ME_CASING.meta
-        private val INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32]
-        private val CASING_TEXTURE_ID = Build_Casing_Helper.ME_CASING.idCasing
-        private val DEFINITION = StructureDefinition.builder<GTMTEMESystemProvider>()
-            .addShape(
-                "main", arrayOf(
-                    arrayOf("ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "),
-                    arrayOf("ADDDA ", "A   AA", "A   A~", "AAAAAA"),
-                    arrayOf("ADDDA ", "A   AA", "A   AA", "AAAAAA"),
-                    arrayOf("ADDDA ", "ADDDA ", "ADDDA ", "AAAAA ")
-                )
-            )
-            .addElement(
-                'A', ofHatchAdderOptional(
-                    GTMTEMESystemProvider::checkHatch,
-                    CASING_TEXTURE_ID,
-                    Casing_Helper.sCaseCore3,
-                    CASING_META,
-                    Casing_Helper.sCaseCore3,
-                    CASING_META
-                )
-            )
-            .addElement('D', StructureUtility.ofBlockAnyMeta(ItemRegistery.IGlassBlock))
+
+        private val CASING: ICasing = ImpactCasings.ME_CASING
+        private val MP_CHAMBER: IHatchElement = object : IHatchElement {
+
+            override fun matches(tile: IMetaTileEntity?): Boolean {
+                return tile is GTMTE_Hatch_MESystemMPChamber
+            }
+
+            override fun count(machine: GT_MetaTileEntity_MultiBlockBase): Int {
+                return (machine as? GTMTEMESystemProvider)?.mpChambers?.size ?: 0
+            }
+
+            override fun add(
+                machine: GT_MetaTileEntity_MultiBlockBase,
+                tile: IGregTechTileEntity,
+                textureIndex: Int,
+            ): Boolean {
+                val controller = machine as? GTMTEMESystemProvider ?: return false
+                val hatch = tile.metaTileEntity as? GTMTE_Hatch_MESystemMPChamber ?: return false
+                hatch.updateTexture(textureIndex)
+                return controller.mpChambers.add(hatch)
+            }
+
+            override fun getDescription(): String {
+                return StatCollector.translateToLocal("impact.structure.hatch.matrix_chamber")
+            }
+        }
+
+        private val SHELL: StructureRequirements = StructureRequirements.builder(
+            CASING,
+            0,
+        )
+            .atLeast(MP_CHAMBER)
             .build()
+
+        private val DEFINITION: IStructureDefinition<GTMTEMESystemProvider> by lazy {
+            StructureDefinition.builder<GTMTEMESystemProvider>()
+                .addShape(
+                    "main",
+                    arrayOf(
+                        arrayOf("ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "),
+                        arrayOf("ADDDA ", "A   AA", "A   A~", "AAAAAA"),
+                        arrayOf("ADDDA ", "A   AA", "A   AA", "AAAAAA"),
+                        arrayOf("ADDDA ", "ADDDA ", "ADDDA ", "AAAAA "),
+                    ),
+                )
+                .addChannel(
+                    GTStructureUtility.HATCH_CHANNEL,
+                    1,
+                    1,
+                )
+                .addElement(
+                    'A',
+                    withHint(
+                        GTStructureUtility.buildHatchAdder(GTMTEMESystemProvider::class.java)
+                            .allow(
+                                HatchElement.Maintenance,
+                                HatchElement.Input,
+                                HatchElement.Output,
+                                HatchElement.Energy,
+                                ImpactHatchElement.LaserInput,
+                            )
+                            .buildAndChain(SHELL),
+                        HintColor.GREEN,
+                    ),
+                )
+                .addElement(
+                    'D',
+                    StructureUtility.ofBlockAnyMeta(ItemRegistery.IGlassBlock),
+                )
+                .build()
+        }
+
     }
 
     private val mpChambers = ArrayList<GTMTE_Hatch_MESystemMPChamber>()
@@ -117,28 +175,46 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
 
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity?) = GTMTEMESystemProvider(mName)
 
-    private fun checkHatch(te: IGregTechTileEntity?, index: Short): Boolean {
-        val mte = te?.metaTileEntity as? GT_MetaTileEntity_Hatch ?: return false
 
-        return if (mte is GTMTE_Hatch_MESystemMPChamber) {
-            mte.updateTexture(index.toInt())
-            mpChambers.add(mte)
-        } else {
-            addMaintenanceToMachineList(te, CASING_TEXTURE_ID) ||
-                    addInputToMachineList(te, CASING_TEXTURE_ID) ||
-                    addOutputToMachineList(te, CASING_TEXTURE_ID) ||
-                    addEnergyInputToMachineList(te, CASING_TEXTURE_ID)
-        }
+
+    public override fun construct(
+        stack: ItemStack,
+        hintOnly: Boolean,
+    ) {
+        buildPiece(
+            stack,
+            hintOnly,
+            5,
+            2,
+            1,
+        )
     }
 
-    override fun construct(stack: ItemStack, hintOnly: Boolean) {
-        buildPiece(stack, hintOnly, 5, 2, 1)
+    public override fun survivalConstruct(
+        trigger: ItemStack,
+        budget: Int,
+        environment: ISurvivalBuildEnvironment,
+    ): Int {
+        return survivalBuildPiece(
+            "main",
+            trigger,
+            5,
+            2,
+            1,
+            budget,
+            environment,
+        )
     }
 
-    override fun machineStructure(te: IGregTechTileEntity): Boolean {
+
+    public override fun machineStructure(te: IGregTechTileEntity): Boolean {
         mpChambers.clear()
         mSpeedUp = 1
-        var formationChecklist = checkPiece(5, 2, 1)
+        var formationChecklist = checkPiece(
+            5,
+            2,
+            1,
+        )
 
         if (mpChambers.size != 1) {
             formationChecklist = false
@@ -162,21 +238,30 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         return finally
     }
 
-    override fun getStructureDefinition(): IStructureDefinition<GTMTEMESystemProvider> = DEFINITION
+    public override fun getStructureDefinition(): IStructureDefinition<GTMTEMESystemProvider> {
+        return DEFINITION
+    }
 
-    override fun getTexture(
+    public override fun getTexture(
         aBaseMetaTileEntity: IGregTechTileEntity?,
         aSide: Byte,
         aFacing: Byte,
         aColorIndex: Byte,
         aActive: Boolean,
-        aRedstone: Boolean
-    ): Array<ITexture?> {
+        aRedstone: Boolean,
+    ): Array<ITexture> {
         return if (aSide == aFacing) {
-            val texture = if (aActive) Textures.BlockIcons.MP1a else Textures.BlockIcons.MP1
-            arrayOf(INDEX_CASE, TextureFactory.of(texture))
+            val overlay = if (aActive) {
+                Textures.BlockIcons.MP1a
+            } else {
+                Textures.BlockIcons.MP1
+            }
+            arrayOf(
+                CASING.texture,
+                TextureFactory.of(overlay),
+            )
         } else {
-            arrayOf(INDEX_CASE)
+            arrayOf(CASING.texture)
         }
     }
 
@@ -188,21 +273,22 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         return GTC_ImpactBase(aPlayerInventory, aBaseMetaTileEntity)
     }
 
-    override fun createTooltip(): MultiBlockTooltipBuilder {
-        return MultiBlockTooltipBuilder("me_system_provider").apply {
-            addInfo("info.0", "Consume Stable Matrix Particles")
-            addTypeMachine("name", "ME System Provider")
-            addInfo("info.1", "Crafting ME Components")
+    public override fun createTooltip(): MultiblockTooltipBuilder {
+        return MultiblockTooltipBuilder(mName).apply {
+            addInfo("Consume Stable Matrix Particles")
+            addMachineType("ME System Provider")
+            addInfo("Crafting ME Components")
             addSeparator()
-            addController()
-            addEnergyHatch(4)
-            addMaintenanceHatch()
-            addInputBus(2)
-            addOutputBus(2)
-            addCasingInfo("case", "ME Construction Casing")
-            addOtherStructurePart("other.2", "Matrix Particles Chamber", "other.3", "Any Casing (max x1)")
-            addOtherStructurePart("other.4", "I-Glass", "other.5", "Glass for structure")
-            signAndFinalize()
+            addController("See the structure hologram")
+            addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
+            addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
+            addOtherStructurePart("Input Bus", "Any casing; maximum 2")
+            addOtherStructurePart("Output Bus", "Any casing; maximum 2")
+            addRequirements(SHELL, "Any casing position")
+            addOtherStructurePart("Matrix Particles Chamber", "Any Casing (max x1)")
+            addOtherStructurePart("I-Glass", "Glass for structure")
+            addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+            toolTipFinisher()
         }
     }
 
