@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -22,16 +23,19 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static com.impact.loader.ItemRegistery.*;
-import static gregtech.api.GregTech_API.*;
+import static gregtech.api.GregTech_API.METATILEENTITIES;
+import static gregtech.api.GregTech_API.sBlockMachines;
 import static gregtech.api.enums.GT_Values.VN;
 import static net.minecraftforge.common.BiomeDictionary.Type.OCEAN;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofChain;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
     private static final ICasing CASING = Casings.SOLID_STEEL;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 16)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.RegularEnergy, ImpactHatchElement.FluidOutput)
             .build();
     private static IStructureDefinition<GTMTE_DrillerWater> STRUCTURE;
@@ -54,7 +58,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_DrillerWater.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.Muffler)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('F',
                             ofChain(GTStructureUtility.ofFrame(Materials.Steel), ofBlock(sBlockMachines, frameMeta)))
                     .build();
@@ -100,13 +104,14 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
                 .addControlInfo("   Plans, Forest - 250 L/s")
                 .addControlInfo("   Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
                 .addControlInfo("   Ocean (Salt Water) - 20 L/s")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
                 .addOtherStructurePart("Output Hatch", "Any casing; maximum 4")
                 .addRequirements(SHELL, "Any casing position")
                 .addOtherStructurePart("Steel Frame Box", "Any casing")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 16")
                 .toolTipFinisher();
     }
 
@@ -119,6 +124,17 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
                 "DrillingRig.png");
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity controller, ItemStack stack) {
+        casingCount = 0;
+        return super.checkMachine(controller, stack)
+                && HatchCounts.energyHatches(this) <= 4
+                && mMaintenanceHatches.size() <= 1
+                && HatchCounts.inputBuses(this) <= 1
+                && mOutputHatches.size() <= 4
+                && SHELL.isSatisfied(this, casingCount);
     }
 
     @Override
