@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import gregtech.api.enums.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -86,7 +87,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase<GTMTE_Nuclea
             checkStructure = false;
         }
 
-        if (mInputHatches.size() > 2) {
+        if (HatchCounts.inputHatches(this) > 2) {
             checkStructure = false;
         }
 
