@@ -573,4 +573,28 @@ menu.website=Website
 menu.options=Options
 menu.discord=Discord
 menu.github=GitHub
+impact.structure.hatch.laser_input=Laser Energy Input Hatch
+impact.structure.hatch.laser_output=Laser Energy Output Hatch
+impact.structure.hatch.parallel=Parallel Hatch
+impact.structure.hatch.ore=Ore Output Hatch
+impact.structure.hatch.enrichment=Enrichment Unit
+impact.structure.hatch.communication=Communication Receiver
+impact.structure.hatch.matrix_chamber=Matrix Particle Chamber
+impact.structure.hatch.drilling_service=Drilling service hatch
+impact.structure.hatch.drilling_mix=Drilling mixture hatch
+impact.structure.hatch.pump_output=Primitive or electric output hatch
+impact.structure.hatch.primitive_output=Primitive output hatch or bus
 
+impact.structure.hatch.tank=I/O Tank Hatch
+
+impact.structure.hatch.aerostat_cargo=Aerostat Cargo Hatch
+
+impact.structure.hatch.transmitter=Communication Transmitter
+
+impact.structure.hatch.reactor_rod=Nuclear Rod Hatch
+
+impact.structure.hatch.machine_hull=Machine Hull
+
+impact.structure.hatch.computer_rack=Computer Rack
+
+impact.structure.hatch.parallel_output=Parallel Output Hatch

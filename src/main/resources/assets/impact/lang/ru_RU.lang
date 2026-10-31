@@ -555,3 +555,28 @@ impact.waila.multis.progress=Прогресс: %s с / %s с
 impact.waila.reactor.temp=Температура: %s%%
 impact.waila.reactor.mox=МОКС-топливо
 impact.waila.reactor.fastdecay=Режим быстрого распада
+impact.structure.hatch.laser_input=Лазерный энергетический вход
+impact.structure.hatch.laser_output=Лазерный энергетический выход
+impact.structure.hatch.parallel=Параллельный порт
+impact.structure.hatch.ore=Выходной рудный порт
+impact.structure.hatch.enrichment=Блок обогащения
+impact.structure.hatch.communication=Приёмник связи
+impact.structure.hatch.matrix_chamber=Камера матричных частиц
+impact.structure.hatch.drilling_service=Служебный порт буровой
+impact.structure.hatch.drilling_mix=Порт буровой смеси
+impact.structure.hatch.pump_output=Примитивный или электрический выходной порт
+impact.structure.hatch.primitive_output=Примитивный выходной порт или шина
+
+impact.structure.hatch.tank=I/O люк бака
+
+impact.structure.hatch.aerostat_cargo=Грузовой люк аэростата
+
+impact.structure.hatch.transmitter=Передатчик связи
+
+impact.structure.hatch.reactor_rod=Люк ядерных стержней
+
+impact.structure.hatch.machine_hull=Корпус машины
+
+impact.structure.hatch.computer_rack=Компьютерная стойка
+
+impact.structure.hatch.parallel_output=Выходной люк параллельных вычислений
