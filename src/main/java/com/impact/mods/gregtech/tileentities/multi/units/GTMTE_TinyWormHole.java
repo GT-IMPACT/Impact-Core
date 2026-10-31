@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
 import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.Casings;
@@ -11,7 +12,11 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
@@ -27,16 +32,19 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static gregtech.api.GregTech_API.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sTinyWormHoleRecipes;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHole> {
 
+    private int casingCount;
+    private int intermixCount;
+
     private static final StructureRequirements HATCHES_G = StructureRequirements
-            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 0).build();
-    private static final StructureRequirements HATCHES_J = StructureRequirements.builder(Casings.INTERMIX_CHAMBER, 0)
+            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 45).build();
+    private static final StructureRequirements HATCHES_J = StructureRequirements.builder(Casings.INTERMIX_CHAMBER, 8)
             .build();
 
     public GTMTE_TinyWormHole(int aID, String aNameRegional) {
@@ -125,20 +133,20 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
                     .addElement('A',
                             ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
                     .addElement('B', Casings.FUSION_MK_II.asElement())
-                    .addElement('C', Casings.INTERMIX_CHAMBER.asElement())
+                    .addElement('C', onElementPass(machine -> machine.intermixCount++, Casings.INTERMIX_CHAMBER.asElement()))
                     .addElement('D', Casings.DYSON_RING.asElement())
                     .addElement('E', Casings.CORE_CHAMBER.asElement())
-                    .addElement('F', Casings.ROBUST_NAQUADAH_ALLOY.asElement())
+                    .addElement('F', onElementPass(machine -> machine.casingCount++, Casings.ROBUST_NAQUADAH_ALLOY.asElement()))
                     .addElement('G', withHint(GTStructureUtility.buildHatchAdder(GTMTE_TinyWormHole.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy,
                                     ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.LaserOutput)
-                            .buildAndChain(HATCHES_G), HintColor.RED))
+                            .buildAndChain(HATCHES_G, machine -> machine.casingCount++), HintColor.RED))
                     .addElement('J', withHint(GTStructureUtility.buildHatchAdder(GTMTE_TinyWormHole.class)
                             .allow(HatchElement.Input)
-                            .buildAndChain(HATCHES_J), HintColor.GREEN))
+                            .buildAndChain(HATCHES_J, machine -> machine.intermixCount++), HintColor.GREEN))
                     .build();
 
         }
@@ -147,7 +155,12 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean check = checkPiece(2, 6, 0);
+        casingCount = 0;
+        intermixCount = 0;
+        boolean check = checkPiece(2, 6, 0)
+                && HATCHES_G.isSatisfied(this, casingCount)
+                && HATCHES_J.isSatisfied(this, intermixCount)
+                && mMaintenanceHatches.size() <= 1;
 
         for (GT_MetaTileEntity_Hatch_Energy mEnergyHatch : this.mEnergyHatches) {
             if (mEnergyHatch.mTier < 8) {
@@ -184,15 +197,15 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
             }
         }
 
-        if (mInputHatches.size() > 1)
+        if (HatchCounts.inputHatches(this) > 1)
             check = false;
         if (mOutputHatches.size() > 1)
             check = false;
-        if (mInputBusses.size() > 1)
+        if (HatchCounts.inputBuses(this) > 1)
             check = false;
         if (mOutputBusses.size() > 1)
             check = false;
-        if (mEnergyHatches.size() > 2)
+        if (HatchCounts.energyHatches(this) > 2)
             check = false;
 
         return check;
@@ -210,11 +223,11 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
                 .addOtherStructurePart("Output Bus", "(UV or better); maximum 1")
                 .addOtherStructurePart("Energy Hatch", "(UV or better); maximum 2")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin("Robust Naquadah Alloy Machine Casing", 65, false)
-                .addCasingInfoMin("Intermix Chamber Casing", 9, false)
-                .addCasingInfoMin("Dyson Ring Casing", 20, false)
-                .addCasingInfoMin("Fusion Casing MKII", 18, false)
-                .addCasingInfoMin("Core Chamber Casing", 1, false)
+                .addCasingInfoMin(Casings.ROBUST_NAQUADAH_ALLOY, HATCHES_G.getMinimumCasings(), false)
+                .addCasingInfoMin(Casings.INTERMIX_CHAMBER, HATCHES_J.getMinimumCasings(), false)
+                .addCasingInfoMin(Casings.DYSON_RING, 20, false)
+                .addCasingInfoMin(Casings.FUSION_MK_II, 18, false)
+                .addCasingInfoMin(Casings.CORE_CHAMBER, 1, false)
                 .addCasingInfoMin("Reinforced Glass", 56, false)
 
                 .addStructureHint("Output Bus / Energy Hatch / Maintenance or Robust Naquadah Alloy Machine Casing", HintColor.RED)
