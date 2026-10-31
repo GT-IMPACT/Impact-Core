@@ -38,6 +38,8 @@ import space.impact.structures.structure.StructureUtility.withHint
 
 class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
+    private var casingCount: Int = 0
+
     companion object {
 
         private val CASING: ICasing = Casings.SOLID_STEEL
@@ -127,7 +129,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
         private val SHELL: StructureRequirements = StructureRequirements.builder(
             CASING,
-            0,
+            88,
         ).build()
         private val SERVICE_POSITIONS: StructureRequirements = StructureRequirements.builder(
             CASING,
@@ -168,7 +170,9 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                     withHint(
                         GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
                             .allow(*STANDARD_HATCHES)
-                            .buildAndChain(SHELL),
+                            .buildAndChain(SHELL) { machine ->
+                                machine.casingCount++
+                            },
                         HintColor.ORANGE,
                     ),
                 )
@@ -310,6 +314,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     }
 
     public override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
+        casingCount = 0
 
         val size = thisController.chunk.chunkTileEntityMap.values
             .count { it is IGregTechTileEntity && it.metaTileEntity is GTMTEOilDrilling }
@@ -320,6 +325,9 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
             3,
             9,
             0,
+        ) && SHELL.isSatisfied(
+            this,
+            casingCount,
         )
         boostCoefficient = min(
             tierEnergyHatch,
@@ -346,13 +354,14 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 .addStructureHint("Input Hatch for Water", HintColor.BLUE)
                 .addStructureHint("Output Hatch for Oil/Gas/Others", HintColor.BLACK)
                 .addOtherStructurePart("Steel Frame Box", "At least 72")
-                .addOtherStructurePart("Solid Steel Machine Casing", "At least 84")
+                .addCasingInfoMin(CASING, SHELL.minimumCasings, false)
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Output Hatch", "Any casing; maximum 4")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
                 .addStructureHint("Casing or compatible hatch", HintColor.ORANGE)
+                .addStructureInfo("Hatches replacing casings: at most 5")
                 .toolTipFinisher()
         }
     }
