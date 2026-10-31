@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -31,7 +32,9 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 
     private static final ICasing CASING = Casings.CHEMICALLY_INERT;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 33)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_MultiChemicalReactor> definition;
 
@@ -60,7 +63,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
                     .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MultiChemicalReactor.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -113,9 +116,11 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
                 .addOtherStructurePart("Input Bus", "Any casing; maximum 8")
                 .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("PTFE Pipe Machine Casing", "inside the hollow")
+                .addOtherStructurePart(Casings.PTFE_PIPE, "inside the hollow", 24)
                 .addRequirements(SHELL, "Any casing position")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 32")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 12)
                 .toolTipFinisher();
     }
 
@@ -130,12 +135,13 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationChecklist = checkPiece(2, 0, 2) && SHELL.isSatisfied(this, 0);
+        casingCount = 0;
+        boolean formationChecklist = checkPiece(2, 0, 2) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 8) {
+        if (HatchCounts.inputBuses(this) > 8) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 16) {
+        if (HatchCounts.inputHatches(this) > 16) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 3) {
@@ -144,7 +150,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
         if (this.mOutputHatches.size() > 8) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 4) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
