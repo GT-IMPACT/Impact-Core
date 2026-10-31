@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.GT_RecipeMaps;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -34,6 +35,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.ofChain;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedPyrolyse> {
@@ -42,7 +44,9 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
     private static final ICasing CASING = Casings.HSLA;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 39)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
     private static IStructureDefinition<GTMTE_AdvancedPyrolyse> definition;
 
@@ -82,13 +86,13 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                             { "EEE EEEEE", "EEE EEEEE", "B B B   B" }
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
-                    .addElement('C', CASING.asElement())
+                    .addElement('C', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('D', Casings.STEEL_PIPE.asElement())
                     .addElement('B', ofChain(ofFrame(Materials.HSLA), ofBlock(GregTech_API.sBlockMachines, frameMeta)))
                     .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvancedPyrolyse.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -123,9 +127,10 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                 .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
                 .addOtherStructurePart("Output Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
-                .addOtherStructurePart("Steel Pipe Casing", "Middle line")
+                .addOtherStructurePart(Casings.STEEL_PIPE, "Middle line", 4)
                 .addOtherStructurePart("HSLA Frame", "Bottom angles")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 7")
                 .toolTipFinisher();
     }
 
@@ -266,13 +271,14 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
+        casingCount = 0;
 
-        boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, 0);
+        boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 1) {
+        if (HatchCounts.inputBuses(this) > 1) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 1) {
+        if (HatchCounts.inputHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mOutputHatches.size() > 1) {
@@ -281,7 +287,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
         if (this.mOutputBusses.size() > 1) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 1) {
+        if (HatchCounts.energyHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
