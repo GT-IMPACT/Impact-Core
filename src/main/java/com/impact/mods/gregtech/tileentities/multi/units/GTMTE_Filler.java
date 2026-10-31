@@ -33,9 +33,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import space.impact.structures.alignment.IAlignmentLimits;
 import space.impact.structures.hint.HintColor;
-import space.impact.structures.structure.AutoPlaceEnvironment;
 import space.impact.structures.structure.IStructureDefinition;
-import space.impact.structures.structure.IStructureElement;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
@@ -54,7 +52,9 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
 
     private static final ICasing CASING = ImpactCasings.SPACE_ELEVATOR_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 3)
             .atLeast(ImpactHatchElement.RegularEnergy).build();
     private static IStructureDefinition<GTMTE_Filler> definition;
 
@@ -99,6 +99,7 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
         return new MultiblockTooltipBuilder(mName)
                 .addRequirements(SHELL, "Either side of the controller")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 3")
                 .toolTipFinisher();
     }
 
@@ -110,50 +111,10 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
                     .addShape("main", new String[][] { { "C C", "C~C", "C C" } })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Filler.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
-                            .buildAndChain(SHELL, optionalCasing(), machine -> {
-                            }), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
-    }
-
-    private static IStructureElement<GTMTE_Filler> optionalCasing() {
-        IStructureElement<GTMTE_Filler> casing = CASING.asElement();
-        return new IStructureElement<GTMTE_Filler>() {
-            @Override
-            public boolean check(GTMTE_Filler machine, World world, int x, int y, int z) {
-                // The original filler only required energy; all six surrounding positions were
-                // optional.
-                return true;
-            }
-
-            @Override
-            public boolean couldBeValid(GTMTE_Filler machine, World world, int x, int y, int z, ItemStack trigger) {
-                return !world.isAirBlock(x, y, z);
-            }
-
-            @Override
-            public boolean spawnHint(GTMTE_Filler machine, World world, int x, int y, int z, ItemStack trigger) {
-                return casing.spawnHint(machine, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean placeBlock(GTMTE_Filler machine, World world, int x, int y, int z, ItemStack trigger) {
-                return casing.placeBlock(machine, world, x, y, z, trigger);
-            }
-
-            @Override
-            public BlocksToPlace getBlocksToPlace(GTMTE_Filler machine, World world, int x, int y, int z,
-                    ItemStack trigger, AutoPlaceEnvironment environment) {
-                return casing.getBlocksToPlace(machine, world, x, y, z, trigger, environment);
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(GTMTE_Filler machine, World world, int x, int y, int z,
-                    ItemStack trigger, AutoPlaceEnvironment environment) {
-                return casing.survivalPlaceBlock(machine, world, x, y, z, trigger, environment);
-            }
-        };
     }
 
     @Override
@@ -196,8 +157,9 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
 
     @Override
     public boolean machineStructure(IGregTechTileEntity te) {
+        casingCount = 0;
         mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
-        return checkPiece(1, 1, 0) && SHELL.isSatisfied(this, 0);
+        return checkPiece(1, 1, 0) && SHELL.isSatisfied(this, casingCount);
     }
 
     private ArrayList<ItemStack> getBlockDrops(int posX, int posY, int posZ) {
