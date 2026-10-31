@@ -40,16 +40,22 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainment> {
 
     private static final ICasing CASING = ImpactCasings.LAB_SAFELG_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0).build();
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 28).build();
     private static final StructureRequirements OUTPUT = StructureRequirements.builder(CASING, 0)
             .atLeast(HatchElement.Output).build();
     private static IStructureDefinition<GTMTE_MPContainment> definition;
@@ -80,7 +86,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MPContainment.class)
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Input)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
                     .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
                     .addElement('T', ofBlock(ItemRegistery.MPTransducer, 0))
@@ -143,11 +149,12 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 .addOtherStructurePart("Input Bus", "Any casing")
                 .addOtherStructurePart("Output Bus", "Any casing")
                 .addRequirements(SHELL, "Any casing position")
-                .addOtherStructurePart("Matrix Particle Reflector", "At least 17")
+                .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 16)
                 .addStructureHint("Output Hatch", HintColor.RED)
                 .addStructureHint("Any I-Glass", HintColor.WHITE)
                 .addStructureHint("Matrix Transducer", HintColor.PURPLE)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 28")
                 .toolTipFinisher();
     }
 
@@ -206,11 +213,13 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
+        casingCount = 0;
         vectors.clear();
         if (!Utilits.isLowGravity(iAm)) {
             return false;
         }
-        boolean formed = checkPiece(5, 1, 0);
+        boolean formed = checkPiece(5, 1, 0)
+                && mMaintenanceHatches.size() <= 1 && SHELL.isSatisfied(this, casingCount);
         if (formed) {
             int[] offset = new int[3];
             getExtendedFacing().getWorldOffset(new int[] { -1, 0, 2 }, offset);
