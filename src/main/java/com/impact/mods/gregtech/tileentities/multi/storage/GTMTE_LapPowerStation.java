@@ -13,8 +13,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IProvideEnergyCover;
-import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DynamoMulti;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_EnergyMulti;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -43,15 +48,19 @@ import space.impact.structures.structure.IStructureElement;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static com.impact.loader.ItemRegistery.*;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.lscLapotronicEnergyUnit;
 import static com.impact.mods.gregtech.enums.Texture.Icons.LPS;
 import static com.impact.mods.gregtech.enums.Texture.Icons.LPS_ACTIVE;
-import static gregtech.api.GregTech_API.*;
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
+import static space.impact.structures.structure.StructureUtility.ofChain;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 /**
@@ -62,7 +71,7 @@ public class GTMTE_LapPowerStation extends
         GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapPowerStation>
         implements ISurvivalConstructable, IProvideEnergyCover {
     private static IStructureDefinition<GTMTE_LapPowerStation> STRUCTURE;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(ImpactCasings.LSCC_CASING, 16)
+    private static final StructureRequirements SHELL = StructureRequirements.builder(ImpactCasings.LSCC_CASING, 25)
             .build();
     private int casingCount;
     private int checkedGlass = -1;
@@ -175,6 +184,7 @@ public class GTMTE_LapPowerStation extends
                 .addOtherStructurePart("Capacitors", "Center 3x(1-15)x3 above base (9-135 blocks)")
                 .addOtherStructurePart("I-Glass", "41-265x, Encase capacitor pillar")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 24")
                 .toolTipFinisher();
     }
 
