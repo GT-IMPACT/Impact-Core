@@ -50,6 +50,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
             Casings.CLEAN_STAINLESS_STEEL, Casings.STABLE_TITANIUM, Casings.ROBUST_TUNGSTENSTEEL
     };
     private IStructureDefinition<T> structure;
+    protected int casingCount;
 
     public final int[] OXYGEN_PER_SEC = new int[] { 400, 1200, 2000 };
     public final int[] EU_PER_TICK = new int[] { 2048, 8192, 32768 };
@@ -82,12 +83,13 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Dynamo Hatch", "Any casing")
                 .addRequirements(requirements(), "Any casing position")
-                .addOtherStructurePart(CERAMIC_STRING[tier], "3x, Center 1x1x3")
+                .addOtherStructurePart(new ItemStack(CeramicBlock, 1, tier), "Center 1x1x3", 3)
                 .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("I/O Hatch", "Any casing")
                 .addStructureHint("Casing or I/O or maintenance hatch", HintColor.GREEN)
                 .addStructureHint("Casing or I/O, maintenance or dynamo hatch", HintColor.BLUE)
+                .addStructureInfo("Hatches replacing casings: at most 17")
                 .toolTipFinisher();
     }
 
@@ -168,7 +170,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
     }
 
     private StructureRequirements requirements() {
-        return StructureRequirements.builder(CASINGS[getTier()], 0)
+        return StructureRequirements.builder(CASINGS[getTier()], 18)
                 .atLeast(HatchElement.Maintenance)
                 .atLeast(ImpactHatchElement.FluidInput, 2).build();
     }
@@ -186,11 +188,11 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                             { "DDD", "DDD", "DDD" }
                     })
                     .addElement('C', withHint(new HatchElementBuilder<T>()
-                            .allow(HatchElement.Input, HatchElement.Output).buildAndChain(requirements()),
+                            .allow(HatchElement.Input, HatchElement.Output).buildAndChain(requirements(), machine -> machine.casingCount++),
                             HintColor.GREEN))
                     .addElement('D', withHint(new HatchElementBuilder<T>()
                             .allow(HatchElement.Input, HatchElement.Output, ImpactHatchElement.Dynamo)
-                            .buildAndChain(requirements()), HintColor.BLUE))
+                            .buildAndChain(requirements(), machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('E', ceramicElement())
                     .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
                     .build();
@@ -244,7 +246,10 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity controller, ItemStack stack) {
-        return checkPiece("main", 1, 1, 0) && requirements().isSatisfied(this, 0)
+        casingCount = 0;
+        return checkPiece("main", 1, 1, 0)
+                && requirements().isSatisfied(this, casingCount)
+                && mMaintenanceHatches.size() == 1
                 && mDynamoHatches.size() <= 2 && mDynamoHatchesMulti.size() <= 1;
     }
 
