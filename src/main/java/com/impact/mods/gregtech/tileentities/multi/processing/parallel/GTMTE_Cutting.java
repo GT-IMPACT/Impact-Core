@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.google.common.collect.Lists;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -33,7 +34,9 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 
     private static final ICasing CASING = ImpactCasings.CUTTING_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 22)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_Cutting> definition;
 
@@ -84,7 +87,7 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Cutting.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -102,12 +105,14 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 16")
+                .addOtherStructurePart("Input Bus", "Any casing; maximum 6")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 3")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
+                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 22")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 7)
                 .toolTipFinisher();
     }
 
@@ -132,18 +137,19 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationChecklist = checkPiece(2, 2, 0) && SHELL.isSatisfied(this, 0);
+        casingCount = 0;
+        boolean formationChecklist = checkPiece(2, 2, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() > 6) {
+        if (HatchCounts.inputBuses(this) > 6) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 3) {
+        if (HatchCounts.inputHatches(this) > 3) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 3) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 4) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
