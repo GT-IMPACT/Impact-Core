@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
 import com.impact.core.Impact_API;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
@@ -44,7 +45,7 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.SpaceElevatorBlock;
 import static com.impact.util.Utilits.isValidDim;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElevator> {
@@ -53,7 +54,9 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
 
     private static final ICasing CASING = ImpactCasings.SPACE_ELEVATOR_CASING;
 
-    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 0).build();
+    private int casingCount;
+
+    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 156).build();
 
     private static IStructureDefinition<GTMTE_SpaceElevator> STRUCTURE_DEFINITION;
     boolean isConnect = false;
@@ -100,7 +103,8 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        return checkPiece(3, 4, 3);
+        casingCount = 0;
+        return checkPiece(3, 4, 3) && HATCHES_A.isSatisfied(this, casingCount) && HatchCounts.energyHatches(this) <= 4;
     }
 
     public boolean checkCurrentDimension(int dim) {
@@ -230,9 +234,10 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
                 .addInfo("Consume energy for teleport: " + CAPACITY_FOR_TELEPORT + " EU")
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addCasingInfoMin(CASING, 150, false)
+                .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
                 .addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 4")
                 .toolTipFinisher();
     }
 
@@ -309,7 +314,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
                     })
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_SpaceElevator.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput)
-                            .buildAndChain(HATCHES_A), HintColor.GREEN))
+                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('B', ofBlockAnyMeta(SpaceElevatorBlock))
                     .build();
         }
