@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -32,7 +33,9 @@ import static space.impact.structures.structure.StructureUtility.withHint;
 public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
 
     private static final ICasing CASING = ImpactCasings.MOON_MINER_CASING;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 18)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_MoonMiner> definition;
 
@@ -77,11 +80,15 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
                 .addInfo(EnumChatFormatting.RED + "MultiBlock in dev [WIP]")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureHint("Collision block or compatible hatch", HintColor.BLUE)
+                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
+                .addStructureInfo("Hatches replacing casings: at most 17")
+                .addOtherStructurePart(new ItemStack(CollisionBlock, 1, 0), "See the structure hologram", 1)
                 .toolTipFinisher();
     }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
+        casingCount = 0;
         int ID = getBaseMetaTileEntity().getWorld().provider.dimensionId;
         if (!DimensionManager.getProvider(ID).getClass().getName().contains("Moon")) {
             return false;
@@ -89,15 +96,15 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
         if (getBaseMetaTileEntity().getYCoord() > 70) {
             return false;
         }
-        boolean formationChecklist = checkPiece(2, 0, 1) && SHELL.isSatisfied(this, 0);
+        boolean formationChecklist = checkPiece(2, 0, 1) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputHatches.size() > 1) {
+        if (HatchCounts.inputHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 1) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 1) {
+        if (HatchCounts.energyHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
@@ -132,7 +139,7 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MoonMiner.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Muffler)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('B', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MoonMiner.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Muffler)
