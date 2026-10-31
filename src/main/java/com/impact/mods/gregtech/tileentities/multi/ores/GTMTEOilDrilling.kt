@@ -1,62 +1,236 @@
 package com.impact.mods.gregtech.tileentities.multi.ores
 
 import com.impact.loader.ItemRegistery
+import com.impact.mods.gregtech.blocks.ImpactHatchElement
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
-import com.impact.util.multis.GT_StructureUtility.ofFrame
-import com.impact.util.multis.GT_StructureUtility.ofHatchAdder
 import com.impact.util.multis.WorldProperties.chunk
-import com.impact.util.string.MultiBlockTooltipBuilder
-import gregtech.api.GregTech_API
+import gregtech.api.enums.Casings
+import gregtech.api.enums.HatchElement
 import gregtech.api.enums.Materials
-import gregtech.api.enums.Textures
+import gregtech.api.interfaces.ICasing
+import gregtech.api.interfaces.IHatchElement
 import gregtech.api.interfaces.ITexture
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase
 import gregtech.api.render.TextureFactory
-import net.minecraft.init.Blocks
+import gregtech.api.util.GTStructureUtility
+import gregtech.api.util.GTStructureUtility.ofFrame
+import gregtech.api.util.MultiblockTooltipBuilder
+import gregtech.api.util.StructureRequirements
+import kotlin.math.min
 import net.minecraft.item.ItemStack
+import net.minecraft.util.StatCollector
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.fluids.FluidStack
-import space.impact.api.ImpactAPI
-import space.impact.api.multiblocks.structure.IStructureDefinition
-import space.impact.api.multiblocks.structure.StructureDefinition
-import space.impact.api.multiblocks.structure.StructureUtility.lazy
-import space.impact.api.multiblocks.structure.StructureUtility.ofBlock
-import space.impact.api.multiblocks.structure.StructureUtility.ofChain
-import kotlin.math.min
+import space.impact.structures.hint.HintColor
+import space.impact.structures.structure.IStructureDefinition
+import space.impact.structures.structure.ISurvivalBuildEnvironment
+import space.impact.structures.structure.StructureDefinition
+import space.impact.structures.structure.StructureUtility.isAir
+import space.impact.structures.structure.StructureUtility.ofBlock
+import space.impact.structures.structure.StructureUtility.ofChain
+import space.impact.structures.structure.StructureUtility.withHint
 
 class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
     companion object {
-        private val INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16]
-        private val DEFINITION = StructureDefinition.builder<GTMTEOilDrilling>()
-            .addShape(
-                "main", arrayOf(
-                    arrayOf("       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " FA AF ", " FA~AF ", " F   F ", " F   F "),
-                    arrayOf("       ", "       ", "       ", "  F F  ", " FAAAF ", " F   F ", " F   F ", " F   F ", "FAAAAAF", "FAAAAAF", "F     F", "F     F"),
-                    arrayOf("  FAF  ", "  F F  ", "  F F  ", " FF FF ", " AAAAA ", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA", "       ", "       "),
-                    arrayOf("  AAA  ", "   A   ", "   E   ", "   G   ", " AAGAA ", "   G   ", "   G   ", "   G   ", "DAAGAAB", "AAAGAAA", "   G   ", "   G   "),
-                    arrayOf("  FAF  ", "  F F  ", "  F F  ", " FF FF ", " AAAAA ", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA", "       ", "       "),
-                    arrayOf("       ", "       ", "       ", "  F F  ", " FAAAF ", " F   F ", " F   F ", " F   F ", "FAAAAAF", "FAAAAAF", "F     F", "F     F"),
-                    arrayOf("       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " FACAF ", " FAAAF ", " F   F ", " F   F "),
+
+        private val CASING: ICasing = Casings.SOLID_STEEL
+        private val STANDARD_HATCHES: Array<IHatchElement> = arrayOf(
+            HatchElement.Maintenance,
+            HatchElement.Input,
+            HatchElement.Output,
+            HatchElement.Energy,
+            ImpactHatchElement.Dynamo,
+            ImpactHatchElement.Muffler,
+            ImpactHatchElement.LaserInput,
+            ImpactHatchElement.LaserOutput,
+        )
+
+        private val SERVICE_HATCH: IHatchElement = object : IHatchElement {
+
+            override fun matches(tile: IMetaTileEntity?): Boolean {
+                return STANDARD_HATCHES.any {
+                    it.matches(tile)
+                }
+            }
+
+            override fun count(machine: GT_MetaTileEntity_MultiBlockBase): Int {
+                return (machine as? GTMTEOilDrilling)?.serviceHatchCount ?: 0
+            }
+
+            override fun add(
+                machine: GT_MetaTileEntity_MultiBlockBase,
+                tile: IGregTechTileEntity,
+                textureIndex: Int,
+            ): Boolean {
+                val controller = machine as? GTMTEOilDrilling ?: return false
+                if (!controller.addToMachineList(
+                        tile,
+                        textureIndex,
+                    )
+                ) {
+                    return false
+                }
+                controller.serviceHatchCount++
+                return true
+            }
+
+            override fun getDescription(): String {
+                return StatCollector.translateToLocal("impact.structure.hatch.drilling_service")
+            }
+        }
+
+        private val MIX_HATCH: IHatchElement = object : IHatchElement {
+
+            override fun matches(tile: IMetaTileEntity?): Boolean {
+                return tile is GT_MetaTileEntity_Hatch_Input || tile is GT_MetaTileEntity_Hatch_Output
+            }
+
+            override fun count(machine: GT_MetaTileEntity_MultiBlockBase): Int {
+                return (machine as? GTMTEOilDrilling)?.mixHatchCount ?: 0
+            }
+
+            override fun add(
+                machine: GT_MetaTileEntity_MultiBlockBase,
+                tile: IGregTechTileEntity,
+                textureIndex: Int,
+            ): Boolean {
+                val controller = machine as? GTMTEOilDrilling ?: return false
+                val hatch = tile.metaTileEntity
+                when (hatch) {
+                    is GT_MetaTileEntity_Hatch_Input -> {
+                        hatch.updateTexture(textureIndex)
+                        controller.mixInHatch = hatch
+                    }
+                    is GT_MetaTileEntity_Hatch_Output -> {
+                        hatch.updateTexture(textureIndex)
+                        controller.mixOutHatch = hatch
+                    }
+                    else -> {
+                        return false
+                    }
+                }
+                controller.mixHatchCount++
+                return true
+            }
+
+            override fun getDescription(): String {
+                return StatCollector.translateToLocal("impact.structure.hatch.drilling_mix")
+            }
+        }
+
+        private val SHELL: StructureRequirements = StructureRequirements.builder(
+            CASING,
+            0,
+        ).build()
+        private val SERVICE_POSITIONS: StructureRequirements = StructureRequirements.builder(
+            CASING,
+            0,
+        ).atLeast(
+            SERVICE_HATCH,
+            2,
+        ).build()
+        private val MIX_POSITIONS: StructureRequirements = StructureRequirements.builder(
+            CASING,
+            0,
+        ).atLeast(
+            MIX_HATCH,
+            2,
+        ).build()
+
+        private val DEFINITION: IStructureDefinition<GTMTEOilDrilling> by lazy {
+            StructureDefinition.builder<GTMTEOilDrilling>()
+                .addShape(
+                    "main",
+                    arrayOf(
+                        arrayOf("       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " FA AF ", " FA~AF ", " F   F ", " F   F "),
+                        arrayOf("       ", "       ", "       ", "  F F  ", " FAAAF ", " F   F ", " F   F ", " F   F ", "FAAAAAF", "FAAAAAF", "F     F", "F     F"),
+                        arrayOf("  FAF  ", "  F F  ", "  F F  ", " FF FF ", " AAAAA ", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA", "       ", "       "),
+                        arrayOf("  AAA  ", "   A   ", "   E   ", "   G   ", " AAGAA ", "   G   ", "   G   ", "   G   ", "DAAGAAB", "AAAGAAA", "   G   ", "   G   "),
+                        arrayOf("  FAF  ", "  F F  ", "  F F  ", " FF FF ", " AAAAA ", "       ", "       ", "       ", "AAAAAAA", "AAAAAAA", "       ", "       "),
+                        arrayOf("       ", "       ", "       ", "  F F  ", " FAAAF ", " F   F ", " F   F ", " F   F ", "FAAAAAF", "FAAAAAF", "F     F", "F     F"),
+                        arrayOf("       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " FACAF ", " FAAAF ", " F   F ", " F   F "),
+                    ),
                 )
-            )
-            .addElement('A', ofChain(ofBlock(GregTech_API.sBlockCasings2, 0), ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.GRAY)))
-            .addElement('B', ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.BLACK)) //Output Oil
-            .addElement('C', ofHatchAdder(GTMTEOilDrilling::checkMixHatch, 16, ImpactAPI.RED)) //Input Oil Dirt Mix
-            .addElement('D', ofHatchAdder(GTMTEOilDrilling::checkHatch, 16, ImpactAPI.BLUE)) //Input Water
-            .addElement('E', ofHatchAdder(GTMTEOilDrilling::checkMixHatch, 16, ImpactAPI.GREEN)) // Output Oil Dirt Mix
-            .addElement('F', lazy { _ -> ofFrame(Materials.Steel) })
-            .addElement('G', ofChain(ofBlock(Blocks.air, 0), ofBlock(ItemRegistery.CollisionBlock, 0)))
-            .build()
+                .addChannel(
+                    GTStructureUtility.HATCH_CHANNEL,
+                    1,
+                    1,
+                )
+                .addElement(
+                    'A',
+                    withHint(
+                        GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
+                            .allow(*STANDARD_HATCHES)
+                            .buildAndChain(SHELL),
+                        HintColor.ORANGE,
+                    ),
+                )
+                .addElement(
+                    'B',
+                    GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
+                        .hint(HintColor.BLACK)
+                        .preferForPlacement {
+                            it is GT_MetaTileEntity_Hatch_Output
+                        }
+                        .build(SERVICE_POSITIONS),
+                )
+                .addElement(
+                    'C',
+                    GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
+                        .hint(HintColor.RED)
+                        .preferForPlacement {
+                            it is GT_MetaTileEntity_Hatch_Input
+                        }
+                        .build(MIX_POSITIONS),
+                )
+                .addElement(
+                    'D',
+                    GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
+                        .hint(HintColor.BLUE)
+                        .preferForPlacement {
+                            it is GT_MetaTileEntity_Hatch_Input
+                        }
+                        .build(SERVICE_POSITIONS),
+                )
+                .addElement(
+                    'E',
+                    GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
+                        .hint(HintColor.GREEN)
+                        .preferForPlacement {
+                            it is GT_MetaTileEntity_Hatch_Output
+                        }
+                        .build(MIX_POSITIONS),
+                )
+                .addElement(
+                    'F',
+                    ofFrame(Materials.Steel),
+                )
+                .addElement(
+                    'G',
+                    ofChain(
+                        isAir(),
+                        ofBlock(
+                            ItemRegistery.CollisionBlock,
+                            0,
+                        ),
+                    ),
+                )
+                .build()
+        }
     }
 
     private var mixInHatch: GT_MetaTileEntity_Hatch_Input? = null
     private var mixOutHatch: GT_MetaTileEntity_Hatch_Output? = null
+
+    private var serviceHatchCount: Int = 0
+    private var mixHatchCount: Int = 0
 
     private var boostCoefficient: Int = 1
     private var currentChunk: Chunk? = null
@@ -66,55 +240,91 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
 
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity?): IMetaTileEntity = GTMTEOilDrilling(mName)
 
-    override fun getTexture(aBaseMetaTileEntity: IGregTechTileEntity?, aSide: Byte, aFacing: Byte, aColorIndex: Byte, aActive: Boolean, aRedstone: Boolean): Array<ITexture> {
-        return if (aSide == aFacing)
-            arrayOf(INDEX_CASE, TextureFactory.of(if (aActive) Texture.Icons.OVERLAY_OIL_DRILL_ACTIVE else Texture.Icons.OVERLAY_OIL_DRILL))
-        else
-            arrayOf(INDEX_CASE)
-    }
-
-    override fun construct(stack: ItemStack, hintOnly: Boolean) {
-        buildPiece(stack, hintOnly, 3, 9, 0)
-    }
-
-    private fun checkMixHatch(te: IGregTechTileEntity?, index: Short): Boolean {
-        val mte = te?.metaTileEntity ?: return false
-        val color = index.toInt()
-        return when (mte) {
-            is GT_MetaTileEntity_Hatch_Input -> {
-                mte.updateTexture(color)
-                mixInHatch = mte
-                true
+    public override fun getTexture(
+        aBaseMetaTileEntity: IGregTechTileEntity?,
+        aSide: Byte,
+        aFacing: Byte,
+        aColorIndex: Byte,
+        aActive: Boolean,
+        aRedstone: Boolean,
+    ): Array<ITexture> {
+        return if (aSide == aFacing) {
+            val overlay = if (aActive) {
+                Texture.Icons.OVERLAY_OIL_DRILL_ACTIVE
+            } else {
+                Texture.Icons.OVERLAY_OIL_DRILL
             }
-
-            is GT_MetaTileEntity_Hatch_Output -> {
-                mte.updateTexture(color)
-                mixOutHatch = mte
-                true
-            }
-
-            else -> false
+            arrayOf(
+                CASING.texture,
+                TextureFactory.of(overlay),
+            )
+        } else {
+            arrayOf(CASING.texture)
         }
     }
 
-    private fun checkHatch(te: IGregTechTileEntity?, index: Short): Boolean {
-        val color = index.toInt()
-        return addToMachineList(te, color)
+    public override fun construct(
+        stack: ItemStack,
+        hintOnly: Boolean,
+    ) {
+        buildPiece(
+            stack,
+            hintOnly,
+            3,
+            9,
+            0,
+        )
     }
+
+    public override fun survivalConstruct(
+        trigger: ItemStack,
+        budget: Int,
+        environment: ISurvivalBuildEnvironment,
+    ): Int {
+        return survivalBuildPiece(
+            "main",
+            trigger,
+            3,
+            9,
+            0,
+            budget,
+            environment,
+        )
+    }
+
+
+
+
+
 
     override fun getPollutionPerTick(aStack: ItemStack?): Int {
         return 25
     }
 
-    override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
+    public override fun clearHatches() {
+        super.clearHatches()
+        serviceHatchCount = 0
+        mixHatchCount = 0
+        mixInHatch = null
+        mixOutHatch = null
+    }
+
+    public override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
 
         val size = thisController.chunk.chunkTileEntityMap.values
             .count { it is IGregTechTileEntity && it.metaTileEntity is GTMTEOilDrilling }
 
         if (size > 1) return false
 
-        val isBuild = checkPiece(3, 9, 0)
-        boostCoefficient = min(tierEnergyHatch, 14) * 2
+        val isBuild = checkPiece(
+            3,
+            9,
+            0,
+        )
+        boostCoefficient = min(
+            tierEnergyHatch,
+            14,
+        ) * 2
         return isBuild && hasRequireHatches(
             energy = 1,
             maintenance = 1,
@@ -124,29 +334,32 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         )
     }
 
-    override fun createTooltip(): MultiBlockTooltipBuilder {
-        return MultiBlockTooltipBuilder("oil_drilling_machine").apply {
-            addTypeMachine("name", "Underground Pump")
-                .addController()
-                .addInfo("info.0", "Extracts underground fluids from a current vein")
-                .addInfo("info.1", "There can only be one machine in a Chunk")
-                .addInfo("info.2", "For operation of the machine, it is required to connect Input Hatch and Output Hatch by pipe to distill Dirty Fluid")
-                .addRedHint("Input Hatch for Fluid Dirty Mix")
-                .addGreenHint("Output Hatch for Fluid Dirty Mix")
-                .addBlueHint("Input Hatch for Water")
-                .addBlackHint("Output Hatch for Oil/Gas/Others")
-                .addOtherStructurePartAny("structure.1", "Steel Frame Box", 72)
-                .addOtherStructurePartAny("structure.2", "Solid Steel Machine Casing", 84)
-                .addEnergyHatch(1)
-                .addMaintenanceHatch()
-                .addMuffler()
-                .addOutputHatch(4)
-                .addInputHatch(2)
-                .signAndFinalize()
+    public override fun createTooltip(): MultiblockTooltipBuilder {
+        return MultiblockTooltipBuilder(mName).apply {
+            addMachineType("Underground Pump")
+                .addController("See the structure hologram")
+                .addInfo("Extracts underground fluids from a current vein")
+                .addInfo("There can only be one machine in a Chunk")
+                .addInfo("For operation of the machine, it is required to connect Input Hatch and Output Hatch by pipe to distill Dirty Fluid")
+                .addStructureHint("Input Hatch for Fluid Dirty Mix", HintColor.RED)
+                .addStructureHint("Output Hatch for Fluid Dirty Mix", HintColor.GREEN)
+                .addStructureHint("Input Hatch for Water", HintColor.BLUE)
+                .addStructureHint("Output Hatch for Oil/Gas/Others", HintColor.BLACK)
+                .addOtherStructurePart("Steel Frame Box", "At least 72")
+                .addOtherStructurePart("Solid Steel Machine Casing", "At least 84")
+                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Output Hatch", "Any casing; maximum 4")
+                .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
+                .addStructureHint("Casing or compatible hatch", HintColor.ORANGE)
+                .toolTipFinisher()
         }
     }
 
-    override fun getStructureDefinition(): IStructureDefinition<GTMTEOilDrilling> = DEFINITION
+    public override fun getStructureDefinition(): IStructureDefinition<GTMTEOilDrilling> {
+        return DEFINITION
+    }
 
     override fun checkRecipe(itemStack: ItemStack?): Boolean {
         if (mixInHatch == null && mixOutHatch == null) return false
