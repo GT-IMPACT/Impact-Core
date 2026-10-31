@@ -65,7 +65,6 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
     public boolean isFastDecay = false;
     public boolean stopTemp = false;
     protected static final ICasing CASING = Casings.RADIATION_PROOF;
-    protected static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0).build();
     private static final StructureRequirements[] SHELLS = {
             StructureRequirements.builder(CASING, 24).build(),
             StructureRequirements.builder(CASING, 63).build(),

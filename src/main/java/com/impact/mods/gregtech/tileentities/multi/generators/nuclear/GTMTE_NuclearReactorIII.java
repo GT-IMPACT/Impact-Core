@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import gregtech.api.enums.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -63,7 +64,7 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase<GTMTE_Nucl
                     .addElement('P', Casings.STEEL_PIPE.asElement())
                     .addElement('r',
                             withHint(new HatchElementBuilder<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorIII>>()
-                                    .allow(ReactorHatch.Rod).buildAndChain(SHELL), HintColor.GREEN))
+                                    .allow(ReactorHatch.Rod).buildAndChain(shellRequirements(), machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -92,7 +93,7 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase<GTMTE_Nucl
             checkStructure = false;
         }
 
-        if (mInputHatches.size() > 6) {
+        if (HatchCounts.inputHatches(this) > 6) {
             checkStructure = false;
         }
 
