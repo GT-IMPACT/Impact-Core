@@ -6,6 +6,7 @@ import com.impact.addon.gt.api.position.IPosition
 import com.impact.common.managers.AeroStateNetworkManager
 import com.impact.impact
 import com.impact.mods.gregtech.GT_ItemList
+import com.impact.mods.gregtech.blocks.HatchCounts
 import com.impact.mods.gregtech.blocks.ImpactCasings
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.hatches.GTMTEAerostatCargoHatch
@@ -117,6 +118,8 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         )
     }
 
+    private var casingCount: Int = 0
+
     companion object {
         const val MAX_BUFFER = 50_000
         private val CASING: ICasing = ImpactCasings.AEROSTATE_PLATFORM
@@ -150,7 +153,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         }
         private val SHELL: StructureRequirements = StructureRequirements.builder(
             CASING,
-            0,
+            4,
         ).atLeast(HatchElement.Input).build()
         private val STRUCTURE: IStructureDefinition<GTMTE_Aerostat> by lazy {
             StructureDefinition.builder<GTMTE_Aerostat>()
@@ -175,7 +178,9 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
                                 HatchElement.Output,
                                 CARGO_HATCH,
                             )
-                            .buildAndChain(SHELL),
+                            .buildAndChain(SHELL) { machine ->
+                                machine.casingCount++
+                            },
                         HintColor.GREEN,
                     ),
                 )
@@ -257,6 +262,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     }
 
     public override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
+        casingCount = 0
         cargoHatch = null
         mCrowbar = true
         mSolderingTool = mCrowbar
@@ -272,9 +278,12 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             1,
             0,
             1,
+        ) && SHELL.isSatisfied(
+            this,
+            casingCount,
         )
 
-        if (mOutputHatches.size > 1) {
+        if (mOutputHatches.size > 1 || HatchCounts.inputBuses(this) > 1 || HatchCounts.inputHatches(this) > 1) {
             return false
         }
 
@@ -295,6 +304,9 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         te: IGregTechTileEntity?,
         aBaseCasingIndex: Int,
     ): Boolean {
+        if (cargoHatch != null) {
+            return false
+        }
         val hatch = te?.metaTileEntity as? GTMTEAerostatCargoHatch ?: return false
         hatch.updateTexture(aBaseCasingIndex)
         cargoHatch = hatch
@@ -357,6 +369,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             .beginStructureBlock(3, 1, 3, false)
             .addRequirements(SHELL, "Any casing position")
             .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+            .addStructureInfo("Hatches replacing casings: at most 4")
             .toolTipFinisher()
     }
 
