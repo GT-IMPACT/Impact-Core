@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
 import com.impact.loader.ItemRegistery;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.matrixsystem.GT_Container_ParametricDiffuser;
@@ -35,7 +36,10 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.withHint;
@@ -44,7 +48,9 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
 
     private static final ICasing CASING = ImpactCasings.LAB_SAFELG_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 43)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.InputBus).build();
     private static IStructureDefinition<GTMTE_ParametricDiffuser> definition;
     public int mMPGenerate = 0;
@@ -113,7 +119,7 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                     })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParametricDiffuser.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Input)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
                     .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
                     .addElement('T', ofBlock(ItemRegistery.MPTransducer, 0))
@@ -137,10 +143,11 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                 .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
-                .addOtherStructurePart("Any I-Glass", "Any casing")
-                .addOtherStructurePart("Matrix Particle Reflector", "At least 20")
-                .addOtherStructurePart("Matrix Transducer", "At least 1")
+                .addOtherStructurePart(new ItemStack(ItemRegistery.IGlassBlock, 1, 0), "Glass positions; any color", 10)
+                .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 19)
+                .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "See the structure hologram", 1)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 42")
                 .toolTipFinisher();
     }
 
@@ -276,9 +283,10 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iAm) {
+        casingCount = 0;
         return Utilits.isLowGravity(iAm) && checkPiece(0, 2, 1)
-                && SHELL.isSatisfied(this, 0)
-                && mInputBusses.size() == 1 && mMaintenanceHatches.size() == 1 && mEnergyHatches.size() < 8;
+                && SHELL.isSatisfied(this, casingCount)
+                && HatchCounts.inputBuses(this) == 1 && mMaintenanceHatches.size() == 1 && HatchCounts.energyHatches(this) < 8;
     }
 
     @Override
