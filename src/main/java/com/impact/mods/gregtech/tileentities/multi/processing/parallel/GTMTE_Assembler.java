@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.google.common.collect.Lists;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -35,7 +36,9 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 
     private static final ICasing CASING = ImpactCasings.ASSEMBLER_CASING;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 31)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_Assembler> definition;
 
@@ -57,6 +60,8 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 30")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 9)
                 .toolTipFinisher();
     }
 
@@ -74,7 +79,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Assembler.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -134,14 +139,15 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationChecklist = checkPiece(6, 1, 0) && SHELL.isSatisfied(this, 0);
+        casingCount = 0;
+        boolean formationChecklist = checkPiece(6, 1, 0) && SHELL.isSatisfied(this, casingCount);
 
         setParallel(this.mLevel);
 
-        if (this.mInputBusses.size() > 20) {
+        if (HatchCounts.inputBuses(this) > 20) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 6) {
+        if (HatchCounts.inputHatches(this) > 6) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 3) {
@@ -150,7 +156,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
         if (this.mMufflerHatches.size() != 0) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 4) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
