@@ -31,13 +31,16 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Farm
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_Farm>
         implements ISurvivalConstructable {
     private static final ICasing CASING = Casings.SOLID_STEEL;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0).build();
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 64).build();
     private static IStructureDefinition<GTMTE_Farm> STRUCTURE;
 
     @Override
@@ -55,8 +58,8 @@ public class GTMTE_Farm
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Farm.class)
                             .allow(HatchElement.Maintenance, HatchElement.Input, HatchElement.Output,
                                     HatchElement.Energy)
-                            .buildAndChain(SHELL), HintColor.GREEN))
-                    .addElement('C', CASING.asElement())
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                    .addElement('C', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
                     .addElement('F', ImpactCasings.CASING_FARM.asElement())
                     .build();
@@ -108,9 +111,10 @@ public class GTMTE_Farm
                 .addOtherStructurePart("Output Bus", "Any casing")
                 .addOtherStructurePart("Output Hatch", "Any casing")
                 .addRequirements(SHELL, "Bottom edge")
-                .addOtherStructurePart("Farm Casings", "At the center of the bottom layer")
+                .addOtherStructurePart(ImpactCasings.CASING_FARM, "At the center of the bottom layer", 9)
                 .addOtherStructurePart("Reinforced Glass", "At the center of the Top layer")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 15")
                 .toolTipFinisher();
     }
 
@@ -224,7 +228,8 @@ public class GTMTE_Farm
     }
 
     public boolean checkMachine(IGregTechTileEntity controller, ItemStack stack) {
-        return checkPiece("main", 2, 4, 0);
+        casingCount = 0;
+        return checkPiece("main", 2, 4, 0) && SHELL.isSatisfied(this, casingCount) && mMaintenanceHatches.size() <= 1;
     }
 
     @Override
