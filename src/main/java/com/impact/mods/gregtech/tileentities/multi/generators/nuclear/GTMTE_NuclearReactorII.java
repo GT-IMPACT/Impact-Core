@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import gregtech.api.enums.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,6 +12,7 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase<GTMTE_NuclearReactorII> {
@@ -44,10 +46,10 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase<GTMTE_Nucle
                     .addElement('C', shellElement(false))
                     .addElement('H', shellElement(true))
                     .addElement('P', Casings.STEEL_PIPE.asElement())
-                    .addElement('B', CASING.asElement())
+                    .addElement('B', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('r',
                             withHint(new HatchElementBuilder<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorII>>()
-                                    .allow(ReactorHatch.Rod).buildAndChain(SHELL), HintColor.GREEN))
+                                    .allow(ReactorHatch.Rod).buildAndChain(shellRequirements(), machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -91,7 +93,7 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase<GTMTE_Nucle
             checkStructure = false;
         }
 
-        if (mInputHatches.size() > 3) {
+        if (HatchCounts.inputHatches(this) > 3) {
             checkStructure = false;
         }
 
