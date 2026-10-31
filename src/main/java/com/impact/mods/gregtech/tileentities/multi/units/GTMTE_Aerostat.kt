@@ -6,30 +6,30 @@ import com.impact.addon.gt.api.position.IPosition
 import com.impact.common.managers.AeroStateNetworkManager
 import com.impact.impact
 import com.impact.mods.gregtech.GT_ItemList
-import com.impact.mods.gregtech.blocks.Build_Casing_Helper
-import com.impact.mods.gregtech.blocks.Casing_Helper
+import com.impact.mods.gregtech.blocks.ImpactCasings
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.hatches.GTMTEAerostatCargoHatch
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
 import com.impact.util.PositionObject
 import com.impact.util.Utilits
-import com.impact.util.string.MultiBlockTooltipBuilder
-import com.impact.util.vector.Vector3i
-import com.impact.util.vector.Vector3ic
 import cpw.mods.fml.common.Optional
+import gregtech.api.enums.HatchElement
 import gregtech.api.enums.Materials
-import gregtech.api.enums.Textures
+import gregtech.api.interfaces.ICasing
+import gregtech.api.interfaces.IHatchElement
 import gregtech.api.interfaces.ITexture
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase
 import gregtech.api.render.TextureFactory
+import gregtech.api.util.GTStructureUtility
 import gregtech.api.util.GT_Utility
+import gregtech.api.util.MultiblockTooltipBuilder
+import gregtech.api.util.StructureRequirements
 import java.util.Arrays
 import java.util.UUID
 import mcp.mobius.waila.api.IWailaConfigHandler
 import mcp.mobius.waila.api.IWailaDataAccessor
-import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.entity.player.InventoryPlayer
@@ -41,11 +41,13 @@ import net.minecraft.util.EnumChatFormatting
 import net.minecraft.util.StatCollector.translateToLocal
 import net.minecraft.util.StatCollector.translateToLocalFormatted
 import net.minecraft.world.World
-import net.minecraftforge.common.util.ForgeDirection
-import space.impact.api.multiblocks.structure.IStructureDefinition
-import space.impact.api.multiblocks.structure.StructureDefinition
-import space.impact.api.multiblocks.structure.StructureUtility
 import space.impact.packet_network.network.packets.IStreamPacketReceiver
+import space.impact.structures.alignment.IAlignmentLimits
+import space.impact.structures.hint.HintColor
+import space.impact.structures.structure.IStructureDefinition
+import space.impact.structures.structure.ISurvivalBuildEnvironment
+import space.impact.structures.structure.StructureDefinition
+import space.impact.structures.structure.StructureUtility.withHint
 
 class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketReceiver, IAeroStat {
 
@@ -117,20 +119,68 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
 
     companion object {
         const val MAX_BUFFER = 50_000
-        val CASING: Block = Casing_Helper.sCaseCore3
-        val CASING_META: Int = Build_Casing_Helper.AEROSTATE_PLATFORM.meta
-        val INDEX_CASE: ITexture = Textures.BlockIcons.casingTexturePages[3][CASING_META + 32]
-        val CASING_TEXTURE_ID: Int = Build_Casing_Helper.AEROSTATE_PLATFORM.idCasing
-        private val STRUCTURE = StructureDefinition.builder<GTMTE_Aerostat>()
-            .addShape(
-                "main", arrayOf(
-                    arrayOf("AAA"),
-                    arrayOf("A~A"),
-                    arrayOf("AAA"),
+        private val CASING: ICasing = ImpactCasings.AEROSTATE_PLATFORM
+        private val CARGO_HATCH: IHatchElement = object : IHatchElement {
+            override fun matches(tile: IMetaTileEntity?): Boolean {
+                return tile is GTMTEAerostatCargoHatch
+            }
+
+            override fun count(machine: GT_MetaTileEntity_MultiBlockBase): Int {
+                return if ((machine as GTMTE_Aerostat).cargoHatch == null) {
+                    0
+                } else {
+                    1
+                }
+            }
+
+            override fun add(
+                machine: GT_MetaTileEntity_MultiBlockBase,
+                tile: IGregTechTileEntity?,
+                texture: Int,
+            ): Boolean {
+                return (machine as GTMTE_Aerostat).addCargoHatch(
+                    te = tile,
+                    aBaseCasingIndex = texture,
                 )
-            )
-            .addElement('A', StructureUtility.ofBlock(CASING, CASING_META))
-            .build()
+            }
+
+            override fun getDescription(): String {
+                return translateToLocal("impact.structure.hatch.aerostat_cargo")
+            }
+        }
+        private val SHELL: StructureRequirements = StructureRequirements.builder(
+            CASING,
+            0,
+        ).atLeast(HatchElement.Input).build()
+        private val STRUCTURE: IStructureDefinition<GTMTE_Aerostat> by lazy {
+            StructureDefinition.builder<GTMTE_Aerostat>()
+                .addChannel(
+                    GTStructureUtility.HATCH_CHANNEL,
+                    1,
+                    1,
+                )
+                .addShape(
+                    "main",
+                    arrayOf(
+                        arrayOf("CCC"),
+                        arrayOf("C~C"),
+                        arrayOf("CCC"),
+                    ),
+                )
+                .addElement(
+                    'C',
+                    withHint(
+                        GTStructureUtility.buildHatchAdder(GTMTE_Aerostat::class.java)
+                            .allow(
+                                HatchElement.Output,
+                                CARGO_HATCH,
+                            )
+                            .buildAndChain(SHELL),
+                        HintColor.GREEN,
+                    ),
+                )
+                .build()
+        }
     }
 
     constructor(aID: Int, aNameRegional: String?) : super(aID, "impact.multis.aerostat", aNameRegional)
@@ -166,19 +216,37 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         return GT_ItemList.Aerostat.get(1)
     }
 
-    override fun getTexture(aBaseMetaTileEntity: IGregTechTileEntity, aSide: Byte, aFacing: Byte, aColorIndex: Byte, aActive: Boolean, aRedstone: Boolean): Array<ITexture> {
-        return if (aSide.toInt() == 1) arrayOf(INDEX_CASE, TextureFactory.of(Texture.Icons.PLATFORM_AEROSTATE_OVERLAY)) else arrayOf(INDEX_CASE)
+    override fun getTexture(
+        aBaseMetaTileEntity: IGregTechTileEntity,
+        aSide: Byte,
+        aFacing: Byte,
+        aColorIndex: Byte,
+        aActive: Boolean,
+        aRedstone: Boolean,
+    ): Array<ITexture> {
+        return if (aSide.toInt() == 1) {
+            arrayOf(
+                CASING.texture,
+                TextureFactory.of(Texture.Icons.PLATFORM_AEROSTATE_OVERLAY),
+            )
+        } else {
+            arrayOf(CASING.texture)
+        }
     }
 
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity): IMetaTileEntity {
         return GTMTE_Aerostat(this.mName)
     }
 
-    override fun isFacingValid(aFacing: Byte): Boolean {
-        return aFacing > 1
+    public override fun getInitialAlignmentLimits(): IAlignmentLimits {
+        return IAlignmentLimits { direction, rotation, flip ->
+            (direction.ordinal > 1) && rotation.isNotRotated && flip.isNotFlipped
+        }
     }
 
-    override fun getStructureDefinition(): IStructureDefinition<GTMTE_Aerostat> = STRUCTURE
+    public override fun getStructureDefinition(): IStructureDefinition<GTMTE_Aerostat> {
+        return STRUCTURE
+    }
 
     override fun getClientGUI(aID: Int, aPlayerInventory: InventoryPlayer, aBaseMetaTileEntity: IGregTechTileEntity): Any? {
         return null
@@ -188,7 +256,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         return null
     }
 
-    override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
+    public override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
         cargoHatch = null
         mCrowbar = true
         mSolderingTool = mCrowbar
@@ -200,35 +268,14 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             return false
         }
 
-        val forgeDirection: Vector3ic = Vector3i(
-            ForgeDirection.getOrientation(thisController.backFacing.toInt()).offsetX,
-            ForgeDirection.getOrientation(thisController.backFacing.toInt()).offsetY,
-            ForgeDirection.getOrientation(thisController.backFacing.toInt()).offsetZ
+        val formationChecklist = checkPiece(
+            1,
+            0,
+            1,
         )
 
-        var formationChecklist = true
-
-        for (X in -1..1) {
-            for (Z in -1..1) {
-                if (X == 0 && Z == 0) {
-                    continue
-                }
-                val offset = rotateOffsetVector(forgeDirection, X, 0, Z)
-                val currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z())
-
-                if (!addInputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-                    if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) === CASING)
-                        && (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()).toInt() == CASING_META)
-                    ) {
-                    } else {
-                        formationChecklist = false
-                    }
-                }
-            }
-        }
-
         if (mOutputHatches.size > 1) {
-            formationChecklist = false
+            return false
         }
 
         if (mInputHatches.size == 1 || mInputBusses.size == 1) {
@@ -244,25 +291,14 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         if (mMachine) AeroStateNetworkManager.markUpdate()
     }
 
-    override fun addInputToMachineList(aTileEntity: IGregTechTileEntity?, aBaseCasingIndex: Int): Boolean {
-        return addCargoHatch(aTileEntity, aBaseCasingIndex)
-                || super.addOutputToMachineList(aTileEntity, aBaseCasingIndex)
-                || super.addInputToMachineList(aTileEntity, aBaseCasingIndex)
-    }
-
-    private fun addCargoHatch(te: IGregTechTileEntity?, aBaseCasingIndex: Int): Boolean {
-        if (te == null) return false
-        val mte = te.metaTileEntity
-        if (mte != null) {
-            if (mte is GT_MetaTileEntity_Hatch) {
-                mte.updateTexture(aBaseCasingIndex)
-            }
-            if (mte is GTMTEAerostatCargoHatch) {
-                cargoHatch = mte
-                return true
-            }
-        }
-        return false
+    private fun addCargoHatch(
+        te: IGregTechTileEntity?,
+        aBaseCasingIndex: Int,
+    ): Boolean {
+        val hatch = te?.metaTileEntity as? GTMTEAerostatCargoHatch ?: return false
+        hatch.updateTexture(aBaseCasingIndex)
+        cargoHatch = hatch
+        return true
     }
 
     override fun onPostTick(aBaseMetaTileEntity: IGregTechTileEntity, aTick: Long) {
@@ -311,19 +347,17 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         }
     }
 
-    override fun createTooltip(): MultiBlockTooltipBuilder {
-        val b = MultiBlockTooltipBuilder("aerostate")
-        b
-            .addInfo("info.0", "Moving over a distance by fuel")
-            .addInfo("info.3", "Natural/Refinery Gas: 64 chunks or Any Burn Time Fuel: 16 chunks")
-            .addInfo("info.2", "Minimum height (Y coord) for work: 60")
-            .addTypeMachine("type", "Moving Machine")
-            .addController()
-            .sizeStructure(3, 1, 3)
-            .addInputHatch(1)
-            .addCasingInfo("case.1", "Aerostate Platform Casing", 7)
-            .signAndFinalize()
-        return b
+    public override fun createTooltip(): MultiblockTooltipBuilder {
+        return MultiblockTooltipBuilder(mName)
+            .addInfo("Moving over a distance by fuel")
+            .addInfo("Natural/Refinery Gas: 64 chunks or Any Burn Time Fuel: 16 chunks")
+            .addInfo("Minimum height (Y coord) for work: 60")
+            .addMachineType("Moving Machine")
+            .addController("See the structure hologram")
+            .beginStructureBlock(3, 1, 3, false)
+            .addRequirements(SHELL, "Any casing position")
+            .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+            .toolTipFinisher()
     }
 
     override fun onRightclick(aBaseMetaTileEntity: IGregTechTileEntity, aPlayer: EntityPlayer): Boolean {
@@ -441,9 +475,35 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ)
     }
 
-    override fun construct(itemStack: ItemStack, b: Boolean) {
-        buildPiece(itemStack, b, 1, 0, 1)
+    public override fun construct(
+        itemStack: ItemStack,
+        b: Boolean,
+    ) {
+        buildPiece(
+            itemStack,
+            b,
+            1,
+            0,
+            1,
+        )
     }
+
+    public override fun survivalConstruct(
+        trigger: ItemStack,
+        budget: Int,
+        environment: ISurvivalBuildEnvironment,
+    ): Int {
+        return survivalBuildPiece(
+            "main",
+            trigger,
+            1,
+            0,
+            1,
+            budget,
+            environment,
+        )
+    }
+
 
     override fun receive(data: ByteArrayDataInput) {
         setLocationName(data.readUTF())
