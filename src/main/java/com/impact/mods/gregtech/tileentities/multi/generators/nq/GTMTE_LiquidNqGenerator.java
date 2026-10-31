@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.generators.nq;
 
 import com.impact.common.block.blocks.Block_NqTether;
 import com.impact.common.block.blocks.Block_QuantumStuff;
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -50,7 +51,9 @@ import static space.impact.structures.structure.StructureUtility.withHint;
 public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_LiquidNqGenerator> {
 
     private static final ICasing CASING = ImpactCasings.NQ_CASING;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 121)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_LiquidNqGenerator> definition;
     public int EU_PER_TICK = 524288;
@@ -98,10 +101,10 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
                     .addElement('B', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserOutput, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.BLUE))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
                     .build();
         }
         return definition;
@@ -136,11 +139,13 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
                 .addOtherStructurePart("Dynamo Hatch", "Any casing")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 3")
-                .addCasing("", CASING, false)
-                .addOtherStructurePart("Naquadah Chamber Casing", "inside structure")
-                .addOtherStructurePart("Tether Core", "for contain core Nq")
+                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
+                .addOtherStructurePart(new ItemStack(InsideBlock, 1, 0), "inside structure", 12)
+                .addOtherStructurePart("Tether Core", "2x, see the structure hologram")
                 .addStructureHint("Casing or I/O, maintenance, muffler or dynamo hatch", HintColor.GREEN)
                 .addStructureHint("Casing or I/O, maintenance or muffler hatch", HintColor.BLUE)
+                .addStructureInfo("Hatches replacing casings: at most 5")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 60)
                 .toolTipFinisher();
     }
 
@@ -186,13 +191,14 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
+        casingCount = 0;
 
-        boolean formationChecklist = checkPiece(3, 3, 1) && SHELL.isSatisfied(this, 0);
+        boolean formationChecklist = checkPiece(3, 3, 1) && SHELL.isSatisfied(this, casingCount);
 
-        if (this.mInputBusses.size() != 0) {
+        if (HatchCounts.inputBuses(this) != 0) {
             formationChecklist = false;
         }
-        if (this.mInputHatches.size() > 3) {
+        if (HatchCounts.inputHatches(this) > 3) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() != 0) {
@@ -204,10 +210,10 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
         if (this.mMufflerHatches.size() != 0) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() != 0) {
+        if (HatchCounts.energyHatches(this) != 0) {
             formationChecklist = false;
         }
-        if (this.mDynamoHatches.size() > 1) {
+        if (HatchCounts.dynamoHatches(this) > 1) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
