@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.GT_Values;
@@ -34,18 +35,17 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static com.impact.loader.ItemRegistery.*;
-import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
-import static space.impact.structures.structure.StructureUtility.*;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_BlastSmelter
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_BlastSmelter>
         implements ISurvivalConstructable {
     private static final ICasing CASING = Casings.HSLA;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 21)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_BlastSmelter> STRUCTURE;
     private HeatingCoil checkedCoil;
@@ -67,7 +67,7 @@ public class GTMTE_BlastSmelter
                     .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BlastSmelter.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.Muffler)
-                            .buildAndChain(SHELL), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('1', GTStructureUtility.ofHeatingCoil(
                             GTMTE_BlastSmelter::checkCoil, GTMTE_BlastSmelter::constructionCoil))
                     .build();
@@ -116,6 +116,7 @@ public class GTMTE_BlastSmelter
                 .addRequirements(SHELL, "Top and bottom layers")
                 .addOtherStructurePart("Heating Coils", "Two middle Layers, hollow")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureInfo("Hatches replacing casings: at most 20")
                 .toolTipFinisher();
     }
 
@@ -284,20 +285,22 @@ public class GTMTE_BlastSmelter
     }
 
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        casingCount = 0;
         checkedCoil = null;
         mHeatingCapacity = 0;
-        boolean formationChecklist = checkPiece("main", 2, 3, 0) && SHELL.isSatisfied(this, 0);
+        boolean formationChecklist = checkPiece("main", 2, 3, 0)
+                && mMufflerHatches.size() <= 1 && SHELL.isSatisfied(this, casingCount);
         if (checkedCoil != null) {
             mHeatingCapacity = checkedCoil.getHeatCapacity();
         }
 
-        if (this.mInputBusses.size() > 5) {
+        if (HatchCounts.inputBuses(this) > 5) {
             formationChecklist = false;
         }
         if (this.mOutputHatches.size() > 5) {
             formationChecklist = false;
         }
-        if (this.mEnergyHatches.size() > 4) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
