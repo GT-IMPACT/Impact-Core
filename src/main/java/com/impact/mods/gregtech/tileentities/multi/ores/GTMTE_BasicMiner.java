@@ -1,83 +1,67 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
-import cpw.mods.fml.common.Optional;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
-
-import static com.impact.util.multis.GT_StructureUtility.ofFrame;
-import static com.impact.util.multis.GT_StructureUtility.ofHatchAdder;
-import static space.impact.api.multiblocks.structure.StructureUtility.*;
-
 import com.impact.addon.vw.VirtualWorldScan;
+import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
-import com.impact.util.string.MultiBlockTooltipBuilder;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import gregtech.api.GregTech_API;
+import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.Casings;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.StructureRequirements;
+import java.util.ArrayList;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.FluidStack;
 import space.gtimpact.virtual_world.api.VirtualAPI;
-import space.gtimpact.virtual_world.api.core.ChunkPos;
 import space.gtimpact.virtual_world.api.core.WorldPos;
 import space.gtimpact.virtual_world.api.resources.ores.OreVein;
 import space.gtimpact.virtual_world.api.services.mining.ores.OreMiningResult;
 import space.gtimpact.virtual_world.api.services.scanning.ores.OreChunkResult;
-import space.gtimpact.virtual_world.api.services.scanning.ores.OreVeinScanResult;
-import space.impact.api.ImpactAPI;
-import space.impact.api.multiblocks.structure.IStructureDefinition;
-import space.impact.api.multiblocks.structure.StructureDefinition;
+import space.impact.structures.hint.HintColor;
+import space.impact.structures.structure.IStructureDefinition;
+import space.impact.structures.structure.ISurvivalBuildEnvironment;
+import space.impact.structures.structure.StructureDefinition;
+
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 
-    static IStructureDefinition<GTMTE_BasicMiner> definition =
-            StructureDefinition.<GTMTE_BasicMiner>builder()
-                    .addShape("main", new String[][]{
-                            {"     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G "},
-                            {"     ", "     ", "     ", "  G  ", "  G  ", "  G  ", " GAG ", " G G ", " G G ", "GA~AG", "G   G", "G   G"},
-                            {"  G  ", "  G  ", "  G  ", " GAG ", " GAG ", " GAG ", " AAA ", "     ", "     ", " ACA ", "     ", "     "},
-                            {"     ", "     ", "     ", "  G  ", "  G  ", "  G  ", " GAG ", " G G ", " G G ", "GAAAG", "G   G", "G   G"},
-                            {"     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G "},
-                    })
-                    .addElement('G', lazy(t -> ofFrame(Materials.Steel)))
-                    .addElement('C', ofHatchAdder(GTMTE_BasicMiner::checkHatch, 16, ImpactAPI.RED))
-                    .addElement('A', ofChain(
-                                    ofBlock(GregTech_API.sBlockCasings2, 0),
-                                    ofHatchAdder(GTMTE_BasicMiner::addToMachineList, 16, GregTech_API.sBlockCasings2, 0)
-                            )
-                    )
-                    .build();
+    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(Casings.SOLID_STEEL, 0)
+            .build();
+
+    private static IStructureDefinition<GTMTE_BasicMiner> definition;
     private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
     public int cycleIncrease = 0, sizeVeinPreStart = 0, drillLevel = 0;
     public OreVein oreVein;
     public int layer = 1;
     public double cashedDecrement = 0d;
-    ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][16];
 
     public GTMTE_BasicMiner(int aID, String aNameRegional) {
         super(aID, "impact.multis.miner.basic", aNameRegional);
@@ -106,7 +90,8 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                     .mineOreAtBlock(te.getWorld().provider.dimensionId, pos, layer, cycleIncrease);
 
             oreVein = result != null ? result.getOre() : null;
-            sizeVeinPreStart = result != null ? (100 * result.getRemainingAmount() / oreVein.getRangeSize().getLast()) : 0;
+            sizeVeinPreStart = result != null ? (100 * result.getRemainingAmount() / oreVein.getRangeSize().getLast())
+                    : 0;
         }
     }
 
@@ -127,12 +112,39 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Texture.Icons.OVERLAY_BASIC_MINER_ACTIVE : Texture.Icons.OVERLAY_BASIC_MINER)} : new ITexture[]{INDEX_CASE};
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+            boolean aActive, boolean aRedstone) {
+        return aSide == aFacing
+                ? new ITexture[] { Casings.SOLID_STEEL.getTexture(),
+                        TextureFactory.of(aActive ? Texture.Icons.OVERLAY_BASIC_MINER_ACTIVE
+                                : Texture.Icons.OVERLAY_BASIC_MINER) }
+                : new ITexture[] { Casings.SOLID_STEEL.getTexture() };
     }
 
     @Override
     public IStructureDefinition<GTMTE_BasicMiner> getStructureDefinition() {
+        if (definition == null) {
+            definition = StructureDefinition.<GTMTE_BasicMiner>builder()
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addShape("main", new String[][] {
+                            { "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G " },
+                            { "     ", "     ", "     ", "  G  ", "  G  ", "  G  ", " GAG ", " G G ", " G G ", "GA~AG", "G   G", "G   G" },
+                            { "  G  ", "  G  ", "  G  ", " GAG ", " GAG ", " GAG ", " AAA ", "     ", "     ", " ACA ", "     ", "     " },
+                            { "     ", "     ", "     ", "  G  ", "  G  ", "  G  ", " GAG ", " G G ", " G G ", "GAAAG", "G   G", "G   G" },
+                            { "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", "     ", " G G ", " G G ", " G G " },
+                    })
+                    .addElement('G', lazy(t -> ofFrame(Materials.Steel)))
+                    .addElement('C',
+                            GTStructureUtility.buildHatchAdder(GTMTE_BasicMiner.class).hint(HintColor.RED)
+                                    .build(StructureRequirements.builder(Casings.SOLID_STEEL, 0)
+                                            .atLeast(SpecialHatch.Ore).build()))
+                    .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BasicMiner.class)
+                            .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
+                                    HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
+                                    ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
+                            .buildAndChain(HATCHES_A), HintColor.GREEN))
+                    .build();
+        }
         return definition;
     }
 
@@ -156,32 +168,13 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 }
             }
         }
-        if (size > 1) return false;
+        if (size > 1)
+            return false;
         hatch.clear();
         boolean check = checkPiece(2, 9, 1);// TODO: 02.12.2021
-        if (hatch.size() != 1) check = false;
+        if (hatch.size() != 1)
+            check = false;
         return check;
-    }
-
-    private boolean checkHatch(IGregTechTileEntity te, int index) {
-        if (te == null) {
-            return false;
-        } else {
-            IMetaTileEntity mte = te.getMetaTileEntity();
-            if (mte == null) {
-                return false;
-            } else {
-                if (mte instanceof GT_MetaTileEntity_Hatch) {
-                    ((GT_MetaTileEntity_Hatch) mte).updateTexture(index);
-                }
-                if (mte instanceof GTMTE_OreHatch) {
-                    ((GTMTE_OreHatch) mte).updateTexture(index);
-                    return this.hatch.add((GTMTE_OreHatch) mte);
-                } else {
-                    return false;
-                }
-            }
-        }
     }
 
     @Override
@@ -193,8 +186,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                         te.getOffsetX((byte) 0, 1) + XSTR.XSTR_INSTANCE.nextFloat(),
                         te.getOffsetY((byte) 0, 2),
                         te.getOffsetZ((byte) 0, 1) + XSTR.XSTR_INSTANCE.nextFloat(),
-                        0.1D, 0.6D, 0.1D
-                );
+                        0.1D, 0.6D, 0.1D);
             }
         } else {
             if (te.isActive()) {
@@ -214,9 +206,12 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        if (hatch.get(0) == null) return false;
-        if (sizeVeinPreStart <= 0) return false;
-        if (oreVein == null) return false;
+        if (hatch.get(0) == null)
+            return false;
+        if (sizeVeinPreStart <= 0)
+            return false;
+        if (oreVein == null)
+            return false;
         boolean check = hatch.get(0).ready;
         if ((sizeVeinPreStart - cycleIncrease) <= 0) {
             initOreProperty(getBaseMetaTileEntity());
@@ -241,9 +236,11 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
             for (OreVein.OreVeinOut component : is) {
                 if (te.getRandomNumber(10000) < component.getChance() * 100) {
                     ItemStack oreStack = component.getStack().copy();
-                    ItemStack drillHeadDrop = new ItemStack(oreStack.getItem(), byDrillHead(oreStack), oreStack.getItemDamage());
+                    ItemStack drillHeadDrop = new ItemStack(oreStack.getItem(), byDrillHead(oreStack),
+                            oreStack.getItemDamage());
                     output.add(drillHeadDrop);
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, voltage, null, oreStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(),
+                            false, voltage, null, oreStack);
                     if (tRecipe != null) {
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
@@ -283,25 +280,25 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     }
 
     @Override
-    protected MultiBlockTooltipBuilder createTooltip() {
-        MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("basic_miner");
-        b.addInfo("info.0", "Factorio Miner??")
-                .addTypeMachine("name", "Miner")
-                .addInfo("info.1", "Mining takes place in current Chunk")
-                .addInfo("info.2", "There is only ONE miner in one Chunk")
-                .addInfo("info.3", "Use a screwdriver to change the Ore Layer (0-1)")
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder(mName)
+                .addInfo("Factorio Miner??")
+                .addMachineType("Miner")
+                .addInfo("Mining takes place in current Chunk")
+                .addInfo("There is only ONE miner in one Chunk")
+                .addInfo("Use a screwdriver to change the Ore Layer (0-1)")
                 .addSeparator()
-                .addController()
-                .sizeStructure(5, 12, 5)
-                .addMaintenanceHatch()
-                .addOutputBus(1)
-                .addInputHatch(1)
-                .addEnergyHatch(2)
-                .addCasingInfo("case.0", "Solid Steel Machine Casing", 11)
-                .addCasingInfo("case.1", "Steel Frame Box", 51)
-                .addRedHint("Miner Drill Hatch")
-                .signAndFinalize();
-        return b;
+                .addController("See the structure hologram")
+                .beginStructureBlock(5, 12, 5, false)
+                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
+                .addOtherStructurePart("Input Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 2")
+                .addCasingInfoMin("Solid Steel Machine Casing", 11, false)
+                .addCasingInfoMin("Steel Frame Box", 51, false)
+                .addStructureHint("Miner Drill Hatch", HintColor.RED)
+                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .toolTipFinisher();
     }
 
     @Override
@@ -352,6 +349,12 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     }
 
     @Override
+    public int survivalConstruct(ItemStack trigger, int budget,
+            ISurvivalBuildEnvironment environment) {
+        return survivalBuildPiece("main", trigger, 2, 9, 1, budget, environment);
+    }
+
+    @Override
     public boolean hasSeparate() {
         return false;
     }
@@ -359,7 +362,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     @Override
     @Optional.Method(modid = "Waila")
     public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+            IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("incompleteStructure")) {
@@ -373,9 +376,38 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     @Override
     @Optional.Method(modid = "Waila")
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
-                                World world, int x, int y, int z) {
+            World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("basic_miner.vein", sizeVeinPreStart);
         tag.setInteger("basic_miner.layer", layer);
+    }
+
+    private enum SpecialHatch implements IHatchElement {
+        Ore {
+            @Override
+            public boolean matches(IMetaTileEntity tile) {
+                return tile instanceof GTMTE_OreHatch;
+            }
+
+            @Override
+            public int count(GT_MetaTileEntity_MultiBlockBase machine) {
+                return machine instanceof GTMTE_BasicMiner ? ((GTMTE_BasicMiner) machine).hatch.size() : 0;
+            }
+
+            @Override
+            public boolean add(GT_MetaTileEntity_MultiBlockBase machine, IGregTechTileEntity tile, int texture) {
+                if (!(machine instanceof GTMTE_BasicMiner) || !matches(tile.getMetaTileEntity())) {
+                    return false;
+                }
+                GTMTE_OreHatch hatch = (GTMTE_OreHatch) tile.getMetaTileEntity();
+                hatch.updateTexture(texture);
+                return ((GTMTE_BasicMiner) machine).hatch.add(hatch);
+            }
+
+            @Override
+            public String getDescription() {
+                return StatCollector.translateToLocal("impact.structure.hatch.ore");
+            }
+        };
     }
 }
