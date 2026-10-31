@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.Casings;
@@ -9,7 +10,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DynamoMulti;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
@@ -29,7 +36,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static gregtech.api.GregTech_API.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAntimatterReactorFuels;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
@@ -265,12 +271,12 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                 .addOtherStructurePart("Input Bus", "(UV or better); maximum 1")
                 .addOtherStructurePart("Output Bus", "(UV or better); maximum 1")
                 .addOtherStructurePart("Dynamo Hatch", "(ZPM or better), back centered; maximum 1")
-                .addCasingInfoMin("Radiation Proof Casing", 89, false)
-                .addCasingInfoMin("Intermix Chamber Casing", 6, false)
-                .addCasingInfoMin("Magnetic Coil Block", 116, false)
-                .addCasingInfoMin("Dyson Ring Casing", 60, false)
-                .addCasingInfoMin("Fusion Machine Casing MK II", 40, false)
-                .addCasingInfoMin("Core Chamber Casing", 6, false)
+                .addCasingInfoMin(Casings.RADIATION_PROOF, 90, false)
+                .addCasingInfoMin(Casings.INTERMIX_CHAMBER, 6, false)
+                .addCasingInfoMin(Casings.MAGNETIC_COIL, 116, false)
+                .addCasingInfoMin(Casings.DYSON_RING, 60, false)
+                .addCasingInfoMin(Casings.FUSION_MK_II, 40, false)
+                .addCasingInfoMin(Casings.CORE_CHAMBER, 6, false)
 
                 .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.RED)
                 .addStructureHint("Output Hatch or Intermix Chamber Casing", HintColor.ORANGE)
@@ -284,7 +290,8 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
     public boolean machineStructure(IGregTechTileEntity thisController) {
         mWrench = mScrewdriver = mSoftHammer = mHardHammer = mSolderingTool = mCrowbar = true;
 
-        boolean check = checkPiece(7, 7, 0);
+        boolean check = checkPiece(7, 7, 0)
+                && HatchCounts.inputHatches(this) <= 2 && mOutputHatches.size() <= 2 && HatchCounts.inputBuses(this) <= 1 && mOutputBusses.size() <= 1 && HatchCounts.dynamoHatches(this) <= 1;
 
         for (GT_MetaTileEntity_Hatch_Dynamo mDynamoHatch : this.mDynamoHatches) {
             if (mDynamoHatch.mTier < 7) { // ZPM
