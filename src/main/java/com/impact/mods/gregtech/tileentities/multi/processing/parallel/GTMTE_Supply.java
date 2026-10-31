@@ -1,255 +1,164 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.google.common.collect.Lists;
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
-import com.impact.mods.gregtech.blocks.Casing_Helper;
+import com.impact.mods.gregtech.blocks.ImpactCasings;
+import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
-import com.impact.util.string.MultiBlockTooltipBuilder;
-import com.impact.util.vector.Vector3i;
-import com.impact.util.vector.Vector3ic;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
-import net.minecraft.block.Block;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.StructureRequirements;
+import java.util.List;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
-import space.impact.api.multiblocks.structure.IStructureDefinition;
-import space.impact.api.multiblocks.structure.StructureDefinition;
-
-import java.util.List;
+import space.impact.structures.hint.HintColor;
+import space.impact.structures.structure.IStructureDefinition;
+import space.impact.structures.structure.ISurvivalBuildEnvironment;
+import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
-import static com.impact.mods.gregtech.blocks.Casing_Helper.sCaseCore1;
-import static space.impact.api.multiblocks.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
+import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Supply extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Supply> {
-	
-	
-	Block CASING = Casing_Helper.sCaseCore1;
-	byte CASING_META = 10;
-	ITexture INDEX_CASE = Textures.BlockIcons.casingTexturePages[3][CASING_META];
-	int CASING_TEXTURE_ID = CASING_META + 128 * 3;
-	static IStructureDefinition<GTMTE_Supply> definition =
-			StructureDefinition.<GTMTE_Supply>builder()
-					.addShapeOldApi("main", new String[][]{
-							{".000.", ".101.", ".101.", ".101.", ".000.",},
-							{"00000", "1AAA1", "1AAA1", "1AAA1", "00000",},
-							{"00.00", "0A.A0", "0A.A0", "0A.A0", "00000",},
-							{"00000", "1AAA1", "1AAA1", "1AAA1", "00000",},
-							{".000.", ".101.", ".101.", ".101.", ".000.",},
-					})
-					.addElement('0', ofBlock(sCaseCore1, 10))
-					.addElement('1', ofBlock(IGlassBlock, 0))
-					.build();
-	
-	public GTMTE_Supply(int aID, String aNameRegional) {
-		super(aID, "impact.multimachine.supply", aNameRegional);
-	}
-	
-	public GTMTE_Supply(String aName) {
-		super(aName);
-	}
-	
-	@Override
-	public IStructureDefinition<GTMTE_Supply> getStructureDefinition() {
-		return definition;
-	}
-	
-	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == 1 ? new ITexture[]{INDEX_CASE, TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1)} : new ITexture[]{INDEX_CASE};
-	}
-	
-	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GTMTE_Supply(this.mName);
-	}
-	
-	@Override
-	public void construct(ItemStack itemStack, boolean b) {
-		buildPiece(itemStack, b, 2, 0, 2);
-	}
-	
-	@Override
-	protected MultiBlockTooltipBuilder createTooltip() {
-		MultiBlockTooltipBuilder b = new MultiBlockTooltipBuilder("multi_supply");
-		b
-				.addSingleAnalog()
-				.addParallelInfo(1, 256)
-				.addTypeMachine("name", "Autoclave, Dust Washer, Ore Washer, Chemical Bath")
-				.addScrew()
-				.addSeparatedBus()
-				.addSeparator()
-				.addController()
-				.addEnergyHatch(4)
-				.addMaintenanceHatch()
-				.addInputBus(6)
-				.addOutputBus(3)
-				.addInputHatch(3)
-				.addParallelHatch(1)
-				.addCasingInfo("case", "Supply Production Casing", 38)
-				.signAndFinalize();
-		return b;
-	}
-	
-	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-	}
-	
-	@Override
-	public boolean machineStructure(IGregTechTileEntity thisController) {
-		final Vector3ic forgeDirection = new Vector3i(
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
-		);
-		
-		int minCasingAmount = 12; // Минимальное количество кейсов
-		boolean formationChecklist = true; // Если все ок, машина собралась
-		
-		for (byte X = -2; X <= 2; X++) {
-			for (byte Y = -2; Y <= 2; Y++) {
-				if (X == 0 && Y == 0) {
-					continue;
-				}
-				if ((X == 2 || X == -2) && (Y == 2 || Y == -2)) {
-					continue;
-				}
-				
-				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, 0, Y);
-				IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-				if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-						minCasingAmount--;
-					} else {
-						formationChecklist = false;
-					}
-				}
-			}
-		}
-		for (byte X = -2; X <= 2; X++) {
-			for (byte Y = -2; Y <= 2; Y++) {
-				for (byte Z = -1; Z >= -3; Z--) {
-					
-					if ((X == 2 || X == -2) && (Y == 2 || Y == -2)) {
-						continue;
-					}
-					
-					if (X == 1 && Y == 1 || X == -1 && Y == -1 || X == 1 && Y == -1 || X == -1 && Y == 1 || X == 0 && Y == 1 || X == 0 && Y == -1 || X == 1 && Y == 0 || X == -1 && Y == 0) {
-						continue;
-					}
-					
-					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Z, Y);
-					
-					String glass = thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName();
-					if (Y == 2 && X == 1 || Y == -2 && X == 1 || Y == 2 && X == -1 || Y == -2 && X == -1 || Y == 1 && X == 2 || Y == -1 && X == 2 || Y == 1 && X == -2 || Y == -1 && X == -2) {
-						if (thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == IGlassBlock) {
-						} else {
-							formationChecklist = false;
-						}
-						continue;
-					}
-					
-					if (X == 0 && Y == 0) {
-						continue;
-					}
-					
-					IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-					if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
-							&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-						
-						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-								&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-							minCasingAmount--;
-						} else {
-							formationChecklist = false;
-						}
-					}
-				}
-			}
-		}
-		for (byte X = -2; X <= 2; X++) {
-			for (byte Y = -2; Y <= 2; Y++) {
-				if (X == 0 && Y == 0) {
-					continue;
-				}
-				if ((X == 2 || X == -2) && (Y == 2 || Y == -2)) {
-					continue;
-				}
-				
-				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, -4, Y);
-				IGregTechTileEntity currentTE = thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-				if (!super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addMufflerToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addEnergyInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addParallHatchToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING)
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-						minCasingAmount--;
-					} else {
-						formationChecklist = false;
-					}
-				}
-			}
-		}
-		
-		if (this.mInputBusses.size() > 6) {
-			formationChecklist = false;
-		}
-		if (this.mInputHatches.size() > 3) {
-			formationChecklist = false;
-		}
-		if (this.mOutputBusses.size() > 3) {
-			formationChecklist = false;
-		}
-		if (this.mEnergyHatches.size() > 4) {
-			formationChecklist = false;
-		}
-		if (this.mMaintenanceHatches.size() != 1) {
-			formationChecklist = false;
-		}
-		if (this.sParallHatchesIn.size() > 1) {
-			formationChecklist = false;
-		}
-		if (this.sParallHatchesOut.size() != 0) {
-			formationChecklist = false;
-		}
-		
-		return formationChecklist;
-	}
-	
-	@NotNull
-	@Override
-	public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {
-		return Lists.newArrayList(
-				GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes,
-				GT_Recipe.GT_Recipe_Map.sDustWashRecipes,
-				GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
-				GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes
-		);
-	}
-	
-	@Override
-	public boolean hasSwitchMap() {
-		return true;
-	}
+
+    private static final ICasing CASING = ImpactCasings.SUPPLY_PRODUCTION_CASING;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+            .atLeast(HatchElement.Maintenance).build();
+    private static IStructureDefinition<GTMTE_Supply> definition;
+
+    public GTMTE_Supply(int aID, String aNameRegional) {
+        super(aID, "impact.multimachine.supply", aNameRegional);
+    }
+
+    public GTMTE_Supply(String aName) {
+        super(aName);
+    }
+
+    @Override
+    public IStructureDefinition<GTMTE_Supply> getStructureDefinition() {
+        if (definition == null) {
+            definition = StructureDefinition.<GTMTE_Supply>builder()
+                    .addShape("main", new String[][] {
+                            { " CCC ", " GCG ", " GCG ", " GCG ", " CCC " },
+                            { "CCCCC", "G   G", "G   G", "G   G", "CCCCC" },
+                            { "CC~CC", "C   C", "C   C", "C   C", "CCCCC" },
+                            { "CCCCC", "G   G", "G   G", "G   G", "CCCCC" },
+                            { " CCC ", " GCG ", " GCG ", " GCG ", " CCC " }
+                    })
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addElement('G', ofBlockAnyMeta(IGlassBlock))
+                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Supply.class)
+                            .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
+                                    ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
+                            .buildAndChain(SHELL), HintColor.GREEN))
+                    .build();
+        }
+        return definition;
+    }
+
+    @Override
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return aSide == 1
+                ? new ITexture[] { CASING.getTexture(),
+                        TextureFactory.of(aActive ? Textures.BlockIcons.MP1a : Textures.BlockIcons.MP1) }
+                : new ITexture[] { CASING.getTexture() };
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GTMTE_Supply(this.mName);
+    }
+
+    @Override
+    public void construct(ItemStack itemStack, boolean b) {
+        buildPiece(itemStack, b, 2, 0, 2);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack trigger, int budget,
+            ISurvivalBuildEnvironment environment) {
+        return survivalBuildPiece("main", trigger, 2, 0, 2, budget, environment);
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder(mName)
+                .addInfo("Single-block machine equivalent")
+                .addInfo("Parallel points: base 1, maximum 256")
+                .addMachineType("Autoclave, Dust Washer, Ore Washer, Chemical Bath")
+                .addInfo("Select machine type by clicking the controller with a screwdriver")
+                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addSeparator()
+                .addController("See the structure hologram")
+                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
+                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Input Bus", "Any casing; maximum 6")
+                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
+                .addOtherStructurePart("Input Hatch", "Any casing; maximum 3")
+                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
+                .addRequirements(SHELL, "Any casing position")
+                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .toolTipFinisher();
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
+    }
+
+    @Override
+    public boolean machineStructure(IGregTechTileEntity thisController) {
+        boolean formationChecklist = checkPiece(2, 0, 2) && SHELL.isSatisfied(this, 0);
+
+        if (this.mInputBusses.size() > 6) {
+            formationChecklist = false;
+        }
+        if (this.mInputHatches.size() > 3) {
+            formationChecklist = false;
+        }
+        if (this.mOutputBusses.size() > 3) {
+            formationChecklist = false;
+        }
+        if (this.mEnergyHatches.size() > 4) {
+            formationChecklist = false;
+        }
+        if (this.mMaintenanceHatches.size() != 1) {
+            formationChecklist = false;
+        }
+        if (this.sParallHatchesIn.size() > 1) {
+            formationChecklist = false;
+        }
+        if (this.sParallHatchesOut.size() != 0) {
+            formationChecklist = false;
+        }
+
+        return formationChecklist;
+    }
+
+    @NotNull
+    @Override
+    public List<GT_Recipe.GT_Recipe_Map> getRecipesMap() {
+        return Lists.newArrayList(
+                GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes,
+                GT_Recipe.GT_Recipe_Map.sDustWashRecipes,
+                GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
+                GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes);
+    }
+
+    @Override
+    public boolean hasSwitchMap() {
+        return true;
+    }
 }
