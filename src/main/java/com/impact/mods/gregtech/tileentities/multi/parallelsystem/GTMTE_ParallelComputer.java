@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.parallelcomputer.Container_SuperParallelComputer;
@@ -28,8 +29,12 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.InsideBlock;
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
+import static net.minecraft.util.EnumChatFormatting.RED;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ParallelComputer> {
@@ -40,7 +45,9 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     public int mMaxCapacityPP = 0;
     public int mCurrentCapacityPP = 0;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 12)
             .atLeast(HatchElement.Maintenance).build();
     private static final StructureRequirements RACKS = StructureRequirements.builder(CASING, 0).build();
     private static IStructureDefinition<GTMTE_ParallelComputer> definition;
@@ -92,8 +99,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                     .addShape("rack", new String[][] { { "R" } })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParallelComputer.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
-                            .buildAndChain(SHELL), HintColor.GREEN))
-                    .addElement('B', CASING.asElement())
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                    .addElement('B', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('P', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParallelComputer.class)
                             .allow(ComputerHatch.ParallelOutput)
                             .buildAndChain(RACKS, ofBlock(InsideBlock, 2), t -> {
@@ -202,6 +209,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureHint("Computer component or parallel output", HintColor.BLUE)
                 .addStructureHint("Computer component or rack", HintColor.ORANGE)
+                .addStructureInfo("Minimum casings: 8 + 2 per rack layer (12-40); at most 7 + 2 per rack layer hatches replacing casings (11-39)")
                 .toolTipFinisher();
     }
 
@@ -310,6 +318,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
+        casingCount = 0;
         boolean formed = checkPiece("front", 0, 2, 0);
         int[] ends = new int[2];
         // Each rack column may stop at its own casing, as in existing installations.
@@ -332,7 +341,11 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         for (int depth = 1; depth <= ends[1]; depth++) {
             formed &= checkPiece("shell", 0, 2, -depth);
         }
-        return formed && SHELL.isSatisfied(this, 0) && mMaintenanceHatches.size() == 1 && mEnergyHatches.size() <= 1;
+        return formed
+                && SHELL.isSatisfied(this, casingCount)
+                && casingCount >= (12 + 4 * ends[1]) / 2
+                && mMaintenanceHatches.size() == 1
+                && HatchCounts.energyHatches(this) <= 1;
     }
 
     @Override
