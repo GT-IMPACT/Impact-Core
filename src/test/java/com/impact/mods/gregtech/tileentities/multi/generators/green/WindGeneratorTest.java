@@ -3,15 +3,15 @@ package com.impact.mods.gregtech.tileentities.multi.generators.green;
 import com.impact.common.item.ITieredDamagedItems;
 import com.impact.common.te.TE_WindMill;
 import com.impact.loader.ItemRegistery;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.DummyModContainer;
-import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFMLSidedHandler;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -21,6 +21,19 @@ import ic2.core.Platform;
 import ic2.core.WorldData;
 import ic2.core.init.MainConfig;
 import ic2.core.util.Config;
+import java.awt.Color;
+import java.io.File;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.net.URLClassLoader;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -28,8 +41,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
@@ -40,24 +53,12 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.SaveHandlerMP;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import space.impact.api.multiblocks.alignment.enumerable.ExtendedFacing;
-
-import java.awt.Color;
-import java.io.File;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
-import java.net.URLClassLoader;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import space.impact.structures.alignment.enumerable.ExtendedFacing;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,7 +81,8 @@ class WindGeneratorTest {
     @AfterAll
     void closeLoader() throws Exception {
         Launch.classLoader = previousLaunchLoader;
-        if (loader != null) loader.close();
+        if (loader != null)
+            loader.close();
     }
 
     private void check(String method) throws Throwable {
@@ -96,29 +98,64 @@ class WindGeneratorTest {
     }
 
     @Test
-    void turningInactiveMachineMovesOnlyItsRotor() throws Throwable { check("turningInactiveMachineMovesOnlyItsRotor"); }
+    void turningInactiveMachineMovesOnlyItsRotor() throws Throwable {
+        check("turningInactiveMachineMovesOnlyItsRotor");
+    }
+
     @Test
-    void inactiveTickRepairsRotorPositionAndStopsAnimation() throws Throwable { check("inactiveTickRepairsRotorPositionAndStopsAnimation"); }
+    void inactiveTickRepairsRotorPositionAndStopsAnimation() throws Throwable {
+        check("inactiveTickRepairsRotorPositionAndStopsAnimation");
+    }
+
     @Test
-    void clientCannotCreateOrRemoveRotorBlocks() throws Throwable { check("clientCannotCreateOrRemoveRotorBlocks"); }
+    void clientCannotCreateOrRemoveRotorBlocks() throws Throwable {
+        check("clientCannotCreateOrRemoveRotorBlocks");
+    }
+
     @Test
-    void occupiedPositionAndReplacementBlocksArePreserved() throws Throwable { check("occupiedPositionAndReplacementBlocksArePreserved"); }
+    void occupiedPositionAndReplacementBlocksArePreserved() throws Throwable {
+        check("occupiedPositionAndReplacementBlocksArePreserved");
+    }
+
     @Test
-    void anotherControllerCannotClaimOrDeleteRotor() throws Throwable { check("anotherControllerCannotClaimOrDeleteRotor"); }
+    void anotherControllerCannotClaimOrDeleteRotor() throws Throwable {
+        check("anotherControllerCannotClaimOrDeleteRotor");
+    }
+
     @Test
-    void reloadRetainsOwnershipAndPreviousPosition() throws Throwable { check("reloadRetainsOwnershipAndPreviousPosition"); }
+    void reloadRetainsOwnershipAndPreviousPosition() throws Throwable {
+        check("reloadRetainsOwnershipAndPreviousPosition");
+    }
+
     @Test
-    void initialSyncIncludesAllVisualFieldsAndUnchangedStateSendsNothing() throws Throwable { check("initialSyncIncludesAllVisualFieldsAndUnchangedStateSendsNothing"); }
+    void initialSyncIncludesAllVisualFieldsAndUnchangedStateSendsNothing() throws Throwable {
+        check("initialSyncIncludesAllVisualFieldsAndUnchangedStateSendsNothing");
+    }
+
     @Test
-    void legacyNbtRemainsReadable() throws Throwable { check("legacyNbtRemainsReadable"); }
+    void legacyNbtRemainsReadable() throws Throwable {
+        check("legacyNbtRemainsReadable");
+    }
+
     @Test
-    void missingBusAndMalformedRotorDoNotCrash() throws Throwable { check("missingBusAndMalformedRotorDoNotCrash"); }
+    void missingBusAndMalformedRotorDoNotCrash() throws Throwable {
+        check("missingBusAndMalformedRotorDoNotCrash");
+    }
+
     @Test
-    void lastDurabilityPointBreaksWithoutGeneratingPower() throws Throwable { check("lastDurabilityPointBreaksWithoutGeneratingPower"); }
+    void lastDurabilityPointBreaksWithoutGeneratingPower() throws Throwable {
+        check("lastDurabilityPointBreaksWithoutGeneratingPower");
+    }
+
     @Test
-    void turnWaitsForOldRotorChunkWithoutLoadingIt() throws Throwable { check("turnWaitsForOldRotorChunkWithoutLoadingIt"); }
+    void turnWaitsForOldRotorChunkWithoutLoadingIt() throws Throwable {
+        check("turnWaitsForOldRotorChunkWithoutLoadingIt");
+    }
+
     @Test
-    void orphanedRotorCleansUpAfterItsChunkLoads() throws Throwable { check("orphanedRotorCleansUpAfterItsChunkLoads"); }
+    void orphanedRotorCleansUpAfterItsChunkLoads() throws Throwable {
+        check("orphanedRotorCleansUpAfterItsChunkLoads");
+    }
 
     public static class Scenarios {
         public void initialize() throws Exception {
@@ -137,14 +174,21 @@ class WindGeneratorTest {
             logSide.set(null, Side.SERVER);
             Field sidedDelegate = FMLCommonHandler.class.getDeclaredField("sidedDelegate");
             sidedDelegate.setAccessible(true);
-            sidedDelegate.set(FMLCommonHandler.instance(), Proxy.newProxyInstance(IFMLSidedHandler.class.getClassLoader(),
-                    new Class<?>[]{IFMLSidedHandler.class}, (proxy, method, args) -> {
-                        if (method.getName().equals("getSide")) return Side.SERVER;
-                        throw new AssertionError("Unexpected sided handler call: " + method.getName());
-                    }));
+            sidedDelegate.set(FMLCommonHandler.instance(),
+                    Proxy.newProxyInstance(IFMLSidedHandler.class.getClassLoader(),
+                            new Class<?>[] { IFMLSidedHandler.class }, (proxy, method, args) -> {
+                                if (method.getName().equals("getSide"))
+                                    return Side.SERVER;
+                                throw new AssertionError("Unexpected sided handler call: " + method.getName());
+                            }));
             GregTech_API.sMachineFile = new GT_Config(new Configuration() {
-                @Override public void load() {}
-                @Override public void save() {}
+                @Override
+                public void load() {
+                }
+
+                @Override
+                public void save() {
+                }
             });
             Config config = new Config("wind-generator-test");
             try (InputStream defaults = IC2.class.getResourceAsStream("/assets/ic2/config/general.ini")) {
@@ -154,10 +198,14 @@ class WindGeneratorTest {
             configField.setAccessible(true);
             configField.set(null, config);
             IC2.platform = new Platform() {
-                @Override public boolean isSimulating() { return false; }
+                @Override
+                public boolean isSimulating() {
+                    return false;
+                }
             };
             GameRegistry.registerTileEntity(TE_WindMill.class, "TileWindMill");
-            ItemRegistery.Wind_rotor = new Block(Material.iron) {};
+            ItemRegistery.Wind_rotor = new Block(Material.iron) {
+            };
         }
 
         public void turningInactiveMachineMovesOnlyItsRotor() {
@@ -166,7 +214,7 @@ class WindGeneratorTest {
             for (byte side = 3; side <= 5; side++) {
                 TE_WindMill old = h.machine.wind;
                 h.facing = side;
-                h.machine.onFacingChange();
+                h.notifyFacingChange();
                 assertSame(Blocks.air, h.world.getBlock(old.xCoord, old.yCoord, old.zCoord));
                 assertEquals(side, h.machine.wind.getFacing());
                 assertEquals(1, h.world.tiles.size());
@@ -193,7 +241,7 @@ class WindGeneratorTest {
             Harness h = new Harness(true, 8, 8);
             h.machine.setWind();
             h.facing = 5;
-            h.machine.onFacingChange();
+            h.notifyFacingChange();
             h.machine.inValidate();
             assertEquals(0, h.world.blockWrites);
             assertNull(h.machine.wind);
@@ -215,7 +263,7 @@ class WindGeneratorTest {
             h.world.setBlock(old.xCoord, old.yCoord, old.zCoord, Blocks.stone, 0, 2);
             h.world.setBlock(9, 74, 8, Blocks.stone, 0, 2);
             h.facing = 5;
-            h.machine.onFacingChange();
+            h.notifyFacingChange();
             assertSame(Blocks.stone, h.world.getBlock(old.xCoord, old.yCoord, old.zCoord));
             assertSame(Blocks.stone, h.world.getBlock(9, 74, 8));
             assertNull(h.machine.wind);
@@ -342,7 +390,7 @@ class WindGeneratorTest {
             h.world.unloadedChunks.add("1:0");
             h.facing = 2;
             int writes = h.world.blockWrites;
-            h.machine.onFacingChange();
+            h.notifyFacingChange();
             assertEquals(writes, h.world.blockWrites);
             h.world.unloadedChunks.clear();
             h.machine.setWind();
@@ -360,7 +408,7 @@ class WindGeneratorTest {
             h.machine.inValidate();
             assertSame(ItemRegistery.Wind_rotor, h.world.getBlock(orphan.xCoord, orphan.yCoord, orphan.zCoord));
             h.world.unloadedChunks.clear();
-            java.lang.reflect.Method tick = TE_WindMill.class.getDeclaredMethod("updateEntityServer");
+            Method tick = TE_WindMill.class.getDeclaredMethod("updateEntityServer");
             tick.setAccessible(true);
             tick.invoke(orphan);
             assertSame(Blocks.air, h.world.getBlock(orphan.xCoord, orphan.yCoord, orphan.zCoord));
@@ -375,32 +423,51 @@ class WindGeneratorTest {
         GT_MetaTileEntity_Hatch_InputBus bus;
         byte facing = 2;
         boolean active;
+        boolean worldAttached = true;
 
-        Harness(boolean client, int x, int z) { this(new TestWorld(client), x, z); }
+        Harness(boolean client, int x, int z) {
+            this(new TestWorld(client), x, z);
+        }
 
         Harness(TestWorld world, int x, int z) {
             this.world = world;
             base = (IGregTechTileEntity) Proxy.newProxyInstance(IGregTechTileEntity.class.getClassLoader(),
-                    new Class<?>[]{IGregTechTileEntity.class}, (proxy, method, args) -> {
+                    new Class<?>[] { IGregTechTileEntity.class }, (proxy, method, args) -> {
                         switch (method.getName()) {
-                            case "isServerSide": return !world.isRemote;
-                            case "isClientSide": return world.isRemote;
-                            case "getWorld": return world;
-                            case "getXCoord": return x;
-                            case "getYCoord": return (short) 64;
-                            case "getZCoord": return z;
-                            case "getFrontFacing": return facing;
-                            case "getBlockOffset": return world.getBlock(x + (int) args[0], 64 + (int) args[1], z + (int) args[2]);
-                            case "getTileEntityOffset": return world.getTileEntity(x + (int) args[0], 64 + (int) args[1], z + (int) args[2]);
-                            case "getMetaTileEntity": return machine;
-                            case "isActive": return active;
-                            case "setActive": active = (boolean) args[0]; return null;
-                            case "getErrorDisplayID": return 0;
-                            case "markDirty":
-                            case "setMetaTileEntity":
-                            case "setErrorDisplayID":
-                            case "disableWorking": return null;
-                            default: throw new AssertionError("Unexpected base call: " + method.getName());
+                        case "isServerSide":
+                            return !world.isRemote;
+                        case "isClientSide":
+                            return world.isRemote;
+                        case "getWorld":
+                            return worldAttached ? world : null;
+                        case "getXCoord":
+                            return x;
+                        case "getYCoord":
+                            return (short) 64;
+                        case "getZCoord":
+                            return z;
+                        case "getFrontFacing":
+                            return facing;
+                        case "getBlockOffset":
+                            return world.getBlock(x + (int) args[0], 64 + (int) args[1], z + (int) args[2]);
+                        case "getTileEntityOffset":
+                            return world.getTileEntity(x + (int) args[0], 64 + (int) args[1], z + (int) args[2]);
+                        case "getMetaTileEntity":
+                            return machine;
+                        case "isActive":
+                            return active;
+                        case "setActive":
+                            active = (boolean) args[0];
+                            return null;
+                        case "getErrorDisplayID":
+                            return 0;
+                        case "markDirty":
+                        case "setMetaTileEntity":
+                        case "setErrorDisplayID":
+                        case "disableWorking":
+                            return null;
+                        default:
+                            throw new AssertionError("Unexpected base call: " + method.getName());
                         }
                     });
             machine.setBaseMetaTileEntity(base);
@@ -416,6 +483,18 @@ class WindGeneratorTest {
             bus.mInventory[0] = stack;
             machine.mInputBusses.add(bus);
         }
+
+        void notifyFacingChange() {
+            // Update real alignment without starting a network transport in this rotor
+            // test.
+            worldAttached = false;
+            try {
+                machine.setExtendedFacing(ExtendedFacing.of(ForgeDirection.getOrientation(facing)));
+            } finally {
+                worldAttached = true;
+            }
+            machine.onFacingChange();
+        }
     }
 
     public static class TestMachine extends GTMTE_Wind_Generator {
@@ -425,17 +504,28 @@ class WindGeneratorTest {
             mStartUpCheck = 100;
         }
 
-        @Override
-        public void setExtendedFacing(ExtendedFacing facing) {
-            // Alignment transport is independent of the rotor lifecycle under test.
-        }
     }
 
     public static class TestRotorItem extends Item implements ITieredDamagedItems {
-        @Override public int getCoefficient(ItemStack stack) { return 0; }
-        @Override public boolean isBroken(ItemStack stack) { return stack.getTagCompound().getInteger("rotorDamage") <= 0; }
-        @Override public Color getColor(ItemStack stack) { return new Color(0x123456); }
-        @Override public boolean isNew(ItemStack stack) { return false; }
+        @Override
+        public int getCoefficient(ItemStack stack) {
+            return 0;
+        }
+
+        @Override
+        public boolean isBroken(ItemStack stack) {
+            return stack.getTagCompound().getInteger("rotorDamage") <= 0;
+        }
+
+        @Override
+        public Color getColor(ItemStack stack) {
+            return new Color(0x123456);
+        }
+
+        @Override
+        public boolean isNew(ItemStack stack) {
+            return false;
+        }
     }
 
     public static class TestWorld extends World {
@@ -446,26 +536,58 @@ class WindGeneratorTest {
 
         TestWorld(boolean client) {
             super(new SaveHandlerMP(), "wind-generator-test", new WorldProviderSurface(),
-                    new WorldSettings(0, WorldSettings.GameType.CREATIVE, false, false, WorldType.DEFAULT), new Profiler());
+                    new WorldSettings(0, WorldSettings.GameType.CREATIVE, false, false, WorldType.DEFAULT),
+                    new Profiler());
             isRemote = client;
         }
 
-        static String key(int x, int y, int z) { return x + ":" + y + ":" + z; }
+        static String key(int x, int y, int z) {
+            return x + ":" + y + ":" + z;
+        }
 
-        @Override public boolean blockExists(int x, int y, int z) {
+        @Override
+        public boolean blockExists(int x, int y, int z) {
             return y >= 0 && y < 256 && !unloadedChunks.contains((x >> 4) + ":" + (z >> 4));
         }
-        @Override public Block getBlock(int x, int y, int z) { return blocks.getOrDefault(key(x, y, z), Blocks.air); }
-        @Override public TileEntity getTileEntity(int x, int y, int z) { return tiles.get(key(x, y, z)); }
-        @Override public int getBlockMetadata(int x, int y, int z) {
+
+        @Override
+        public Block getBlock(int x, int y, int z) {
+            return blocks.getOrDefault(key(x, y, z), Blocks.air);
+        }
+
+        @Override
+        public TileEntity getTileEntity(int x, int y, int z) {
+            return tiles.get(key(x, y, z));
+        }
+
+        @Override
+        public int getBlockMetadata(int x, int y, int z) {
             assertTrue(blockExists(x, y, z), "Must not access an unloaded rotor chunk");
             return 0;
         }
-        @Override public void markTileEntityChunkModified(int x, int y, int z, TileEntity tile) {}
-        @Override public void func_147453_f(int x, int y, int z, Block block) {}
-        @Override public Entity getEntityByID(int id) { return null; }
-        @Override protected int func_152379_p() { return 0; }
-        @Override protected IChunkProvider createChunkProvider() { throw new UnsupportedOperationException(); }
+
+        @Override
+        public void markTileEntityChunkModified(int x, int y, int z, TileEntity tile) {
+        }
+
+        @Override
+        public void func_147453_f(int x, int y, int z, Block block) {
+        }
+
+        @Override
+        public Entity getEntityByID(int id) {
+            return null;
+        }
+
+        @Override
+        protected int func_152379_p() {
+            return 0;
+        }
+
+        @Override
+        protected IChunkProvider createChunkProvider() {
+            throw new UnsupportedOperationException();
+        }
 
         @Override
         public boolean setBlock(int x, int y, int z, Block block, int metadata, int flags) {
