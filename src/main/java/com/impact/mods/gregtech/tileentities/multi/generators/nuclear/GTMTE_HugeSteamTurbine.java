@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
@@ -31,13 +32,16 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.InsideBlock;
+import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSteamTurbine> {
 
     private static final ICasing CASING = ImpactCasings.HUGE_CASING_TURBINE;
     private static final ICasing GEARBOX = Casings.STEEL_GEARBOX;
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 0)
+    private int casingCount;
+
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 56)
             .atLeast(HatchElement.Maintenance).build();
     private static final StructureRequirements DYNAMOS = StructureRequirements.builder(CASING, 0).build();
 
@@ -95,11 +99,11 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                             { "     ", " DDD ", " DDD ", " DDD " }
                     })
                     .addElement('A', GEARBOX.asElement())
-                    .addElement('B', CASING.asElement())
+                    .addElement('B', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HugeSteamTurbine.class)
-                            .allow(HatchElement.Input).buildAndChain(SHELL), HintColor.GREEN))
+                            .allow(HatchElement.Input).buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HugeSteamTurbine.class)
-                            .allow(ImpactHatchElement.Dynamo, ImpactHatchElement.LaserOutput).buildAndChain(DYNAMOS),
+                            .allow(ImpactHatchElement.Dynamo, ImpactHatchElement.LaserOutput).buildAndChain(DYNAMOS, machine -> machine.casingCount++),
                             HintColor.BLUE))
                     .build();
         }
@@ -120,9 +124,10 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 20")
                 .addRequirements(SHELL, "Side casings")
-                .addOtherStructurePart("Steel GearBox Casing", "inside structure")
+                .addOtherStructurePart(GEARBOX, "inside structure", 4)
                 .addStructureHint("Casing or input hatch/bus / maintenance hatch", HintColor.GREEN)
                 .addStructureHint("Casing or dynamo / laser output", HintColor.BLUE)
+                .addStructureInfo("Hatches replacing casings: at most 56")
                 .toolTipFinisher();
     }
 
@@ -133,9 +138,10 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationChecklist = checkPiece(2, 2, 0) && SHELL.isSatisfied(this, 0);
+        casingCount = 0;
+        boolean formationChecklist = checkPiece(2, 2, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (mInputHatches.size() > 20) {
+        if (HatchCounts.inputHatches(this) > 20) {
             formationChecklist = false;
         }
 
@@ -143,7 +149,7 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
             formationChecklist = false;
         }
 
-        if (mDynamoHatches.size() > 9 || mDynamoHatchesMulti.size() > 9) {
+        if (HatchCounts.dynamoHatches(this) > 9) {
             formationChecklist = false;
         }
 
