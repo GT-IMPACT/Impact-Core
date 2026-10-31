@@ -25,7 +25,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +51,7 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static space.impact.structures.structure.StructureUtility.*;
+import static space.impact.structures.structure.StructureUtility.lazy;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_TowerCommunication>
@@ -59,7 +59,9 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     private static final ICasing CASING = ImpactCasings.TOWER_CASING;
 
-    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 0).build();
+    private int casingCount;
+
+    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 21).build();
 
     private static IStructureDefinition<GTMTE_TowerCommunication> STRUCTURE_DEFINITION;
 
@@ -115,7 +117,8 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
-        boolean formationCheckList = checkPiece(3, 17, 3);
+        casingCount = 0;
+        boolean formationCheckList = checkPiece(3, 17, 3) && HATCHES_A.isSatisfied(this, casingCount);
         if (sCommunReceiver.size() != 4) {
             formationCheckList = false;
         }
@@ -151,9 +154,10 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Communication Receiver Hatch", "Top")
                 .addOtherStructurePart("Steel Frame Box", "Frames")
-                .addCasingInfoMin(CASING, 41, false)
+                .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureHint("Communication receiver hatch", HintColor.RED)
+                .addStructureInfo("Hatches replacing casings: at most 20")
                 .toolTipFinisher();
     }
 
@@ -175,7 +179,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
-                            .buildAndChain(HATCHES_A), HintColor.GREEN))
+                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('D',
                             GTStructureUtility.buildHatchAdder(GTMTE_TowerCommunication.class).hint(HintColor.RED)
                                     .build(StructureRequirements.builder(CASING, 0).atLeast(SpecialHatch.Receiver)
