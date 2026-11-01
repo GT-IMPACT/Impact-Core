@@ -368,7 +368,10 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             .beginStructureBlock(3, 3, 3, false)
             .addOtherStructurePart("Steel Frame Box", "At least 8")
             .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
-            .addStructureChannels(getStructureDefinition())
+            .addSubChannel(
+                GTStructureUtility.HATCH_CHANNEL,
+                "Installs the ore sampling hatch from your inventory at its marked position.",
+            )
             .toolTipFinisher()
     }
 

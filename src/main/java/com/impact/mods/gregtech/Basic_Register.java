@@ -85,7 +85,7 @@ public class Basic_Register {
 		Diode_16A_ZPM.set(new GT_MetaTileEntity_Diode(ID2++, "impact.diode16A.tier.07", "Diode Cable 16A ZPM", 7, 16).getStackForm(1L));
 		Diode_16A_UV.set(new GT_MetaTileEntity_Diode(ID2++, "impact.diode16A.tier.08", "Diode Cable 16A UV", 8, 16).getStackForm(1L));
 		
-		Tank_Hatch.set(new GTMTE_TankHatch(ID2++, "impact.machine.tankhatchio", "I/O Tank Hatch", 5).getStackForm(1L));
+		Tank_Hatch.set(new GTMTE_TankHatch(ID2++, "impact.machine.tankhatchio", "Tank Input and Output Hatch", 5).getStackForm(1L));
 		
 		Generator_Steam_Turbine_EV.set(new GT_MetaTileEntity_SteamTurbine(ID2++, "impact.basicgenerator.steamturbine.tier.04", "EV Steam Turbine", 4).getStackForm(1L));
 		Generator_Diesel_EV.set(new GT_MetaTileEntity_DieselGenerator(ID2++, "impact.basicgenerator.diesel.tier.04", "EV Combustion Generator", 4).getStackForm(1L));

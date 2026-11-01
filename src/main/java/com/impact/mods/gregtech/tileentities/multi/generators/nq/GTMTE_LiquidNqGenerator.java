@@ -99,11 +99,13 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
                     .addElement('C', ofBlock(Block_NqTether.INSTANCE, 0))
                     .addElement('D', ofBlock(InsideBlock, 0))
                     .addElement('B', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
-                            .allow(HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
-                                    ImpactHatchElement.LaserOutput, HatchElement.Output)
+                            .allow(ImpactHatchElement.FluidInput, ImpactHatchElement.Dynamo,
+                                    ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.FluidInput)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
-                            .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Output)
+                            .allow(ImpactHatchElement.FluidInput)
+                            .autoPlace(ImpactHatchElement.FluidInput)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.LIME))
                     .build();
         }
@@ -143,11 +145,11 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addOtherStructurePart(new ItemStack(InsideBlock, 1, 0), "inside structure", 12)
                 .addOtherStructurePart("Tether Core", "2x, see the structure hologram")
-                .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.GREEN)
-                .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.LIME)
+                .addStructureHint("Casing, fluid input hatch, maintenance hatch or dynamo hatch", HintColor.GREEN)
+                .addStructureHint("Casing, fluid input hatch or maintenance hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 5")
                 .addOtherStructurePart(60, "I-Glass", "Any color; see the structure hologram")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Maintenance Hatch, a fuel input and a dynamo or laser output from your inventory.")
                 .toolTipFinisher();
     }
 

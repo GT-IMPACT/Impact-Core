@@ -158,7 +158,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureHint("Communication receiver hatch", HintColor.PURPLE)
                 .addStructureInfo("Hatches replacing casings: at most 20")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the four tower receivers and available service hatches from your inventory.")
                 .toolTipFinisher();
     }
 
@@ -167,6 +167,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition
                     .<GTMTE_TowerCommunication>builder()
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addShape("main", new String[][] {
                             { "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " EEEEE ", "EE   EE", "E     E", "E     E", "E     E" },
                             { "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "  EEE  ", " EE EE ", " E   E ", " E   E ", " E   E ", "EE   EE", "E     E", "       ", "  AAA  ", "  AAA  " },
@@ -180,6 +181,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
                             .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('D',
                             GTStructureUtility.buildHatchAdder(GTMTE_TowerCommunication.class).hint(HintColor.PURPLE)

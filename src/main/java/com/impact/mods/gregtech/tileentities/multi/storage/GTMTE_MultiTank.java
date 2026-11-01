@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import com.impact.util.fluid.IMultiFluidTank;
 import com.impact.util.fluid.MultiFluidHandler;
@@ -19,6 +20,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTStructureChannels;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -69,6 +71,7 @@ public class GTMTE_MultiTank
     private static IStructureDefinition<GTMTE_MultiTank> STRUCTURE;
     private double fluidCapacityAcc;
     private int casingCount;
+    private int tankHatchCount;
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
@@ -81,6 +84,7 @@ public class GTMTE_MultiTank
         if (STRUCTURE == null) {
             STRUCTURE = StructureDefinition.<GTMTE_MultiTank>builder()
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addChannel(GTStructureChannels.TIER, 1, 8)
                     .addShape("main", new String[][] {
                             { "EEEEE", "EAAAE", "EA~AE", "EAAAE", "EEEEE" },
                             { "GMMMG", "MTTTM", "MTTTM", "MTTTM", "GMMMG" },
@@ -94,21 +98,23 @@ public class GTMTE_MultiTank
                     })
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MultiTank.class)
                             .allow(HatchElement.Input, HatchElement.Output, TankHatch.INSTANCE)
-                            .buildAndChain(SHELL, ofBlockAnyMeta(CASING.getBlock(), CASING.getMetadata()),
+                            .autoPlace(ImpactHatchElement.FluidInput, ImpactHatchElement.FluidOutput, TankHatch.INSTANCE)
+                            .buildAndChain(SHELL, CASING.asElement(),
                                     t -> t.casingCount++),
                             HintColor.GREEN))
                     .addElement('E', onElementPass(t -> t.casingCount++,
-                            ofBlockAnyMeta(CASING.getBlock(), CASING.getMetadata())))
+                            CASING.asElement()))
                     .addElement('G', ofBlockAnyMeta(IGlassBlock))
                     .addElement('M', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MultiTank.class)
                             .allow(HatchElement.Input, HatchElement.Output, TankHatch.INSTANCE)
+                            .autoPlace(ImpactHatchElement.FluidInput, ImpactHatchElement.FluidOutput, TankHatch.INSTANCE)
                             .buildAndChain(StructureRequirements.builder(CASING, 0).build(),
                                     ofChain(ofBlockAnyMeta(IGlassBlock), onElementPass(t -> t.casingCount++,
-                                            ofBlockAnyMeta(CASING.getBlock(), CASING.getMetadata()))),
+                                            CASING.asElement())),
                                     t -> {
                                     }),
                             HintColor.LIME))
-                    .addElement('T', ofChain(
+                    .addElement('T', new TankStorageElement<GTMTE_MultiTank>(ofChain(
                             onElementPass(t -> t.fluidCapacityAcc += 6349206.3f, ofBlock(FluidTankBlock, 0)),
                             onElementPass(t -> t.fluidCapacityAcc += 12698412.6f, ofBlock(FluidTankBlock, 1)),
                             onElementPass(t -> t.fluidCapacityAcc += 25396825.3f, ofBlock(FluidTankBlock, 2)),
@@ -116,8 +122,7 @@ public class GTMTE_MultiTank
                             onElementPass(t -> t.fluidCapacityAcc += 101587301.5f, ofBlock(FluidTankBlock, 4)),
                             onElementPass(t -> t.fluidCapacityAcc += 203174603.1f, ofBlock(FluidTankBlock, 5)),
                             onElementPass(t -> t.fluidCapacityAcc += 406349206.3f, ofBlock(FluidTankBlock, 6)),
-                            onElementPass(t -> t.fluidCapacityAcc += 812698412.65479f, ofBlock(FluidTankBlock, 7)),
-                            ofBlockAnyMeta(FluidTankBlock)))
+                            onElementPass(t -> t.fluidCapacityAcc += 812698412.65479f, ofBlock(FluidTankBlock, 7))), 8))
                     .build();
         }
         return STRUCTURE;
@@ -133,7 +138,7 @@ public class GTMTE_MultiTank
 
         @Override
         public int count(GT_MetaTileEntity_MultiBlockBase machine) {
-            return ((GTMTE_MultiTank) machine).sMultiHatches.size();
+            return ((GTMTE_MultiTank) machine).tankHatchCount;
         }
 
         @Override
@@ -176,6 +181,7 @@ public class GTMTE_MultiTank
     }
 
     private void detachHatches() {
+        tankHatchCount = 0;
         for (GTMTE_TankHatch hatch : sMultiHatches) {
             hatch.detachFromController(getBaseMetaTileEntity());
         }
@@ -248,17 +254,19 @@ public class GTMTE_MultiTank
                 .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
                 .addInfo("If the integrity of Tank Storage is broken, the fluids are removed.")
                 .addInfo("Use a view cell in the gui to restrict fluids.")
-                .beginStructureBlock(5, 9, 5, false).addController("See the structure hologram")
+                .beginStructureBlock(5, 5, 9, false).addController("See the structure hologram")
                 .addOtherStructurePart("Tank Storage Block", "63 blocks in the inner 3x7x3 volume")
                 .addStructureInfo("Two 5x5 end layers; hatches may replace the inner casing positions")
                 .addOtherStructurePart("I-Glass", "28 fixed corner blocks; the other 84 side positions accept glass, casing or compatible hatches")
-                .addOtherStructurePart("I/O Tank Hatch", "Instead of any casing or glass (not angle)")
-                .addInfo("I/O Tank Hatch provides information and connects to AE2 and OC systems")
+                .addOtherStructurePart("Tank Input and Output Hatch", "Marked casing and side-wall positions; maximum 1 per structure")
+                .addInfo("Tank Input and Output Hatch provides information and connects to AE2 and OC systems")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Glass, casing or I/O/tank hatch", HintColor.LIME)
+                .addStructureHint("Glass, casing or input, output or tank access hatch", HintColor.LIME)
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addStructureInfo("Hatches in the top and bottom casing layers: at most 17")
-                .addStructureChannels(getStructureDefinition())
+                .addStructureInfo("Hatches in the two end layers: at most 17")
+                .addStructureInfo("Can be built horizontally or vertically; the long axis follows the controller facing.")
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available fluid input, fluid output and tank access hatches in the tank walls.")
+                .addSubChannel(GTStructureChannels.TIER, "Selects the level of the 63 inner Tank Storage Blocks (1-8) for the hologram and automatic construction. Higher levels increase fluid capacity; installed blocks are kept.")
                 .toolTipFinisher();
     }
 
@@ -429,6 +437,7 @@ public class GTMTE_MultiTank
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
         HashSet<GTMTE_TankHatch> previousHatches = new HashSet<>(sMultiHatches);
         sMultiHatches.clear();
+        tankHatchCount = 0;
         fluidCapacityAcc = 0;
         casingCount = 0;
         mInputHatches.clear();
@@ -437,7 +446,8 @@ public class GTMTE_MultiTank
         mOutputBusses.clear();
         mEnergyHatches.clear();
         mEnergyHatchesMulti.clear();
-        boolean formationChecklist = checkPiece("main", 2, 2, 0) && SHELL.isSatisfied(this, casingCount);
+        boolean formationChecklist = checkPiece("main", 2, 2, 0) && SHELL.isSatisfied(this, casingCount)
+                && tankHatchCount <= 1;
 
         if (HatchCounts.energyHatches(this) > 0) {
             formationChecklist = false;
@@ -463,6 +473,7 @@ public class GTMTE_MultiTank
             previousHatches.removeAll(sMultiHatches);
         } else {
             previousHatches.addAll(sMultiHatches);
+            // Keep tankHatchCount for automatic construction of the incomplete structure.
             sMultiHatches.clear();
             if (mfh != null) {
                 mfh.setLock(true);
@@ -490,7 +501,11 @@ public class GTMTE_MultiTank
                 return false;
             } else if (aMetaTileEntity instanceof GTMTE_TankHatch) {
                 ((GTMTE_TankHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return sMultiHatches.add((GTMTE_TankHatch) aMetaTileEntity);
+                if (sMultiHatches.add((GTMTE_TankHatch) aMetaTileEntity)) {
+                    tankHatchCount++;
+                    return true;
+                }
+                return false;
             } else {
                 return false;
             }

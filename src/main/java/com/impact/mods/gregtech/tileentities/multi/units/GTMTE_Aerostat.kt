@@ -178,6 +178,10 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
                                 HatchElement.Output,
                                 CARGO_HATCH,
                             )
+                            .autoPlace(
+                                HatchElement.Output,
+                                CARGO_HATCH,
+                            )
                             .buildAndChain(SHELL) { machine ->
                                 machine.casingCount++
                             },
@@ -370,7 +374,11 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             .addRequirements(SHELL, "Any casing position")
             .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
             .addStructureInfo("Hatches replacing casings: at most 4")
-            .addStructureChannels(getStructureDefinition())
+            .addSubChannel(
+                GTStructureUtility.HATCH_CHANNEL,
+                "Installs the platform input and available output and cargo hatches from your " +
+                "inventory.",
+            )
             .toolTipFinisher()
     }
 

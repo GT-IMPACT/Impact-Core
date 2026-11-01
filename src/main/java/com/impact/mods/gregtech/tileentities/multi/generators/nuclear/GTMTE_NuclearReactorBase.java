@@ -21,6 +21,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.StructureRequirements;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
                 .addStructureHint("Casing, compatible hatch or machine hull", HintColor.CYAN)
                 .addStructureHint(tierReactor() == 1 ? "Reactor rod" : "Casing or reactor rod", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most " + (SHELL_POSITIONS[tierReactor() - 1] - shellRequirements().getMinimumCasings()))
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs reactor rod hatches at the marked positions, plus available machine hulls and service hatches.")
                 .toolTipFinisher();
     }
 
@@ -335,9 +336,9 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         HatchElementBuilder<GTMTE_NuclearReactorBase<T>> builder = new HatchElementBuilder<GTMTE_NuclearReactorBase<T>>()
                 .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, HatchElement.Energy,
                         ImpactHatchElement.Dynamo, ImpactHatchElement.Muffler,
-                        ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput);
+                        ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput).autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler);
         if (acceptsHull) {
-            builder.allow(ReactorHatch.Hull);
+            builder.allow(ReactorHatch.Hull).autoPlace(ReactorHatch.Hull);
         }
         return withHint(builder.buildAndChain(shellRequirements(), machine -> machine.casingCount++), acceptsHull ? HintColor.CYAN : HintColor.LIME);
     }

@@ -3,8 +3,6 @@ package com.impact.mods.gregtech.tileentities.multi.units;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ICasing;
@@ -31,7 +29,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraftforge.common.BiomeDictionary.Type.BEACH;
 import static net.minecraftforge.common.BiomeDictionary.Type.CONIFEROUS;
@@ -46,8 +43,6 @@ import static net.minecraftforge.common.BiomeDictionary.Type.SAVANNA;
 import static net.minecraftforge.common.BiomeDictionary.Type.SNOWY;
 import static net.minecraftforge.common.BiomeDictionary.Type.SWAMP;
 import static net.minecraftforge.common.BiomeDictionary.Type.WATER;
-import static space.impact.structures.structure.StructureUtility.ofBlock;
-import static space.impact.structures.structure.StructureUtility.ofChain;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWaterPump> {
@@ -108,16 +103,13 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
                 .addStructureHint("Pump deck or output hatch", HintColor.ORANGE)
                 .addOtherStructurePart(10, "Wood Frame Box", "Support frame above the pump deck")
                 .addOtherStructurePart("Pump Output Hatch", "Center of the pump deck; maximum 1; accepts primitive, ULV or LV output hatches")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs a Pump Output Hatch from your inventory at the orange marker.")
                 .toolTipFinisher();
     }
 
     @Override
     public IStructureDefinition<GTMTE_BasicWaterPump> getStructureDefinition() {
         if (definition == null) {
-            int frameMeta = GregTech_API.METATILEENTITIES[4905] != null
-                    ? GregTech_API.METATILEENTITIES[4905].getTileEntityBaseType()
-                    : W;
             definition = StructureDefinition.<GTMTE_BasicWaterPump>builder()
                     .addShape("main", new String[][] {
                             { " F  ", " F  ", "CCC~" },
@@ -126,9 +118,10 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', CASING.asElement())
-                    .addElement('F', ofChain(ofFrame(Materials.Wood), ofBlock(GregTech_API.sBlockMachines, frameMeta)))
+                    .addElement('F', ofFrame(Materials.Wood))
                     .addElement('H', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BasicWaterPump.class)
                             .allow(PumpOutput.INSTANCE)
+                            .autoPlace(PumpOutput.INSTANCE)
                             .buildAndChain(StructureRequirements.builder(CASING, 0).build()), HintColor.ORANGE))
                     .build();
         }
@@ -315,12 +308,14 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
 
         @Override
         public boolean matches(IMetaTileEntity tile) {
-            return tile instanceof GT_MetaTileEntity_Primitive_Hatch_Output || HatchElement.Output.matches(tile);
+            return tile instanceof GT_MetaTileEntity_Primitive_Hatch_Output
+                    || tile instanceof GT_MetaTileEntity_Hatch_Output
+                            && ((GT_MetaTileEntity_Hatch_Output) tile).mTier <= 1;
         }
 
         @Override
         public int count(GT_MetaTileEntity_MultiBlockBase machine) {
-            return HatchElement.Output.count(machine) + ((GTMTE_BasicWaterPump) machine).mOutputHatches1.size();
+            return machine.mOutputHatches.size() + ((GTMTE_BasicWaterPump) machine).mOutputHatches1.size();
         }
 
         @Override

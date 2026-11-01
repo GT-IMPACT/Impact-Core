@@ -26,12 +26,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
 import space.impact.structures.hint.HintColor;
-import space.impact.structures.structure.AutoPlaceEnvironment;
 import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.IStructureElement;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
@@ -93,7 +91,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                 .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.GREEN)
                 .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 17")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance and fluid inputs for fuel and oxygen, plus available fluid outputs and dynamos.")
                 .toolTipFinisher();
     }
 
@@ -192,10 +190,10 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                             { "DDD", "DDD", "DDD" }
                     })
                     .addElement('C', withHint(new HatchElementBuilder<T>()
-                            .allow(HatchElement.Input, HatchElement.Output).buildAndChain(requirements(), machine -> machine.casingCount++),
+                            .allow(HatchElement.Input, HatchElement.Output).autoPlace(ImpactHatchElement.FluidInput, ImpactHatchElement.FluidOutput).buildAndChain(requirements(), machine -> machine.casingCount++),
                             HintColor.GREEN))
                     .addElement('D', withHint(new HatchElementBuilder<T>()
-                            .allow(HatchElement.Input, HatchElement.Output, ImpactHatchElement.Dynamo)
+                            .allow(HatchElement.Input, HatchElement.Output, ImpactHatchElement.Dynamo).autoPlace(ImpactHatchElement.FluidInput, ImpactHatchElement.FluidOutput, ImpactHatchElement.Dynamo)
                             .buildAndChain(requirements(), machine -> machine.casingCount++), HintColor.LIME))
                     .addElement('E', ceramicElement())
                     .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
@@ -205,37 +203,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
     }
 
     private IStructureElement<T> ceramicElement() {
-        int metadata = getTier();
-        IStructureElement<T> ceramic = ofBlock(CeramicBlock, metadata);
-        return new IStructureElement<T>() {
-            @Override
-            public boolean check(T machine, World world, int x, int y, int z) {
-                // Existing structures allow any ceramic tier or another block with the tier's
-                // metadata.
-                return world.getBlock(x, y, z) == CeramicBlock || world.getBlockMetadata(x, y, z) == metadata;
-            }
-
-            @Override
-            public boolean couldBeValid(T machine, World world, int x, int y, int z, ItemStack trigger) {
-                return check(machine, world, x, y, z);
-            }
-
-            @Override
-            public boolean spawnHint(T machine, World world, int x, int y, int z, ItemStack trigger) {
-                return ceramic.spawnHint(machine, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean placeBlock(T machine, World world, int x, int y, int z, ItemStack trigger) {
-                return check(machine, world, x, y, z) || ceramic.placeBlock(machine, world, x, y, z, trigger);
-            }
-
-            @Override
-            public BlocksToPlace getBlocksToPlace(T machine, World world, int x, int y, int z,
-                    ItemStack trigger, AutoPlaceEnvironment environment) {
-                return ceramic.getBlocksToPlace(machine, world, x, y, z, trigger, environment);
-            }
-        };
+        return ofBlock(CeramicBlock, getTier());
     }
 
     @Override

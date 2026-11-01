@@ -86,6 +86,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
                     .addElement('H', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LaserEng.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
@@ -118,7 +119,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
                 .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 11), "See the structure hologram", 3)
                 .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 13), "See the structure hologram", 3)
                 .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 14), "See the structure hologram", 3)
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
                 .toolTipFinisher();
     }
 

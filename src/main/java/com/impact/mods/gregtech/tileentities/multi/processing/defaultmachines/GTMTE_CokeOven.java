@@ -47,6 +47,7 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_CokeOven.class)
                             .allow(ImpactHatchElement.PrimitiveInput, ImpactHatchElement.PrimitiveOutput)
+                            .autoPlace(ImpactHatchElement.PrimitiveInput, ImpactHatchElement.PrimitiveOutput)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
@@ -90,7 +91,7 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
                 .addOtherStructurePart("Primitive Output Hatch", "Maximum 1")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 3")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available primitive input and output hatches in the coke oven walls.")
                 .toolTipFinisher();
     }
 

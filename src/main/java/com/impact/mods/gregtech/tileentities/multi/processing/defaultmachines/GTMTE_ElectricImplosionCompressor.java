@@ -71,6 +71,7 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
                             withHint(GTStructureUtility.buildHatchAdder(GTMTE_ElectricImplosionCompressor.class)
                                     .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                             HatchElement.Output)
+                                    .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output)
                                     .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
@@ -112,7 +113,7 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
                 .addOtherStructurePart(Casings.SUPERCONDUCTING_COIL, "Around the compression chamber, including the top and bottom faces", 16)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 20")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
                 .toolTipFinisher();
     }
 

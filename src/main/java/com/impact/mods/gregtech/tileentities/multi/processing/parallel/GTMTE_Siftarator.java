@@ -59,10 +59,12 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Siftarator.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.Parallel, HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Siftarator.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
@@ -100,7 +102,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
 
                 .addStructureInfo("Hatches replacing casings: at most 25")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
                 .toolTipFinisher();
     }
 

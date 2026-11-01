@@ -83,7 +83,7 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureInfo("Hatches replacing casings: at most 17")
                 .addOtherStructurePart(new ItemStack(CollisionBlock, 1, 0), "See the structure hologram", 1)
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the miner casing.")
                 .toolTipFinisher();
     }
 
@@ -140,10 +140,12 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MoonMiner.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Muffler)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, ImpactHatchElement.Muffler)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('B', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MoonMiner.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Muffler)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, ImpactHatchElement.Muffler)
                             .buildAndChain(SHELL, ofBlock(CollisionBlock, 0), t -> {
                             }), HintColor.LIME))
                     .build();

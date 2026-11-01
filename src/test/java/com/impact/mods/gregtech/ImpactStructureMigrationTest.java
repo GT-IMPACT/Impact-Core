@@ -113,6 +113,7 @@ class ImpactStructureMigrationTest {
             GregTech_API.sBlockMachines = Blocks.iron_block;
             ItemRegistery.IGlassBlock = Blocks.glass;
             ItemRegistery.InsideBlock = Blocks.wool;
+            ItemRegistery.CeramicBlock = Blocks.wool;
             ItemRegistery.SawMillBlock = Blocks.wool;
             ItemRegistery.MPSystem = Blocks.wool;
             ItemRegistery.MPTransducer = Blocks.iron_block;

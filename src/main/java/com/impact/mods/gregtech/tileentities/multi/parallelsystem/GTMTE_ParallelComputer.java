@@ -101,14 +101,17 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                     .addShape("rack", new String[][] { { "R" } })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParallelComputer.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('B', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('P', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParallelComputer.class)
                             .allow(ComputerHatch.ParallelOutput)
+                            .autoPlace(Integer.MAX_VALUE, ComputerHatch.ParallelOutput)
                             .buildAndChain(RACKS, ofBlock(InsideBlock, 2), t -> {
                             }), HintColor.PURPLE))
                     .addElement('R', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParallelComputer.class)
                             .allow(ComputerHatch.Rack)
+                            .autoPlace(Integer.MAX_VALUE, ComputerHatch.Rack)
                             .buildAndChain(RACKS, ofBlock(InsideBlock, 2), t -> {
                             }), HintColor.MAGENTA))
                     .build();
@@ -204,21 +207,19 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Maintenance Hatch", "Front, top and bottom casings; exactly 1")
-                .addOtherStructurePart(ComputerHatch.Rack.getDescription(),
-                        StatCollector.translateToLocal("impact.structure.parallel_computer.rack_location"))
-                .addOtherStructurePart(ComputerHatch.ParallelOutput.getDescription(),
-                        StatCollector.translateToLocal("impact.structure.parallel_computer.output_location"))
-                .addOtherStructurePart(StatCollector.translateToLocal("tile.impact_inside_block.2.name"),
-                        StatCollector.translateToLocal("impact.structure.parallel_computer.empty_location"))
+                .addOtherStructurePart("Parallel Computer Rack",
+                        "Right inner column when facing the controller; replaces an Empty Rack Casing")
+                .addOtherStructurePart("Parallel Transmitter",
+                        "Left inner column when facing the controller; replaces an Empty Rack Casing")
+                .addOtherStructurePart("Empty Rack Casing",
+                        "Fills unused Parallel Computer Rack and Parallel Transmitter positions")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addSubChannel(GTStructureChannels.LENGTH, "Value: 1-15; rack layers = value + 1; total length = value + 3 (4-18 blocks)")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint(StatCollector.translateToLocalFormatted("impact.structure.parallel_computer.hatch_or_empty",
-                        ComputerHatch.ParallelOutput.getDescription()), HintColor.PURPLE)
-                .addStructureHint(StatCollector.translateToLocalFormatted("impact.structure.parallel_computer.hatch_or_empty",
-                        ComputerHatch.Rack.getDescription()), HintColor.MAGENTA)
+                .addStructureHint("Parallel Transmitter or Empty Rack Casing", HintColor.PURPLE)
+                .addStructureHint("Parallel Computer Rack or Empty Rack Casing", HintColor.MAGENTA)
                 .addStructureInfo("Minimum casings: 8 + 2 per rack layer (12-40); at most 7 + 2 per rack layer hatches replacing casings (11-39)")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance and power hatches from your inventory. Fills the right inner column with Parallel Computer Racks and the left with Parallel Transmitters.")
                 .toolTipFinisher();
     }
 
@@ -330,11 +331,13 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         casingCount = 0;
         boolean formed = checkPiece("front", 0, 2, 0);
         int[] ends = new int[2];
+        int checkedDepth = 0;
         // Each rack column may stop at its own casing, as in existing installations.
         for (int x = 0; x <= 1; x++) {
             for (int y = 0; y <= 1; y++) {
                 boolean terminated = false;
                 for (int depth = 1; depth <= MAX_RACK_LAYERS + 1; depth++) {
+                    checkedDepth = Math.max(checkedDepth, depth);
                     if (checkPiece("terminator", -x, y, -depth)) {
                         formed &= depth >= MIN_RACK_LAYERS + 1;
                         terminated = true;
@@ -347,7 +350,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
             }
         }
         formed &= ends[0] == ends[1];
-        for (int depth = 1; depth <= ends[1]; depth++) {
+        // Scan unfinished layers too, so automatic construction sees existing power hatches.
+        for (int depth = 1; depth <= checkedDepth; depth++) {
             formed &= checkPiece("shell", 0, 2, -depth);
         }
         return formed

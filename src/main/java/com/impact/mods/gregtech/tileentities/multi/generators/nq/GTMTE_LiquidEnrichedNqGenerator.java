@@ -74,6 +74,7 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition
                     .<GTMTE_LiquidEnrichedNqGenerator>builder()
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addShape("main", new String[][] {
                             { "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "   AA~AA   ", "   AAAAA   " },
                             { "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "   AAAAA   ", "  A     A  ", "  AAAAAAA  " },
@@ -91,6 +92,7 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
                             .buildAndChain(HATCHES_A, t -> t.casingCount++), HintColor.GREEN))
                     .addElement('B', ofBlockAnyMeta(IGlassBlock))
                     .addElement('C', ofBlock(Block_NqTether.INSTANCE, 0))
@@ -234,7 +236,7 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_BlockBase<GTMT
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 93")
                 .addOtherStructurePart(60, "I-Glass", "Any color; see the structure hologram")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available fuel inputs, energy inputs, dynamos, maintenance, muffler and output hatches in the generator casing.")
                 .toolTipFinisher();
     }
 

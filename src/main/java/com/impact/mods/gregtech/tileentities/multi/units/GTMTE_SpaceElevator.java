@@ -238,7 +238,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
                 .addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 4")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs an energy or laser input from your inventory in the elevator base.")
                 .toolTipFinisher();
     }
 
@@ -304,6 +304,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition
                     .<GTMTE_SpaceElevator>builder()
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addShape("main", new String[][] {
                             { " AAAAA ", " A   A ", " A   A ", " A   A ", " AAAAA ", " AAAAA " },
                             { "AAAAAAA", "AA   AA", "AA   AA", "AA   AA", "AAAAAAA", "AAAAAAA" },
@@ -315,6 +316,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
                     })
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_SpaceElevator.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput)
+                            .autoPlace(ImpactHatchElement.PowerInput)
                             .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('B', ofBlockAnyMeta(SpaceElevatorBlock))
                     .build();

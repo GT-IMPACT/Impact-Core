@@ -2,6 +2,7 @@ package com.impact.mods.gregtech;
 
 import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.common.te.TE_NqTether;
+import com.impact.common.te.TE_TheMill;
 import com.impact.common.te.TE_SpaceElevatorTether;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
@@ -23,6 +24,7 @@ import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Flo
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
+import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
 import com.impact.util.fluid.IMultiFluidTank;
 import com.mojang.authlib.GameProfile;
@@ -88,6 +90,8 @@ import space.impact.structures.Main;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
 import space.impact.structures.alignment.constructable.ChannelDataAccessor;
 import space.impact.structures.structure.IChannelDefinition;
+import space.impact.structures.structure.IStructureElement;
+import space.impact.structures.structure.StructureDefinition;
 import space.impact.structures.alignment.enumerable.ExtendedFacing;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.hint.HintMarkerKind;
@@ -120,18 +124,24 @@ public class ImpactConstructionChecks {
         checkCokeOven();
         checkTank();
         checkTankDirections(hints);
+        checkTankTiers(hints);
         checkNaquadahBeams();
         checkSpaceElevatorBeam();
         checkParallelComputerLength(hints);
+        checkAutomaticComputerHatches();
         checkCapacitors();
+        checkCapacitorTiers(hints);
         checkCapacitorGlassShell(hints);
         checkSurvival();
         assertEquals(5, new GTMTE_TheMill("mill-test").mInventory.length);
         assertEquals(2, new GTMTE_CokeOven("coke-test").mInventory.length);
         checkAllControllerHints(hints);
+        checkMillClearance(hints);
+        checkFuelCellCeramics();
         ImpactCasingChecks.checkLimits();
         checkGeneratorCasingLimits(hints);
         ImpactGlassChecks.check();
+        ImpactStructureRegressionChecks.check();
     }
 
     private static void checkGeneratorCasingLimits(HintRecorder hints) throws Exception {
@@ -212,9 +222,24 @@ public class ImpactConstructionChecks {
                 ImpactCasingChecks.checkTooltip(machine);
                 String description = String.join("\n", machine.getSecondaryDescription());
                 String structureHints = String.join("\n", machine.getStructureDescription(null));
+                if (!name.endsWith("GTMTE_TheMill")) {
+                    assertTrue(machine.getStructureDefinition().getChannelDefinitions().stream()
+                            .anyMatch(channel -> GTStructureChannels.HATCH.equals(channel.getChannel())), name + " missing hatch channel declaration");
+                }
                 for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
-                    assertTrue(description.contains(channel.getChannel() + ":"), name + " missing " + channel.getChannel());
-                    assertTrue(structureHints.contains(channel.getChannel() + ":"), name + " missing channel hint");
+                    assertTrue(description.contains("(" + channel.getChannel() + ")"), name + " missing " + channel.getChannel());
+                    assertTrue(structureHints.contains("(" + channel.getChannel() + ")"), name + " missing channel hint");
+                    String label = net.minecraft.util.EnumChatFormatting.AQUA
+                            + GTStructureChannels.getLabel(channel.getChannel()) + net.minecraft.util.EnumChatFormatting.DARK_GRAY;
+                    assertTrue(description.contains(label), name + " missing colored label");
+                    assertTrue(structureHints.contains(label), name + " missing colored hint label");
+                    String header = net.minecraft.util.StatCollector.translateToLocal("gt.tooltip.channels");
+                    assertTrue(description.indexOf(label) > description.indexOf(header), name + " channel outside section");
+                    assertFalse(String.join("\n", machine.getPrimaryDescription()).contains(header), name + " channels in primary tooltip");
+                    assertFalse(net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(description)
+                            .contains(GTStructureChannels.getDescription(channel.getChannel())), name + " generic channel description");
+                    assertEquals(1, Arrays.stream(machine.getSecondaryDescription())
+                            .filter(row -> row.contains(label)).count(), name + " repeated channel");
                 }
                 int orientations = 0;
                 for (ExtendedFacing facing : ExtendedFacing.VALUES) {
@@ -237,7 +262,9 @@ public class ImpactConstructionChecks {
                         boolean hasParameter = false;
                         for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
                             if (!GTStructureChannels.HATCH.equals(channel.getChannel())) {
-                                ChannelDataAccessor.setChannelData(named, channel.getChannel(), size);
+                                int value = machine instanceof GTMTE_LapPowerStation
+                                        && GTStructureChannels.TIER.equals(channel.getChannel()) ? 8 : size;
+                                ChannelDataAccessor.setChannelData(named, channel.getChannel(), value);
                                 hasParameter = true;
                             }
                         }
@@ -298,6 +325,107 @@ public class ImpactConstructionChecks {
             throw failure;
         }
         assertEquals(69, controllers.size());
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private static void checkFuelCellCeramics() {
+        Block originalCeramic = ItemRegistery.CeramicBlock;
+        ItemRegistery.CeramicBlock = Blocks.wool;
+        GT_MetaTileEntity_EnhancedMultiBlockBase[] machines = {
+                new GTMTE_SOFC_I("ceramic-i-test", 0),
+                new GTMTE_SOFC_II("ceramic-ii-test", 1),
+                new GTMTE_SOFC_III("ceramic-iii-test", 2)
+        };
+        for (int tier = 0; tier < machines.length; tier++) {
+            GT_MetaTileEntity_EnhancedMultiBlockBase machine = machines[tier];
+            IStructureElement ceramic = (IStructureElement) ((StructureDefinition) machine.getStructureDefinition())
+                    .getElements().get('E');
+            TestWorld world = new TestWorld();
+            assertFalse(ceramic.check(machine, world, 2, 64, 0), "Missing ceramic tier " + tier);
+            world.setBlock(2, 64, 0, Blocks.stained_hardened_clay, tier, 0);
+            assertFalse(ceramic.check(machine, world, 2, 64, 0), "Foreign material with matching metadata");
+            for (int metadata = 0; metadata < 16; metadata++) {
+                world.setBlock(2, 64, 0, ItemRegistery.CeramicBlock, metadata, 0);
+                assertEquals(metadata == tier, ceramic.check(machine, world, 2, 64, 0),
+                        "Ceramic tier " + tier + " metadata " + metadata);
+            }
+            world.setBlock(2, 64, 0, Blocks.air, 0, 0);
+            Source source = new Source(new ItemStack(ItemRegistery.CeramicBlock, 1, (tier + 1) % 3));
+            TestPlayer player = new TestPlayer(world);
+            space.impact.structures.structure.AutoPlaceEnvironment environment =
+                    space.impact.structures.structure.AutoPlaceEnvironment.fromLegacy(source, player, player::addChatMessage);
+            ItemStack trigger = new ItemStack(Items.stick);
+            assertEquals(IStructureElement.PlaceResult.REJECT,
+                    ceramic.survivalPlaceBlock(machine, world, 2, 64, 0, trigger, environment));
+            assertEquals(0, source.consumed);
+            assertTrue(world.isAirBlock(2, 64, 0));
+            source = new Source(new ItemStack(ItemRegistery.CeramicBlock, 1, tier));
+            environment = space.impact.structures.structure.AutoPlaceEnvironment.fromLegacy(source, player, player::addChatMessage);
+            assertEquals(IStructureElement.PlaceResult.ACCEPT,
+                    ceramic.survivalPlaceBlock(machine, world, 2, 64, 0, trigger, environment));
+            assertEquals(1, source.consumed);
+            assertTrue(ceramic.check(machine, world, 2, 64, 0));
+        }
+        ItemRegistery.CeramicBlock = originalCeramic;
+    }
+
+    private static void checkMillClearance(HintRecorder hints) {
+        for (ForgeDirection direction : new ForgeDirection[] {
+                ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST }) {
+            TE_TheMill rotor = new TE_TheMill() {
+                @Override
+                public void setFacing(short side) {
+                    facing = side;
+                }
+            };
+            rotor.xCoord = direction.offsetX;
+            rotor.yCoord = 64;
+            rotor.zCoord = direction.offsetZ;
+            rotor.facing = direction.ordinal();
+            TestWorld world = new TestWorld() {
+                @Override
+                public TileEntity getTileEntity(int x, int y, int z) {
+                    return x == rotor.xCoord && y == rotor.yCoord && z == rotor.zCoord
+                            && getBlock(x, y, z) == ItemRegistery.TheWind ? rotor : super.getTileEntity(x, y, z);
+                }
+            };
+            rotor.setWorldObj(world);
+            GTMTE_TheMill machine = new GTMTE_TheMill("mill-clearance-test");
+            TestTile tile = new TestTile(world, machine, direction);
+            world.putTile(0, 64, 0, tile);
+            ItemStack trigger = new ItemStack(Items.stick, 64);
+            machine.construct(trigger, false);
+            assertTrue(machine.checkMachine(tile, null), "Complete mill: " + direction);
+            assertTrue(rotor.checkArea(), "Clear rotor: " + direction);
+            world.isRemote = true;
+            int changes = world.changes;
+            hints.clear();
+            machine.construct(trigger, true);
+            assertEquals(changes, world.changes, "Showing clearance must not modify blocks");
+            world.isRemote = false;
+            Set<String> requiredAir = new HashSet<>();
+            hints.markers.forEach((position, kind) -> {
+                if (kind == HintMarkerKind.AIR) requiredAir.add(position);
+            });
+            for (int height = -7; height <= 7; height++) {
+                for (int width = -7; width <= 7; width++) {
+                    if (height == 0 && width == 0) continue;
+                    int x = rotor.xCoord + (direction.offsetZ != 0 ? width : 0);
+                    int y = rotor.yCoord + height;
+                    int z = rotor.zCoord + (direction.offsetX != 0 ? width : 0);
+                    world.setBlock(x, y, z, Blocks.bedrock, 0, 0);
+                    boolean rotorClear = rotor.checkArea();
+                    String position = TestWorld.key(x, y, z);
+                    assertEquals(!rotorClear, requiredAir.contains(position),
+                            "Rotor and hologram disagree at " + position + " facing " + direction);
+                    assertEquals(rotorClear, machine.checkMachine(tile, null),
+                            "Rotor and structure disagree at " + position + " facing " + direction);
+                    world.setBlock(x, y, z, Blocks.air, 0, 0);
+                }
+            }
+            assertEquals(120, requiredAir.size(), "Swept rotor area excludes its central block");
+            assertTrue(machine.checkMachine(tile, null), "Removing obstructions restores the mill");
+        }
     }
 
     private static void checkFlotationHints(HintRecorder hints) {
@@ -404,6 +532,165 @@ public class ImpactConstructionChecks {
         }
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private static void checkAutomaticComputerHatches() {
+        List<java.util.function.Supplier<MetaTileEntity>> factories = Arrays.asList(
+                () -> new GT_MetaTileEntity_Hatch_Maintenance("auto-maintenance", 1, "", new ITexture[0][][], false),
+                () -> new GT_MetaTileEntity_Hatch_Energy("auto-energy", 4, "", new ITexture[0][][]),
+                () -> new com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack("auto-rack", new String[0], new ITexture[0][][]),
+                () -> new com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output("auto-transmitter", 5, new String[0], new ITexture[0][][], 16),
+                () -> new GTMTE_ParallelHatch_Input("auto-parallel", 5, new String[0], new ITexture[0][][], 16),
+                () -> new GT_MetaTileEntity_Hatch_InputBus("auto-input", 4, "", new ITexture[0][][]),
+                () -> new gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus("auto-output", 4, "", new ITexture[0][][]),
+                () -> new gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input("auto-fluid-input", 4, "", new ITexture[0][][]),
+                () -> new GT_MetaTileEntity_Hatch_Output("auto-fluid-output", 4, "", new ITexture[0][][]),
+                () -> new GTMTE_TankHatch("auto-tank", 4, "", new ITexture[0][][])
+        );
+        MetaTileEntity[] templates = factories.stream().map(java.util.function.Supplier::get).toArray(MetaTileEntity[]::new);
+        gregtech.api.interfaces.metatileentity.IMetaTileEntity[] previous = new gregtech.api.interfaces.metatileentity.IMetaTileEntity[templates.length];
+        for (int index = 0; index < templates.length; index++) {
+            previous[index] = GregTech_API.METATILEENTITIES[31900 + index];
+            GregTech_API.METATILEENTITIES[31900 + index] = templates[index];
+        }
+        Block machineBlock = new Block(Material.iron) {
+        };
+        Block.blockRegistry.addObject(3008, "impact_test:automatic_hatches", machineBlock);
+        net.minecraft.item.Item machineItem = new gregtech.common.blocks.GT_Item_Machines(machineBlock) {
+            @Override
+            public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
+                    int side, float hitX, float hitY, float hitZ) {
+                MetaTileEntity hatch = factories.get(stack.getItemDamage() - 31900).get();
+                ((TestWorld) world).putTile(x, y, z, new TestTile(world, hatch, ForgeDirection.NORTH));
+                stack.stackSize--;
+                return true;
+            }
+        };
+        net.minecraft.item.Item.itemRegistry.addObject(3008, "impact_test:automatic_hatches", machineItem);
+        try {
+            for (ForgeDirection direction : new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST }) {
+                TestWorld world = new TestWorld();
+                ParallelComputer computer = new ParallelComputer();
+                TestTile tile = new TestTile(world, computer, direction);
+                world.putTile(0, 64, 0, tile);
+                Source source = new Source(new ItemStack(machineItem, 2, 31900), new ItemStack(machineItem, 2, 31901),
+                        new ItemStack(machineItem, 8, 31902), new ItemStack(machineItem, 8, 31903),
+                        new ItemStack(ImpactCasings.COMPUTER_CASING.getBlock(), 128, ImpactCasings.COMPUTER_CASING.getMetadata()),
+                        new ItemStack(ItemRegistery.InsideBlock, 16, 2));
+                TestPlayer player = new TestPlayer(world);
+                ItemStack trigger = new ItemStack(Items.stick);
+                ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.HATCH, 1);
+                ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(source, player);
+                for (int attempt = 0; attempt < 100; attempt++) {
+                    if (computer.survivalConstruct(trigger, 8, environment) < 0) break;
+                }
+                assertTrue(computer.recheck(), direction + " consumed=" + source.consumed
+                        + " hatches=" + computer.mMaintenanceHatches.size() + "/" + computer.mEnergyHatches.size()
+                        + "/" + computer.sComputerRack.size() + "/" + computer.sParallHatchesOut.size()
+                        + " tiles=" + world.tiles.entrySet().stream().map(entry -> entry.getKey() + "=" + entry.getValue().getMetaTileEntity().getClass().getSimpleName()).collect(java.util.stream.Collectors.toList()));
+                assertEquals(1, computer.mMaintenanceHatches.size());
+                assertEquals(1, computer.mEnergyHatches.size());
+                assertEquals(4, computer.sComputerRack.size());
+                assertEquals(4, computer.sParallHatchesOut.size());
+                int consumed = source.consumed;
+                computer.survivalConstruct(trigger, 8, environment);
+                assertEquals(consumed, source.consumed, "Finished computer must keep its hatches");
+            }
+            TestWorld world = new TestWorld();
+            Assembler assembler = new Assembler();
+            controller(world, assembler);
+            Source source = new Source(new ItemStack(machineItem, 2, 31901), new ItemStack(machineItem, 2, 31900),
+                    new ItemStack(machineItem, 2, 31904), new ItemStack(machineItem, 2, 31905), new ItemStack(machineItem, 2, 31906),
+                    new ItemStack(ImpactCasings.ASSEMBLER_CASING.getBlock(), 128, ImpactCasings.ASSEMBLER_CASING.getMetadata()),
+                    new ItemStack(ItemRegistery.IGlassBlock, 32));
+            ItemStack trigger = new ItemStack(Items.stick);
+            ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.HATCH, 1);
+            ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(source, new TestPlayer(world));
+            for (int attempt = 0; attempt < 150; attempt++) {
+                if (assembler.survivalConstruct(trigger, 1, environment) < 0) break;
+            }
+            assertTrue(assembler.recheck(), "Assembler must finish with a one-block construction budget");
+            assertEquals(1, assembler.mMaintenanceHatches.size());
+            assertEquals(1, assembler.mEnergyHatches.size());
+            assertEquals(1, assembler.mInputBusses.size());
+            assertEquals(1, assembler.mOutputBusses.size());
+            assertEquals(1, assembler.sParallHatchesIn.size(), "Incomplete scans must not request duplicate parallel hatches");
+            Ic2Items.reinforcedGlass = new ItemStack(Blocks.glass);
+            GT_MetaTileEntity_EnhancedMultiBlockBase[] fluidMachines = {
+                    new GTMTE_SOFC_I("fluid-port-sofc-i", 0), new GTMTE_SOFC_II("fluid-port-sofc-ii", 1),
+                    new GTMTE_SOFC_III("fluid-port-sofc-iii", 2),
+                    new com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine("fluid-port-turbine")
+            };
+            for (int index = 0; index < fluidMachines.length; index++) {
+                GT_MetaTileEntity_EnhancedMultiBlockBase machine = fluidMachines[index];
+                TestWorld portWorld = new TestWorld();
+                controller(portWorld, machine);
+                machine.mMaintenanceHatches.add(new GT_MetaTileEntity_Hatch_Maintenance("fluid-port-maintenance", 1, "", new ITexture[0][][], false));
+                if (index < 3) {
+                    machine.mInputHatches.add(new gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input("fuel-input", 4, "", new ITexture[0][][]));
+                    machine.mInputHatches.add(new gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input("oxygen-input", 4, "", new ITexture[0][][]));
+                }
+                ItemStack wrongBus = new ItemStack(machineItem, 1, index < 3 ? 31906 : 31905);
+                ItemStack fluidPort = new ItemStack(machineItem, 1, index < 3 ? 31908 : 31907);
+                Source portSource = new Source(wrongBus, fluidPort);
+                TestPlayer player = new TestPlayer(portWorld);
+                IStructureElement element = (IStructureElement) ((StructureDefinition) machine.getStructureDefinition()).getElements().get('C');
+                assertEquals(IStructureElement.PlaceResult.ACCEPT_STOP, element.survivalPlaceBlock(machine, portWorld,
+                        20, 64, 20, trigger, space.impact.structures.structure.AutoPlaceEnvironment.fromLegacy(portSource, player, player::addChatMessage)));
+                assertEquals(1, wrongBus.stackSize, "A fluid machine must not consume an item bus instead of a fluid hatch");
+                assertEquals(0, fluidPort.stackSize);
+            }
+            for (boolean multi : new boolean[] { false, true }) {
+                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                    for (int budget : new int[] { 1, 64 }) {
+                        TestWorld tankWorld = new TestWorld();
+                        GT_MetaTileEntity_EnhancedMultiBlockBase<?> tank = multi
+                                ? new GTMTE_MultiTank("auto-fluid-multi-tank") : new GTMTE_SingleTank("auto-fluid-single-tank");
+                        TestTile tile = new TestTile(tankWorld, tank, direction);
+                        tankWorld.putTile(0, 64, 0, tile);
+                        ItemStack itemInput = new ItemStack(machineItem, 1, 31905);
+                        ItemStack itemOutput = new ItemStack(machineItem, 1, 31906);
+                        ItemStack tankAccess = new ItemStack(machineItem, 200, 31909);
+                        Source tankSource = new Source(itemInput, itemOutput, tankAccess,
+                                new ItemStack(machineItem, 1, 31907), new ItemStack(machineItem, 1, 31908),
+                                new ItemStack(Casings.CHEMICALLY_INERT.getBlock(), 300, Casings.CHEMICALLY_INERT.getMetadata()),
+                                new ItemStack(ItemRegistery.IGlassBlock, 300), new ItemStack(ItemRegistery.FluidTankBlock, 63));
+                        ISurvivalBuildEnvironment tankEnvironment = ISurvivalBuildEnvironment.create(tankSource, new TestPlayer(tankWorld));
+                        for (int step = 0; step < 400 && !tank.checkMachine(tile, null); step++) {
+                            ((ISurvivalConstructable) tank).survivalConstruct(trigger, budget, tankEnvironment);
+                        }
+                        assertTrue(tank.checkMachine(tile, null), "Automatic tank " + direction + " budget=" + budget);
+                        assertEquals(1, tank.mInputHatches.size());
+                        assertEquals(1, tank.mOutputHatches.size());
+                        assertTrue(tank.mInputBusses.isEmpty());
+                        assertTrue(tank.mOutputBusses.isEmpty());
+                        assertEquals(1, itemInput.stackSize);
+                        assertEquals(1, itemOutput.stackSize);
+                        assertEquals(199, tankAccess.stackSize, "Exactly one tank access hatch is installed");
+                        assertEquals(1L, tankWorld.tiles.values().stream()
+                                .filter(value -> value.getMetaTileEntity() instanceof GTMTE_TankHatch).count());
+                        String glass = tankWorld.blocks.entrySet().stream()
+                                .filter(entry -> entry.getValue() == ItemRegistery.IGlassBlock)
+                                .filter(entry -> {
+                                    int[] local = new int[3];
+                                    // A middle side-wall slot, not one of the fixed glass corners.
+                                    tank.getExtendedFacing().getWorldOffset(new int[] { multi ? 2 : 1, 0, 1 }, local);
+                                    return entry.getKey().equals(TestWorld.key(local[0], 64 + local[1], local[2]));
+                                }).map(Map.Entry::getKey).findFirst().get();
+                        int glassMetadata = tankWorld.metadata.get(glass);
+                        putHatch(tankWorld, glass, new GTMTE_TankHatch("second-tank-access", 4, "", new ITexture[0][][]));
+                        assertFalse(tank.checkMachine(tile, null), "A manually installed second tank hatch must be rejected");
+                        String[] parts = glass.split(":");
+                        tankWorld.setBlock(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
+                                ItemRegistery.IGlassBlock, glassMetadata, 0);
+                        assertTrue(tank.checkMachine(tile, null), "Removing the second hatch restores the tank");
+                    }
+                }
+            }
+        } finally {
+            for (int index = 0; index < previous.length; index++) GregTech_API.METATILEENTITIES[31900 + index] = previous[index];
+        }
+    }
+
     private static class Assembler extends GTMTE_Assembler {
         Assembler() {
             super("assembler-test");
@@ -421,6 +708,7 @@ public class ImpactConstructionChecks {
         final Map<String, Block> blocks = new HashMap<>();
         final Map<String, Integer> metadata = new HashMap<>();
         final Map<String, HintColor> frames = new HashMap<>();
+        final Map<String, HintMarkerKind> markers = new HashMap<>();
 
         void clear() {
             positions.clear();
@@ -428,6 +716,7 @@ public class ImpactConstructionChecks {
             blocks.clear();
             metadata.clear();
             frames.clear();
+            markers.clear();
         }
 
         @Override
@@ -441,6 +730,7 @@ public class ImpactConstructionChecks {
         @Override
         public void hintMarker(World world, int x, int y, int z, HintMarkerKind kind) {
             positions.add(TestWorld.key(x, y, z));
+            markers.put(TestWorld.key(x, y, z), kind);
         }
 
         @Override
@@ -543,6 +833,89 @@ public class ImpactConstructionChecks {
         assertEquals(96_000_000, tank.getMultiFluidHandler().getCapacity());
         world.blocks.put(cell, Blocks.bedrock);
         assertFalse(tank.checkMachine(tile, null));
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private static void checkTankTiers(HintRecorder hints) {
+        for (boolean multi : new boolean[] { false, true }) {
+            int maximum = multi ? 8 : 6;
+            int storageCount = multi ? 63 : 5;
+            for (int tier = 1; tier <= maximum; tier++) {
+                for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                    for (boolean survival : new boolean[] { false, true }) {
+                        TestWorld world = new TestWorld();
+                        GT_MetaTileEntity_EnhancedMultiBlockBase tank = multi
+                                ? new GTMTE_MultiTank("tier-multi-tank") : new GTMTE_SingleTank("tier-single-tank");
+                        TestTile tile = new TestTile(world, tank, direction);
+                        world.putTile(0, 64, 0, tile);
+                        IChannelDefinition channel = (IChannelDefinition) tank.getStructureDefinition()
+                                .getChannelDefinitions().stream()
+                                .filter(value -> GTStructureChannels.TIER.equals(((IChannelDefinition) value).getChannel()))
+                                .findFirst().get();
+                        assertEquals(1, channel.getMinimumValue());
+                        assertEquals(maximum, channel.getMaximumValue());
+                        ItemStack trigger = new ItemStack(Items.stick, 64);
+                        ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.TIER, tier);
+                        world.isRemote = true;
+                        hints.clear();
+                        tank.construct(trigger, true);
+                        List<String> cells = new ArrayList<>();
+                        for (Map.Entry<String, Block> hint : hints.blocks.entrySet()) {
+                            if (hint.getValue() == ItemRegistery.FluidTankBlock) {
+                                cells.add(hint.getKey());
+                                assertEquals(tier - 1, hints.metadata.get(hint.getKey()).intValue());
+                            }
+                        }
+                        assertEquals(storageCount, cells.size());
+                        assertEquals(1, world.blocks.size(), "Hologram must be read-only");
+                        world.isRemote = false;
+                        if (survival) {
+                            int otherTier = tier == 1 ? 1 : 0;
+                            ItemStack wrong = new ItemStack(ItemRegistery.FluidTankBlock, storageCount, otherTier);
+                            ItemStack selected = new ItemStack(ItemRegistery.FluidTankBlock, storageCount, tier - 1);
+                            Source source = new Source(wrong, selected,
+                                    new ItemStack(Casings.CHEMICALLY_INERT.getBlock(), 300,
+                                            Casings.CHEMICALLY_INERT.getMetadata()),
+                                    new ItemStack(ItemRegistery.IGlassBlock, 300));
+                            ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(source, new TestPlayer(world));
+                            for (int step = 0; step < 40 && !tank.checkMachine(tile, null); step++) {
+                                ((ISurvivalConstructable) tank).survivalConstruct(trigger, 16, environment);
+                            }
+                            assertEquals(storageCount, wrong.stackSize, "Do not consume a different storage tier");
+                            assertEquals(0, selected.stackSize);
+                        } else {
+                            tank.construct(trigger, false);
+                        }
+                        assertTrue(tank.checkMachine(tile, null), "Tank tier=" + tier + " facing=" + direction);
+                        for (String cell : cells) {
+                            assertSame(ItemRegistery.FluidTankBlock, world.blocks.get(cell));
+                            assertEquals(tier - 1, world.metadata.get(cell).intValue());
+                        }
+                        assertTrue(((IMultiFluidTank) tank).getMultiFluidHandler().getCapacity() > 0);
+                        IStructureElement storage = (IStructureElement) ((StructureDefinition) tank.getStructureDefinition())
+                                .getElements().get('T');
+                        Source wrongOnly = new Source(new ItemStack(ItemRegistery.FluidTankBlock, 1, tier == 1 ? 1 : 0));
+                        TestPlayer player = new TestPlayer(world);
+                        assertEquals(IStructureElement.PlaceResult.REJECT, storage.survivalPlaceBlock(tank, world,
+                                100, 64, 100, trigger, space.impact.structures.structure.AutoPlaceEnvironment
+                                        .fromLegacy(wrongOnly, player, player::addChatMessage)));
+                        assertEquals(0, wrongOnly.consumed);
+                        assertTrue(world.isAirBlock(100, 64, 100));
+                        world.metadata.put(cells.get(0), tier == 1 ? 1 : 0);
+                        assertTrue(tank.checkMachine(tile, null), "Mixed installed storage tiers remain valid");
+                        int changes = world.changes;
+                        tank.construct(trigger, false);
+                        assertEquals(changes, world.changes, "Construction preserves installed storage blocks");
+                        if (tier == maximum && direction == ForgeDirection.NORTH && !survival) {
+                            for (int invalid = maximum; invalid < 16; invalid++) {
+                                world.metadata.put(cells.get(0), invalid);
+                                assertFalse(tank.checkMachine(tile, null), "Unsupported tank storage metadata " + invalid);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private static void checkTankDirections(HintRecorder hints) {
@@ -788,6 +1161,74 @@ public class ImpactConstructionChecks {
             assertEquals(expected - GTMTE_LapPowerStation.L_UEV + GTMTE_LapPowerStation.L_IV, machine.capacity);
             world.blocks.put(cell, Blocks.bedrock);
             assertFalse(machine.checkMachine(tile, null));
+        }
+    }
+
+    private static void checkCapacitorTiers(HintRecorder hints) {
+        long[] capacities = { GTMTE_LapPowerStation.L_IV, GTMTE_LapPowerStation.L_LuV,
+                GTMTE_LapPowerStation.L_ZPM, GTMTE_LapPowerStation.L_UV, 0,
+                GTMTE_LapPowerStation.E_IV, GTMTE_LapPowerStation.L_UHV, GTMTE_LapPowerStation.L_UEV };
+        for (int value : new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 64 }) {
+            int tier = Math.min(8, value);
+            for (boolean survival : new boolean[] { false, true }) {
+                TestWorld world = new TestWorld();
+                GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("capacitor-tier");
+                TestTile tile = controller(world, machine);
+                ItemStack trigger = new ItemStack(Items.stick, 64);
+                ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.HEIGHT, 2);
+                ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.TIER, value);
+                world.isRemote = true;
+                hints.clear();
+                machine.construct(trigger, true);
+                Set<String> capacitors = new HashSet<>();
+                hints.blocks.forEach((position, block) -> {
+                    if (block == ItemRegistery.lscLapotronicEnergyUnit) {
+                        capacitors.add(position);
+                        assertEquals(tier, hints.metadata.get(position).intValue());
+                    }
+                });
+                assertEquals(18, capacitors.size(), "Height is independent of tier and master size");
+                assertEquals(0, machine.capacity, "Holograms must not count stored energy");
+                world.isRemote = false;
+                IStructureElement<GTMTE_LapPowerStation> element =
+                        ((StructureDefinition<GTMTE_LapPowerStation>) machine.getStructureDefinition()).getElements().get('E');
+                IStructureElement.BlocksToPlace candidates = element.getBlocksToPlace(machine, world, 0, 66, 1, trigger, null);
+                for (int metadata = 1; metadata <= 8; metadata++) {
+                    assertEquals(metadata == tier, candidates.getPredicate().test(
+                            new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 1, metadata)));
+                }
+                assertFalse(candidates.getPredicate().test(new ItemStack(ItemRegistery.IGlassBlock)));
+                if (survival) {
+                    ItemStack wrong = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, tier == 1 ? 8 : 1);
+                    ItemStack selected = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, tier);
+                    Source source = new Source(
+                            new ItemStack(ImpactCasings.LSCC_CASING.getBlock(), 49, ImpactCasings.LSCC_CASING.getMetadata()),
+                            new ItemStack(ItemRegistery.IGlassBlock, 57), wrong, selected);
+                    ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(source, new TestPlayer(world));
+                    for (int pass = 0; pass < 100 && !machine.checkMachine(tile, null); pass++) {
+                        int consumed = source.consumed;
+                        int built = machine.survivalConstruct(trigger, 7, environment);
+                        assertTrue(built >= 0 && built <= 7);
+                        assertEquals(built, source.consumed - consumed);
+                    }
+                    assertEquals(18, wrong.stackSize, "Do not substitute another capacitor tier");
+                    assertEquals(0, selected.stackSize);
+                } else {
+                    machine.construct(trigger, false);
+                }
+                for (String position : capacitors) {
+                    assertSame(ItemRegistery.lscLapotronicEnergyUnit, world.blocks.get(position));
+                    assertEquals(tier, world.metadata.get(position).intValue());
+                }
+                assertTrue(machine.checkMachine(tile, null));
+                assertEquals(18 * capacities[tier - 1], machine.capacity);
+                String existing = capacitors.iterator().next();
+                int otherTier = tier == 1 ? 8 : 1;
+                world.metadata.put(existing, otherTier);
+                assertTrue(machine.checkMachine(tile, null), "Mixed installed capacitor tiers remain valid");
+                machine.construct(trigger, false);
+                assertEquals(otherTier, world.metadata.get(existing).intValue(), "Keep existing capacitors");
+            }
         }
     }
 

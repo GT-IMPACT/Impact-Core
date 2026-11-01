@@ -100,7 +100,7 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
                 .addRequirements(SHELL, "Either side of the controller")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 3")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the required regular Energy Hatch, plus an available output hatch and additional power connection.")
                 .toolTipFinisher();
     }
 
@@ -112,6 +112,7 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
                     .addShape("main", new String[][] { { "C C", "C~C", "C C" } })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Filler.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }

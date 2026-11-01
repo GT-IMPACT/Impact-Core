@@ -93,8 +93,8 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
                 .addController("See the structure hologram")
                 .beginStructureBlock(9, 12, 9, false)
                 .addCasingInfoExactly(CASING, 262, false)
+                .addStructureInfo("Keep the area swept by the rotor clear (13 blocks across). Air markers show the required space.")
                 .addStructureHint("The Mill Rotor", HintColor.GREEN)
-                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 
@@ -105,16 +105,16 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
         if (definition == null) {
             definition = StructureDefinition.<GTMTE_TheMill>builder()
                     .addShape("main", new String[][] {
-                            { "------------", "------------", "------------", "------------", "------------", "------A-----", "------------", "------------", "------------", "------------", "------------", "------------", "            ", "            " },
-                            { "            ", "            ", "            ", "            ", "     CCC    ", "     C~C    ", "     CCC    ", "            ", "            ", "            ", "     CCC    ", "    CCCCC   ", "    CC CC   ", "    CC CC   " },
-                            { "            ", "            ", "            ", "     CCC    ", "    C   C   ", "    C   C   ", "    C   C   ", "     CCC    ", "     CCC    ", "     CCC    ", "   CC   CC  ", "   C     C  ", "   C     C  ", "   C     C  " },
-                            { "            ", "            ", "     CCC    ", "    C   C   ", "   C     C  ", "   C     C  ", "   C     C  ", "    CCCCC   ", "    C   C   ", "    C   C   ", "   C     C  ", "  C       C ", "  C       C ", "  C       C " },
-                            { "            ", "            ", "    CCCCC   ", "   C     C  ", "  C       C ", "  C       C ", "  C       C ", "   CCCCCCC  ", "   C     C  ", "   C     C  ", "  C       C ", "  C       C ", "  C       C ", "  C       C " },
-                            { "            ", "            ", "    CCCCC   ", "   C     C  ", "  C       C ", "  C       C ", "  C       C ", "   CCCCCCC  ", "   C     C  ", "   C     C  ", "  C       C ", "  C       C ", "  C       C ", "  C       C " },
-                            { "            ", "            ", "    CCCCC   ", "   C     C  ", "  C       C ", "  C       C ", "  C       C ", "   CCCCCCC  ", "   C     C  ", "   C     C  ", "  C       C ", "  C       C ", "  C       C ", "  C       C " },
-                            { "            ", "            ", "     CCC    ", "    C   C   ", "   C     C  ", "   C     C  ", "   C     C  ", "    CC CC   ", "    C   C   ", "    C   C   ", "   C     C  ", "  C       C ", "  C       C ", "  C       C " },
-                            { "            ", "            ", "            ", "     CCC    ", "    C   C   ", "    C   C   ", "    C   C   ", "     CCC    ", "     CCC    ", "     CCC    ", "   CC C CC  ", "   C  C  C  ", "   C  C  C  ", "   C  C  C  " },
-                            { "            ", "            ", "            ", "            ", "     CCC    ", "     CCC    ", "     CCC    ", "            ", "            ", "            ", "     CCC    ", "    CCCCC   ", "    CCCCC   ", "    CCCCC   " }
+                            { "     ---     ", "   -------   ", "  ---------  ", " ----------- ", " ----------- ", "-------------", "------A------", "-------------", " ----------- ", " ----------- ", "  ---------  ", "   -------   ", "     ---     ", "             ", "             " },
+                            { "             ", "             ", "             ", "             ", "             ", "     CCC     ", "     C~C     ", "     CCC     ", "             ", "             ", "             ", "     CCC     ", "    CCCCC    ", "    CC CC    ", "    CC CC    " },
+                            { "             ", "             ", "             ", "             ", "     CCC     ", "    C   C    ", "    C   C    ", "    C   C    ", "     CCC     ", "     CCC     ", "     CCC     ", "   CC   CC   ", "   C     C   ", "   C     C   ", "   C     C   " },
+                            { "             ", "             ", "             ", "     CCC     ", "    C   C    ", "   C     C   ", "   C     C   ", "   C     C   ", "    CCCCC    ", "    C   C    ", "    C   C    ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  " },
+                            { "             ", "             ", "             ", "    CCCCC    ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  ", "   CCCCCCC   ", "   C     C   ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  ", "  C       C  " },
+                            { "             ", "             ", "             ", "    CCCCC    ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  ", "   CCCCCCC   ", "   C     C   ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  ", "  C       C  " },
+                            { "             ", "             ", "             ", "    CCCCC    ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  ", "   CCCCCCC   ", "   C     C   ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  ", "  C       C  " },
+                            { "             ", "             ", "             ", "     CCC     ", "    C   C    ", "   C     C   ", "   C     C   ", "   C     C   ", "    CC CC    ", "    C   C    ", "    C   C    ", "   C     C   ", "  C       C  ", "  C       C  ", "  C       C  " },
+                            { "             ", "             ", "             ", "             ", "     CCC     ", "    C   C    ", "    C   C    ", "    C   C    ", "     CCC     ", "     CCC     ", "     CCC     ", "   CC C CC   ", "   C  C  C   ", "   C  C  C   ", "   C  C  C   " },
+                            { "             ", "             ", "             ", "             ", "             ", "     CCC     ", "     CCC     ", "     CCC     ", "             ", "             ", "             ", "     CCC     ", "    CCCCC    ", "    CCCCC    ", "    CCCCC    " }
                     })
                     .addElement('A', rotorElement())
                     .addElement('C', CASING.asElement())
@@ -250,7 +250,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
     @Override
     public boolean machineStructure(IGregTechTileEntity gt) {
-        if (!checkPiece(6, 5, 1)) {
+        if (!checkPiece(6, 6, 1)) {
             return false;
         }
         int[] offset = new int[3];
@@ -301,13 +301,13 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        buildPiece(itemStack, b, 6, 5, 1);
+        buildPiece(itemStack, b, 6, 6, 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack trigger, int budget,
             ISurvivalBuildEnvironment environment) {
-        return survivalBuildPiece("main", trigger, 6, 5, 1, budget, environment);
+        return survivalBuildPiece("main", trigger, 6, 6, 1, budget, environment);
     }
 
     @Override

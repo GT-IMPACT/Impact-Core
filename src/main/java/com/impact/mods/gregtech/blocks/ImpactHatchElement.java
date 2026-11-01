@@ -23,6 +23,38 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import net.minecraft.util.StatCollector;
 
 public enum ImpactHatchElement implements IHatchElement {
+    PowerInput("gt.tooltip.hatch.energy") {
+        @Override
+        public boolean matches(IMetaTileEntity tile) {
+            return gregtech.api.enums.HatchElement.Energy.matches(tile) || LaserInput.matches(tile);
+        }
+
+        @Override
+        public int count(GT_MetaTileEntity_MultiBlockBase machine) {
+            return HatchCounts.energyHatches(machine);
+        }
+
+        @Override
+        public boolean add(GT_MetaTileEntity_MultiBlockBase machine, IGregTechTileEntity tile, int texture) {
+            return machine.addEnergyInputToMachineList(tile, texture);
+        }
+    },
+    PowerOutput("gt.tooltip.hatch.dynamo") {
+        @Override
+        public boolean matches(IMetaTileEntity tile) {
+            return Dynamo.matches(tile) || LaserOutput.matches(tile);
+        }
+
+        @Override
+        public int count(GT_MetaTileEntity_MultiBlockBase machine) {
+            return HatchCounts.dynamoHatches(machine);
+        }
+
+        @Override
+        public boolean add(GT_MetaTileEntity_MultiBlockBase machine, IGregTechTileEntity tile, int texture) {
+            return machine.addDynamoToMachineList(tile, texture);
+        }
+    },
     FluidOutput("gt.tooltip.hatch.output_hatch") {
         @Override
         public boolean matches(IMetaTileEntity tile) {

@@ -57,7 +57,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 28).build();
     private static final StructureRequirements OUTPUT = StructureRequirements.builder(CASING, 0)
-            .atLeast(HatchElement.Output).build();
+            .atLeast(HatchElement.OutputBus).build();
     private static IStructureDefinition<GTMTE_MPContainment> definition;
     public int mMPStable = 0;
     public ArrayList<Vector3ic> vectors = new ArrayList<>();
@@ -85,10 +85,11 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                     })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MPContainment.class)
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput,
-                                    HatchElement.Input)
+                                    ImpactHatchElement.InputBus)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Maintenance, ImpactHatchElement.InputBus)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
-                    .addElement('G', withHint(ofBlockAnyMeta(ItemRegistery.IGlassBlock), HintColor.CYAN))
+                    .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
                     .addElement('T', withHint(ofBlock(ItemRegistery.MPTransducer, 0), HintColor.PURPLE))
                     .addElement('O',
                             GTStructureUtility.buildHatchAdder(GTMTE_MPContainment.class).hint(HintColor.ORANGE)
@@ -147,15 +148,15 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 .addOtherStructurePart("Energy Hatch", "Any casing")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Bus", "Any casing")
-                .addOtherStructurePart("Output Bus", "Any casing")
+                .addOtherStructurePart("Output Bus", "Exactly 1 at the orange marker")
                 .addRequirements(SHELL, "Any casing position")
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 16)
-                .addStructureHint("Output Hatch", HintColor.ORANGE)
-                .addStructureHint("Any I-Glass", HintColor.CYAN)
+                .addStructureHint("Output Bus", HintColor.ORANGE)
+                .addOtherStructurePart("I-Glass", "Any color; see the structure hologram")
                 .addStructureHint("Matrix Transducer", HintColor.PURPLE)
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 28")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the item output bus at the orange marker, plus an input bus, maintenance and energy hatches in the casing.")
                 .toolTipFinisher();
     }
 

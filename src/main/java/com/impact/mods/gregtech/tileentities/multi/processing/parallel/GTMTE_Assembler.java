@@ -62,7 +62,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 30")
                 .addOtherStructurePart(9, "I-Glass", "Any color; see the structure hologram")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
                 .toolTipFinisher();
     }
 
@@ -80,6 +80,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Assembler.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }

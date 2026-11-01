@@ -58,6 +58,7 @@ public class GTMTE_Farm
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Farm.class)
                             .allow(HatchElement.Maintenance, HatchElement.Input, HatchElement.Output,
                                     HatchElement.Energy)
+                            .autoPlace(HatchElement.Maintenance, HatchElement.Input, HatchElement.Output, HatchElement.Energy)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('C', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
@@ -115,7 +116,7 @@ public class GTMTE_Farm
                 .addOtherStructurePart("Reinforced Glass", "At the center of the Top layer")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 15")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input and output hatches from your inventory in the farm casing.")
                 .toolTipFinisher();
     }
 

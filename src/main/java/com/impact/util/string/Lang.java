@@ -22,7 +22,7 @@ public enum Lang {
 	hatch_dynamo("Dynamo Hatch"),
 	hatch_muffler("Muffler Hatch"),
 	hatch_maintenance("Maintenance Hatch"),
-	hatch_io("I/O Hatch"),
+	hatch_io("Input and Output Hatch"),
 	hatch_nuclear("Nuclear Rod Hatch"),
 	hatch_bus_in("Input Bus"),
 	hatch_in("Input Hatch"),

@@ -49,7 +49,7 @@ public class GTMTE_NuclearReactorII extends GTMTE_NuclearReactorBase<GTMTE_Nucle
                     .addElement('B', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('r',
                             withHint(new HatchElementBuilder<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorII>>()
-                                    .allow(ReactorHatch.Rod).buildAndChain(shellRequirements(), machine -> machine.casingCount++), HintColor.GREEN))
+                                    .allow(ReactorHatch.Rod).autoPlace(Integer.MAX_VALUE, ReactorHatch.Rod).buildAndChain(shellRequirements(), machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;

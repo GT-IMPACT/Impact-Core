@@ -121,7 +121,12 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
         boolean formed = super.checkMachine(thisController, guiSlotItem);
         if (!formed) {
-            clearHatches();
+            // Keep the detected hatches for construction limits, but release live parallel connections.
+            for (GTMTE_ParallelHatch_Input hatch : sParallHatchesIn) {
+                hatch.releaseController(this);
+            }
+            isConnectParallel = false;
+            setParallel(1);
         }
         return formed;
     }
@@ -136,6 +141,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
         if (iAm.isServerSide() && aTick % 100 == 0) {
+            if (!mMachine) {
+                isConnectParallel = false;
+                setParallel(1);
+                return;
+            }
             int maxParallel = 1;
             boolean isDebug = false;
 

@@ -72,6 +72,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition
                     .<GTMTE_HyperNaquadahGenerator>builder()
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addShape("main", new String[][] {
                             { "               ", "      CCC      ", "    CC   CC    ", "   C       C   ", "  C         C  ", "  C         C  ", " C           C ", " C           C ", " C           C ", "  C         C  ", "  C         C  ", "   C       C   ", "    CC   CC    ", "      C~C      ", "               " },
                             { "      CCC      ", "    CCBBBCC    ", "   CBBAAABBC   ", "  CBAA   AABC  ", " CBA       ABC ", " CBA       ABC ", "CBA         ABC", "CBA         ABC", "CBA         ABC", " CBA       ABC ", " CBA       ABC ", "  CBAA   AABC  ", "   CBBAAABBC   ", "    CCBBBCC    ", "      CCC      " },
@@ -83,6 +84,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
                             .buildAndChain(HATCHES_C, t -> t.casingCount++), HintColor.GREEN))
                     .build();
         }
@@ -221,7 +223,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
                 .addOtherStructurePart("Tether Core", "32x, see the structure hologram")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 63")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available fuel inputs, energy inputs, dynamos, maintenance, muffler and output hatches around the generator ring.")
                 .toolTipFinisher();
     }
 

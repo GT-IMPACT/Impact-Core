@@ -19,6 +19,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -238,18 +239,38 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                     .addElement('F', Casings.MAGNETIC_COIL.asElement())
                     .addElement('H', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(ImpactHatchElement.Dynamo, ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 7)
                             .buildAndChain(HATCHES_H), HintColor.YELLOW))
                     .addElement('I', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Input)
+                            .autoPlace(HatchElement.Input)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
                             .buildAndChain(HATCHES_I), HintColor.BLUE))
                     .addElement('J', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Input)
+                            .autoPlace(HatchElement.Input)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
                             .buildAndChain(HATCHES_J), HintColor.BLUE))
                     .addElement('K', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Output)
+                            .autoPlace(HatchElement.Output)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
                             .buildAndChain(HATCHES_K), HintColor.ORANGE))
                     .addElement('L', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Output)
+                            .autoPlace(HatchElement.Output)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
                             .buildAndChain(HATCHES_L), HintColor.ORANGE))
                     .build();
 
@@ -283,7 +304,7 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                 .addStructureHint("Input Bus or Radiation Proof Casing", HintColor.BLUE)
                 .addStructureHint("Dynamo Hatch or Radiation Proof Casing", HintColor.YELLOW)
                 .addStructureHint("Output Bus or Radiation Proof Casing", HintColor.ORANGE)
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs a ZPM-or-better dynamo and UV-or-better input and output hatches at their marked positions.")
                 .toolTipFinisher();
     }
 
@@ -349,6 +370,8 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                 break;
             }
         }
+
+        check &= HatchCounts.inputsAtLeastTier(this, 8);
 
         return check;
     }

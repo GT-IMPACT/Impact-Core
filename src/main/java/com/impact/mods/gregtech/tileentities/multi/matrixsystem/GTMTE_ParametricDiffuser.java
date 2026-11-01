@@ -119,6 +119,7 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                     })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParametricDiffuser.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Input)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
                     .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
@@ -148,7 +149,7 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "See the structure hologram", 1)
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 42")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs one Input Bus, one Maintenance Hatch and an available energy or laser input in the diffuser casing.")
                 .toolTipFinisher();
     }
 

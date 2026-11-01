@@ -67,8 +67,9 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                     })
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvancedCrackingUnit.class)
                             .allow(ImpactHatchElement.Parallel, HatchElement.Input, HatchElement.Output,
-                                    HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
+                                    HatchElement.Energy, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, ImpactHatchElement.Parallel, HatchElement.Input, HatchElement.Output)
                             .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('B', HeatingCoil.NAQUADAH.asElement())
                     .addElement('C', Casings.PTFE_PIPE.asElement())
@@ -126,14 +127,14 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                 .addOtherStructurePart("Input Bus", "Any casing; maximum 8")
                 .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
+                .addOtherStructurePart("Muffler Hatch", "Exactly 1 at the marked top position")
                 .addOtherStructurePart(HeatingCoil.NAQUADAH, "around Pipe Machine Casing", 40)
                 .addOtherStructurePart(Casings.PTFE_PIPE, "inside the hollow", 5)
                 .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
                 .addStructureHint("Muffler Hatch", HintColor.ORANGE)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 32")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the top muffler, maintenance, energy, input and output hatches, and a parallel hatch.")
                 .toolTipFinisher();
     }
 

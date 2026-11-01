@@ -5,7 +5,6 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
@@ -29,8 +28,6 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static space.impact.structures.structure.StructureUtility.ofBlock;
-import static space.impact.structures.structure.StructureUtility.ofChain;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
@@ -70,9 +67,6 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
     @Override
     public IStructureDefinition<GTMTE_Pyrolyse> getStructureDefinition() {
         if (definition == null) {
-            int frameId = 4096 + Materials.Steel.mMetaItemSubID;
-            int frameMeta = GregTech_API.METATILEENTITIES[frameId] == null ? 32767
-                    : GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType();
             definition = StructureDefinition.<GTMTE_Pyrolyse>builder()
                     .addShape("main", new String[][] {
                             { "EEE EEEEE", "~EE EEEEE", "B B B   B" },
@@ -82,10 +76,11 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', Casings.STEEL_PIPE.asElement())
                     .addElement('D', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
-                    .addElement('B', ofChain(ofFrame(Materials.Steel), ofBlock(GregTech_API.sBlockMachines, frameMeta)))
+                    .addElement('B', ofFrame(Materials.Steel))
                     .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Pyrolyse.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
@@ -124,7 +119,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
                 .addOtherStructurePart("Steel Frame", "Bottom angles")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 7")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
                 .toolTipFinisher();
     }
 

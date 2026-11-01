@@ -33,6 +33,9 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
+import static space.impact.structures.structure.StructureUtility.ofBlock;
+import static space.impact.structures.structure.StructureUtility.ofChain;
+import static space.impact.structures.structure.StructureUtility.isAir;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSteamTurbine> {
@@ -93,17 +96,20 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                             { "     ", "CCCCC", "C A C", "CCCCC" },
                             { " BBB ", "CCCCC", "C A C", "CCCCC" },
                             { "BBBBB", "CCCCC", "C A C", "CCCCC" },
-                            { "BBBBB", "CCACC", "C   C", "CCCCC" },
+                            { "BBBBB", "CCACC", "C R C", "CCCCC" },
                             { "BBBBB", "CCCCC", "C   C", "CCCCC" },
                             { " BBB ", "CCCCC", "CCCCC", "CCCCC" },
                             { "     ", " DDD ", " DDD ", " DDD " }
                     })
                     .addElement('A', GEARBOX.asElement())
+                    .addElement('R', ofChain(isAir(), ofBlock(InsideBlock, 3), ofBlock(InsideBlock, 4)))
                     .addElement('B', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HugeSteamTurbine.class)
-                            .allow(HatchElement.Input).buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
+                            .allow(HatchElement.InputHatch)
+                            .autoPlace(HatchElement.InputHatch).buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HugeSteamTurbine.class)
-                            .allow(ImpactHatchElement.Dynamo, ImpactHatchElement.LaserOutput).buildAndChain(DYNAMOS, machine -> machine.casingCount++),
+                            .allow(ImpactHatchElement.Dynamo, ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput).buildAndChain(DYNAMOS, machine -> machine.casingCount++),
                             HintColor.YELLOW))
                     .build();
         }
@@ -125,10 +131,11 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 20")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addOtherStructurePart(GEARBOX, "inside structure", 4)
-                .addStructureHint("Casing or input hatch/bus / maintenance hatch", HintColor.BLUE)
+                .addStructureHint("Casing, fluid input hatch or maintenance hatch", HintColor.BLUE)
                 .addStructureHint("Casing or dynamo / laser output", HintColor.YELLOW)
                 .addStructureInfo("Hatches replacing casings: at most 56")
-                .addStructureChannels(getStructureDefinition())
+                .addStructureInfo("The rotor appears automatically. Keep its marked central position clear.")
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Maintenance Hatch, available steam inputs and energy outputs at their marked positions.")
                 .toolTipFinisher();
     }
 
@@ -215,7 +222,7 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
         return super.onRunningTick(aStack);
     }
 
-    private void rotorTopTrigger(boolean shouldExist) {
+    private void rotorTopTrigger(boolean active) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         final Vector3ic forgeDirection = new Vector3i(
@@ -225,10 +232,15 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
 
         final Vector3ic offset = rotateOffsetVector(forgeDirection, 0, 0, -4);
 
-        if (base.isActive()) {
-            Structure.setBlock(base, offset, InsideBlock, 3);
-        } else {
-            Structure.setBlock(base, offset, InsideBlock, 4);
+        net.minecraft.block.Block current = Structure.getBlock(base, offset);
+        int oldMetadata = base.getMetaIDOffset(offset.x(), offset.y(), offset.z());
+        if (current != net.minecraft.init.Blocks.air
+                && (current != InsideBlock || (oldMetadata != 3 && oldMetadata != 4))) {
+            return;
+        }
+        int metadata = active ? 3 : 4;
+        if (current != InsideBlock || oldMetadata != metadata) {
+            Structure.setBlock(base, offset, InsideBlock, metadata);
         }
     }
 

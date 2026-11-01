@@ -52,6 +52,8 @@ final class ImpactCasingChecks {
         for (Class<?> type = machine.getClass(); type != null; type = type.getSuperclass()) {
             for (Field field : type.getDeclaredFields()) {
                 if (Modifier.isStatic(field.getModifiers()) && ICasing.class.isAssignableFrom(field.getType())) {
+                    // Wind generator's two positions are required hatches; CASING supplies their texture only.
+                    if (name.equals("GTMTE_Wind_Generator") && field.getName().equals("CASING")) continue;
                     field.setAccessible(true);
                     ICasing casing = (ICasing) field.get(null);
                     assertTrue(description.contains(casing.getDisplayName()), name + " omits " + field.getName());

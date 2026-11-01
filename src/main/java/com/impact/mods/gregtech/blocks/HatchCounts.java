@@ -27,4 +27,15 @@ public final class HatchCounts {
         int lasers = machine instanceof GTMTE_Impact_BlockBase ? ((GTMTE_Impact_BlockBase<?>) machine).mLaserOut.size() : 0;
         return machine.mDynamoHatches.size() + machine.mDynamoHatchesMulti.size() + lasers;
     }
+    /** Applies the input tier floor to regular, combined, multi-amp and laser inputs. */
+    public static boolean inputsAtLeastTier(GTMTE_Impact_BlockBase<?> machine, int minimum) {
+        return machine.mEnergyHatches.stream().allMatch(hatch -> hatch.mTier >= minimum)
+                && machine.mEnergyHatchesMulti.stream().allMatch(hatch -> hatch.mTier >= minimum)
+                && machine.mLaserIn.stream().allMatch(hatch -> hatch.mTier >= minimum)
+                && machine.mInputHatches.stream().allMatch(hatch -> hatch.mTier >= minimum)
+                && machine.mInputBusses.stream().allMatch(hatch -> hatch.mTier >= minimum)
+                && machine.mQuadrInputHatches.stream().allMatch(hatch -> hatch.mTier >= minimum)
+                && machine.mInputBusHatches.stream().allMatch(hatch -> hatch.mTier >= minimum);
+    }
+
 }

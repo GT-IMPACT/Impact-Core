@@ -146,6 +146,26 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
             2,
         ).build()
 
+        private fun fluidPositionRequirements(
+            delegate: IHatchElement,
+            input: Boolean,
+        ): StructureRequirements {
+            val hatch = object : IHatchElement by delegate {
+
+                override fun matches(tile: IMetaTileEntity?): Boolean {
+                    return if (input) {
+                        tile is GT_MetaTileEntity_Hatch_Input
+                    } else {
+                        tile is GT_MetaTileEntity_Hatch_Output
+                    }
+                }
+            }
+            return StructureRequirements.builder(
+                CASING,
+                0,
+            ).atLeast(hatch).build()
+        }
+
         private val DEFINITION: IStructureDefinition<GTMTEOilDrilling> by lazy {
             StructureDefinition.builder<GTMTEOilDrilling>()
                 .addShape(
@@ -180,37 +200,45 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                     'B',
                     GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
                         .hint(HintColor.ORANGE)
-                        .preferForPlacement {
-                            it is GT_MetaTileEntity_Hatch_Output
-                        }
-                        .build(SERVICE_POSITIONS),
+                        .build(
+                            fluidPositionRequirements(
+                                delegate = SERVICE_HATCH,
+                                input = false,
+                            ),
+                        ),
                 )
                 .addElement(
                     'C',
                     GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
                         .hint(HintColor.LIGHT_BLUE)
-                        .preferForPlacement {
-                            it is GT_MetaTileEntity_Hatch_Input
-                        }
-                        .build(MIX_POSITIONS),
+                        .build(
+                            fluidPositionRequirements(
+                                delegate = MIX_HATCH,
+                                input = true,
+                            ),
+                        ),
                 )
                 .addElement(
                     'D',
                     GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
                         .hint(HintColor.BLUE)
-                        .preferForPlacement {
-                            it is GT_MetaTileEntity_Hatch_Input
-                        }
-                        .build(SERVICE_POSITIONS),
+                        .build(
+                            fluidPositionRequirements(
+                                delegate = SERVICE_HATCH,
+                                input = true,
+                            ),
+                        ),
                 )
                 .addElement(
                     'E',
                     GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
                         .hint(HintColor.RED)
-                        .preferForPlacement {
-                            it is GT_MetaTileEntity_Hatch_Output
-                        }
-                        .build(MIX_POSITIONS),
+                        .build(
+                            fluidPositionRequirements(
+                                delegate = MIX_HATCH,
+                                input = false,
+                            ),
+                        ),
                 )
                 .addElement(
                     'F',
@@ -362,7 +390,11 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 5")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(
+                GTStructureUtility.HATCH_CHANNEL,
+                "Installs the drilling rig service and mixing hatches from your inventory at their " +
+                "marked positions.",
+            )
                 .toolTipFinisher()
         }
     }
@@ -372,7 +404,9 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     }
 
     override fun checkRecipe(itemStack: ItemStack?): Boolean {
-        if (mixInHatch == null && mixOutHatch == null) return false
+        if (mixInHatch == null || mixOutHatch == null) {
+            return false
+        }
         mEfficiency = getCurrentEfficiency(null)
         mEfficiencyIncrease = 10000
         val tier = min(tierEnergyHatch, 14)

@@ -19,6 +19,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
@@ -158,7 +159,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                 .addStructureHint("Input Bus / Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
                 .addStructureHint("Output Hatch / Output Bus / Maintenance Hatch or Robust Naquadah Alloy Machine Casing", HintColor.ORANGE)
                 .addStructureHint("Energy Hatch or Robust Naquadah Alloy Machine Casing", HintColor.YELLOW)
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs UHV-or-better inputs, outputs and energy hatches at their marked positions, plus a Maintenance Hatch.")
                 .toolTipFinisher();
     }
 
@@ -169,6 +170,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
         if (STRUCTURE == null) {
             STRUCTURE = StructureDefinition
                     .<GTMTE_Tesseract>builder()
+                    .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addShape("main", new String[][] {
                             { "000000000", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "0       0", "000080000" },
                             { "0       0", " 1     1 ", "         ", "         ", "         ", "         ", "         ", " 1     1 ", "0       0" },
@@ -184,6 +186,10 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                     .addElement('1', Casings.DYSON_RING.asElement())
                     .addElement('2', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Input)
+                            .autoPlace(HatchElement.Input)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 9)
                             .buildAndChain(HATCHES_2, machine -> machine.intermixCount++), HintColor.BLUE))
                     .addElement('3', onElementPass(machine -> machine.intermixCount++, Casings.INTERMIX_CHAMBER.asElement()))
                     .addElement('4', Casings.CORE_CHAMBER.asElement())
@@ -191,9 +197,17 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                     .addElement('6', Casings.FUSION_MK_II.asElement())
                     .addElement('7', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Output, HatchElement.Maintenance)
+                            .autoPlace(HatchElement.Output, HatchElement.Maintenance)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 9)
                             .buildAndChain(HATCHES_7, machine -> machine.casingCount++), HintColor.ORANGE))
                     .addElement('8', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput)
+                            .autoPlace(ImpactHatchElement.PowerInput)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 9)
                             .buildAndChain(HATCHES_8, machine -> machine.casingCount++), HintColor.YELLOW))
                     .build();
         }
@@ -254,6 +268,8 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
             check = false;
         if (HatchCounts.energyHatches(this) > 2)
             check = false;
+
+        check &= HatchCounts.inputsAtLeastTier(this, 9);
 
         return check;
     }

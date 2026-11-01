@@ -166,6 +166,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                                     ImpactHatchElement.Dynamo, ImpactHatchElement.Muffler,
                                     ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.LaserOutput, SpecialHatch.Enrichment)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler, SpecialHatch.Enrichment)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.LIME))
                     .build();
         }
@@ -361,7 +362,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
                 .addStructureHint("Casing or compatible hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 15")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Miner Drill Hatch, enrichment unit and available power, input and output hatches from your inventory.")
                 .toolTipFinisher();
     }
 

@@ -3,6 +3,11 @@ package com.impact.mods.gregtech;
 import com.impact.loader.ItemRegistery;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import java.util.Arrays;
+import java.io.InputStream;
+import gregtech.api.util.GTStructureChannels;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
+import net.minecraft.util.StatCollector;
+import net.minecraft.util.StringTranslate;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -14,6 +19,7 @@ final class ImpactTooltipChecks {
     private static final String ROOT = "com.impact.mods.gregtech.tileentities.multi.";
 
     static void check() throws Exception {
+        checkChannelTranslations();
         ItemRegistery.CeramicBlock = Blocks.wool;
         String[][] dimensions = {
                 { "generators.nuclear.GTMTE_NuclearReactorI", "5 x 4 x 5" },
@@ -71,6 +77,71 @@ final class ImpactTooltipChecks {
                 .contains("Single-block machine equivalent"));
         assertFalse(plain(machine("generators.nq.GTMTE_LiquidNqGenerator").getSecondaryDescription())
                 .toLowerCase().contains("muffler"));
+    }
+
+    private static void checkChannelTranslations() throws Exception {
+        GT_MetaTileEntity_EnhancedMultiBlockBase<?> lap = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class.forName(ROOT + "storage.GTMTE_LapPowerStation")
+                .getConstructor(String.class).newInstance("impact.multimachine.supercapacitor");
+        for (String language : new String[] { "ru_RU", "en_US" }) {
+            for (String mod : new String[] { "gregtech", "impact" }) {
+                try (InputStream stream = ImpactTooltipChecks.class.getResourceAsStream(
+                        "/assets/" + mod + "/lang/" + language + ".lang")) {
+                    StringTranslate.inject(stream);
+                }
+            }
+            GT_MetaTileEntity_TooltipMultiBlockBase.invalidateTooltipCache();
+            String header = StatCollector.translateToLocal("gt.tooltip.channels");
+            for (String[] lines : new String[][] { lap.getSecondaryDescription(), lap.getStructureDescription(null) }) {
+                String description = plain(lines);
+                int section = description.indexOf(header);
+                assertTrue(section > description.indexOf("I-Glass"), language);
+                assertEquals(1, Arrays.stream(lines)
+                        .filter(line -> EnumChatFormatting.getTextWithoutFormattingCodes(line).equals(header)).count());
+                assertTrue(String.join("\n", lines).contains(EnumChatFormatting.AQUA
+                        + GTStructureChannels.getLabel(GTStructureChannels.TIER) + EnumChatFormatting.DARK_GRAY));
+                assertEquals(1, Arrays.stream(lines).filter(line -> line.contains("(tier)")).count());
+                for (int key = 1; key <= 3; key++) {
+                    String text = StatCollector.translateToLocal("TileEntity_DESCRIPTION_impact.multimachine.supercapacitor_Channel_Index_" + key);
+                    assertTrue(description.indexOf(text) > section, language + " misplaced " + key);
+                }
+            }
+            assertFalse(plain(lap.getPrimaryDescription()).contains(header));
+            for (String tank : new String[] { "Single", "Multi" }) {
+                String registeredName = "impact.multimachine." + tank.toLowerCase() + "fluidtank";
+                GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class
+                        .forName(ROOT + "storage.GTMTE_" + tank + "Tank").getConstructor(String.class)
+                        .newInstance(registeredName);
+                String key = "TileEntity_DESCRIPTION_" + registeredName + "_Channel_Index_1";
+                String dimensions = tank.equals("Single") ? "3 x 3 x 7" : "5 x 5 x 9";
+                assertTrue(plain(machine.getSecondaryDescription()).replace('×', 'x').contains(dimensions), "Tank dimensions " + tank);
+                assertTrue(StatCollector.canTranslate(key), language + " tank tier translation");
+                String hatchLimitKey = "TileEntity_DESCRIPTION_" + registeredName + "_Location_Index_3";
+                assertTrue(StatCollector.canTranslate(hatchLimitKey), language + " tank hatch limit translation");
+                assertTrue(plain(machine.getSecondaryDescription()).contains(StatCollector.translateToLocal(hatchLimitKey)));
+                for (String[] lines : new String[][] { machine.getSecondaryDescription(), machine.getStructureDescription(null) }) {
+                    String description = plain(lines);
+                    assertTrue(description.contains("(tier)"));
+                    assertTrue(description.indexOf(StatCollector.translateToLocal(key)) > description.indexOf(header));
+                }
+            }
+            GT_MetaTileEntity_EnhancedMultiBlockBase<?> mill = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class
+                    .forName(ROOT + "processing.defaultmachines.GTMTE_TheMill").getConstructor(String.class)
+                    .newInstance("impact.multis.the_mill");
+            String clearanceKey = "TileEntity_DESCRIPTION_impact.multis.the_mill_Structure_Index_0";
+            assertTrue(StatCollector.canTranslate(clearanceKey), language + " mill clearance translation");
+            assertTrue(plain(mill.getSecondaryDescription()).contains(StatCollector.translateToLocal(clearanceKey)), language);
+            GT_MetaTileEntity_EnhancedMultiBlockBase<?> computer = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class.forName(ROOT + "parallelsystem.GTMTE_ParallelComputer")
+                    .getConstructor(String.class).newInstance("impact.multis.parallelcomputer");
+            String computerStructure = plain(computer.getSecondaryDescription());
+            for (String section : new String[] { "Part", "Location", "Hint" }) {
+                int first = section.equals("Part") ? 2 : section.equals("Location") ? 3 : 1;
+                int last = section.equals("Part") ? 4 : section.equals("Location") ? 5 : 2;
+                for (int index = first; index <= last; index++) {
+                    String key = "TileEntity_DESCRIPTION_impact.multis.parallelcomputer_" + section + "_Index_" + index;
+                    assertTrue(computerStructure.contains(StatCollector.translateToLocal(key)), language + " missing " + key);
+                }
+            }
+        }
     }
 
     private static GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine(String name) throws Exception {

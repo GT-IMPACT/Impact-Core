@@ -73,6 +73,7 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_SpaceSatellite.class)
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     Transmitter.INSTANCE)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Maintenance, Transmitter.INSTANCE)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
@@ -113,7 +114,7 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 24")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Parallel Transmitter and available power and maintenance hatches from your inventory.")
                 .toolTipFinisher();
     }
 

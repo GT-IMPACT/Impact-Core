@@ -149,10 +149,16 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
                         GTStructureUtility.buildHatchAdder(GTMTEMESystemProvider::class.java)
                             .allow(
                                 HatchElement.Maintenance,
-                                HatchElement.Input,
-                                HatchElement.Output,
+                                ImpactHatchElement.InputBus,
+                                HatchElement.OutputBus,
                                 HatchElement.Energy,
                                 ImpactHatchElement.LaserInput,
+                            )
+                            .autoPlace(
+                                ImpactHatchElement.PowerInput,
+                                HatchElement.Maintenance,
+                                ImpactHatchElement.InputBus,
+                                HatchElement.OutputBus,
                             )
                             .buildAndChain(SHELL) { machine ->
                                 machine.casingCount++
@@ -297,7 +303,11 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             addOtherStructurePart("I-Glass", "Glass for structure")
             addStructureHint("Casing or compatible hatch", HintColor.GREEN)
             addStructureInfo("Hatches replacing casings: at most 10")
-            addStructureChannels(getStructureDefinition())
+            addSubChannel(
+                GTStructureUtility.HATCH_CHANNEL,
+                "Installs the Matrix Particles Chamber and available maintenance, power, input and " +
+                "output hatches from your inventory.",
+            )
             toolTipFinisher()
         }
     }

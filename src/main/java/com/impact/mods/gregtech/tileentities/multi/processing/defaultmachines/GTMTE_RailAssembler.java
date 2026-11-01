@@ -83,7 +83,7 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
                 .addRequirements(SHELL, "Any casing position")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 8")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the rail assembler casing.")
                 .toolTipFinisher();
     }
 
@@ -142,6 +142,7 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_RailAssembler.class)
                             .allow(HatchElement.Maintenance, HatchElement.Input, ImpactHatchElement.Muffler,
                                     HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Maintenance, HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Output)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }

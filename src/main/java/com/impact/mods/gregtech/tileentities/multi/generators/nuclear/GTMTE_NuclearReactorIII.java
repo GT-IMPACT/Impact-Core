@@ -64,7 +64,7 @@ public class GTMTE_NuclearReactorIII extends GTMTE_NuclearReactorBase<GTMTE_Nucl
                     .addElement('P', Casings.STEEL_PIPE.asElement())
                     .addElement('r',
                             withHint(new HatchElementBuilder<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorIII>>()
-                                    .allow(ReactorHatch.Rod).buildAndChain(shellRequirements(), machine -> machine.casingCount++), HintColor.GREEN))
+                                    .allow(ReactorHatch.Rod).autoPlace(Integer.MAX_VALUE, ReactorHatch.Rod).buildAndChain(shellRequirements(), machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }
         return definition;

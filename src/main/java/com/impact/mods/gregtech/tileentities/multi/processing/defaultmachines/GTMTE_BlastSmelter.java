@@ -69,6 +69,7 @@ public class GTMTE_BlastSmelter
                     .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BlastSmelter.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.Muffler)
+                            .autoPlace(HatchElement.Input, HatchElement.Output, HatchElement.Energy, ImpactHatchElement.Muffler)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('1', GTStructureUtility.ofHeatingCoil(
                             GTMTE_BlastSmelter::checkCoil, GTMTE_BlastSmelter::constructionCoil))
@@ -119,7 +120,8 @@ public class GTMTE_BlastSmelter
                 .addOtherStructurePart("Heating Coils", "Two middle Layers, hollow")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 20")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureChannels.COIL, "Selects the Blast Smelter heating coils (1-10). Existing coils determine the tier when completing a structure.")
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
                 .toolTipFinisher();
     }
 

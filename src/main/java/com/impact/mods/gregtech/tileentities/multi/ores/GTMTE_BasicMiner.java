@@ -145,6 +145,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
                             .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.LIME))
                     .build();
         }
@@ -308,7 +309,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
                 .addStructureHint("Casing or compatible hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 7")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Miner Drill Hatch and available maintenance, power, input and output hatches from your inventory.")
                 .toolTipFinisher();
     }
 

@@ -9,6 +9,9 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -23,12 +26,9 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static gregtech.api.GregTech_API.METATILEENTITIES;
-import static gregtech.api.GregTech_API.sBlockMachines;
 import static gregtech.api.enums.GT_Values.VN;
 import static net.minecraftforge.common.BiomeDictionary.Type.OCEAN;
-import static space.impact.structures.structure.StructureUtility.ofBlock;
-import static space.impact.structures.structure.StructureUtility.ofChain;
+import static space.impact.structures.structure.StructureUtility.defer;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
@@ -43,9 +43,6 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
     @Override
     public IStructureDefinition<GTMTE_DrillerWater> getStructureDefinition() {
         if (STRUCTURE == null) {
-            int frameId = 4096 + Materials.Steel.mMetaItemSubID;
-            int frameMeta = METATILEENTITIES[frameId] == null ? 32767
-                    : METATILEENTITIES[frameId].getTileEntityBaseType();
             STRUCTURE = StructureDefinition.<GTMTE_DrillerWater>builder()
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addShape("main", new String[][] {
@@ -55,12 +52,12 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
                             { "     ", "     ", "     ", " CCC ", " F F ", " F F ", "CCCCC", "     ", "     " },
                             { "     ", "     ", "     ", "     ", "     ", "     ", "CCCCC", "F   F", "F   F" }
                     })
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_DrillerWater.class)
-                            .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
-                                    ImpactHatchElement.Muffler)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
-                    .addElement('F',
-                            ofChain(GTStructureUtility.ofFrame(Materials.Steel), ofBlock(sBlockMachines, frameMeta)))
+                    .addElement('C', defer(machine -> withHint(GTStructureUtility.buildHatchAdder(GTMTE_DrillerWater.class)
+                            .allow(ImpactHatchElement.InputBus)
+                            .autoPlace(ImpactHatchElement.InputBus)
+                            .onlyAcceptIf(machine::acceptsPlacementTier)
+                            .buildAndChain(SHELL, controller -> controller.casingCount++), HintColor.GREEN)))
+                    .addElement('F', GTStructureUtility.ofFrame(Materials.Steel))
                     .build();
         }
         return STRUCTURE;
@@ -90,7 +87,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
         return new MultiblockTooltipBuilder(mName)
                 .addInfo("Drilling water from Bedrock")
                 .addMachineType("Water Pump")
-                .addInfo("Energy Hatch and Output Hatch must be of the same Tier")
+                .addInfo("Energy and fluid output hatches must share a tier of LV or higher")
                 .addInfo("When drilling it is necessary to consider the Biome Coefficient and tier Hatches")
                 .addInfo("Drilling Salt Water in Ocean")
                 .addSeparator()
@@ -109,10 +106,10 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
                 .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
                 .addOtherStructurePart("Output Hatch", "Any casing; 1-4")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart("Steel Frame Box", "Any casing")
+                .addOtherStructurePart(19, "Steel Frame Box", "Support frame shown in the hologram")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 16")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, matching-tier energy and water output hatches, and an input bus for mining pipes.")
                 .toolTipFinisher();
     }
 
@@ -135,7 +132,29 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
                 && mMaintenanceHatches.size() <= 1
                 && HatchCounts.inputBuses(this) <= 1
                 && mOutputHatches.size() <= 4
+                && haveMatchingHatchTiers()
                 && SHELL.isSatisfied(this, casingCount);
+    }
+
+    private boolean acceptsPlacementTier(IMetaTileEntity hatch) {
+        if (!(hatch instanceof GT_MetaTileEntity_Hatch_Energy)
+                && !(hatch instanceof GT_MetaTileEntity_Hatch_Output)) {
+            return true;
+        }
+        int tier = ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier;
+        int existingTier = !mEnergyHatches.isEmpty() ? mEnergyHatches.get(0).mTier
+                : !mOutputHatches.isEmpty() ? mOutputHatches.get(0).mTier : tier;
+        return tier >= getMinTier() && tier == existingTier;
+    }
+
+    private boolean haveMatchingHatchTiers() {
+        if (mEnergyHatches.isEmpty() || mOutputHatches.isEmpty()) {
+            return false;
+        }
+        int tier = mEnergyHatches.get(0).mTier;
+        return tier >= getMinTier()
+                && mEnergyHatches.stream().allMatch(hatch -> hatch.mTier == tier)
+                && mOutputHatches.stream().allMatch(hatch -> hatch.mTier == tier);
     }
 
     @Override

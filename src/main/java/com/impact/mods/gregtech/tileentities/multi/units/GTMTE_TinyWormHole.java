@@ -19,6 +19,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
@@ -143,9 +144,17 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
                                     ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.LaserOutput)
+                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
                             .buildAndChain(HATCHES_G, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('J', withHint(GTStructureUtility.buildHatchAdder(GTMTE_TinyWormHole.class)
                             .allow(HatchElement.Input)
+                            .autoPlace(HatchElement.Input)
+                            .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
+                                    || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
+                                    || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
                             .buildAndChain(HATCHES_J, machine -> machine.intermixCount++), HintColor.BLUE))
                     .build();
 
@@ -208,6 +217,8 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
         if (HatchCounts.energyHatches(this) > 2)
             check = false;
 
+        check &= HatchCounts.inputsAtLeastTier(this, 8);
+
         return check;
     }
 
@@ -232,7 +243,7 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 
                 .addStructureHint("Input/output, energy/dynamo, maintenance or Robust Naquadah Alloy Machine Casing", HintColor.GREEN)
                 .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs UV-or-better input, output and energy hatches, plus available maintenance, muffler and dynamo hatches.")
                 .toolTipFinisher();
     }
 

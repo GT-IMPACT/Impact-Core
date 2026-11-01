@@ -82,6 +82,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                     .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_FlotationUnit.class)
                             .allow(ImpactHatchElement.Parallel, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Input)
+                            .autoPlace(ImpactHatchElement.PowerInput, ImpactHatchElement.Parallel, HatchElement.Output, HatchElement.Input)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('1', Casings.TITANIUM_PIPE.asElement())
                     .addElement('2', HeatingCoil.NICHROME.asElement())
@@ -112,7 +113,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                 .addOtherStructurePart("Nichrome Coil", "Any casing")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 11")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
                 .toolTipFinisher();
     }
 

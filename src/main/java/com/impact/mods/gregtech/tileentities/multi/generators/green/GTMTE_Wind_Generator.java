@@ -10,12 +10,12 @@ import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
 import cpw.mods.fml.common.Optional;
-import gregtech.api.enums.HatchElement;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Utility;
@@ -42,7 +42,6 @@ import space.impact.structures.structure.StructureDefinition;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.REACTOR_OVERLAY_ACTIVE;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Generator> {
@@ -55,22 +54,23 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
     public int mOutputSalary = 0;
     public int mCapacity = 0;
     private static final ICasing CASING = ImpactCasings.ME_CASING;
-    private int casingCount;
-
-    private static final StructureRequirements SUPPORT = StructureRequirements.builder(CASING, 1).build();
+    private static final StructureRequirements SUPPORT = StructureRequirements.builder(CASING, 0)
+            .atLeast(ImpactHatchElement.InputBus, ImpactHatchElement.Dynamo).build();
 
     public GTMTE_Wind_Generator(int aID, String aNameRegional) {
         super(aID, "impact.multis.generator.wind_generator", aNameRegional);
+        enabledMaintenance = false;
     }
 
     public GTMTE_Wind_Generator(String aName) {
         super(aName);
+        enabledMaintenance = false;
     }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity base) {
-        casingCount = 0;
-        return checkPiece(0, 2, 0) && SUPPORT.isSatisfied(this, casingCount);
+        return checkPiece(0, 2, 0) && SUPPORT.isSatisfied(this, 0)
+                && mInputBusses.size() == 1 && mDynamoHatches.size() == 1;
     }
 
     @Override
@@ -82,13 +82,9 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Wind_Generator.class)
-                            .allow(HatchElement.Maintenance, HatchElement.Input, HatchElement.Output,
-                                    HatchElement.Energy,
-                                    ImpactHatchElement.Dynamo, ImpactHatchElement.Muffler,
-                                    ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
-                            .buildAndChain(SUPPORT, ofBlockAnyMeta(CASING.getBlock(), CASING.getMetadata()),
-                                    machine -> {
-                                    }),
+                            .onlyAcceptIf(hatch -> hatch instanceof GT_MetaTileEntity_Hatch_InputBus
+                                    || hatch instanceof GT_MetaTileEntity_Hatch_Dynamo)
+                            .buildAndChain(SUPPORT),
                             HintColor.GREEN))
                     .build();
         }
@@ -369,10 +365,12 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder(mName)
-                .addMachineType("Generator").addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addCasingInfoMin(CASING, SUPPORT.getMinimumCasings(), false)
-                .addStructureInfo("Hatches replacing casings: at most 1")
-                .addStructureChannels(getStructureDefinition())
+                .addMachineType("Generator")
+                .addOtherStructurePart("Input Bus", "Exactly 1 in the two positions above the controller; put the rotor in its first slot")
+                .addOtherStructurePart("Dynamo Hatch", "Exactly 1 regular dynamo in the other position above the controller")
+                .addInfo("No maintenance hatch is required")
+                .addStructureHint("Rotor input bus or regular dynamo hatch", HintColor.GREEN)
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs one rotor input bus and one regular dynamo hatch above the controller.")
                 .toolTipFinisher();
     }
 

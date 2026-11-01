@@ -42,6 +42,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
+import space.impact.structures.alignment.constructable.ChannelDataAccessor;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.AutoPlaceEnvironment;
 import space.impact.structures.structure.IStructureDefinition;
@@ -83,6 +84,7 @@ public class GTMTE_LapPowerStation extends
             STRUCTURE = StructureDefinition.<GTMTE_LapPowerStation>builder()
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addChannel(GTStructureChannels.HEIGHT, 1, 15)
+                    .addChannel(GTStructureChannels.TIER, 1, 8)
                     .addShape("base", new String[][] {
                             { "CCCCC", "CC~CC" }, { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" },
                             { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" }
@@ -95,6 +97,7 @@ public class GTMTE_LapPowerStation extends
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LapPowerStation.class)
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.Dynamo,
                                     LaserHatch.Input, LaserHatch.Output)
+                            .autoPlace(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.Dynamo, LaserHatch.Input, LaserHatch.Output)
                             .buildAndChain(SHELL, t -> t.casingCount++), HintColor.GREEN))
                     .addElement('E', capacitorElement())
                     .addElement('G', glassElement())
@@ -183,11 +186,14 @@ public class GTMTE_LapPowerStation extends
                 .addOtherStructurePart("Energy Hatch", "Base casing")
                 .addRequirements(SHELL, "5x2x5 base")
                 .addSubChannel(GTStructureChannels.HEIGHT, "Capacitor layers: 1-15; total height = value + 3")
+                .addSubChannel(GTStructureChannels.TIER, "Capacitor type: 1-8. Without this channel: UEV hologram, any available type for auto-build. Existing capacitors are kept.")
+                .addSubChannel(GTStructureChannels.TIER, "tier 1: Lapotronic IV; 2: Lapotronic LuV; 3: Lapotronic ZPM; 4: Lapotronic UV")
+                .addSubChannel(GTStructureChannels.TIER, "tier 5: Ultimate UHV; 6: Energium IV; 7: Crystal Orb UHV; 8: Crystal Module UEV")
                 .addOtherStructurePart("Capacitors", "Center 3x(1-15)x3 above base (9-135 blocks)")
                 .addOtherStructurePart("I-Glass", "16 per capacitor layer and 25 in the roof (41-265); capacitor columns may also end with glass")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 24")
-                .addStructureChannels(getStructureDefinition())
+                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available energy inputs, dynamos, laser hatches and a Maintenance Hatch in the capacitor station base.")
                 .toolTipFinisher();
     }
 
@@ -314,6 +320,15 @@ public class GTMTE_LapPowerStation extends
                 capacitorTier(3, L_ZPM), capacitorTier(4, L_UV), capacitorTier(5, 0),
                 capacitorTier(6, E_IV), capacitorTier(7, L_UHV), ofBlockAnyMeta(IGlassBlock));
         return new IStructureElement<GTMTE_LapPowerStation>() {
+            private IStructureElement<GTMTE_LapPowerStation> selected(ItemStack trigger) {
+                // The master value already selects height; preserve legacy selection until tier is explicitly set.
+                if (trigger == null || !ChannelDataAccessor.hasSubChannel(trigger, GTStructureChannels.TIER)) {
+                    return capacitor;
+                }
+                int tier = Math.max(1, Math.min(8, GTStructureChannels.getValue(trigger, GTStructureChannels.TIER)));
+                return ofBlock(lscLapotronicEnergyUnit, tier);
+            }
+
             private boolean aboveGlass(GTMTE_LapPowerStation machine, World world, int x, int y, int z) {
                 // A column stops at its first glass block, even below the common roof.
                 for (int height = machine.getBaseMetaTileEntity().getYCoord() + 2; height < y; height++) {
@@ -338,27 +353,27 @@ public class GTMTE_LapPowerStation extends
             @Override
             public boolean spawnHint(GTMTE_LapPowerStation machine, World world, int x, int y, int z,
                     ItemStack trigger) {
-                return aboveGlass(machine, world, x, y, z) || capacitor.spawnHint(machine, world, x, y, z, trigger);
+                return aboveGlass(machine, world, x, y, z) || selected(trigger).spawnHint(machine, world, x, y, z, trigger);
             }
 
             @Override
             public boolean placeBlock(GTMTE_LapPowerStation machine, World world, int x, int y, int z,
                     ItemStack trigger) {
                 return couldBeValid(machine, world, x, y, z, trigger)
-                        || capacitor.placeBlock(machine, world, x, y, z, trigger);
+                        || selected(trigger).placeBlock(machine, world, x, y, z, trigger);
             }
 
             @Override
             public BlocksToPlace getBlocksToPlace(GTMTE_LapPowerStation machine, World world, int x, int y, int z,
                     ItemStack trigger, AutoPlaceEnvironment environment) {
-                return capacitor.getBlocksToPlace(machine, world, x, y, z, trigger, environment);
+                return selected(trigger).getBlocksToPlace(machine, world, x, y, z, trigger, environment);
             }
 
             @Override
             public PlaceResult survivalPlaceBlock(GTMTE_LapPowerStation machine, World world, int x, int y, int z,
                     ItemStack trigger, AutoPlaceEnvironment environment) {
                 return couldBeValid(machine, world, x, y, z, trigger) ? PlaceResult.SKIP
-                        : capacitor.survivalPlaceBlock(machine, world, x, y, z, trigger, environment);
+                        : selected(trigger).survivalPlaceBlock(machine, world, x, y, z, trigger, environment);
             }
         };
     }
