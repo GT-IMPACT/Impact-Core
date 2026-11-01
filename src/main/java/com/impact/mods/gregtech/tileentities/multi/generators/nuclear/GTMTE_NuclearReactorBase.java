@@ -116,9 +116,9 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
                 .addRequirements(shellRequirements(), "Radiation shielding")
                 .addOtherStructurePart(Casings.STEEL_PIPE, "Internal pipes", 8 << (tierReactor() - 1))
                 .addOtherStructurePart("Machine Hull", "Bottom layer; optional AE2 interface connection; maximum 1")
-                .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
+                .addStructureHint("Casing or compatible hatch", HintColor.LIME)
                 .addStructureHint("Casing, compatible hatch or machine hull", HintColor.CYAN)
-                .addStructureHint(tierReactor() == 1 ? "Reactor rod" : "Casing or reactor rod", tierReactor() == 1 ? HintColor.RED : HintColor.GREEN)
+                .addStructureHint(tierReactor() == 1 ? "Reactor rod" : "Casing or reactor rod", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most " + (SHELL_POSITIONS[tierReactor() - 1] - shellRequirements().getMinimumCasings()))
                 .toolTipFinisher();
     }
@@ -338,7 +338,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         if (acceptsHull) {
             builder.allow(ReactorHatch.Hull);
         }
-        return withHint(builder.buildAndChain(shellRequirements(), machine -> machine.casingCount++), acceptsHull ? HintColor.CYAN : HintColor.BLUE);
+        return withHint(builder.buildAndChain(shellRequirements(), machine -> machine.casingCount++), acceptsHull ? HintColor.CYAN : HintColor.LIME);
     }
 
     protected enum ReactorHatch implements IHatchElement {

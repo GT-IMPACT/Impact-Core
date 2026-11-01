@@ -103,7 +103,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
                 .addElement(
                     'B',
                     GTStructureUtility.buildHatchAdder(GTMTEOreSamplingMachine::class.java)
-                        .hint(HintColor.RED)
+                        .hint(HintColor.GREEN)
                         .build(ORE_POSITION),
                 )
                 .build()
@@ -367,7 +367,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             .addController("See the structure hologram")
             .beginStructureBlock(3, 3, 3, false)
             .addOtherStructurePart("Steel Frame Box", "At least 8")
-            .addStructureHint("Miner Drill Hatch", HintColor.RED)
+            .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
             .toolTipFinisher()
     }
 

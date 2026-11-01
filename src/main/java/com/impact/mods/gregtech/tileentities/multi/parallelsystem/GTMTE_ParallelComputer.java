@@ -104,11 +104,11 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                     .addElement('P', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParallelComputer.class)
                             .allow(ComputerHatch.ParallelOutput)
                             .buildAndChain(RACKS, ofBlock(InsideBlock, 2), t -> {
-                            }), HintColor.BLUE))
+                            }), HintColor.PURPLE))
                     .addElement('R', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParallelComputer.class)
                             .allow(ComputerHatch.Rack)
                             .buildAndChain(RACKS, ofBlock(InsideBlock, 2), t -> {
-                            }), HintColor.ORANGE))
+                            }), HintColor.MAGENTA))
                     .build();
         }
         return definition;
@@ -208,8 +208,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureInfo("Length: 4 to 18 blocks; tool stack size selects 2 to 16 rack layers; one item builds the minimum size")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Computer component or parallel output", HintColor.BLUE)
-                .addStructureHint("Computer component or rack", HintColor.ORANGE)
+                .addStructureHint("Computer component or parallel output", HintColor.PURPLE)
+                .addStructureHint("Computer component or rack", HintColor.MAGENTA)
                 .addStructureInfo("Minimum casings: 8 + 2 per rack layer (12-40); at most 7 + 2 per rack layer hatches replacing casings (11-39)")
                 .toolTipFinisher();
     }

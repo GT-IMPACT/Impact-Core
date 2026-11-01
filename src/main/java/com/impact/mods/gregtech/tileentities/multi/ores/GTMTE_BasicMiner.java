@@ -138,14 +138,14 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                     })
                     .addElement('G', lazy(t -> ofFrame(Materials.Steel)))
                     .addElement('C',
-                            GTStructureUtility.buildHatchAdder(GTMTE_BasicMiner.class).hint(HintColor.RED)
+                            GTStructureUtility.buildHatchAdder(GTMTE_BasicMiner.class).hint(HintColor.GREEN)
                                     .build(StructureRequirements.builder(Casings.SOLID_STEEL, 0)
                                             .atLeast(SpecialHatch.Ore).build()))
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BasicMiner.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
-                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.LIME))
                     .build();
         }
         return definition;
@@ -305,8 +305,8 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 2")
                 .addCasingInfoMin(Casings.SOLID_STEEL, HATCHES_A.getMinimumCasings(), false)
                 .addCasingInfoMin("Steel Frame Box", 51, false)
-                .addStructureHint("Miner Drill Hatch", HintColor.RED)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
+                .addStructureHint("Casing or compatible hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 7")
                 .toolTipFinisher();
     }

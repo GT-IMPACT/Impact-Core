@@ -101,10 +101,10 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                     .addElement('A', GEARBOX.asElement())
                     .addElement('B', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HugeSteamTurbine.class)
-                            .allow(HatchElement.Input).buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .allow(HatchElement.Input).buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HugeSteamTurbine.class)
                             .allow(ImpactHatchElement.Dynamo, ImpactHatchElement.LaserOutput).buildAndChain(DYNAMOS, machine -> machine.casingCount++),
-                            HintColor.BLUE))
+                            HintColor.YELLOW))
                     .build();
         }
         return definition;
@@ -125,8 +125,8 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 20")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addOtherStructurePart(GEARBOX, "inside structure", 4)
-                .addStructureHint("Casing or input hatch/bus / maintenance hatch", HintColor.GREEN)
-                .addStructureHint("Casing or dynamo / laser output", HintColor.BLUE)
+                .addStructureHint("Casing or input hatch/bus / maintenance hatch", HintColor.BLUE)
+                .addStructureHint("Casing or dynamo / laser output", HintColor.YELLOW)
                 .addStructureInfo("Hatches replacing casings: at most 56")
                 .toolTipFinisher();
     }

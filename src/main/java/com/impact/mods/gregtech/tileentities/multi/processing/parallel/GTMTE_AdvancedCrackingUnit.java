@@ -73,7 +73,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                     .addElement('B', HeatingCoil.NAQUADAH.asElement())
                     .addElement('C', Casings.PTFE_PIPE.asElement())
                     .addElement('D',
-                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedCrackingUnit.class).hint(HintColor.RED)
+                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedCrackingUnit.class).hint(HintColor.ORANGE)
                                     .build(MUFFLER_POSITION))
                     .build();
         }
@@ -130,7 +130,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                 .addOtherStructurePart(HeatingCoil.NAQUADAH, "around Pipe Machine Casing", 40)
                 .addOtherStructurePart(Casings.PTFE_PIPE, "inside the hollow", 5)
                 .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
-                .addStructureHint("Muffler Hatch", HintColor.RED)
+                .addStructureHint("Muffler Hatch", HintColor.ORANGE)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 32")
                 .toolTipFinisher();

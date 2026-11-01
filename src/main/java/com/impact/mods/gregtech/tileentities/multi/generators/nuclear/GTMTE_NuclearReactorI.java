@@ -43,7 +43,7 @@ public class GTMTE_NuclearReactorI extends GTMTE_NuclearReactorBase<GTMTE_Nuclea
                     .addElement('P', Casings.STEEL_PIPE.asElement())
                     .addElement('R',
                             new HatchElementBuilder<GTMTE_NuclearReactorBase<GTMTE_NuclearReactorI>>()
-                                    .hint(HintColor.RED).build(RODS))
+                                    .hint(HintColor.GREEN).build(RODS))
                     .build();
         }
         return definition;

@@ -86,12 +86,12 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MPContainment.class)
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Input)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
-                    .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
-                    .addElement('T', ofBlock(ItemRegistery.MPTransducer, 0))
+                    .addElement('G', withHint(ofBlockAnyMeta(ItemRegistery.IGlassBlock), HintColor.CYAN))
+                    .addElement('T', withHint(ofBlock(ItemRegistery.MPTransducer, 0), HintColor.PURPLE))
                     .addElement('O',
-                            GTStructureUtility.buildHatchAdder(GTMTE_MPContainment.class).hint(HintColor.RED)
+                            GTStructureUtility.buildHatchAdder(GTMTE_MPContainment.class).hint(HintColor.ORANGE)
                                     .build(OUTPUT))
                     .build();
         }
@@ -150,10 +150,10 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 .addOtherStructurePart("Output Bus", "Any casing")
                 .addRequirements(SHELL, "Any casing position")
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 16)
-                .addStructureHint("Output Hatch", HintColor.RED)
-                .addStructureHint("Any I-Glass", HintColor.WHITE)
+                .addStructureHint("Output Hatch", HintColor.ORANGE)
+                .addStructureHint("Any I-Glass", HintColor.CYAN)
                 .addStructureHint("Matrix Transducer", HintColor.PURPLE)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 28")
                 .toolTipFinisher();
     }

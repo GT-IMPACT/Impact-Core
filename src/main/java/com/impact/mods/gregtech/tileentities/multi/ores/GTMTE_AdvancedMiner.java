@@ -158,7 +158,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                     })
                     .addElement('B', lazy(t -> ofFrame(Materials.HSLA)))
                     .addElement('C',
-                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedMiner.class).hint(HintColor.RED)
+                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedMiner.class).hint(HintColor.GREEN)
                                     .build(StructureRequirements.builder(CASING, 0).atLeast(SpecialHatch.Ore).build()))
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvancedMiner.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
@@ -166,7 +166,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                                     ImpactHatchElement.Dynamo, ImpactHatchElement.Muffler,
                                     ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.LaserOutput, SpecialHatch.Enrichment)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.LIME))
                     .build();
         }
         return definition;
@@ -358,8 +358,8 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                 .addOtherStructurePart(95, "HSLA Steel Frame Box", "Support frame; see the structure hologram")
                 .addOtherStructurePart("Miner Enrichment Unit", "Any casing")
                 .addOtherStructurePart(1, "Miner Drill Hatch", "Center of the casing platform (red hologram position)")
-                .addStructureHint("Miner Drill Hatch", HintColor.RED)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
+                .addStructureHint("Casing or compatible hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 15")
                 .toolTipFinisher();
     }

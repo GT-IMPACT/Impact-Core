@@ -143,10 +143,10 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
                                     ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.LaserOutput)
-                            .buildAndChain(HATCHES_G, machine -> machine.casingCount++), HintColor.RED))
+                            .buildAndChain(HATCHES_G, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('J', withHint(GTStructureUtility.buildHatchAdder(GTMTE_TinyWormHole.class)
                             .allow(HatchElement.Input)
-                            .buildAndChain(HATCHES_J, machine -> machine.intermixCount++), HintColor.GREEN))
+                            .buildAndChain(HATCHES_J, machine -> machine.intermixCount++), HintColor.BLUE))
                     .build();
 
         }
@@ -230,8 +230,8 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
                 .addCasingInfoMin(Casings.CORE_CHAMBER, 1, false)
                 .addCasingInfoMin("Reinforced Glass", 56, false)
 
-                .addStructureHint("Output Bus / Energy Hatch / Maintenance or Robust Naquadah Alloy Machine Casing", HintColor.RED)
-                .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.GREEN)
+                .addStructureHint("Input/output, energy/dynamo, maintenance or Robust Naquadah Alloy Machine Casing", HintColor.GREEN)
+                .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
                 .toolTipFinisher();
     }
 

@@ -114,7 +114,7 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
                 .addRequirements(SHELL, "Any casing position")
                 .addOtherStructurePart(new ItemStack(ItemRegistery.IGlassBlock, 1, 0), "Glass positions; any color", 2)
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 11)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
+                .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 12")
                 .toolTipFinisher();
     }
@@ -142,7 +142,7 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
                     })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MPStabilizer.class)
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
                     .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
                     .build();

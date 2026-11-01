@@ -156,7 +156,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                 .addOtherStructurePart("Steel Frame Box", "Frames")
                 .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Communication receiver hatch", HintColor.RED)
+                .addStructureHint("Communication receiver hatch", HintColor.PURPLE)
                 .addStructureInfo("Hatches replacing casings: at most 20")
                 .toolTipFinisher();
     }
@@ -181,7 +181,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
                             .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('D',
-                            GTStructureUtility.buildHatchAdder(GTMTE_TowerCommunication.class).hint(HintColor.RED)
+                            GTStructureUtility.buildHatchAdder(GTMTE_TowerCommunication.class).hint(HintColor.PURPLE)
                                     .build(StructureRequirements.builder(CASING, 0).atLeast(SpecialHatch.Receiver)
                                             .build()))
                     .addElement('E', lazy(t -> ofFrame(Materials.Steel)))

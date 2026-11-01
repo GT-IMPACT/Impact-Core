@@ -173,13 +173,13 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                             .buildAndChain(SHELL) { machine ->
                                 machine.casingCount++
                             },
-                        HintColor.ORANGE,
+                        HintColor.GREEN,
                     ),
                 )
                 .addElement(
                     'B',
                     GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
-                        .hint(HintColor.BLACK)
+                        .hint(HintColor.ORANGE)
                         .preferForPlacement {
                             it is GT_MetaTileEntity_Hatch_Output
                         }
@@ -188,7 +188,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 .addElement(
                     'C',
                     GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
-                        .hint(HintColor.RED)
+                        .hint(HintColor.LIGHT_BLUE)
                         .preferForPlacement {
                             it is GT_MetaTileEntity_Hatch_Input
                         }
@@ -206,7 +206,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 .addElement(
                     'E',
                     GTStructureUtility.buildHatchAdder(GTMTEOilDrilling::class.java)
-                        .hint(HintColor.GREEN)
+                        .hint(HintColor.RED)
                         .preferForPlacement {
                             it is GT_MetaTileEntity_Hatch_Output
                         }
@@ -349,10 +349,10 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 .addInfo("Extracts underground fluids from a current vein")
                 .addInfo("There can only be one machine in a Chunk")
                 .addInfo("For operation of the machine, it is required to connect Input Hatch and Output Hatch by pipe to distill Dirty Fluid")
-                .addStructureHint("Input Hatch for Fluid Dirty Mix", HintColor.RED)
-                .addStructureHint("Output Hatch for Fluid Dirty Mix", HintColor.GREEN)
+                .addStructureHint("Input Hatch for Fluid Dirty Mix", HintColor.LIGHT_BLUE)
+                .addStructureHint("Output Hatch for Fluid Dirty Mix", HintColor.RED)
                 .addStructureHint("Input Hatch for Water", HintColor.BLUE)
-                .addStructureHint("Output Hatch for Oil/Gas/Others", HintColor.BLACK)
+                .addStructureHint("Output Hatch for Oil/Gas/Others", HintColor.ORANGE)
                 .addOtherStructurePart("Steel Frame Box", "At least 72")
                 .addCasingInfoMin(CASING, SHELL.minimumCasings, false)
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
@@ -360,7 +360,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Output Hatch", "Any casing; maximum 4")
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
-                .addStructureHint("Casing or compatible hatch", HintColor.ORANGE)
+                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 5")
                 .toolTipFinisher()
         }

@@ -105,7 +105,7 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
                 .beginStructureBlock(4, 3, 3, false)
                 .addController("See the structure hologram")
                 .addCasingInfoMin(CASING, 10, false)
-                .addStructureHint("Pump deck or output hatch", HintColor.BLUE)
+                .addStructureHint("Pump deck or output hatch", HintColor.ORANGE)
                 .addOtherStructurePart(10, "Wood Frame Box", "Support frame above the pump deck")
                 .addOtherStructurePart("Pump Output Hatch", "Center of the pump deck; maximum 1; accepts primitive, ULV or LV output hatches")
                 .toolTipFinisher();
@@ -128,7 +128,7 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
                     .addElement('F', ofChain(ofFrame(Materials.Wood), ofBlock(GregTech_API.sBlockMachines, frameMeta)))
                     .addElement('H', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BasicWaterPump.class)
                             .allow(PumpOutput.INSTANCE)
-                            .buildAndChain(StructureRequirements.builder(CASING, 0).build()), HintColor.BLUE))
+                            .buildAndChain(StructureRequirements.builder(CASING, 0).build()), HintColor.ORANGE))
                     .build();
         }
         return definition;

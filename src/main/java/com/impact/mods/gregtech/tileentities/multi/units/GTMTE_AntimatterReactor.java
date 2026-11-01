@@ -241,7 +241,7 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                             .buildAndChain(HATCHES_H), HintColor.YELLOW))
                     .addElement('I', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Input)
-                            .buildAndChain(HATCHES_I), HintColor.RED))
+                            .buildAndChain(HATCHES_I), HintColor.BLUE))
                     .addElement('J', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Input)
                             .buildAndChain(HATCHES_J), HintColor.BLUE))
@@ -250,7 +250,7 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                             .buildAndChain(HATCHES_K), HintColor.ORANGE))
                     .addElement('L', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Output)
-                            .buildAndChain(HATCHES_L), HintColor.GREEN))
+                            .buildAndChain(HATCHES_L), HintColor.ORANGE))
                     .build();
 
         }
@@ -278,11 +278,11 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                 .addCasingInfoMin(Casings.FUSION_MK_II, 40, false)
                 .addCasingInfoMin(Casings.CORE_CHAMBER, 6, false)
 
-                .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.RED)
+                .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
                 .addStructureHint("Output Hatch or Intermix Chamber Casing", HintColor.ORANGE)
                 .addStructureHint("Input Bus or Radiation Proof Casing", HintColor.BLUE)
                 .addStructureHint("Dynamo Hatch or Radiation Proof Casing", HintColor.YELLOW)
-                .addStructureHint("Output Bus or Radiation Proof Casing", HintColor.GREEN)
+                .addStructureHint("Output Bus or Radiation Proof Casing", HintColor.ORANGE)
                 .toolTipFinisher();
     }
 

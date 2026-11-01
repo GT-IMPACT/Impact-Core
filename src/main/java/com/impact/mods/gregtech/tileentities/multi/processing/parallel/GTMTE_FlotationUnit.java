@@ -82,7 +82,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                     .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_FlotationUnit.class)
                             .allow(ImpactHatchElement.Parallel, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Input)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.RED))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('1', Casings.TITANIUM_PIPE.asElement())
                     .addElement('2', HeatingCoil.NICHROME.asElement())
                     .build();
@@ -110,7 +110,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                 .addCasingInfoMin(Casings.STABLE_TITANIUM, SHELL.getMinimumCasings(), false)
                 .addOtherStructurePart("Titanium Pipe Casing", "Any casing")
                 .addOtherStructurePart("Nichrome Coil", "Any casing")
-                .addStructureHint("Casing or compatible hatch", HintColor.RED)
+                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 11")
                 .toolTipFinisher();
     }

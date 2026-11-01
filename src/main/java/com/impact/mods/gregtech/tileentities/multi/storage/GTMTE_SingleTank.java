@@ -103,7 +103,7 @@ public class GTMTE_SingleTank
                             .buildAndChain(StructureRequirements.builder(CASING, 0).build(),
                                     ofBlockAnyMeta(IGlassBlock), t -> {
                                     }),
-                            HintColor.ORANGE))
+                            HintColor.LIME))
                     .addElement('T', ofChain(
                             onElementPass(t -> t.fluidCapacityAcc += 16000000f, ofBlock(FluidTankBlock, 0)),
                             onElementPass(t -> t.fluidCapacityAcc += 32000000f, ofBlock(FluidTankBlock, 1)),
@@ -247,7 +247,7 @@ public class GTMTE_SingleTank
                 .addOtherStructurePart("I/O Tank Hatch", "Instead of any casing or glass")
                 .addInfo("I/O Tank Hatch provides information and connects to AE2 and OC systems")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Glass or input hatch/bus / output hatch/bus / tank hatch", HintColor.ORANGE)
+                .addStructureHint("Glass or input hatch/bus / output hatch/bus / tank hatch", HintColor.LIME)
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureInfo("Hatches in the top and bottom casing layers: at most 8")
                 .toolTipFinisher();

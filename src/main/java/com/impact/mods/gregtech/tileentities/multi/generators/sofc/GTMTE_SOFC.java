@@ -83,7 +83,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                 .addSeparator()
                 .beginStructureBlock(3, 3, 5, false)
                 .addController("See the structure hologram")
-                .addOtherStructurePart("Dynamo Hatch", "Rear end layer (blue); maximum 2 regular and 1 multi-amp hatch")
+                .addOtherStructurePart("Dynamo Hatch", "Rear end layer (lime); maximum 2 regular and 1 multi-amp hatch")
                 .addCasingInfoMin(CASINGS[tier], requirements().getMinimumCasings(), false)
                 .addOtherStructurePart("Input Hatch", "Casing positions; at least 2 fluid inputs for fuel and oxygen")
                 .addOtherStructurePart("Output Hatch", "Casing positions; steam output")
@@ -91,7 +91,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                 .addOtherStructurePart(6, "Reinforced Glass", "Along both sides of the electrolyte units")
                 .addOtherStructurePart("Maintenance Hatch", "Casing positions; exactly 1")
                 .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.GREEN)
-                .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.BLUE)
+                .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 17")
                 .toolTipFinisher();
     }
@@ -195,7 +195,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                             HintColor.GREEN))
                     .addElement('D', withHint(new HatchElementBuilder<T>()
                             .allow(HatchElement.Input, HatchElement.Output, ImpactHatchElement.Dynamo)
-                            .buildAndChain(requirements(), machine -> machine.casingCount++), HintColor.BLUE))
+                            .buildAndChain(requirements(), machine -> machine.casingCount++), HintColor.LIME))
                     .addElement('E', ceramicElement())
                     .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
                     .build();

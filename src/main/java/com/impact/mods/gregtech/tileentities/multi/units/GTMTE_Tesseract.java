@@ -155,8 +155,8 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                 .addCasingInfoMin(Casings.FUSION_COIL, 1, false)
                 .addCasingInfoMin(Casings.CORE_CHAMBER, 16, false)
 
-                .addStructureHint("Input Bus / Input Hatch or Intermix Chamber Casing", HintColor.RED)
-                .addStructureHint("Output Hatch / Output Bus / Maintenance Hatch or Robust Naquadah Alloy Machine Casing", HintColor.GREEN)
+                .addStructureHint("Input Bus / Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
+                .addStructureHint("Output Hatch / Output Bus / Maintenance Hatch or Robust Naquadah Alloy Machine Casing", HintColor.ORANGE)
                 .addStructureHint("Energy Hatch or Robust Naquadah Alloy Machine Casing", HintColor.YELLOW)
                 .toolTipFinisher();
     }
@@ -183,14 +183,14 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                     .addElement('1', Casings.DYSON_RING.asElement())
                     .addElement('2', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Input)
-                            .buildAndChain(HATCHES_2, machine -> machine.intermixCount++), HintColor.RED))
+                            .buildAndChain(HATCHES_2, machine -> machine.intermixCount++), HintColor.BLUE))
                     .addElement('3', onElementPass(machine -> machine.intermixCount++, Casings.INTERMIX_CHAMBER.asElement()))
                     .addElement('4', Casings.CORE_CHAMBER.asElement())
                     .addElement('5', Casings.FUSION_COIL.asElement())
                     .addElement('6', Casings.FUSION_MK_II.asElement())
                     .addElement('7', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Output, HatchElement.Maintenance)
-                            .buildAndChain(HATCHES_7, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(HATCHES_7, machine -> machine.casingCount++), HintColor.ORANGE))
                     .addElement('8', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput)
                             .buildAndChain(HATCHES_8, machine -> machine.casingCount++), HintColor.YELLOW))

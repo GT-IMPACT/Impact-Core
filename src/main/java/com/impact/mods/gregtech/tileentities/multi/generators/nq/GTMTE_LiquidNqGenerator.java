@@ -104,7 +104,7 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.LIME))
                     .build();
         }
         return definition;
@@ -144,7 +144,7 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
                 .addOtherStructurePart(new ItemStack(InsideBlock, 1, 0), "inside structure", 12)
                 .addOtherStructurePart("Tether Core", "2x, see the structure hologram")
                 .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.GREEN)
-                .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.BLUE)
+                .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 5")
                 .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 60)
                 .toolTipFinisher();

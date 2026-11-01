@@ -151,7 +151,7 @@ public class ImpactConstructionChecks {
             List<String> positions = new ArrayList<>();
             boolean sofc = index >= 2;
             hints.frames.forEach((position, color) -> {
-                if (sofc || color == HintColor.BLUE || color == HintColor.CYAN) {
+                if (sofc || color == HintColor.LIME || color == HintColor.CYAN) {
                     positions.add(position);
                 }
             });
@@ -227,6 +227,7 @@ public class ImpactConstructionChecks {
                         assertFalse(hints.positions.contains(TestWorld.key(0, 64, 0)),
                                 "The hologram covers its controller: " + name);
                         Set<HintColor> usedColors = new HashSet<>(hints.frames.values());
+                        assertFalse(usedColors.contains(HintColor.WHITE), "White frames hide on light casings: " + name);
                         hints.blocks.forEach((position, block) -> {
                             if (block == coloredHint) {
                                 assertFalse(hints.frames.containsKey(position), "Dedicated hatch must stay a marker");
@@ -293,7 +294,7 @@ public class ImpactConstructionChecks {
                         assertSame(Casings.STABLE_TITANIUM.getBlock(), hints.blocks.get(position));
                         assertEquals(Integer.valueOf(Casings.STABLE_TITANIUM.getMetadata()),
                                 hints.metadata.get(position));
-                        assertEquals(HintColor.RED, hints.frames.get(position));
+                        assertEquals(HintColor.GREEN, hints.frames.get(position));
                     } else if (hints.metadata.get(position) == Casings.TITANIUM_PIPE.getMetadata()) {
                         assertSame(Casings.TITANIUM_PIPE.getBlock(), hints.blocks.get(position));
                         pipes++;
@@ -536,7 +537,8 @@ public class ImpactConstructionChecks {
                     Set<String> expectedBlocks = new HashSet<>(hints.positions);
                     assertEquals(multi ? 224 : 62, expectedBlocks.size());
                     assertEquals(multi ? 101 : 28, hints.frames.size());
-                    assertFalse(hints.frames.containsValue(HintColor.BLUE), "Tanks have no energy hatch positions");
+                    assertEquals(new HashSet<>(Arrays.asList(HintColor.GREEN, HintColor.LIME)),
+                            new HashSet<>(hints.frames.values()), "Tank I/O groups use distinct green hints");
                     assertEquals(1, world.blocks.size(), "Holograms must not place blocks");
                     world.isRemote = false;
                     if (survival) {

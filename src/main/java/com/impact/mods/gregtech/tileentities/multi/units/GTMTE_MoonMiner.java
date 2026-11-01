@@ -79,7 +79,7 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
         return new MultiblockTooltipBuilder(mName)
                 .addInfo(EnumChatFormatting.RED + "MultiBlock in dev [WIP]")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Collision block or compatible hatch", HintColor.BLUE)
+                .addStructureHint("Collision block or compatible hatch", HintColor.LIME)
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureInfo("Hatches replacing casings: at most 17")
                 .addOtherStructurePart(new ItemStack(CollisionBlock, 1, 0), "See the structure hologram", 1)
@@ -144,7 +144,7 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Muffler)
                             .buildAndChain(SHELL, ofBlock(CollisionBlock, 0), t -> {
-                            }), HintColor.BLUE))
+                            }), HintColor.LIME))
                     .build();
         }
         return definition;

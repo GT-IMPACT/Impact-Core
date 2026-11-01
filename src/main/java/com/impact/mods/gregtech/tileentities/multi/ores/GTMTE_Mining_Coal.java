@@ -151,7 +151,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
                     })
                     .addElement('A', lazy(t -> ofFrame(Materials.Iron)))
                     .addElement('B',
-                            GTStructureUtility.buildHatchAdder(GTMTE_Mining_Coal.class).hint(HintColor.RED)
+                            GTStructureUtility.buildHatchAdder(GTMTE_Mining_Coal.class).hint(HintColor.GREEN)
                                     .build(StructureRequirements.builder(Casings.PYROLYSE_OVEN, 0)
                                             .atLeast(SpecialHatch.Ore).build()))
                     .build();
@@ -330,7 +330,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
                 .addController("See the structure hologram")
                 .beginStructureBlock(5, 3, 5, false)
                 .addOtherStructurePart("Iron Frame Box", "At least 16")
-                .addStructureHint("Miner Drill Hatch", HintColor.RED)
+                .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
                 .toolTipFinisher();
     }
 
