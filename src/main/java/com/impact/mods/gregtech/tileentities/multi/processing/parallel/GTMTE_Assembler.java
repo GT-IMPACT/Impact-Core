@@ -38,7 +38,6 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 
     private int casingCount;
 
-    // 61 shell positions minus 20 input buses, 6 input hatches, 3 output buses, 4 energy and 2 service hatches.
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 26)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_Assembler> definition;
@@ -55,9 +54,10 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 20")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 6")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
+                .addOtherStructurePart("Input Bus", "Any casing; no separate limit")
+                .addOtherStructurePart("Input Hatch", "Any casing; no separate limit")
+                .addOtherStructurePart("Output Bus", "Any casing; no separate limit")
+                .addOtherStructurePart("Output Hatch", "Any casing; no separate limit")
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
@@ -147,15 +147,6 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 
         setParallel(this.mLevel);
 
-        if (HatchCounts.inputBuses(this) > 20) {
-            formationChecklist = false;
-        }
-        if (HatchCounts.inputHatches(this) > 6) {
-            formationChecklist = false;
-        }
-        if (this.mOutputBusses.size() > 3) {
-            formationChecklist = false;
-        }
         if (this.mMufflerHatches.size() != 0) {
             formationChecklist = false;
         }

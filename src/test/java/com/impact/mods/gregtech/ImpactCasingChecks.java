@@ -18,6 +18,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
 import java.lang.reflect.Field;
@@ -121,11 +122,23 @@ final class ImpactCasingChecks {
                     new String[0], new ITexture[0][][], 16000));
         }
         assertTrue(machine.recheck(), "Six multi-fluid hatches count as six physical inputs");
-        put(world, positions.get(7), new GTMTE_BusHatch_Input("combined", 4,
-                new String[0], new ITexture[0][][], 16000));
-        assertFalse(machine.recheck(), "Combined input cannot bypass the fluid-input limit");
-        assertEquals(7, HatchCounts.inputHatches(machine));
-        assertEquals(1, HatchCounts.inputBuses(machine));
+        for (int i = 7; i <= 27; i++) {
+            put(world, positions.get(i), new GTMTE_BusHatch_Input(
+                    "combined",
+                    4,
+                    new String[0],
+                    new ITexture[0][][],
+                    16000
+            ));
+        }
+        assertTrue(machine.recheck(), "Item and fluid inputs have no separate limits");
+        assertEquals(27, HatchCounts.inputHatches(machine));
+        assertEquals(21, HatchCounts.inputBuses(machine));
+        for (int i = 28; i <= 31; i++) {
+            put(world, positions.get(i), new GT_MetaTileEntity_Hatch_OutputBus("output", 4, "", new ITexture[0][][]));
+        }
+        assertTrue(machine.recheck(), "Output buses have no separate limit");
+        assertEquals(4, machine.mOutputBusses.size());
     }
 
     private static void checkPbeLimits() {
