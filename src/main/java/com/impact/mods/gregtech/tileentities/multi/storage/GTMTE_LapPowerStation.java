@@ -251,13 +251,14 @@ public class GTMTE_LapPowerStation extends
         int[] offset = new int[3];
         getExtendedFacing().getWorldOffset(new int[] { -2, -2, 0 }, offset);
         int x = base.getXCoord() + offset[0], y = base.getYCoord() + offset[1], z = base.getZCoord() + offset[2];
-        return base.getWorld().getBlock(x, y, z) == IGlassBlock ? base.getWorld().getBlockMetadata(x, y, z) : 0;
+        return base.getWorld().getBlock(x, y, z) == IGlassBlock ? base.getWorld().getBlockMetadata(x, y, z) : -1;
     }
 
     private static IStructureElement<GTMTE_LapPowerStation> glassElement() {
         return new IStructureElement<GTMTE_LapPowerStation>() {
             private IStructureElement<GTMTE_LapPowerStation> selected(GTMTE_LapPowerStation machine) {
-                return ofBlock(IGlassBlock, machine.constructionGlass());
+                int color = machine.constructionGlass();
+                return color < 0 ? ofBlockAnyMeta(IGlassBlock) : ofBlock(IGlassBlock, color);
             }
 
             @Override

@@ -127,6 +127,7 @@ public class ImpactConstructionChecks {
         checkAllControllerHints(hints);
         ImpactCasingChecks.checkLimits();
         checkGeneratorCasingLimits(hints);
+        ImpactGlassChecks.check();
     }
 
     private static void checkGeneratorCasingLimits(HintRecorder hints) throws Exception {
