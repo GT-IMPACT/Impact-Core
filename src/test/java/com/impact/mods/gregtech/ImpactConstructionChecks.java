@@ -1168,8 +1168,10 @@ public class ImpactConstructionChecks {
         long[] capacities = { GTMTE_LapPowerStation.L_IV, GTMTE_LapPowerStation.L_LuV,
                 GTMTE_LapPowerStation.L_ZPM, GTMTE_LapPowerStation.L_UV, 0,
                 GTMTE_LapPowerStation.E_IV, GTMTE_LapPowerStation.L_UHV, GTMTE_LapPowerStation.L_UEV };
-        // GregTech voltage tier -> registered capacitor metadata (not a consecutive block ID).
-        int[][] selections = { { 5, 1 }, { 6, 2 }, { 7, 3 }, { 8, 4 }, { 9, 7 }, { 10, 8 }, { 1, 1 }, { 64, 8 } };
+        // Channel tier -> registered capacitor metadata; Energium has its own selection below Lapotronic.
+        int[][] selections = {
+                { 4, 6 }, { 5, 1 }, { 6, 2 }, { 7, 3 }, { 8, 4 }, { 9, 7 }, { 10, 8 }, { 1, 6 }, { 64, 8 }
+        };
         for (int[] selection : selections) {
             int value = selection[0];
             int metadata = selection[1];
@@ -1197,7 +1199,7 @@ public class ImpactConstructionChecks {
                         ((StructureDefinition<GTMTE_LapPowerStation>) machine.getStructureDefinition()).getElements().get('E');
                 IStructureElement.BlocksToPlace candidates = element.getBlocksToPlace(machine, world, 0, 66, 1, trigger, null);
                 for (int candidate = 1; candidate <= 8; candidate++) {
-                    boolean sameTier = candidate == metadata || (metadata == 1 && candidate == 6);
+                    boolean sameTier = candidate == metadata;
                     assertEquals(sameTier, candidates.getPredicate().test(
                             new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 1, candidate)),
                             "tier=" + value + " candidate=" + candidate);
@@ -1236,15 +1238,15 @@ public class ImpactConstructionChecks {
             }
         }
         TestWorld world = new TestWorld();
-        GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("energium-tier-five");
+        GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("energium-tier-four");
         TestTile tile = controller(world, machine);
         IChannelDefinition tierChannel = machine.getStructureDefinition().getChannelDefinitions().stream()
                 .filter(channel -> channel.getChannel().equals(GTStructureChannels.TIER)).findFirst().get();
-        assertEquals(5, tierChannel.getMinimumValue());
+        assertEquals(4, tierChannel.getMinimumValue());
         assertEquals(10, tierChannel.getMaximumValue());
         ItemStack trigger = new ItemStack(Items.stick);
         ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.HEIGHT, 2);
-        ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.TIER, 5);
+        ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.TIER, 4);
         ItemStack hiddenUltimate = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, 5);
         ItemStack energium = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, 6);
         Source source = new Source(hiddenUltimate, energium,
@@ -1254,7 +1256,7 @@ public class ImpactConstructionChecks {
         for (int pass = 0; pass < 100 && !machine.checkMachine(tile, null); pass++) {
             machine.survivalConstruct(trigger, 7, environment);
         }
-        assertTrue(machine.checkMachine(tile, null), "Energium is also an IV capacitor");
+        assertTrue(machine.checkMachine(tile, null), "Tier 4 selects Energium capacitors");
         assertEquals(18 * GTMTE_LapPowerStation.E_IV, machine.capacity);
         assertEquals(0, energium.stackSize);
         assertEquals(18, hiddenUltimate.stackSize, "Never automatically place the hidden Ultimate capacitor");

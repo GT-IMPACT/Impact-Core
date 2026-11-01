@@ -84,7 +84,7 @@ public class GTMTE_LapPowerStation extends
             STRUCTURE = StructureDefinition.<GTMTE_LapPowerStation>builder()
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addChannel(GTStructureChannels.HEIGHT, 1, 15)
-                    .addChannel(GTStructureChannels.TIER, 5, 10)
+                    .addChannel(GTStructureChannels.TIER, 4, 10)
                     .addShape("base", new String[][] {
                             { "CCCCC", "CC~CC" }, { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" },
                             { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" }
@@ -186,8 +186,8 @@ public class GTMTE_LapPowerStation extends
                 .addOtherStructurePart("Energy Hatch", "Base casing")
                 .addRequirements(SHELL, "5x2x5 base")
                 .addSubChannel(GTStructureChannels.HEIGHT, "Capacitor layers: 1-15; total height = value + 3")
-                .addSubChannel(GTStructureChannels.TIER, "Capacitor voltage tier: 5-10. Without this channel: UEV hologram, available capacitors for auto-build. Existing capacitors are kept.")
-                .addSubChannel(GTStructureChannels.TIER, "5: IV (Lapotronic or Energium); 6: LuV; 7: ZPM; 8: UV")
+                .addSubChannel(GTStructureChannels.TIER, "Capacitor tier: 4-10. Without this channel: UEV hologram, available capacitors for auto-build. Existing capacitors are kept.")
+                .addSubChannel(GTStructureChannels.TIER, "4: Energium; 5: IV (Lapotronic); 6: LuV; 7: ZPM; 8: UV")
                 .addSubChannel(GTStructureChannels.TIER, "9: UHV (Crystal Orb); 10: UEV (Crystal Module)")
                 .addOtherStructurePart("Capacitors", "Center 3x(1-15)x3 above base (9-135 blocks)")
                 .addOtherStructurePart("I-Glass", "16 per capacitor layer and 25 in the roof (41-265); capacitor columns may also end with glass")
@@ -325,10 +325,12 @@ public class GTMTE_LapPowerStation extends
                 if (trigger == null || !ChannelDataAccessor.hasSubChannel(trigger, GTStructureChannels.TIER)) {
                     return capacitor;
                 }
-                int tier = Math.max(5, Math.min(10, GTStructureChannels.getValue(trigger, GTStructureChannels.TIER)));
+                int tier = Math.max(4, Math.min(10, GTStructureChannels.getValue(trigger, GTStructureChannels.TIER)));
                 switch (tier) {
+                    case 4:
+                        return ofBlock(lscLapotronicEnergyUnit, 6);
                     case 5:
-                        return ofChain(ofBlock(lscLapotronicEnergyUnit, 1), ofBlock(lscLapotronicEnergyUnit, 6));
+                        return ofBlock(lscLapotronicEnergyUnit, 1);
                     case 6:
                         return ofBlock(lscLapotronicEnergyUnit, 2);
                     case 7:
