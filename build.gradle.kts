@@ -44,7 +44,7 @@ repositories {
 dependencies {
     // impact
     implementation("space.impact:Packet-network:1.1.8.dirty")
-    implementation("space.impact:ImpactStructures:1.1.0:dev")
+    implementation("space.impact:ImpactStructures:1.1.1:dev")
     implementation("space.impact:VirtualWorld:2.0.4:dev")
     implementation("space.impact:gregtech-impact:5.09.36.1:dev") {
         isTransitive = false
