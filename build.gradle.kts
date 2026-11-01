@@ -38,7 +38,7 @@ dependencies {
         isTransitive = false
     }
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
-    runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.0.5") { isTransitive = false }
+    runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.1.3") { isTransitive = false }
     runtimeOnlyNonPublishable("space.impact:GregTechBridge:1.0.2:dev") { isTransitive = false }
 
     // maven impact
