@@ -84,7 +84,7 @@ public class GTMTE_LapPowerStation extends
             STRUCTURE = StructureDefinition.<GTMTE_LapPowerStation>builder()
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addChannel(GTStructureChannels.HEIGHT, 1, 15)
-                    .addChannel(GTStructureChannels.TIER, 1, 8)
+                    .addChannel(GTStructureChannels.TIER, 5, 10)
                     .addShape("base", new String[][] {
                             { "CCCCC", "CC~CC" }, { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" },
                             { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" }
@@ -186,9 +186,9 @@ public class GTMTE_LapPowerStation extends
                 .addOtherStructurePart("Energy Hatch", "Base casing")
                 .addRequirements(SHELL, "5x2x5 base")
                 .addSubChannel(GTStructureChannels.HEIGHT, "Capacitor layers: 1-15; total height = value + 3")
-                .addSubChannel(GTStructureChannels.TIER, "Capacitor type: 1-8. Without this channel: UEV hologram, any available type for auto-build. Existing capacitors are kept.")
-                .addSubChannel(GTStructureChannels.TIER, "tier 1: Lapotronic IV; 2: Lapotronic LuV; 3: Lapotronic ZPM; 4: Lapotronic UV")
-                .addSubChannel(GTStructureChannels.TIER, "tier 5: Ultimate UHV; 6: Energium IV; 7: Crystal Orb UHV; 8: Crystal Module UEV")
+                .addSubChannel(GTStructureChannels.TIER, "Capacitor voltage tier: 5-10. Without this channel: UEV hologram, available capacitors for auto-build. Existing capacitors are kept.")
+                .addSubChannel(GTStructureChannels.TIER, "5: IV (Lapotronic or Energium); 6: LuV; 7: ZPM; 8: UV")
+                .addSubChannel(GTStructureChannels.TIER, "9: UHV (Crystal Orb); 10: UEV (Crystal Module)")
                 .addOtherStructurePart("Capacitors", "Center 3x(1-15)x3 above base (9-135 blocks)")
                 .addOtherStructurePart("I-Glass", "16 per capacitor layer and 25 in the roof (41-265); capacitor columns may also end with glass")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
@@ -317,7 +317,7 @@ public class GTMTE_LapPowerStation extends
     private static IStructureElement<GTMTE_LapPowerStation> capacitorElement() {
         IStructureElement<GTMTE_LapPowerStation> capacitor = ofChain(
                 capacitorTier(8, L_UEV), capacitorTier(1, L_IV), capacitorTier(2, L_LuV),
-                capacitorTier(3, L_ZPM), capacitorTier(4, L_UV), capacitorTier(5, 0),
+                capacitorTier(3, L_ZPM), capacitorTier(4, L_UV),
                 capacitorTier(6, E_IV), capacitorTier(7, L_UHV), ofBlockAnyMeta(IGlassBlock));
         return new IStructureElement<GTMTE_LapPowerStation>() {
             private IStructureElement<GTMTE_LapPowerStation> selected(ItemStack trigger) {
@@ -325,8 +325,21 @@ public class GTMTE_LapPowerStation extends
                 if (trigger == null || !ChannelDataAccessor.hasSubChannel(trigger, GTStructureChannels.TIER)) {
                     return capacitor;
                 }
-                int tier = Math.max(1, Math.min(8, GTStructureChannels.getValue(trigger, GTStructureChannels.TIER)));
-                return ofBlock(lscLapotronicEnergyUnit, tier);
+                int tier = Math.max(5, Math.min(10, GTStructureChannels.getValue(trigger, GTStructureChannels.TIER)));
+                switch (tier) {
+                    case 5:
+                        return ofChain(ofBlock(lscLapotronicEnergyUnit, 1), ofBlock(lscLapotronicEnergyUnit, 6));
+                    case 6:
+                        return ofBlock(lscLapotronicEnergyUnit, 2);
+                    case 7:
+                        return ofBlock(lscLapotronicEnergyUnit, 3);
+                    case 8:
+                        return ofBlock(lscLapotronicEnergyUnit, 4);
+                    case 9:
+                        return ofBlock(lscLapotronicEnergyUnit, 7);
+                    default:
+                        return ofBlock(lscLapotronicEnergyUnit, 8);
+                }
             }
 
             private boolean aboveGlass(GTMTE_LapPowerStation machine, World world, int x, int y, int z) {

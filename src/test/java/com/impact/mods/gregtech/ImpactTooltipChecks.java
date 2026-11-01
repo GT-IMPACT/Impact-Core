@@ -104,6 +104,9 @@ final class ImpactTooltipChecks {
                 }
             }
             assertFalse(plain(lap.getPrimaryDescription()).contains(header));
+            String capacitorDescription = plain(lap.getSecondaryDescription());
+            assertTrue(capacitorDescription.contains("5: IV"), language);
+            assertFalse(capacitorDescription.contains("Ultimate"), language);
             for (String tank : new String[] { "Single", "Multi" }) {
                 String registeredName = "impact.multimachine." + tank.toLowerCase() + "fluidtank";
                 GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class

@@ -263,7 +263,7 @@ public class ImpactConstructionChecks {
                         for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
                             if (!GTStructureChannels.HATCH.equals(channel.getChannel())) {
                                 int value = machine instanceof GTMTE_LapPowerStation
-                                        && GTStructureChannels.TIER.equals(channel.getChannel()) ? 8 : size;
+                                        && GTStructureChannels.TIER.equals(channel.getChannel()) ? 10 : size;
                                 ChannelDataAccessor.setChannelData(named, channel.getChannel(), value);
                                 hasParameter = true;
                             }
@@ -1168,8 +1168,11 @@ public class ImpactConstructionChecks {
         long[] capacities = { GTMTE_LapPowerStation.L_IV, GTMTE_LapPowerStation.L_LuV,
                 GTMTE_LapPowerStation.L_ZPM, GTMTE_LapPowerStation.L_UV, 0,
                 GTMTE_LapPowerStation.E_IV, GTMTE_LapPowerStation.L_UHV, GTMTE_LapPowerStation.L_UEV };
-        for (int value : new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 64 }) {
-            int tier = Math.min(8, value);
+        // GregTech voltage tier -> registered capacitor metadata (not a consecutive block ID).
+        int[][] selections = { { 5, 1 }, { 6, 2 }, { 7, 3 }, { 8, 4 }, { 9, 7 }, { 10, 8 }, { 1, 1 }, { 64, 8 } };
+        for (int[] selection : selections) {
+            int value = selection[0];
+            int metadata = selection[1];
             for (boolean survival : new boolean[] { false, true }) {
                 TestWorld world = new TestWorld();
                 GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("capacitor-tier");
@@ -1184,7 +1187,7 @@ public class ImpactConstructionChecks {
                 hints.blocks.forEach((position, block) -> {
                     if (block == ItemRegistery.lscLapotronicEnergyUnit) {
                         capacitors.add(position);
-                        assertEquals(tier, hints.metadata.get(position).intValue());
+                        assertEquals(metadata, hints.metadata.get(position).intValue(), "Capacitor voltage tier " + value);
                     }
                 });
                 assertEquals(18, capacitors.size(), "Height is independent of tier and master size");
@@ -1193,14 +1196,16 @@ public class ImpactConstructionChecks {
                 IStructureElement<GTMTE_LapPowerStation> element =
                         ((StructureDefinition<GTMTE_LapPowerStation>) machine.getStructureDefinition()).getElements().get('E');
                 IStructureElement.BlocksToPlace candidates = element.getBlocksToPlace(machine, world, 0, 66, 1, trigger, null);
-                for (int metadata = 1; metadata <= 8; metadata++) {
-                    assertEquals(metadata == tier, candidates.getPredicate().test(
-                            new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 1, metadata)));
+                for (int candidate = 1; candidate <= 8; candidate++) {
+                    boolean sameTier = candidate == metadata || (metadata == 1 && candidate == 6);
+                    assertEquals(sameTier, candidates.getPredicate().test(
+                            new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 1, candidate)),
+                            "tier=" + value + " candidate=" + candidate);
                 }
                 assertFalse(candidates.getPredicate().test(new ItemStack(ItemRegistery.IGlassBlock)));
                 if (survival) {
-                    ItemStack wrong = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, tier == 1 ? 8 : 1);
-                    ItemStack selected = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, tier);
+                    ItemStack wrong = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, metadata == 1 ? 8 : 1);
+                    ItemStack selected = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, metadata);
                     Source source = new Source(
                             new ItemStack(ImpactCasings.LSCC_CASING.getBlock(), 49, ImpactCasings.LSCC_CASING.getMetadata()),
                             new ItemStack(ItemRegistery.IGlassBlock, 57), wrong, selected);
@@ -1218,18 +1223,49 @@ public class ImpactConstructionChecks {
                 }
                 for (String position : capacitors) {
                     assertSame(ItemRegistery.lscLapotronicEnergyUnit, world.blocks.get(position));
-                    assertEquals(tier, world.metadata.get(position).intValue());
+                    assertEquals(metadata, world.metadata.get(position).intValue());
                 }
                 assertTrue(machine.checkMachine(tile, null));
-                assertEquals(18 * capacities[tier - 1], machine.capacity);
+                assertEquals(18 * capacities[metadata - 1], machine.capacity);
                 String existing = capacitors.iterator().next();
-                int otherTier = tier == 1 ? 8 : 1;
+                int otherTier = metadata == 1 ? 8 : 1;
                 world.metadata.put(existing, otherTier);
                 assertTrue(machine.checkMachine(tile, null), "Mixed installed capacitor tiers remain valid");
                 machine.construct(trigger, false);
                 assertEquals(otherTier, world.metadata.get(existing).intValue(), "Keep existing capacitors");
             }
         }
+        TestWorld world = new TestWorld();
+        GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("energium-tier-five");
+        TestTile tile = controller(world, machine);
+        IChannelDefinition tierChannel = machine.getStructureDefinition().getChannelDefinitions().stream()
+                .filter(channel -> channel.getChannel().equals(GTStructureChannels.TIER)).findFirst().get();
+        assertEquals(5, tierChannel.getMinimumValue());
+        assertEquals(10, tierChannel.getMaximumValue());
+        ItemStack trigger = new ItemStack(Items.stick);
+        ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.HEIGHT, 2);
+        ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.TIER, 5);
+        ItemStack hiddenUltimate = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, 5);
+        ItemStack energium = new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 18, 6);
+        Source source = new Source(hiddenUltimate, energium,
+                new ItemStack(ImpactCasings.LSCC_CASING.getBlock(), 49, ImpactCasings.LSCC_CASING.getMetadata()),
+                new ItemStack(ItemRegistery.IGlassBlock, 57));
+        ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(source, new TestPlayer(world));
+        for (int pass = 0; pass < 100 && !machine.checkMachine(tile, null); pass++) {
+            machine.survivalConstruct(trigger, 7, environment);
+        }
+        assertTrue(machine.checkMachine(tile, null), "Energium is also an IV capacitor");
+        assertEquals(18 * GTMTE_LapPowerStation.E_IV, machine.capacity);
+        assertEquals(0, energium.stackSize);
+        assertEquals(18, hiddenUltimate.stackSize, "Never automatically place the hidden Ultimate capacitor");
+        IStructureElement<GTMTE_LapPowerStation> element = ((StructureDefinition<GTMTE_LapPowerStation>)
+                machine.getStructureDefinition()).getElements().get('E');
+        IStructureElement.BlocksToPlace defaults = element.getBlocksToPlace(machine, world, 20, 66, 20,
+                new ItemStack(Items.stick), null);
+        assertFalse(defaults.getPredicate().test(hiddenUltimate), "The default channel must also exclude Ultimate");
+        world.setBlock(20, 66, 20, ItemRegistery.lscLapotronicEnergyUnit, 5, 0);
+        assertFalse(element.check(machine, world, 20, 66, 20), "Ultimate must not count as a valid capacitor");
+        assertFalse(element.couldBeValid(machine, world, 20, 66, 20, trigger));
     }
 
     private static void checkCapacitorGlassShell(HintRecorder hints) {
