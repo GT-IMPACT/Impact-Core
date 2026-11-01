@@ -277,6 +277,7 @@ public class ImpactCoreQaRegressionChecks {
     }
 
     static void run(String name, String mode) throws Exception {
+        report.println("START " + name + " " + mode);
         GT_MetaTileEntity_EnhancedMultiBlockBase m = machine(name);
         FullWorld w = new FullWorld();
         ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(w, m,
@@ -581,6 +582,7 @@ public class ImpactCoreQaRegressionChecks {
                     run(name, mode);
             checkDedicatedRoles();
         } catch (Throwable error) {
+            error.printStackTrace(report);
             report.flush();
             throw new AssertionError(log.toString(), error);
         }
