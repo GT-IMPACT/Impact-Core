@@ -167,6 +167,7 @@ class ImpactStructureMigrationTest {
                 }
             }
             ImpactConstructionChecks.check();
+            ImpactTooltipChecks.check();
         }
 
         private static Set<String> positions(GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine, int[] origin,

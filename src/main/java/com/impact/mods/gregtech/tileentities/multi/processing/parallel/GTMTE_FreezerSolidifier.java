@@ -82,11 +82,12 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder(mName)
-                .addInfo("Single-block machine equivalent")
+                .addInfo("Cools and solidifies molten materials")
                 .addInfo("Parallel points: base 1, maximum 256")
                 .addMachineType("Freezer Solidification")
                 .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
                 .addSeparator()
+                .beginStructureBlock(5, 4, 5, false)
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")

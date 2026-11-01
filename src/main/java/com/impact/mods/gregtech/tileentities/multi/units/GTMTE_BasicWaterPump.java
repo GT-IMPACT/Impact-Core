@@ -102,11 +102,12 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
                 .addControlInfo("   Beach - 170 L/s")
                 .addControlInfo("   Plans, Forest - 250 L/s")
                 .addControlInfo("   Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
-                .addSeparator()
+                .beginStructureBlock(4, 3, 3, false)
                 .addController("See the structure hologram")
                 .addCasingInfoMin(CASING, 10, false)
                 .addStructureHint("Pump deck or output hatch", HintColor.BLUE)
-                .addOtherStructurePart("Wood Frame Box", "10; see the structure hologram")
+                .addOtherStructurePart(10, "Wood Frame Box", "Support frame above the pump deck")
+                .addOtherStructurePart("Pump Output Hatch", "Center of the pump deck; maximum 1; accepts primitive, ULV or LV output hatches")
                 .toolTipFinisher();
     }
 
