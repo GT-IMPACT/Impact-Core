@@ -221,6 +221,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
                 .addOtherStructurePart("Tether Core", "32x, see the structure hologram")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 63")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

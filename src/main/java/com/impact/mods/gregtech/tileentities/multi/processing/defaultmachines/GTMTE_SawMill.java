@@ -118,6 +118,7 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
                 .addOtherStructurePart(5, "Saw Mill Conveyor", "Bottom middle")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 9")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

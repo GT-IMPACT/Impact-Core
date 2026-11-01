@@ -146,7 +146,8 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_BlockBase<GTMTE_Liquid
                 .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.GREEN)
                 .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 5")
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 60)
+                .addOtherStructurePart(60, "I-Glass", "Any color; see the structure hologram")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -125,6 +125,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
 
                 .addStructureInfo("Hatches replacing casings: at most 60")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -283,6 +283,7 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                 .addStructureHint("Input Bus or Radiation Proof Casing", HintColor.BLUE)
                 .addStructureHint("Dynamo Hatch or Radiation Proof Casing", HintColor.YELLOW)
                 .addStructureHint("Output Bus or Radiation Proof Casing", HintColor.ORANGE)
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

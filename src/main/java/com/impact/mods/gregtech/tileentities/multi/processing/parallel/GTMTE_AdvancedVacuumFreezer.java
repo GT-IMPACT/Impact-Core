@@ -103,6 +103,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 .addOtherStructurePart(7, "IC2 Coolant fluid blocks", "Internal coolant channel; see the structure hologram")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 34")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

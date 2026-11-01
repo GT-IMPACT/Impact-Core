@@ -113,6 +113,7 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 24")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

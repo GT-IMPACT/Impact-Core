@@ -118,6 +118,7 @@ public class GTMTE_MultiDistillationTower
                 .addOtherStructurePart(HeatingCoil.KANTHAL, "inside the hollow", 48)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 90")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

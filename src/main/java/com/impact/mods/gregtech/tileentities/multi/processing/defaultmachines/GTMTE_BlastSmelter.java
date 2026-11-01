@@ -18,6 +18,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTStructureChannels;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -64,6 +65,7 @@ public class GTMTE_BlastSmelter
 
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addChannel(GTStructureChannels.COIL, 1, 10)
                     .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BlastSmelter.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.Muffler)
@@ -117,6 +119,7 @@ public class GTMTE_BlastSmelter
                 .addOtherStructurePart("Heating Coils", "Two middle Layers, hollow")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 20")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 
@@ -322,7 +325,7 @@ public class GTMTE_BlastSmelter
         IGregTechTileEntity base = getBaseMetaTileEntity();
         HeatingCoil existing = HeatingCoil.at(base.getWorld(), base.getXCoord(), base.getYCoord() + 2,
                 base.getZCoord());
-        return existing != null ? existing : HeatingCoil.fromTier(trigger == null ? 1 : trigger.stackSize);
+        return existing != null ? existing : HeatingCoil.fromTier(GTStructureChannels.getValue(trigger, GTStructureChannels.COIL));
     }
 
     public int getMaxEfficiency(ItemStack aStack) {

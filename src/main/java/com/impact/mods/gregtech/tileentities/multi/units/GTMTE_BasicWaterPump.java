@@ -108,6 +108,7 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
                 .addStructureHint("Pump deck or output hatch", HintColor.ORANGE)
                 .addOtherStructurePart(10, "Wood Frame Box", "Support frame above the pump deck")
                 .addOtherStructurePart("Pump Output Hatch", "Center of the pump deck; maximum 1; accepts primitive, ULV or LV output hatches")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

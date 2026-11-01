@@ -120,6 +120,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
                 .addStructureHint("Casing, compatible hatch or machine hull", HintColor.CYAN)
                 .addStructureHint(tierReactor() == 1 ? "Reactor rod" : "Casing or reactor rod", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most " + (SHELL_POSITIONS[tierReactor() - 1] - shellRequirements().getMinimumCasings()))
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

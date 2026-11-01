@@ -250,6 +250,7 @@ public class GTMTE_SingleTank
                 .addStructureHint("Glass or input hatch/bus / output hatch/bus / tank hatch", HintColor.LIME)
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureInfo("Hatches in the top and bottom casing layers: at most 8")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -130,7 +130,7 @@ public final class ImpactGlassChecks {
                             placedGlass++;
                         }
                     }
-                    assertEquals(51, placedGlass);
+                    assertEquals(57, placedGlass);
                     assertEquals(200 - placedGlass, glass.stackSize);
                 }
             }

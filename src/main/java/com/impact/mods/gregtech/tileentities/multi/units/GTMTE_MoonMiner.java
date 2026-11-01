@@ -83,6 +83,7 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureInfo("Hatches replacing casings: at most 17")
                 .addOtherStructurePart(new ItemStack(CollisionBlock, 1, 0), "See the structure hologram", 1)
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

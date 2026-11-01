@@ -120,7 +120,8 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 32")
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 12)
+                .addOtherStructurePart(12, "I-Glass", "Any color; see the structure hologram")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

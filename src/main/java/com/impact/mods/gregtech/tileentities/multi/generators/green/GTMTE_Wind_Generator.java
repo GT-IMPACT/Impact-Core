@@ -372,6 +372,7 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
                 .addMachineType("Generator").addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addCasingInfoMin(CASING, SUPPORT.getMinimumCasings(), false)
                 .addStructureInfo("Hatches replacing casings: at most 1")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

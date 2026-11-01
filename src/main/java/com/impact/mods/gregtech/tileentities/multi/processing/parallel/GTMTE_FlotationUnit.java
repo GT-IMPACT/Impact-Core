@@ -112,6 +112,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                 .addOtherStructurePart("Nichrome Coil", "Any casing")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 11")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

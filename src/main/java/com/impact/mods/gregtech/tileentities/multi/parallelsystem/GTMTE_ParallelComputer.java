@@ -16,6 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTStructureChannels;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.HashSet;
@@ -56,7 +57,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     private int constructionLayers(ItemStack trigger) {
         return Math.max(MIN_RACK_LAYERS, Math.min(MAX_RACK_LAYERS,
-                (trigger == null ? 1 : trigger.stackSize) + MIN_RACK_LAYERS - 1));
+                (GTStructureChannels.getValue(trigger, GTStructureChannels.LENGTH)) + MIN_RACK_LAYERS - 1));
     }
 
     @Override
@@ -90,6 +91,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         if (definition == null) {
             definition = StructureDefinition.<GTMTE_ParallelComputer>builder()
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addChannel(GTStructureChannels.LENGTH, 1, MAX_RACK_LAYERS - MIN_RACK_LAYERS + 1)
                     .addShape("front", new String[][] { { "CC", "CC", "~C", "CC" } })
                     .addShape("layer", new String[][] { { "CC", "PR", "PR", "CC" } })
                     .addShape("end", new String[][] { { "CC", "BB", "BB", "CC" } })
@@ -202,15 +204,21 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Maintenance Hatch", "Front, top and bottom casings; exactly 1")
-                .addOtherStructurePart("Computer Rack", "Empty Rack Casing, Right Side")
-                .addOtherStructurePart("Parallel Hatch Out", "Empty Rack Casing, Left Side")
-                .addOtherStructurePart("Empty Rack Casing", "inside")
+                .addOtherStructurePart(ComputerHatch.Rack.getDescription(),
+                        StatCollector.translateToLocal("impact.structure.parallel_computer.rack_location"))
+                .addOtherStructurePart(ComputerHatch.ParallelOutput.getDescription(),
+                        StatCollector.translateToLocal("impact.structure.parallel_computer.output_location"))
+                .addOtherStructurePart(StatCollector.translateToLocal("tile.impact_inside_block.2.name"),
+                        StatCollector.translateToLocal("impact.structure.parallel_computer.empty_location"))
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addStructureInfo("Length: 4 to 18 blocks; tool stack size selects 2 to 16 rack layers; one item builds the minimum size")
+                .addSubChannel(GTStructureChannels.LENGTH, "Value: 1-15; rack layers = value + 1; total length = value + 3 (4-18 blocks)")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Computer component or parallel output", HintColor.PURPLE)
-                .addStructureHint("Computer component or rack", HintColor.MAGENTA)
+                .addStructureHint(StatCollector.translateToLocalFormatted("impact.structure.parallel_computer.hatch_or_empty",
+                        ComputerHatch.ParallelOutput.getDescription()), HintColor.PURPLE)
+                .addStructureHint(StatCollector.translateToLocalFormatted("impact.structure.parallel_computer.hatch_or_empty",
+                        ComputerHatch.Rack.getDescription()), HintColor.MAGENTA)
                 .addStructureInfo("Minimum casings: 8 + 2 per rack layer (12-40); at most 7 + 2 per rack layer hatches replacing casings (11-39)")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

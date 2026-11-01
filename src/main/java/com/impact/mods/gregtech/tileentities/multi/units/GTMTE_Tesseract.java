@@ -158,6 +158,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                 .addStructureHint("Input Bus / Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
                 .addStructureHint("Output Hatch / Output Bus / Maintenance Hatch or Robust Naquadah Alloy Machine Casing", HintColor.ORANGE)
                 .addStructureHint("Energy Hatch or Robust Naquadah Alloy Machine Casing", HintColor.YELLOW)
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

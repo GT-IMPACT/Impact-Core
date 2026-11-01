@@ -118,6 +118,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
                 .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 11), "See the structure hologram", 3)
                 .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 13), "See the structure hologram", 3)
                 .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 14), "See the structure hologram", 3)
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

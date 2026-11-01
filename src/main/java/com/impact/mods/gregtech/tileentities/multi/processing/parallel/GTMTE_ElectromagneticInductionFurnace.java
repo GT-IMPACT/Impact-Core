@@ -121,6 +121,7 @@ public class GTMTE_ElectromagneticInductionFurnace
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 29")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

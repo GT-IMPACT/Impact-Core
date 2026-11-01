@@ -112,7 +112,8 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 22")
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 7)
+                .addOtherStructurePart(7, "I-Glass", "Any color; see the structure hologram")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -78,7 +78,8 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 15")
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 8)
+                .addOtherStructurePart(8, "I-Glass", "Any color; see the structure hologram")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

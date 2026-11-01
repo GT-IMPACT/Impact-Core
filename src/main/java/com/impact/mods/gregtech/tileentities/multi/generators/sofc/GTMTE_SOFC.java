@@ -93,6 +93,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                 .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.GREEN)
                 .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 17")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

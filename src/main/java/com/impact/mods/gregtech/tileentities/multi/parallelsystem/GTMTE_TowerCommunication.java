@@ -158,6 +158,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureHint("Communication receiver hatch", HintColor.PURPLE)
                 .addStructureInfo("Hatches replacing casings: at most 20")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -83,6 +83,7 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
                 .addRequirements(SHELL, "Any casing position")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 8")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

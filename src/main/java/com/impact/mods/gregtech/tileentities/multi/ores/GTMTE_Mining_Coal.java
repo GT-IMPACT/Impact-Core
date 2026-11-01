@@ -331,6 +331,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
                 .beginStructureBlock(5, 3, 5, false)
                 .addOtherStructurePart("Iron Frame Box", "At least 16")
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

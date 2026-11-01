@@ -98,6 +98,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 32")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

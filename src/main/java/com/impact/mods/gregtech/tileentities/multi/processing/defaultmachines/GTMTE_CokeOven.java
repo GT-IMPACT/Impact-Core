@@ -90,6 +90,7 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
                 .addOtherStructurePart("Primitive Output Hatch", "Maximum 1")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 3")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

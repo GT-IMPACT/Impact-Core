@@ -362,6 +362,7 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                 .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 5")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher()
         }
     }

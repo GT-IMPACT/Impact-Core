@@ -370,6 +370,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             .addRequirements(SHELL, "Any casing position")
             .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
             .addStructureInfo("Hatches replacing casings: at most 4")
+            .addStructureChannels(getStructureDefinition())
             .toolTipFinisher()
     }
 

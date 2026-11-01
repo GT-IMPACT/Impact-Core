@@ -105,6 +105,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 24")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

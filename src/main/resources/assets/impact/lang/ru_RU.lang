@@ -577,6 +577,10 @@ impact.structure.hatch.reactor_rod=Люк ядерных стержней
 
 impact.structure.hatch.machine_hull=Корпус машины
 
-impact.structure.hatch.computer_rack=Компьютерная стойка
+impact.structure.hatch.computer_rack=Стойка параллельного компьютера
 
-impact.structure.hatch.parallel_output=Выходной люк параллельных вычислений
+impact.structure.hatch.parallel_output=Передатчик параллельных вычислений
+impact.structure.parallel_computer.rack_location=Правый внутренний ряд при взгляде на контроллер; вместо пустого корпуса стеллажа
+impact.structure.parallel_computer.output_location=Левый внутренний ряд при взгляде на контроллер; вместо пустого корпуса стеллажа
+impact.structure.parallel_computer.empty_location=Заполняет незанятые места стоек параллельного компьютера и передатчиков параллельных вычислений
+impact.structure.parallel_computer.hatch_or_empty=%s или пустой корпус стеллажа

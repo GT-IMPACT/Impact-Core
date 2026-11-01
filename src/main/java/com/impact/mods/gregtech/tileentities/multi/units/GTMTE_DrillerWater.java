@@ -112,6 +112,7 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
                 .addOtherStructurePart("Steel Frame Box", "Any casing")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 16")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

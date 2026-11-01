@@ -308,6 +308,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
                 .addStructureHint("Casing or compatible hatch", HintColor.LIME)
                 .addStructureInfo("Hatches replacing casings: at most 7")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

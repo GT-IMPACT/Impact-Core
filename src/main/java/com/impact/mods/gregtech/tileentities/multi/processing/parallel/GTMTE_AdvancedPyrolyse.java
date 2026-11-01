@@ -131,6 +131,7 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                 .addOtherStructurePart("HSLA Frame", "Bottom angles")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 7")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

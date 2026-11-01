@@ -155,6 +155,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 .addStructureHint("Matrix Transducer", HintColor.PURPLE)
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 28")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

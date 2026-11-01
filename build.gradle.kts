@@ -35,7 +35,7 @@ repositories {
             includeVersion(
                 "space.impact",
                 "gregtech-impact",
-                "5.09.36.1",
+                "5.09.36.3",
             )
         }
     }
@@ -46,7 +46,7 @@ dependencies {
     implementation("space.impact:Packet-network:1.1.8.dirty")
     implementation("space.impact:ImpactStructures:1.1.1:dev")
     implementation("space.impact:VirtualWorld:2.0.4:dev")
-    implementation("space.impact:gregtech-impact:5.09.36.1:dev") {
+    implementation("space.impact:gregtech-impact:5.09.36.3:dev") {
         isTransitive = false
     }
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")

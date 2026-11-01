@@ -112,10 +112,11 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
                 .addOtherStructurePart("Energy Hatch", "Any casing")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addRequirements(SHELL, "Any casing position")
-                .addOtherStructurePart(new ItemStack(ItemRegistery.IGlassBlock, 1, 0), "Glass positions; any color", 2)
+                .addOtherStructurePart(2, "I-Glass", "Any color; see the structure hologram")
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 11)
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 12")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -100,6 +100,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
 
                 .addStructureInfo("Hatches replacing casings: at most 25")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

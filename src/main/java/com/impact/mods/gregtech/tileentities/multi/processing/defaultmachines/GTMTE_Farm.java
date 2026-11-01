@@ -115,6 +115,7 @@ public class GTMTE_Farm
                 .addOtherStructurePart("Reinforced Glass", "At the center of the Top layer")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 15")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -238,6 +238,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
                 .addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 4")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

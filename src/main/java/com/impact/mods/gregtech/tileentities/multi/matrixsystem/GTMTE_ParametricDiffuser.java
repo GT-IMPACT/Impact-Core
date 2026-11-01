@@ -143,11 +143,12 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                 .addOtherStructurePart("Input Bus", "Any casing; exactly 1")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(new ItemStack(ItemRegistery.IGlassBlock, 1, 0), "Glass positions; any color", 10)
+                .addOtherStructurePart(10, "I-Glass", "Any color; see the structure hologram")
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 19)
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "See the structure hologram", 1)
                 .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
                 .addStructureInfo("Hatches replacing casings: at most 42")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

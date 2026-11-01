@@ -40,6 +40,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTStructureChannels;
 import ic2.core.Ic2Items;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -85,6 +86,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.structures.CommonProxy;
 import space.impact.structures.Main;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
+import space.impact.structures.alignment.constructable.ChannelDataAccessor;
+import space.impact.structures.structure.IChannelDefinition;
 import space.impact.structures.alignment.enumerable.ExtendedFacing;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.hint.HintMarkerKind;
@@ -121,6 +124,7 @@ public class ImpactConstructionChecks {
         checkSpaceElevatorBeam();
         checkParallelComputerLength(hints);
         checkCapacitors();
+        checkCapacitorGlassShell(hints);
         checkSurvival();
         assertEquals(5, new GTMTE_TheMill("mill-test").mInventory.length);
         assertEquals(2, new GTMTE_CokeOven("coke-test").mInventory.length);
@@ -206,6 +210,12 @@ public class ImpactConstructionChecks {
                             .newInstance(name);
                 }
                 ImpactCasingChecks.checkTooltip(machine);
+                String description = String.join("\n", machine.getSecondaryDescription());
+                String structureHints = String.join("\n", machine.getStructureDescription(null));
+                for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
+                    assertTrue(description.contains(channel.getChannel() + ":"), name + " missing " + channel.getChannel());
+                    assertTrue(structureHints.contains(channel.getChannel() + ":"), name + " missing channel hint");
+                }
                 int orientations = 0;
                 for (ExtendedFacing facing : ExtendedFacing.VALUES) {
                     if (!machine.isNewExtendedFacingValid(facing)) {
@@ -223,6 +233,24 @@ public class ImpactConstructionChecks {
                         hints.clear();
                         ItemStack trigger = new ItemStack(Items.stick, size);
                         machine.construct(trigger, true);
+                        ItemStack named = new ItemStack(Items.stick, size == 1 ? 64 : 1);
+                        boolean hasParameter = false;
+                        for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
+                            if (!GTStructureChannels.HATCH.equals(channel.getChannel())) {
+                                ChannelDataAccessor.setChannelData(named, channel.getChannel(), size);
+                                hasParameter = true;
+                            }
+                        }
+                        if (hasParameter) {
+                            Set<String> positions = new HashSet<>(hints.positions);
+                            Map<String, Block> blocks = new HashMap<>(hints.blocks);
+                            Map<String, Integer> metadata = new HashMap<>(hints.metadata);
+                            hints.clear();
+                            machine.construct(named, true);
+                            assertEquals(positions, hints.positions, name + " channel geometry");
+                            assertEquals(blocks, hints.blocks, name + " channel blocks");
+                            assertEquals(metadata, hints.metadata, name + " channel tiers");
+                        }
                         assertFalse(hints.positions.isEmpty(), name);
                         assertFalse(hints.positions.contains(TestWorld.key(0, 64, 0)),
                                 "The hologram covers its controller: " + name);
@@ -652,6 +680,11 @@ public class ImpactConstructionChecks {
                     machine.construct(trigger, true);
                     Set<String> expected = new HashSet<>(hints.positions);
                     assertEquals(length * 8 - 1, expected.size(), "Computer length for stack " + size);
+                    ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.LENGTH, size);
+                    trigger.stackSize = size == 1 ? 64 : 1;
+                    hints.clear();
+                    machine.construct(trigger, true);
+                    assertEquals(expected, hints.positions, "Named length overrides the master channel");
                     world.isRemote = false;
                     if (survival) {
                         Source source = new Source(
@@ -755,6 +788,69 @@ public class ImpactConstructionChecks {
             assertEquals(expected - GTMTE_LapPowerStation.L_UEV + GTMTE_LapPowerStation.L_IV, machine.capacity);
             world.blocks.put(cell, Blocks.bedrock);
             assertFalse(machine.checkMachine(tile, null));
+        }
+    }
+
+    private static void checkCapacitorGlassShell(HintRecorder hints) {
+        for (ForgeDirection facing : new ForgeDirection[] {
+                ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST }) {
+            for (int size : new int[] { 1, 2, 64 }) {
+                int layers = Math.min(size, 15);
+                Set<String> expectedGlass = new HashSet<>();
+                int[] offset = new int[3];
+                for (int height = 2; height <= layers + 2; height++) {
+                    for (int x = -2; x <= 2; x++) {
+                        for (int z = 0; z <= 4; z++) {
+                            if (height < layers + 2 && Math.abs(x) < 2 && z > 0 && z < 4) continue;
+                            ExtendedFacing.of(facing).getWorldOffset(new int[] { x, -height, z }, offset);
+                            expectedGlass.add(TestWorld.key(offset[0], 64 + offset[1], offset[2]));
+                        }
+                    }
+                }
+                assertEquals(16 * layers + 25, expectedGlass.size());
+                for (boolean survival : new boolean[] { false, true }) {
+                    TestWorld world = new TestWorld();
+                    GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("closed-capacitor-shell");
+                    TestTile tile = new TestTile(world, machine, facing);
+                    world.putTile(0, 64, 0, tile);
+                    ItemStack trigger = new ItemStack(Items.stick, size);
+                    world.isRemote = true;
+                    hints.clear();
+                    machine.construct(trigger, true);
+                    Set<String> hintedGlass = new HashSet<>();
+                    hints.blocks.forEach((position, block) -> {
+                        if (block == ItemRegistery.IGlassBlock) hintedGlass.add(position);
+                    });
+                    assertEquals(expectedGlass, hintedGlass, "Closed glass hologram: size=" + size + " facing=" + facing);
+                    world.isRemote = false;
+                    if (survival) {
+                        Source source = new Source(
+                                new ItemStack(ImpactCasings.LSCC_CASING.getBlock(), 49,
+                                        ImpactCasings.LSCC_CASING.getMetadata()),
+                                new ItemStack(ItemRegistery.IGlassBlock, expectedGlass.size()),
+                                new ItemStack(ItemRegistery.lscLapotronicEnergyUnit, 9 * layers, 8));
+                        ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(source, new TestPlayer(world));
+                        for (int pass = 0; pass < 100 && !machine.checkMachine(tile, null); pass++) {
+                            int consumed = source.consumed;
+                            int built = machine.survivalConstruct(trigger, 7, environment);
+                            assertTrue(built >= 0 && built <= 7);
+                            assertEquals(built, source.consumed - consumed);
+                        }
+                        assertEquals(49 + expectedGlass.size() + 9 * layers, source.consumed);
+                    } else {
+                        machine.construct(trigger, false);
+                    }
+                    Set<String> placedGlass = new HashSet<>();
+                    world.blocks.forEach((position, block) -> {
+                        if (block == ItemRegistery.IGlassBlock) placedGlass.add(position);
+                    });
+                    assertEquals(expectedGlass, placedGlass, "Closed glass build: size=" + size + " facing=" + facing);
+                    assertTrue(machine.checkMachine(tile, null));
+                    ExtendedFacing.of(facing).getWorldOffset(new int[] { 0, -2, 4 }, offset);
+                    world.setBlock(offset[0], 64 + offset[1], offset[2], Blocks.air, 0, 0);
+                    assertFalse(machine.checkMachine(tile, null), "Missing rear glass must invalidate the structure");
+                }
+            }
         }
     }
 

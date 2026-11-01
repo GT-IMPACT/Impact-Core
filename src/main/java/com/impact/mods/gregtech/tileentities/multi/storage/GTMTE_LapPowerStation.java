@@ -22,6 +22,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTStructureChannels;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.text.NumberFormat;
@@ -81,12 +82,13 @@ public class GTMTE_LapPowerStation extends
         if (STRUCTURE == null) {
             STRUCTURE = StructureDefinition.<GTMTE_LapPowerStation>builder()
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
+                    .addChannel(GTStructureChannels.HEIGHT, 1, 15)
                     .addShape("base", new String[][] {
                             { "CCCCC", "CC~CC" }, { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" },
                             { "CCCCC", "CCCCC" }, { "CCCCC", "CCCCC" }
                     })
                     .addShape("layer",
-                            new String[][] { { "GGGGG" }, { "GEEEG" }, { "GEEEG" }, { "GEEEG" }, { "G   G" } })
+                            new String[][] { { "GGGGG" }, { "GEEEG" }, { "GEEEG" }, { "GEEEG" }, { "GGGGG" } })
                     .addShape("roof",
                             new String[][] { { "GGGGG" }, { "GGGGG" }, { "GGGGG" }, { "GGGGG" }, { "GGGGG" } })
                     .addShape("roofProbe", new String[][] { { "P" } })
@@ -103,7 +105,7 @@ public class GTMTE_LapPowerStation extends
     }
 
     private int constructionLayers(ItemStack trigger) {
-        return Math.max(1, Math.min(15, trigger == null ? 1 : trigger.stackSize));
+        return Math.max(1, Math.min(15, GTStructureChannels.getValue(trigger, GTStructureChannels.HEIGHT)));
     }
 
     @Override
@@ -180,11 +182,12 @@ public class GTMTE_LapPowerStation extends
                 .addOtherStructurePart("Dynamo Hatch", "Base casing")
                 .addOtherStructurePart("Energy Hatch", "Base casing")
                 .addRequirements(SHELL, "5x2x5 base")
-                .addStructureInfo("Tool stack size selects 1 to 15 capacitor layers")
+                .addSubChannel(GTStructureChannels.HEIGHT, "Capacitor layers: 1-15; total height = value + 3")
                 .addOtherStructurePart("Capacitors", "Center 3x(1-15)x3 above base (9-135 blocks)")
-                .addOtherStructurePart("I-Glass", "13 per capacitor layer and 25 in the roof (38-220); capacitor columns may also end with glass")
+                .addOtherStructurePart("I-Glass", "16 per capacitor layer and 25 in the roof (41-265); capacitor columns may also end with glass")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 24")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

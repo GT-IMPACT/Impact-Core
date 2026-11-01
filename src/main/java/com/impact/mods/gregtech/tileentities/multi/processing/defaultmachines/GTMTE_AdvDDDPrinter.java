@@ -111,6 +111,7 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
                 .addOtherStructurePart(ImpactCasings.DDD_PRINTER_CASING4X4, "core structure", 16)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 29")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

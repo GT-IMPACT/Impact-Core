@@ -124,6 +124,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
                 .addOtherStructurePart("Steel Frame", "Bottom angles")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 7")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

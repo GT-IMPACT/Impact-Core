@@ -112,6 +112,7 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
                 .addOtherStructurePart(Casings.SUPERCONDUCTING_COIL, "Around the compression chamber, including the top and bottom faces", 16)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 20")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -94,6 +94,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
                 .beginStructureBlock(9, 12, 9, false)
                 .addCasingInfoExactly(CASING, 262, false)
                 .addStructureHint("The Mill Rotor", HintColor.GREEN)
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

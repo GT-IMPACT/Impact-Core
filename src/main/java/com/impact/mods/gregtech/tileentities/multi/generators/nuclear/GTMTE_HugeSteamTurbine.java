@@ -128,6 +128,7 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                 .addStructureHint("Casing or input hatch/bus / maintenance hatch", HintColor.BLUE)
                 .addStructureHint("Casing or dynamo / laser output", HintColor.YELLOW)
                 .addStructureInfo("Hatches replacing casings: at most 56")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

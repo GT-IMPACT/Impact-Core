@@ -133,6 +133,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                 .addStructureHint("Muffler Hatch", HintColor.ORANGE)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 32")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -595,6 +595,10 @@ impact.structure.hatch.reactor_rod=Nuclear Rod Hatch
 
 impact.structure.hatch.machine_hull=Machine Hull
 
-impact.structure.hatch.computer_rack=Computer Rack
+impact.structure.hatch.computer_rack=Parallel Computer Rack
 
-impact.structure.hatch.parallel_output=Parallel Output Hatch
+impact.structure.hatch.parallel_output=Parallel Transmitter
+impact.structure.parallel_computer.rack_location=Right inner column when facing the controller; replaces an Empty Rack Casing
+impact.structure.parallel_computer.output_location=Left inner column when facing the controller; replaces an Empty Rack Casing
+impact.structure.parallel_computer.empty_location=Fills unused Parallel Computer Rack and Parallel Transmitter positions
+impact.structure.parallel_computer.hatch_or_empty=%s or Empty Rack Casing

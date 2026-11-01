@@ -258,6 +258,7 @@ public class GTMTE_MultiTank
                 .addStructureHint("Glass, casing or I/O/tank hatch", HintColor.LIME)
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
                 .addStructureInfo("Hatches in the top and bottom casing layers: at most 17")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

@@ -297,6 +297,7 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             addOtherStructurePart("I-Glass", "Glass for structure")
             addStructureHint("Casing or compatible hatch", HintColor.GREEN)
             addStructureInfo("Hatches replacing casings: at most 10")
+            addStructureChannels(getStructureDefinition())
             toolTipFinisher()
         }
     }

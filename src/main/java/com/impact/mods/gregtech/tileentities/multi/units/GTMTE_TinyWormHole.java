@@ -232,6 +232,7 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 
                 .addStructureHint("Input/output, energy/dynamo, maintenance or Robust Naquadah Alloy Machine Casing", HintColor.GREEN)
                 .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 

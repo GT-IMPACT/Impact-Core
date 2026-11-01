@@ -100,6 +100,7 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
                 .addRequirements(SHELL, "Either side of the controller")
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
                 .addStructureInfo("Hatches replacing casings: at most 3")
+                .addStructureChannels(getStructureDefinition())
                 .toolTipFinisher();
     }
 
