@@ -78,6 +78,7 @@ class ImpactStructureMigrationTest {
 
     public static class Scenarios {
         public static void check() throws Exception {
+            com.impact.core.Config.isDebugDev = false;
             Loader.injectData("7", "10", "99", "99", "1.7.10", "9.05", new File("."), Collections.emptyList());
             Bootstrap.func_151354_b();
             GregTech_API.sMachineFile = new GT_Config(new Configuration() {

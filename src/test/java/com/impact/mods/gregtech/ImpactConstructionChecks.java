@@ -1375,8 +1375,12 @@ public class ImpactConstructionChecks {
         int changes;
 
         TestWorld() {
+            this(new WorldProviderSurface());
+        }
+
+        TestWorld(net.minecraft.world.WorldProvider provider) {
             super(new SaveHandlerMP(), "structures", new WorldSettings(0, WorldSettings.GameType.SURVIVAL,
-                    false, false, WorldType.DEFAULT), new WorldProviderSurface(), new Profiler());
+                    false, false, WorldType.DEFAULT), provider, new Profiler());
         }
 
         static String key(int x, int y, int z) {

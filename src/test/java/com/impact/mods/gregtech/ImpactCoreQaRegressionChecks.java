@@ -280,6 +280,9 @@ public class ImpactCoreQaRegressionChecks {
         report.println("START " + name + " " + mode);
         GT_MetaTileEntity_EnhancedMultiBlockBase m = machine(name);
         FullWorld w = new FullWorld();
+        if (name.endsWith("GTMTE_MPContainment")) {
+            w.provider.dimensionId = com.impact.addon.gc.DimensionsIDs.ORBIT_EARTH;
+        }
         ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(w, m,
                 name.endsWith("GTMTE_Mining_Coal") || name.endsWith("GTMTE_BasicMiner")
                         || name.endsWith("GTMTE_AdvancedMiner") ? ForgeDirection.UP : ForgeDirection.NORTH);
@@ -409,6 +412,13 @@ public class ImpactCoreQaRegressionChecks {
     static void checkSelectedHatches(GT_MetaTileEntity_EnhancedMultiBlockBase machine, FullWorld world,
             ImpactConstructionChecks.TestTile controller) throws Exception {
         String name = machine.getClass().getSimpleName();
+        if (name.equals("GTMTE_MPContainment")) {
+            int orbit = world.provider.dimensionId;
+            world.provider.dimensionId = 0;
+            assertFalse(recheck(machine, controller), "Containment requires low gravity");
+            world.provider.dimensionId = orbit;
+            assertTrue(recheck(machine, controller), "Containment must form again on Earth's orbit");
+        }
         if (name.equals("GTMTE_Wind_Generator")) {
             assertEquals(1, machine.mInputBusses.size());
             assertEquals(1, machine.mDynamoHatches.size());
@@ -561,8 +571,30 @@ public class ImpactCoreQaRegressionChecks {
         }
     }
 
+    static class TestSpaceProvider extends net.minecraft.world.WorldProviderSurface {
+    }
+
+    private static void checkGravityRequirements() {
+        assertFalse(com.impact.core.Config.isDebugDev, "Structure tests must not bypass dimension restrictions");
+        FullWorld world = new FullWorld();
+        assertNull(net.minecraftforge.common.DimensionManager.getWorld(world.provider.dimensionId));
+        ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(world,
+                new com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment("gravity-test"),
+                ForgeDirection.NORTH);
+        assertFalse(com.impact.util.Utilits.isValidDim(world.provider.dimensionId, "Space"));
+        assertFalse(com.impact.util.Utilits.isLowGravity(tile), "The overworld has normal gravity");
+        world.provider.dimensionId = com.impact.addon.gc.DimensionsIDs.ORBIT_EARTH;
+        assertTrue(com.impact.util.Utilits.isLowGravity(tile), "Earth's orbit has low gravity");
+        ImpactConstructionChecks.TestWorld spaceWorld = new ImpactConstructionChecks.TestWorld(new TestSpaceProvider());
+        ImpactConstructionChecks.TestTile spaceTile = new ImpactConstructionChecks.TestTile(spaceWorld,
+                new com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment("space-gravity-test"),
+                ForgeDirection.NORTH);
+        assertTrue(com.impact.util.Utilits.isLowGravity(spaceTile), "Use the world's provider even outside DimensionManager");
+    }
+
     public static void check() throws Exception {
         ImpactStructureMigrationTest.Scenarios.check();
+        checkGravityRequirements();
         checkTooltips();
         List<String> names = Arrays.asList(
                 "com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator",

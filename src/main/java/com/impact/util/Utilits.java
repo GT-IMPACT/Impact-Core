@@ -258,7 +258,8 @@ public class Utilits {
 	}
 
 	public static boolean isValidDim(int idDim, String nameDim) {
-		return DimensionManager.getProvider(idDim).getClass().getName().contains(nameDim);
+		World world = DimensionManager.getWorld(idDim);
+		return world != null && world.provider != null && world.provider.getClass().getName().contains(nameDim);
 	}
 
 	public static boolean isLowGravity(int idDim) {
@@ -267,8 +268,10 @@ public class Utilits {
 
 	public static boolean isLowGravity(IGregTechTileEntity iAm) {
 		if (Config.isDebugDev) return true;
-		int dimId = iAm.getWorld().provider.dimensionId;
-		return dimId == DimensionsIDs.ORBIT_EARTH || isValidDim(dimId, "Orbit") || isValidDim(dimId, "Space") || isValidDim(dimId, "SS") || isValidDim(dimId, "SpaceStation");
+		World world = iAm.getWorld();
+		String providerName = world.provider.getClass().getName();
+		return world.provider.dimensionId == DimensionsIDs.ORBIT_EARTH
+				|| providerName.contains("Orbit") || providerName.contains("Space") || providerName.contains("SS");
 	}
 
 	public static AxisAlignedBB setBoxAABB(IGregTechTileEntity igt, double radius) {
