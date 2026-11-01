@@ -34,7 +34,8 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
     private int casingCount;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 21)
+    // 41 shell positions minus 20 input buses, 3 output buses, 4 energy and 3 service hatches.
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 11)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
     private static IStructureDefinition<GTMTE_PressBendExtrud> definition;
 
@@ -65,7 +66,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 20")
+                .addStructureInfo("Hatches replacing casings: at most 30")
                 .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
                 .toolTipFinisher();
     }

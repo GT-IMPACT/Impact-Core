@@ -4,6 +4,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Assembler;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_PressBendExtrud;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,6 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_EnergyMulti;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
@@ -67,6 +69,7 @@ final class ImpactCasingChecks {
     }
 
     static void checkLimits() {
+        checkPbeLimits();
         ImpactConstructionChecks.TestWorld world = new ImpactConstructionChecks.TestWorld();
         Assembler machine = new Assembler();
         world.putTile(0, 64, 0, new ImpactConstructionChecks.TestTile(world, machine, ForgeDirection.NORTH));
@@ -80,16 +83,16 @@ final class ImpactCasingChecks {
         });
         assertEquals(61, positions.size());
         put(world, positions.get(0), maintenance());
-        for (int i = 1; i < 30; i++) {
+        for (int i = 1; i < 35; i++) {
             put(world, positions.get(i), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
         }
-        assertTrue(machine.recheck(), "31 casings and 30 hatches must form the assembler");
+        assertTrue(machine.recheck(), "26 casings and 35 hatches must form the assembler");
         assertTrue(machine.recheck(), "Casing counts must reset between checks");
         String tooltip = EnumChatFormatting.getTextWithoutFormattingCodes(String.join("\n", machine.getSecondaryDescription()));
-        assertTrue(tooltip.contains("31"), "The tooltip must expose the enforced minimum");
-        put(world, positions.get(30), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
-        assertFalse(machine.recheck(), "30 casings are below the minimum");
-        for (int i = 31; i < positions.size(); i++) {
+        assertTrue(tooltip.contains("26"), "The tooltip must expose the enforced minimum");
+        put(world, positions.get(35), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
+        assertFalse(machine.recheck(), "25 casings are below the minimum");
+        for (int i = 36; i < positions.size(); i++) {
             put(world, positions.get(i), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
         }
         assertFalse(machine.recheck(), "A shell made entirely of hatches must be rejected");
@@ -123,6 +126,34 @@ final class ImpactCasingChecks {
         assertFalse(machine.recheck(), "Combined input cannot bypass the fluid-input limit");
         assertEquals(7, HatchCounts.inputHatches(machine));
         assertEquals(1, HatchCounts.inputBuses(machine));
+    }
+
+    private static void checkPbeLimits() {
+        ImpactConstructionChecks.TestWorld world = new ImpactConstructionChecks.TestWorld();
+        Pbe machine = new Pbe();
+        world.putTile(0, 64, 0, new ImpactConstructionChecks.TestTile(world, machine, ForgeDirection.NORTH));
+        machine.construct(new ItemStack(Items.stick), false);
+        List<String> positions = new ArrayList<>();
+        world.blocks.forEach((position, block) -> {
+            if (block == ImpactCasings.PBECASING.getBlock()
+                    && world.metadata.get(position) == ImpactCasings.PBECASING.getMetadata()) {
+                positions.add(position);
+            }
+        });
+        assertEquals(41, positions.size());
+        put(world, positions.get(0), maintenance());
+        put(world, positions.get(1), new GT_MetaTileEntity_Hatch_Muffler("muffler", 4, "", new ITexture[0][][]));
+        for (int i = 2; i < 30; i++) {
+            put(world, positions.get(i), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
+        }
+        assertTrue(machine.recheck(), "11 casings and 30 hatches must form the PBE");
+        assertTrue(machine.recheck(), "PBE casing counts must reset between checks");
+        String tooltip = EnumChatFormatting.getTextWithoutFormattingCodes(
+                String.join("\n", machine.getSecondaryDescription())
+        );
+        assertTrue(tooltip.contains("11"), "The PBE tooltip must expose the enforced minimum");
+        put(world, positions.get(30), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
+        assertFalse(machine.recheck(), "10 casings are below the PBE minimum");
     }
 
     private static GT_MetaTileEntity_Hatch_Maintenance maintenance() {
@@ -172,6 +203,18 @@ final class ImpactCasingChecks {
             String[] point = position.split(":");
             world.setBlock(Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(point[2]),
                     ImpactCasings.ASSEMBLER_CASING.getBlock(), ImpactCasings.ASSEMBLER_CASING.getMetadata(), 0);
+        }
+    }
+
+    private static final class Pbe extends GTMTE_PressBendExtrud {
+
+        Pbe() {
+            super("pbe-casing-limit-test");
+        }
+
+        boolean recheck() {
+            setupMachine(getBaseMetaTileEntity(), null);
+            return mMachine;
         }
     }
 

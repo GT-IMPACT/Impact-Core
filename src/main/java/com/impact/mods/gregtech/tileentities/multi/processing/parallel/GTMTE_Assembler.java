@@ -38,7 +38,8 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 
     private int casingCount;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 31)
+    // 61 shell positions minus 20 input buses, 6 input hatches, 3 output buses, 4 energy and 2 service hatches.
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 26)
             .atLeast(HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_Assembler> definition;
 
@@ -60,7 +61,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
                 .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 30")
+                .addStructureInfo("Hatches replacing casings: at most 35")
                 .addOtherStructurePart(9, "I-Glass", "Any color; see the structure hologram")
                 .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
                 .toolTipFinisher();
