@@ -537,17 +537,10 @@ public class ImpactCoreQaRegressionChecks {
                 { "units.GTMTE_DrillerWater", "impact.multimachine.waterdrill" } };
         for (String language : new String[] { "ru_RU", "en_US" }) {
             Properties translations = new Properties();
-            for (String mod : new String[] { "gregtech", "impact" }) {
-                String resource = "/assets/" + mod + "/lang/" + language + ".lang";
-                try (InputStream stream = ImpactCoreQaRegressionChecks.class.getResourceAsStream(resource)) {
-                    net.minecraft.util.StringTranslate.inject(stream);
-                }
-                if (mod.equals("impact")) {
-                    try (Reader reader = new InputStreamReader(
-                            ImpactCoreQaRegressionChecks.class.getResourceAsStream(resource), StandardCharsets.UTF_8)) {
-                        translations.load(reader);
-                    }
-                }
+            ImpactTooltipChecks.loadLanguage(language);
+            try (Reader reader = new InputStreamReader(ImpactCoreQaRegressionChecks.class.getResourceAsStream(
+                    "/assets/impact/lang/" + language + ".lang"), StandardCharsets.UTF_8)) {
+                translations.load(reader);
             }
             GT_MetaTileEntity_TooltipMultiBlockBase.invalidateTooltipCache();
             for (String[] entry : machines) {

@@ -29,24 +29,12 @@ buildConfig {
     }
 }
 
-repositories {
-    mavenLocal {
-        content {
-            includeVersion(
-                "space.impact",
-                "gregtech-impact",
-                "5.09.36.3",
-            )
-        }
-    }
-}
-
 dependencies {
     // impact
     implementation("space.impact:Packet-network:1.1.8.dirty")
     implementation("space.impact:ImpactStructures:1.1.3:dev")
     implementation("space.impact:VirtualWorld:2.0.4:dev")
-    implementation("space.impact:gregtech-impact:5.09.36.3:dev") {
+    implementation("space.impact:gregtech-impact:5.09.36.4:dev") {
         isTransitive = false
     }
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")

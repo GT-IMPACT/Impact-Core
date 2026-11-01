@@ -4,6 +4,8 @@ import com.impact.loader.ItemRegistery;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import java.util.Arrays;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
 import gregtech.api.util.GTStructureChannels;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
 import net.minecraft.util.StatCollector;
@@ -83,14 +85,10 @@ final class ImpactTooltipChecks {
         GT_MetaTileEntity_EnhancedMultiBlockBase<?> lap = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class.forName(ROOT + "storage.GTMTE_LapPowerStation")
                 .getConstructor(String.class).newInstance("impact.multimachine.supercapacitor");
         for (String language : new String[] { "ru_RU", "en_US" }) {
-            for (String mod : new String[] { "gregtech", "impact" }) {
-                try (InputStream stream = ImpactTooltipChecks.class.getResourceAsStream(
-                        "/assets/" + mod + "/lang/" + language + ".lang")) {
-                    StringTranslate.inject(stream);
-                }
-            }
+            loadLanguage(language);
             GT_MetaTileEntity_TooltipMultiBlockBase.invalidateTooltipCache();
             String header = StatCollector.translateToLocal("gt.tooltip.channels");
+            assertEquals(language.equals("ru_RU") ? "Каналы структуры" : "Structure channels", header);
             for (String[] lines : new String[][] { lap.getSecondaryDescription(), lap.getStructureDescription(null) }) {
                 String description = plain(lines);
                 int section = description.indexOf(header);
@@ -139,6 +137,20 @@ final class ImpactTooltipChecks {
                 for (int index = first; index <= last; index++) {
                     String key = "TileEntity_DESCRIPTION_impact.multis.parallelcomputer_" + section + "_Index_" + index;
                     assertTrue(computerStructure.contains(StatCollector.translateToLocal(key)), language + " missing " + key);
+                }
+            }
+        }
+    }
+
+    static void loadLanguage(String language) throws Exception {
+        for (String mod : new String[] { "gregtech", "impact" }) {
+            // Addons can contribute another file under the same language resource path.
+            Enumeration<URL> resources = ImpactTooltipChecks.class.getClassLoader()
+                    .getResources("assets/" + mod + "/lang/" + language + ".lang");
+            assertTrue(resources.hasMoreElements(), mod + " missing language " + language);
+            while (resources.hasMoreElements()) {
+                try (InputStream stream = resources.nextElement().openStream()) {
+                    StringTranslate.inject(stream);
                 }
             }
         }
