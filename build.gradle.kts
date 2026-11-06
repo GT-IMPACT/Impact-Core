@@ -39,11 +39,6 @@ dependencies {
     }
 
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
-    // RecipeModule's IMPACT recipes reference TecTech items during startup.
-    runtimeOnlyNonPublishable("space.impact:TecTech:3.9.4:dev") { isTransitive = false }
-    // YAMCore is published with SRG names; dev clients need MCP names for packet handlers.
-    runtimeOnlyNonPublishable(modUtils.deobfuscate("com.github.GTNewHorizons:YAMCore:0.5.79"))
-    runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.1.3") { isTransitive = false }
     runtimeOnlyNonPublishable("space.impact:GregTechBridge:1.0.2:dev") { isTransitive = false }
 
     // maven impact
