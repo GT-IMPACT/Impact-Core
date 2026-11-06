@@ -34,34 +34,13 @@ dependencies {
     implementation("space.impact:Packet-network:1.1.8.dirty")
     implementation("space.impact:ImpactStructures:1.1.3:dev")
     implementation("space.impact:VirtualWorld:2.0.4:dev")
-    val gregtechDevJar = providers.gradleProperty("gregtechDevJar")
-    if (gregtechDevJar.isPresent) {
-        implementation(files(gregtechDevJar.get()))
-    } else {
-        implementation("space.impact:gregtech-impact:5.09.37.1") {
-            if (gradle.includedBuilds.none {
-                    it.name == "gregtech"
-                }) {
-                artifact {
-                    classifier = "dev"
-                }
-            }
-            isTransitive = false
-        }
+    implementation("space.impact:gregtech-impact:5.09.37.2:dev") {
+        isTransitive = false
     }
 
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
     // RecipeModule's IMPACT recipes reference TecTech items during startup.
-    runtimeOnlyNonPublishable("space.impact:TecTech:3.9.3") {
-        if (gradle.includedBuilds.none {
-                it.name == "tectech"
-            }) {
-            artifact {
-                classifier = "dev"
-            }
-        }
-        isTransitive = false
-    }
+    runtimeOnlyNonPublishable("space.impact:TecTech:3.9.4:dev") { isTransitive = false }
     // YAMCore is published with SRG names; dev clients need MCP names for packet handlers.
     runtimeOnlyNonPublishable(modUtils.deobfuscate("com.github.GTNewHorizons:YAMCore:0.5.79"))
     runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.1.3") { isTransitive = false }
