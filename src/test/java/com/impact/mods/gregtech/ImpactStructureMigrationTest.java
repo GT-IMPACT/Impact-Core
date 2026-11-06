@@ -5,6 +5,7 @@ import com.impact.mods.gregtech.blocks.ImpactBlocks;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.util.GT_Config;
 import java.io.BufferedReader;
@@ -61,7 +62,7 @@ class ImpactStructureMigrationTest {
         };
                 BufferedReader reader = new BufferedReader(new InputStreamReader(
                         getClass().getResourceAsStream("/structures/controllers.tsv"), StandardCharsets.UTF_8))) {
-            Class<?> base = server.loadClass(GT_MetaTileEntity_EnhancedMultiBlockBase.class.getName());
+            Class<?> base = server.loadClass(GT_MetaTileEntity_ProcessingMultiBlockBase.class.getName());
             Class<?> survival = server.loadClass(ISurvivalConstructable.class.getName());
             String row;
             int controllers = 0;

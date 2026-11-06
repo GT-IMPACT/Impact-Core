@@ -1,19 +1,26 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.lap.LapChargeHistory;
+import com.impact.mods.gregtech.gui.lap.LapPowerStationGui;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IProvideEnergyCover;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DynamoMulti;
@@ -34,7 +41,6 @@ import java.util.Set;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -70,7 +76,7 @@ import static space.impact.structures.structure.StructureUtility.withHint;
  */
 
 public class GTMTE_LapPowerStation extends
-        GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapPowerStation>
+        GT_MetaTileEntity_ProcessingMultiBlockBase<GTMTE_LapPowerStation>
         implements ISurvivalConstructable, IProvideEnergyCover {
     private static IStructureDefinition<GTMTE_LapPowerStation> STRUCTURE;
     private static final StructureRequirements SHELL = StructureRequirements.builder(ImpactCasings.LSCC_CASING, 25)
@@ -152,6 +158,7 @@ public class GTMTE_LapPowerStation extends
     // Count the amount of capacitors of each tier in each slot (translate with meta
     // - 1)
     private final int[] capacitors = new int[8];
+    private final LapChargeHistory chargeHistory = new LapChargeHistory();
     public long capacity = 0;
     public long stored = 0;
     public long passiveDischargeAmount = 0;
@@ -204,10 +211,6 @@ public class GTMTE_LapPowerStation extends
                 : new ITexture[] { CASING.getTexture() };
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-                "MultiblockDisplay.png");
-    }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack stack) {
@@ -215,12 +218,8 @@ public class GTMTE_LapPowerStation extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack stack) {
-        this.mProgresstime = 1;
-        this.mMaxProgresstime = 1;
-        this.mEUt = 0;
-        this.mEfficiencyIncrease = 10000;
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 1);
     }
 
     @Override
@@ -492,6 +491,27 @@ public class GTMTE_LapPowerStation extends
     }
 
     @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        return LapPowerStationGui.build(this, data, sync, settings);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity tile, long tick) {
+        if (tile.isServerSide()) {
+            intputLastTick = 0;
+            outputLastTick = 0;
+        }
+        super.onPostTick(tile, tick);
+        if (tile.isServerSide()) {
+            chargeHistory.sample(tick, stored, mMachine ? capacity : 0);
+        }
+    }
+
+    public int[] getChargeHistory() {
+        return chargeHistory.snapshot();
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack stack) {
         // Reset I/O cache
         intputLastTick = 0;
@@ -692,5 +712,9 @@ public class GTMTE_LapPowerStation extends
         tag.setLong("Stored", stored);
         tag.setLong("Input", intputLastTick);
         tag.setLong("Output", outputLastTick);
+    }
+    @Override
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 }

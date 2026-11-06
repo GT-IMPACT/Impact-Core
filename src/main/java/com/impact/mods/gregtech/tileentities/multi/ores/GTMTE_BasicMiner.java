@@ -1,5 +1,9 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.ProcessingInputs;
+import gregtech.api.logic.WorldProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import com.impact.addon.vw.VirtualWorldScan;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
@@ -215,78 +219,66 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (hatch.get(0) == null)
-            return false;
-        if (sizeVeinPreStart <= 0)
-            return false;
-        if (oreVein == null)
-            return false;
-        boolean check = hatch.get(0).ready;
-        if ((sizeVeinPreStart - cycleIncrease) <= 0) {
-            initOreProperty(getBaseMetaTileEntity());
-            return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new WorldProcessingLogic(this::prepareMining);
+    }
+
+    private WorldProcessingLogic.Operation prepareMining(ProcessingLogic.Request request) {
+        if (hatch.isEmpty() || hatch.get(0) == null || !hatch.get(0).ready || oreVein == null
+                || sizeVeinPreStart <= 0) {
+            return WorldProcessingLogic.Operation.failure(CheckRecipeResult.MACHINE_CONDITION);
         }
-        if (check) {
-            List<ItemStack> output = new ArrayList<>();
-            IGregTechTileEntity te = getBaseMetaTileEntity();
-            int chancePrimary = 500;
-            int tier = Math.max(1, getTierEnergyHatch());
-            int startEU = 3 * (2 << (tier << 1));
-            long voltage = getMaxInputVoltage();
-            if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 50))) {
-                return false;
-            }
-            if (oreVein.getSpecial() != null) {
-                if (!depleteInput(oreVein.getSpecial())) {
-                    return false;
-                }
-            }
-            List<OreVein.OreVeinOut> is = oreVein.getOres();
-            for (OreVein.OreVeinOut component : is) {
-                if (te.getRandomNumber(10000) < component.getChance() * 100) {
-                    ItemStack oreStack = component.getStack().copy();
-                    ItemStack drillHeadDrop = new ItemStack(oreStack.getItem(), byDrillHead(oreStack),
-                            oreStack.getItemDamage());
-                    output.add(drillHeadDrop);
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(),
-                            false, voltage, null, oreStack);
-                    if (tRecipe != null) {
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
-                            if (i == 0 && te.getRandomNumber(10000) < chancePrimary) {
-                                output.add(recipeOutput);
-                            }
+        if (sizeVeinPreStart - cycleIncrease <= 0) {
+            initOreProperty(getBaseMetaTileEntity());
+            return WorldProcessingLogic.Operation.failure(CheckRecipeResult.NO_RECIPE);
+        }
+        ProcessingInputs inputs = request.inputs.get(0).copy();
+        if (!inputs.consumeFluid(new FluidStack(ItemList.sDrillingFluid, 50))
+                || oreVein.getSpecial() != null && !inputs.consumeFluid(oreVein.getSpecial())) {
+            return WorldProcessingLogic.Operation.failure(CheckRecipeResult.NO_RECIPE);
+        }
+        List<ItemStack> output = new ArrayList<>();
+        IGregTechTileEntity te = getBaseMetaTileEntity();
+        int chancePrimary = 500;
+        int tier = Math.max(1, getTierEnergyHatch());
+        long startEU = Math.multiplyExact(6L, 1L << (tier * 2));
+        long voltage = Math.multiplyExact(request.voltage, 4L);
+        List<OreVein.OreVeinOut> is = oreVein.getOres();
+        for (OreVein.OreVeinOut component : is) {
+            if (te.getRandomNumber(10000) < component.getChance() * 100) {
+                ItemStack oreStack = component.getStack().copy();
+                ItemStack drillHeadDrop = new ItemStack(oreStack.getItem(), byDrillHead(oreStack),
+                        oreStack.getItemDamage());
+                output.add(drillHeadDrop);
+                GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(),
+                        false, voltage, null, oreStack);
+                if (tRecipe != null) {
+                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                        ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
+                        if (i == 0 && te.getRandomNumber(10000) < chancePrimary) {
+                            output.add(recipeOutput);
                         }
                     }
                 }
             }
-            this.mEfficiency = getCurrentEfficiency(null);
-            this.mEfficiencyIncrease = 10000;
-            this.mEUt = -startEU;
-            this.mMaxProgresstime = 400 / (1 << (tier - 1));
-            this.mMaxProgresstime = Math.max(2, this.mMaxProgresstime);
-            this.mOutputItems = output.toArray(new ItemStack[0]);
         }
-        GTMTE_OreHatch oreHatch = hatch.get(0);
-        if (oreHatch != null) {
-            oreHatch.cycleDrill(check);
-        }
-
-        double utilization = 1.0D;
-        for (int i = 0; i < drillLevel; i++) {
-            utilization *= 0.9D;
-        }
-
-        double aa = utilization + cashedDecrement;
-        cycleIncrease = (int) Math.floor(aa);
-        cashedDecrement = aa - cycleIncrease;
-
-        if (cycleIncrease >= 1) {
-            sizeVeinPreStart -= cycleIncrease;
-            increaseLayer(getBaseMetaTileEntity(), 1);
-        }
-        return check;
+        OreVein plannedVein = oreVein;
+        double decrement = Math.pow(0.9D, drillLevel) + cashedDecrement;
+        int nextIncrease = (int) Math.floor(decrement);
+        return new WorldProcessingLogic.Operation(startEU, Math.max(2, 400 / (1 << (tier - 1))),
+                output.toArray(new ItemStack[0]), new FluidStack[0], () -> {
+                    if (oreVein != plannedVein || !hatch.get(0).ready || !inputs.commit()) {
+                        return false;
+                    }
+                    cycleIncrease = nextIncrease;
+                    cashedDecrement = decrement - nextIncrease;
+                    hatch.get(0).cycleDrill(true);
+                    if (cycleIncrease >= 1) {
+                        sizeVeinPreStart -= cycleIncrease;
+                        increaseLayer(getBaseMetaTileEntity(), 1);
+                    }
+                    return true;
+                });
     }
 
     @Override
@@ -367,8 +359,8 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
     }
 
     @Override

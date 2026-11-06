@@ -1,11 +1,9 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.google.common.collect.Lists;
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.interfaces.ICasing;
@@ -15,10 +13,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.List;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import space.impact.structures.hint.HintColor;
@@ -123,29 +121,12 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
                 .toolTipFinisher();
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
-    public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-        boolean checkRecipe = recipeBuilder
-                .checkSizeHatches(true, true, indexBus)
-                .checkVoltage()
-                .checkRecipeMap(indexBus)
-                .checkInputEquals(indexBus, false)
-                .checkEfficiency()
-                .checkConsumption()
-                .checkOutputs(true)
-                .build();
-
-        if (!checkRecipe) {
-            return false;
-        }
-        mEUt /= 4;
-        mMaxProgresstime *= 2;
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return super.createProcessingLogic()
+                .setEUtAfterOverclock(eut -> eut / 4)
+                .setDurationAfterOverclock(duration -> Math.multiplyExact(duration, 2));
     }
 
     @Override
@@ -183,7 +164,7 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
     }
 }

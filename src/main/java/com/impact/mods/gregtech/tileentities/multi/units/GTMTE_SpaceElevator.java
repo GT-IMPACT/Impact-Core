@@ -1,21 +1,26 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.processing.ImpactProcessingGui;
+import gregtech.api.modularui2.GTGuiTextures;
+
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.TimedProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import com.impact.core.Impact_API;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_TargetBase;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.Language;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,8 +34,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -91,15 +94,6 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
                 && flip.isNotFlipped();
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER(aPlayerInventory, aBaseMetaTileEntity);
-    }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
@@ -280,12 +274,16 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        this.mMaxProgresstime = 20;
-        this.mEUt = 0;
-        this.mEfficiencyIncrease = 10000;
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        return this.mEfficiency >= 10000;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 20);
+    }
+
+    @Override
+    protected CheckRecipeResult validateProcessing() {
+        if (getRepairStatus() < getIdealStatus()) {
+            return CheckRecipeResult.MACHINE_CONDITION;
+        }
+        return super.validateProcessing();
     }
 
     @Override
@@ -325,99 +323,27 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 
-    private static class GUI extends GUI_BASE {
-
-        public GUI(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-            super("Space Elevator", "SpaceElevator.png", new CONTAINER(aInventoryPlayer, aTileEntity));
-        }
-
-        @Override
-        protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-            fontRendererObj.drawString(mName, 10, 8, 16448255);
-            needTools(true);
-            if (this.mContainer != null && ((mContainer).mDisplayErrorCode & 64) == 0) {
-                long charge = Math.min(((CONTAINER) mContainer).currentCharge, CAPACITY_FOR_TELEPORT);
-                String needCharge = String.format("%s / %s EU", GT_Utility.formatNumbers(charge),
-                        GT_Utility.formatNumbers(CAPACITY_FOR_TELEPORT));
-                fontRendererObj.drawString(
-                        Language.translate("space_elevator_need-charge", "Need energy for teleport:"), 10, 30,
-                        16448255);
-                fontRendererObj.drawString(needCharge, 10, 40, 16448255);
-                double tScale = ((double) charge / (double) CAPACITY_FOR_TELEPORT) * 100;
-                fontRendererObj.drawString(GT_Utility.formatNumbers((int) tScale) + "%", 71, 56, 16448255);
-            }
-        }
-
-        @Override
-        protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-            super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-            int x = (this.width - this.xSize) / 2;
-            int y = (this.height - this.ySize) / 2;
-            this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-            if (this.mContainer != null && ((mContainer).mDisplayErrorCode & 64) == 0) {
-                double tScale = (double) Math.min(((CONTAINER) mContainer).currentCharge, CAPACITY_FOR_TELEPORT)
-                        / (double) CAPACITY_FOR_TELEPORT;
-                drawTexturedModalRect(x + 22, y + 55, 0, 232, Math.min(113, (int) (tScale * 113)), 9);
-                drawTexturedModalRect(x + 19, y + 52, 0, 241, 119, 15);
-            }
-        }
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        ModularPanel panel = super.buildUI(data, sync, settings);
+        new ImpactProcessingGui(this, panel, sync).addAction("travel", -1, 1,
+                GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_UP, "impact.processing.travel",
+                (player, shift) -> teleportEntity(player));
+        return panel;
     }
 
-    private static class CONTAINER extends GTC_ImpactBase {
-
-        public int currentCharge = 0;
-
-        public CONTAINER(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-            super(aInventoryPlayer, aTileEntity);
-        }
-
-        @Override
-        public void addSlots(InventoryPlayer aInventoryPlayer) {
-            super.addSlots(aInventoryPlayer);
-            addSlotToContainer(new GT_Slot_Holo(mTileEntity, 1, 152, 42, false, false, 1));
-        }
-
-        @Override
-        public void detectAndSendChanges() {
-            super.detectAndSendChanges();
-            if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null)
-                return;
-            currentCharge = ((GTMTE_SpaceElevator) mTileEntity.getMetaTileEntity()).currentCharge;
-
-            for (Object crafter : this.crafters) {
-                ICrafting var1 = (ICrafting) crafter;
-                var1.sendProgressBarUpdate(this, 100, currentCharge & 65535);
-                var1.sendProgressBarUpdate(this, 101, currentCharge >>> 16);
-            }
-        }
-
-        @SideOnly(Side.CLIENT)
-        @Override
-        public void updateProgressBar(int id, int data) {
-            super.updateProgressBar(id, data);
-            switch (id) {
-            case 100:
-                currentCharge = currentCharge & -65536 | data;
-                break;
-            case 101:
-                currentCharge = currentCharge & 65535 | data << 16;
-                break;
-            }
-        }
-
-        @Override
-        public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-            if (aSlotIndex == 1 && mte != null && mte instanceof GTMTE_SpaceElevator) {
-                GTMTE_SpaceElevator elevator = (GTMTE_SpaceElevator) mte;
-                elevator.teleportEntity(aPlayer);
-                return null;
-            } else {
-                return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
-            }
-        }
+    @Override
+    public long getProcessingEnergyCapacity() {
+        return CAPACITY_FOR_TELEPORT;
     }
+
+    @Override
+    public long getProcessingStoredEnergy() {
+        return currentCharge;
+    }
+
 }

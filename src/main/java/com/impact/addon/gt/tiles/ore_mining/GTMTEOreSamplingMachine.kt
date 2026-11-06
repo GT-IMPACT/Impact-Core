@@ -1,5 +1,8 @@
 package com.impact.addon.gt.tiles.ore_mining
 
+import gregtech.api.recipe.check.CheckRecipeResult
+import gregtech.api.logic.TimedProcessingLogic
+import gregtech.api.logic.ProcessingLogic
 import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
@@ -208,23 +211,24 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         }
     }
 
-    override fun checkRecipe(aStack: ItemStack?): Boolean {
-        val size = lastScanReport
-            ?.results
-            ?.sumOf { it.generatedAmount ?: 0 }
-            ?: 0
+    override fun createProcessingLogic(): ProcessingLogic {
+        return TimedProcessingLogic(
+            0,
+            {
+                DEFAULT_WORK
+            },
+        )
+    }
 
-        if (size <= 0) {
-            stopMachine()
-            return false
+    override fun validateProcessing(): CheckRecipeResult {
+        val size = lastScanReport?.results?.sumOf {
+            it.generatedAmount ?: 0
+        } ?: 0
+        val oreHatch = hatch.firstOrNull()
+        if (size <= 0 || !isHanded || oreHatch == null || !oreHatch.ready) {
+            return CheckRecipeResult.MACHINE_CONDITION
         }
-        val oreHatch = hatch.firstOrNull() ?: return false
-
-        return if (isHanded && oreHatch.ready) {
-            mMaxProgresstime = DEFAULT_WORK
-            mEUt = 0
-            true
-        } else false
+        return super.validateProcessing()
     }
 
     override fun saveNBTData(aNBT: NBTTagCompound) {
@@ -379,8 +383,8 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
         return DEFINITION
     }
 
-    override fun hasSeparate(): Boolean {
-        return false
+    override fun getSupportedProcessingModes(): Int {
+        return 0
     }
 
     override fun hasShowConnect(): Boolean {

@@ -1,10 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -17,7 +15,6 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
@@ -99,7 +96,7 @@ public class GTMTE_DDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_DDDPrinter> {
         return new MultiblockTooltipBuilder(mName)
                 .addInfo("Assembler machines")
                 .addMachineType("3x3 Crafting")
-                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addInfo("Configure input bus separation in the machine GUI")
                 .addSeparator()
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
@@ -113,24 +110,6 @@ public class GTMTE_DDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_DDDPrinter> {
                 .addStructureInfo("Hatches replacing casings: at most 22")
                 .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
                 .toolTipFinisher();
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
-
-    @Override
-    public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-        return recipeBuilder
-                .checkSizeHatches(false, true, indexBus)
-                .checkVoltage()
-                .checkRecipeMap(indexBus)
-                .checkInputEquals(indexBus, false)
-                .checkEfficiency()
-                .checkConsumption()
-                .checkOutputs(true)
-                .build();
     }
 
     @Override

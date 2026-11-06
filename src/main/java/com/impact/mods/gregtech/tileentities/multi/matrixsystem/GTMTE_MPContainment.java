@@ -1,12 +1,14 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
+import net.minecraft.util.StatCollector;
+
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.common.item.Core_Items3;
 import com.impact.impact;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.Utilits;
 import com.impact.util.vector.Vector3i;
@@ -29,7 +31,6 @@ import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -125,15 +126,6 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 : new ITexture[] { CASING.getTexture() };
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GTC_ImpactBase(aPlayerInventory, aBaseMetaTileEntity);
-    }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
@@ -161,11 +153,8 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        this.mEUt = -1920;
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mMaxProgresstime = 20;
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(1920, () -> 20);
     }
 
     @Override
@@ -254,8 +243,8 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 
     @Override

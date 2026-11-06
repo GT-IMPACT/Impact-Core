@@ -1,11 +1,9 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.interfaces.ICasing;
@@ -18,7 +16,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.HashSet;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
@@ -92,9 +89,6 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
         return sTrackAssemblerRecipes;
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
@@ -149,16 +143,5 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
         return definition;
     }
 
-    @Override
-    public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-        return recipeBuilder
-                .checkSizeHatches(false, true, indexBus)
-                .checkVoltage()
-                .checkRecipeMap(indexBus)
-                .checkInputEquals(indexBus, false)
-                .checkEfficiency()
-                .checkConsumption()
-                .checkOutputs(true)
-                .build();
-    }
+
 }

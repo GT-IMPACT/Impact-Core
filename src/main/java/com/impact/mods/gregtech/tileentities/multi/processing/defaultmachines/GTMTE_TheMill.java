@@ -1,6 +1,13 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
+
+import java.util.Collections;
+import java.util.List;
+import gregtech.api.logic.IProcessingOutputSink;
+import gregtech.api.logic.InventoryProcessingOutputs;
+import gregtech.api.logic.ProcessingInputs;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.common.te.TE_TheMill;
 import com.impact.impact;
 import com.impact.mods.gregtech.GT_RecipeMaps;
@@ -24,10 +31,9 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tools.GT_Tool_Axe;
-import java.awt.Color;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -162,33 +168,12 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
     @Override
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
-        if (iAm.isServerSide() && iAm.isActive()) {
-            if (mProgresstime >= mMaxProgresstime - 1) {
-                this.addOutputProducts();
-                this.mOutputItems = null;
-            }
-        }
         super.onPostTick(iAm, aTick);
         if (iAm.isServerSide() && (aTick % 20) == 0) {
             IInventory tTileEntity = iAm.getIInventoryAtSide(iAm.getBackFacing());
             if (tTileEntity != null) {
                 GT_Utility.moveOneItemStack(iAm, tTileEntity, (byte) 1, (byte) 1, null, false, (byte) 64, (byte) 1,
                         (byte) 64, (byte) 1);
-            }
-        }
-    }
-
-    private void addOutputProducts() {
-        if (this.mOutputItems != null) {
-            int limit = Math.min(this.mOutputItems.length, 4);
-            for (int i = 0; i < limit; ++i) {
-                int absi = 1 + i;
-                if (this.mInventory[absi] == null) {
-                    this.mInventory[absi] = GT_Utility.copy(this.mOutputItems[i]);
-                } else if (GT_Utility.areStacksEqual(this.mInventory[absi], this.mOutputItems[i])) {
-                    this.mInventory[absi].stackSize = Math.min(this.mInventory[absi].getMaxStackSize(),
-                            this.mInventory[absi].stackSize + this.mOutputItems[i].stackSize);
-                }
             }
         }
     }
@@ -214,38 +199,32 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
         return GT_RecipeMaps.sTheMill;
     }
 
-    protected boolean canOutput(ItemStack... aOutputs) {
-        if (aOutputs == null)
-            return true;
-        ItemStack[] tOutputSlots = { mInventory[1], mInventory[2], mInventory[3], mInventory[4] };
-        for (int i = 0; i < tOutputSlots.length && i < aOutputs.length; i++)
-            if (tOutputSlots[i] != null && aOutputs[i] != null
-                    && (!GT_Utility.areStacksEqual(tOutputSlots[i], aOutputs[i], false)
-                            || tOutputSlots[i].stackSize + aOutputs[i].stackSize > tOutputSlots[i].getMaxStackSize())) {
-                return false;
-            }
-        return true;
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return super.createProcessingLogic().setPowerRequired(false).setItemOutputLimit(4)
+                .setRecipeValidator(recipe -> new InventoryProcessingOutputs(getBaseMetaTileEntity(), 1, 4)
+                        .canFit(recipe.mOutputs, recipe.mFluidOutputs, true, true));
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        if (mInventory[0] != null) {
-            GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, false, 0, null,
-                    mInventory[0]);
-            if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
-                    && (tRecipe.isRecipeInputEqual(true, null, mInventory[0]))) {
+    protected List<ProcessingInputs> collectProcessingInputs() {
+        ItemStack input = mInventory[0];
+        return Collections.singletonList(new ProcessingInputs(Collections.singletonList(input),
+                Collections.emptyList(), () -> mInventory[0] == input));
+    }
 
-                if (mInventory[0] != null && mInventory[0].stackSize <= 0) {
-                    mInventory[0] = null;
-                }
-
-                mEfficiency = mEfficiencyIncrease = 10000;
-                mMaxProgresstime = tRecipe.mDuration;
-                mOutputItems = tRecipe.mOutputs;
-                return true;
-            }
+    @Override
+    public void updateSlots() {
+        super.updateSlots();
+        ItemStack input = mInventory[0];
+        if (input != null && input.stackSize <= 0) {
+            setInventorySlotContents(0, null);
         }
-        return false;
+    }
+
+    @Override
+    protected IProcessingOutputSink createProcessingOutputs() {
+        return new InventoryProcessingOutputs(getBaseMetaTileEntity(), 1, 4).setAlwaysProtectItems(true);
     }
 
     @Override
@@ -311,7 +290,12 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
     }
 
     @Override
-    public boolean hasSeparate() {
+    public int getSupportedProcessingModes() {
+        return ProcessingLogic.BATCH | ProcessingLogic.LOCK_RECIPE;
+    }
+
+    @Override
+    public boolean useMui2() {
         return false;
     }
 
@@ -328,12 +312,12 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
     private static class GUI extends GT_GUIContainerMT_Machine {
 
         public GUI(GT_ContainerMetaTile_Machine aContainer) {
-            super(aContainer, RES_PATH_GUI + "basic/" + "TheMill.png");
+            super(aContainer, RES_PATH_GUI + "basic/TheMill.png");
         }
 
         @Override
         protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-            fontRendererObj.drawString("The Mill", 6, 4, Color.WHITE.hashCode());
+            fontRendererObj.drawString("The Mill", 6, 4, 0xffffff);
         }
 
         @Override
@@ -362,7 +346,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
             int xx = x + 69;
             int yy = y + 32;
             if (xx <= mouseX && xx + 20 >= mouseX && yy <= mouseY && yy + 16 >= mouseY) {
-                GuiCraftingRecipe.openRecipeGui(GT_RecipeMaps.sTheMill.mUnlocalizedName);
+                GuiCraftingRecipe.openRecipeGui(GT_RecipeMaps.sTheMill.mNEIName);
             }
         }
     }
@@ -389,7 +373,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
         @Override
         public int getShiftClickSlotCount() {
-            return 5;
+            return 1;
         }
     }
 }

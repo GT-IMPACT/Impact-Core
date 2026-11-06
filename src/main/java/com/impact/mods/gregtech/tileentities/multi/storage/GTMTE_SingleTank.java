@@ -1,5 +1,13 @@
 package com.impact.mods.gregtech.tileentities.multi.storage;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.tank.TankStorageGui;
+
+import gregtech.api.logic.TimedProcessingLogic;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
@@ -9,13 +17,12 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
@@ -34,7 +41,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -64,7 +70,7 @@ import static space.impact.structures.structure.StructureUtility.withHint;
  * подключаемыми хэтчами.
  */
 public class GTMTE_SingleTank
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SingleTank>
+        extends GT_MetaTileEntity_ProcessingMultiBlockBase<GTMTE_SingleTank>
         implements ISurvivalConstructable, IMultiFluidTank {
     private static final ICasing CASING = Casings.CHEMICALLY_INERT;
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 9).build();
@@ -293,10 +299,7 @@ public class GTMTE_SingleTank
      * @param aBaseMetaTileEntity базовая тайл-сущность блока
      * @return экран интерфейса бака
      */
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-                "MultiblockDisplay.png");
-    }
+
 
     /**
      * Разрешает работу без обязательного предмета в слоте контроллера.
@@ -318,18 +321,36 @@ public class GTMTE_SingleTank
      * @return {@code true}: бак не требует рецепта переработки
      */
     @Override
-    public boolean checkRecipe(ItemStack guiSlotItem) {
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 100);
+    }
 
-        this.mEfficiency = 10000;
-        this.mEfficiencyIncrease = 10000;
-        this.mEUt = 0;
-        super.mMaxProgresstime = 100;
-
+    @Override
+    public boolean checkRecipe(ItemStack filter) {
         if (mfh != null) {
-            mfh.setFilterFluids(guiSlotItem);
-            mfh.setLock(!super.getBaseMetaTileEntity().isActive());
+            mfh.setFilterFluids(filter);
+            mfh.setLock(!getBaseMetaTileEntity().isActive());
         }
+        return super.checkRecipe(filter);
+    }
 
+    @Override
+    protected void startCycle(ProcessingLogic.Result result, int efficiency) {
+        super.startCycle(result, 10000);
+    }
+
+    @Override
+    public int getSupportedProcessingModes() {
+        return 0;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        return TankStorageGui.build(this, data, sync, settings, MAX_DISTINCT_FLUIDS);
+    }
+
+    @Override
+    public boolean hasControllerSlotInGui() {
         return true;
     }
 

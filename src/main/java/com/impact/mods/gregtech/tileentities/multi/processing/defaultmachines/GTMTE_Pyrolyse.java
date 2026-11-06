@@ -1,9 +1,13 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import net.minecraft.nbt.NBTTagCompound;
+import gregtech.api.util.OverclockCalculator;
+import com.impact.addon.gt.api.recipe.StagedFluidOutputs;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -18,8 +22,6 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import java.util.ArrayList;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import space.impact.structures.hint.HintColor;
@@ -36,6 +38,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
     private static final ICasing CASING = Casings.SOLID_STEEL;
 
     private int casingCount;
+    private final StagedFluidOutputs stagedOutputs = new StagedFluidOutputs();
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 39)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
@@ -123,44 +126,18 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
                 .toolTipFinisher();
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        ArrayList<ItemStack> stored = getStoredInputs();
-        ItemStack[] inputs = stored.toArray(new ItemStack[stored.size()]);
-        FluidStack[] fluids = new FluidStack[] {};
-
-        GT_Recipe recipe = getRecipeMap()
-                .findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
-                        false, 20L, null, inputs);
-
-        if ((recipe != null) && (recipe.isRecipeInputEqual(true, fluids, inputs))) {
-
-            cashedRecipe = recipe;
-
-            this.mEfficiency = 10000;
-            this.mEfficiencyIncrease = 10000;
-
-            int EUt = 20;
-            int maxProgresstime = 40 * 20;
-
-            this.mEUt = -EUt;
-            this.mMaxProgresstime = maxProgresstime;
-            this.mOutputItems = new ItemStack[] { recipe.getOutput(0) };
-
-            FluidStack fluid = cashedRecipe.mFluidOutputs[4];
-            if (fluid != null)
-                this.mOutputFluids = new FluidStack[] { fluid };
-
-            this.updateSlots();
-            return true;
-
-        }
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic()
+                .setRecipeMapSupplier(this::getRecipeMap)
+                .setOutputChances(false)
+                .setItemOutputLimit(1)
+                .setRecipeValidator(recipe -> recipe.mEUt <= 20
+                        ? CheckRecipeResult.SUCCESS : CheckRecipeResult.INSUFFICIENT_VOLTAGE)
+                .setCalculatorSupplier(() -> new OverclockCalculator().setMaxOverclocks(0))
+                .setEUtAfterOverclock(eut -> 20)
+                .setDurationAfterOverclock(duration -> 800);
     }
 
     @Override
@@ -169,32 +146,45 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-
-        if (cashedRecipe == null)
-            return super.onRunningTick(aStack);
-
-        FluidStack out = null;
-
-        switch (this.mProgresstime) {
-        case 7 * 20:
-            out = cashedRecipe.mFluidOutputs[0];
-            break;
-        case 14 * 20:
-            out = cashedRecipe.mFluidOutputs[1];
-            break;
-        case 21 * 20:
-            out = cashedRecipe.mFluidOutputs[2];
-            break;
-        case 28 * 20:
-            out = cashedRecipe.mFluidOutputs[3];
-            break;
+    public boolean onRunningTick(ItemStack stack) {
+        if (!super.onRunningTick(stack)) {
+            return false;
         }
+        stagedOutputs.tick(mProgresstime, createProcessingOutputs());
+        markDirty();
+        return true;
+    }
 
-        if (out != null)
-            addOutput(out);
+    @Override
+    protected void startCycle(ProcessingLogic.Result result, int efficiency) {
+        super.startCycle(result, efficiency);
+        stagedOutputs.start(result.fluids, (getProcessingModes() & ProcessingLogic.PROTECT_FLUIDS) != 0);
+        mOutputFluids = result.fluids.length > 4 && result.fluids[4] != null
+                ? new FluidStack[] { result.fluids[4].copy() } : new FluidStack[0];
+    }
 
-        return super.onRunningTick(aStack);
+    @Override
+    protected void completeRecipe() {
+        mOutputFluids = stagedOutputs.finish(mOutputFluids);
+        super.completeRecipe();
+    }
+
+    @Override
+    public void stopMachine() {
+        stagedOutputs.clear();
+        super.stopMachine();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound tag) {
+        super.saveNBTData(tag);
+        stagedOutputs.save(tag);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound tag) {
+        super.loadNBTData(tag);
+        stagedOutputs.load(tag);
     }
 
     @Override
@@ -233,7 +223,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return ProcessingLogic.PROTECT_ITEMS | ProcessingLogic.PROTECT_FLUIDS | ProcessingLogic.LOCK_RECIPE;
     }
 }

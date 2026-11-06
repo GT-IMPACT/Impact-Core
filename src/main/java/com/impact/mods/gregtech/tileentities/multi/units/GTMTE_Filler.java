@@ -1,11 +1,21 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import net.minecraft.util.StatCollector;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.processing.ImpactProcessingGui;
+import gregtech.api.modularui2.GTGuiTextures;
+
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.logic.TimedProcessingLogic;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.impact;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.filler.Container_Construction_Laser;
-import com.impact.mods.gregtech.gui.filler.GUI_Construction_Laser;
 import com.impact.mods.gregtech.items.tools.ConstructionLaser;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.vector.Box;
@@ -25,7 +35,6 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,15 +75,6 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
         super(aName);
     }
 
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new Container_Construction_Laser(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_Construction_Laser(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
@@ -302,14 +302,13 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        if (isDone)
-            return false;
-        this.mMaxProgresstime = 20;
-        this.mEUt = 0;
-        this.mEfficiencyIncrease = 10000;
-        this.mEfficiency = 10000;
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 20);
+    }
+
+    @Override
+    protected CheckRecipeResult validateProcessing() {
+        return isDone ? CheckRecipeResult.MACHINE_CONDITION : super.validateProcessing();
     }
 
     public boolean isMe(int x, int y, int z) {
@@ -328,7 +327,42 @@ public class GTMTE_Filler extends GTMTE_Impact_BlockBase<GTMTE_Filler> {
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
+    @Override
+    public boolean hasControllerSlotInGui() {
+        return true;
+    }
+
+    @Override
+    public int getControllerSlotIndex() {
+        return 0;
+    }
+
+    @Override
+    public boolean isValidSlot(int index) {
+        return index == 0 || super.isValidSlot(index);
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        ModularPanel panel = super.buildUI(data, sync, settings);
+        ImpactProcessingGui gui = new ImpactProcessingGui(this, panel, sync);
+        gui.addAction("preserve_tiles", 0, 1, GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED,
+                "impact.processing.preserve_tiles", (player, shift) -> saveTiles = !saveTiles);
+        gui.addAction("kill_mobs", 1, 1, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN,
+                "impact.processing.kill_mobs", (player, shift) -> killMobs());
+        return panel;
+    }
+
+    @Override
+    public String[] getProcessingInfo() {
+        return new String[] {
+                StatCollector.translateToLocalFormatted("impact.processing.preserve_state", saveTiles),
+                StatCollector.translateToLocalFormatted("impact.processing.current_layer", curY),
+                StatCollector.translateToLocalFormatted("impact.processing.completed", isDone)
+        };
+    }
+
 }

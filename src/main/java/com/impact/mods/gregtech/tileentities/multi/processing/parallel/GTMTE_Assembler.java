@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -18,7 +17,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.List;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import space.impact.structures.hint.HintColor;
@@ -49,7 +47,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addInfo("Parallel points: base 1, maximum 256")
                 .addMachineType("Assembler, Circuit Assembler, Component Assembler")
                 .addInfo("Select machine type by clicking the controller with a screwdriver")
-                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addInfo("Configure input bus separation in the machine GUI")
                 .addSeparator()
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
@@ -121,10 +119,6 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
         return new GTMTE_Assembler(this.mName);
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @NotNull
     @Override

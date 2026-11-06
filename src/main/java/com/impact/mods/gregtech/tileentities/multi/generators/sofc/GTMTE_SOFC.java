@@ -1,15 +1,16 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.sofc;
 
+import gregtech.api.logic.FuelProcessingLogic;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_ModHandler;
@@ -20,9 +21,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import ic2.core.Ic2Items;
 import ic2.core.util.StackUtil;
-import java.util.ArrayList;
-import java.util.Collection;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -41,7 +39,7 @@ import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>
+        extends GT_MetaTileEntity_ProcessingMultiBlockBase<T>
         implements ISurvivalConstructable {
 
     private static final ICasing[] CASINGS = {
@@ -105,10 +103,6 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
         } : new ITexture[] { CASINGS[getTier()].getTexture() };
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity,
-                "SO Generator " + (getTier() + 1), "MultiblockDisplay.png");
-    }
 
     public int calculateSteamOutput() {
         if (EU_PER_TICK[getTier()] > 2048) {
@@ -124,51 +118,54 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
     }
 
     @Override
-    public boolean checkRecipe(ItemStack stack) {
-        final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
-        Collection<GT_Recipe> recipeList = GT_Recipe.GT_Recipe_Map.sTurbineFuels.mRecipeList;
-
-        if ((!storedFluids.isEmpty() && recipeList != null)) {
-
-            for (FluidStack hatchFluid : storedFluids) {
-
-                for (GT_Recipe aFuel : recipeList) {
-
-                    FluidStack liquid;
-                    if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
-                            && hatchFluid.isFluidEqual(liquid)) {
-
-                        fuelConsumption = liquid.amount = (EU_PER_TICK[getTier()] * 20) / aFuel.mSpecialValue;
-
-                        if (super.depleteInput(liquid)) {
-
-                            if (!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC[getTier()]))) {
-                                super.mEUt = 0;
-                                super.mEfficiency = 0;
-                                return false;
-                            }
-
-                            super.mEUt = EU_PER_TICK[getTier()];
-                            super.mMaxProgresstime = 20;
-                            super.mEfficiencyIncrease = 1000;
-                            if (super.mEfficiency == getMaxEfficiency(null)) {
-                                if (getTier() == 0) {
-                                    super.addOutput(GT_ModHandler.getSteam(calculateSteamOutput()));
-                                } else {
-                                    super.addOutput(
-                                            FluidRegistry.getFluidStack("ic2superheatedsteam", calculateSteamOutput()));
-                                }
-                            }
-                            return true;
-                        }
-                    }
-                }
+    protected ProcessingLogic createProcessingLogic() {
+        return new FuelProcessingLogic(this::getRecipeMap, recipe -> {
+            FluidStack fuel = GT_Utility.getFluidForFilledItem(recipe.getRepresentativeInput(0), true);
+            if (fuel == null || recipe.mSpecialValue <= 0) {
+                return null;
             }
-        }
+            int tier = getTier();
+            fuel.amount = Math.multiplyExact(EU_PER_TICK[tier], 20) / recipe.mSpecialValue;
+            FluidStack[] outputs = new FluidStack[0];
+            if (mEfficiency == getMaxEfficiency(null)) {
+                FluidStack steam = tier == 0 ? GT_ModHandler.getSteam(calculateSteamOutput())
+                        : FluidRegistry.getFluidStack("ic2superheatedsteam", calculateSteamOutput());
+                outputs = new FluidStack[] { steam };
+            }
+            return new FuelProcessingLogic.FuelCycle(
+                    EU_PER_TICK[tier],
+                    20,
+                    fuel,
+                    new FluidStack[] { Materials.Oxygen.getGas(OXYGEN_PER_SEC[tier]) },
+                    outputs
+            );
+        });
+    }
 
-        super.mEUt = 0;
-        super.mEfficiency = 0;
-        return false;
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sTurbineFuels;
+    }
+
+    @Override
+    protected void startCycle(ProcessingLogic.Result result, int efficiency) {
+        super.startCycle(result, mEfficiency);
+        mEfficiencyIncrease = 1000;
+        fuelConsumption = ((FuelProcessingLogic) getProcessingLogic()).getConsumption();
+    }
+
+    @Override
+    public boolean checkRecipe(ItemStack stack) {
+        boolean started = super.checkRecipe(stack);
+        if (!started && mMaxProgresstime == 0 && !isWaitingForOutput()) {
+            mEfficiency = 0;
+        }
+        return started;
+    }
+
+    @Override
+    public int getSupportedProcessingModes() {
+        return ProcessingLogic.PROTECT_FLUIDS;
     }
 
     private StructureRequirements requirements() {

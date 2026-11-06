@@ -4,6 +4,7 @@ import com.impact.addon.gt.api.parallel_system.INetworkMachine;
 import com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_ReceiverBase<MULTIS>> extends GTMTE_Impact_BlockBase<MULTIS> implements INetworkMachine {
@@ -66,6 +67,15 @@ public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_Rece
 	}
 
 	public abstract boolean hasConnectForce();
+
+    @Override
+    protected CheckRecipeResult validateProcessing() {
+        if (hasConnectForce() && !isSatelliteConnected()) {
+            return CheckRecipeResult.MACHINE_CONDITION;
+        }
+        return super.validateProcessing();
+    }
+
 	
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {

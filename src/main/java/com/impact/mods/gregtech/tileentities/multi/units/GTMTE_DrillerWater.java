@@ -2,10 +2,11 @@ package com.impact.mods.gregtech.tileentities.multi.units;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,7 +18,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.BiomeDictionary;
@@ -118,11 +118,6 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
         return new GTMTE_DrillerWater(mName);
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "DrillingRig.png");
-    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity controller, ItemStack stack) {
@@ -163,42 +158,36 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
     }
 
     @Override
-    protected void setElectricityStats() {
-        this.mEfficiencyIncrease = 10000;
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        int tier = Math.max(0, getTierEnergyHatch());
-        this.mEUt = -7 << (tier << 1);// (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = 20;
+    protected long getDrillingEUt() {
+        return Math.multiplyExact(7L, 1L << (Math.max(0, getTierEnergyHatch()) * 2));
     }
 
     @Override
-    protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-            int yHead, int oldYHead) {
-        switch (tryLowerPipeState(true)) {
-        case 0:
-            workState = STATE_DOWNWARD;
-            if (this.mEfficiency > 0) {
-                setElectricityStats();
-            }
-            return true;
-        case 3:
-            workState = STATE_UPWARD;
-            return true;
-        }
+    protected int getDrillingDuration() {
+        return 20;
+    }
 
+    @Override
+    protected CheckRecipeResult prepareAtBottom(DrillingPlan plan) {
+        switch (plan.lowerPipe(true)) {
+            case 0:
+                plan.nextState = STATE_DOWNWARD;
+                return CheckRecipeResult.SUCCESS;
+            case 3:
+                plan.nextState = STATE_UPWARD;
+                return CheckRecipeResult.SUCCESS;
+            default:
+                break;
+        }
         if (reachingVoidOrBedrock()) {
-            if (BiomeDictionary.isBiomeOfType(getBaseMetaTileEntity().getBiome(), OCEAN)) {
-                addOutput(Materials.SaltWater.getFluid(getWaterOutputPerTick() * 20));
-            } else {
-                addOutput(GT_ModHandler.getWater(getWaterOutputPerTick() * 20));
-            }
+            long amount = Math.multiplyExact(getWaterOutputPerTick(), 20L);
+            Math.toIntExact(amount);
+            FluidStack water = BiomeDictionary.isBiomeOfType(getBaseMetaTileEntity().getBiome(), OCEAN)
+                    ? Materials.SaltWater.getFluid(amount) : GT_ModHandler.getWater(amount);
+            plan.fluids = new FluidStack[] { water };
         }
-        if (mEfficiency == 10000) {
-            workState = STATE_AT_BOTTOM;
-        } else {
-            workState = STATE_UPWARD;
-        }
-        return true;
+        plan.nextState = getCurrentEfficiency(null) == 10000 ? STATE_AT_BOTTOM : STATE_UPWARD;
+        return CheckRecipeResult.SUCCESS;
     }
 
     @Override

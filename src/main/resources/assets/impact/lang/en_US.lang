@@ -638,3 +638,64 @@ TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Information_Index_1=Energy
 TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Part_Index_4=Steel Frame Box
 TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Location_Index_3=Support frame shown in the hologram
 TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Channel_Index_0=Installs maintenance, matching-tier energy and water output hatches, and an input bus for mining pipes.
+
+impact.processing.rods_up=Raise all rods by 10%
+impact.processing.rods_down=Lower all rods by 10%
+impact.processing.hold_temperature=Toggle temperature hold
+impact.processing.preserve_tiles=Preserve tile entities
+impact.processing.kill_mobs=Kill mobs in the work area
+impact.processing.preserve_state=Preserve tile entities: %s
+impact.processing.current_layer=Current layer: %s
+impact.processing.completed=Work completed: %s
+impact.processing.parallel_capacity=Parallel capacity: %s / %s PP
+impact.processing.travel=Travel
+impact.processing.station_next=Next station (Shift: last)
+impact.processing.station_previous=Previous station (Shift: first)
+impact.processing.station_name=Station name
+impact.processing.apply=Apply
+impact.processing.station=Station: %s
+impact.processing.owner=Owner: %s
+impact.processing.travel_fuel=Fuel: %s / %s; needed: %s
+impact.processing.no_stations=No stations in range
+impact.processing.temperature=Temperature: %s / %s
+impact.processing.rods=Rod positions: %s
+impact.processing.hold_state=Temperature hold: %s
+impact.processing.fast_decay=Fast decay: %s
+impact.processing.mox=MOX fuel: %s
+impact.processing.fluid_input=Input: %s L/t
+impact.processing.fluid_output=Output: %s L/t
+
+impact.processing.hold_unavailable=Hold unavailable in fast decay mode
+impact.processing.control_on=Enabled
+impact.processing.control_off=Disabled
+
+impact.reactor.rods=Rod insertion, %
+impact.reactor.no_rods=No rods
+impact.reactor.all_rods=All rods
+impact.reactor.mixed_rods=All rods: mixed
+impact.reactor.temperature=Temperature
+impact.reactor.decay=Fast decay
+impact.reactor.mox_on=MOX: yes
+impact.reactor.mox_off=MOX: no
+impact.reactor.input=In: %s L/t
+impact.reactor.output=Out: %s L/t
+impact.reactor.decay_requirement=Temperature <= 10; coolant to enable, water to disable
+impact.reactor.rod_title=Reactor rod
+impact.reactor.rod_id=Rod #%s
+impact.reactor.rod_depth=Insertion: %s%%
+impact.reactor.hold_label=Hold temp.
+
+impact.lap.history=Charge history
+impact.lap.charging=Charging
+impact.lap.discharging=Discharging
+impact.lap.steady=Steady
+impact.lap.disabled=Disabled
+impact.lap.collecting=Collecting data...
+impact.lap.seconds_ago=-%s s
+impact.lap.now=Now
+
+impact.tank.stored=Stored
+impact.tank.capacity=Capacity
+impact.tank.fluid_count=Fluid slots: %s / %s
+impact.tank.per_fluid=%s L / type
+impact.tank.amount_tooltip=%s / %s L

@@ -2,27 +2,22 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import gregtech.api.enums.Casings;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import ic2.core.Ic2Items;
 import ic2.core.util.StackUtil;
-import java.util.ArrayList;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import space.impact.structures.alignment.IAlignmentLimits;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
 import space.impact.structures.hint.HintColor;
@@ -35,7 +30,7 @@ import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Farm
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_Farm>
+        extends GT_MetaTileEntity_ProcessingMultiBlockBase<GTMTE_Farm>
         implements ISurvivalConstructable {
     private static final ICasing CASING = Casings.SOLID_STEEL;
     private int casingCount;
@@ -130,12 +125,6 @@ public class GTMTE_Farm
         return new ITexture[] { CASING.getTexture() };
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-            IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "PyrolyseOven.png");
-    }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -154,79 +143,11 @@ public class GTMTE_Farm
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
-
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-        if (tInputList.size() > 0) {
-            long tVoltage = getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe recipe = getRecipeMap()
-                    .findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
-                            false, GT_Values.V[tTier], tFluids, tInputs);
-            if ((recipe != null) && (recipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-                cashedRecipe = recipe;
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-
-                int EUt = recipe.mEUt;
-                int maxProgresstime = recipe.mDuration;
-
-                while (EUt <= GT_Values.V[tTier - 1] && maxProgresstime > 2) {
-                    EUt *= 4;
-                    maxProgresstime /= 4;
-                }
-                if (maxProgresstime < 2) {
-                    maxProgresstime = 2;
-                    EUt = recipe.mEUt * recipe.mDuration / 2;
-                }
-
-                this.mEUt = -EUt;
-                this.mMaxProgresstime = maxProgresstime;
-                mOutputItems = new ItemStack[recipe.mOutputs.length];
-                for (int i = 0; i < recipe.mOutputs.length; i++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
-                        this.mOutputItems[i] = recipe.getOutput(i);
-                    }
-                }
-                this.mOutputFluids = recipe.mFluidOutputs;
-                this.updateSlots();
-                return true;
-            }
-        }
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic()
+                .setRecipeMapSupplier(this::getRecipeMap)
+                .setOverclock(4, 4)
+                .setDurationAfterOverclock(duration -> Math.max(2, duration));
     }
 
     public boolean checkMachine(IGregTechTileEntity controller, ItemStack stack) {

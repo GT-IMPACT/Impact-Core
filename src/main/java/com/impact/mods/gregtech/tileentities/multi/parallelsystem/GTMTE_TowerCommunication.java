@@ -1,5 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.addon.gt.api.parallel_system.INetworkMachine;
 import com.impact.addon.gt.api.parallel_system.INetworkTower;
 import com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic;
@@ -33,7 +35,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -105,15 +106,6 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     private boolean isConnected;
 
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
@@ -131,12 +123,8 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        this.mMaxProgresstime = 20;
-        this.mEfficiency = 10000;
-        this.mEfficiencyIncrease = 10000;
-        this.mEUt = 0;
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 20);
     }
 
     @Override
@@ -358,8 +346,8 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 
     @Override

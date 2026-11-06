@@ -1,5 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -17,7 +19,6 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.HashSet;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import space.impact.structures.hint.HintColor;
@@ -85,15 +86,6 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
         return new GTMTE_SpaceSatellite(this.mName);
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return false;
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return false;
-    }
 
     @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
@@ -119,12 +111,8 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        this.mMaxProgresstime = 10;
-        this.mEfficiency = 10000;
-        this.mEfficiencyIncrease = 10000;
-        this.mEUt = 0;
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 10);
     }
 
     @Override
@@ -193,6 +181,10 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
+        return 0;
+    }
+    @Override
+    public int getSupportedProcessingModes() {
         return 0;
     }
 }

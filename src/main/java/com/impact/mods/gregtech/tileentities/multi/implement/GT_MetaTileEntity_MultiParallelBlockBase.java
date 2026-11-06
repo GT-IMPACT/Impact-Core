@@ -1,5 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
+import net.minecraft.util.StatCollector;
+
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import cpw.mods.fml.common.Optional;
@@ -14,7 +16,12 @@ import net.minecraft.world.World;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.impact.addon.gt.api.multis.IMachineParallelRecipe;
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
+import com.impact.core.Config;
+import gregtech.GT_Mod;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -34,7 +41,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
 
     public boolean isConnectParallel = false;
     public int mParallel = 0;
-    public int mCheckParallelCurrent = 0;
 
     public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -55,7 +61,6 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mParallel", this.mParallel);
-        aNBT.setInteger("mCheckParallelCurrent", this.mCheckParallelCurrent);
         aNBT.setBoolean("isConnectParallel", this.isConnectParallel);
         super.saveNBTData(aNBT);
     }
@@ -63,9 +68,13 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mParallel = aNBT.getInteger("mParallel");
-        this.mCheckParallelCurrent = aNBT.getInteger("mCheckParallelCurrent");
         this.isConnectParallel = aNBT.getBoolean("isConnectParallel");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    protected int getLegacyCycleParallel(NBTTagCompound tag) {
+        return Math.max(1, tag.getInteger("mCheckParallelCurrent"));
     }
 
     @Override
@@ -138,65 +147,75 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity iAm, long aTick) {
-        super.onPostTick(iAm, aTick);
-        if (iAm.isServerSide() && aTick % 100 == 0) {
-            if (!mMachine) {
-                isConnectParallel = false;
-                setParallel(1);
-                return;
-            }
-            int maxParallel = 1;
-            boolean isDebug = false;
-
-            for (GTMTE_ParallelHatch_Input ph : sParallHatchesIn) {
-
-                isConnectParallel = ph.isConnected;
-                ph.machineName = getLocalName();
-
-                maxParallel = ph.getParallel();
-                isDebug = ph.isDebug;
-
-            }
-            if (isDebug) {
-                isConnectParallel = true;
-                isSatelliteConnected = true;
-                setParallel(maxParallel);
-                return;
-            }
-            if (!isConnectParallel || !isSatelliteConnected) {
-                maxParallel = 1;
-            }
-            setParallel(maxParallel);
+    public void onPostTick(IGregTechTileEntity tile, long tick) {
+        if (tile.isServerSide() && tick % 100 == 0) {
+            refreshParallelConnection();
         }
+        super.onPostTick(tile, tick);
+    }
+
+    private void refreshParallelConnection() {
+        isConnectParallel = false;
+        int available = 1;
+        for (GTMTE_ParallelHatch_Input hatch : sParallHatchesIn) {
+            if (!isValidMetaTileEntity(hatch)) {
+                continue;
+            }
+            hatch.machineName = getLocalName();
+            isConnectParallel = hatch.isConnected || hatch.isDebug;
+            if (hatch.isDebug || isConnectParallel && isSatelliteConnected()) {
+                available = Math.max(1, hatch.getParallel());
+            }
+        }
+        setParallel(available);
     }
 
     @Override
-    public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-        if (!sParallHatchesIn.isEmpty() && !isConnectParallel) {
-            return false;
-        }
-        return recipeBuilder
-                .checkSizeHatches(true, true, indexBus)
-                .checkVoltage()
-                .checkRecipeMap(indexBus)
-                .checkInputEqualsParallel(indexBus, true)
-                .checkWorldProperties(true, true)
-                .checkEfficiency()
-                .checkConsumptionParallel()
-                .checkOutputs(false, indexBus)
-                .build();
+    public int getMaxParallelRecipes() {
+        return Math.max(1, mParallel);
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        return super.checkRecipe(itemStack);
+    protected CheckRecipeResult validateProcessing() {
+        refreshParallelConnection();
+        CheckRecipeResult result = super.validateProcessing();
+        if (!result.wasSuccessful()) {
+            return result;
+        }
+        return !sParallHatchesIn.isEmpty() && !isConnectParallel
+                ? CheckRecipeResult.MACHINE_CONDITION : CheckRecipeResult.SUCCESS;
     }
 
-	@Override
-	public int getCurrentParallel() {
-		return mCheckParallelCurrent;
-	}
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return super.createProcessingLogic()
+                .setMaxParallelSupplier(this::getMaxParallelRecipes)
+                .setDurationAfterOverclock(this::applyParallelSpeedBonus);
+    }
+
+    private int applyParallelSpeedBonus(int duration) {
+        int parallel = getProcessingLogic().getAvailableParallel();
+        int divisor = parallel == 16 ? 2 : parallel == 64 ? 3 : parallel == 256 ? 4 : 1;
+        return Math.max(Config.MAX_TICK_RATE, Math.max(1, duration / divisor));
+    }
+
+    @Override
+    protected boolean usesRecipeOutputChances() {
+        return true;
+    }
+
+    @Override
+    protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
+        if (recipe.mSpecialValue == -200 && (mCleanroom == null || mCleanroom.mEfficiency == 0)) {
+            return CheckRecipeResult.MACHINE_CONDITION;
+        }
+        if (GT_Mod.gregtechproxy.mLowGravProcessing && recipe.mSpecialValue == -100
+                && !GT_MetaTileEntity_BasicMachine.isValidForLowGravity(recipe,
+                        getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
+            return CheckRecipeResult.MACHINE_CONDITION;
+        }
+        return super.validateRecipe(recipe);
+    }
 
 	@Override
 	public int getMaxParallel() {
@@ -230,7 +249,7 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
         if (!(this instanceof GTMTE_ParallelComputer)) {
             final int Parallel = mParallel;
             tag.setInteger("Parallel", Parallel);
-            tag.setInteger("currentParallel", mCheckParallelCurrent);
+            tag.setInteger("currentParallel", getCurrentParallel());
         }
         tag.setBoolean("hasShowConnect", hasShowConnect());
         tag.setBoolean("connectWithTower", isSatelliteConnected());

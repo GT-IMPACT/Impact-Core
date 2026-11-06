@@ -7,28 +7,25 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoil;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTStructureChannels;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import java.util.ArrayList;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 import space.impact.structures.alignment.IAlignmentLimits;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
 import space.impact.structures.hint.HintColor;
@@ -36,12 +33,11 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_BlastSmelter
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_BlastSmelter>
+        extends GT_MetaTileEntity_ProcessingMultiBlockBase<GTMTE_BlastSmelter>
         implements ISurvivalConstructable {
     private static final ICasing CASING = Casings.HSLA;
     private int casingCount;
@@ -135,10 +131,6 @@ public class GTMTE_BlastSmelter
         return new ITexture[] { CASING.getTexture() };
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "ElectricBlastFurnace.png");
-    }
 
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sBlastSmelterRecipes;
@@ -153,88 +145,14 @@ public class GTMTE_BlastSmelter
                 && flip.isNotFlipped();
     }
 
-    public boolean checkRecipe(ItemStack aStack) {
-        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-            tBus.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tBus)) {
-                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-                    }
-                }
-            }
-            ArrayList<ItemStack> tInputList = getStoredInputs();
-            int tInputList_sS = tInputList.size();
-            for (int i = 0; i < tInputList_sS - 1; i++) {
-                for (int j = i + 1; j < tInputList_sS; j++) {
-                    if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                        if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                            tInputList.remove(j--);
-                            tInputList_sS = tInputList.size();
-                        } else {
-                            tInputList.remove(i--);
-                            tInputList_sS = tInputList.size();
-                            break;
-                        }
-                    }
-                }
-            }
-            ItemStack[] tInputs = tBusItems.toArray(new ItemStack[] {});
-            ArrayList<FluidStack> tFluidList = getStoredFluids();
-            int tFluidList_sS = tFluidList.size();
-            for (int i = 0; i < tFluidList_sS - 1; i++) {
-                for (int j = i + 1; j < tFluidList_sS; j++) {
-                    if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                        if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                            tFluidList.remove(j--);
-                            tFluidList_sS = tFluidList.size();
-                        } else {
-                            tFluidList.remove(i--);
-                            tFluidList_sS = tFluidList.size();
-                            break;
-                        }
-                    }
-                }
-            }
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-            if (tInputList.size() > 0) {
-                long tVoltage = getMaxInputVoltage();
-                byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-                GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false,
-                        GT_Values.V[tTier], tFluids, tInputs);
-                if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue)
-                        && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-                    cashedRecipe = tRecipe;
-                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
-                    byte overclockCount = calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
-                    // In case recipe is too OP for that machine
-                    if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
-                        return false;
-                    }
-                    if (this.mEUt > 0) {
-                        this.mEUt = (-this.mEUt);
-                    }
-                    if (tHeatCapacityDivTiers > 0) {
-                        this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-                        this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount);// extra free
-                                                                                                      // overclocking if
-                                                                                                      // possible
-                        if (this.mMaxProgresstime < 1) {
-                            this.mMaxProgresstime = 1;// no eu efficiency correction
-                        }
-                    }
-                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                    this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0), tRecipe.getOutput(1) };
-                    this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-                    updateSlots();
-                    return true;
-                }
-            }
-        }
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic()
+                .setRecipeMapSupplier(this::getRecipeMap)
+                .setItemOutputLimit(2)
+                .setFluidOutputLimit(1)
+                .setOutputChances(false)
+                .setCalculatorFactory(recipe -> new OverclockCalculator()
+                        .setHeat(recipe.mSpecialValue, mHeatingCapacity, true, true));
     }
 
     /**
@@ -243,51 +161,7 @@ public class GTMTE_BlastSmelter
      * @param aEUt      - recipe EUt
      * @param aDuration - recipe Duration
      */
-    protected byte calculateOverclockednessEBF(int aEUt, int aDuration, long maxInputVoltage) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage)), timesOverclocked = 0;
-        if (mTier == 0) {
-            // Long time calculation
-            long xMaxProgresstime = ((long) aDuration) << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                // make impossible if too long
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = aEUt >> 2;
-                mMaxProgresstime = (int) xMaxProgresstime;
-            }
-            // return 0;
-        } else {
-            // Long EUt calculation
-            long xEUt = aEUt;
-            // Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
 
-            mMaxProgresstime = aDuration;
-
-            while (tempEUt <= V[mTier - 1]) {
-                tempEUt <<= 2;// this actually controls overclocking
-                // xEUt *= 4;//this is effect of everclocking
-                mMaxProgresstime >>= 1;// this is effect of overclocking
-                xEUt = mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2;// U know, if the time is less than 1 tick make the
-                                                                     // machine use less power
-                timesOverclocked++;
-            }
-            if (xEUt > Integer.MAX_VALUE - 1) {
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = (int) xEUt;
-                if (mEUt == 0) {
-                    mEUt = 1;
-                }
-                if (mMaxProgresstime == 0) {
-                    mMaxProgresstime = 1;// set time to 1 tick
-                }
-            }
-        }
-        return timesOverclocked;
-    }
 
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
         casingCount = 0;

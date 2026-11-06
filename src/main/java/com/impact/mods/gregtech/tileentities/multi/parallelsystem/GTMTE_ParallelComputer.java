@@ -1,10 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.parallelcomputer.Container_SuperParallelComputer;
-import com.impact.mods.gregtech.gui.parallelcomputer.GUI_SuperParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -20,7 +20,6 @@ import gregtech.api.util.GTStructureChannels;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.HashSet;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -188,15 +187,6 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 : new ITexture[] { CASING.getTexture() };
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new Container_SuperParallelComputer(aPlayerInventory, aBaseMetaTileEntity, this);
-    }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
@@ -260,13 +250,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        this.mMaxProgresstime = 10;
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-        this.mEUt = 8192 + mMaxCapacityPP;
-        this.mEUt = -this.mEUt;
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(() -> 8192L + mMaxCapacityPP, () -> 10);
     }
 
     public int getCurrentCapacityPP() {
@@ -384,8 +369,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 
     public String[] getInfoData() {
@@ -398,4 +383,12 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                         : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET),
         };
     }
+    @Override
+    public String[] getProcessingInfo() {
+        return new String[] {
+                StatCollector.translateToLocalFormatted("impact.processing.parallel_capacity",
+                        mCurrentCapacityPP, mMaxCapacityPP)
+        };
+    }
+
 }

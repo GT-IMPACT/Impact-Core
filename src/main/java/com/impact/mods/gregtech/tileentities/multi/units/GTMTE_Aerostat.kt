@@ -1,8 +1,12 @@
 package com.impact.mods.gregtech.tileentities.multi.units
 
+
+import gregtech.api.logic.TimedProcessingLogic
+import gregtech.api.logic.ProcessingLogic
 import com.google.common.io.ByteArrayDataInput
 import com.impact.addon.gt.api.aerostat.IAeroStat
 import com.impact.addon.gt.api.position.IPosition
+import com.impact.client.gui.GUIHandler
 import com.impact.common.managers.AeroStateNetworkManager
 import com.impact.impact
 import com.impact.mods.gregtech.GT_ItemList
@@ -11,6 +15,7 @@ import com.impact.mods.gregtech.blocks.ImpactCasings
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.hatches.GTMTEAerostatCargoHatch
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
+import com.impact.network.NetworkPackets
 import com.impact.util.PositionObject
 import com.impact.util.Utilits
 import cpw.mods.fml.common.Optional
@@ -33,7 +38,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler
 import mcp.mobius.waila.api.IWailaDataAccessor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
@@ -42,6 +46,7 @@ import net.minecraft.util.EnumChatFormatting
 import net.minecraft.util.StatCollector.translateToLocal
 import net.minecraft.util.StatCollector.translateToLocalFormatted
 import net.minecraft.world.World
+import space.impact.packet_network.network.NetworkHandler.sendToPlayer
 import space.impact.packet_network.network.packets.IStreamPacketReceiver
 import space.impact.structures.alignment.IAlignmentLimits
 import space.impact.structures.hint.HintColor
@@ -257,13 +262,6 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         return STRUCTURE
     }
 
-    override fun getClientGUI(aID: Int, aPlayerInventory: InventoryPlayer, aBaseMetaTileEntity: IGregTechTileEntity): Any? {
-        return null
-    }
-
-    override fun getServerGUI(aID: Int, aPlayerInventory: InventoryPlayer, aBaseMetaTileEntity: IGregTechTileEntity): Any? {
-        return null
-    }
 
     public override fun machineStructure(thisController: IGregTechTileEntity): Boolean {
         casingCount = 0
@@ -382,8 +380,50 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             .toolTipFinisher()
     }
 
-    override fun onRightclick(aBaseMetaTileEntity: IGregTechTileEntity, aPlayer: EntityPlayer): Boolean {
-        return mMachine && super.onRightclick(aBaseMetaTileEntity, aPlayer)
+    override fun useMui2(): Boolean {
+        return false
+    }
+
+    override fun onRightclick(
+        aBaseMetaTileEntity: IGregTechTileEntity,
+        aPlayer: EntityPlayer,
+    ): Boolean {
+        if (!mMachine) {
+            return false
+        }
+        if (aBaseMetaTileEntity.isServerSide) {
+            openStationGui(aPlayer)
+        }
+        return true
+    }
+
+    fun openStationGui(player: EntityPlayer) {
+        val tile = baseMetaTileEntity ?: return
+        if (!mMachine || tile.isClientSide) {
+            return
+        }
+        if (player.isSneaking) {
+            Utilits.openGui(
+                player,
+                GUIHandler.GUI_ID_AerostatName,
+                tile,
+            )
+            return
+        }
+        Utilits.openGui(
+            player,
+            GUIHandler.GUI_ID_AerostatSelect,
+            tile,
+        )
+        val stationNames = ArrayList<String>(currentLocationPlatforms.size + 2)
+        stationNames.add(owner)
+        stationNames.add(name)
+        for (station in currentLocationPlatforms) {
+            stationNames.add(station.name)
+        }
+        player.sendToPlayer(
+            NetworkPackets.StreamPacket.transaction(*stationNames.toTypedArray()),
+        )
     }
 
     fun setLocationName(name: String) {
@@ -440,8 +480,13 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         }
     }
 
-    override fun checkRecipe(itemStack: ItemStack?): Boolean {
-        return false
+    override fun createProcessingLogic(): ProcessingLogic {
+        return TimedProcessingLogic(
+            0,
+            {
+                0
+            },
+        )
     }
 
     private val distanceTravel: Int
@@ -531,8 +576,8 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         setLocationName(data.readUTF())
     }
 
-    override fun hasSeparate(): Boolean {
-        return false
+    override fun getSupportedProcessingModes(): Int {
+        return 0
     }
 
     fun inputItems(inventory: Array<ItemStack?>): Boolean {
@@ -586,4 +631,55 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     override fun isValid(): Boolean {
         return baseMetaTileEntity?.metaTileEntity != null
     }
+    fun selectStation(
+        direction: Int,
+        end: Boolean,
+    ) {
+        if (name.isEmpty() || currentLocationPlatforms.isEmpty()) {
+            return
+        }
+        val last = currentLocationPlatforms.lastIndex
+        val next = if (end) {
+            if (direction > 0) {
+                last
+            } else {
+                0
+            }
+        } else {
+            (indexSelect + direction).coerceIn(0, last)
+        }
+        updateSelected(next)
+    }
+
+    override fun getProcessingInfo(): Array<String> {
+        val lines = arrayListOf(
+            translateToLocalFormatted(
+                "impact.processing.station",
+                name,
+            ),
+            translateToLocalFormatted(
+                "impact.processing.owner",
+                owner,
+            ),
+            translateToLocalFormatted(
+                "impact.processing.travel_fuel",
+                curBuffer,
+                MAX_BUFFER,
+                selectedDistance * 25,
+            ),
+        )
+        if (currentLocationPlatforms.isEmpty()) {
+            lines.add(translateToLocal("impact.processing.no_stations"))
+        }
+        for ((index, station) in currentLocationPlatforms.withIndex()) {
+            val prefix = if (index == indexSelect) {
+                "§6> "
+            } else {
+                "§7  "
+            }
+            lines.add(prefix + station.name)
+        }
+        return lines.toTypedArray()
+    }
+
 }

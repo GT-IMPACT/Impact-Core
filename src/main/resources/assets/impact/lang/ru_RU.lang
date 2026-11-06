@@ -620,3 +620,64 @@ TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Information_Index_1=Эне
 TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Part_Index_4=Стальной каркас
 TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Location_Index_3=Опорный каркас, показанный на голограмме
 TileEntity_DESCRIPTION_impact.multimachine.waterdrill_Channel_Index_0=Устанавливает хэтч обслуживания, энергетический хэтч и выход воды одинакового уровня, а также входную шину для бурильных труб.
+
+impact.processing.rods_up=Поднять все стержни на 10%
+impact.processing.rods_down=Опустить все стержни на 10%
+impact.processing.hold_temperature=Удерживать температуру
+impact.processing.preserve_tiles=Сохранять блоки с данными
+impact.processing.kill_mobs=Убить мобов в рабочей области
+impact.processing.preserve_state=Сохранение блоков с данными: %s
+impact.processing.current_layer=Текущий слой: %s
+impact.processing.completed=Работа завершена: %s
+impact.processing.parallel_capacity=Параллельная мощность: %s / %s PP
+impact.processing.travel=Переместиться
+impact.processing.station_next=Следующая площадка (Shift: последняя)
+impact.processing.station_previous=Предыдущая площадка (Shift: первая)
+impact.processing.station_name=Название площадки
+impact.processing.apply=Применить
+impact.processing.station=Площадка: %s
+impact.processing.owner=Владелец: %s
+impact.processing.travel_fuel=Топливо: %s / %s; нужно: %s
+impact.processing.no_stations=Нет площадок в радиусе действия
+impact.processing.temperature=Температура: %s / %s
+impact.processing.rods=Положения стержней: %s
+impact.processing.hold_state=Удержание температуры: %s
+impact.processing.fast_decay=Быстрый распад: %s
+impact.processing.mox=MOX-топливо: %s
+impact.processing.fluid_input=Вход: %s л/т
+impact.processing.fluid_output=Выход: %s л/т
+
+impact.processing.hold_unavailable=Удержание недоступно в режиме ускоренного распада
+impact.processing.control_on=Включено
+impact.processing.control_off=Выключено
+
+impact.reactor.rods=Погружение, %
+impact.reactor.no_rods=Нет стержней
+impact.reactor.all_rods=Все стержни
+impact.reactor.mixed_rods=Все: разные
+impact.reactor.temperature=Температура
+impact.reactor.decay=Быстрый распад
+impact.reactor.mox_on=MOX: да
+impact.reactor.mox_off=MOX: нет
+impact.reactor.input=Вход: %s л/т
+impact.reactor.output=Выход: %s л/т
+impact.reactor.decay_requirement=Температура <= 10; хладагент для включения, вода для выключения
+impact.reactor.rod_title=Стержень реактора
+impact.reactor.rod_id=Стержень №%s
+impact.reactor.rod_depth=Погружение: %s%%
+impact.reactor.hold_label=Удержание
+
+impact.lap.history=История заряда
+impact.lap.charging=Заряжается
+impact.lap.discharging=Разряжается
+impact.lap.steady=Заряд стабилен
+impact.lap.disabled=Выключен
+impact.lap.collecting=Сбор данных...
+impact.lap.seconds_ago=-%s с
+impact.lap.now=Сейчас
+
+impact.tank.stored=Накоплено
+impact.tank.capacity=Ёмкость
+impact.tank.fluid_count=Слоты жидкостей: %s / %s
+impact.tank.per_fluid=%s л / тип
+impact.tank.amount_tooltip=%s / %s л

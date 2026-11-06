@@ -1,9 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -16,9 +14,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.logic.ProcessingInputs;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
@@ -100,7 +101,7 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
                 .addInfo("Not used TNT!!!")
                 .addInfo("Energy consumption: (EU/t) = (NEI Recipe EU/t) * 1000")
                 .addInfo("Select machine type by clicking the controller with a screwdriver")
-                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addInfo("Configure input bus separation in the machine GUI")
                 .addSeparator()
                 .beginStructureBlock(7, 3, 3, false)
                 .addController("See the structure hologram")
@@ -117,24 +118,15 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
                 .toolTipFinisher();
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
-    public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-        ItemStack specialInput = GT_ModHandler.getIC2Item("industrialTnt", 64, null);
-        return recipeBuilder
-                .addFakeItems(indexBus, specialInput)
-                .checkSizeHatches(false, true, indexBus)
-                .checkVoltage()
-                .checkRecipeMap(indexBus)
-                .checkInputEquals(indexBus, false)
-                .checkEfficiency()
-                .checkConsumption()
-                .checkOutputs(true)
-                .build();
+    protected List<ProcessingInputs> collectProcessingInputs() {
+        List<ProcessingInputs> groups = new ArrayList<>(super.collectProcessingInputs());
+        ItemStack explosive = GT_ModHandler.getIC2Item("industrialTnt", 64, null);
+        for (int index = 0; index < groups.size(); index++) {
+            groups.set(index, groups.get(index).withVirtualItems(Collections.singletonList(explosive)));
+        }
+        return groups;
     }
 
     @Override

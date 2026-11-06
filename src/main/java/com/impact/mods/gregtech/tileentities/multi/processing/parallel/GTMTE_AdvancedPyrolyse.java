@@ -1,9 +1,12 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
+import net.minecraft.nbt.NBTTagCompound;
+import gregtech.api.util.OverclockCalculator;
+import com.impact.addon.gt.api.recipe.StagedFluidOutputs;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -17,11 +20,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import java.util.ArrayList;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import space.impact.structures.hint.HintColor;
@@ -29,19 +29,17 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static com.impact.util.recipe.RecipeHelper.resizeItemStackSize;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedPyrolyse> {
 
-    public int mParallelPoint = 1;
 
     private static final ICasing CASING = Casings.HSLA;
 
     private int casingCount;
+    private final StagedFluidOutputs stagedOutputs = new StagedFluidOutputs();
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 39)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
@@ -130,88 +128,15 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                 .toolTipFinisher();
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        int xPar = tierHatch() * 2;
-
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-
-        if (!tInputList.isEmpty() || !tFluidList.isEmpty()) {
-
-            GT_Recipe tRecipe;
-
-            long nominalV = getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(nominalV));
-
-            tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), cashedRecipe, false, V[tTier], tFluids,
-                    tInputs);
-
-            if (tRecipe != null) {
-                cashedRecipe = tRecipe;
-                ArrayList<FluidStack> outputFluids = new ArrayList<>();
-
-                boolean found_Recipe = false;
-
-                ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-                int processed = 0;
-                while ((!tFluidList.isEmpty() || !tInputList.isEmpty()) && processed < xPar) {
-                    if ((tRecipe.mEUt * (processed + 1L)) < nominalV && tRecipe
-                            .isRecipeInputEqual(true, tFluids, tInputs)) {
-                        found_Recipe = true;
-                        for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-                            if (tRecipe.getOutput(h) != null) {
-                                ItemStack old = tRecipe.getOutput(h).copy();
-                                tOut[h] = old;
-                                tOut[h].stackSize = old.stackSize * (processed + 1);
-                            }
-                        }
-
-                        ++processed;
-
-                    } else {
-                        break;
-                    }
-                }
-                mParallelPoint = processed;
-                if (tRecipe.mFluidOutputs.length > 4) {
-                    FluidStack fluid = tRecipe.getFluidOutput(4);
-                    if (fluid != null) {
-                        FluidStack fluidOut = fluid.copy();
-                        fluidOut.amount *= processed;
-                        outputFluids.add(fluidOut);
-                    }
-                }
-
-                tOut = resizeItemStackSize(tOut);
-
-                if (found_Recipe) {
-
-                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-
-                    this.mEUt = (tRecipe.mEUt) * processed * tierHatch() / 2;
-
-                    this.mEUt = this.mEUt > 0 ? (-this.mEUt) : this.mEUt;
-
-                    this.mMaxProgresstime = tRecipe.mDuration;
-
-                    this.mOutputItems = tOut;
-                    this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
-
-                    this.updateSlots();
-                    return true;
-                }
-            }
-        }
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic()
+                .setRecipeMapSupplier(this::getRecipeMap)
+                .setMaxParallelSupplier(() -> tierHatch() * 2)
+                .setOutputChances(false)
+                .setCalculatorSupplier(() -> new OverclockCalculator()
+                        .setMaxOverclocks(0).setEUtModifier(tierHatch() / 2.0));
     }
 
     @Override
@@ -231,38 +156,45 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-
-        if (cashedRecipe == null)
-            return super.onRunningTick(aStack);
-
-        int outIndex = -1;
-
-        switch (this.mProgresstime) {
-        case 7 * 20:
-            outIndex = 0;
-            break;
-        case 14 * 20:
-            outIndex = 1;
-            break;
-        case 21 * 20:
-            outIndex = 2;
-            break;
-        case 28 * 20:
-            outIndex = 3;
-            break;
+    public boolean onRunningTick(ItemStack stack) {
+        if (!super.onRunningTick(stack)) {
+            return false;
         }
+        stagedOutputs.tick(mProgresstime, createProcessingOutputs());
+        markDirty();
+        return true;
+    }
 
-        if (outIndex >= 0 && cashedRecipe.mFluidOutputs.length > outIndex) {
-            FluidStack out = cashedRecipe.mFluidOutputs[outIndex];
-            if (out != null) {
-                FluidStack outCopy = out.copy();
-                outCopy.amount *= mParallelPoint;
-                addOutput(outCopy);
-            }
-        }
+    @Override
+    protected void startCycle(ProcessingLogic.Result result, int efficiency) {
+        super.startCycle(result, efficiency);
+        stagedOutputs.start(result.fluids, (getProcessingModes() & ProcessingLogic.PROTECT_FLUIDS) != 0);
+        mOutputFluids = result.fluids.length > 4 && result.fluids[4] != null
+                ? new FluidStack[] { result.fluids[4].copy() } : new FluidStack[0];
+    }
 
-        return super.onRunningTick(aStack);
+    @Override
+    protected void completeRecipe() {
+        mOutputFluids = stagedOutputs.finish(mOutputFluids);
+        super.completeRecipe();
+    }
+
+    @Override
+    public void stopMachine() {
+        stagedOutputs.clear();
+        super.stopMachine();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound tag) {
+        super.saveNBTData(tag);
+        stagedOutputs.save(tag);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound tag) {
+        super.loadNBTData(tag);
+        stagedOutputs.load(tag);
     }
 
     @Override
@@ -301,8 +233,8 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return ProcessingLogic.PROTECT_ITEMS | ProcessingLogic.PROTECT_FLUIDS | ProcessingLogic.LOCK_RECIPE;
     }
 
     @Override

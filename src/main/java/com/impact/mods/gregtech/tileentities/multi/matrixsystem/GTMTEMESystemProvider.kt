@@ -1,12 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem
 
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder
+import gregtech.api.logic.ProcessingLogic
 import com.impact.loader.ItemRegistery
 import com.impact.mods.gregtech.GT_RecipeMaps
 import com.impact.mods.gregtech.blocks.ImpactCasings
 import com.impact.mods.gregtech.blocks.ImpactHatchElement
-import com.impact.mods.gregtech.gui.base.GTC_ImpactBase
-import com.impact.mods.gregtech.gui.base.GUI_BASE
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
 import cpw.mods.fml.common.Optional
@@ -26,7 +24,6 @@ import gregtech.api.util.StructureRequirements
 import mcp.mobius.waila.api.IWailaConfigHandler
 import mcp.mobius.waila.api.IWailaDataAccessor
 import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
@@ -185,8 +182,6 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
 
     override fun newMetaEntity(aTileEntity: IGregTechTileEntity?) = GTMTEMESystemProvider(mName)
 
-
-
     public override fun construct(
         stack: ItemStack,
         hintOnly: Boolean,
@@ -279,13 +274,6 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         }
     }
 
-    override fun getClientGUI(aID: Int, aPlayerInventory: InventoryPlayer?, aBaseMetaTileEntity: IGregTechTileEntity?): Any {
-        return GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, localName)
-    }
-
-    override fun getServerGUI(aID: Int, aPlayerInventory: InventoryPlayer?, aBaseMetaTileEntity: IGregTechTileEntity?): Any {
-        return GTC_ImpactBase(aPlayerInventory, aBaseMetaTileEntity)
-    }
 
     public override fun createTooltip(): MultiblockTooltipBuilder {
         return MultiblockTooltipBuilder(mName).apply {
@@ -316,20 +304,21 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         return GT_RecipeMaps.sMESystemProvider
     }
 
-    override fun checkRecipe(recipeBuilder: MultiBlockRecipeBuilder<*>?, indexBus: Int): Boolean {
-        return recipeBuilder!!
-            .checkSizeHatches(needCheckFluid = false, needCheckItems = true, indexBus = indexBus)
-            .checkVoltage()
-            .checkRecipeMap(indexBus = indexBus)
-            .checkInputEquals(indexBus = indexBus, enabledChance = false) { recipe ->
-                mMatrixParticlesSummary - recipe.mSpecialValue >= 0
+    override fun createProcessingLogic(): ProcessingLogic {
+        return super.createProcessingLogic()
+            .setOperationLimit { recipe ->
+                if (recipe.mSpecialValue <= 0) {
+                    Int.MAX_VALUE
+                } else {
+                    mMatrixParticlesSummary / recipe.mSpecialValue
+                }
             }
-            .checkEfficiency()
-            .checkConsumption()
-            .checkOutputs(default = true, indexBus = indexBus) { recipe ->
-                mMatrixParticlesSummary -= recipe.mSpecialValue
+            .setRecipeCommitHandler { recipe, operations ->
+                mMatrixParticlesSummary -= Math.multiplyExact(
+                    recipe.mSpecialValue.coerceAtLeast(0),
+                    operations,
+                )
             }
-            .build()
     }
 
     override fun onPostTick(iAm: IGregTechTileEntity, aTick: Long) {
@@ -367,8 +356,8 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         )
     }
 
-    override fun hasSeparate(): Boolean {
-        return false
+    override fun getSupportedProcessingModes(): Int {
+        return super.getSupportedProcessingModes() and ProcessingLogic.SEPARATE_INPUTS.inv()
     }
 
     override fun hasShowConnect(): Boolean {

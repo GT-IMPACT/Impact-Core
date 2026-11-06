@@ -3,7 +3,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -16,7 +15,6 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
@@ -99,7 +97,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                 .addInfo("Single-block machine equivalent")
                 .addInfo("Parallel points: base 1, maximum 256")
                 .addMachineType("Electrolyzer")
-                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addInfo("Configure input bus separation in the machine GUI")
                 .addSeparator()
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
@@ -118,9 +116,6 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                 .toolTipFinisher();
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {

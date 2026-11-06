@@ -12,8 +12,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import com.impact.mods.gregtech.enums.Texture;
-import com.impact.mods.gregtech.gui.nuclear.GT_Container_Reactor_Rod;
-import com.impact.mods.gregtech.gui.nuclear.GT_GUIContainer_Reactor_Rod;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.nuclear.ReactorRodHatchGui;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
@@ -24,7 +27,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -102,18 +104,16 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 		return true;
 	}
 	
-	@Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
-							   IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_Reactor_Rod(aPlayerInventory, aBaseMetaTileEntity);
-	}
-	
-	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-							   IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_Reactor_Rod(aPlayerInventory, aBaseMetaTileEntity, "Reactor Rod");
-	}
-	
+    @Override
+    public boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        return ReactorRodHatchGui.build(this, data, sync, settings);
+    }
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
@@ -216,9 +216,12 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 		mSpeedDecay = speedDecay;
 	}
 	
-	public void setRodPosition(int position) {
-		mDownRod = position <= 0 ? 0 : Math.min(position, 10);
-	}
+    public void setRodPosition(int position) {
+        mDownRod = Math.max(0, Math.min(position, 10));
+        if (getBaseMetaTileEntity() != null) {
+            markDirty();
+        }
+    }
 	
 	public void setStartReactor(boolean start) {
 		this.mStartReactor = start;

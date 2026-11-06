@@ -5,9 +5,7 @@ import com.impact.common.block.blocks.Block_QuantumStuff;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GTC_ImpactBase;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
-import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_FuelGeneratorBase;
 import com.impact.util.string.Language;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3ic;
@@ -26,13 +24,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import java.util.ArrayList;
-import java.util.Collection;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
@@ -44,7 +38,7 @@ import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
-public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_HyperNaquadahGenerator> {
+public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase<GTMTE_HyperNaquadahGenerator> {
 
     private static IStructureDefinition<GTMTE_HyperNaquadahGenerator> STRUCTURE_DEFINITION;
 
@@ -55,7 +49,6 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
 
     public boolean Stuff;
     public int EU_PER_TICK = 134217728;
-    protected int fuelConsumption = 0;
     private int casingCount = 0;
 
     public GTMTE_HyperNaquadahGenerator(int aID, String aNameRegional) {
@@ -105,15 +98,6 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
                 : new ITexture[] { CASING.getTexture() };
     }
 
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GTC_ImpactBase(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Hyper Generator", "MultiParallelBlockGUI.png");
-    }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity iGregTechTileEntity) {
@@ -126,35 +110,13 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
-        Collection<GT_Recipe> recipeList = GT_Recipe.GT_Recipe_Map.sHyperGenerator.mRecipeList;
-        if ((storedFluids.size() > 0 && recipeList != null)) {
-            for (FluidStack hatchFluid : storedFluids) {
-                for (GT_Recipe aFuel : recipeList) {
-                    FluidStack liquid; // Register FluidStack (name fluid from oredict cell materials, amount)
-                    if ((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
-                            && hatchFluid.isFluidEqual(liquid)) { // check: fluid cell and fluid without cell
-                        fuelConsumption = liquid.amount = aFuel.mSpecialValue; // set Amount: FUEL_PER_SECOND
-                        if (super.depleteInput(liquid)) {
-                            super.mMaxProgresstime = 20; // 1 Second
-                            super.mEfficiencyIncrease = 500; // 500 - 5% per cycle
-                            if (mEfficiency > 9000) {
-                                super.mEUt = EU_PER_TICK;
-                            } else {
-                                super.mEUt = 0;
-                            } // UV * 256A
-                            quantumStuff(true);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        super.mEUt = 0;
-        super.mEfficiency = 0;
-        quantumStuff(false);
-        return false;
+    protected long getFuelCycleGeneration() {
+        return mEfficiency > 9000 ? EU_PER_TICK : 0;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sHyperGenerator;
     }
 
     @Override
@@ -280,7 +242,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_BlockBase<GTMTE_H
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 }

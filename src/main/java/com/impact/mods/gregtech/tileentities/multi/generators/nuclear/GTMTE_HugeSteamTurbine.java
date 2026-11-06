@@ -1,9 +1,12 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.logic.ProcessingInputs;
+import gregtech.api.logic.WorldProcessingLogic;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
@@ -20,8 +23,6 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -139,10 +140,6 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                 .toolTipFinisher();
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Huge Steam Turbine", "MultiParallelBlockGUI.png");
-    }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
@@ -176,44 +173,47 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        ArrayList<FluidStack> tFluids = getStoredFluids();
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        int totalFlow = 0;
-        int countEU = 0;
-        long outEU = 0;
-        this.mStoredFluids = 0;
-        int countFluid = 0;
-        for (FluidStack fluidStack : tFluids) {
-            String fluidName = fluidStack.getUnlocalizedName();
-            if (fluidName.equals("fluid.steam") || fluidName.equals("ic2.fluidSteam")) {
-                countFluid = fluidStack.amount;
-                depleteInput(new FluidStack(fluidStack, countFluid));
-                this.mStoredFluids += countFluid;
-                totalFlow += countFluid;
-                countEU = 2;
-            } else if (fluidName.equals("ic2.fluidSuperheatedSteam")) {
-                countFluid = fluidStack.amount;
-                depleteInput(new FluidStack(fluidStack, countFluid));
-                this.mStoredFluids += countFluid;
-                totalFlow += countFluid;
-                countEU = 1;
+    protected ProcessingLogic createProcessingLogic() {
+        return new WorldProcessingLogic(request -> {
+            ProcessingInputs inputs = request.inputs.get(0).copy();
+            long flow = 0;
+            int divisor = 0;
+            for (FluidStack fluid : inputs.fluids) {
+                String name = fluid.getUnlocalizedName();
+                if (name.equals("fluid.steam") || name.equals("ic2.fluidSteam")) {
+                    divisor = 2;
+                } else if (name.equals("ic2.fluidSuperheatedSteam")) {
+                    divisor = 1;
+                } else {
+                    continue;
+                }
+                flow = Math.addExact(flow, fluid.amount);
+                fluid.amount = 0;
             }
-            outEU = totalFlow / countEU;
-        }
-
-        if (tFluids.isEmpty() || totalFlow == 0) {
-            return false;
-        }
-
-        outEU = mEfficiency < 10000 ? outEU / 2 : outEU;
-        outEU /= 20;
-        mStoredFluids /= 20;
-        mOutputSalary = Math.min(outEU, getMaxOutputVoltage());
-
-        this.mMaxProgresstime = 20;
-        this.mEfficiencyIncrease = 10000;
-        return true;
+            if (flow == 0) {
+                return WorldProcessingLogic.Operation.failure(CheckRecipeResult.NO_RECIPE);
+            }
+            long generated = flow / divisor;
+            if (request.efficiency < 10000) {
+                generated /= 2;
+            }
+            long output = Math.min(generated / 20, getMaxOutputVoltage());
+            int stored = Math.toIntExact(flow / 20);
+            return new WorldProcessingLogic.Operation(
+                    0,
+                    20,
+                    new ItemStack[0],
+                    new FluidStack[0],
+                    () -> {
+                        if (!inputs.commit()) {
+                            return false;
+                        }
+                        mStoredFluids = stored;
+                        mOutputSalary = output;
+                        return true;
+                    }
+            );
+        });
     }
 
     @Override
@@ -262,7 +262,7 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 }

@@ -1,5 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.ores
 
+import gregtech.api.recipe.check.CheckRecipeResult
+import gregtech.api.logic.TimedProcessingLogic
+import gregtech.api.logic.ProcessingLogic
 import com.impact.loader.ItemRegistery
 import com.impact.mods.gregtech.blocks.ImpactHatchElement
 import com.impact.mods.gregtech.enums.Texture
@@ -403,18 +406,26 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         return DEFINITION
     }
 
-    override fun checkRecipe(itemStack: ItemStack?): Boolean {
+    override fun createProcessingLogic(): ProcessingLogic {
+        return TimedProcessingLogic(
+            {
+                val tier = min(
+                    tierEnergyHatch,
+                    14,
+                )
+                6L shl (tier * 2)
+            },
+            {
+                400
+            },
+        )
+    }
+
+    override fun validateProcessing(): CheckRecipeResult {
         if (mixInHatch == null || mixOutHatch == null) {
-            return false
+            return CheckRecipeResult.MACHINE_CONDITION
         }
-        mEfficiency = getCurrentEfficiency(null)
-        mEfficiencyIncrease = 10000
-        val tier = min(tierEnergyHatch, 14)
-        mEUt = 3 * (2 shl (tier shl 1))
-        if (mEUt > 0) mEUt = -mEUt
-        mProgresstime = 0
-        mMaxProgresstime = 20 * 20
-        return true
+        return super.validateProcessing()
     }
 
     override fun onFirstTick(te: IGregTechTileEntity) {
@@ -511,8 +522,8 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
         return false
     }
 
-    override fun hasSeparate(): Boolean {
-        return false
+    override fun getSupportedProcessingModes(): Int {
+        return 0
     }
 
     override fun hasIndicator(): Boolean {

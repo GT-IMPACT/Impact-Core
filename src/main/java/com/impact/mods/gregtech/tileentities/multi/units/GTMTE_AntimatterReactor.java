@@ -1,5 +1,11 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.ProcessingInputs;
+import gregtech.api.logic.ProcessingPersistence;
+import gregtech.api.logic.FuelProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import com.impact.addon.gt.api.recipe.ContinuousFluidOutputs;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -21,13 +27,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import gregtech.common.gui.GT_GUIContainer_AntimatterReactor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,7 +55,10 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
             .build();
 
     protected int mColantConsumption = 0, mPerFluidAmount;
-    private FluidStack[] mInputFluids;
+    private FluidStack[] mInputFluids = new FluidStack[0];
+    private FluidStack runningProduct;
+    private boolean protectRunningOutput;
+    private final ContinuousFluidOutputs continuousOutputs = new ContinuousFluidOutputs();
 
     public GTMTE_AntimatterReactor(int aID, String aNameRegional) {
         super(aID, "impact.multis.antimatterreactor", aNameRegional);
@@ -90,10 +94,6 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
         return sTexture;
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_AntimatterReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "AntimatterReactor.png", sAntimatterReactorFuels.mNEIName);
-    }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -107,64 +107,55 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        for (int i = 0; i < tInputList.size() - 1; i++) {
-            for (int j = i + 1; j < tInputList.size(); j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--);
-                    } else {
-                        tInputList.remove(i--);
-                        break;
-                    }
-                }
+    protected ProcessingLogic createProcessingLogic() {
+        return new FuelProcessingLogic(this::getRecipeMap, recipe -> {
+            if (recipe.mSpecialValue <= 0 || recipe.mFluidInputs.length == 0
+                    || recipe.mFluidInputs[0] == null || recipe.mFluidOutputs.length == 0) {
+                return null;
             }
-        }
-        ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[0]), 0, 2);
+            return new FuelProcessingLogic.FuelCycle(recipe, 2097152, Math.multiplyExact(recipe.mSpecialValue, 20));
+        });
+    }
 
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        for (int i = 0; i < tFluidList.size() - 1; i++) {
-            for (int j = i + 1; j < tFluidList.size(); j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                    } else {
-                        tFluidList.remove(i--);
-                        break;
-                    }
-                }
-            }
+    @Override
+    protected CheckRecipeResult validateProcessing() {
+        if (!continuousOutputs.isEmpty()) {
+            return CheckRecipeResult.WAITING_FOR_OUTPUT;
         }
-        FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
+        return super.validateProcessing();
+    }
 
-        if (tInputList.size() > 1) {
-            GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), cashedRecipe, false, Long.MAX_VALUE,
-                    tFluids, tInputs);
-            if (tRecipe == null) {
-                return false;
-            }
-            if (tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-                cashedRecipe = tRecipe;
-                this.mEUt = 2097152;
-                this.mMaxProgresstime = tRecipe.mSpecialValue * 20;
-                this.mEfficiency = 10000;
-                this.mEfficiencyIncrease = 10000;
-                this.mInputFluids = tRecipe.mFluidInputs;
-                this.mPerFluidAmount = tRecipe.mFluidInputs.length;
-                this.mOutputFluids = tRecipe.mFluidOutputs;
-                this.mOutputItems = tRecipe.mOutputs;
-                this.mColantConsumption = tRecipe.mFluidInputs[0].amount;
-                updateSlots();
-                return true;
-            }
+    @Override
+    protected void startCycle(ProcessingLogic.Result result, int efficiency) {
+        super.startCycle(result, 10000);
+        GT_Recipe recipe = ((FuelProcessingLogic) getProcessingLogic()).getCurrentRecipe();
+        mInputFluids = ProcessingInputs.copyFluids(recipe.mFluidInputs);
+        mPerFluidAmount = mInputFluids.length;
+        mColantConsumption = mInputFluids[0].amount;
+        runningProduct = result.fluids.length == 0 || result.fluids[0] == null ? null : result.fluids[0].copy();
+        protectRunningOutput = (getProcessingModes() & ProcessingLogic.PROTECT_FLUIDS) != 0;
+    }
+
+    @Override
+    protected void completeRecipe() {
+        mOutputFluids = continuousOutputs.finish(mOutputFluids);
+        super.completeRecipe();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity tile, long tick) {
+        super.onPostTick(tile, tick);
+        if (tile.isServerSide()) {
+            continuousOutputs.flush(createProcessingOutputs());
         }
-        return false;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        continuousOutputs.save(aNBT);
+        aNBT.setBoolean("protectRunningOutput", protectRunningOutput);
+        ProcessingPersistence.writeFluids(aNBT, "runningProduct", new FluidStack[] { runningProduct });
         aNBT.setInteger("mPerFluidAmount", mPerFluidAmount);
         for (int i = 0; i < mPerFluidAmount; i++) {
             if (mInputFluids[i] != null && mInputFluids[i].amount > 0) {
@@ -176,6 +167,12 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        continuousOutputs.load(aNBT);
+        protectRunningOutput = aNBT.getBoolean("protectRunningOutput");
+        FluidStack[] products = aNBT.hasKey("runningProduct")
+                ? ProcessingPersistence.readFluids(aNBT, "runningProduct")
+                : mOutputFluids == null ? new FluidStack[0] : ProcessingInputs.copyFluids(mOutputFluids);
+        runningProduct = products.length == 0 ? null : products[0];
         mPerFluidAmount = aNBT.getInteger("mPerFluidAmount");
         mInputFluids = new FluidStack[mPerFluidAmount];
         for (int i = 0; i < mPerFluidAmount; i++) {
@@ -189,16 +186,21 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (mEUt > 0 && mInputFluids != null) {
-            if (depleteInput(mInputFluids[0])) {
-                addEnergyOutput(((long) mEUt * mEfficiency) / 10000);
-                addOutput(mOutputFluids[0]);
-                return true;
-            }
+    public boolean onRunningTick(ItemStack stack) {
+        if (lEUt <= 0 || mInputFluids.length == 0 || mInputFluids[0] == null) {
+            stopMachine();
+            return false;
         }
-        stopMachine();
-        return false;
+        ProcessingInputs coolant = collectProcessingInputs().get(0).copy();
+        if (!coolant.consumeFluid(mInputFluids[0]) || !coolant.commit()) {
+            stopMachine();
+            return false;
+        }
+        addEnergyOutput(lEUt * mEfficiency / 10000);
+        continuousOutputs.emit(runningProduct, protectRunningOutput, createProcessingOutputs());
+        updateSlots();
+        markDirty();
+        return true;
     }
 
     @Override
@@ -388,7 +390,7 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
     }
 }

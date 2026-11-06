@@ -1,11 +1,12 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.logic.TimedProcessingLogic;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.matrixsystem.GT_Container_ParametricDiffuser;
-import com.impact.mods.gregtech.gui.matrixsystem.GUI_ParametricDiffuser;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.network.GTNetworkHandler;
 import com.impact.network.NetworkPackets;
@@ -26,7 +27,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.Random;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -84,15 +84,6 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                 : new ITexture[] { CASING.getTexture() };
     }
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_ParametricDiffuser(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_ParametricDiffuser(aPlayerInventory, aBaseMetaTileEntity);
-    }
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
@@ -154,25 +145,32 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        for (GT_MetaTileEntity_Hatch_InputBus mInputBuss : mInputBusses) {
-            ItemStack gem = mInputBuss.mInventory[0];
-            if (gem == null)
-                return false;
-            int[] idOreDict = OreDictionary.getOreIDs(gem);
-            for (int id : idOreDict) {
-                if (OreDictionary.getOreName(id).startsWith("gemExquisite")) {
-                    this.mMaxProgresstime = 20;
-                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    int tier = GT_Utility.getTier(getMaxInputVoltage());
-                    this.mPeakBeamMP = mEfficiency < 10000 ? 0 : tier >= 4 ? tier - 3 : 0;
-                    this.mEUt = -(int) getMaxInputVoltage();
-                    return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(
+                () -> Math.multiplyExact(getAverageInputVoltage(), getProcessingAmperage()), () -> 20);
+    }
+
+    @Override
+    protected CheckRecipeResult validateProcessing() {
+        for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+            ItemStack gem = bus.mInventory[0];
+            if (gem == null) {
+                return CheckRecipeResult.MACHINE_CONDITION;
+            }
+            for (int oreId : OreDictionary.getOreIDs(gem)) {
+                if (OreDictionary.getOreName(oreId).startsWith("gemExquisite")) {
+                    return super.validateProcessing();
                 }
             }
         }
-        return false;
+        return CheckRecipeResult.MACHINE_CONDITION;
+    }
+
+    @Override
+    protected void startCycle(ProcessingLogic.Result result, int efficiency) {
+        super.startCycle(result, efficiency);
+        int tier = GT_Utility.getTier(getAverageInputVoltage());
+        mPeakBeamMP = efficiency < 10000 ? 0 : Math.max(0, tier - 3);
     }
 
     public void addBound(IGregTechTileEntity iAm) {
@@ -320,7 +318,7 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 }

@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
-import com.impact.addon.gt.api.recipe.MultiBlockRecipeBuilder;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -8,7 +8,6 @@ import gregtech.api.enums.Casings;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,7 +24,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import ic2.core.Ic2Items;
 import ic2.core.util.StackUtil;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.alignment.IAlignmentLimits;
 import space.impact.structures.hint.HintColor;
@@ -82,10 +80,6 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
         return sTexture;
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "TinyWormHole.png");
-    }
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -101,19 +95,6 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return sTinyWormHoleRecipes;
-    }
-
-    @Override
-    public boolean checkRecipe(MultiBlockRecipeBuilder<?> recipeBuilder, int indexBus) {
-        return recipeBuilder
-                .checkSizeHatches(true, true, indexBus)
-                .checkVoltage()
-                .checkRecipeMap(indexBus)
-                .checkInputEquals(indexBus, true)
-                .checkEfficiency()
-                .checkConsumption()
-                .checkOutputs(true)
-                .build();
     }
 
     private static IStructureDefinition<GTMTE_TinyWormHole> structureDefinition;
@@ -259,7 +240,7 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
     }
 }

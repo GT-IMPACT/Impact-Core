@@ -5,7 +5,7 @@ import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive
 import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -14,23 +14,46 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
+import java.util.List;
+import com.impact.addon.gt.api.recipe.PrimitiveProcessingOutputs;
+import gregtech.api.logic.IProcessingOutputSink;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
 
 public abstract class GTMTE_PrimitiveBlockBase<T extends GTMTE_PrimitiveBlockBase<T>>
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>
+        extends GT_MetaTileEntity_ProcessingMultiBlockBase<T>
         implements ISurvivalConstructable {
     public final ArrayList<GT_MetaTileEntity_Primitive_Hatch_Output> mOutputHatches1 = new ArrayList<>();
     public final ArrayList<GT_MetaTileEntity_Primitive_InputBus> mInputBusses1 = new ArrayList<>();
     public final ArrayList<GT_MetaTileEntity_Primitive_OutputBus> mOutputBusses1 = new ArrayList<>();
 
     protected GTMTE_PrimitiveBlockBase(int id, String name, String regionalName) {
-        super(id, name, regionalName);
+        super(id, name, regionalName, 2);
+        enabledMaintenance = false;
     }
 
     protected GTMTE_PrimitiveBlockBase(String name) {
-        super(name);
+        super(name, 2);
+        enabledMaintenance = false;
+    }
+
+    @Override
+    public int getCircuitSlot() {
+        return -1;
+    }
+
+    @Override
+    protected List<GT_MetaTileEntity_Hatch> getProcessingInputBuses() {
+        List<GT_MetaTileEntity_Hatch> buses = super.getProcessingInputBuses();
+        buses.addAll(mInputBusses1);
+        return buses;
+    }
+
+    @Override
+    protected IProcessingOutputSink createProcessingOutputs() {
+        return PrimitiveProcessingOutputs.create(this, mOutputBusses1, mOutputHatches1);
     }
 
     @Override

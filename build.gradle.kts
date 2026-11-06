@@ -34,16 +34,45 @@ dependencies {
     implementation("space.impact:Packet-network:1.1.8.dirty")
     implementation("space.impact:ImpactStructures:1.1.3:dev")
     implementation("space.impact:VirtualWorld:2.0.4:dev")
-    implementation("space.impact:gregtech-impact:5.09.36.4:dev") {
+    val gregtechDevJar = providers.gradleProperty("gregtechDevJar")
+    if (gregtechDevJar.isPresent) {
+        implementation(files(gregtechDevJar.get()))
+    } else {
+        implementation("space.impact:gregtech-impact:5.09.37.1") {
+            if (gradle.includedBuilds.none {
+                    it.name == "gregtech"
+                }) {
+                artifact {
+                    classifier = "dev"
+                }
+            }
+            isTransitive = false
+        }
+    }
+
+    compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
+    // RecipeModule's IMPACT recipes reference TecTech items during startup.
+    runtimeOnlyNonPublishable("space.impact:TecTech:3.9.3") {
+        if (gradle.includedBuilds.none {
+                it.name == "tectech"
+            }) {
+            artifact {
+                classifier = "dev"
+            }
+        }
         isTransitive = false
     }
-    compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
+    // YAMCore is published with SRG names; dev clients need MCP names for packet handlers.
+    runtimeOnlyNonPublishable(modUtils.deobfuscate("com.github.GTNewHorizons:YAMCore:0.5.79"))
     runtimeOnlyNonPublishable("space.impact:RecipeModule:1.1.1.3") { isTransitive = false }
     runtimeOnlyNonPublishable("space.impact:GregTechBridge:1.0.2:dev") { isTransitive = false }
 
     // maven impact
     api("com.github.GTNewHorizons:modularui:1.1.24:dev") { isTransitive = false }
-    implementation(modUtils.deobfuscate("com.github.Azanor:Baubles:1.0.1.12"))
+    api("com.github.GTNewHorizons:ModularUI2:2.3.92-1.7.10:dev") {
+        exclude(group = "com.github.GTNewHorizons", module = "ModularUI")
+    }
+    implementation("com.github.GTNewHorizons:Baubles-Expanded:2.2.24-GTNH:dev")
     implementation("com.github.GTNewHorizons:waila:1.7.3:dev") { isTransitive = false }
     implementation("com.github.GTNewHorizons:EnderCore:0.2.7:dev") { isTransitive = false }
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:IC2NuclearControl:2.6.2:dev") { isTransitive = false }
@@ -61,6 +90,13 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.8.1")
     // Интерфейс стеков AE2 ссылается на клиент Minecraft, использующий LWJGL.
     testRuntimeOnly("org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209")
+    // Match GT's native MUI2 test runtime; the game supplies these through its loader mods.
+    testRuntimeOnly("it.unimi.dsi:fastutil:8.5.18")
+    testRuntimeOnly("org.joml:joml:1.10.8")
+    testRuntimeOnly("com.github.GTNewHorizons:lwjgl3ify:3.0.34:api") { isTransitive = false }
+    testRuntimeOnly("curse.maven:neverenoughanimation-1062347:7664003-sources-7663978") {
+        isTransitive = false
+    }
 }
 
 tasks.test {

@@ -1,8 +1,20 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.nuclear;
 
+import java.util.Arrays;
+
+import net.minecraft.util.StatCollector;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.impact.mods.gregtech.gui.nuclear.NuclearReactorGui;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
+import gregtech.api.logic.ProcessingLogic;
+import com.impact.addon.gt.api.recipe.ContinuousFluidOutputs;
+import gregtech.api.logic.TimedProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.nuclear.GT_Container_NuclearReactor;
-import com.impact.mods.gregtech.gui.nuclear.GUI_NuclearReactor;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import cpw.mods.fml.common.Optional;
@@ -31,7 +43,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -137,9 +148,14 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         return false;
     }
 
+    private final ContinuousFluidOutputs continuousOutputs = new ContinuousFluidOutputs();
+    private boolean protectThermalOutput;
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        continuousOutputs.save(aNBT);
+        aNBT.setBoolean("protectThermalOutput", protectThermalOutput);
         aNBT.setFloat("mCurrentTemp", mCurrentTemp);
         aNBT.setDouble("mCurrentOutput", mCurrentOutput);
         aNBT.setDouble("mCurrentInput", mCurrentInput);
@@ -152,6 +168,8 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        continuousOutputs.load(aNBT);
+        protectThermalOutput = aNBT.getBoolean("protectThermalOutput");
         this.mCurrentTemp = aNBT.getFloat("mCurrentTemp");
         this.mCurrentOutput = aNBT.getDouble("mCurrentOutput");
         this.mCurrentInput = aNBT.getDouble("mCurrentInput");
@@ -161,28 +179,29 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         this.stopTemp = aNBT.getBoolean("stopTemp");
     }
 
+
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-            IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_NuclearReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(),
-                "NuclearReactorGUI.png");
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 20);
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
-            IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_NuclearReactor(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (mFirstStart) {
-            this.mMaxProgresstime = 20;
-            this.mEUt = 0;
-            this.mEfficiencyIncrease = 1000;
-            return true;
+    protected CheckRecipeResult validateProcessing() {
+        if (!continuousOutputs.isEmpty() || (getProcessingModes() & ProcessingLogic.PROTECT_FLUIDS) != 0
+                && !createProcessingOutputs().areFluidOutputsEmpty()) {
+            return CheckRecipeResult.FLUID_OUTPUT_FULL;
         }
-        return false;
+        if (!mFirstStart) {
+            return CheckRecipeResult.MACHINE_CONDITION;
+        }
+        return super.validateProcessing();
+    }
+
+    @Override
+    protected void startCycle(ProcessingLogic.Result result, int efficiency) {
+        super.startCycle(result, mEfficiency);
+        mEfficiencyIncrease = 1000;
+        protectThermalOutput = (getProcessingModes() & ProcessingLogic.PROTECT_FLUIDS) != 0;
     }
 
     public abstract int maxTemperature();
@@ -194,6 +213,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
+            continuousOutputs.flush(createProcessingOutputs());
             int countTime = 20; // 1 sec
             int checkReallyRod = 0;
             float coefficientFuelRods = 0;
@@ -258,7 +278,8 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
             }
 
             if (aTick % 2 == 0 && temperature > 0) {
-                addOutput(getOutputFluid());
+                continuousOutputs.emit(getOutputFluid(), protectThermalOutput, createProcessingOutputs());
+                markDirty();
             }
 
             if (temperature <= 0) {
@@ -272,27 +293,31 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
-            if (aPlayer.capabilities.isCreativeMode)
+            if (aPlayer.capabilities.isCreativeMode) {
                 mCurrentTemp = maxTemperature();
-        } else {
-            if (mCurrentTemp <= 10
-                    && depleteInput(!isFastDecay ? getFluidStack("ic2coolant", 1) : Materials.Water.getFluid(1))) {
-                isFastDecay = !isFastDecay;
-                GT_Utility.sendChatToPlayer(aPlayer, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
-            } else {
-                GT_Utility.sendChatToPlayer(aPlayer,
-                        EnumChatFormatting.RED
-                                + (mCurrentTemp > 10 ? "Reactor active! " : isFastDecay ? "No Water! " : "No Coolant! ")
-                                +
-                                EnumChatFormatting.RESET + (!isFastDecay ? "Fast Decay Mode" : "Default Mode")
-                                + " cannot be activated");
             }
+        } else {
+            toggleFastDecay(aPlayer);
+        }
+    }
+
+    public void toggleFastDecay(EntityPlayer player) {
+        if (mCurrentTemp <= 10
+                && depleteInput(!isFastDecay ? getFluidStack("ic2coolant", 1) : Materials.Water.getFluid(1))) {
+            isFastDecay = !isFastDecay;
+            markDirty();
+            GT_Utility.sendChatToPlayer(player, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
+        } else {
+            GT_Utility.sendChatToPlayer(player, EnumChatFormatting.RED
+                    + (mCurrentTemp > 10 ? "Reactor active! " : isFastDecay ? "No Water! " : "No Coolant! ")
+                    + EnumChatFormatting.RESET + (!isFastDecay ? "Fast Decay Mode" : "Default Mode")
+                    + " cannot be activated");
         }
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return ProcessingLogic.PROTECT_FLUIDS;
     }
 
     public void setFastDecayMode(boolean isFastDecay) {
@@ -468,4 +493,31 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         tag.setBoolean("wMox", isMoxFuel);
         tag.setBoolean("wFastDecay", isFastDecay);
     }
+    @Override
+    public void onProcessingPowerChanged(boolean enabled) {
+        mFirstStart = enabled;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        return NuclearReactorGui.build(this, data, sync, settings);
+    }
+
+    @Override
+    public String[] getProcessingInfo() {
+        return new String[] {
+                StatCollector.translateToLocalFormatted("impact.processing.temperature",
+                        (int) mCurrentTemp, maxTemperature()),
+                StatCollector.translateToLocalFormatted("impact.processing.rods",
+                        Arrays.toString(getRodPosition())),
+                StatCollector.translateToLocalFormatted("impact.processing.hold_state", stopTemp),
+                StatCollector.translateToLocalFormatted("impact.processing.fast_decay", isFastDecay),
+                StatCollector.translateToLocalFormatted("impact.processing.mox", isMoxFuel),
+                StatCollector.translateToLocalFormatted("impact.processing.fluid_input",
+                        Math.ceil(mCurrentInput) / 2.0),
+                StatCollector.translateToLocalFormatted("impact.processing.fluid_output",
+                        Math.ceil(mCurrentOutput) / 2.0)
+        };
+    }
+
 }

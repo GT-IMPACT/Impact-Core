@@ -2,7 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -20,7 +19,6 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.alignment.IAlignmentLimits;
 import space.impact.structures.hint.HintColor;
@@ -117,7 +115,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
         return new MultiblockTooltipBuilder(mName)
                 .addInfo("Parallel points: base 1, maximum 256")
                 .addMachineType("Cracking Unit")
-                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addInfo("Configure input bus separation in the machine GUI")
                 .addSeparator()
                 .addController("See the structure hologram")
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
@@ -138,9 +136,6 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                 .toolTipFinisher();
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
     public GT_Recipe_Map getRecipeMap() {

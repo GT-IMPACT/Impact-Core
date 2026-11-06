@@ -2,7 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -18,7 +17,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
@@ -89,7 +87,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 .addInfo("Super Coolant is required for operation: 50 per second")
                 .addInfo("At the output, get Hot Coolant: 25 per second")
                 .addMachineType("Vacuum Freezer")
-                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addInfo("Configure input bus separation in the machine GUI")
                 .addSeparator()
                 .beginStructureBlock(5, 4, 5, false)
                 .addController("See the structure hologram")
@@ -123,9 +121,6 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
         return new GTMTE_AdvancedVacuumFreezer(this.mName);
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiParallelBlockGUI.png");
-    }
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {

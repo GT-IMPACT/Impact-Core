@@ -1,5 +1,9 @@
 package com.impact.mods.gregtech.tileentities.multi.units;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.logic.ProcessingInputs;
+import gregtech.api.logic.WorldProcessingLogic;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
@@ -48,20 +52,20 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
     }
 
     @Override
-    public boolean checkRecipe(ItemStack guiSlotItem) {
-        boolean check = true;
-        this.mMaxProgresstime = 20;
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-        int tier = Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
-        this.mEUt = -4 * (1 << (tier << 1));
-        if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 200))) {
-            mMaxProgresstime = 0;
-            this.mEUt = 0;
-            this.mEfficiency = 0;
-            check = false;
-        }
-        return check;
+    protected ProcessingLogic createProcessingLogic() {
+        return new WorldProcessingLogic(request -> {
+            for (ProcessingInputs source : request.inputs) {
+                ProcessingInputs inputs = source.copy();
+                if (!inputs.consumeFluid(new FluidStack(ItemList.sDrillingFluid, 200))) {
+                    continue;
+                }
+                int tier = Math.max(1, GT_Utility.getTier(request.voltage));
+                long consumption = Math.multiplyExact(4L, 1L << (tier * 2));
+                return new WorldProcessingLogic.Operation(
+                        consumption, 20, new ItemStack[0], new FluidStack[0], inputs::commit);
+            }
+            return WorldProcessingLogic.Operation.failure(CheckRecipeResult.NO_RECIPE);
+        });
     }
 
     @Override
@@ -174,7 +178,7 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 }

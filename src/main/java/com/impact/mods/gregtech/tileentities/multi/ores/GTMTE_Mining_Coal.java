@@ -1,5 +1,13 @@
 package com.impact.mods.gregtech.tileentities.multi.ores;
 
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.ProcessingInputs;
+import gregtech.api.logic.WorldProcessingLogic;
+import gregtech.api.logic.InventoryProcessingOutputs;
+import gregtech.api.logic.IProcessingOutputSink;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import net.minecraftforge.fluids.FluidStack;
+import java.util.Collections;
 import com.impact.addon.vw.VirtualWorldScan;
 import com.impact.core.Config;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
@@ -69,6 +77,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
     public int cBurnTime = 0, maxBurnTime = 10, sizeVeinPreStart = 0;
     public int cycleIncrease = 0;
     public OreVein oreVein = null;
+    private boolean legacyMiningCycle;
 
     public GTMTE_Mining_Coal(int aID, String aNameRegional) {
         super(aID, "impact.multis.miner.coal", aNameRegional);
@@ -81,19 +90,13 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer p, IGregTechTileEntity te) {
-        return new CoalContainer(p, te);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer p, IGregTechTileEntity te) {
-        return new CoalGUI(new CoalContainer(p, te));
-    }
-
-    @Override
     public void onFirstTick(IGregTechTileEntity te) {
         super.onFirstTick(te);
         initOreProperty(te);
+        if (legacyMiningCycle && oreVein != null && !oreVein.getOres().isEmpty()) {
+            mOutputItems = new ItemStack[] { GT_Utility.copyAmount(1, oreVein.getOres().get(0).getStack()) };
+        }
+        legacyMiningCycle = false;
     }
 
     public void increaseLayer(IGregTechTileEntity te) {
@@ -199,6 +202,12 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
                         0.1D, 0.6D, 0.1D);
             }
         } else {
+            // Preserve the old miner's penultimate-tick output. The shared completion path
+            // retries any remainder and cannot duplicate an already accepted product.
+            if (te.isActive() && mProgresstime == DEFAULT_WORK - 1 && mOutputItems != null) {
+                createProcessingOutputs().deliver(mOutputItems, null, true, false);
+                markDirty();
+            }
             if ((aTick & 0x7) == 0) {
                 IInventory tTileEntity = te.getIInventoryAtSide((byte) 1);
                 if (tTileEntity != null) {
@@ -215,35 +224,10 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
             }
 
             if (cBurnTime > 0 && sizeVeinPreStart > 0) {
-                te.setActive(true);
                 cBurnTime--;
             }
-
-            if (te.isActive()) {
-                if (cBurnTime <= 0 && !checkFuel()) {
-                    mEfficiency = mProgresstime = mMaxProgresstime = mEfficiencyIncrease = 0;
-                    te.setActive(false);
-                }
-                if (mProgresstime == DEFAULT_WORK - 1) {
-
-                    if (mInventory[OUTPUT_SLOT] != null) {
-                        mInventory[OUTPUT_SLOT].stackSize += 1;
-                        if (mInventory[OUTPUT_SLOT].stackSize >= 64) {
-                            mInventory[OUTPUT_SLOT].stackSize = 64;
-                        }
-                    } else {
-                        if (oreVein != null) {
-                            ItemStack stack = oreVein.getOres().get(0).getStack();
-                            mInventory[OUTPUT_SLOT] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
-                        }
-                    }
-                }
-            } else {
-                if (aTick % 20 == 2 && !hatch.isEmpty()) {
-                    if (hatch.get(0) != null) {
-                        hatch.get(0).cycleDrill(false);
-                    }
-                }
+            if (!te.isActive() && aTick % 20 == 2 && !hatch.isEmpty() && hatch.get(0) != null) {
+                hatch.get(0).cycleDrill(false);
             }
         }
     }
@@ -270,22 +254,55 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        if (cBurnTime <= 0 && mInventory[INPUT_SLOT] == null && oreVein == null) {
-            return false;
-        }
-        if (sizeVeinPreStart < 1) {
+    protected ProcessingLogic createProcessingLogic() {
+        return new WorldProcessingLogic(request -> {
+            if (hatch.isEmpty() || hatch.get(0) == null || !hatch.get(0).ready || oreVein == null
+                    || oreVein.getOres().isEmpty() || sizeVeinPreStart < 1) {
+                return WorldProcessingLogic.Operation.failure(CheckRecipeResult.MACHINE_CONDITION);
+            }
+            ItemStack originalFuel = mInventory[INPUT_SLOT];
+            ProcessingInputs fuel = new ProcessingInputs(Collections.singletonList(originalFuel),
+                    Collections.emptyList(), () -> mInventory[INPUT_SLOT] == originalFuel);
+            int burn = cBurnTime > 0 ? cBurnTime : TileEntityFurnace.getItemBurnTime(originalFuel);
+            if (burn <= 0) {
+                return WorldProcessingLogic.Operation.failure(CheckRecipeResult.NO_RECIPE);
+            }
+            if (cBurnTime <= 0) {
+                fuel.items[0].stackSize--;
+            }
+            ItemStack product = GT_Utility.copyAmount(1, oreVein.getOres().get(0).getStack());
+            OreVein plannedVein = oreVein;
+            return new WorldProcessingLogic.Operation(0, DEFAULT_WORK,
+                    new ItemStack[] { product }, new FluidStack[0], () -> {
+                        if (oreVein != plannedVein || !hatch.get(0).ready || !fuel.commit()) {
+                            return false;
+                        }
+                        if (cBurnTime <= 0) {
+                            maxBurnTime = burn;
+                            cBurnTime = burn;
+                        }
+                        if (mInventory[INPUT_SLOT] != null && mInventory[INPUT_SLOT].stackSize <= 0) {
+                            mInventory[INPUT_SLOT] = null;
+                        }
+                        hatch.get(0).cycleDrill(true);
+                        increaseLayer(getBaseMetaTileEntity());
+                        return true;
+                    });
+        });
+    }
+
+    @Override
+    protected IProcessingOutputSink createProcessingOutputs() {
+        return new InventoryProcessingOutputs(getBaseMetaTileEntity(), OUTPUT_SLOT, 1).setAlwaysProtectItems(true);
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack stack) {
+        if (cBurnTime <= 0 && !checkFuel()) {
             stopMachine();
             return false;
         }
-        checkFuel();
-        if (cBurnTime > 0) {
-            mMaxProgresstime = DEFAULT_WORK;
-        } else {
-            return false;
-        }
-        increaseLayer(getBaseMetaTileEntity());
-        return true;
+        return super.onRunningTick(stack);
     }
 
     @Override
@@ -352,6 +369,8 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        legacyMiningCycle = !aNBT.hasKey("processing") && mMaxProgresstime > 0
+                && mProgresstime < DEFAULT_WORK - 1;
         cBurnTime = aNBT.getInteger("cBurnTime");
         maxBurnTime = aNBT.getInteger("maxBurnTime");
         cycleIncrease = aNBT.getInteger("cycleIncrease");
@@ -374,106 +393,9 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
         return true;
     }
 
-    private static class CoalGUI extends GT_GUIContainerMT_Machine {
-
-        public CoalGUI(GT_ContainerMetaTile_Machine aContainer) {
-            super(aContainer, RES_PATH_GUI + "basic/" + "CoalMiner.png");
-        }
-
-        @Override
-        protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-            fontRendererObj.drawString("Coal Miner", 6, 4, Color.BLACK.hashCode());
-        }
-
-        @Override
-        protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-            super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-            int x = (width - xSize) / 2;
-            int y = (height - ySize) / 2;
-            drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-            double work = (double) mContainer.mProgressTime / (double) mContainer.mMaxProgressTime;
-            drawTexturedModalRect(x + 78, y + 24, 176, 1, Math.min(20, (int) (work * 20)), 16);
-
-            double burn = (double) ((CoalContainer) mContainer).burnTime / ((CoalContainer) mContainer).maxBurnTime;
-            drawTexturedModalRect(x + 81, y + 60 - (int) Math.min(13d, burn * 13d), 198,
-                    14 - (int) Math.min(13d, burn * 13d), 14, 13);
-        }
-    }
-
-    private static class CoalContainer extends GT_ContainerMetaTile_Machine {
-
-        public int cWork, burnTime, maxBurnTime;
-
-        public CoalContainer(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-            super(aInventoryPlayer, aTileEntity);
-        }
-
-        @Override
-        public void addSlots(InventoryPlayer aInventoryPlayer) {
-            addSlotToContainer(new Slot(this.mTileEntity, 0, 53, 25));
-            addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 1, 107, 25));
-        }
-
-        @Override
-        public void detectAndSendChanges() {
-            super.detectAndSendChanges();
-            if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null)
-                return;
-            GTMTE_Mining_Coal te = (GTMTE_Mining_Coal) mTileEntity.getMetaTileEntity();
-            cWork = te.mProgresstime;
-            burnTime = te.cBurnTime;
-            maxBurnTime = te.maxBurnTime;
-            for (Object crafter : this.crafters) {
-                ICrafting ic = (ICrafting) crafter;
-                ic.sendProgressBarUpdate(this, 100, cWork & 65535);
-                ic.sendProgressBarUpdate(this, 101, cWork >>> 16);
-                ic.sendProgressBarUpdate(this, 102, burnTime & 65535);
-                ic.sendProgressBarUpdate(this, 103, burnTime >>> 16);
-                ic.sendProgressBarUpdate(this, 104, maxBurnTime & 65535);
-                ic.sendProgressBarUpdate(this, 105, maxBurnTime >>> 16);
-            }
-        }
-
-        @SideOnly(Side.CLIENT)
-        @Override
-        public void updateProgressBar(int par1, int par2) {
-            super.updateProgressBar(par1, par2);
-            switch (par1) {
-            case 100:
-                cWork = cWork & -65536 | par2;
-                break;
-            case 101:
-                cWork = cWork & 65535 | par2 << 16;
-                break;
-            case 102:
-                burnTime = burnTime & -65536 | par2;
-                break;
-            case 103:
-                burnTime = burnTime & 65535 | par2 << 16;
-                break;
-            case 104:
-                maxBurnTime = maxBurnTime & -65536 | par2;
-                break;
-            case 105:
-                maxBurnTime = maxBurnTime & 65535 | par2 << 16;
-                break;
-            }
-        }
-
-        @Override
-        public int getSlotCount() {
-            return 2;
-        }
-
-        @Override
-        public int getShiftClickSlotCount() {
-            return 1;
-        }
-    }
-
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
     }
 
     @Override
@@ -526,4 +448,110 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
             }
         };
     }
+    @Override
+    public boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer p, IGregTechTileEntity te) {
+        return new CoalContainer(p, te);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer p, IGregTechTileEntity te) {
+        return new CoalGUI(new CoalContainer(p, te));
+    }
+
+    private static class CoalGUI extends GT_GUIContainerMT_Machine {
+
+        public CoalGUI(GT_ContainerMetaTile_Machine aContainer) {
+            super(aContainer, RES_PATH_GUI + "basic/CoalMiner.png");
+        }
+
+        @Override
+        protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+            fontRendererObj.drawString("Coal Miner", 6, 4, 0x000000);
+        }
+
+        @Override
+        protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+            super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+            int x = (width - xSize) / 2;
+            int y = (height - ySize) / 2;
+            drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+            double work = (double) mContainer.mProgressTime / (double) mContainer.mMaxProgressTime;
+            drawTexturedModalRect(x + 78, y + 24, 176, 1, Math.min(20, (int) (work * 20)), 16);
+
+            double burn = (double) ((CoalContainer) mContainer).burnTime / ((CoalContainer) mContainer).maxBurnTime;
+            drawTexturedModalRect(x + 81, y + 60 - (int) Math.min(13d, burn * 13d), 198,
+                    14 - (int) Math.min(13d, burn * 13d), 14, 13);
+        }
+    }
+
+    private static class CoalContainer extends GT_ContainerMetaTile_Machine {
+
+        private int burnTime;
+        private int maxBurnTime;
+
+        public CoalContainer(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+            super(aInventoryPlayer, aTileEntity);
+        }
+
+        @Override
+        public void addSlots(InventoryPlayer aInventoryPlayer) {
+            addSlotToContainer(new Slot(this.mTileEntity, 0, 53, 25));
+            addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 1, 107, 25));
+        }
+
+        @Override
+        public void detectAndSendChanges() {
+            super.detectAndSendChanges();
+            if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
+                return;
+            }
+            GTMTE_Mining_Coal te = (GTMTE_Mining_Coal) mTileEntity.getMetaTileEntity();
+            burnTime = te.cBurnTime;
+            maxBurnTime = te.maxBurnTime;
+            for (Object crafter : this.crafters) {
+                ICrafting ic = (ICrafting) crafter;
+                ic.sendProgressBarUpdate(this, 102, burnTime & 65535);
+                ic.sendProgressBarUpdate(this, 103, burnTime >>> 16);
+                ic.sendProgressBarUpdate(this, 104, maxBurnTime & 65535);
+                ic.sendProgressBarUpdate(this, 105, maxBurnTime >>> 16);
+            }
+        }
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public void updateProgressBar(int par1, int par2) {
+            super.updateProgressBar(par1, par2);
+            switch (par1) {
+            case 102:
+                burnTime = burnTime & 0xffff0000 | par2 & 0xffff;
+                break;
+            case 103:
+                burnTime = burnTime & 65535 | par2 << 16;
+                break;
+            case 104:
+                maxBurnTime = maxBurnTime & 0xffff0000 | par2 & 0xffff;
+                break;
+            case 105:
+                maxBurnTime = maxBurnTime & 65535 | par2 << 16;
+                break;
+            }
+        }
+
+        @Override
+        public int getSlotCount() {
+            return 2;
+        }
+
+        @Override
+        public int getShiftClickSlotCount() {
+            return 1;
+        }
+    }
+
+
 }

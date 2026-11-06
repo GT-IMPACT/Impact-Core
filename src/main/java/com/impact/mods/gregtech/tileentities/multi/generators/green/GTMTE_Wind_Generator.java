@@ -1,5 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.generators.green;
 
+import net.minecraft.util.StatCollector;
+
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.logic.TimedProcessingLogic;
+import gregtech.api.logic.ProcessingLogic;
 import com.impact.common.item.ITieredDamagedItems;
 import com.impact.common.te.TE_WindMill;
 import com.impact.loader.ItemRegistery;
@@ -103,17 +108,20 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        if (mEfficiency < getMaxEfficiency(null))
-            return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new TimedProcessingLogic(0, () -> 8);
+    }
+
+    @Override
+    protected CheckRecipeResult validateProcessing() {
+        if (10000 - (getIdealStatus() - getRepairStatus()) * 1000 < getMaxEfficiency(null)) {
+            return CheckRecipeResult.MACHINE_CONDITION;
+        }
         if (!isUsableRotor(getRotorStack())) {
             stopRotor();
-            return false;
+            return CheckRecipeResult.MACHINE_CONDITION;
         }
-        this.mMaxProgresstime = 8;
-        this.mEfficiencyIncrease = 10000;
-        return true;
+        return super.validateProcessing();
     }
 
     private long getPowerToPush(long hatchWatts) {
@@ -375,8 +383,8 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
     }
 
     @Override
-    public boolean hasSeparate() {
-        return false;
+    public int getSupportedProcessingModes() {
+        return 0;
     }
 
     @Override

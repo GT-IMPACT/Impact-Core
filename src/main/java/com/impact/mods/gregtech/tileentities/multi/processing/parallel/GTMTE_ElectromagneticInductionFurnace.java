@@ -2,7 +2,6 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
-import com.impact.mods.gregtech.gui.base.GUI_BASE;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -18,7 +17,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
@@ -105,7 +103,7 @@ public class GTMTE_ElectromagneticInductionFurnace
                 .addInfo("Hey, its not EBF ha-ha!")
                 .addInfo("Parallel points: base 1, maximum 256")
                 .addMachineType("Electric Blast Furnace")
-                .addInfo("Shift-click the controller with a screwdriver to switch separated buses")
+                .addInfo("Configure input bus separation in the machine GUI")
                 .addSeparator()
                 .beginStructureBlock(5, 5, 5, false)
                 .addController("See the structure hologram")
@@ -126,10 +124,6 @@ public class GTMTE_ElectromagneticInductionFurnace
                 .toolTipFinisher();
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_BASE(aPlayerInventory, aBaseMetaTileEntity, "Electrom. Induction Furn.",
-                "MultiParallelBlockGUI.png");
-    }
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
