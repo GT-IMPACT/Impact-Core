@@ -15,7 +15,7 @@ public final class HatchCounts {
 
     public static int inputHatches(GT_MetaTileEntity_MultiBlockBase machine) {
         // A combined bus/hatch occupies one position but uses both input allowances.
-        return machine.mInputHatches.size() + machine.mQuadrInputHatches.size() + machine.mInputBusHatches.size();
+        return machine.mInputHatches.size() + machine.mInputBusHatches.size();
     }
 
     public static int energyHatches(GT_MetaTileEntity_MultiBlockBase machine) {
@@ -34,7 +34,6 @@ public final class HatchCounts {
                 && machine.mLaserIn.stream().allMatch(hatch -> hatch.mTier >= minimum)
                 && machine.mInputHatches.stream().allMatch(hatch -> hatch.mTier >= minimum)
                 && machine.mInputBusses.stream().allMatch(hatch -> hatch.mTier >= minimum)
-                && machine.mQuadrInputHatches.stream().allMatch(hatch -> hatch.mTier >= minimum)
                 && machine.mInputBusHatches.stream().allMatch(hatch -> hatch.mTier >= minimum);
     }
 

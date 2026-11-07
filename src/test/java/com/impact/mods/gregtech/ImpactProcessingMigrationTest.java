@@ -31,6 +31,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.ProcessingOutputAccess;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GTMTE_BusHatch_Input;
+import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_EnergyMulti;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -481,6 +482,19 @@ class ImpactProcessingMigrationTest {
                         }
                         secondInventory[sugarSlot] = sugar;
                         GT_MetaTileEntity_Hatch_Input fluid = fluidInput(machine, limit * 20);
+                        GTMTE_Multi_Hatch_Input multi = new GTMTE_Multi_Hatch_Input(
+                                "multi-fluid",
+                                combined ? 4 : 9,
+                                1,
+                                new String[0],
+                                new ITexture[0][][],
+                                32000
+                        );
+                        attach(multi);
+                        assertTrue(machine.addInputToMachineList(multi.getBaseMetaTileEntity(), 0));
+                        assertTrue(machine.mInputHatches.contains(multi));
+                        multi.mInventory[0] = new ItemStack(Items.iron_ingot, limit);
+                        multi.mInventory[1] = new ItemStack(Items.sugar, limit);
                         assertEquals(!separated, machine.checkRecipe(null));
                         if (separated) {
                             assertEquals(limit * 2, iron.stackSize);
@@ -500,6 +514,8 @@ class ImpactProcessingMigrationTest {
                         }
                         assertEquals(limit, remainingSugar, "combined=" + combined + ", separated=" + separated);
                         assertEquals(limit * 10, fluid.mFluid.amount);
+                        assertEquals(limit, multi.mInventory[0].stackSize);
+                        assertEquals(limit, multi.mInventory[1].stackSize);
                     }
                 }
             }

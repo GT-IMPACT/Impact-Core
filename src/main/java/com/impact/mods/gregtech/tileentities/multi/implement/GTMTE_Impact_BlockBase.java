@@ -16,6 +16,8 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
@@ -412,7 +414,11 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
     @Override
     protected List<GT_MetaTileEntity_Hatch> getProcessingInputBuses() {
         List<GT_MetaTileEntity_Hatch> hatches = super.getProcessingInputBuses();
-        hatches.addAll(mInputHatches);
+        for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+            if (!(hatch instanceof GTMTE_Multi_Hatch_Input)) {
+                hatches.add(hatch);
+            }
+        }
         hatches.sort(Comparator.comparingInt(hatch -> hatch.idHatch));
         return hatches;
     }

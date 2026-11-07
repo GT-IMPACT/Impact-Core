@@ -2,6 +2,7 @@ package com.impact.mods.gregtech;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
+import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Assembler;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_PressBendExtrud;
@@ -118,10 +119,17 @@ final class ImpactCasingChecks {
         restore(world, positions);
         put(world, positions.get(0), maintenance());
         for (int i = 1; i <= 6; i++) {
-            put(world, positions.get(i), new GTMTE_Multi_Hatch_Input("multi-fluid", 4, 4,
-                    new String[0], new ITexture[0][][], 16000));
+            put(world, positions.get(i), new GTMTE_Multi_Hatch_Input(
+                    "multi-fluid",
+                    i % 2 == 0 ? 4 : 9,
+                    4,
+                    new String[0],
+                    new ITexture[0][][],
+                    16000
+            ));
         }
         assertTrue(machine.recheck(), "Six multi-fluid hatches count as six physical inputs");
+        assertEquals(6, ImpactHatchElement.FluidInput.count(machine));
         for (int i = 7; i <= 27; i++) {
             put(world, positions.get(i), new GTMTE_BusHatch_Input(
                     "combined",
