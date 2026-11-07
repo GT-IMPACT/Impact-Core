@@ -215,6 +215,11 @@ class ImpactProcessingMigrationTest {
     }
 
     @Test
+    void legacyRecipeMapSurvivesLoadingBeforeWorldAttachment() throws Throwable {
+        run("legacyRecipeMap");
+    }
+
+    @Test
     void continuousProductsSurvivePartialDeliveryReloadAndCycleCompletion() throws Throwable {
         run("continuousOutputs");
     }
@@ -556,6 +561,35 @@ class ImpactProcessingMigrationTest {
             assertEquals(20, restored.mOutputFluids[0].amount);
             assertEquals(9700, fluid.mFluid.amount);
             assertEquals(1, bus.mInventory[0].stackSize);
+        }
+
+        public static void legacyRecipeMap() {
+            GTMTE_Brewmenter machine = new GTMTE_Brewmenter("legacy-maps") {
+                @Override
+                public void createConnect() {
+                }
+            };
+            ImpactConstructionChecks.TestTile tile =
+                    new ImpactConstructionChecks.TestTile(null, machine, ForgeDirection.NORTH);
+            GT_Recipe.GT_Recipe_Map brewing = machine.getRecipesMap().get(0);
+            GT_Recipe.GT_Recipe_Map fermenting = machine.getRecipesMap().get(1);
+            NBTTagCompound legacy = new NBTTagCompound();
+            legacy.setByte("mRecipeMode", (byte) 0);
+            legacy.setBoolean("isSeparated", true);
+
+            machine.loadNBTData(legacy);
+            assertEquals(fermenting, machine.getRecipeMap());
+            assertEquals(ProcessingLogic.SEPARATE_INPUTS, machine.getProcessingModes());
+            NBTTagCompound saved = new NBTTagCompound();
+            machine.saveNBTData(saved);
+            assertEquals(brewing.mUnlocalizedName, saved.getCompoundTag("processing").getString("recipeMap"));
+
+            tile.setWorldObj(new ImpactConstructionChecks.TestWorld());
+            machine.onFirstTick(tile);
+            assertEquals(brewing, machine.getRecipeMap());
+            assertTrue(machine.setActiveRecipeMap(fermenting));
+            machine.saveNBTData(saved);
+            assertEquals(fermenting.mUnlocalizedName, saved.getCompoundTag("processing").getString("recipeMap"));
         }
 
         public static void continuousOutputs() {

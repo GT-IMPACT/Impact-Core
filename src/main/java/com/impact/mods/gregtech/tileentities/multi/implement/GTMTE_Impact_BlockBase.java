@@ -49,6 +49,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
 
     public final HashSet<GTMTE_LaserEnergy_In> mLaserIn = new HashSet<>();
     public final HashSet<GTMTE_LaserEnergy_Out> mLaserOut = new HashSet<>();
+    private GT_Recipe.GT_Recipe_Map legacyRecipeMapToRestore;
 
     public GTMTE_Impact_BlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
@@ -262,14 +263,37 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
     @Override
     public void loadNBTData(NBTTagCompound tag) {
         super.loadNBTData(tag);
+        legacyRecipeMapToRestore = null;
         if (!tag.hasKey("processing")) {
             setProcessingModes(tag.getBoolean("isSeparated")
                     ? ProcessingLogic.SEPARATE_INPUTS : 0);
             List<GT_Recipe.GT_Recipe_Map> maps = getRecipesMap();
             int index = tag.getByte("mRecipeMode");
             if (!maps.isEmpty()) {
-                setActiveRecipeMap(maps.get(index >= 0 && index < maps.size() ? index : 0));
+                GT_Recipe.GT_Recipe_Map map = maps.get(index >= 0 && index < maps.size() ? index : 0);
+                if (getBaseMetaTileEntity().getWorld() == null) {
+                    legacyRecipeMapToRestore = map;
+                } else {
+                    setActiveRecipeMap(map);
+                }
             }
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound tag) {
+        super.saveNBTData(tag);
+        if (legacyRecipeMapToRestore != null) {
+            tag.getCompoundTag("processing").setString("recipeMap", legacyRecipeMapToRestore.mUnlocalizedName);
+        }
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (legacyRecipeMapToRestore != null) {
+            setActiveRecipeMap(legacyRecipeMapToRestore);
+            legacyRecipeMapToRestore = null;
         }
     }
 
