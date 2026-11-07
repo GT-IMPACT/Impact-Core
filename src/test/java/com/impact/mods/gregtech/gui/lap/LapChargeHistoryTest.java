@@ -8,6 +8,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LapChargeHistoryTest {
 
     @Test
+    void scalesOneHourIntoSixtyIntervalsForEverySelectedPeriod() {
+        LapChargeHistory history = new LapChargeHistory();
+        for (int second = 0; second <= 4000; second++) {
+            history.sample(second * 20L, second, 10000);
+        }
+        for (LapHistoryPeriod period : LapHistoryPeriod.values()) {
+            int[] samples = history.snapshot(period);
+            assertEquals(61, samples.length);
+            for (int index = 0; index <= 60; index++) {
+                assertEquals(4000 - period.seconds + index * (period.seconds / 60), samples[index]);
+            }
+        }
+    }
+
+    @Test
+    void longerWindowsKeepWarmupPointsAlignedWithTheLatestSample() {
+        LapChargeHistory history = new LapChargeHistory();
+        for (int second = 0; second <= 25; second++) {
+            history.sample(second * 20L, second, 10000);
+        }
+        assertArrayEquals(new int[] { 5, 15, 25 }, history.snapshot(LapHistoryPeriod.TEN_MINUTES));
+        assertArrayEquals(new int[] { 25 }, history.snapshot(LapHistoryPeriod.HOUR));
+    }
+
+    @Test
     void keepsOneMinuteOfSamplesInOrderAfterWraparound() {
         LapChargeHistory history = new LapChargeHistory();
         for (int tick = 0; tick <= 1_400; tick++) {

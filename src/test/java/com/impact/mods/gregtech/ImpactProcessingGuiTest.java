@@ -17,6 +17,8 @@ import com.cleanroommc.modularui.value.sync.PanelSyncHandler;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
 import com.impact.mods.gregtech.gui.processing.ImpactProcessingGui;
+import com.impact.mods.gregtech.gui.lap.LapChargeHistory;
+import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
 import com.impact.mods.gregtech.gui.aerostat.ContainerSelectAerostat;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
@@ -42,6 +44,7 @@ import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GT
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_TheMill;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
+import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Filler;
@@ -126,6 +129,11 @@ class ImpactProcessingGuiTest {
     }
 
     @Test
+    void lapPeriodsSyncMatchingAveragesAndHistoryWithoutResizingThePanel() throws Throwable {
+        run("lapHistory");
+    }
+
+    @Test
     void reactorPowerRodsAndTemperatureUseServerPacketsAndSurviveReload() throws Throwable {
         run("reactor");
     }
@@ -196,6 +204,9 @@ class ImpactProcessingGuiTest {
             FMLServerHandler.instance();
             GTGuis.init();
             switch (scenario) {
+                case "lapHistory":
+                    lapHistory();
+                    break;
                 case "communicationTower":
                     communicationTower();
                     break;
@@ -469,6 +480,81 @@ class ImpactProcessingGuiTest {
             } finally {
                 packet.release();
             }
+        }
+
+        private static void lapHistory() throws Exception {
+            GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("lap");
+            machine.mMachine = true;
+            machine.capacity = 10000;
+            machine.stored = 5000;
+            machine.intputLastTick = 999;
+            machine.outputLastTick = 123;
+            Field flowsField = GTMTE_LapPowerStation.class.getDeclaredField("flowHistory");
+            flowsField.setAccessible(true);
+            LapFlowHistory flows = (LapFlowHistory) flowsField.get(machine);
+            for (int tick = 0; tick < 72000; tick++) {
+                flows.sample(tick >= 70800 ? 300 : tick >= 60000 ? 200 : 100, 10);
+            }
+            Field chargeField = GTMTE_LapPowerStation.class.getDeclaredField("chargeHistory");
+            chargeField.setAccessible(true);
+            LapChargeHistory charge = (LapChargeHistory) chargeField.get(machine);
+            for (int second = 0; second <= 3600; second++) {
+                charge.sample(second * 20L, second, machine.capacity);
+            }
+            Fixture fixture = new Fixture(machine);
+            GenericSyncValue<?, ?> history = fixture.handlers.findSyncHandler("lapHistory", GenericSyncValue.class);
+            GenericSyncValue<?, ?> readings = fixture.handlers.findSyncHandler("lapReadings", GenericSyncValue.class);
+            assertFalse(history.isAllowC2S());
+            assertFalse(readings.isAllowC2S());
+            history.updateCacheFromSource(false);
+            NBTTagCompound snapshot = (NBTTagCompound) history.getValue();
+            assertEquals("minute", snapshot.getString("period"));
+            assertEquals(300, snapshot.getLong("averageInput"));
+            assertEquals(10, snapshot.getLong("averageOutput"));
+            assertEquals(3540, snapshot.getIntArray("charge")[0]);
+            fixture.press("lap_period_ten_minutes", false);
+            history.updateCacheFromSource(false);
+            snapshot = (NBTTagCompound) history.getValue();
+            assertEquals("ten_minutes", snapshot.getString("period"));
+            assertEquals(210, snapshot.getLong("averageInput"));
+            assertEquals(3000, snapshot.getIntArray("charge")[0]);
+            fixture.press("lap_period_hour", false);
+            history.updateCacheFromSource(false);
+            snapshot = (NBTTagCompound) history.getValue();
+            assertEquals("hour", snapshot.getString("period"));
+            assertEquals(118, snapshot.getLong("averageInput"));
+            assertEquals(61, snapshot.getIntArray("charge").length);
+            assertEquals(0, snapshot.getIntArray("charge")[0]);
+            assertEquals(3600, snapshot.getIntArray("charge")[60]);
+            fixture.player.setPosition(100, 64, 100);
+            fixture.press("lap_period_minute", false);
+            history.updateCacheFromSource(false);
+            assertEquals("hour", ((NBTTagCompound) history.getValue()).getString("period"));
+            fixture.player.setPosition(0.5, 64.5, 0.5);
+            fixture.player.openContainer = fixture.player.inventoryContainer;
+            fixture.press("lap_period_minute", false);
+            history.updateCacheFromSource(false);
+            assertEquals("hour", ((NBTTagCompound) history.getValue()).getString("period"));
+            fixture.player.openContainer = fixture.container;
+            readings.updateCacheFromSource(false);
+            NBTTagCompound telemetry = (NBTTagCompound) readings.getValue();
+            assertEquals(999, telemetry.getLong("input"));
+            assertEquals(123, telemetry.getLong("output"));
+            initializeResizers(fixture.panel, new Viewport());
+            WidgetTree.resizeInternal(fixture.panel.resizer(), false);
+            assertEquals(268, fixture.panel.getArea().width);
+            assertEquals(238, fixture.panel.getArea().height);
+            assertEquals(36, fixture.container.inventorySlots.size());
+            for (String period : new String[] { "minute", "ten_minutes", "hour" }) {
+                Area area = fixture.find("impact_lap_period_" + period).getArea();
+                int x = area.x - fixture.panel.getArea().x;
+                int y = area.y - fixture.panel.getArea().y;
+                assertTrue(x >= 104 && x + area.width <= 198);
+                assertEquals(108, y);
+                assertEquals(11, area.height);
+            }
+            assertNotNull(fixture.find("lap_instant_input"));
+            assertNotNull(fixture.find("lap_instant_output"));
         }
 
         private static void communicationTower() throws Exception {

@@ -1,13 +1,13 @@
 package com.impact.mods.gregtech.gui.lap;
 
-/** One sample per second, including both ends of the one-minute chart. */
+/** One hour sampled each second; the selected chart always contains at most 61 points. */
 public final class LapChargeHistory {
 
     public static final int SECONDS = 60;
     static final int POINTS = SECONDS + 1;
     static final int FULL_CHARGE = 10_000;
 
-    private final int[] samples = new int[POINTS];
+    private final int[] samples = new int[LapHistoryPeriod.HOUR.seconds + 1];
     private int nextSample;
     private int size;
     private long capacity;
@@ -23,16 +23,25 @@ public final class LapChargeHistory {
         }
 
         samples[nextSample] = (int) Math.round(fraction(stored, capacity) * FULL_CHARGE);
-        nextSample = (nextSample + 1) % POINTS;
-        size = Math.min(size + 1, POINTS);
+        nextSample = (nextSample + 1) % samples.length;
+        size = Math.min(size + 1, samples.length);
     }
 
     public int[] snapshot() {
-        int[] ordered = new int[size];
-        int oldest = (nextSample + POINTS - size) % POINTS;
-        int firstPart = Math.min(size, POINTS - oldest);
-        System.arraycopy(samples, oldest, ordered, 0, firstPart);
-        System.arraycopy(samples, 0, ordered, firstPart, size - firstPart);
+        return snapshot(LapHistoryPeriod.MINUTE);
+    }
+
+    public int[] snapshot(LapHistoryPeriod period) {
+        if (size == 0) {
+            return new int[0];
+        }
+        int step = period.seconds / SECONDS;
+        int count = Math.min(POINTS, (size - 1) / step + 1);
+        int[] ordered = new int[count];
+        int oldest = (nextSample - 1 - (count - 1) * step + samples.length) % samples.length;
+        for (int index = 0; index < count; index++) {
+            ordered[index] = samples[(oldest + index * step) % samples.length];
+        }
         return ordered;
     }
 

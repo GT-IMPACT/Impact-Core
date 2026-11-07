@@ -693,6 +693,16 @@ impact.lap.disabled=Disabled
 impact.lap.collecting=Collecting data...
 impact.lap.seconds_ago=-%s s
 impact.lap.now=Now
+impact.lap.period.minute=1m
+impact.lap.period.ten_minutes=10m
+impact.lap.period.hour=1h
+impact.lap.period_tooltip.minute=Last minute
+impact.lap.period_tooltip.ten_minutes=Last 10 minutes
+impact.lap.period_tooltip.hour=Last hour
+impact.lap.average_input=Avg in: %s EU/t
+impact.lap.average_output=Avg out: %s EU/t
+impact.lap.instant_input=Current input: %s EU/t
+impact.lap.instant_output=Current output: %s EU/t
 
 impact.tank.stored=Stored
 impact.tank.capacity=Capacity

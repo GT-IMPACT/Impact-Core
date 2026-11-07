@@ -675,6 +675,16 @@ impact.lap.disabled=Выключен
 impact.lap.collecting=Сбор данных...
 impact.lap.seconds_ago=-%s с
 impact.lap.now=Сейчас
+impact.lap.period.minute=1м
+impact.lap.period.ten_minutes=10м
+impact.lap.period.hour=1ч
+impact.lap.period_tooltip.minute=Последняя минута
+impact.lap.period_tooltip.ten_minutes=Последние 10 минут
+impact.lap.period_tooltip.hour=Последний час
+impact.lap.average_input=Ср. вход: %s EU/t
+impact.lap.average_output=Ср. выход: %s EU/t
+impact.lap.instant_input=Текущий вход: %s EU/t
+impact.lap.instant_output=Текущий выход: %s EU/t
 
 impact.tank.stored=Накоплено
 impact.tank.capacity=Ёмкость

@@ -62,8 +62,9 @@ final class LapPowerStationDisplay extends ProcessingMachineDisplay {
 
         FontRenderer font = Minecraft.getMinecraft().fontRenderer;
         long stored = telemetry.getLong("stored");
-        long input = telemetry.getLong("input");
-        long output = telemetry.getLong("output");
+        NBTTagCompound selectedHistory = history.getValue();
+        long input = selectedHistory.getLong("averageInput");
+        long output = selectedHistory.getLong("averageOutput");
 
         font.drawString(machine.getLocalName(), LEFT, 8, MUTED);
         String percent = percentFormat.format(LapChargeHistory.fraction(stored, capacity));
@@ -80,9 +81,9 @@ final class LapPowerStationDisplay extends ProcessingMachineDisplay {
             drawRight(font, text("disabled"), 41, MUTED);
         }
 
-        drawHistory(font, history.getValue().getIntArray("charge"));
-        font.drawString(energy("in", input), LEFT, 122, INPUT);
-        font.drawString(energy("out", output), LEFT, 134, OUTPUT);
+        drawHistory(font, selectedHistory);
+        font.drawString(text("average_input", energyFormat.format(input)), LEFT, 122, INPUT);
+        font.drawString(text("average_output", energyFormat.format(output)), LEFT, 134, OUTPUT);
     }
 
     @Override
@@ -93,7 +94,8 @@ final class LapPowerStationDisplay extends ProcessingMachineDisplay {
         return super.onMouseScroll(direction, amount);
     }
 
-    private static void drawHistory(FontRenderer font, int[] samples) {
+    private static void drawHistory(FontRenderer font, NBTTagCompound history) {
+        int[] samples = history.getIntArray("charge");
         Gui.drawRect(CHART_LEFT, CHART_TOP, RIGHT, CHART_BOTTOM + 1, 0xff101a20);
         for (int percent = 0; percent <= 100; percent += 25) {
             int y = CHART_BOTTOM - percent * (CHART_BOTTOM - CHART_TOP) / 100;
@@ -125,14 +127,14 @@ final class LapPowerStationDisplay extends ProcessingMachineDisplay {
             int center = (CHART_LEFT + RIGHT - font.getStringWidth(waiting)) / 2;
             font.drawString(waiting, center, 75, MUTED);
         }
-        font.drawString(StatCollector.translateToLocalFormatted("impact.lap.seconds_ago", LapChargeHistory.SECONDS),
-                CHART_LEFT, 109, MUTED);
+        String period = history.hasKey("period") ? history.getString("period") : LapHistoryPeriod.MINUTE.key;
+        font.drawString("-" + text("period." + period), CHART_LEFT, 109, MUTED);
         drawRight(font, text("now"), 109, MUTED);
     }
 
     private static int sampleX(int index, int count) {
         int windowIndex = LapChargeHistory.POINTS - count + index;
-        return CHART_LEFT + windowIndex * (RIGHT - CHART_LEFT - 1) / LapChargeHistory.SECONDS;
+        return CHART_LEFT + windowIndex * (RIGHT - CHART_LEFT - 1) / (LapChargeHistory.POINTS - 1);
     }
 
     private static void drawRight(FontRenderer font, String label, int y, int color) {
@@ -143,7 +145,7 @@ final class LapPowerStationDisplay extends ProcessingMachineDisplay {
         return StatCollector.translateToLocalFormatted("impact.waila.lsc." + key, energyFormat.format(amount));
     }
 
-    private static String text(String key) {
-        return StatCollector.translateToLocal("impact.lap." + key);
+    private static String text(String key, Object... arguments) {
+        return StatCollector.translateToLocalFormatted("impact.lap." + key, arguments);
     }
 }

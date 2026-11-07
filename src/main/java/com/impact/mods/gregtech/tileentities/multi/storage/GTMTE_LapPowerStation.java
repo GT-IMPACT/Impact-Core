@@ -5,6 +5,8 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.impact.mods.gregtech.gui.lap.LapChargeHistory;
+import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
+import com.impact.mods.gregtech.gui.lap.LapHistoryPeriod;
 import com.impact.mods.gregtech.gui.lap.LapPowerStationGui;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.TimedProcessingLogic;
@@ -159,6 +161,7 @@ public class GTMTE_LapPowerStation extends
     // - 1)
     private final int[] capacitors = new int[8];
     private final LapChargeHistory chargeHistory = new LapChargeHistory();
+    private final LapFlowHistory flowHistory = new LapFlowHistory();
     public long capacity = 0;
     public long stored = 0;
     public long passiveDischargeAmount = 0;
@@ -504,11 +507,24 @@ public class GTMTE_LapPowerStation extends
         super.onPostTick(tile, tick);
         if (tile.isServerSide()) {
             chargeHistory.sample(tick, stored, mMachine ? capacity : 0);
+            flowHistory.sample(intputLastTick, outputLastTick);
         }
     }
 
     public int[] getChargeHistory() {
         return chargeHistory.snapshot();
+    }
+
+    public int[] getChargeHistory(LapHistoryPeriod period) {
+        return chargeHistory.snapshot(period);
+    }
+
+    public long getAverageInput(LapHistoryPeriod period) {
+        return flowHistory.averageInput(period);
+    }
+
+    public long getAverageOutput(LapHistoryPeriod period) {
+        return flowHistory.averageOutput(period);
     }
 
     @Override
