@@ -164,8 +164,6 @@ public enum GT_ItemList implements IItemContainer {
 	DynamoTunnel6_IV, DynamoTunnel6_LuV, DynamoTunnel6_ZPM, DynamoTunnel6_UV, DynamoTunnel6_UHV, DynamoTunnel6_UEV, DynamoTunnel6_UIV, DynamoTunnel6_UMV, DynamoTunnel6_UXV,
 	DynamoTunnel7_IV, DynamoTunnel7_LuV, DynamoTunnel7_ZPM, DynamoTunnel7_UV, DynamoTunnel7_UHV, DynamoTunnel7_UEV, DynamoTunnel7_UIV, DynamoTunnel7_UMV, DynamoTunnel7_UXV,
 	
-	Filler,
-	
 	Parametric_Diffuser, Matrix_Stabilizer, Matrix_Containment, ME_System_Provider,
 	
 	Mining_Hatch_ULV,

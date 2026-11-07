@@ -73,7 +73,7 @@ class ImpactStructureMigrationTest {
                 assertTrue(survival.isAssignableFrom(controller), name);
                 controllers++;
             }
-            assertEquals(68, controllers);
+            assertEquals(67, controllers);
         }
     }
 

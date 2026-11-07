@@ -346,7 +346,7 @@ public class ImpactConstructionChecks {
             failures.forEach(failure::addSuppressed);
             throw failure;
         }
-        assertEquals(69, controllers.size());
+        assertEquals(68, controllers.size());
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

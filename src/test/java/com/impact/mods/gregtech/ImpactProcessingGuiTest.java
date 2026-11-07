@@ -54,7 +54,6 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump;
-import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Filler;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
@@ -71,6 +70,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingM
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.CoverUIFactory;
 import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.multiblock.ProcessingGuiControls;
@@ -438,29 +438,24 @@ class ImpactProcessingGuiTest {
                     count++;
                 }
             }
-            assertEquals(68, count);
+            assertEquals(67, count);
         }
 
         private static void inventory() throws Exception {
             MetaTileEntity[] machines = {
-                    new GTMTE_TheMill("mill"), new GTMTE_Mining_Coal("coal"), new GTMTE_Filler("filler")
+                    new GTMTE_TheMill("mill"), new GTMTE_Mining_Coal("coal")
             };
-            int[][] indices = { { 0, 1, 2, 3, 4 }, { 0, 1 }, { 0 } };
+            int[][] indices = { { 0, 1, 2, 3, 4 }, { 0, 1 } };
             for (int index = 0; index < machines.length; index++) {
                 MetaTileEntity machine = machines[index];
-                Fixture nativeGui = index == 2 ? new Fixture(machine) : null;
-                AttachedMachine fixture = nativeGui != null ? nativeGui : new AttachedMachine(machine);
-                Container container = nativeGui != null
-                        ? nativeGui.container
-                        : (Container) machine.getServerGUI(0, fixture.player.inventory, fixture.tile);
+                AttachedMachine fixture = new AttachedMachine(machine);
+                Container container = (Container) machine.getServerGUI(0, fixture.player.inventory, fixture.tile);
                 assertNotNull(container);
                 fixture.player.openContainer = container;
                 assertTrue(container.canInteractWith(fixture.player));
                 assertEquals(36 + indices[index].length, container.inventorySlots.size());
                 for (int inventoryIndex : indices[index]) {
-                    Slot slot = nativeGui != null
-                            ? nativeGui.machineSlot(inventoryIndex)
-                            : (Slot) container.inventorySlots.get(inventoryIndex);
+                    Slot slot = (Slot) container.inventorySlots.get(inventoryIndex);
                     boolean input = inventoryIndex == 0;
                     assertEquals(input, slot.isItemValid(new ItemStack(Items.coal)));
                     machine.mInventory[inventoryIndex] = new ItemStack(Items.coal, inventoryIndex + 2);
@@ -996,23 +991,23 @@ class ImpactProcessingGuiTest {
         }
 
         private static void access() throws Exception {
-            GTMTE_Filler machine = new GTMTE_Filler("filler");
+            NamedMachine machine = new NamedMachine();
             Fixture fixture = new Fixture(machine);
-            fixture.press("preserve_tiles", false);
-            assertTrue(machine.saveTiles);
+            fixture.press("test_action", false);
+            assertTrue(machine.actionEnabled);
             fixture.player.openContainer = fixture.player.inventoryContainer;
-            fixture.press("preserve_tiles", false);
-            assertTrue(machine.saveTiles);
+            fixture.press("test_action", false);
+            assertTrue(machine.actionEnabled);
             fixture.player.openContainer = fixture.container;
             fixture.player.setPosition(100, 64, 100);
-            fixture.press("preserve_tiles", false);
-            assertTrue(machine.saveTiles);
+            fixture.press("test_action", false);
+            assertTrue(machine.actionEnabled);
             fixture.player.setPosition(0.5, 64.5, 0.5);
-            fixture.press("preserve_tiles", false);
-            assertFalse(machine.saveTiles);
+            fixture.press("test_action", false);
+            assertFalse(machine.actionEnabled);
             machine.setBaseMetaTileEntity(null);
-            fixture.press("preserve_tiles", false);
-            assertFalse(machine.saveTiles);
+            fixture.press("test_action", false);
+            assertFalse(machine.actionEnabled);
         }
 
         private static void travel() throws Exception {
@@ -1206,10 +1201,11 @@ class ImpactProcessingGuiTest {
         }
     }
 
-    private static final class NamedMachine extends GTMTE_Filler {
+    private static final class NamedMachine extends GTMTE_Mixer {
 
         private String stationName = "original";
         private int applied;
+        private boolean actionEnabled;
 
         private NamedMachine() {
             super("named");
@@ -1218,10 +1214,19 @@ class ImpactProcessingGuiTest {
         @Override
         public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
             ModularPanel panel = super.buildUI(data, sync, settings);
-            new ImpactProcessingGui(this, panel, sync).addNameEditor(() -> stationName, value -> {
+            ImpactProcessingGui gui = new ImpactProcessingGui(this, panel, sync);
+            gui.addNameEditor(() -> stationName, value -> {
                 stationName = value;
                 applied++;
             });
+            gui.addAction(
+                "test_action",
+                0,
+                1,
+                GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
+                "impact.processing.apply",
+                (player, shift) -> actionEnabled = !actionEnabled
+            );
             return panel;
         }
     }

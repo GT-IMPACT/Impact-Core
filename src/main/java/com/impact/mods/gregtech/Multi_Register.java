@@ -102,8 +102,7 @@ public class Multi_Register {
 
 		Aerostate.set(new GTMTE_Aerostat(ID++, "Aerostate Platform").get());
 
-		Filler.set(new GTMTE_Filler(ID++, "Filler").get());
-		hideItem(Filler.get(1));
+        ID++; // Reserve retired controller ID 14065 so later machine IDs stay unchanged.
 
 		Parametric_Diffuser.set(new GTMTE_ParametricDiffuser(ID++, "Parametric Diffuser").get());
 		Matrix_Stabilizer.set(new GTMTE_MPStabilizer(ID++, "Matrix Particles Stabilizer").get());
