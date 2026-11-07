@@ -1,5 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.parallelcomputer.ParallelComputerGui;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
@@ -170,6 +175,11 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     public GTMTE_ParallelComputer(String aName) {
         super(aName);
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        return ParallelComputerGui.build(this, data, sync, settings);
     }
 
     @Override

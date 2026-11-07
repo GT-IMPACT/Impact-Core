@@ -12,6 +12,8 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockB
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_FuelGeneratorBase;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_Pyrolyse;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_SawMill;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
@@ -65,6 +67,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
@@ -284,6 +288,11 @@ class ImpactProcessingMigrationTest {
     @Test
     void nuclearProtectionChecksAvailableCapacityInsteadOfRequiringEmptyHatches() throws Throwable {
         run("nuclearOutputCapacity");
+    }
+
+    @Test
+    void communicationTowerRejectsMachinesWithoutNetworkSupport() throws Throwable {
+        run("towerConnections");
     }
 
     @Test
@@ -873,6 +882,52 @@ class ImpactProcessingMigrationTest {
                     }
                 }
             }
+        }
+
+        public static void towerConnections() {
+            ImpactConstructionChecks.TestWorld world = new ImpactConstructionChecks.TestWorld() {
+                @Override
+                public Chunk getChunkFromChunkCoords(int x, int z) {
+                    Chunk chunk = new Chunk(this, x, z);
+                    for (ImpactConstructionChecks.TestTile tile : tiles.values()) {
+                        if (tile.xCoord >> 4 == x && tile.zCoord >> 4 == z) {
+                            chunk.chunkTileEntityMap.put(
+                                    new ChunkPosition(tile.xCoord & 15, tile.yCoord, tile.zCoord & 15), tile);
+                        }
+                    }
+                    return chunk;
+                }
+            };
+            GTMTE_TowerCommunication tower = new GTMTE_TowerCommunication("tower");
+            world.putTile(0, 64, 0, new ImpactConstructionChecks.TestTile(world, tower, ForgeDirection.NORTH));
+            GTMTE_Mixer mixer = new GTMTE_Mixer("mixer");
+            world.putTile(16, 64, 0, new ImpactConstructionChecks.TestTile(world, mixer, ForgeDirection.NORTH));
+            GTMTE_ParallelComputer computer = new GTMTE_ParallelComputer("computer");
+            world.putTile(128, 64, 0, new ImpactConstructionChecks.TestTile(world, computer, ForgeDirection.NORTH));
+            GTMTE_Mixer outside = new GTMTE_Mixer("outside");
+            world.putTile(144, 64, 0, new ImpactConstructionChecks.TestTile(world, outside, ForgeDirection.NORTH));
+            GTMTE_AdvancedPyrolyse pyrolyse = new GTMTE_AdvancedPyrolyse("pyrolyse");
+            world.putTile(32, 64, 0, new ImpactConstructionChecks.TestTile(world, pyrolyse, ForgeDirection.NORTH));
+            GTMTEMESystemProvider provider = new GTMTEMESystemProvider("provider");
+            world.putTile(48, 64, 0, new ImpactConstructionChecks.TestTile(world, provider, ForgeDirection.NORTH));
+            GTMTE_Pyrolyse normalPyrolyse = new GTMTE_Pyrolyse("normal-pyrolyse");
+            world.putTile(64, 64, 0, new ImpactConstructionChecks.TestTile(world, normalPyrolyse, ForgeDirection.NORTH));
+            pyrolyse.setSatelliteConnected(true);
+            provider.setSatelliteConnected(true);
+            tower.setSatelliteConnected(true);
+            tower.onUpdateConnections();
+            assertEquals(2, tower.getConnections().size());
+            assertTrue(tower.getConnections().contains(mixer));
+            assertTrue(tower.getConnections().contains(computer));
+            assertTrue(mixer.isSatelliteConnected());
+            assertTrue(computer.isSatelliteConnected());
+            assertFalse(pyrolyse.isSatelliteConnected());
+            assertFalse(provider.isSatelliteConnected());
+            assertFalse(outside.isSatelliteConnected());
+            tower.setSatelliteConnected(false);
+            tower.updateStatusConnections();
+            assertFalse(mixer.isSatelliteConnected());
+            assertFalse(computer.isSatelliteConnected());
         }
 
         public static void nuclearOutputCapacity() {

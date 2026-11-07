@@ -681,3 +681,23 @@ impact.tank.capacity=Ёмкость
 impact.tank.fluid_count=Слоты жидкостей: %s / %s
 impact.tank.per_fluid=%s л / тип
 impact.tank.amount_tooltip=%s / %s л
+
+impact.computer.capacity=Ёмкость: %s PP
+impact.computer.free=Свободно: %s PP
+impact.computer.racks=Рэки: %s
+impact.computer.rack=Рэк №%s
+impact.computer.no_racks=Рэки не найдены
+impact.computer.active=Работает
+impact.computer.idle=Ожидание
+impact.computer.empty=Пусто
+impact.computer.consumption=%s EU/t
+
+impact.tower.uplink_on=Связь со спутником: есть
+impact.tower.uplink_off=Связь со спутником: нет
+impact.tower.receivers=Приёмники спутника
+impact.tower.connections=Подключения: %s / %s
+impact.tower.no_connections=Рядом нет совместимых устройств
+impact.tower.connected=Подключено
+impact.tower.disconnected=Нет связи
+impact.tower.device=Сетевое устройство
+impact.tower.address=X: %s, Y: %s, Z: %s

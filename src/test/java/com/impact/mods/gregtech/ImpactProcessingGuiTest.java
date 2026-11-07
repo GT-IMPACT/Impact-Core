@@ -32,6 +32,12 @@ import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_Nucl
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_CokeOven;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_TheMill;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
@@ -110,6 +116,16 @@ class ImpactProcessingGuiTest {
     }
 
     @Test
+    void parallelComputerSyncsAllRacksWithinTheExistingScreen() throws Throwable {
+        run("parallelComputer");
+    }
+
+    @Test
+    void communicationTowerPagesAllConnectionsWithinTheExistingScreen() throws Throwable {
+        run("communicationTower");
+    }
+
+    @Test
     void reactorPowerRodsAndTemperatureUseServerPacketsAndSurviveReload() throws Throwable {
         run("reactor");
     }
@@ -180,6 +196,12 @@ class ImpactProcessingGuiTest {
             FMLServerHandler.instance();
             GTGuis.init();
             switch (scenario) {
+                case "communicationTower":
+                    communicationTower();
+                    break;
+                case "parallelComputer":
+                    parallelComputer();
+                    break;
                 case "name":
                     nameEditor();
                     break;
@@ -447,6 +469,177 @@ class ImpactProcessingGuiTest {
             } finally {
                 packet.release();
             }
+        }
+
+        private static void communicationTower() throws Exception {
+            GTMTE_TowerCommunication tower = new GTMTE_TowerCommunication("tower");
+            Fixture fixture = new Fixture(tower);
+            tower.mMachine = true;
+            tower.setSatelliteConnected(true);
+            for (int index = 69; index >= 0; index--) {
+                GTMTE_Mixer machine = new GTMTE_Mixer("machine-" + index);
+                ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
+                        fixture.world, machine, ForgeDirection.NORTH);
+                tile.xCoord = index;
+                machine.setSatelliteConnected(index % 2 == 0);
+                tower.getConnections().add(machine);
+            }
+            GTMTE_AdvancedPyrolyse unsupported = new GTMTE_AdvancedPyrolyse("unsupported");
+            new ImpactConstructionChecks.TestTile(fixture.world, unsupported, ForgeDirection.NORTH);
+            tower.getConnections().add(unsupported);
+            tower.getConnections().add(new GTMTE_Mixer("detached"));
+            for (int index = 3; index >= 0; index--) {
+                GTMTE_CommunicationTower_Receiver receiver = new GTMTE_CommunicationTower_Receiver(
+                        "receiver-" + index, new String[0], new ITexture[0][][]);
+                ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
+                        fixture.world, receiver, ForgeDirection.NORTH);
+                tile.xCoord = index;
+                receiver.isConnected = index != 2;
+                tile.setActive(true);
+                tower.sCommunReceiver.add(receiver);
+            }
+            GenericSyncValue<?, ?> state =
+                    fixture.handlers.findSyncHandler("communicationTowerState", GenericSyncValue.class);
+            assertNotNull(state);
+            assertFalse(state.isAllowC2S());
+            state.updateCacheFromSource(false);
+            NBTTagCompound snapshot = (NBTTagCompound) state.getValue();
+            assertEquals(70, snapshot.getInteger("total"));
+            assertEquals(35, snapshot.getInteger("connected"));
+            assertEquals(3, snapshot.getInteger("pages"));
+            assertTrue(snapshot.getBoolean("uplink"));
+            assertArrayEquals(new int[] { 1, 1, 0, 1 }, snapshot.getIntArray("receivers"));
+            assertEquals(32, snapshot.getTagList("nodes", 10).tagCount());
+            assertEquals(0, snapshot.getTagList("nodes", 10).getCompoundTagAt(0).getInteger("x"));
+            fixture.press("tower_next", false);
+            state.updateCacheFromSource(false);
+            snapshot = (NBTTagCompound) state.getValue();
+            assertEquals(1, snapshot.getInteger("page"));
+            assertEquals(32, snapshot.getTagList("nodes", 10).getCompoundTagAt(0).getInteger("x"));
+            fixture.press("tower_next", false);
+            state.updateCacheFromSource(false);
+            snapshot = (NBTTagCompound) state.getValue();
+            assertEquals(2, snapshot.getInteger("page"));
+            assertEquals(6, snapshot.getTagList("nodes", 10).tagCount());
+            fixture.press("tower_next", false);
+            state.updateCacheFromSource(false);
+            assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
+            fixture.player.setPosition(100, 64, 100);
+            fixture.press("tower_previous", false);
+            state.updateCacheFromSource(false);
+            assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
+            fixture.player.setPosition(0.5, 64.5, 0.5);
+            fixture.player.openContainer = fixture.player.inventoryContainer;
+            fixture.press("tower_previous", false);
+            state.updateCacheFromSource(false);
+            assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
+            fixture.player.openContainer = fixture.container;
+            fixture.press("tower_previous", false);
+            state.updateCacheFromSource(false);
+            assertEquals(1, ((NBTTagCompound) state.getValue()).getInteger("page"));
+            initializeResizers(fixture.panel, new Viewport());
+            WidgetTree.resizeInternal(fixture.panel.resizer(), false);
+            assertEquals(268, fixture.panel.getArea().width);
+            assertEquals(238, fixture.panel.getArea().height);
+            assertEquals(36, fixture.container.inventorySlots.size());
+            for (String name : new String[] { "impact_tower_previous", "impact_tower_next" }) {
+                Area area = fixture.find(name).getArea();
+                int x = area.x - fixture.panel.getArea().x;
+                int y = area.y - fixture.panel.getArea().y;
+                assertTrue(x >= 198 && x + area.width <= 258);
+                assertTrue(y >= 133 && y + area.height <= 144);
+            }
+            for (int index = 0; index < 32; index++) {
+                IWidget connection = fixture.find("tower_connection_" + index);
+                assertNotNull(connection);
+                Area area = connection.getArea();
+                int x = area.x - fixture.panel.getArea().x;
+                int y = area.y - fixture.panel.getArea().y;
+                assertEquals(10 + index % 8 * 31, x);
+                assertEquals(80 + index / 8 * 12, y);
+                assertEquals(28, area.width);
+                assertEquals(11, area.height);
+                assertTrue(x + area.width <= 262);
+                assertTrue(y + area.height <= 148);
+            }
+            tower.getConnections().clear();
+            state.updateCacheFromSource(false);
+            snapshot = (NBTTagCompound) state.getValue();
+            assertEquals(0, snapshot.getInteger("total"));
+            assertEquals(0, snapshot.getInteger("page"));
+            assertEquals(1, snapshot.getInteger("pages"));
+            assertEquals(0, snapshot.getTagList("nodes", 10).tagCount());
+        }
+
+        private static void parallelComputer() throws Exception {
+            GTMTE_ParallelComputer machine = new GTMTE_ParallelComputer("parallel-computer");
+            Fixture fixture = new Fixture(machine);
+            machine.mMachine = true;
+            int[] capacities = new int[32];
+            int[] states = new int[32];
+            int total = 0;
+            for (int index = 31; index >= 0; index--) {
+                GTMTE_ComputerRack rack = new GTMTE_ComputerRack("rack-" + index, new String[0], new ITexture[0][][]);
+                ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
+                        fixture.world, rack, ForgeDirection.NORTH);
+                tile.xCoord = index;
+                rack.mCapacityP = index % 3 == 0 ? 0 : index % 3 == 1 ? 64 : 256;
+                tile.setActive(index % 3 == 2);
+                capacities[index] = rack.mCapacityP;
+                states[index] = index % 3;
+                total += rack.mCapacityP;
+                machine.sComputerRack.add(rack);
+            }
+            machine.sComputerRack.add(new GTMTE_ComputerRack("detached", new String[0], new ITexture[0][][]));
+            machine.setMaxCapacityPP(total);
+            machine.setCurrentCapacityPP(512);
+            GenericSyncValue<?, ?> state =
+                    fixture.handlers.findSyncHandler("parallelComputerState", GenericSyncValue.class);
+            assertNotNull(state);
+            assertFalse(state.isAllowC2S());
+            state.updateCacheFromSource(false);
+            NBTTagCompound snapshot = (NBTTagCompound) state.getValue();
+            assertEquals(total, snapshot.getInteger("capacity"));
+            assertEquals(512, snapshot.getInteger("free"));
+            assertEquals(0, snapshot.getLong("consumption"));
+            assertTrue(snapshot.getBoolean("formed"));
+            assertArrayEquals(capacities, snapshot.getIntArray("rackCapacity"));
+            assertArrayEquals(states, snapshot.getIntArray("rackState"));
+            initializeResizers(fixture.panel, new Viewport());
+            WidgetTree.resizeInternal(fixture.panel.resizer(), false);
+            assertEquals(268, fixture.panel.getArea().width);
+            assertEquals(238, fixture.panel.getArea().height);
+            assertEquals(36, fixture.container.inventorySlots.size());
+            for (int index = 0; index < 32; index++) {
+                IWidget rack = fixture.find("parallel_rack_" + index);
+                assertNotNull(rack);
+                Area area = rack.getArea();
+                int x = area.x - fixture.panel.getArea().x;
+                int y = area.y - fixture.panel.getArea().y;
+                assertEquals(10 + index % 8 * 31, x);
+                assertEquals(80 + index / 8 * 12, y);
+                assertEquals(28, area.width);
+                assertEquals(11, area.height);
+                assertTrue(x >= 6 && x + area.width <= 262);
+                assertTrue(y >= 4 && y + area.height <= 148);
+            }
+            machine.setCurrentCapacityPP(128);
+            state.updateCacheFromSource(false);
+            assertEquals(128, ((NBTTagCompound) state.getValue()).getInteger("free"));
+            fixture.tile.setActive(true);
+            machine.lEUt = -18432;
+            machine.mEfficiency = 5000;
+            state.updateCacheFromSource(false);
+            assertEquals(36864, ((NBTTagCompound) state.getValue()).getLong("consumption"));
+            machine.mEfficiency = 10000;
+            state.updateCacheFromSource(false);
+            assertEquals(18432, ((NBTTagCompound) state.getValue()).getLong("consumption"));
+            fixture.tile.setActive(false);
+            state.updateCacheFromSource(false);
+            assertEquals(0, ((NBTTagCompound) state.getValue()).getLong("consumption"));
+            machine.clearHatches();
+            state.updateCacheFromSource(false);
+            assertEquals(0, ((NBTTagCompound) state.getValue()).getIntArray("rackCapacity").length);
         }
 
         private static void reactor() throws Exception {

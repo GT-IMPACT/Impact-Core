@@ -1,5 +1,10 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.tower.CommunicationTowerGui;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.addon.gt.api.parallel_system.INetworkMachine;
@@ -78,6 +83,11 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     public GTMTE_TowerCommunication(String aName) {
         super(aName);
         enabledMaintenance = false;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
+        return CommunicationTowerGui.build(this, data, sync, settings);
     }
 
     @Override
@@ -324,19 +334,30 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                                     && gte.getMetaTileEntity() instanceof INetworkMachine
                                     && gte.getMetaTileEntity() != this) {
                                 INetworkMachine receiver = (INetworkMachine) gte.getMetaTileEntity();
-                                connections.add(receiver);
+                                addConnection(receiver);
                             }
                         }
 
                         if (tile instanceof INetworkMachine) {
                             INetworkMachine receiver = (INetworkMachine) tile;
-                            connections.add(receiver);
+                            addConnection(receiver);
                         }
                     }
                 }
             }
         }
         updateStatusConnections();
+    }
+
+    private void addConnection(INetworkMachine receiver) {
+        if (receiver == this) {
+            return;
+        }
+        if (receiver.hasShowConnect()) {
+            connections.add(receiver);
+        } else {
+            receiver.setSatelliteConnected(false);
+        }
     }
 
     @NotNull

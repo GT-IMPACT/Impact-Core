@@ -699,3 +699,23 @@ impact.tank.capacity=Capacity
 impact.tank.fluid_count=Fluid slots: %s / %s
 impact.tank.per_fluid=%s L / type
 impact.tank.amount_tooltip=%s / %s L
+
+impact.computer.capacity=Capacity: %s PP
+impact.computer.free=Free: %s PP
+impact.computer.racks=Racks: %s
+impact.computer.rack=Rack #%s
+impact.computer.no_racks=No racks installed
+impact.computer.active=Active
+impact.computer.idle=Idle
+impact.computer.empty=Empty
+impact.computer.consumption=%s EU/t
+
+impact.tower.uplink_on=Satellite link: connected
+impact.tower.uplink_off=Satellite link: disconnected
+impact.tower.receivers=Satellite receivers
+impact.tower.connections=Connections: %s / %s
+impact.tower.no_connections=No compatible devices nearby
+impact.tower.connected=Connected
+impact.tower.disconnected=Offline
+impact.tower.device=Network device
+impact.tower.address=X: %s, Y: %s, Z: %s

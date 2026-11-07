@@ -34,7 +34,7 @@ dependencies {
     implementation("space.impact:Packet-network:1.1.8.dirty")
     implementation("space.impact:ImpactStructures:1.1.3:dev")
     implementation("space.impact:VirtualWorld:2.0.4:dev")
-    implementation("space.impact:gregtech-impact:5.09.37.2:dev") {
+    implementation("space.impact:gregtech-impact:5.09.37.3:dev") {
         isTransitive = false
     }
 
