@@ -704,6 +704,9 @@ impact.tank.capacity=Capacity
 impact.tank.fluid_count=Fluid slots: %s / %s
 impact.tank.per_fluid=%s L / type
 impact.tank.amount_tooltip=%s / %s L
+impact.tank.auto_void.enabled=Auto-voiding: On
+impact.tank.auto_void.disabled=Auto-voiding: Off
+impact.tank.auto_void.tooltip=Destroys incoming fluid above the tank capacity.
 
 impact.computer.capacity=Capacity: %s PP
 impact.computer.free=Free: %s PP

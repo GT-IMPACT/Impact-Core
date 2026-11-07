@@ -58,6 +58,8 @@ import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_MoonMiner;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
+import com.impact.util.fluid.IMultiFluidTank;
+import com.impact.util.fluid.MultiFluidHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.Side;
@@ -638,6 +640,49 @@ class ImpactProcessingGuiTest {
                     assertEquals(FluidRegistry.LAVA, reserved.getFluid());
                     assertEquals(0, reserved.amount);
                 }
+
+                IMultiFluidTank storage = (IMultiFluidTank) tank;
+                MultiFluidHandler handler = storage.getMultiFluidHandler();
+                fixture.tile.setActive(true);
+                handler.setLock(false);
+                assertNotNull(fixture.find("impact_tank_auto_void"));
+                assertFalse(storage.isVoidExcessEnabled());
+                assertFalse(handler.getVoidExcess());
+                assertFalse(payload.getBoolean("voidExcess"));
+                FluidStack incoming = new FluidStack(FluidRegistry.WATER, 500_000);
+                assertEquals(300_000, handler.pushFluid(incoming, false));
+
+                fixture.press("tank_auto_void", false);
+                assertTrue(storage.isVoidExcessEnabled());
+                assertTrue(handler.getVoidExcess());
+                sync.updateCacheFromSource(false);
+                assertTrue(((NBTTagCompound) sync.getValue()).getBoolean("voidExcess"));
+                assertEquals(500_000, handler.pushFluid(incoming, false));
+                assertEquals(700_000, handler.fluids.get(0).amount);
+                assertEquals(500_000, handler.pushFluid(incoming, true));
+                assertEquals(1_000_000, handler.fluids.get(0).amount);
+
+                tank.onScrewdriverRightClick((byte) ForgeDirection.NORTH.ordinal(), fixture.player, 0F, 0F, 0F);
+                assertFalse(storage.isVoidExcessEnabled());
+                assertFalse(handler.getVoidExcess());
+                assertEquals(0, handler.pushFluid(incoming, false));
+                sync.updateCacheFromSource(false);
+                assertFalse(((NBTTagCompound) sync.getValue()).getBoolean("voidExcess"));
+
+                fixture.player.openContainer = fixture.player.inventoryContainer;
+                fixture.press("tank_auto_void", false);
+                assertFalse(storage.isVoidExcessEnabled());
+                fixture.player.openContainer = fixture.container;
+                fixture.press("tank_auto_void", false);
+
+                NBTTagCompound roundTrip = new NBTTagCompound();
+                tank.saveNBTData(roundTrip);
+                assertTrue(roundTrip.getBoolean("doVoidExcess"));
+                AttachedMachine restored = new AttachedMachine((MetaTileEntity) tank.newMetaEntity(null));
+                restored.machine.loadNBTData(roundTrip);
+                IMultiFluidTank restoredStorage = (IMultiFluidTank) restored.machine;
+                assertTrue(restoredStorage.isVoidExcessEnabled());
+                assertTrue(restoredStorage.getMultiFluidHandler().getVoidExcess());
             }
         }
 

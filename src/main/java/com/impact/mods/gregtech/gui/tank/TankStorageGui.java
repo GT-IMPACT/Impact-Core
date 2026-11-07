@@ -1,18 +1,22 @@
 package com.impact.mods.gregtech.gui.tank;
 
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.impact.mods.gregtech.gui.processing.ImpactProcessingGui;
 import com.impact.util.fluid.IMultiFluidTank;
 import com.impact.util.fluid.MultiFluidHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.MTEProcessingMultiBlockGui;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 public final class TankStorageGui {
@@ -35,6 +39,17 @@ public final class TankStorageGui {
         Readings readings = new Readings(storage, slots);
         ModularPanel panel = new MTEProcessingMultiBlockGui(machine).build(data, sync, settings,
                 state -> new TankStorageDisplay(machine, state, readings, slots));
+        new ImpactProcessingGui(machine, panel, sync).addAction(
+            "tank_auto_void",
+            0,
+            1,
+            new DynamicDrawable(() -> readings.voidExcess()
+                ? GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS : GTGuiTextures.OVERLAY_BUTTON_VOID_EXCESS_NONE),
+            () -> StatCollector.translateToLocal(readings.voidExcess()
+                ? "impact.tank.auto_void.enabled" : "impact.tank.auto_void.disabled")
+                + "\n" + StatCollector.translateToLocal("impact.tank.auto_void.tooltip"),
+            (player, shift) -> machine.setVoidExcessEnabled(!machine.isVoidExcessEnabled())
+        );
 
         if (slots == 1) {
             panel.child(gauge(readings, 0, false).pos(14, 30).size(102, 108));
@@ -59,6 +74,7 @@ public final class TankStorageGui {
             int slots
     ) {
         NBTTagCompound snapshot = new NBTTagCompound();
+        snapshot.setBoolean("voidExcess", machine.isVoidExcessEnabled());
         IGregTechTileEntity tile = machine.getBaseMetaTileEntity();
         MultiFluidHandler handler = machine.getMultiFluidHandler();
         if (tile == null || tile.isDead() || tile.getMetaTileEntity() != machine || handler == null) {
@@ -87,6 +103,7 @@ public final class TankStorageGui {
         private NBTTagCompound lastSnapshot;
         private int capacity;
         private int count;
+        private boolean voidExcess;
 
         Readings(GenericSyncValue<NBTTagCompound, ?> sync, int slots) {
             this.sync = sync;
@@ -103,6 +120,11 @@ public final class TankStorageGui {
             return count;
         }
 
+        boolean voidExcess() {
+            refresh();
+            return voidExcess;
+        }
+
         FluidStack fluid(int index) {
             refresh();
             return fluids[index];
@@ -114,6 +136,7 @@ public final class TankStorageGui {
                 return;
             }
             lastSnapshot = snapshot;
+            voidExcess = snapshot.getBoolean("voidExcess");
             capacity = snapshot.getInteger("capacity");
             NBTTagList entries = snapshot.getTagList("fluids", 10);
             count = Math.min(entries.tagCount(), fluids.length);

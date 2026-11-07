@@ -173,6 +173,20 @@ public class GTMTE_SingleTank
         return mfh;
     }
 
+    @Override
+    public boolean isVoidExcessEnabled() {
+        return doVoidExcess;
+    }
+
+    @Override
+    public void setVoidExcessEnabled(boolean enabled) {
+        doVoidExcess = enabled;
+        if (mfh != null) {
+            mfh.setVoidExcess(enabled);
+        }
+        markTankDirty();
+    }
+
     private void markTankDirty() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base != null && base.getWorld() != null && base.isServerSide()) {
@@ -530,11 +544,7 @@ public class GTMTE_SingleTank
      */
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        doVoidExcess = !doVoidExcess;
-        markTankDirty();
-        if (mfh != null) {
-            mfh.setVoidExcess(doVoidExcess);
-        }
+        setVoidExcessEnabled(!isVoidExcessEnabled());
         GT_Utility.sendChatToPlayer(aPlayer, doVoidExcess ? "Auto-voiding enabled" : "Auto-voiding disabled");
     }
 

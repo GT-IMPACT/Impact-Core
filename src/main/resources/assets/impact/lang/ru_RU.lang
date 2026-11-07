@@ -686,6 +686,9 @@ impact.tank.capacity=Ёмкость
 impact.tank.fluid_count=Слоты жидкостей: %s / %s
 impact.tank.per_fluid=%s л / тип
 impact.tank.amount_tooltip=%s / %s л
+impact.tank.auto_void.enabled=Автовойд: Вкл
+impact.tank.auto_void.disabled=Автовойд: Выкл
+impact.tank.auto_void.tooltip=Уничтожает поступающую жидкость сверх ёмкости бака.
 
 impact.computer.capacity=Ёмкость: %s PP
 impact.computer.free=Свободно: %s PP
