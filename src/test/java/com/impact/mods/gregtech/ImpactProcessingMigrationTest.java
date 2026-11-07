@@ -11,6 +11,7 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockB
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_FuelGeneratorBase;
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_Pyrolyse;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Brewmenter;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
@@ -72,6 +73,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -177,6 +179,16 @@ class ImpactProcessingMigrationTest {
     @Test
     void advancedPyrolysisKeepsItsOwnTierBasedParallelSource() throws Throwable {
         run("pyrolysisParallelSource");
+    }
+
+    @Test
+    void pyrolysisExposesItsCustomRecipeMapToNei() throws Throwable {
+        run("pyrolysisNei");
+    }
+
+    @Test
+    void pyrolysisChecksProtectedFractionsSeparatelyInOneUnlockedHatch() throws Throwable {
+        run("pyrolysisProtectedFractions");
     }
 
     @Test
@@ -1313,6 +1325,56 @@ class ImpactProcessingMigrationTest {
             assertEquals(4, item.stackSize);
             assertEquals(40, fluid.amount);
             assertEquals(0, machine.getMMatrixParticlesSummary());
+        }
+
+        public static void pyrolysisNei() {
+            GT_Recipe.GT_Recipe_Map map = GT_RecipeMaps.sPyrolyseOven;
+            assertFalse(map.mNEIAllowed);
+            assertSame(map, new GTMTE_Pyrolyse("pyrolysis-nei").getRecipeMapForNEI());
+            assertSame(map, new GTMTE_AdvancedPyrolyse("advanced-pyrolysis-nei").getRecipeMapForNEI());
+        }
+
+        public static void pyrolysisProtectedFractions() {
+            GT_Recipe recipe = GT_RecipeMaps.sPyrolyseOven.addRecipe(
+                    false,
+                    new ItemStack[] { new ItemStack(Items.gold_ingot) },
+                    new ItemStack[] { new ItemStack(Items.iron_ingot) },
+                    null,
+                    null,
+                    null,
+                    new FluidStack[] { water(72), water(288), water(144), water(216),
+                            new FluidStack(FluidRegistry.LAVA, 1440) },
+                    800,
+                    20,
+                    0
+            );
+            assertTrue(recipe != null);
+            for (GTMTE_Impact_BlockBase<?> machine : Arrays.asList(
+                    new GTMTE_Pyrolyse("pyrolysis-protected"),
+                    new GTMTE_AdvancedPyrolyse("advanced-pyrolysis-protected"))) {
+                attach(machine);
+                GT_MetaTileEntity_Hatch_Energy energy = new GT_MetaTileEntity_Hatch_Energy(
+                        "energy", 3, "", new ITexture[0][][]);
+                attach(energy);
+                machine.mEnergyHatches.add(energy);
+                GT_MetaTileEntity_Hatch_InputBus input = addInput(machine, 1);
+                input.mInventory[0] = new ItemStack(Items.gold_ingot);
+                GT_MetaTileEntity_Hatch_Output output = fluidOutput(machine);
+                machine.setProcessingModes(ProcessingLogic.PROTECT_FLUIDS);
+
+                output.mMode = 1; // Steam and items only.
+                assertFalse(machine.checkRecipe(null));
+                assertEquals(CheckRecipeResult.FLUID_OUTPUT_FULL, machine.getProcessingResult());
+                output.lockFluid(true); // A single hatch cannot auto-lock to two fluids.
+                assertFalse(machine.checkRecipe(null));
+                assertEquals(CheckRecipeResult.FLUID_OUTPUT_FULL, machine.getProcessingResult());
+                assertEquals(1, input.mInventory[0].stackSize);
+
+                output.lockFluid(false);
+                assertTrue(machine.checkRecipe(null), machine.getProcessingResult().toString());
+                assertEquals(0, output.getFluidAmount());
+                assertEquals(1440, machine.mOutputFluids[0].amount);
+            }
         }
 
         public static void pyrolysisParallelSource() throws Exception {

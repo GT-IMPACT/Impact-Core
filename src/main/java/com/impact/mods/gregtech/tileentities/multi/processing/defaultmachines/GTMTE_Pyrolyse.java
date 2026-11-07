@@ -3,7 +3,9 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.util.OverclockCalculator;
+import com.impact.addon.gt.api.recipe.StagedFluidOutputSink;
 import com.impact.addon.gt.api.recipe.StagedFluidOutputs;
+import gregtech.api.logic.IProcessingOutputSink;
 import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.HatchCounts;
@@ -128,6 +130,11 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
 
 
     @Override
+    protected IProcessingOutputSink createProcessingOutputs() {
+        return StagedFluidOutputSink.create(this);
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic()
                 .setRecipeMapSupplier(this::getRecipeMap)
@@ -142,6 +149,11 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_RecipeMaps.sPyrolyseOven;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
         return GT_RecipeMaps.sPyrolyseOven;
     }
 
