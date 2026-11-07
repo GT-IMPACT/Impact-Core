@@ -6,6 +6,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -39,6 +40,23 @@ public class GTMTE_Maintenance extends GT_MetaTileEntity_Hatch_Maintenance {
 		this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
 	}
 	
+    @Override
+    public boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public boolean onRightclick(
+            IGregTechTileEntity tile,
+            EntityPlayer player,
+            byte side,
+            float x,
+            float y,
+            float z
+    ) {
+        return false;
+    }
+
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return null;
