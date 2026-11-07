@@ -2,8 +2,14 @@ package com.impact.mods.gregtech.tileentities.covers;
 
 import com.impact.util.math.PackUnpackValues;
 import cpw.mods.fml.common.Loader;
+import gregtech.api.covers.CoverContext;
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_CoverBehavior;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
+import java.net.URLClassLoader;
+import java.util.Collections;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,13 +23,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
-import java.net.URLClassLoader;
-import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FluidDetectorTest {
@@ -41,7 +42,9 @@ class FluidDetectorTest {
 
     @AfterAll
     void closeLoader() throws Exception {
-        if (loader != null) loader.close();
+        if (loader != null) {
+            loader.close();
+        }
     }
 
     private void check(String method) throws Throwable {
@@ -53,22 +56,34 @@ class FluidDetectorTest {
     }
 
     @Test
-    void missingTanksDoNotCrashOrEraseSettings() throws Throwable { check("missingTanksDoNotCrashOrEraseSettings"); }
+    void missingTanksDoNotCrashOrEraseSettings() throws Throwable {
+        check("missingTanksDoNotCrashOrEraseSettings");
+    }
 
     @Test
-    void blockWithoutFluidHandlerIsSafe() throws Throwable { check("blockWithoutFluidHandlerIsSafe"); }
+    void blockWithoutFluidHandlerIsSafe() throws Throwable {
+        check("blockWithoutFluidHandlerIsSafe");
+    }
 
     @Test
-    void boundUsesAllTanksAndKeepsInvertedMode() throws Throwable { check("boundUsesAllTanksAndKeepsInvertedMode"); }
+    void boundUsesAllTanksAndKeepsInvertedMode() throws Throwable {
+        check("boundUsesAllTanksAndKeepsInvertedMode");
+    }
 
     @Test
-    void rangeUsesCombinedCapacityAndInclusiveBounds() throws Throwable { check("rangeUsesCombinedCapacityAndInclusiveBounds"); }
+    void rangeUsesCombinedCapacityAndInclusiveBounds() throws Throwable {
+        check("rangeUsesCombinedCapacityAndInclusiveBounds");
+    }
 
     @Test
-    void largeTankTotalsDoNotOverflow() throws Throwable { check("largeTankTotalsDoNotOverflow"); }
+    void largeTankTotalsDoNotOverflow() throws Throwable {
+        check("largeTankTotalsDoNotOverflow");
+    }
 
     @Test
-    void clampedBoundUpdatesSignalImmediately() throws Throwable { check("clampedBoundUpdatesSignalImmediately"); }
+    void clampedBoundUpdatesSignalImmediately() throws Throwable {
+        check("clampedBoundUpdatesSignalImmediately");
+    }
 
     public static class Scenarios {
         private static final Fluid FLUID = new Fluid("fluid_detector_test_fluid");
@@ -101,9 +116,12 @@ class FluidDetectorTest {
             return new FluidTankInfo(amount == 0 ? null : new FluidStack(FLUID, amount), capacity);
         }
 
-        private void tick(GT_CoverBehavior cover, ICoverable tile, int setting, byte expected) {
+        private void tick(CoverFactory factory, ICoverable tile, int setting, byte expected) {
             signal = -1;
-            assertEquals(setting, cover.doCoverThings((byte) 2, (byte) 0, 0, setting, tile, 20));
+            DetectorCover cover = (DetectorCover) factory.buildCover(new CoverContext(1, ForgeDirection.NORTH, tile));
+            cover.setLegacyData(setting);
+            cover.doCoverThings((byte) 0, 20);
+            assertEquals(setting, cover.getLegacyData());
             assertEquals(expected, signal);
         }
 
@@ -111,51 +129,55 @@ class FluidDetectorTest {
             for (FluidTankInfo[] tanks : new FluidTankInfo[][]{
                     null, new FluidTankInfo[0], new FluidTankInfo[]{null}, new FluidTankInfo[]{tank(0, 0)}}) {
                 ICoverable tile = tile(tanks, true);
-                tick(new GTC_AdvFluidDetectorBound(), tile, 500, (byte) 0);
-                tick(new GTC_AdvFluidDetectorBound(), tile, 0, (byte) 0);
-                tick(new GTC_AdvFluidDetectorRange(), tile, PackUnpackValues.packFloats(0, 100), (byte) 0);
+                tick(GTC_AdvFluidDetectorBound::new, tile, 500, (byte) 0);
+                tick(GTC_AdvFluidDetectorBound::new, tile, 0, (byte) 0);
+                tick(GTC_AdvFluidDetectorRange::new, tile, PackUnpackValues.packFloats(0, 100), (byte) 0);
                 assertEquals(1L, FluidDetectorTankData.read(tile).guiCapacity());
             }
         }
 
         public void blockWithoutFluidHandlerIsSafe() {
             ICoverable tile = tile(null, false);
-            tick(new GTC_AdvFluidDetectorBound(), tile, 500, (byte) 0);
-            tick(new GTC_AdvFluidDetectorRange(), tile, 0, (byte) 0);
+            tick(GTC_AdvFluidDetectorBound::new, tile, 500, (byte) 0);
+            tick(GTC_AdvFluidDetectorRange::new, tile, 0, (byte) 0);
             assertEquals(1L, FluidDetectorTankData.read(tile).guiCapacity());
         }
 
         public void boundUsesAllTanksAndKeepsInvertedMode() {
             ICoverable tile = tile(new FluidTankInfo[]{null, tank(1000, 400), tank(2000, 800)}, true);
-            tick(new GTC_AdvFluidDetectorBound(), tile, 1000, (byte) 15);
-            tick(new GTC_AdvFluidDetectorBound(), tile, 1201, (byte) 0);
-            tick(new GTC_AdvFluidDetectorBound(), tile, -1200, (byte) 15);
-            tick(new GTC_AdvFluidDetectorBound(), tile, -1199, (byte) 0);
+            tick(GTC_AdvFluidDetectorBound::new, tile, 1000, (byte) 15);
+            tick(GTC_AdvFluidDetectorBound::new, tile, 1201, (byte) 0);
+            tick(GTC_AdvFluidDetectorBound::new, tile, -1200, (byte) 15);
+            tick(GTC_AdvFluidDetectorBound::new, tile, -1199, (byte) 0);
             assertEquals(3000L, FluidDetectorTankData.read(tile).guiCapacity());
-            tick(new GTC_AdvFluidDetectorBound(), tile(new FluidTankInfo[]{tank(1000, 0)}, true), 0, (byte) 15);
+            tick(GTC_AdvFluidDetectorBound::new, tile(new FluidTankInfo[]{tank(1000, 0)}, true), 0, (byte) 15);
         }
 
         public void rangeUsesCombinedCapacityAndInclusiveBounds() {
             ICoverable tile = tile(new FluidTankInfo[]{tank(1000, 0), tank(1000, 1000)}, true);
-            tick(new GTC_AdvFluidDetectorRange(), tile, PackUnpackValues.packFloats(50, 50), (byte) 15);
-            tick(new GTC_AdvFluidDetectorRange(), tile, PackUnpackValues.packFloats(51, 100), (byte) 0);
-            tick(new GTC_AdvFluidDetectorRange(), tile, PackUnpackValues.packFloats(0, 49), (byte) 0);
-            tick(new GTC_AdvFluidDetectorRange(), tile(new FluidTankInfo[]{tank(1000, 0)}, true), 0, (byte) 15);
+            tick(GTC_AdvFluidDetectorRange::new, tile, PackUnpackValues.packFloats(50, 50), (byte) 15);
+            tick(GTC_AdvFluidDetectorRange::new, tile, PackUnpackValues.packFloats(51, 100), (byte) 0);
+            tick(GTC_AdvFluidDetectorRange::new, tile, PackUnpackValues.packFloats(0, 49), (byte) 0);
+            tick(GTC_AdvFluidDetectorRange::new, tile(new FluidTankInfo[]{tank(1000, 0)}, true), 0, (byte) 15);
         }
 
         public void largeTankTotalsDoNotOverflow() {
             ICoverable tile = tile(new FluidTankInfo[]{tank(2_000_000_000, 1_500_000_000), tank(2_000_000_000, 1_500_000_000)}, true);
             assertEquals(4_000_000_000L, FluidDetectorTankData.read(tile).guiCapacity());
-            tick(new GTC_AdvFluidDetectorBound(), tile, 2_000_000_000, (byte) 15);
-            tick(new GTC_AdvFluidDetectorBound(), tile, Integer.MIN_VALUE, (byte) 0);
-            tick(new GTC_AdvFluidDetectorBound(), tile(new FluidTankInfo[]{tank(1000, 500)}, true), Integer.MIN_VALUE, (byte) 15);
-            tick(new GTC_AdvFluidDetectorRange(), tile, PackUnpackValues.packFloats(75, 75), (byte) 15);
+            tick(GTC_AdvFluidDetectorBound::new, tile, 2_000_000_000, (byte) 15);
+            tick(GTC_AdvFluidDetectorBound::new, tile, Integer.MIN_VALUE, (byte) 0);
+            tick(GTC_AdvFluidDetectorBound::new, tile(new FluidTankInfo[]{tank(1000, 500)}, true), Integer.MIN_VALUE, (byte) 15);
+            tick(GTC_AdvFluidDetectorRange::new, tile, PackUnpackValues.packFloats(75, 75), (byte) 15);
         }
 
         public void clampedBoundUpdatesSignalImmediately() {
             ICoverable tile = tile(new FluidTankInfo[]{tank(1000, 1000)}, true);
             signal = 0;
-            assertEquals(1000, new GTC_AdvFluidDetectorBound().doCoverThings((byte) 2, (byte) 0, 0, 2000, tile, 20));
+            GTC_AdvFluidDetectorBound cover = new GTC_AdvFluidDetectorBound(
+                new CoverContext(1, ForgeDirection.NORTH, tile));
+            cover.setLegacyData(2000);
+            cover.doCoverThings((byte) 0, 20);
+            assertEquals(1000, cover.getLegacyData());
             assertEquals((byte) 15, signal);
         }
     }

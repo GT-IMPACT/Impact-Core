@@ -74,6 +74,11 @@ dependencies {
 }
 
 tasks.test {
+    // Forge GUI tests retain isolated Minecraft class loaders until their worker exits.
+    maxHeapSize = "1g"
+    maxParallelForks = 1
+    forkEvery = 1
+    jvmArgs("-XX:+ExitOnOutOfMemoryError")
     useJUnitPlatform()
     testLogging {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

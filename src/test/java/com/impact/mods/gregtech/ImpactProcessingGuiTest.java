@@ -7,71 +7,83 @@ import com.cleanroommc.modularui.screen.ModularContainer;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.MouseData;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.widgets.SliderWidget;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.ModularSyncManager;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PanelSyncHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
-import com.impact.mods.gregtech.gui.processing.ImpactProcessingGui;
-import com.impact.mods.gregtech.gui.lap.LapChargeHistory;
-import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
-import com.impact.mods.gregtech.gui.aerostat.ContainerSelectAerostat;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widget.sizer.ResizeNode;
 import com.cleanroommc.modularui.widget.sizer.StaticResizer;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import gregtech.common.gui.modularui.multiblock.ProcessingGuiControls;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.google.common.io.ByteStreams;
+import com.impact.mods.gregtech.gui.aerostat.ContainerSelectAerostat;
+import com.impact.mods.gregtech.gui.lap.LapChargeHistory;
+import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
+import com.impact.mods.gregtech.gui.processing.ImpactProcessingGui;
+import com.impact.mods.gregtech.tileentities.covers.DetectorCover;
+import com.impact.mods.gregtech.tileentities.covers.GTC_AdvEUDetector;
+import com.impact.mods.gregtech.tileentities.covers.GTC_AdvEUDetectorRange;
+import com.impact.mods.gregtech.tileentities.covers.GTC_AdvFluidDetectorBound;
+import com.impact.mods.gregtech.tileentities.covers.GTC_AdvFluidDetectorRange;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorI;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorIII;
-import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorBase;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
-import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_CokeOven;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_TheMill;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
+import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
-import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Filler;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.FMLInjectionData;
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.server.FMLServerHandler;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.GregTech_API;
+import gregtech.api.covers.CoverFactory;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Materials;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
+import gregtech.api.modularui2.CoverGuiData;
+import gregtech.api.modularui2.CoverUIFactory;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.gui.modularui.multiblock.ProcessingGuiControls;
+import gregtech.common.modularui2.widget.CoverTabButton;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,24 +91,34 @@ import java.util.Map;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import org.junit.jupiter.api.Test;
 
 import static gregtech.api.gui.GT_Container_ProcessingMachine.POWER_SLOT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ImpactProcessingGuiTest {
+
+    @Test
+    void nativeImpactCoversKeepSettingsAndBuildStandaloneAndMachinePopupControls() throws Throwable {
+        run("covers");
+    }
 
     @Test
     void realControllerSlotsKeepIndicesContentsAndOutputRestrictions() throws Throwable {
@@ -204,6 +226,9 @@ class ImpactProcessingGuiTest {
             FMLServerHandler.instance();
             GTGuis.init();
             switch (scenario) {
+                case "covers":
+                    covers();
+                    break;
                 case "lapHistory":
                     lapHistory();
                     break;
@@ -245,6 +270,86 @@ class ImpactProcessingGuiTest {
                     break;
                 default:
                     throw new AssertionError(scenario);
+            }
+        }
+
+        private static void covers() throws Exception {
+            CoverFactory[] factories = {
+                GTC_AdvFluidDetectorBound::new,
+                GTC_AdvEUDetector::new,
+                GTC_AdvFluidDetectorRange::new,
+                GTC_AdvEUDetectorRange::new
+            };
+            Item[] items = {Items.apple, Items.paper, Items.stick, Items.coal};
+            for (int index = 0; index < factories.length; index++) {
+                GTMTE_LapPowerStation machine = new GTMTE_LapPowerStation("cover_host");
+                machine.capacity = 4_000_000_000L;
+                AttachedMachine fixture = new AttachedMachine(machine);
+                ItemStack stack = new ItemStack(items[index]);
+                CoverRegistry.registerCover(stack, null, factories[index]);
+                int id = GT_Utility.stackToInt(stack);
+                fixture.tile.setCoverIDAtSide((byte) ForgeDirection.NORTH.ordinal(), id);
+                DetectorCover cover = (DetectorCover) fixture.tile.getCoverAtSide(ForgeDirection.NORTH);
+                assertTrue(CoverRegistry.isNativeCover(stack));
+                assertTrue(cover.useMui2());
+                assertTrue(cover.hasCoverGUI());
+                for (int setting : new int[]{0, -50, 75, 12900, Integer.MIN_VALUE}) {
+                    NBTTagCompound legacy = new NBTTagCompound();
+                    legacy.setTag("d", new NBTTagInt(setting));
+                    cover.readFromNbt(legacy);
+                    assertEquals(setting, cover.getLegacyData());
+                    DetectorCover copy = (DetectorCover) CoverRegistry.buildCover(
+                        id,
+                        ForgeDirection.NORTH,
+                        fixture.tile
+                    );
+                    copy.readFromNbt(cover.writeToNBT(new NBTTagCompound()));
+                    assertEquals(setting, copy.getLegacyData());
+                    ByteBuf packet = Unpooled.buffer();
+                    try {
+                        cover.writeToByteBuf(packet);
+                        byte[] bytes = new byte[packet.readableBytes()];
+                        packet.readBytes(bytes);
+                        copy.readFromPacket(ByteStreams.newDataInput(bytes));
+                        assertEquals(setting, copy.getLegacyData());
+                    } finally {
+                        packet.release();
+                    }
+                }
+                cover.setLegacyData(0);
+                for (boolean popup : new boolean[]{false, true}) {
+                    ModularSyncManager manager = new ModularSyncManager(false);
+                    PanelSyncManager handlers = new PanelSyncManager(manager, true);
+                    UISettings settings = new UISettings(RecipeViewerSettings.DUMMY);
+                    CoverGuiData data = new CoverGuiData(fixture.player, id, 0, 64, 0, ForgeDirection.NORTH, popup);
+                    ModularPanel panel = popup
+                        ? cover.buildPopUpUI(data, "cover_test", handlers, settings, new ButtonWidget<>())
+                        : CoverUIFactory.INSTANCE.createPanel(data, handlers, settings);
+                    WidgetTree.collectSyncValues(handlers, panel);
+                    ModularContainer container = new ModularContainer();
+                    container.construct(fixture.player, manager, settings, panel.getName(), data);
+                    assertTrue(container.isInitialized());
+                    if (!popup) {
+                        assertEquals(36, container.inventorySlots.size());
+                    }
+                    assertNotNull(handlers.findSyncHandler("capacity", LongSyncValue.class));
+                    IntSyncValue value = handlers.findSyncHandler(
+                        cover.isRange() ? "start_percent" : "setting", IntSyncValue.class);
+                    PacketBuffer packet = new PacketBuffer(Unpooled.buffer());
+                    try {
+                        packet.writeVarIntToBuffer(55);
+                        value.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
+                        assertEquals(cover.isRange() ? 55 << 7 : cover.isFluid() ? 0 : 55, cover.getLegacyData());
+                        fixture.tile.detachCover(ForgeDirection.NORTH);
+                        packet.clear();
+                        packet.writeVarIntToBuffer(80);
+                        value.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
+                        assertEquals(cover.isRange() ? 55 << 7 : cover.isFluid() ? 0 : 55, cover.getLegacyData());
+                        fixture.tile.attachCover(cover);
+                    } finally {
+                        packet.release();
+                    }
+                }
             }
         }
 
@@ -996,7 +1101,7 @@ class ImpactProcessingGuiTest {
                         && !(widget instanceof SliderWidget) && !tankGauge) {
                     continue;
                 }
-                if (widget.getName().startsWith("processing_control_")) {
+                if (name != null && name.startsWith("processing_control_")) {
                     int index = Integer.parseInt(widget.getName().substring("processing_control_".length()));
                     if (!ProcessingGuiControls.isControlVisible(
                             (GT_MetaTileEntity_ProcessingMultiBlockBase<?>) machine, index)) {
@@ -1004,9 +1109,19 @@ class ImpactProcessingGuiTest {
                     }
                 }
                 Area area = widget.getArea();
-                assertTrue(area.x >= panel.getArea().x && area.y >= panel.getArea().y, machine.mName);
-                assertTrue(area.x + area.width <= panel.getArea().x + panel.getArea().width, machine.mName);
-                assertTrue(area.y + area.height <= panel.getArea().y + panel.getArea().height, machine.mName);
+                String bounds = machine.mName + ": " + widget.getClass().getSimpleName() + " " + name
+                        + " " + area + " / " + panel.getArea();
+                if (widget instanceof CoverTabButton) {
+                    assertEquals(20, area.width, bounds);
+                    assertEquals(20, area.height, bounds);
+                    assertEquals(panel.getArea().x - 17, area.x, bounds);
+                    assertTrue(area.y >= panel.getArea().y, bounds);
+                    assertTrue(area.y + area.height <= panel.getArea().y + panel.getArea().height, bounds);
+                    continue;
+                }
+                assertTrue(area.x >= panel.getArea().x && area.y >= panel.getArea().y, bounds);
+                assertTrue(area.x + area.width <= panel.getArea().x + panel.getArea().width, bounds);
+                assertTrue(area.y + area.height <= panel.getArea().y + panel.getArea().height, bounds);
                 for (IWidget previous : controls) {
                     Area other = previous.getArea();
                     boolean overlaps = area.x < other.x + other.width && area.x + area.width > other.x
