@@ -395,7 +395,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 
     @Override
     public int getSupportedProcessingModes() {
-        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
+        return 0;
     }
 
     @Override

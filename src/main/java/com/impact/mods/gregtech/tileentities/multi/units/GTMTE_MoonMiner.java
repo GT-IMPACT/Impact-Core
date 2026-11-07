@@ -179,6 +179,6 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
 
     @Override
     public int getSupportedProcessingModes() {
-        return 0;
+        return ProcessingLogic.PROTECT_ITEMS | ProcessingLogic.PROTECT_FLUIDS;
     }
 }

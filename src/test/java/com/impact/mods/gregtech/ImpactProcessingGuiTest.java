@@ -40,6 +40,8 @@ import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_Nucl
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorIII;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
+import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
@@ -54,6 +56,7 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump;
+import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_MoonMiner;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
@@ -64,6 +67,7 @@ import gregtech.api.covers.CoverFactory;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
@@ -105,7 +109,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.junit.jupiter.api.Test;
 
+import static gregtech.api.gui.GT_Container_ProcessingMachine.BATCH_SLOT;
+import static gregtech.api.gui.GT_Container_ProcessingMachine.LOCK_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.POWER_SLOT;
+import static gregtech.api.gui.GT_Container_ProcessingMachine.RECIPE_MAP_SLOT;
+import static gregtech.api.gui.GT_Container_ProcessingMachine.SEPARATION_SLOT;
+import static gregtech.api.gui.GT_Container_ProcessingMachine.VOIDING_SLOT;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -114,6 +123,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ImpactProcessingGuiTest {
+
+    @Test
+    void minersExposeOnlyPowerAndOutputProtectionAndRejectUnsupportedModes() throws Throwable {
+        run("miners");
+    }
 
     @Test
     void nativeImpactCoversKeepSettingsAndBuildStandaloneAndMachinePopupControls() throws Throwable {
@@ -226,6 +240,9 @@ class ImpactProcessingGuiTest {
             FMLServerHandler.instance();
             GTGuis.init();
             switch (scenario) {
+                case "miners":
+                    miners();
+                    break;
                 case "covers":
                     covers();
                     break;
@@ -270,6 +287,61 @@ class ImpactProcessingGuiTest {
                     break;
                 default:
                     throw new AssertionError(scenario);
+            }
+        }
+
+        private static void miners() throws Exception {
+            GT_MetaTileEntity_ProcessingMultiBlockBase<?>[] miners = {
+                new GTMTE_Mining_Coal("coal"),
+                new GTMTE_BasicMiner("basic"),
+                new GTMTE_AdvancedMiner("advanced"),
+                new GTMTE_MoonMiner("moon")
+            };
+            for (GT_MetaTileEntity_ProcessingMultiBlockBase<?> miner : miners) {
+                boolean primitive = miner instanceof GTMTE_Mining_Coal;
+                int protection = primitive ? 0 : ProcessingLogic.PROTECT_ITEMS | ProcessingLogic.PROTECT_FLUIDS;
+                assertEquals(protection, miner.getSupportedProcessingModes(), miner.mName);
+                Fixture nativeGui = miner.useMui2() ? new Fixture(miner) : null;
+                AttachedMachine fixture = nativeGui != null ? nativeGui : new AttachedMachine(miner);
+                if (nativeGui != null) {
+                    nativeGui.checkLayout();
+                }
+                for (int index = 0; index <= RECIPE_MAP_SLOT; index++) {
+                    assertEquals(index == POWER_SLOT || !primitive && index == VOIDING_SLOT,
+                        ProcessingGuiControls.isControlVisible(miner, index), miner.mName + ": " + index);
+                }
+                miner.setProcessingModes(ProcessingLogic.ALL_MODES);
+                assertEquals(protection, miner.getProcessingModes());
+                for (int hidden : new int[]{BATCH_SLOT, LOCK_SLOT, SEPARATION_SLOT}) {
+                    clickMinerControl(fixture, hidden);
+                    assertEquals(protection, miner.getProcessingModes());
+                }
+                int[] expectedProtection = primitive ? new int[]{0} : new int[]{
+                    ProcessingLogic.PROTECT_FLUIDS, ProcessingLogic.PROTECT_ITEMS, 0, protection
+                };
+                for (int expected : expectedProtection) {
+                    clickMinerControl(fixture, VOIDING_SLOT);
+                    assertEquals(expected, miner.getProcessingModes());
+                }
+                fixture.tile.disableWorking();
+                clickMinerControl(fixture, POWER_SLOT);
+                assertTrue(fixture.tile.isAllowedToWork());
+                clickMinerControl(fixture, POWER_SLOT);
+                assertFalse(fixture.tile.isAllowedToWork());
+
+                NBTTagCompound saved = new NBTTagCompound();
+                miner.saveNBTData(saved);
+                saved.getCompoundTag("processing").setInteger("modes", ProcessingLogic.ALL_MODES);
+                miner.loadNBTData(saved);
+                assertEquals(protection, miner.getProcessingModes());
+            }
+        }
+
+        private static void clickMinerControl(AttachedMachine fixture, int index) throws Exception {
+            if (fixture instanceof Fixture) {
+                ((Fixture) fixture).press("processingControl_" + index, false);
+            } else {
+                ProcessingGuiControls.click((GT_MetaTileEntity_ProcessingMultiBlockBase<?>) fixture.machine, index, 0);
             }
         }
 

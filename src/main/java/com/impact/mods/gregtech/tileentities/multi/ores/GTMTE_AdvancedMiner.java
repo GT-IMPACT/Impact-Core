@@ -435,7 +435,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 
     @Override
     public int getSupportedProcessingModes() {
-        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
+        return ProcessingLogic.PROTECT_ITEMS | ProcessingLogic.PROTECT_FLUIDS;
     }
 
     @Override

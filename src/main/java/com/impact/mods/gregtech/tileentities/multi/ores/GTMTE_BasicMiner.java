@@ -360,7 +360,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
 
     @Override
     public int getSupportedProcessingModes() {
-        return super.getSupportedProcessingModes() & ~ProcessingLogic.SEPARATE_INPUTS;
+        return ProcessingLogic.PROTECT_ITEMS | ProcessingLogic.PROTECT_FLUIDS;
     }
 
     @Override
