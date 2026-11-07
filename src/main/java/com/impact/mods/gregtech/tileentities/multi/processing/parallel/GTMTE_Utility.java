@@ -173,4 +173,9 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
     public boolean hasSwitchMap() {
         return true;
     }
+
+    @Override
+    public boolean isNEIButtonEnabled() {
+        return getRecipeMap() != GT_Recipe.GT_Recipe_Map.sRecyclerRecipes;
+    }
 }

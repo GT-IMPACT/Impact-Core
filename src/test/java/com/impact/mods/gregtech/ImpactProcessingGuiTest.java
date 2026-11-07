@@ -2,6 +2,7 @@ package com.impact.mods.gregtech;
 
 import com.cleanroommc.modularui.api.RecipeViewerSettings;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularContainer;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -51,6 +52,7 @@ import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GT
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_TheMill;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Utility;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
@@ -78,6 +80,7 @@ import gregtech.api.modularui2.CoverUIFactory;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.multiblock.ProcessingGuiControls;
 import gregtech.common.modularui2.widget.CoverTabButton;
@@ -113,6 +116,7 @@ import org.junit.jupiter.api.Test;
 
 import static gregtech.api.gui.GT_Container_ProcessingMachine.BATCH_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.LOCK_SLOT;
+import static gregtech.api.gui.GT_Container_ProcessingMachine.NEI_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.POWER_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.RECIPE_MAP_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.SEPARATION_SLOT;
@@ -125,6 +129,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ImpactProcessingGuiTest {
+
+    @Test
+    void utilityDisablesTheVisibleNeiButtonOnlyForRecycler() throws Throwable {
+        run("utility_nei");
+    }
 
     @Test
     void minersExposeOnlyPowerAndOutputProtectionAndRejectUnsupportedModes() throws Throwable {
@@ -274,6 +283,9 @@ class ImpactProcessingGuiTest {
                     break;
                 case "tanks":
                     tanks();
+                    break;
+                case "utility_nei":
+                    utilityNei();
                     break;
                 case "reactor":
                     reactor();
@@ -596,6 +608,26 @@ class ImpactProcessingGuiTest {
             assertTrue(mill.checkRecipe(null), String.valueOf(mill.getProcessingResult()));
             assertNull(container.getSlot(0).getStack(), "A consumed input must not leave a zero-size stack");
             assertEquals(1, mill.mOutputItems[0].stackSize);
+        }
+
+        private static void utilityNei() throws Exception {
+            GTMTE_Utility machine = new GTMTE_Utility("utility");
+            Fixture fixture = new Fixture(machine);
+            fixture.checkLayout();
+            ButtonWidget<?> button = (ButtonWidget<?>) fixture.find("processing_control_" + NEI_SLOT);
+            assertNotNull(button);
+            int x = button.getArea().x;
+            int y = button.getArea().y;
+            assertEquals(Interactable.Result.SUCCESS, button.onMousePressed(1));
+            machine.setActiveRecipeMap(GT_Recipe.GT_Recipe_Map.sRecyclerRecipes);
+            assertTrue(button.isEnabled());
+            assertEquals(Interactable.Result.STOP, button.onMousePressed(0));
+            assertEquals(Interactable.Result.STOP, button.onMousePressed(1));
+            fixture.checkLayout();
+            assertEquals(x, button.getArea().x);
+            assertEquals(y, button.getArea().y);
+            machine.setActiveRecipeMap(GT_Recipe.GT_Recipe_Map.sCompressorRecipes);
+            assertEquals(Interactable.Result.SUCCESS, button.onMousePressed(1));
         }
 
         private static void tanks() throws Exception {
