@@ -133,6 +133,15 @@ public class GTMTE_Cutting extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
+        GT_Recipe.GT_Recipe_Map map = getRecipeMap();
+        if (map == null || map == GT_Recipe.GT_Recipe_Map.sCutterRecipes) {
+            return map;
+        }
+        return GT_Recipe.GT_Recipe_Map.sSawMillVisual;
+    }
+
+    @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
         casingCount = 0;
         boolean formationChecklist = checkPiece(2, 2, 0) && SHELL.isSatisfied(this, casingCount);

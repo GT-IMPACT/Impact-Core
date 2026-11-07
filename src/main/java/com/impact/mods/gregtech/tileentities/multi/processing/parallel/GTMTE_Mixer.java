@@ -122,6 +122,12 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
+        // The standard NEI handler displays the recipes mirrored into the multiblock map.
+        return GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+    }
+
+    @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
         casingCount = 0;
         boolean formationChecklist = checkPiece(1, 3, 0) && SHELL.isSatisfied(this, casingCount);

@@ -159,6 +159,11 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
+        return getRecipeMap() == null ? null : GT_Recipe.GT_Recipe_Map.sSawMillVisual;
+    }
+
+    @Override
     public boolean hasSwitchMap() {
         return true;
     }

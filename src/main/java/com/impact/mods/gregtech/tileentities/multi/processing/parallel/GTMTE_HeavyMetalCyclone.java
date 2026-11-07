@@ -137,6 +137,11 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
+        return GT_Recipe.GT_Recipe_Map.sCyclonRecipes;
+    }
+
+    @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
         casingCount = 0;
         boolean formationChecklist = checkPiece(3, 4, 1) && SHELL.isSatisfied(this, casingCount);

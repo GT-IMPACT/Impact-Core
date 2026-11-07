@@ -41,6 +41,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTStructureChannels;
 import ic2.core.Ic2Items;
@@ -100,6 +102,7 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -175,6 +178,24 @@ public class ImpactConstructionChecks {
         }
     }
 
+    private static void checkNeiMaps(GT_MetaTileEntity_ProcessingMultiBlockBase<?> machine) {
+        GT_Recipe.GT_Recipe_Map original = machine.getRecipeMap();
+        if (original == null) {
+            return;
+        }
+        assertNotNull(machine.getRecipeMapForNEI(), machine.mName + " missing NEI page");
+        if (machine.getRecipeMaps().size() > 1) {
+            new TestTile(new TestWorld(), machine, ForgeDirection.NORTH);
+            for (GT_Recipe.GT_Recipe_Map map : machine.getRecipeMaps()) {
+                machine.setActiveRecipeMap(map);
+                assertSame(map, machine.getRecipeMap());
+                assertNotNull(machine.getRecipeMapForNEI(), machine.mName + " missing NEI page for "
+                        + map.mUnlocalizedName);
+            }
+            machine.setActiveRecipeMap(original);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private static void checkAllControllerHints(HintRecorder hints) throws Exception {
         for (Class<?> registry : new Class<?>[] { ItemRegistery.class, GregTech_API.class }) {
@@ -219,6 +240,7 @@ public class ImpactConstructionChecks {
                     machine = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) type.getConstructor(String.class)
                             .newInstance(name);
                 }
+                checkNeiMaps((GT_MetaTileEntity_ProcessingMultiBlockBase<?>) machine);
                 ImpactCasingChecks.checkTooltip(machine);
                 String description = String.join("\n", machine.getSecondaryDescription());
                 String structureHints = String.join("\n", machine.getStructureDescription(null));

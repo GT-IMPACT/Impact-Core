@@ -304,6 +304,10 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
         return GT_RecipeMaps.sMESystemProvider
     }
 
+    override fun getRecipeMapForNEI(): GT_Recipe_Map {
+        return GT_RecipeMaps.sMESystemProvider
+    }
+
     override fun createProcessingLogic(): ProcessingLogic {
         return super.createProcessingLogic()
             .setOperationLimit { recipe ->

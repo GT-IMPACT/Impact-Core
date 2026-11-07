@@ -12,8 +12,10 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_FuelGe
 import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_Pyrolyse;
+import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_SawMill;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Brewmenter;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Cutting;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_AntimatterReactor;
@@ -74,6 +76,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -185,6 +188,11 @@ class ImpactProcessingMigrationTest {
     @Test
     void pyrolysisExposesItsCustomRecipeMapToNei() throws Throwable {
         run("pyrolysisNei");
+    }
+
+    @Test
+    void machineButtonsUseRegisteredNeiMapsAcrossRecipeModes() throws Throwable {
+        run("machineNeiMaps");
     }
 
     @Test
@@ -1348,6 +1356,36 @@ class ImpactProcessingMigrationTest {
             assertFalse(map.mNEIAllowed);
             assertSame(map, new GTMTE_Pyrolyse("pyrolysis-nei").getRecipeMapForNEI());
             assertSame(map, new GTMTE_AdvancedPyrolyse("advanced-pyrolysis-nei").getRecipeMapForNEI());
+        }
+
+        public static void machineNeiMaps() {
+            assertFalse(GT_RecipeMaps.sMESystemProvider.mNEIAllowed);
+            assertSame(GT_RecipeMaps.sMESystemProvider,
+                    new GTMTEMESystemProvider("provider-nei").getRecipeMapForNEI());
+            assertFalse(GT_Recipe.GT_Recipe_Map.sHyperGenerator.mNEIAllowed);
+            assertSame(GT_Recipe.GT_Recipe_Map.sHyperGenerator,
+                    new GTMTE_HyperNaquadahGenerator("hyper-nei").getRecipeMapForNEI());
+
+            GTMTE_Mixer mixer = new GTMTE_Mixer("mixer-nei");
+            assertSame(GT_Recipe.GT_Recipe_Map.sMultuMixerRecipes, mixer.getRecipeMap());
+            assertSame(GT_Recipe.GT_Recipe_Map.sMixerRecipes, mixer.getRecipeMapForNEI());
+
+            for (GTMTE_Impact_BlockBase<?> machine : Arrays.asList(
+                    new GTMTE_SawMill("sawmill-nei"), new GTMTE_Cutting("cutting-nei"))) {
+                attach(machine);
+                for (GT_Recipe.GT_Recipe_Map map : machine.getRecipeMaps()) {
+                    machine.setActiveRecipeMap(map);
+                    assertSame(map, machine.getRecipeMap());
+                    assertSame(map == GT_Recipe.GT_Recipe_Map.sCutterRecipes
+                            ? map : GT_Recipe.GT_Recipe_Map.sSawMillVisual, machine.getRecipeMapForNEI());
+                }
+                NBTTagCompound saved = new NBTTagCompound();
+                machine.saveNBTData(saved);
+                saved.getCompoundTag("processing").setString("recipeMap", "missing-nei-map");
+                machine.loadNBTData(saved);
+                assertNull(machine.getRecipeMap());
+                assertNull(machine.getRecipeMapForNEI());
+            }
         }
 
         public static void pyrolysisProtectedFractions() {

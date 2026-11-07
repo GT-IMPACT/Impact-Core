@@ -131,6 +131,11 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_FuelGeneratorB
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
+        return GT_Recipe.GT_Recipe_Map.sLiquidENqGenerator;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity base, long tick) {
         super.onPostTick(base, tick);
         if (base.isServerSide() && mStartUpCheck < 0) {

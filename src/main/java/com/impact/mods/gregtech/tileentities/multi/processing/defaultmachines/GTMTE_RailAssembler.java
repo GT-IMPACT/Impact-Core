@@ -89,6 +89,11 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
         return sTrackAssemblerRecipes;
     }
 
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
+        return sTrackAssemblerRecipes;
+    }
+
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {

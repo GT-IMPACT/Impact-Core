@@ -119,6 +119,11 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
     }
 
     @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMapForNEI() {
+        return GT_Recipe.GT_Recipe_Map.sBasicline;
+    }
+
+    @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
         casingCount = 0;
         boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, casingCount);
