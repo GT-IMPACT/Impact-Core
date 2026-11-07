@@ -4,6 +4,7 @@ import com.impact.addon.gt.api.recipe.ContinuousFluidOutputs;
 import com.impact.addon.gt.api.recipe.StagedFluidOutputs;
 import com.impact.core.Config;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator;
@@ -278,6 +279,11 @@ class ImpactProcessingMigrationTest {
     @Test
     void combustionFinishesAgainstFullOutputsAndRetainsProductsAcrossReload() throws Throwable {
         run("antimatterBurn");
+    }
+
+    @Test
+    void nuclearProtectionChecksAvailableCapacityInsteadOfRequiringEmptyHatches() throws Throwable {
+        run("nuclearOutputCapacity");
     }
 
     @Test
@@ -867,6 +873,41 @@ class ImpactProcessingMigrationTest {
                     }
                 }
             }
+        }
+
+        public static void nuclearOutputCapacity() {
+            for (int available : new int[] { 0, 99, 100, 1000 }) {
+                TestNuclearReactor machine = new TestNuclearReactor();
+                attach(machine);
+                machine.mFirstStart = true;
+                machine.mCurrentOutput = 99.5;
+                machine.setProcessingModes(ProcessingLogic.PROTECT_FLUIDS);
+                GT_MetaTileEntity_Hatch_Output output = fluidOutput(machine);
+                int stored = output.getCapacity() - available;
+                output.mFluid = water(stored);
+                assertEquals(available >= 100, machine.checkRecipe(null), "available=" + available);
+                assertEquals(stored, output.mFluid.amount);
+                if (available < 100) {
+                    assertEquals(CheckRecipeResult.FLUID_OUTPUT_FULL, machine.getProcessingResult());
+                    machine.setProcessingModes(0);
+                    assertTrue(machine.checkRecipe(null));
+                }
+            }
+
+            TestNuclearReactor machine = new TestNuclearReactor();
+            attach(machine);
+            machine.mFirstStart = true;
+            machine.mCurrentOutput = 100;
+            machine.setProcessingModes(ProcessingLogic.PROTECT_FLUIDS);
+            GT_MetaTileEntity_Hatch_Output output = fluidOutput(machine);
+            output.mMode = 9;
+            output.setLockedFluidName(FluidRegistry.LAVA.getName());
+            assertFalse(machine.checkRecipe(null));
+            assertEquals(CheckRecipeResult.FLUID_OUTPUT_FULL, machine.getProcessingResult());
+            output.setLockedFluidName(FluidRegistry.WATER.getName());
+            output.mFluid = water(231);
+            assertTrue(machine.checkRecipe(null));
+            assertEquals(231, output.mFluid.amount);
         }
 
         public static void antimatterBurn() throws Exception {
@@ -1719,6 +1760,18 @@ class ImpactProcessingMigrationTest {
 
         private void finish() {
             completeRecipe();
+        }
+    }
+
+    public static final class TestNuclearReactor extends GTMTE_NuclearReactorII {
+
+        private TestNuclearReactor() {
+            super("nuclear-test");
+        }
+
+        @Override
+        public FluidStack getOutputFluid() {
+            return new FluidStack(FluidRegistry.WATER, (int) Math.ceil(mCurrentOutput));
         }
     }
 

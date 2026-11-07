@@ -187,9 +187,15 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 
     @Override
     protected CheckRecipeResult validateProcessing() {
-        if (!continuousOutputs.isEmpty() || (getProcessingModes() & ProcessingLogic.PROTECT_FLUIDS) != 0
-                && !createProcessingOutputs().areFluidOutputsEmpty()) {
+        if (!continuousOutputs.isEmpty()) {
             return CheckRecipeResult.FLUID_OUTPUT_FULL;
+        }
+        if ((getProcessingModes() & ProcessingLogic.PROTECT_FLUIDS) != 0) {
+            CheckRecipeResult outputResult = createProcessingOutputs()
+                    .canFit(null, new FluidStack[] { getOutputFluid() }, false, true);
+            if (!outputResult.wasSuccessful()) {
+                return outputResult;
+            }
         }
         if (!mFirstStart) {
             return CheckRecipeResult.MACHINE_CONDITION;
