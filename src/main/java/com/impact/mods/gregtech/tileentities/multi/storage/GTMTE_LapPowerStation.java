@@ -645,6 +645,12 @@ public class GTMTE_LapPowerStation extends
         ll.add(GREEN + NumberFormat.getNumberInstance().format(intputLastTick) + RESET + " EU/t");
         ll.add("EU OUT: ");
         ll.add(RED + NumberFormat.getNumberInstance().format(outputLastTick) + RESET + " EU/t");
+        ll.add("Average EU IN (1m): ");
+        ll.add(GREEN + NumberFormat.getNumberInstance().format(getAverageInput(LapHistoryPeriod.MINUTE))
+                + RESET + " EU/t");
+        ll.add("Average EU OUT (1m): ");
+        ll.add(RED + NumberFormat.getNumberInstance().format(getAverageOutput(LapHistoryPeriod.MINUTE))
+                + RESET + " EU/t");
         ll.add("Maintenance: " + ((super.getRepairStatus() == super.getIdealStatus())
                 ? GREEN + "Good " + YELLOW + mEfficiency / 100.0F + " %" + RESET
                 : RED + "Has Problems " + mEfficiency / 100.0F + " %" + RESET));
