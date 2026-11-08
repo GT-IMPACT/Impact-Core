@@ -58,13 +58,21 @@ final class ParallelComputerDisplay extends ProcessingMachineDisplay {
 
         int[] capacities = snapshot.getIntArray("rackCapacity");
         int[] states = snapshot.getIntArray("rackState");
-        int count = Math.min(ParallelComputerGui.MAX_RACKS, Math.min(capacities.length, states.length));
+        int positions = Math.min(ParallelComputerGui.MAX_RACKS, Math.min(capacities.length, states.length));
+        int count = 0;
+        for (int index = 0; index < positions; index++) {
+            if (capacities[index] >= 0) {
+                count++;
+            }
+        }
         font.drawString(text("racks", count), 10, 67, MUTED);
         if (count == 0) {
             font.drawString(text("no_racks"), 10, 91, MUTED);
         }
-        for (int index = 0; index < count; index++) {
-            drawRack(font, index, Math.max(0, Math.min(2, states[index])));
+        for (int index = 0; index < positions; index++) {
+            if (capacities[index] >= 0) {
+                drawRack(font, index, Math.max(0, Math.min(2, states[index])));
+            }
         }
         int x = 10;
         for (int state = 2; state >= 0; state--) {

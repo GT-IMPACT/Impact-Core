@@ -117,6 +117,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.junit.jupiter.api.Test;
+import space.impact.structures.alignment.enumerable.ExtendedFacing;
 
 import static gregtech.api.gui.GT_Container_ProcessingMachine.BATCH_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.LOCK_SLOT;
@@ -958,8 +959,10 @@ class ImpactProcessingGuiTest {
                 GTMTE_ComputerRack rack = new GTMTE_ComputerRack("rack-" + index, new String[0], new ITexture[0][][]);
                 ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
                         fixture.world, rack, ForgeDirection.NORTH);
-                tile.xCoord = index;
-                rack.mCapacityP = index % 3 == 0 ? 0 : index % 3 == 1 ? 64 : 256;
+                tile.xCoord = -1;
+                tile.yCoord = 65 - index / 16;
+                tile.zCoord = index % 16 + 1;
+                rack.mCapacityP = index % 3 == 0 ? 0 : index * 64;
                 tile.setActive(index % 3 == 2);
                 capacities[index] = rack.mCapacityP;
                 states[index] = index % 3;
@@ -992,9 +995,9 @@ class ImpactProcessingGuiTest {
                 Area area = rack.getArea();
                 int x = area.x - fixture.panel.getArea().x;
                 int y = area.y - fixture.panel.getArea().y;
-                assertEquals(10 + index % 8 * 31, x);
-                assertEquals(80 + index / 8 * 12, y);
-                assertEquals(28, area.width);
+                assertEquals(10 + index % 16 * 15, x);
+                assertEquals(80 + index / 16 * 12, y);
+                assertEquals(14, area.width);
                 assertEquals(11, area.height);
                 assertTrue(x >= 6 && x + area.width <= 262);
                 assertTrue(y >= 4 && y + area.height <= 148);
@@ -1013,6 +1016,43 @@ class ImpactProcessingGuiTest {
             fixture.tile.setActive(false);
             state.updateCacheFromSource(false);
             assertEquals(0, ((NBTTagCompound) state.getValue()).getLong("consumption"));
+            for (ForgeDirection direction : new ForgeDirection[] {
+                    ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST }) {
+                ExtendedFacing facing = ExtendedFacing.of(direction);
+                machine.setExtendedFacing(facing);
+                machine.mMachine = true;
+                GTMTE_ComputerRack removed = null;
+                for (GTMTE_ComputerRack rack : machine.sComputerRack) {
+                    if (rack.getBaseMetaTileEntity() == null) {
+                        continue;
+                    }
+                    int index = Integer.parseInt(rack.mName.substring("rack-".length()));
+                    int[] offset = new int[3];
+                    facing.getWorldOffset(new int[] { 1, index / 16 - 1, index % 16 + 1 }, offset);
+                    ImpactConstructionChecks.TestTile rackTile =
+                            (ImpactConstructionChecks.TestTile) rack.getBaseMetaTileEntity();
+                    rackTile.xCoord = fixture.tile.xCoord + offset[0];
+                    rackTile.yCoord = fixture.tile.yCoord + offset[1];
+                    rackTile.zCoord = fixture.tile.zCoord + offset[2];
+                    if (index == 17) {
+                        removed = rack;
+                    }
+                }
+                state.updateCacheFromSource(false);
+                snapshot = (NBTTagCompound) state.getValue();
+                assertArrayEquals(capacities, snapshot.getIntArray("rackCapacity"), direction.toString());
+                assertArrayEquals(states, snapshot.getIntArray("rackState"), direction.toString());
+                machine.sComputerRack.remove(removed);
+                int[] sparseCapacity = capacities.clone();
+                int[] sparseStates = states.clone();
+                sparseCapacity[17] = -1;
+                sparseStates[17] = -1;
+                state.updateCacheFromSource(false);
+                snapshot = (NBTTagCompound) state.getValue();
+                assertArrayEquals(sparseCapacity, snapshot.getIntArray("rackCapacity"), direction.toString());
+                assertArrayEquals(sparseStates, snapshot.getIntArray("rackState"), direction.toString());
+                machine.sComputerRack.add(removed);
+            }
             machine.clearHatches();
             state.updateCacheFromSource(false);
             assertEquals(0, ((NBTTagCompound) state.getValue()).getIntArray("rackCapacity").length);

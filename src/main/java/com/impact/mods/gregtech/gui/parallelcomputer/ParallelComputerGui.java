@@ -15,18 +15,17 @@ import gregtech.common.gui.modularui.multiblock.MTEProcessingMultiBlockGui;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 
 public final class ParallelComputerGui {
 
     static final int MAX_RACKS = 32;
-    static final int COLUMNS = 8;
+    static final int COLUMNS = 16;
     static final int RACK_LEFT = 10;
     static final int RACK_TOP = 80;
-    static final int RACK_PITCH_X = 31;
+    static final int RACK_PITCH_X = 15;
     static final int RACK_PITCH_Y = 12;
-    static final int RACK_WIDTH = 28;
+    static final int RACK_WIDTH = 14;
     static final int RACK_HEIGHT = 11;
 
     private ParallelComputerGui() {
@@ -53,7 +52,8 @@ public final class ParallelComputerGui {
                     .size(RACK_WIDTH, RACK_HEIGHT)
                     .invisible()
                     .setEnabledIf(widget -> showRacks(readings.getValue())
-                            && rack < readings.getValue().getIntArray("rackCapacity").length)
+                            && rack < readings.getValue().getIntArray("rackCapacity").length
+                            && readings.getValue().getIntArray("rackCapacity")[rack] >= 0)
                     .tooltipBuilder(tooltip -> {
                         NBTTagCompound snapshot = readings.getValue();
                         int[] capacity = snapshot.getIntArray("rackCapacity");
@@ -94,27 +94,32 @@ public final class ParallelComputerGui {
                 ? ProcessingLogic.efficiencyAdjustedEUt(-runningEUt, machine.mEfficiency) : 0;
         snapshot.setLong("consumption", consumption);
 
-        ArrayList<GTMTE_ComputerRack> racks = new ArrayList<>();
+        int[] capacity = new int[MAX_RACKS];
+        int[] states = new int[MAX_RACKS];
+        Arrays.fill(capacity, -1);
+        Arrays.fill(states, -1);
+        int count = 0;
+        int[] local = new int[3];
         for (GTMTE_ComputerRack rack : machine.sComputerRack) {
             IGregTechTileEntity rackTile = rack.getBaseMetaTileEntity();
-            if (rackTile != null && !rackTile.isDead() && rackTile.getMetaTileEntity() == rack) {
-                racks.add(rack);
+            if (rackTile == null || rackTile.isDead() || rackTile.getMetaTileEntity() != rack) {
+                continue;
             }
-        }
-        // The structure stores racks in a HashSet; keep their screen order stable across refreshes.
-        racks.sort(Comparator.comparingInt((GTMTE_ComputerRack rack) -> rack.getBaseMetaTileEntity().getXCoord())
-                .thenComparingInt(rack -> rack.getBaseMetaTileEntity().getYCoord())
-                .thenComparingInt(rack -> rack.getBaseMetaTileEntity().getZCoord()));
-        int count = Math.min(MAX_RACKS, racks.size());
-        int[] capacity = new int[count];
-        int[] states = new int[count];
-        for (int index = 0; index < count; index++) {
-            GTMTE_ComputerRack rack = racks.get(index);
+            machine.getExtendedFacing().getOffsetABC(new int[] {
+                    rackTile.getXCoord() - tile.getXCoord(), rackTile.getYCoord() - tile.getYCoord(),
+                    rackTile.getZCoord() - tile.getZCoord()
+            }, local);
+            if (local[0] != 1 || local[1] < -1 || local[1] > 0 || local[2] < 1 || local[2] > MAX_RACKS / 2) {
+                continue;
+            }
+            // Top row first, front to back; keep gaps instead of shifting later racks.
+            int index = (local[1] + 1) * (MAX_RACKS / 2) + local[2] - 1;
             capacity[index] = Math.max(0, rack.mCapacityP);
-            states[index] = capacity[index] == 0 ? 0 : rack.getBaseMetaTileEntity().isActive() ? 2 : 1;
+            states[index] = capacity[index] == 0 ? 0 : rackTile.isActive() ? 2 : 1;
+            count = Math.max(count, index + 1);
         }
-        snapshot.setIntArray("rackCapacity", capacity);
-        snapshot.setIntArray("rackState", states);
+        snapshot.setIntArray("rackCapacity", Arrays.copyOf(capacity, count));
+        snapshot.setIntArray("rackState", Arrays.copyOf(states, count));
         return snapshot;
     }
 }
