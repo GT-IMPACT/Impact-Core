@@ -5,7 +5,10 @@ import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Ou
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ComputerRack;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModMetadata;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
@@ -69,7 +72,12 @@ class BlueprintsIntegrationTest {
             Loader.injectData("7", "10", "99", "99", "1.7.10", "9.05", new File("."), Collections.emptyList());
             Field namedMods = Loader.class.getDeclaredField("namedMods");
             namedMods.setAccessible(true);
-            namedMods.set(Loader.instance(), Collections.emptyMap());
+            ModMetadata gregtech = new ModMetadata();
+            gregtech.modId = "gregtech";
+            namedMods.set(Loader.instance(), Collections.singletonMap("gregtech", new DummyModContainer(gregtech)));
+            Field modController = Loader.class.getDeclaredField("modController");
+            modController.setAccessible(true);
+            modController.set(Loader.instance(), new LoadController(Loader.instance()));
             Bootstrap.func_151354_b();
             BlueprintsIntegration.register();
             Method group = Arrays.stream(SceneAlternativeGroups.class.getDeclaredMethods())
@@ -110,13 +118,26 @@ class BlueprintsIntegrationTest {
                         group,
                         machineItem,
                         new GT_MetaTileEntity_Hatch_Energy("energy", tier, "", null),
-                        "impact.blueprints.group.energy_input"
+                        "iblueprints.variants.group.energy_input"
                 );
                 assertGroup(
                         group,
                         machineItem,
                         new GT_MetaTileEntity_Hatch_Dynamo("dynamo", tier, "", null),
-                        "impact.blueprints.group.energy_output"
+                        "iblueprints.variants.group.energy_output"
+                );
+                // A 1 A variant without a special rule must share the ordinary hatch's default group.
+                assertGroup(
+                        group,
+                        machineItem,
+                        new GT_MetaTileEntity_Hatch_EnergyMulti("single-amp-energy", tier, 1, "", null),
+                        "iblueprints.variants.group.energy_input"
+                );
+                assertGroup(
+                        group,
+                        machineItem,
+                        new GT_MetaTileEntity_Hatch_DynamoMulti("single-amp-dynamo", tier, 1, "", null),
+                        "iblueprints.variants.group.energy_output"
                 );
                 for (int amperage : new int[] { 2, 4, 16, 64 }) {
                     assertGroup(

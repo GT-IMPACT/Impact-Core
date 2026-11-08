@@ -767,8 +767,6 @@ impact.blueprints.group.racks=Racks
 impact.blueprints.group.parallel_transmitters=Parallel Transmitters
 impact.blueprints.group.parallel_receivers=Parallel Receivers
 
-impact.blueprints.group.energy_input=Energy Input Hatches
-impact.blueprints.group.energy_output=Dynamo Hatches
 impact.blueprints.group.multi_energy_input.2=Multi-amp Energy Input (2 A)
 impact.blueprints.group.multi_energy_input.4=Multi-amp Energy Input (4 A)
 impact.blueprints.group.multi_energy_input.16=Multi-amp Energy Input (16 A)

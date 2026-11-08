@@ -6,9 +6,7 @@ import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_Computer
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Output;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DynamoMulti;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_EnergyMulti;
 import gregtech.api.util.GTStructureUtility;
 import java.util.function.ToIntFunction;
@@ -49,14 +47,6 @@ public final class BlueprintsIntegration {
                     hatch -> hatch.Amp
             );
         }
-        SceneAlternativeGroups.register(
-                "impact.blueprints.group.energy_input",
-                stack -> GTStructureUtility.getMetaTileEntity(stack) instanceof GT_MetaTileEntity_Hatch_Energy
-        );
-        SceneAlternativeGroups.register(
-                "impact.blueprints.group.energy_output",
-                stack -> GTStructureUtility.getMetaTileEntity(stack) instanceof GT_MetaTileEntity_Hatch_Dynamo
-        );
         SceneAlternativeGroups.register(
                 "impact.blueprints.group.racks",
                 stack -> GTStructureUtility.getMetaTileEntity(stack) instanceof GTMTE_ComputerRack
