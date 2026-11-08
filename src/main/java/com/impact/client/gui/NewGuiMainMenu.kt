@@ -11,9 +11,7 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.GuiSelectWorld
 import org.lwjgl.opengl.GL11
 import java.io.File
-import java.net.HttpURLConnection
 import java.net.URI
-import java.net.URL
 import java.util.Random
 
 @SideOnly(Side.CLIENT)
@@ -30,28 +28,6 @@ class NewGuiMainMenu : GuiScreen() {
             "DEEP SPACE ROUTING: CALCULATED",
             "MATTER FABRICATION ARRAY: STANDBY"
         )
-    }
-
-    val lastReleaseVersion by lazy {
-        val url = URL("https://api.github.com/repos/GT-IMPACT/IMPACT-1/releases/latest")
-        val connection = url.openConnection() as HttpURLConnection
-        try {
-            connection.requestMethod = "GET"
-            connection.setRequestProperty("Accept", "application/vnd.github+json")
-            connection.setRequestProperty("User-Agent", "IMPACT-Launcher")
-
-            val response = connection.inputStream.bufferedReader().use { it.readText() }
-
-            Regex("\"tag_name\"\\s*:\\s*\"([^\"]+)\"")
-                .find(response)
-                ?.groupValues
-                ?.get(1)
-        } catch (e: Exception) {
-            connection.disconnect()
-            null
-        } finally {
-            connection.disconnect()
-        }
     }
 
     val currentVersionModpack by lazy {
@@ -298,18 +274,19 @@ class NewGuiMainMenu : GuiScreen() {
     }
 
     private fun drawFooter() {
-        val versionModpack = when {
-            currentVersionModpack == lastReleaseVersion ->
-                if (lastReleaseVersion.isNullOrEmpty()) "" else "* MODPACK v$lastReleaseVersion"
-
-            currentVersionModpack != lastReleaseVersion ->
-                if (currentVersionModpack.isEmpty()) "" else "* MODPACK v$currentVersionModpack"
-
-            else -> ""
+        val versionModpack = if (currentVersionModpack.isEmpty()) {
+            ""
+        } else {
+            "* MODPACK v$currentVersionModpack"
         }
 
         val text = "MINECRAFT v1.7.10 $versionModpack"
-        fontRendererObj.drawString(text, 8, height - 12, 0xFFBB55)
+        fontRendererObj.drawString(
+            text,
+            8,
+            height - 12,
+            0xFFBB55,
+        )
     }
 
     private fun drawCircleBlock(cx: Int, cy: Int, radius: Int, color: Int) {
