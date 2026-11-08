@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
@@ -469,6 +470,36 @@ class ImpactProcessingGuiTest {
                         value.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
                         assertEquals(cover.isRange() ? 55 << 7 : cover.isFluid() ? 0 : 55, cover.getLegacyData());
                         fixture.tile.attachCover(cover);
+                        if (!cover.isFluid() && !cover.isRange()) {
+                            cover.setLegacyData(-50);
+                            value.updateCacheFromSource(false);
+                            assertEquals(50, value.getIntValue());
+                            assertEquals(-50, cover.getLegacyData());
+                            packet.clear();
+                            packet.writeVarIntToBuffer(75);
+                            value.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
+                            assertEquals(-75, cover.getLegacyData());
+                            BooleanSyncValue inverted = handlers.findSyncHandler("inverted", BooleanSyncValue.class);
+                            packet.clear();
+                            packet.writeBoolean(false);
+                            inverted.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
+                            assertEquals(75, cover.getLegacyData());
+                            packet.clear();
+                            packet.writeVarIntToBuffer(-100);
+                            value.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
+                            assertEquals(0, cover.getLegacyData());
+                            packet.clear();
+                            packet.writeVarIntToBuffer(101);
+                            value.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
+                            assertEquals(100, cover.getLegacyData());
+                            packet.clear();
+                            packet.writeBoolean(true);
+                            inverted.readOnServer(ValueSyncHandler.SYNC_VALUE, packet);
+                            assertEquals(-100, cover.getLegacyData());
+                            value.updateCacheFromSource(false);
+                            assertEquals(100, value.getIntValue());
+                            cover.setLegacyData(55);
+                        }
                     } finally {
                         packet.release();
                     }

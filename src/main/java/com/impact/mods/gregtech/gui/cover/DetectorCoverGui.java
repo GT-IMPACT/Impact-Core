@@ -32,9 +32,9 @@ public class DetectorCoverGui extends CoverBaseGui<DetectorCover> {
             addRangeBound(syncManager, fields, capacity, true);
             addRangeBound(syncManager, fields, capacity, false);
         } else {
-            IntSyncValue setting = new IntSyncValue(cover::getSetting, cover::setSetting).allowC2S();
+            IntSyncValue setting = new IntSyncValue(this::getBoundLimit, this::setBoundLimit).allowC2S();
             syncManager.syncValue("setting", setting);
-            long minimum = cover.isFluid() ? Integer.MIN_VALUE : -100;
+            long minimum = cover.isFluid() ? Integer.MIN_VALUE : 0;
             fields.child(makeNamedColumn(IKey.str(cover.isFluid() ? "L (Limit)" : "% (Limit)"))
                     .child(makeNumberField(100).value(setting).numbersLong(() -> minimum,
                             () -> cover.isFluid() ? Math.min(Integer.MAX_VALUE, capacity.getLongValue()) : 100L)));
@@ -59,6 +59,19 @@ public class DetectorCoverGui extends CoverBaseGui<DetectorCover> {
                             .asWidget());
         }
         column.child(fields);
+    }
+
+    private int getBoundLimit() {
+        return cover.isFluid() ? cover.getSetting() : (int) Math.min(100L, Math.abs((long) cover.getSetting()));
+    }
+
+    private void setBoundLimit(int limit) {
+        if (cover.isFluid()) {
+            cover.setSetting(limit);
+        } else {
+            int percent = Math.max(0, Math.min(100, limit));
+            cover.setSetting(cover.isInverted() ? -percent : percent);
+        }
     }
 
     private long getBoundPercent(long capacity) {
