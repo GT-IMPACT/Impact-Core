@@ -38,9 +38,9 @@ dependencies {
         isTransitive = false
     }
 
-    compileOnly("space.impact:ImpactBlueprints:0.0.4:dev") { isTransitive = false }
-    runtimeOnlyNonPublishable("space.impact:ImpactBlueprints:0.0.4:dev") { isTransitive = false }
-    testImplementation("space.impact:ImpactBlueprints:0.0.4:dev") { isTransitive = false }
+    compileOnly("space.impact:ImpactBlueprints:0.0.6:dev") { isTransitive = false }
+    runtimeOnlyNonPublishable("space.impact:ImpactBlueprints:0.0.6:dev") { isTransitive = false }
+    testImplementation("space.impact:ImpactBlueprints:0.0.6:dev") { isTransitive = false }
 
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
     runtimeOnlyNonPublishable("space.impact:GregTechBridge:1.0.2:dev") { isTransitive = false }

@@ -21,8 +21,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
@@ -85,6 +87,7 @@ class BlueprintsIntegrationTest {
                     .findFirst().orElseThrow(() -> new AssertionError("Blueprints grouping method is unavailable"));
             Item machineItem = new GT_Item_Machines(Blocks.iron_block);
             checkEnergyGroups(group, machineItem);
+            checkEnergyGroupOrder();
             assertGroup(
                     group,
                     machineItem,
@@ -168,6 +171,34 @@ class BlueprintsIntegrationTest {
                     );
                 }
             }
+        }
+
+        private static void checkEnergyGroupOrder() {
+            Method compare = Arrays.stream(SceneAlternativeGroups.class.getDeclaredMethods())
+                    .filter(method -> method.getName().startsWith("compareGroups$"))
+                    .findFirst().orElseThrow(() -> new AssertionError("Blueprints group comparator is unavailable"));
+            List<String> expected = new ArrayList<>();
+            expected.add("iblueprints.variants.group.energy_input");
+            expected.add("iblueprints.variants.group.energy_output");
+            for (int amperage : new int[] { 2, 4, 16, 64 }) {
+                expected.add("impact.blueprints.group.multi_energy_input." + amperage);
+                expected.add("impact.blueprints.group.multi_energy_output." + amperage);
+            }
+            for (int amperage : new int[] { 256, 1024, 4096, 16384, 65536, 262144, 1048576 }) {
+                expected.add("impact.blueprints.group.laser_energy_input." + amperage);
+                expected.add("impact.blueprints.group.laser_energy_output." + amperage);
+            }
+            expected.add("impact.blueprints.group.racks");
+            List<String> actual = new ArrayList<>(expected);
+            Collections.reverse(actual);
+            actual.sort((first, second) -> {
+                try {
+                    return (Integer) compare.invoke(SceneAlternativeGroups.INSTANCE, first, second);
+                } catch (ReflectiveOperationException failure) {
+                    throw new AssertionError("Cannot compare blueprint groups", failure);
+                }
+            });
+            assertEquals(expected, actual);
         }
 
         private static void assertGroup(Method group, Item machineItem, IMetaTileEntity hatch, String expected)

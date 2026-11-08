@@ -67,7 +67,7 @@ public final class BlueprintsIntegration {
             int amperage,
             ToIntFunction<T> hatchAmperage
     ) {
-        SceneAlternativeGroups.register(translationKey, stack -> {
+        SceneAlternativeGroups.register(translationKey, amperage, stack -> {
             IMetaTileEntity hatch = GTStructureUtility.getMetaTileEntity(stack);
             return hatchType.isInstance(hatch) && hatchAmperage.applyAsInt(hatchType.cast(hatch)) == amperage;
         });
