@@ -91,7 +91,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                 .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
                 .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
                 .addOtherStructurePart("Input Bus", "Any casing; maximum 2")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
+                .addOtherStructurePart("Input Hatch", "Any casing; maximum 6")
                 .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
                 .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
                 .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
@@ -133,7 +133,7 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
         if (HatchCounts.inputBuses(this) > 2) {
             formationChecklist = false;
         }
-        if (HatchCounts.inputHatches(this) > 2) {
+        if (HatchCounts.inputHatches(this) > 6) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 1) {
