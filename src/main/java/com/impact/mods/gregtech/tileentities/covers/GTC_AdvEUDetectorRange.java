@@ -29,9 +29,8 @@ public class GTC_AdvEUDetectorRange extends DetectorCover {
             return;
         }
         EnergyDetectorData tanks = EnergyDetectorData.read(getTile());
-        // Preserve the existing energy-range conversion while migrating the cover API.
-        int start = (int) ((double) getStartPercent() / 100 * tanks.capacity);
-        int end = (int) ((double) getEndPercent() / 100 * tanks.capacity);
+        long start = (long) ((double) getStartPercent() / 100 * tanks.capacity);
+        long end = (long) ((double) getEndPercent() / 100 * tanks.capacity);
         boolean active = start <= tanks.stored && tanks.stored <= end;
         getTile().setOutputRedstoneSignal((byte) coverSide.ordinal(), (byte) (active ? 15 : 0));
     }
