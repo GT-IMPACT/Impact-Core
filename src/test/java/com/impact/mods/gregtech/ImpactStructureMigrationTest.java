@@ -40,8 +40,11 @@ class ImpactStructureMigrationTest {
         try (LaunchClassLoader loader = new LaunchClassLoader(
                 ((URLClassLoader) getClass().getClassLoader()).getURLs())) {
             loader.addClassLoaderExclusion("org.junit.");
+            loader.registerTransformer("cpw.mods.fml.common.asm.transformers.EventSubscriptionTransformer");
             try {
                 loader.loadClass(getClass().getName() + "$Scenarios").getMethod("check").invoke(null);
+                loader.loadClass(ImpactConstructionChecks.class.getName())
+                        .getMethod("checkParallelComputerPreviewElements").invoke(null);
             } catch (InvocationTargetException failure) {
                 throw failure.getTargetException();
             }

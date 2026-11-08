@@ -28,6 +28,7 @@ import java.util.HashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
@@ -333,13 +334,13 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 boolean terminated = false;
                 for (int depth = 1; depth <= MAX_RACK_LAYERS + 1; depth++) {
                     checkedDepth = Math.max(checkedDepth, depth);
-                    if (checkPiece("terminator", -x, y, -depth)) {
+                    if (checkColumnPosition("terminator", x, y, depth)) {
                         formed &= depth >= MIN_RACK_LAYERS + 1;
                         terminated = true;
                         ends[x] = depth;
                         break;
                     }
-                    formed &= checkPiece(x == 0 ? "parallel" : "rack", -x, y, -depth);
+                    formed &= checkColumnPosition(x == 0 ? "parallel" : "rack", x, y, depth);
                 }
                 formed &= terminated;
             }
@@ -354,6 +355,19 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 && casingCount >= (12 + 4 * ends[1]) / 2
                 && mMaintenanceHatches.size() == 1
                 && HatchCounts.energyHatches(this) <= 1;
+    }
+
+    private boolean checkColumnPosition(String piece, int column, int row, int depth) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        int[] offset = new int[3];
+        getExtendedFacing().getWorldOffset(new int[] { column, -row, depth }, offset);
+        World world = base.getWorld();
+        int x = base.getXCoord() + offset[0];
+        int y = base.getYCoord() + offset[1];
+        int z = base.getZCoord() + offset[2];
+        // These single-block probes try different elements at one position, not construction alternatives.
+        return world.blockExists(x, y, z)
+                && getStructureDefinition().getStructureFor(piece)[0].check(this, world, x, y, z);
     }
 
     @Override

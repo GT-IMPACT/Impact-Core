@@ -28,6 +28,7 @@ import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
 import com.impact.util.fluid.IMultiFluidTank;
 import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.GregTech_API;
@@ -86,9 +87,12 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.SaveHandlerMP;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import space.impact.structures.CommonProxy;
 import space.impact.structures.Main;
+import space.impact.structures.ImpactStructures;
+import space.impact.structures.StructureEvent;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
 import space.impact.structures.alignment.constructable.ChannelDataAccessor;
 import space.impact.structures.structure.IChannelDefinition;
@@ -1055,6 +1059,64 @@ public class ImpactConstructionChecks {
         assertTrue(ImpactConstructionChecks.class.getResource(
                 "/assets/impact/textures/blocks/space_elevator_beam.png") != null,
                 "The beam sprite must be available to the block atlas");
+    }
+
+    public static void checkParallelComputerPreviewElements() {
+        for (ForgeDirection direction : new ForgeDirection[] {
+                ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST }) {
+            for (int length : new int[] { 1, 3, 15 }) {
+                TestWorld world = new TestWorld();
+                ParallelComputer machine = new ParallelComputer();
+                world.putTile(0, 64, 0, new TestTile(world, machine, direction));
+                ItemStack trigger = new ItemStack(Items.stick);
+                ChannelDataAccessor.setChannelData(trigger, GTStructureChannels.LENGTH, length);
+                PreviewElementRecorder recorder = new PreviewElementRecorder(world);
+                MinecraftForge.EVENT_BUS.register(recorder);
+                try {
+                    ImpactStructures.enableInstrument(recorder);
+                    try {
+                        machine.construct(trigger, false);
+                    } finally {
+                        ImpactStructures.disableInstrument();
+                    }
+                } finally {
+                    MinecraftForge.EVENT_BUS.unregister(recorder);
+                }
+
+                for (int x = 0; x <= 1; x++) {
+                    for (int y = 0; y <= 1; y++) {
+                        for (int depth = 1; depth <= length + 2; depth++) {
+                            String piece = depth == length + 2 ? "terminator" : x == 0 ? "parallel" : "rack";
+                            int[] offset = new int[3];
+                            machine.getExtendedFacing().getWorldOffset(new int[] { x, -y, depth }, offset);
+                            String position = TestWorld.key(offset[0], 64 + offset[1], offset[2]);
+                            assertSame(
+                                    machine.getStructureDefinition().getStructureFor(piece)[0],
+                                    recorder.elements.get(position),
+                                    "First preview element must be " + piece + " at " + position + " facing " + direction
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static class PreviewElementRecorder {
+
+        private final World world;
+        private final Map<String, IStructureElement<?>> elements = new HashMap<>();
+
+        PreviewElementRecorder(World world) {
+            this.world = world;
+        }
+
+        @SubscribeEvent
+        public void onElement(StructureEvent.StructureElementVisitedEvent event) {
+            if (event.getInstrumentIdentifier() == this && event.getWorld() == world) {
+                elements.putIfAbsent(TestWorld.key(event.getX(), event.getY(), event.getZ()), event.getElement());
+            }
+        }
     }
 
     private static void checkParallelComputerLength(HintRecorder hints) {
