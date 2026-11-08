@@ -4,6 +4,8 @@ import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
+import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
+import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
 import com.impact.util.fluid.MultiFluidHandler;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
@@ -14,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -23,6 +26,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StringTranslate;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.common.config.Configuration;
@@ -81,7 +85,49 @@ class WailaIntegrationTest {
         check("minerShowsOreRemainingOnlyWhenStructureIsComplete");
     }
 
+    @Test
+    void supercapacitorShowsMinuteAveragesInsteadOfInstantFlow() throws Throwable {
+        check("supercapacitorShowsMinuteAveragesInsteadOfInstantFlow");
+    }
+
     public static class Scenarios {
+        public void supercapacitorShowsMinuteAveragesInsteadOfInstantFlow() throws Exception {
+            GTMTE_LapPowerStation battery = new GTMTE_LapPowerStation("waila-battery");
+            Field historyField = GTMTE_LapPowerStation.class.getDeclaredField("flowHistory");
+            historyField.setAccessible(true);
+            LapFlowHistory history = (LapFlowHistory) historyField.get(battery);
+            history.sample(9000, 7000);
+            for (int tick = 0; tick < 1200; tick++) {
+                history.sample(100, 40);
+            }
+            battery.stored = 500;
+            battery.capacity = 1000;
+            battery.intputLastTick = 999;
+            battery.outputLastTick = 888;
+            NBTTagCompound tag = new NBTTagCompound();
+            battery.getWailaNBTData(null, null, tag, null, 0, 0, 0);
+            assertEquals(500, tag.getLong("Stored"));
+            assertEquals(1000, tag.getLong("Capacity"));
+            assertEquals(100, tag.getLong("Input"));
+            assertEquals(40, tag.getLong("Output"));
+            try {
+                for (String language : new String[]{"en_US", "ru_RU"}) {
+                    StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/" + language + ".lang"));
+                    List<String> tooltip = new ArrayList<>();
+                    battery.getWailaBody(null, tooltip, accessor(tag), config());
+                    List<String> flowLines = new ArrayList<>();
+                    for (String line : tooltip.subList(2, tooltip.size())) {
+                        flowLines.add(EnumChatFormatting.getTextWithoutFormattingCodes(line));
+                    }
+                    assertEquals(language.equals("en_US")
+                            ? Arrays.asList("Avg input (1m): 100 EU/t", "Avg output (1m): 40 EU/t")
+                            : Arrays.asList("Ср. вход (1 мин): 100 EU/t", "Ср. выход (1 мин): 40 EU/t"), flowLines);
+                }
+            } finally {
+                StringTranslate.inject(getClass().getResourceAsStream("/assets/impact/lang/en_US.lang"));
+            }
+        }
+
         public void initialize() {
             Loader.injectData("7", "10", "99", "99", "1.7.10", "9.05", new File("."), Collections.emptyList());
             Bootstrap.func_151354_b();

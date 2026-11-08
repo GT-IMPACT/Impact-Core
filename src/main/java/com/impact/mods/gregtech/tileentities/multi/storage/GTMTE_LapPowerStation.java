@@ -732,8 +732,8 @@ public class GTMTE_LapPowerStation extends
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("Capacity", capacity);
         tag.setLong("Stored", stored);
-        tag.setLong("Input", intputLastTick);
-        tag.setLong("Output", outputLastTick);
+        tag.setLong("Input", getAverageInput(LapHistoryPeriod.MINUTE));
+        tag.setLong("Output", getAverageOutput(LapHistoryPeriod.MINUTE));
     }
     @Override
     public int getSupportedProcessingModes() {
