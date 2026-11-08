@@ -1,5 +1,6 @@
 package com.impact.core;
 
+import com.impact.addon.blueprints.BlueprintsIntegration;
 import com.impact.addon.nei.impactplugin.RecipeCatalystRegister;
 import com.impact.addon.nei.impactplugin.RecipeProcessorRegister;
 import com.impact.client.key.KeyBindings;
@@ -19,6 +20,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import ic2.core.item.ItemFluidCell;
 import net.minecraft.block.Block;
@@ -226,6 +228,9 @@ public class ClientProxy extends CommonProxy {
         ClientCommandHandler.instance.registerCommand(new Command_Run());
         RecipeProcessorRegister.register();
         RecipeCatalystRegister.register();
+        if (Loader.isModLoaded("iblueprints")) {
+            BlueprintsIntegration.register();
+        }
     }
 
     public void init() {
