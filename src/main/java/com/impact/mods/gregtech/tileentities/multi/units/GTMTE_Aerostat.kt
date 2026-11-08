@@ -3,21 +3,21 @@ package com.impact.mods.gregtech.tileentities.multi.units
 
 import gregtech.api.logic.TimedProcessingLogic
 import gregtech.api.logic.ProcessingLogic
-import com.google.common.io.ByteArrayDataInput
 import com.impact.addon.gt.api.aerostat.IAeroStat
 import com.impact.addon.gt.api.position.IPosition
-import com.impact.client.gui.GUIHandler
+import com.cleanroommc.modularui.factory.PosGuiData
+import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.UISettings
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
+import com.impact.mods.gregtech.gui.aerostat.AerostatGui
 import com.impact.common.managers.AeroStateNetworkManager
-import com.impact.impact
 import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.blocks.HatchCounts
 import com.impact.mods.gregtech.blocks.ImpactCasings
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.hatches.GTMTEAerostatCargoHatch
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
-import com.impact.network.NetworkPackets
 import com.impact.util.PositionObject
-import com.impact.util.Utilits
 import cpw.mods.fml.common.Optional
 import gregtech.api.enums.HatchElement
 import gregtech.api.enums.Materials
@@ -28,8 +28,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase
 import gregtech.api.render.TextureFactory
+import gregtech.api.modularui2.GTGuis
 import gregtech.api.util.GTStructureUtility
-import gregtech.api.util.GT_Utility
 import gregtech.api.util.MultiblockTooltipBuilder
 import gregtech.api.util.StructureRequirements
 import java.util.Arrays
@@ -46,8 +46,7 @@ import net.minecraft.util.EnumChatFormatting
 import net.minecraft.util.StatCollector.translateToLocal
 import net.minecraft.util.StatCollector.translateToLocalFormatted
 import net.minecraft.world.World
-import space.impact.packet_network.network.NetworkHandler.sendToPlayer
-import space.impact.packet_network.network.packets.IStreamPacketReceiver
+import net.minecraft.util.ChatComponentTranslation
 import space.impact.structures.alignment.IAlignmentLimits
 import space.impact.structures.hint.HintColor
 import space.impact.structures.structure.IStructureDefinition
@@ -55,7 +54,7 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment
 import space.impact.structures.structure.StructureDefinition
 import space.impact.structures.structure.StructureUtility.withHint
 
-class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketReceiver, IAeroStat {
+class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
 
     @Optional.Method(modid = "Waila")
     public override fun getWailaBody(
@@ -127,6 +126,15 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
 
     companion object {
         const val MAX_BUFFER = 50_000
+        public const val FUEL_PER_BLOCK: Int = 25
+        public const val MAX_NAME_LENGTH: Int = 48
+
+        @JvmStatic
+        public fun hasAerostat(player: EntityPlayer?): Boolean {
+            val held = player?.heldItem ?: return false
+            return GT_ItemList.Aerostat.isStackEqual(held)
+        }
+
         private val CASING: ICasing = ImpactCasings.AEROSTATE_PLATFORM
         private val CARGO_HATCH: IHatchElement = object : IHatchElement {
             override fun matches(tile: IMetaTileEntity?): Boolean {
@@ -212,15 +220,29 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     @JvmField
     var selectedDistance = 0
 
-    private var firstOpen: Boolean = true
-    private var isFullBuffer: Boolean = false
     private var isFluidEngine: Boolean = false
+    private var automaticName: Boolean = true
     var targetPos: IPosition? = null
     private var cargoHatch: GTMTEAerostatCargoHatch? = null
 
     override var owner: String = ""
     override var name: String = ""
-    var uuid: String = UUID.randomUUID().toString()
+    public override var uuid: String = UUID.randomUUID().toString()
+
+    public val travelRange: Int
+        get() {
+            return if (isFluidEngine) {
+                1024
+            } else {
+                256
+            }
+        }
+
+    public val defaultStationName: String
+        get() {
+            val tile = baseMetaTileEntity ?: return ""
+            return "${tile.xCoord}, ${tile.yCoord}, ${tile.zCoord}"
+        }
 
     override fun hasIndicator(): Boolean {
         return true
@@ -289,17 +311,28 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             return false
         }
 
-        if (mInputHatches.size == 1 || mInputBusses.size == 1) {
-            isFluidEngine = mInputHatches.size == 1
+        val inputHatches = HatchCounts.inputHatches(this)
+        val inputBuses = HatchCounts.inputBuses(this)
+        if (inputHatches + inputBuses == 1) {
+            isFluidEngine = inputHatches == 1
             return formationChecklist
         }
 
         return false
     }
 
-    override fun setupMachine(aBaseMetaTileEntity: IGregTechTileEntity?, stack: ItemStack?) {
-        super.setupMachine(aBaseMetaTileEntity, stack)
-        if (mMachine) AeroStateNetworkManager.markUpdate()
+    override fun setupMachine(
+        aBaseMetaTileEntity: IGregTechTileEntity?,
+        stack: ItemStack?,
+    ) {
+        super.setupMachine(
+            aBaseMetaTileEntity,
+            stack,
+        )
+        if (aBaseMetaTileEntity?.isServerSide == true) {
+            initializeStation()
+            AeroStateNetworkManager.updateNetwork(aBaseMetaTileEntity.world)
+        }
     }
 
     private fun addCargoHatch(
@@ -315,49 +348,61 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         return true
     }
 
-    override fun onPostTick(aBaseMetaTileEntity: IGregTechTileEntity, aTick: Long) {
-        super.onPostTick(aBaseMetaTileEntity, aTick)
-        if (aBaseMetaTileEntity.isServerSide && mMachine && aTick % 18 == 0L) {
-            if (isFluidEngine) {
-                if (curBuffer < MAX_BUFFER - 1000) {
-                    isFullBuffer = false
+    override fun onPostTick(
+        aBaseMetaTileEntity: IGregTechTileEntity,
+        aTick: Long,
+    ) {
+        super.onPostTick(
+            aBaseMetaTileEntity,
+            aTick,
+        )
+        if (!aBaseMetaTileEntity.isServerSide) {
+            return
+        }
+        if (aTick % 20L == 0L) {
+            initializeStation()
+        }
+        if (mMachine && aTick % 18L == 0L) {
+            refuel()
+        }
+    }
+
+    public fun refuel() {
+        if (!mMachine || baseMetaTileEntity?.isServerSide != true || curBuffer >= MAX_BUFFER) {
+            return
+        }
+        val fuelBefore = curBuffer
+        if (isFluidEngine) {
+            if (MAX_BUFFER - curBuffer >= 1000 &&
+                (depleteInput(Materials.NatruralGas.getGas(1000)) || depleteInput(Materials.Gas.getGas(1000)))
+            ) {
+                curBuffer += 1000
+            }
+        } else {
+            for (input in storedInputs) {
+                if (input == null || input.stackSize <= 0) {
+                    continue
                 }
-
-                if (!isFullBuffer && depleteInput(Materials.NatruralGas.getGas(1000)) || depleteInput(Materials.Gas.getGas(1000))) {
-                    curBuffer += 1000
-                    if (curBuffer + 1000 > MAX_BUFFER) {
-                        curBuffer = MAX_BUFFER
-                        isFullBuffer = true
-                    }
+                val fuelItem = input.copy()
+                fuelItem.stackSize = 1
+                val burnTime = TileEntityFurnace.getItemBurnTime(fuelItem)
+                if (burnTime <= 0) {
+                    continue
                 }
-            } else {
-                val items: List<ItemStack> = storedInputs
-
-                if (items.isNotEmpty()) {
-                    val input = storedInputs[0]
-
-                    if (input != null && input.item != null && input.stackSize > 0) {
-                        for (i in 0 until input.stackSize) {
-                            val item = ItemStack(input.item, 1, input.itemDamage)
-                            val burnTime = TileEntityFurnace.getItemBurnTime(item)
-
-                            if (curBuffer < MAX_BUFFER - burnTime) {
-                                isFullBuffer = false
-                            }
-
-                            if (!isFullBuffer && burnTime > 0 && depleteInput(item)) {
-                                input.stackSize--
-                                curBuffer += burnTime
-                                if (curBuffer + burnTime >= MAX_BUFFER) {
-                                    curBuffer = MAX_BUFFER
-                                    isFullBuffer = true
-                                }
-                            }
-                        }
+                val count = minOf(
+                    a = input.stackSize,
+                    b = (MAX_BUFFER - curBuffer) / burnTime,
+                )
+                repeat(count) {
+                    if (depleteInput(fuelItem)) {
+                        curBuffer += burnTime
                     }
-                    updateSlots()
                 }
             }
+        }
+        if (curBuffer != fuelBefore) {
+            updateSlots()
+            markDirty()
         }
     }
 
@@ -381,14 +426,31 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     }
 
     override fun useMui2(): Boolean {
-        return false
+        return true
+    }
+
+    override fun isAccessAllowed(player: EntityPlayer?): Boolean {
+        return mMachine && hasAerostat(player)
+    }
+
+    public override fun buildUI(
+        data: PosGuiData,
+        sync: PanelSyncManager,
+        settings: UISettings,
+    ): ModularPanel {
+        return AerostatGui.build(
+            this,
+            data,
+            sync,
+            settings,
+        )
     }
 
     override fun onRightclick(
         aBaseMetaTileEntity: IGregTechTileEntity,
         aPlayer: EntityPlayer,
     ): Boolean {
-        if (!mMachine) {
+        if (!mMachine || !hasAerostat(aPlayer)) {
             return false
         }
         if (aBaseMetaTileEntity.isServerSide) {
@@ -397,51 +459,64 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         return true
     }
 
-    fun openStationGui(player: EntityPlayer) {
+    public fun openStationGui(player: EntityPlayer) {
         val tile = baseMetaTileEntity ?: return
-        if (!mMachine || tile.isClientSide) {
+        if (!mMachine || tile.isClientSide || !hasAerostat(player) || !tile.isUseableByPlayer(player)) {
             return
         }
-        if (player.isSneaking) {
-            Utilits.openGui(
-                player,
-                GUIHandler.GUI_ID_AerostatName,
-                tile,
-            )
-            return
-        }
-        Utilits.openGui(
+        initializeStation()
+        AeroStateNetworkManager.updateNetwork(tile.world)
+        GTGuis.open(
             player,
-            GUIHandler.GUI_ID_AerostatSelect,
-            tile,
-        )
-        val stationNames = ArrayList<String>(currentLocationPlatforms.size + 2)
-        stationNames.add(owner)
-        stationNames.add(name)
-        for (station in currentLocationPlatforms) {
-            stationNames.add(station.name)
-        }
-        player.sendToPlayer(
-            NetworkPackets.StreamPacket.transaction(*stationNames.toTypedArray()),
+            this,
         )
     }
 
-    fun setLocationName(name: String) {
-        this.name = name
-        impact.proxy.addClientSideChatMessages("Set location name: $name")
+    public fun setLocationName(name: String) {
+        val sanitized = name.trim().filter {
+            it >= ' ' && it != '\u007f' && it != '\u00a7'
+        }.take(MAX_NAME_LENGTH)
+        automaticName = sanitized.isEmpty()
+        this.name = sanitized.ifEmpty {
+            defaultStationName
+        }
+        val tile = baseMetaTileEntity ?: return
+        if (tile.isServerSide) {
+            AeroStateNetworkManager.register(this)
+            markDirty()
+        }
+    }
 
-        if (baseMetaTileEntity.isServerSide)
-            AeroStateNetworkManager.addAeroState(owner, this, uuid)
+    public fun initializeStation() {
+        val tile = baseMetaTileEntity ?: return
+        if (tile.isClientSide) {
+            return
+        }
+        var changed = false
+        if (owner != tile.ownerName) {
+            owner = tile.ownerName
+            changed = true
+        }
+        val registered = AeroStateNetworkManager.getStation(uuid)
+        if (uuid.isEmpty() || (registered != null && registered !== this && registered.isValid() &&
+                !registered.pos.isEquals(pos))) {
+            uuid = UUID.randomUUID().toString()
+            changed = true
+        }
+        if (name.isBlank() || (automaticName && name != defaultStationName)) {
+            name = defaultStationName
+            changed = true
+        }
+        AeroStateNetworkManager.register(this)
+        if (changed) {
+            markDirty()
+        }
     }
 
     override fun onFirstTick(te: IGregTechTileEntity) {
         super.onFirstTick(te)
         if (te.isServerSide) {
-            if (owner.isEmpty()) owner = te.ownerName
-            if (uuid.isEmpty()) uuid = UUID.randomUUID().toString()
-            if (owner.isNotEmpty() && name.isNotEmpty()) {
-                AeroStateNetworkManager.addAeroState(owner, this, uuid)
-            }
+            initializeStation()
         }
     }
 
@@ -449,9 +524,9 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
         super.saveNBTData(aNBT)
         aNBT.setInteger("curBuffer", curBuffer)
         aNBT.setString("aerName", name)
+        aNBT.setBoolean("automaticName", automaticName)
         aNBT.setString("playerName", owner)
         aNBT.setString("uuidName", uuid)
-        aNBT.setBoolean("firstOpen", firstOpen)
         aNBT.setBoolean("isFluidEngine", isFluidEngine)
 
         targetPos?.also {
@@ -460,23 +535,33 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     }
 
     override fun inValidate() {
-        cargoHatch?.changeTarget(null, null)
-        AeroStateNetworkManager.onRemove(owner, this, uuid)
+        cargoHatch?.changeTarget(
+            pos = null,
+            callDecreaseFuel = null,
+        )
+        AeroStateNetworkManager.unregister(this)
         super.inValidate()
     }
 
     override fun loadNBTData(aNBT: NBTTagCompound) {
         super.loadNBTData(aNBT)
-        curBuffer = aNBT.getInteger("curBuffer")
-        firstOpen = aNBT.getBoolean("firstOpen")
+        curBuffer = aNBT.getInteger("curBuffer").coerceIn(
+            minimumValue = 0,
+            maximumValue = MAX_BUFFER,
+        )
         name = aNBT.getString("aerName")
+        automaticName = if (aNBT.hasKey("automaticName")) {
+            aNBT.getBoolean("automaticName")
+        } else {
+            name.isBlank()
+        }
         uuid = aNBT.getString("uuidName")
         owner = aNBT.getString("playerName")
         isFluidEngine = aNBT.getBoolean("isFluidEngine")
 
-        aNBT.getCompoundTag("targetPos")?.also {
-            val pos = PositionObject.loadFromNBT(it)
-            if (!pos.isInvalid()) targetPos = pos
+        targetPos = null
+        if (aNBT.hasKey("targetPos")) {
+            targetPos = PositionObject.loadFromNBT(aNBT.getCompoundTag("targetPos"))
         }
     }
 
@@ -491,51 +576,110 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
 
     private val distanceTravel: Int
         get() {
-            val thisPos = pos
-            val newPos = targetPos
-            if (newPos != null && thisPos != newPos) {
-                val distance = Utilits.distanceBetween3D(thisPos.x, newPos.x, thisPos.y, newPos.y, thisPos.z, newPos.z)
-                if (distance >= 16) {
-                    return distance
-                }
-            }
-            return 0
+            val destination = targetPos ?: return 0
+            return distanceTo(destination)
         }
 
     fun updateSelected(indexSelect: Int) {
+        val station = currentLocationPlatforms.getOrNull(indexSelect)
+        if (station == null) {
+            this.indexSelect = 0
+            targetPos = null
+            selectedDistance = 0
+            cargoHatch?.changeTarget(
+                pos = null,
+                callDecreaseFuel = null,
+            )
+            return
+        }
         this.indexSelect = indexSelect
-        if (currentLocationPlatforms.isNotEmpty()) {
-            val newPos = currentLocationPlatforms[indexSelect]
-            targetPos = newPos.pos
-            cargoHatch?.changeTarget(newPos.pos) {
-                (curBuffer - selectedDistance * 25 >= 0).also { isOk ->
-                    if (isOk) curBuffer -= selectedDistance * 25
+        targetPos = station.pos
+        selectedDistance = distanceTravel
+        cargoHatch?.changeTarget(
+            pos = station.pos,
+            callDecreaseFuel = {
+                val cost = selectedDistance * FUEL_PER_BLOCK
+                if (cost > 0 && curBuffer >= cost) {
+                    curBuffer -= cost
+                    markDirty()
+                    true
+                } else {
+                    false
                 }
-            }
-            selectedDistance = distanceTravel
+            },
+        )
+    }
+
+    public fun distanceTo(destination: IPosition): Int {
+        val origin = pos
+        val dx = origin.x.toDouble() - destination.x
+        val dy = origin.y.toDouble() - destination.y
+        val dz = origin.z.toDouble() - destination.z
+        return kotlin.math.sqrt(dx * dx + dy * dy + dz * dz).toInt()
+    }
+
+    public fun getReachableStation(id: String): GTMTE_Aerostat? {
+        val station = AeroStateNetworkManager.getStation(id) as? GTMTE_Aerostat ?: return null
+        if (!mMachine || !isValid() || !station.mMachine || !station.isValid() || station === this) {
+            return null
+        }
+        val originTile = baseMetaTileEntity
+        val destinationTile = station.baseMetaTileEntity
+        if (originTile.ownerName != destinationTile.ownerName || originTile.world !== destinationTile.world) {
+            return null
+        }
+        val distance = distanceTo(station.pos)
+        return if (distance in 16..travelRange) {
+            station
+        } else {
+            null
         }
     }
 
-    fun toTravel(aPlayer: EntityPlayer) {
-
-        if (currentLocationPlatforms.isEmpty()) {
-            targetPos = null
+    public fun travelTo(
+        player: EntityPlayer,
+        stationId: String,
+    ): Boolean {
+        val tile = baseMetaTileEntity ?: return false
+        if (tile.isClientSide || player.worldObj !== tile.world ||
+            !hasAerostat(player) || !tile.isUseableByPlayer(player)
+        ) {
+            return false
         }
-
-        val thisPos = pos
-        targetPos?.also { newPos ->
-            val distance = Utilits.distanceBetween3D(thisPos.x, newPos.x, thisPos.y, newPos.y, thisPos.z, newPos.z)
-            if (distance >= 16 && thisPos.d == newPos.d) {
-                if (curBuffer - distance * 25 > 0) {
-                    curBuffer -= distance * 25
-                    aPlayer.setPositionAndUpdate(newPos.x + 0.5, newPos.y + 1.0, newPos.z + 0.5)
-                } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, "No Fuel")
-                }
-            } else {
-                GT_Utility.sendChatToPlayer(aPlayer, "Error Distance")
-            }
+        val destination = getReachableStation(stationId)
+        val error = when {
+            destination == null -> "impact.aerostat.unavailable"
+            player.ridingEntity != null -> "impact.aerostat.dismount"
+            curBuffer < distanceTo(destination.pos) * FUEL_PER_BLOCK -> "impact.aerostat.no_fuel"
+            else -> ""
         }
+        if (error.isNotEmpty()) {
+            player.addChatMessage(ChatComponentTranslation(error))
+            return false
+        }
+        val arrival = destination?.pos ?: return false
+        val x = arrival.x + 0.5
+        val y = arrival.y + 1.0
+        val z = arrival.z + 0.5
+        val arrivalBox = player.boundingBox.getOffsetBoundingBox(
+            x - player.posX,
+            y - player.posY,
+            z - player.posZ,
+        )
+        if (tile.world.getCollidingBoundingBoxes(player, arrivalBox).isNotEmpty()) {
+            player.addChatMessage(ChatComponentTranslation("impact.aerostat.blocked"))
+            return false
+        }
+        curBuffer -= distanceTo(arrival) * FUEL_PER_BLOCK
+        markDirty()
+        player.closeScreen()
+        player.fallDistance = 0f
+        player.setPositionAndUpdate(
+            x,
+            y,
+            z,
+        )
+        return true
     }
 
     override fun onScrewdriverRightClick(aSide: Byte, aPlayer: EntityPlayer, aX: Float, aY: Float, aZ: Float) {
@@ -572,10 +716,6 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     }
 
 
-    override fun receive(data: ByteArrayDataInput) {
-        setLocationName(data.readUTF())
-    }
-
     override fun getSupportedProcessingModes(): Int {
         return 0
     }
@@ -593,43 +733,45 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
     }
 
     override val pos: IPosition
-        get() = PositionObject(baseMetaTileEntity)
-
-    override fun updateState(nested: List<IAeroStat>) {
-        val te = baseMetaTileEntity ?: return
-        val updateList = getRadiusAeroStates(nested, te.ownerName, te, if (isFluidEngine) 1024 else 256)
-        currentLocationPlatforms.clear()
-        currentLocationPlatforms.addAll(updateList)
-        selectedDistance = distanceTravel
-
-        val index = currentLocationPlatforms.indexOfFirst { targetPos == it.pos }
-        if (index > 0) updateSelected(index)
-    }
-
-    private fun getRadiusAeroStates(updateList: List<IAeroStat>, owner: String, te: IGregTechTileEntity, maxRange: Int): List<IAeroStat> {
-        val list: MutableList<IAeroStat> = ArrayList()
-        val thisPos = PositionObject(te)
-
-        for (aerostat in updateList) {
-            val location = aerostat.pos
-            val teTarget = te.getIGregTechTileEntity(location.x, location.y, location.z)
-            if (teTarget == null || thisPos.isEquals(location) || thisPos.dPos != location.d) continue
-            if (teTarget.metaTileEntity is GTMTE_Aerostat) {
-                val gtmteAerostat = teTarget.metaTileEntity as GTMTE_Aerostat
-                if (gtmteAerostat.owner == owner) {
-                    val distance = Utilits.distanceBetween3D(thisPos.xPos, location.x, thisPos.yPos, location.y, thisPos.zPos, location.z)
-                    if (distance in 16..maxRange) {
-                        list.add(gtmteAerostat)
-                    }
-                }
-            }
+        get() {
+            return PositionObject(baseMetaTileEntity)
         }
 
-        return list
+    override fun updateState(nested: List<IAeroStat>) {
+        val previousTarget = targetPos
+        currentLocationPlatforms.clear()
+        for (station in nested) {
+            if (getReachableStation(station.uuid) === station) {
+                currentLocationPlatforms.add(station)
+            }
+        }
+        currentLocationPlatforms.sortWith(
+            compareBy<IAeroStat> {
+                distanceTo(it.pos)
+            }.thenBy {
+                it.name.lowercase(java.util.Locale.ROOT)
+            }.thenBy {
+                it.uuid
+            },
+        )
+        val selectedIndex = currentLocationPlatforms.indexOfFirst {
+            previousTarget?.isEquals(it.pos) == true
+        }
+        updateSelected(selectedIndex)
     }
 
     override fun isValid(): Boolean {
-        return baseMetaTileEntity?.metaTileEntity != null
+        val tile = baseMetaTileEntity ?: return false
+        return !tile.isDead && tile.metaTileEntity === this &&
+            tile.world.blockExists(
+                tile.xCoord,
+                tile.yCoord.toInt(),
+                tile.zCoord,
+            ) && tile.world.getTileEntity(
+                tile.xCoord,
+                tile.yCoord.toInt(),
+                tile.zCoord,
+            ) === tile
     }
     fun selectStation(
         direction: Int,
@@ -672,7 +814,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IStreamPacketRece
             lines.add(translateToLocal("impact.processing.no_stations"))
         }
         for ((index, station) in currentLocationPlatforms.withIndex()) {
-            val prefix = if (index == indexSelect) {
+            val prefix = if (index == indexSelect && targetPos != null) {
                 "§6> "
             } else {
                 "§7  "

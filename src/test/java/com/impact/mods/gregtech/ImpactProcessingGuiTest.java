@@ -23,11 +23,12 @@ import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widget.sizer.ResizeNode;
 import com.cleanroommc.modularui.widget.sizer.StaticResizer;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.io.ByteStreams;
-import com.impact.mods.gregtech.gui.aerostat.ContainerSelectAerostat;
+import com.impact.common.managers.AeroStateNetworkManager;
 import com.impact.mods.gregtech.gui.lap.LapChargeHistory;
 import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
 import com.impact.mods.gregtech.gui.processing.ImpactProcessingGui;
@@ -74,6 +75,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.CoverUIFactory;
@@ -94,10 +96,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.init.Items;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -196,8 +200,28 @@ class ImpactProcessingGuiTest {
     }
 
     @Test
-    void travelControlsKeepStationSelectionAndShiftNavigation() throws Throwable {
+    void aerostatUsesOneNativePanelAndKeepsEachPlayersSelectionById() throws Throwable {
         run("travel");
+    }
+
+    @Test
+    void aerostatRegistryHandlesRenameReloadRemovalDimensionsAndCopiedIds() throws Throwable {
+        run("aerostatNetwork");
+    }
+
+    @Test
+    void aerostatFuelNeverConsumesTwiceOrRefuelsBeyondCapacity() throws Throwable {
+        run("aerostatFuel");
+    }
+
+    @Test
+    void aerostatPlatformFormsWithEitherFuelInputInEveryHorizontalDirection() throws Throwable {
+        run("aerostatStructure");
+    }
+
+    @Test
+    void aerostatFlightChecksDestinationAndAcceptsExactFuel() throws Throwable {
+        run("aerostatFlight");
     }
 
     @Test
@@ -298,6 +322,18 @@ class ImpactProcessingGuiTest {
                     break;
                 case "travel":
                     travel();
+                    break;
+                case "aerostatNetwork":
+                    aerostatNetwork();
+                    break;
+                case "aerostatFuel":
+                    aerostatFuel();
+                    break;
+                case "aerostatStructure":
+                    aerostatStructure();
+                    break;
+                case "aerostatFlight":
+                    aerostatFlight();
                     break;
                 default:
                     throw new AssertionError(scenario);
@@ -493,8 +529,7 @@ class ImpactProcessingGuiTest {
                     } else {
                         machine = (MetaTileEntity) type.getConstructor(String.class).newInstance(name);
                     }
-                    if (machine instanceof GTMTE_TheMill || machine instanceof GTMTE_Mining_Coal
-                            || machine instanceof GTMTE_Aerostat) {
+                    if (machine instanceof GTMTE_TheMill || machine instanceof GTMTE_Mining_Coal) {
                         assertFalse(machine.useMui2(), name);
                         count++;
                         continue;
@@ -518,9 +553,15 @@ class ImpactProcessingGuiTest {
                             assertTrue(slot.getSlotIndex() < machine.mInventory.length, name);
                         }
                     }
-                    assertNotNull(fixture.find("processing_display"), name);
-                    assertNotNull(fixture.find("processing_control_" + POWER_SLOT), name);
-                    fixture.checkLayout();
+                    if (machine instanceof GTMTE_Aerostat) {
+                        assertNotNull(fixture.find("aerostat_name"), name);
+                        assertNotNull(fixture.find("aerostat_travel"), name);
+                        fixture.checkAerostatLayout();
+                    } else {
+                        assertNotNull(fixture.find("processing_display"), name);
+                        assertNotNull(fixture.find("processing_control_" + POWER_SLOT), name);
+                        fixture.checkLayout();
+                    }
                     count++;
                 }
             }
@@ -1159,34 +1200,306 @@ class ImpactProcessingGuiTest {
             assertFalse(machine.actionEnabled);
         }
 
-        private static void travel() throws Exception {
-            GTMTE_Aerostat machine = new GTMTE_Aerostat("aerostat");
-            machine.setName("origin");
-            machine.mMachine = true;
-            for (int index = 0; index < 3; index++) {
-                GTMTE_Aerostat station = new GTMTE_Aerostat("destination");
-                new AttachedMachine(station);
-                station.setName("station-" + index);
-                machine.currentLocationPlatforms.add(station);
+        private static GTMTE_Aerostat station(
+                ImpactConstructionChecks.TestWorld world, int x, String owner, boolean formed
+        ) throws Exception {
+            GTMTE_Aerostat station = new GTMTE_Aerostat("destination");
+            ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
+                    world, station, ForgeDirection.NORTH);
+            world.putTile(x, 64, 0, tile);
+            tile.setOwnerName(owner);
+            station.mMachine = formed;
+            station.initializeStation();
+            return station;
+        }
+
+        private static void aerostatNetwork() throws Exception {
+            AeroStateNetworkManager.onClear();
+            GTMTE_Aerostat source = new GTMTE_Aerostat("origin");
+            AttachedMachine fixture = new AttachedMachine(source);
+            GTMTE_Aerostat near = station(fixture.world, 16, "Builder", true);
+            GTMTE_Aerostat edge = station(fixture.world, 256, "Builder", true);
+            station(fixture.world, 15, "Builder", true);
+            station(fixture.world, 257, "Builder", true);
+            station(fixture.world, 32, "Other", true);
+            station(fixture.world, 48, "Builder", false);
+            ImpactConstructionChecks.TestWorld otherWorld = new ImpactConstructionChecks.TestWorld();
+            otherWorld.provider.setDimension(7);
+            GTMTE_Aerostat otherDimension = station(otherWorld, 16, "Builder", true);
+            AeroStateNetworkManager.updateNetwork(fixture.world);
+            assertEquals(Arrays.asList(near, edge), source.currentLocationPlatforms);
+            assertNull(source.getReachableStation(otherDimension.getUuid()));
+            String nearId = near.getUuid();
+            for (String name : Arrays.asList("First name", "Second name", "Second name")) {
+                near.setLocationName(name);
+                AeroStateNetworkManager.updateNetwork(fixture.world);
+                assertEquals(nearId, near.getUuid());
+                assertEquals(2, source.currentLocationPlatforms.size());
             }
-            AttachedMachine fixture = new AttachedMachine(machine);
-            ContainerSelectAerostat container = new ContainerSelectAerostat(fixture.player.inventory, fixture.tile);
-            fixture.player.openContainer = container;
-            assertTrue(container.canInteractWith(fixture.player));
-            assertEquals(3, container.inventorySlots.size());
-            container.slotClick(0, 0, 0, fixture.player);
-            assertEquals(1, machine.indexSelect);
-            container.slotClick(0, 0, 1, fixture.player);
-            assertEquals(2, machine.indexSelect);
-            container.slotClick(1, 0, 1, fixture.player);
-            assertEquals(0, machine.indexSelect);
-            fixture.player.setPosition(100, 64, 100);
-            container.slotClick(0, 0, 1, fixture.player);
-            assertEquals(0, machine.indexSelect);
+            source.updateSelected(0);
+            AeroStateNetworkManager.updateNetwork(fixture.world);
+            assertTrue(source.getTargetPos().isEquals(near.getPos()));
+            assertEquals(0, source.indexSelect);
+            GTMTE_Aerostat copy = station(fixture.world, 80, "Builder", true);
+            copy.setUuid(nearId);
+            copy.initializeStation();
+            assertFalse(nearId.equals(copy.getUuid()));
+            assertTrue(AeroStateNetworkManager.getStation(nearId) == near);
+            NBTTagCompound saved = new NBTTagCompound();
+            near.saveNBTData(saved);
+            GTMTE_Aerostat replacement = station(fixture.world, 16, "Builder", true);
+            AeroStateNetworkManager.unregister(replacement);
+            replacement.loadNBTData(saved);
+            replacement.initializeStation();
+            assertEquals(nearId, replacement.getUuid());
+            assertEquals("Second name", replacement.getName());
+            AeroStateNetworkManager.unregister(near);
+            assertTrue(AeroStateNetworkManager.getStation(nearId) == replacement);
+            fixture.world.unloadedPositions.add(ImpactConstructionChecks.TestWorld.key(16, 64, 0));
+            AeroStateNetworkManager.updateNetwork(fixture.world);
+            assertNull(AeroStateNetworkManager.getStation(nearId));
+            assertNull(source.getTargetPos());
+            assertEquals(0, source.selectedDistance);
+            fixture.world.setBlock(256, 64, 0, Blocks.air, 0, 0);
+            AeroStateNetworkManager.updateNetwork(fixture.world);
+            assertNull(AeroStateNetworkManager.getStation(edge.getUuid()));
+            NBTTagCompound automatic = new NBTTagCompound();
+            copy.setLocationName("");
+            copy.saveNBTData(automatic);
+            GTMTE_Aerostat moved = station(fixture.world, 96, "Builder", true);
+            moved.loadNBTData(automatic);
+            moved.initializeStation();
+            assertEquals("96, 64, 0", moved.getName());
+            automatic.setInteger("curBuffer", Integer.MAX_VALUE);
+            moved.loadNBTData(automatic);
+            assertEquals(GTMTE_Aerostat.MAX_BUFFER, moved.curBuffer);
+            automatic.setInteger("curBuffer", -1);
+            moved.loadNBTData(automatic);
+            assertEquals(0, moved.curBuffer);
+            AeroStateNetworkManager.onClear();
+        }
+
+        private static void aerostatStructure() throws Exception {
+            com.impact.mods.gregtech.blocks.ImpactBlocks.sCaseCore3 = Blocks.stained_glass;
+            java.lang.reflect.Method setup = gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.class
+                    .getDeclaredMethod("setupMachine", gregtech.api.interfaces.tileentity.IGregTechTileEntity.class,
+                            ItemStack.class);
+            setup.setAccessible(true);
+            for (ForgeDirection facing : new ForgeDirection[] {
+                    ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST }) {
+                for (boolean gas : new boolean[] { false, true }) {
+                    GTMTE_Aerostat machine = new GTMTE_Aerostat("aerostat-structure");
+                    ImpactConstructionChecks.TestWorld world = new ImpactConstructionChecks.TestWorld();
+                    ImpactConstructionChecks.TestTile controller = new ImpactConstructionChecks.TestTile(
+                            world, machine, facing);
+                    world.putTile(0, 64, 0, controller);
+                    controller.setOwnerName("Builder");
+                    machine.construct(new ItemStack(Items.stick), false);
+                    assertEquals(9, world.blocks.size(), "Controller and eight platform positions");
+                    for (String position : world.blocks.keySet()) {
+                        assertEquals("64", position.split(":")[1], "Platform must be horizontal");
+                    }
+                    setup.invoke(machine, controller, null);
+                    assertFalse(machine.mMachine, "An input is required to supply fuel");
+                    MetaTileEntity input = gas ? new GT_MetaTileEntity_Hatch_Input(
+                            "aerostat-gas", 1, "", new ITexture[0][][])
+                            : new GT_MetaTileEntity_Hatch_InputBus("aerostat-solid", 1, "", new ITexture[0][][]);
+                    world.putTile(facing.offsetX, 64, facing.offsetZ,
+                            new ImpactConstructionChecks.TestTile(world, input, facing));
+                    setup.invoke(machine, controller, null);
+                    assertTrue(machine.mMachine, "Fuel input " + gas + " facing " + facing);
+                    assertEquals(gas ? 1024 : 256, machine.getTravelRange());
+                    setup.invoke(machine, controller, null);
+                    assertTrue(machine.mMachine, "Repeated scans must preserve formation");
+                }
+            }
+            AeroStateNetworkManager.onClear();
+        }
+
+        private static void aerostatFuel() throws Exception {
+            GTMTE_Aerostat source = new GTMTE_Aerostat("fuel");
+            AttachedMachine fixture = new AttachedMachine(source);
+            GT_MetaTileEntity_Hatch_InputBus bus = new GT_MetaTileEntity_Hatch_InputBus(
+                    "fuel_bus", 1, "", new ITexture[0][][]);
+            ImpactConstructionChecks.TestTile busTile = new ImpactConstructionChecks.TestTile(
+                    fixture.world, bus, ForgeDirection.NORTH);
+            fixture.world.putTile(1, 64, 0, busTile);
+            source.mInputBusses.add(bus);
+            bus.mInventory[0] = new ItemStack(Blocks.cobblestone);
+            bus.mInventory[1] = new ItemStack(Items.coal, 4);
+            source.curBuffer = 48000;
+            source.refuel();
+            assertEquals(49600, source.curBuffer);
+            assertEquals(3, bus.mInventory[1].stackSize);
+            source.refuel();
+            assertEquals(49600, source.curBuffer);
+            assertEquals(3, bus.mInventory[1].stackSize);
+            source.curBuffer = 48400;
+            source.refuel();
+            assertEquals(50000, source.curBuffer);
+            assertEquals(2, bus.mInventory[1].stackSize);
+            source.refuel();
+            assertEquals(2, bus.mInventory[1].stackSize);
+            Fluid natural = new Fluid("aerostat_natural_gas");
+            Fluid refinery = new Fluid("aerostat_refinery_gas");
+            FluidRegistry.registerFluid(natural);
+            FluidRegistry.registerFluid(refinery);
+            Materials.NatruralGas.mGas = natural;
+            Materials.Gas.mGas = refinery;
+            GT_MetaTileEntity_Hatch_Input hatch = new GT_MetaTileEntity_Hatch_Input(
+                    "gas_hatch", 1, "", new ITexture[0][][]);
+            ImpactConstructionChecks.TestTile hatchTile = new ImpactConstructionChecks.TestTile(
+                    fixture.world, hatch, ForgeDirection.NORTH);
+            fixture.world.putTile(2, 64, 0, hatchTile);
+            source.mInputHatches.add(hatch);
+            NBTTagCompound saved = new NBTTagCompound();
+            source.saveNBTData(saved);
+            saved.setBoolean("isFluidEngine", true);
+            source.loadNBTData(saved);
+            for (Fluid gas : Arrays.asList(natural, refinery)) {
+                hatch.mFluid = new FluidStack(gas, 3000);
+                source.curBuffer = 50000;
+                source.refuel();
+                assertEquals(3000, hatch.mFluid.amount);
+                source.curBuffer = 49500;
+                source.refuel();
+                assertEquals(49500, source.curBuffer);
+                assertEquals(3000, hatch.mFluid.amount);
+                source.curBuffer = 49000;
+                source.refuel();
+                assertEquals(50000, source.curBuffer);
+                assertEquals(2000, hatch.mFluid.amount);
+            }
+            AeroStateNetworkManager.onClear();
+        }
+
+        private static void aerostatFlight() throws Exception {
+            AeroStateNetworkManager.onClear();
+            GTMTE_Aerostat source = new GTMTE_Aerostat("flight");
+            AttachedMachine fixture = new AttachedMachine(source, new ImpactConstructionChecks.TestWorld() {
+                @Override
+                public List getEntitiesWithinAABBExcludingEntity(
+                        net.minecraft.entity.Entity entity, net.minecraft.util.AxisAlignedBB bounds
+                ) {
+                    return java.util.Collections.emptyList();
+                }
+            });
+            // Server players use feet coordinates; the generic test player defaults to the client eye offset.
+            fixture.player.yOffset = 0;
             fixture.player.setPosition(0.5, 64.5, 0.5);
-            machine.currentLocationPlatforms.clear();
-            container.slotClick(0, 0, 0, fixture.player);
-            assertEquals(0, machine.indexSelect);
+            GTMTE_Aerostat destination = station(fixture.world, 16, "Builder", true);
+            source.curBuffer = 399;
+            assertFalse(source.travelTo(fixture.player, destination.getUuid()));
+            assertEquals(399, source.curBuffer);
+            source.curBuffer = 400;
+            destination.mMachine = false;
+            assertFalse(source.travelTo(fixture.player, destination.getUuid()));
+            destination.mMachine = true;
+            fixture.world.setBlock(16, 65, 0, Blocks.stone, 0, 0);
+            assertFalse(source.travelTo(fixture.player, destination.getUuid()));
+            assertEquals(400, source.curBuffer);
+            fixture.world.setBlock(16, 65, 0, Blocks.air, 0, 0);
+            fixture.player.fallDistance = 15;
+            assertTrue(source.travelTo(fixture.player, destination.getUuid()));
+            assertEquals(0, source.curBuffer);
+            assertEquals(16.5, fixture.player.posX);
+            assertEquals(65, fixture.player.posY);
+            assertEquals(0, fixture.player.fallDistance);
+            fixture.player.setPosition(0.5, 64.5, 0.5);
+            fixture.player.inventory.setInventorySlotContents(fixture.player.inventory.currentItem, null);
+            source.curBuffer = 400;
+            assertFalse(source.onRightclick(fixture.tile, fixture.player));
+            assertFalse(source.travelTo(fixture.player, destination.getUuid()));
+            assertEquals(400, source.curBuffer);
+            AeroStateNetworkManager.onClear();
+        }
+
+        private static void travel() throws Exception {
+            AeroStateNetworkManager.onClear();
+            GTMTE_Aerostat machine = new GTMTE_Aerostat("aerostat");
+            Fixture fixture = new Fixture(machine);
+            List<GTMTE_Aerostat> stations = new ArrayList<>();
+            for (int index = 0; index < 8; index++) {
+                GTMTE_Aerostat station = new GTMTE_Aerostat("destination");
+                ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
+                        fixture.world, station, ForgeDirection.NORTH);
+                fixture.world.putTile(32 * (index + 1), 64, 0, tile);
+                tile.setOwnerName("Builder");
+                station.mMachine = true;
+                station.initializeStation();
+                station.setLocationName("station-" + index);
+                stations.add(station);
+            }
+            AeroStateNetworkManager.updateNetwork(fixture.world);
+            GenericSyncValue<?, ?> state = fixture.handlers.findSyncHandler("aerostatState", GenericSyncValue.class);
+            state.updateCacheFromSource(true);
+            fixture.checkAerostatLayout();
+            assertEquals(36, fixture.container.inventorySlots.size());
+            assertNotNull(fixture.find("aerostat_name"));
+            assertNotNull(fixture.find("aerostat_search"));
+            assertTrue(fixture.find("aerostat_stations") instanceof ListWidget);
+            assertNull(fixture.find("aerostat_previous"));
+            assertNull(fixture.find("aerostat_next"));
+            assertNull(fixture.find("aerostat_close"));
+            assertNull(fixture.find("aerostat_clear_search"));
+            assertNotNull(fixture.find("aerostat_edit_name"));
+            ListWidget stationList = (ListWidget) fixture.find("aerostat_stations");
+            stationList.getOnUpdateListener().accept(stationList);
+            assertEquals(8, stationList.getChildren().size());
+            com.cleanroommc.modularui.widgets.textfield.TextFieldWidget searchField =
+                    (com.cleanroommc.modularui.widgets.textfield.TextFieldWidget) fixture.find("aerostat_search");
+            searchField.getStringValue().setStringValue("station-6");
+            stationList.getOnUpdateListener().accept(stationList);
+            assertEquals(1, stationList.getChildren().size());
+            assertTrue(((IWidget) stationList.getChildren().get(0))
+                    .isName("aerostat_station_" + stations.get(6).getUuid()));
+            searchField.getStringValue().setStringValue("");
+            stationList.getOnUpdateListener().accept(stationList);
+            assertEquals(8, stationList.getChildren().size());
+            assertNotNull(fixture.find("aerostat_save_name"));
+            assertNotNull(fixture.find("aerostat_travel"));
+            StringSyncValue selected = fixture.handlers.findSyncHandler("aerostatSelected", StringSyncValue.class);
+            String destinationId = stations.get(1).getUuid();
+            selected.setStringValue(destinationId, true, false);
+            assertEquals(destinationId, selected.getStringValue());
+            ImpactConstructionChecks.TestPlayer secondPlayer = new ImpactConstructionChecks.TestPlayer(fixture.world);
+            secondPlayer.setPosition(0.5, 64.5, 0.5);
+            secondPlayer.inventory.setInventorySlotContents(0, GT_ItemList.Aerostat.get(1));
+            ModularSyncManager secondManager = new ModularSyncManager(false);
+            PanelSyncManager secondSync = new PanelSyncManager(secondManager, true);
+            UISettings secondSettings = new UISettings(RecipeViewerSettings.DUMMY);
+            PosGuiData secondData = new PosGuiData(secondPlayer, 0, 64, 0);
+            ModularPanel secondPanel = MetaTileEntityGuiHandler.INSTANCE.createPanel(secondData, secondSync, secondSettings);
+            WidgetTree.collectSyncValues(secondSync, secondPanel);
+            ModularContainer secondContainer = new ModularContainer();
+            secondContainer.construct(secondPlayer, secondManager, secondSettings, secondPanel.getName(), secondData);
+            secondPlayer.openContainer = secondContainer;
+            StringSyncValue secondSelection = secondSync.findSyncHandler("aerostatSelected", StringSyncValue.class);
+            secondSelection.setStringValue(stations.get(2).getUuid(), true, false);
+            assertEquals(stations.get(2).getUuid(), secondSelection.getStringValue());
+            assertEquals(destinationId, selected.getStringValue());
+            assertNull(machine.getTargetPos(), "Passenger selection must not change the cargo target");
+            stations.get(1).setLocationName("renamed");
+            AeroStateNetworkManager.updateNetwork(fixture.world);
+            state.updateCacheFromSource(true);
+            assertEquals(destinationId, selected.getStringValue());
+            StringSyncValue name = fixture.handlers.findSyncHandler("aerostatName", StringSyncValue.class);
+            name.setStringValue("New name", true, false);
+            assertEquals("0, 64, 0", machine.getName());
+            fixture.press("aerostat_save_name", false);
+            assertEquals("New name", machine.getName());
+            fixture.press("aerostat_reset_name", false);
+            assertEquals("0, 64, 0", machine.getName());
+            fixture.player.setPosition(100, 64, 100);
+            name.setStringValue("Distant edit", true, false);
+            fixture.press("aerostat_save_name", false);
+            assertEquals("0, 64, 0", machine.getName());
+            fixture.player.setPosition(0.5, 64.5, 0.5);
+            fixture.player.inventory.setInventorySlotContents(fixture.player.inventory.currentItem, null);
+            assertFalse(fixture.container.canInteractWith(fixture.player));
+            fixture.press("aerostat_save_name", false);
+            assertEquals("0, 64, 0", machine.getName());
+            AeroStateNetworkManager.onClear();
             Fixture elevator = new Fixture(new GTMTE_SpaceElevator("elevator"));
             assertNotNull(elevator.find("impact_travel"));
         }
@@ -1195,12 +1508,17 @@ class ImpactProcessingGuiTest {
     private static class AttachedMachine {
 
         protected final MetaTileEntity machine;
-        protected final ImpactConstructionChecks.TestWorld world = new ImpactConstructionChecks.TestWorld();
+        protected final ImpactConstructionChecks.TestWorld world;
         protected final ImpactConstructionChecks.TestTile tile;
         protected final ImpactConstructionChecks.TestPlayer player;
 
         private AttachedMachine(MetaTileEntity machine) throws Exception {
+            this(machine, new ImpactConstructionChecks.TestWorld());
+        }
+
+        private AttachedMachine(MetaTileEntity machine, ImpactConstructionChecks.TestWorld world) throws Exception {
             this.machine = machine;
+            this.world = world;
             tile = new ImpactConstructionChecks.TestTile(world, machine, ForgeDirection.NORTH);
             world.putTile(0, 64, 0, tile);
             Field timer = gregtech.api.metatileentity.BaseMetaTileEntity.class.getDeclaredField("mTickTimer");
@@ -1208,6 +1526,13 @@ class ImpactProcessingGuiTest {
             timer.setLong(tile, 51);
             player = new ImpactConstructionChecks.TestPlayer(world);
             player.setPosition(0.5, 64.5, 0.5);
+            if (machine instanceof GTMTE_Aerostat) {
+                GT_ItemList.Aerostat.set(new ItemStack(Items.feather));
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, GT_ItemList.Aerostat.get(1));
+                tile.setOwnerName("Builder");
+                ((GTMTE_Aerostat) machine).mMachine = true;
+                ((GTMTE_Aerostat) machine).initializeStation();
+            }
         }
     }
 
@@ -1234,11 +1559,31 @@ class ImpactProcessingGuiTest {
             collect(panel);
         }
 
+        private void checkAerostatLayout() {
+            // Scroll widgets need a client panel for scrollbar theming; fixed controls can be resized headlessly.
+            IWidget name = find("aerostat_name");
+            IWidget search = find("aerostat_search");
+            IWidget stations = find("aerostat_stations");
+            panel.remove(name);
+            panel.remove(search);
+            panel.remove(stations);
+            try {
+                checkLayout();
+            } finally {
+                panel.child(name);
+                panel.child(search);
+                panel.child(stations);
+            }
+        }
+
         private void checkLayout() {
             initializeResizers(panel, new Viewport());
             WidgetTree.resizeInternal(panel.resizer(), false);
             List<IWidget> controls = new ArrayList<>();
             for (IWidget widget : widgets) {
+                if (machine instanceof GTMTE_Aerostat && !widget.isEnabled()) {
+                    continue;
+                }
                 String name = widget.getName();
                 boolean tankGauge = name != null && name.startsWith("tank_fluid_");
                 if (!(widget instanceof ItemSlot) && !(widget instanceof ButtonWidget)
@@ -1322,7 +1667,7 @@ class ImpactProcessingGuiTest {
         }
 
         private void press(String name, boolean shift) throws Exception {
-            String widgetName = name.startsWith("processingControl_")
+            String widgetName = name.startsWith("aerostat_") ? name : name.startsWith("processingControl_")
                     ? name.replace("processingControl_", "processing_control_") : "impact_" + name;
             ButtonWidget<?> button = (ButtonWidget<?>) find(widgetName);
             assertNotNull(button, widgetName);

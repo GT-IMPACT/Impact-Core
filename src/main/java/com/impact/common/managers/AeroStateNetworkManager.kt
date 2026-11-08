@@ -4,55 +4,68 @@ import com.impact.addon.gt.api.aerostat.IAeroStat
 import cpw.mods.fml.common.gameevent.TickEvent
 import net.minecraft.world.World
 
-object AeroStateNetworkManager {
+public object AeroStateNetworkManager {
 
-    private val DATA = hashMapOf<Key, IAeroStat>()
-    private var isModified = false
+    private val stationsById: MutableMap<String, IAeroStat> = LinkedHashMap()
 
     @JvmStatic
-    fun onWorldTick(e: TickEvent.WorldTickEvent, tick: Long) {
-        if (isModified && tick % 20 == 0L) {
-            updateNetwork(e.world)
-            isModified = false
+    public fun onWorldTick(event: TickEvent.WorldTickEvent) {
+        if (event.world.isRemote || event.phase != TickEvent.Phase.END) {
+            return
+        }
+        if (event.world.totalWorldTime % 20L == 0L) {
+            updateNetwork(event.world)
         }
     }
 
     @JvmStatic
-    fun updateNetwork(world: World) {
-        DATA.forEach { (key, stat) ->
-            val data = DATA
-                .filterValues { it.owner == key.owner }.values.toList()
-            stat.updateState(data)
+    public fun updateNetwork(world: World) {
+        if (world.isRemote) {
+            return
+        }
+        val iterator = stationsById.values.iterator()
+        while (iterator.hasNext()) {
+            if (!iterator.next().isValid()) {
+                iterator.remove()
+            }
+        }
+
+        val stationsByOwner = HashMap<String, MutableList<IAeroStat>>()
+        for (station in stationsById.values) {
+            if (station.pos.d == world.provider.dimensionId) {
+                stationsByOwner.getOrPut(station.owner) {
+                    ArrayList()
+                }.add(station)
+            }
+        }
+        for (stations in stationsByOwner.values) {
+            for (station in stations) {
+                station.updateState(stations)
+            }
         }
     }
 
     @JvmStatic
-    fun markUpdate() {
-        isModified = true
+    public fun getStation(id: String): IAeroStat? {
+        return stationsById[id]
     }
 
     @JvmStatic
-    fun addAeroState(owner: String, pos: IAeroStat, uuid: String) {
-        val key = Key(pos.name, owner, uuid)
-        DATA[key] = pos
-        markUpdate()
+    public fun register(station: IAeroStat) {
+        if (station.owner.isNotEmpty() && station.uuid.isNotEmpty()) {
+            stationsById[station.uuid] = station
+        }
     }
 
     @JvmStatic
-    fun onClear() {
-        DATA.clear()
+    public fun onClear() {
+        stationsById.clear()
     }
 
     @JvmStatic
-    fun onRemove(owner: String, pos: IAeroStat, uuid: String) {
-        val key = Key(pos.name, owner, uuid)
-        DATA.remove(key)
-        markUpdate()
+    public fun unregister(station: IAeroStat) {
+        if (stationsById[station.uuid] === station) {
+            stationsById.remove(station.uuid)
+        }
     }
 }
-
-data class Key(
-    val name: String,
-    val owner: String,
-    val uuid: String,
-)

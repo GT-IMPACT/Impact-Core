@@ -7,6 +7,7 @@ interface IAeroStat {
     val pos: IPosition
     val name: String
     val owner: String
+    public val uuid: String
 
     fun updateState(nested: List<IAeroStat>)
     fun isValid(): Boolean

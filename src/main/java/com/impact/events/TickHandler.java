@@ -98,7 +98,7 @@ public class TickHandler {
             }
         }
 
-        AeroStateNetworkManager.onWorldTick(e, worldTicker);
+        AeroStateNetworkManager.onWorldTick(e);
     }
 
     @SubscribeEvent
