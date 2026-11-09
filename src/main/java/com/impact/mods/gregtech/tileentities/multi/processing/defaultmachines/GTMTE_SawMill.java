@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.google.common.collect.Lists;
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -30,7 +31,6 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_ACTIVE;
 import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_FRONT;
 import static com.impact.mods.gregtech.enums.Texture.Icons.SAW_FRONT_ACTIVE;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 
@@ -91,11 +91,11 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', ofBlockAnyMeta(SawMillBlock))
-                    .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_SawMill.class)
+                    .addElement('D', GTStructureUtility.buildHatchAdder(GTMTE_SawMill.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -103,21 +103,22 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Nooo! Do not saw me..")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Saw Mill")
-                .addSeparator()
+                .addInfo("After overclocking: 1/4 EU/t, 2x recipe time.")
                 .beginStructureBlock(3, 3, 5, false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 2")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(5, "Saw Mill Conveyor", "Bottom middle")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 9")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the required regular Energy Hatch, plus available input, output and power hatches in the sawmill casing.")
+                .addController("front left edge, middle layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(SawMillBlock, 1, 0), "exactly 5; center row of the bottom layer")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Energy Hatch", "exactly 1; casing positions; standard hatch only")
+                .addHatchInfo("Input Bus", "optional, up to 1; casing positions")
+                .addHatchInfo("Input Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 2; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

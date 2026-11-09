@@ -4,6 +4,7 @@ import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HatchElement;
@@ -205,26 +206,29 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addInfo("Tiny WORMHOLE on The Earth!!!")
                 .addMachineType("Wormhole")
-                .addSeparator()
-                .addController("See the structure hologram")
                 .beginStructureBlock(5, 7, 5, false)
-                .addOtherStructurePart("Input Hatch", "(UV or better); maximum 1")
-                .addOtherStructurePart("Output Bus", "(UV or better); maximum 1")
-                .addOtherStructurePart("Energy Hatch", "(UV or better); maximum 2")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(Casings.ROBUST_NAQUADAH_ALLOY, HATCHES_G.getMinimumCasings(), false)
-                .addCasingInfoMin(Casings.INTERMIX_CHAMBER, HATCHES_J.getMinimumCasings(), false)
-                .addCasingInfoMin(Casings.DYSON_RING, 20, false)
-                .addCasingInfoMin(Casings.FUSION_MK_II, 18, false)
-                .addCasingInfoMin(Casings.CORE_CHAMBER, 1, false)
-                .addCasingInfoMin("Reinforced Glass", 56, false)
-
-                .addStructureHint("Input/output, energy/dynamo, maintenance or Robust Naquadah Alloy Machine Casing", HintColor.GREEN)
-                .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs UV-or-better input, output and energy hatches, plus available maintenance, muffler and dynamo hatches.")
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(Casings.ROBUST_NAQUADAH_ALLOY, "%s fixed in the roof and corner columns; fill unused bottom positions", HATCHES_G.getMinimumCasings())
+                .addStructurePartInfo(Casings.INTERMIX_CHAMBER, "%s+; around the core and unused side-center input positions", HATCHES_J.getMinimumCasings())
+                .addOtherStructurePart(Casings.DYSON_RING, "exactly 20; inner cage around the core")
+                .addOtherStructurePart(Casings.FUSION_MK_II, "exactly 18; inner 3x3 plates in layers 2 and 6")
+                .addOtherStructurePart(Casings.CORE_CHAMBER, "exactly 1; center of layer 4")
+                .addOtherStructurePart(Ic2Items.reinforcedGlass, "exactly 56; side walls, except corners and side-center inputs")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Input Hatch", "optional, up to 1; UV+; bottom layer or side centers in layer 4")
+                .addHatchInfo("Input Bus", "optional, up to 1; UV+; bottom layer or side centers in layer 4")
+                .addHatchInfo("Output Hatch", "optional, up to 1; UV+; bottom layer")
+                .addHatchInfo("Output Bus", "optional, up to 1; UV+; bottom layer")
+                .addHatchInfo("Energy Hatches", "optional, up to 2 total; UV+; bottom layer")
+                .addHatchInfo("Maintenance Hatch", "optional, up to 1; bottom layer")
+                .addStructureHint("Bottom: casings or hatches/buses", HintColor.GREEN)
+                .addStructureHint("Side centers: casings or input hatches/buses", HintColor.BLUE)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

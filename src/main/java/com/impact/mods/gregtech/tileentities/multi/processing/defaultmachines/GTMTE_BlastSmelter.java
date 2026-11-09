@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.GT_Values;
@@ -34,7 +35,6 @@ import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
 import static gregtech.api.enums.GT_Values.VN;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_BlastSmelter
         extends GT_MetaTileEntity_ProcessingMultiBlockBase<GTMTE_BlastSmelter>
@@ -62,11 +62,11 @@ public class GTMTE_BlastSmelter
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addChannel(GTStructureChannels.COIL, 1, 10)
-                    .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_BlastSmelter.class)
+                    .addElement('0', GTStructureUtility.buildHatchAdder(GTMTE_BlastSmelter.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.Muffler)
                             .autoPlace(HatchElement.Input, HatchElement.Output, HatchElement.Energy, ImpactHatchElement.Muffler)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .addElement('1', GTStructureUtility.ofHeatingCoil(
                             GTMTE_BlastSmelter::checkCoil, GTMTE_BlastSmelter::constructionCoil))
                     .build();
@@ -102,22 +102,30 @@ public class GTMTE_BlastSmelter
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Blast Smelter")
-                .addPollutionAmount(20 * getPollutionPerTick(null))
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Top and bottom layers; exactly 1")
-                .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 5")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 5")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart("Heating Coils", "Two middle Layers, hollow")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 20")
-                .addSubChannel(GTStructureChannels.COIL, "Selects the Blast Smelter heating coils (1-10). Existing coils determine the tier when completing a structure.")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
+                .addInfo("Heating capacity depends on the coils and total input voltage.")
+                .addInfo("Each 900 K above the recipe requirement multiplies EU/t by 0.95.")
+                .addInfo("Each 1800 K above the recipe requirement upgrades one available overclock.")
+                .addInfo("Upgraded overclock: 4x EU/t, 1/4 recipe time.")
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
+                .beginStructureBlock(5, 4, 5, false)
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart("Heating Coils", "exactly 24 of the same tier; layers 2 and 3")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; top and bottom layers")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; top and bottom layers")
+                .addHatchInfo("Input Buses", "optional, up to 5; top and bottom layers")
+                .addHatchInfo("Input Hatches", "optional; top and bottom layers")
+                .addHatchInfo("Output Buses", "optional; top and bottom layers")
+                .addHatchInfo("Output Hatches", "optional, up to 5; top and bottom layers")
+                .addHatchInfo("Muffler Hatch", "optional, up to 1; top and bottom layers")
+                .addStructureHint("Top and bottom: casings or hatches/buses", HintColor.GREEN)
+                .addSubChannel(GTStructureChannels.COIL, "1-10; default: stack size; existing coils take priority.")
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

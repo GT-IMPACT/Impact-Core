@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.ImpactCasings;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -27,7 +28,6 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Farm
         extends GT_MetaTileEntity_ProcessingMultiBlockBase<GTMTE_Farm>
@@ -50,11 +50,11 @@ public class GTMTE_Farm
                             { "CGGGC", "C---C", "C---C", "C---C", "AFFFA" },
                             { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "AAAAA" }
                     })
-                    .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Farm.class)
+                    .addElement('A', GTStructureUtility.buildHatchAdder(GTMTE_Farm.class)
                             .allow(HatchElement.Maintenance, HatchElement.Input, HatchElement.Output,
                                     HatchElement.Energy)
                             .autoPlace(HatchElement.Maintenance, HatchElement.Input, HatchElement.Output, HatchElement.Energy)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .addElement('C', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
                     .addElement('F', ImpactCasings.CASING_FARM.asElement())
@@ -93,25 +93,25 @@ public class GTMTE_Farm
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Industrial Wood producer")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Wood Farm")
-                .addInfo("Overclocking without loss of efficiency")
-                .addInfo("Select machine type by clicking the controller with a screwdriver")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Bus", "Any casing")
-                .addOtherStructurePart("Input Hatch", "Any casing")
-                .addOtherStructurePart("Output Bus", "Any casing")
-                .addOtherStructurePart("Output Hatch", "Any casing")
-                .addRequirements(SHELL, "Bottom edge")
-                .addOtherStructurePart(ImpactCasings.CASING_FARM, "At the center of the bottom layer", 9)
-                .addOtherStructurePart("Reinforced Glass", "At the center of the Top layer")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 15")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input and output hatches from your inventory in the farm casing.")
+                .addInfo("Overclock: 4x EU/t, 1/4 recipe time; minimum 2 ticks.")
+                .beginStructureBlock(5, 5, 5, false)
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addOtherStructurePart(SHELL.getCasing(), "64+; roof frame and walls; fill unused bottom-edge positions")
+                .addOtherStructurePart(ImpactCasings.CASING_FARM, "exactly 9; center of the bottom layer")
+                .addOtherStructurePart("Reinforced Glass", "exactly 9; roof center")
+                .addAir(27, "interior, above the farm casings")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "optional, up to 1; bottom edge")
+                .addHatchInfo("Energy Hatches", "optional; bottom edge")
+                .addHatchInfo("Input Buses", "optional; bottom edge")
+                .addHatchInfo("Input Hatches", "optional; bottom edge")
+                .addHatchInfo("Output Buses", "optional; bottom edge")
+                .addStructureHint("Bottom edge: casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

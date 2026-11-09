@@ -11,6 +11,7 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockB
 import com.impact.network.GTNetworkHandler;
 import com.impact.network.NetworkPackets;
 import com.impact.network.special.LaserPushPacket;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.Utilits;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -42,7 +43,6 @@ import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_ParametricDiffuser> {
 
@@ -108,10 +108,10 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                             { "      CCC ", "CCCCCCCCCC", "CCGGGRRRRC", "CCCCCCCCCC" },
                             { "     C   C", "     CCCCC", "     CCCCC", "          " }
                     })
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_ParametricDiffuser.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_ParametricDiffuser.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Input)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.BLUE))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
                     .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
                     .addElement('T', ofBlock(ItemRegistery.MPTransducer, 0))
@@ -122,25 +122,27 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Generation of unstable Matrix Particles")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addInfo("Generates unstable Matrix Particles.")
                 .addMachineType("Parametric Diffuser")
-                .addInfo("Need any Exquisite Gem")
-                .addInfo("Power Beam: (Tier Energy Hatch - 3) * ~200")
-                .addInfo("Max range to Matrix Particle Stabilizer: 30 blocks")
-                .addInfo("Need Low Gravity")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "EV and above; maximum 7")
-                .addOtherStructurePart("Input Bus", "Any casing; exactly 1")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(10, "I-Glass", "Any color; see the structure hologram")
-                .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 19)
-                .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "See the structure hologram", 1)
-                .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
-                .addStructureInfo("Hatches replacing casings: at most 42")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs one Input Bus, one Maintenance Hatch and an available energy or laser input in the diffuser casing.")
+                .addInfo("Requires an Exquisite Gem in the first Input Bus slot; the gem is not consumed.")
+                .addInfo("Particle generation requires EV or higher; output increases with voltage tier.")
+                .addInfo("Range to Matrix Particles Stabilizer: less than 30 blocks.")
+                .addInfo("Requires low gravity.")
+                .beginStructureBlock(10, 4, 5, false)
+                .addController("left end of layer 2, 1 block behind the front edge")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart("I-Glass", "exactly 10; inner chamber walls; any color")
+                .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "exactly 19; inner chamber")
+                .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "exactly 1; behind the controller, 1 block to the right")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Input Bus", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 7 total; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.BLUE)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
@@ -24,7 +25,6 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssembler> {
 
@@ -69,18 +69,20 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Rail Assembler")
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 5")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
-                .addRequirements(SHELL, "Any casing position")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 8")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the rail assembler casing.")
+                .beginStructureBlock(3, 2, 4, false)
+                .addController("back left corner of the top layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Energy Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 5; casing positions")
+                .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 
@@ -138,11 +140,11 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
                             { "~CC", "CCC" }
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_RailAssembler.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_RailAssembler.class)
                             .allow(HatchElement.Maintenance, HatchElement.Input, ImpactHatchElement.Muffler,
                                     HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Maintenance, HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;

@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -23,7 +24,6 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrinter> {
 
@@ -71,11 +71,11 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('G', ofBlockAnyMeta(IGlassBlock))
                     .addElement('C', ImpactCasings.DDD_PRINTER_CASING4X4.asElement())
-                    .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvDDDPrinter.class)
+                    .addElement('D', GTStructureUtility.buildHatchAdder(GTMTE_AdvDDDPrinter.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -94,22 +94,23 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Assembler machines")
-                .addMachineType("4x4 Crafting")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 30")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart("I-Glass", "it is glass")
-                .addOtherStructurePart(ImpactCasings.DDD_PRINTER_CASING4X4, "core structure", 16)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 29")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("3D Printer 4x4")
+                .beginStructureBlock(6, 3, 6, false)
+                .addController("front left edge, middle layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(ImpactCasings.DDD_PRINTER_CASING4X4, "exactly 16; center of the middle layer")
+                .addOtherStructurePart("I-Glass", "exactly 32; roof and front/back of the middle layer; any color")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional; casing positions")
+                .addHatchInfo("Input Hatches", "optional; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.Collections;
 import com.impact.addon.vw.VirtualWorldScan;
 import com.impact.core.Config;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch;
@@ -18,6 +19,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Output;
@@ -29,10 +31,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.StructureRequirements;
+import gregtech.api.util.*;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -338,17 +338,20 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Factorio Miner??")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Miner")
-                .addInfo("Mining takes place in current Chunk")
-                .addInfo("There is only ONE miner in one Chunk")
-                .addSeparator()
-                .addController("See the structure hologram")
+                .addInfo("Burns fuel in the controller to mine the current chunk.")
+                .addInfo("Only 1 of these miners per chunk; works in the Overworld.")
+                .addInfo("Requires a drill head in the Miner Drill Hatch.")
                 .beginStructureBlock(5, 3, 5, false)
-                .addOtherStructurePart("Iron Frame Box", "At least 16")
+                .addController("center of the top layer")
+                .addStructureSection("Components")
+                .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), "exactly 16; support frame")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Miner Drill Hatch", "exactly 1; directly below the controller; facing down")
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the mining hatch from your inventory at the green marker.")
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

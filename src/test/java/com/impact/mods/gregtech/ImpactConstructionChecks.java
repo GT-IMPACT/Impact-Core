@@ -34,6 +34,8 @@ import cpw.mods.fml.relauncher.Side;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HeatingCoil;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -44,6 +46,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maint
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTStructureChannels;
 import ic2.core.Ic2Items;
@@ -72,6 +75,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.profiler.Profiler;
@@ -210,6 +215,20 @@ public class ImpactConstructionChecks {
                 }
             }
         }
+        // Native component names require item registrations normally provided by mod loading.
+        int frameMetadata = 0;
+        for (Materials material : new Materials[] { Materials.Iron, Materials.Wood, Materials.Steel, Materials.HSLA }) {
+            if (GT_OreDictUnificator.get(OrePrefixes.frameGt, material, 1) == null) {
+                ItemStack frame = new ItemStack(Blocks.wool, 1, frameMetadata++);
+                frame.setStackDisplayName(material.mDefaultLocalName + " Frame Box");
+                GT_OreDictUnificator.set(OrePrefixes.frameGt, material, frame);
+            }
+        }
+        Block tether = com.impact.common.block.blocks.Block_NqTether.INSTANCE;
+        if (Item.getItemFromBlock(tether) == null) {
+            Block.blockRegistry.addObject(3009, "impact_test:nq_tether", tether);
+            Item.itemRegistry.addObject(3009, "impact_test:nq_tether", new ItemBlock(tether));
+        }
         Ic2Items.reinforcedGlass = new ItemStack(Blocks.glass);
         Field coolantBlocks = BlocksItems.class.getDeclaredField("fluidBlocks");
         coolantBlocks.setAccessible(true);
@@ -253,10 +272,10 @@ public class ImpactConstructionChecks {
                             .anyMatch(channel -> GTStructureChannels.HATCH.equals(channel.getChannel())), name + " missing hatch channel declaration");
                 }
                 for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
-                    assertTrue(description.contains("(" + channel.getChannel() + ")"), name + " missing " + channel.getChannel());
-                    assertTrue(structureHints.contains("(" + channel.getChannel() + ")"), name + " missing channel hint");
+                    assertFalse(description.contains("(" + channel.getChannel() + ")"), name + " exposes channel ID");
+                    assertFalse(structureHints.contains("(" + channel.getChannel() + ")"), name + " exposes hint channel ID");
                     String label = net.minecraft.util.EnumChatFormatting.AQUA
-                            + GTStructureChannels.getLabel(channel.getChannel()) + net.minecraft.util.EnumChatFormatting.DARK_GRAY;
+                            + GTStructureChannels.getLabel(channel.getChannel()) + net.minecraft.util.EnumChatFormatting.RESET;
                     assertTrue(description.contains(label), name + " missing colored label");
                     assertTrue(structureHints.contains(label), name + " missing colored hint label");
                     String header = net.minecraft.util.StatCollector.translateToLocal("gt.tooltip.channels");
@@ -317,10 +336,10 @@ public class ImpactConstructionChecks {
                         });
                         if (machine instanceof GTMTE_TheMill) {
                             assertEquals(Collections.singleton(HintColor.GREEN), usedColors);
-                            assertTrue(hints.frames.isEmpty(), "The rotor is a dedicated component, not a hatch");
+                            assertEquals(1, hints.frames.size(), "Only the rotor needs a colored frame");
                             String rotor = TestWorld.key(direction.offsetX, 64 + direction.offsetY, direction.offsetZ);
-                            assertSame(coloredHint, hints.blocks.get(rotor), "The rotor needs a marker, not a block icon");
-                            assertEquals(HintColor.GREEN, HintColor.fromMetadata(hints.metadata.get(rotor)));
+                            assertSame(ItemRegistery.TheWind, hints.blocks.get(rotor), "The rotor must display its actual block");
+                            assertEquals(HintColor.GREEN, hints.frames.get(rotor));
                         } else {
                             assertFalse(usedColors.isEmpty(), "Missing hatch hints: " + name);
                         }

@@ -9,6 +9,7 @@ import com.impact.addon.gt.api.recipe.ContinuousFluidOutputs;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HatchElement;
@@ -282,31 +283,32 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addInfo("REBIRTH IN A NEW ERA!!!")
                 .addMachineType("Antimatter Reactor")
-                .addInfo("2,097,152 EU/t and 4 L/t plasma (in cooling)")
-                .addSeparator()
-                .addController("See the structure hologram")
+                .addInfo("Output: %s EU/t.", 2097152)
+                .addInfo("Uses Hydrogen Pods and AntiHydrogen Pods as fuel.")
+                .addInfo("Cooling: 4 L/t nitrogen; produces nitrogen plasma.")
                 .beginStructureBlock(15, 15, 15, false)
-                .addOtherStructurePart("Input Hatch", "(UV or better); maximum 2")
-                .addOtherStructurePart("Output Hatch", "(UV or better); maximum 2")
-                .addOtherStructurePart("Input Bus", "(UV or better); maximum 1")
-                .addOtherStructurePart("Output Bus", "(UV or better); maximum 1")
-                .addOtherStructurePart("Dynamo Hatch", "(ZPM or better), back centered; maximum 1")
-                .addCasingInfoMin(Casings.RADIATION_PROOF, 90, false)
-                .addCasingInfoMin(Casings.INTERMIX_CHAMBER, 6, false)
-                .addCasingInfoMin(Casings.MAGNETIC_COIL, 116, false)
-                .addCasingInfoMin(Casings.DYSON_RING, 60, false)
-                .addCasingInfoMin(Casings.FUSION_MK_II, 40, false)
-                .addCasingInfoMin(Casings.CORE_CHAMBER, 6, false)
-
-                .addStructureHint("Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
-                .addStructureHint("Output Hatch or Intermix Chamber Casing", HintColor.ORANGE)
-                .addStructureHint("Input Bus or Radiation Proof Casing", HintColor.BLUE)
-                .addStructureHint("Dynamo Hatch or Radiation Proof Casing", HintColor.YELLOW)
-                .addStructureHint("Output Bus or Radiation Proof Casing", HintColor.ORANGE)
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs a ZPM-or-better dynamo and UV-or-better input and output hatches at their marked positions.")
+                .addController("front center of layer 8")
+                .addStructureSection("Components")
+                .addOtherStructurePart(Casings.RADIATION_PROOF, "90 fixed; fill unused front and rear hatch positions")
+                .addOtherStructurePart(Casings.INTERMIX_CHAMBER, "6 fixed; fill unused core input/output positions")
+                .addOtherStructurePart(Casings.MAGNETIC_COIL, "exactly 116; outer frame")
+                .addOtherStructurePart(Casings.DYSON_RING, "exactly 60; inner rings")
+                .addOtherStructurePart(Casings.FUSION_MK_II, "exactly 40; around the core chambers")
+                .addOtherStructurePart(Casings.CORE_CHAMBER, "exactly 6; around the core")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Input Hatches", "optional, up to 2; UV+; left of the controller or core")
+                .addHatchInfo("Input Bus", "optional, up to 1; UV+; left of the controller or core")
+                .addHatchInfo("Output Hatches", "optional, up to 2; UV+; right of the controller or core")
+                .addHatchInfo("Output Bus", "optional, up to 1; UV+; right of the controller or core")
+                .addHatchInfo("Dynamo Hatch", "optional, up to 1; ZPM+; rear center of layer 8")
+                .addStructureHint("Left: casings or input hatches/buses", HintColor.BLUE)
+                .addStructureHint("Right: casings or output hatches/buses", HintColor.ORANGE)
+                .addStructureHint("Rear center: casing or Dynamo Hatch", HintColor.YELLOW)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

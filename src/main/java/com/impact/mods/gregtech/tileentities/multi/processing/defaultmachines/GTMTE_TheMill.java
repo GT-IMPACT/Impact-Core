@@ -15,6 +15,7 @@ import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.gui.base.GT_GUIContainerMT_Machine;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.Utilits;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -51,7 +52,6 @@ import static com.impact.common.item.Core_List_Items.DropCrashedStone;
 import static com.impact.loader.ItemRegistery.TheWind;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.ofHint;
 
 public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
@@ -91,16 +91,16 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Is a primitive windmill")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Wind Mill")
-                .addInfo("The wind is whirling, something is crushing")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .beginStructureBlock(9, 12, 9, false)
-                .addCasingInfoExactly(CASING, 262, false)
-                .addStructureInfo("Keep the area swept by the rotor clear (13 blocks across). Air markers show the required space.")
-                .addStructureHint("The Mill Rotor", HintColor.GREEN)
+                .beginStructureBlock(13, 15, 10, false)
+                .addController("directly behind the rotor, layer 9 from the bottom")
+                .addStructureSection("Components")
+                .addOtherStructurePart(CASING, "exactly 262; mill body")
+                .addOtherStructurePart(new ItemStack(TheWind), "exactly 1; directly in front of the controller")
+                .addAir(120, "rotor clearance, 13 blocks across")
+                .addStructureHint("Rotor", HintColor.GREEN)
                 .toolTipFinisher();
     }
 
@@ -244,6 +244,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
     private static IStructureElement<GTMTE_TheMill> rotorElement() {
         IStructureElement<GTMTE_TheMill> rotor = ofBlockAnyMeta(TheWind);
+        IStructureElement<GTMTE_TheMill> rotorHint = rotor.withHint(HintColor.GREEN);
         return new IStructureElement<GTMTE_TheMill>() {
             @Override
             public boolean check(GTMTE_TheMill machine, World world, int x, int y, int z) {
@@ -257,7 +258,7 @@ public class GTMTE_TheMill extends GTMTE_Impact_BlockBase<GTMTE_TheMill> {
 
             @Override
             public boolean spawnHint(GTMTE_TheMill machine, World world, int x, int y, int z, ItemStack trigger) {
-                return ofHint(HintColor.GREEN).spawnHint(machine, world, x, y, z, trigger);
+                return rotorHint.spawnHint(machine, world, x, y, z, trigger);
             }
 
             @Override

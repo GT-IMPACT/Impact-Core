@@ -8,10 +8,12 @@ import com.impact.mods.gregtech.blocks.ImpactHatchElement
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
+import com.impact.util.ImpactMultiblockTooltipBuilder
 import com.impact.util.multis.WorldProperties.chunk
 import gregtech.api.enums.Casings
 import gregtech.api.enums.HatchElement
 import gregtech.api.enums.Materials
+import gregtech.api.enums.OrePrefixes
 import gregtech.api.interfaces.ICasing
 import gregtech.api.interfaces.IHatchElement
 import gregtech.api.interfaces.ITexture
@@ -21,6 +23,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase
 import gregtech.api.render.TextureFactory
+import gregtech.api.util.GT_OreDictUnificator
 import gregtech.api.util.GTStructureUtility
 import gregtech.api.util.GTStructureUtility.ofFrame
 import gregtech.api.util.MultiblockTooltipBuilder
@@ -160,6 +163,14 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
                         tile is GT_MetaTileEntity_Hatch_Input
                     } else {
                         tile is GT_MetaTileEntity_Hatch_Output
+                    }
+                }
+
+                override fun getDescription(): String {
+                    return if (input) {
+                        HatchElement.InputHatch.description
+                    } else {
+                        HatchElement.OutputHatch.description
                     }
                 }
             }
@@ -374,32 +385,75 @@ class GTMTEOilDrilling : GTMTE_Impact_BlockBase<GTMTEOilDrilling> {
     }
 
     public override fun createTooltip(): MultiblockTooltipBuilder {
-        return MultiblockTooltipBuilder(mName).apply {
-            addMachineType("Underground Pump")
-                .addController("See the structure hologram")
-                .addInfo("Extracts underground fluids from a current vein")
-                .addInfo("There can only be one machine in a Chunk")
-                .addInfo("For operation of the machine, it is required to connect Input Hatch and Output Hatch by pipe to distill Dirty Fluid")
-                .addStructureHint("Input Hatch for Fluid Dirty Mix", HintColor.LIGHT_BLUE)
-                .addStructureHint("Output Hatch for Fluid Dirty Mix", HintColor.RED)
-                .addStructureHint("Input Hatch for Water", HintColor.BLUE)
-                .addStructureHint("Output Hatch for Oil/Gas/Others", HintColor.ORANGE)
-                .addOtherStructurePart("Steel Frame Box", "At least 72")
-                .addCasingInfoMin(CASING, SHELL.minimumCasings, false)
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 5")
-                .addSubChannel(
-                GTStructureUtility.HATCH_CHANNEL,
-                "Installs the drilling rig service and mixing hatches from your inventory at their " +
-                "marked positions.",
+        return ImpactMultiblockTooltipBuilder(mName)
+            .useCompactStructure()
+            .addMachineType("Underground Pump")
+            .addInfo("Work in progress: no underground fluid output yet.")
+            .addInfo("Only 1 of these machines per chunk.")
+            .addInfo(
+                "Pollution: %s per second before muffler reduction.",
+                getPollutionPerTick(null) * 20,
             )
-                .toolTipFinisher()
-        }
+            .beginStructureBlock(7, 12, 7, false)
+            .addController("front center of layer 3")
+            .addStructureSection("Components")
+            .addStructurePartInfo(
+                CASING,
+                "%s+; fill unused casing positions",
+                SHELL.minimumCasings,
+            )
+            .addOtherStructurePart(
+                GT_OreDictUnificator.get(
+                    OrePrefixes.frameGt,
+                    Materials.Steel,
+                    1L,
+                ),
+                "exactly 72; support frame and mast",
+            )
+            .addStructureInfo("Drill shaft: 9 air or collision blocks in the center of layers 1-9.")
+            .addStructureSection("Hatches and buses")
+            .addHatchInfo(
+                "Input Hatches",
+                "layer 4 left and rear center: exactly 1 each; casings: optional, up to 1",
+            )
+            .addHatchInfo(
+                "Output Hatches",
+                "layer 4 right: exactly 1; layer 10 center: exactly 1; casings: optional, up to 3",
+            )
+            .addHatchInfo(
+                "Energy Hatch",
+                "optional, up to 1 total; casing positions",
+            )
+            .addHatchInfo(
+                "Maintenance Hatch",
+                "optional, up to 1; casing positions",
+            )
+            .addHatchInfo(
+                "Muffler Hatch",
+                "optional, up to 1; casing positions",
+            )
+            .addStructureHint(
+                "Layer 4 rear center: Input Hatch",
+                HintColor.LIGHT_BLUE,
+            )
+            .addStructureHint(
+                "Layer 10 center: Output Hatch",
+                HintColor.RED,
+            )
+            .addStructureHint(
+                "Layer 4 left: Input Hatch",
+                HintColor.BLUE,
+            )
+            .addStructureHint(
+                "Layer 4 right: Output Hatch",
+                HintColor.ORANGE,
+            )
+            .addStructureHint(
+                "Casings or hatches",
+                HintColor.GREEN,
+            )
+            .addHatchChannelInfo()
+            .toolTipFinisher()
     }
 
     public override fun getStructureDefinition(): IStructureDefinition<GTMTEOilDrilling> {

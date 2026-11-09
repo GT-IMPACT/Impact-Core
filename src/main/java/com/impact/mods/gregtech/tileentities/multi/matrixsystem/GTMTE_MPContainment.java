@@ -10,6 +10,7 @@ import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.Utilits;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -129,26 +130,28 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Collecting stable Matrix Particles")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Containment")
-                .addInfo("Constant power consumption: 1,920 EU/t")
-                .addInfo("Stable particles are filled in \"Portable Cell with Matrix Particles\"")
-                .addInfo("Need Low Gravity")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Bus", "Any casing")
-                .addOtherStructurePart("Output Bus", "Exactly 1 at the orange marker")
-                .addRequirements(SHELL, "Any casing position")
-                .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "See the structure hologram", 16)
+                .addInfo("Fills portable cells with 1000 stable Matrix Particles each.")
+                .addInfo("Power consumption: 1920 EU/t.")
+                .addInfo("Requires low gravity.")
+                .beginStructureBlock(7, 3, 5, false)
+                .addController("front, second from the right, middle layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "exactly 16; inner chamber")
+                .addOtherStructurePart("I-Glass", "exactly 4; middle layer; any color")
+                .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "exactly 1; middle layer, 1 block left and 2 blocks behind the controller")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional; casing positions")
+                .addHatchInfo("Input Buses", "optional; casing positions")
+                .addHatchInfo("Output Bus", "exactly 1; rear wall, directly behind the controller")
                 .addStructureHint("Output Bus", HintColor.ORANGE)
-                .addOtherStructurePart("I-Glass", "Any color; see the structure hologram")
                 .addStructureHint("Matrix Transducer", HintColor.PURPLE)
-                .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
-                .addStructureInfo("Hatches replacing casings: at most 28")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the item output bus at the orange marker, plus an input bus, maintenance and energy hatches in the casing.")
+                .addStructureHint("Casings or hatches/buses", HintColor.BLUE)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

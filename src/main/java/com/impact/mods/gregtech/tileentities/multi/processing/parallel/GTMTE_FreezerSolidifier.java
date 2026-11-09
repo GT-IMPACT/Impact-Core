@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
@@ -22,7 +23,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_FreezerSolidifier> {
 
@@ -56,11 +56,11 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
                             { " CCC ", " C C ", " C C ", " CCC " }
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_FreezerSolidifier.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_FreezerSolidifier.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -80,24 +80,23 @@ public class GTMTE_FreezerSolidifier extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Cools and solidifies molten materials")
-                .addInfo("Parallel points: base 1, maximum 256")
-                .addMachineType("Freezer Solidification")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Freezer Solidifier")
+                .addParallelInfo()
                 .beginStructureBlock(5, 4, 5, false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 2")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 6")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 32")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+                .addController("roof center")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 2; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 6; casing positions")
+                .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

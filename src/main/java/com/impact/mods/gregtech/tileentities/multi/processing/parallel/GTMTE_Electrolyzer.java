@@ -4,6 +4,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ICasing;
@@ -23,7 +24,6 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Electrolyzer> {
 
@@ -81,11 +81,11 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('G', ofBlockAnyMeta(IGlassBlock))
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Electrolyzer.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_Electrolyzer.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -93,26 +93,26 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Single-block machine equivalent")
-                .addInfo("Parallel points: base 1, maximum 256")
-                .addMachineType("Electrolyzer")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Muffler Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 9")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 6")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 6")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 31")
-                .addOtherStructurePart(9, "I-Glass", "Any color; see the structure hologram")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Multiblock Electrolyzer")
+                .addParallelInfo()
+                .addInfo("Accepts fluids instead of fluid cells.")
+                .beginStructureBlock(3, 4, 5, false)
+                .addController("front center, layer 2 from the bottom")
+                .addStructureSection("Components")
+                .addOtherStructurePart(SHELL.getCasing(), "10+; fill unused casing positions")
+                .addOtherStructurePart("I-Glass", "exactly 9; roof center and upper side walls; any color")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 9; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 6; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
+                .addHatchInfo("Output Hatches", "optional, up to 6; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

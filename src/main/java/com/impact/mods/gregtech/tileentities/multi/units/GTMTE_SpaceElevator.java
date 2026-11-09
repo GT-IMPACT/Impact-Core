@@ -16,6 +16,7 @@ import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_TargetBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.PositionObject;
 import com.impact.util.Utilits;
 import com.impact.util.string.Language;
@@ -221,18 +222,21 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Teleportation on Space Satellite")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addInfo("Teleports players between linked Space Elevators.")
                 .addMachineType("Space Elevator")
-                .addInfo("Setup is done using Laptop")
-                .addInfo("Consume energy for teleport: " + CAPACITY_FOR_TELEPORT + " EU")
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
-                .addOtherStructurePart("Space Elevator Hawser", "Center below Controller")
-                .addStructureHint("Casing or compatible hatch", HintColor.BLUE)
-                .addStructureInfo("Hatches replacing casings: at most 4")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs an energy or laser input from your inventory in the elevator base.")
+                .addInfo("Both elevators must be active; link them with a Laptop.")
+                .addInfo("Teleport cost: %s EU.", CAPACITY_FOR_TELEPORT)
+                .beginStructureBlock(7, 6, 7, false)
+                .addController("center of layer 2")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", HATCHES_A.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(SpaceElevatorBlock, 1, 0), "exactly 1; directly below the controller")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addStructureHint("Casings or energy hatches", HintColor.BLUE)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

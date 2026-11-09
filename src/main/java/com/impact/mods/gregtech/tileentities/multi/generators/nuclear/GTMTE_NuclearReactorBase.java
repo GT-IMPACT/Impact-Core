@@ -17,6 +17,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.hatch.GTMTE_Reactor_Rod_Hatch;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
@@ -112,27 +113,29 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        int tier = tierReactor();
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addInfo("Radiation!")
                 .addMachineType("Steam Producer")
-                .addInfo("Default Mode (default rods): consumes water produces steam")
-                .addInfo("Default Mode (MOX rods): consumes water produces superheated steam, all rods need MOX")
-                .addInfo("Fact Decay Mode (default or MOX rods): consumes coolant produces hot coolant, rods decays speed x5")
-                .addInfo("Select reactor mode with a screwdriver")
-                .addSeparator()
-                .beginStructureBlock(3 + 2 * tierReactor(), tierReactor() == 1 ? 4 : 6, 3 + 2 * tierReactor(), false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Nuclear Rod Hatch", "Any top middle casing; maximum " + AMOUNT_NUCLEAR_HATCHES[tierReactor() - 1])
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum " + AMOUNT_INPUT_HATCHES[tierReactor() - 1])
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum " + AMOUNT_OUTPUT_HATCHES[tierReactor() - 1])
-                .addRequirements(shellRequirements(), "Radiation shielding")
-                .addOtherStructurePart(Casings.STEEL_PIPE, "Internal pipes", 8 << (tierReactor() - 1))
-                .addOtherStructurePart("Machine Hull", "Bottom layer; optional AE2 interface connection; maximum 1")
-                .addStructureHint("Casing or compatible hatch", HintColor.LIME)
-                .addStructureHint("Casing, compatible hatch or machine hull", HintColor.CYAN)
-                .addStructureHint(tierReactor() == 1 ? "Reactor rod" : "Casing or reactor rod", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most " + (SHELL_POSITIONS[tierReactor() - 1] - shellRequirements().getMinimumCasings()))
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs reactor rod hatches at the marked positions, plus available machine hulls and service hatches.")
+                .addInfo("Default mode: water to steam.")
+                .addInfo("MOX fuel: water to superheated steam; all loaded fuel rods must be MOX.")
+                .addInfo("Fast decay mode: coolant to hot coolant; fuel rods deplete 5x faster.")
+                .addInfo("A hot reactor needs water or coolant even when stopped; a shortage causes Nuclear Rod Hatches to explode.")
+                .beginStructureBlock(3 + 2 * tier, tier == 1 ? 4 : 6, 3 + 2 * tier, false)
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", shellRequirements().getMinimumCasings())
+                .addStructurePartInfo(Casings.STEEL_PIPE, "exactly %s; internal columns", 8 << (tier - 1))
+                .addOtherStructurePart("Machine Hull", "optional, up to 1; bottom layer")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Nuclear Rod Hatch", tier == 1 ? "exactly 1; roof center; facing up" : "optional, up to " + AMOUNT_NUCLEAR_HATCHES[tier - 1] + "; center " + (2 * tier - 1) + "x" + (2 * tier - 1) + " of the roof; facing up")
+                .addHatchInfo("Input Hatches", "optional, up to " + AMOUNT_INPUT_HATCHES[tier - 1] + "; casing positions")
+                .addHatchInfo("Output Hatches", "optional, up to " + AMOUNT_OUTPUT_HATCHES[tier - 1] + "; casing positions")
+                .addStructureHint("Casings or input/output hatches", HintColor.LIME)
+                .addStructureHint("Bottom: casings, input/output hatches or Machine Hull", HintColor.CYAN)
+                .addStructureHint(tier == 1 ? "Nuclear Rod Hatch" : "Casings or Nuclear Rod Hatches", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -25,7 +26,6 @@ import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_HeavyMetalCyclone> {
 
@@ -71,21 +71,21 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('G', ofBlockAnyMeta(IGlassBlock))
                     .addElement('C', ofBlock(InsideBlock, 1))
-                    .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HeavyMetalCyclone.class)
+                    .addElement('D', GTStructureUtility.buildHatchAdder(GTMTE_HeavyMetalCyclone.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
-                    .addElement('B', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HeavyMetalCyclone.class)
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
+                    .addElement('B', GTStructureUtility.buildHatchAdder(GTMTE_HeavyMetalCyclone.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel,
                                     HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
-                    .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HeavyMetalCyclone.class)
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
+                    .addElement('E', GTStructureUtility.buildHatchAdder(GTMTE_HeavyMetalCyclone.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Parallel, ImpactHatchElement.Muffler,
                                     HatchElement.Energy, ImpactHatchElement.LaserInput, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Parallel, ImpactHatchElement.Muffler, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -107,26 +107,26 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Centrifuge for heavy materials")
-                .addInfo("Parallel points: base 1, maximum 256")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Heavy Metal Cyclone")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 3")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 4")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 6")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 4")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(new ItemStack(InsideBlock, 1, 1), "inside structure", 20)
-                .addOtherStructurePart("I-Glass", "glass for structure")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-
-                .addStructureInfo("Hatches replacing casings: at most 60")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+                .addParallelInfo()
+                .beginStructureBlock(7, 7, 7, false)
+                .addController("front center of the tower, layer 3 from the bottom")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(InsideBlock, 1, 1), "exactly 20; tower interior")
+                .addOtherStructurePart("I-Glass", "exactly 12; tower walls, layers 3-6; any color")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 3 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 4; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 6; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 4; casing positions")
+                .addHatchInfo("Output Hatches", "optional, up to 4; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

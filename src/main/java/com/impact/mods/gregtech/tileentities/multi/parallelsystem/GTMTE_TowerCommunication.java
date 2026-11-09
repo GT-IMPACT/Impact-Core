@@ -16,11 +16,13 @@ import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockB
 import com.impact.network.GTNetworkHandler;
 import com.impact.network.NetworkPackets;
 import com.impact.network.special.LaserPushPacket;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.PositionObject;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -29,6 +31,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
@@ -145,18 +148,22 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Communication Tower")
-                .addInfo("Working radius is 9x9 chunks square")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Communication Receiver Hatch", "Top")
-                .addOtherStructurePart("Steel Frame Box", "Frames")
-                .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Communication receiver hatch", HintColor.PURPLE)
-                .addStructureInfo("Hatches replacing casings: at most 20")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the four tower receivers and available service hatches from your inventory.")
+                .addInfo("Connects nearby machines to the satellite network.")
+                .addInfo("Coverage: 17x17 chunks, centered on the tower's chunk.")
+                .addInfo("All 4 Communication Receivers must be connected and active.")
+                .beginStructureBlock(7, 19, 7, false)
+                .addController("center of layer 2")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused base positions", HATCHES_A.getMinimumCasings())
+                .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1), "exactly 110; support frame and mast")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Communication Receiver", "exactly 4; around the mast in layer 15")
+                .addStructureHint("Base casings", HintColor.GREEN)
+                .addStructureHint("Communication Receivers", HintColor.PURPLE)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

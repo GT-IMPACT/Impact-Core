@@ -12,6 +12,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
 import cpw.mods.fml.common.Optional;
@@ -185,25 +186,23 @@ public class GTMTE_LapPowerStation extends
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Multi battery buffer!")
-                .addInfo("Very big battery")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Battery Buffer")
-                .addSeparator()
+                .addInfo("Capacity depends on the number and tier of installed capacitors.")
                 .beginVariableStructureBlock(5, 5, 4, 18, 5, 5, false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Dynamo Hatch", "Base casing")
-                .addOtherStructurePart("Energy Hatch", "Base casing")
-                .addRequirements(SHELL, "5x2x5 base")
-                .addSubChannel(GTStructureChannels.HEIGHT, "Capacitor layers: 1-15; total height = value + 3")
-                .addSubChannel(GTStructureChannels.TIER, "Capacitor tier: 4-10. Without this channel: UEV hologram, available capacitors for auto-build. Existing capacitors are kept.")
-                .addSubChannel(GTStructureChannels.TIER, "4: Energium; 5: IV (Lapotronic); 6: LuV; 7: ZPM; 8: UV")
-                .addSubChannel(GTStructureChannels.TIER, "9: UHV (Crystal Orb); 10: UEV (Crystal Module)")
-                .addOtherStructurePart("Capacitors", "Center 3x(1-15)x3 above base (9-135 blocks)")
-                .addOtherStructurePart("I-Glass", "16 per capacitor layer and 25 in the roof (41-265); capacitor columns may also end with glass")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 24")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available energy inputs, dynamos, laser hatches and a Maintenance Hatch in the capacitor station base.")
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused positions in the 2-layer base", SHELL.getMinimumCasings())
+                .addOtherStructurePart("Capacitors", "up to 9 per layer; central 3x3 above the base; mixed tiers allowed")
+                .addOtherStructurePart("I-Glass", "16 per layer and 25 in the roof; walls and roof must have the same color; may end capacitor columns")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Energy Hatches", "optional; 2-layer base")
+                .addHatchInfo("Dynamo Hatches", "optional; 2-layer base")
+                .addStructureHint("Base: casings or energy/dynamo hatches", HintColor.GREEN)
+                .addSubChannel(GTStructureChannels.HEIGHT, "1-15: capacitor layers; %s; default: stack size.", "height = value + 3")
+                .addSubChannel(GTStructureChannels.TIER, "4: Energium; 5-10: IV-UEV; unset: UEV preview, available tiers; existing capacitors are kept.")
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

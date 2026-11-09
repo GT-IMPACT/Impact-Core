@@ -7,6 +7,7 @@ import com.impact.mods.gregtech.blocks.ImpactCasings
 import com.impact.mods.gregtech.blocks.ImpactHatchElement
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.mods.gregtech.tileentities.multi.structure.RequiresHatches.hasRequireHatches
+import com.impact.util.ImpactMultiblockTooltipBuilder
 import cpw.mods.fml.common.Optional
 import gregtech.api.enums.HatchElement
 import gregtech.api.enums.Textures
@@ -276,28 +277,24 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
 
 
     public override fun createTooltip(): MultiblockTooltipBuilder {
-        return MultiblockTooltipBuilder(mName).apply {
-            addInfo("Consume Stable Matrix Particles")
-            addMachineType("ME System Provider")
-            addInfo("Crafting ME Components")
-            addSeparator()
-            addController("See the structure hologram")
-            addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-            addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-            addOtherStructurePart("Input Bus", "Any casing; maximum 2")
-            addOtherStructurePart("Output Bus", "Any casing; maximum 2")
-            addRequirements(SHELL, "Any casing position")
-            addOtherStructurePart("Matrix Particles Chamber", "Any Casing (max x1)")
-            addOtherStructurePart("I-Glass", "Glass for structure")
-            addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-            addStructureInfo("Hatches replacing casings: at most 10")
-            addSubChannel(
-                GTStructureUtility.HATCH_CHANNEL,
-                "Installs the Matrix Particles Chamber and available maintenance, power, input and " +
-                "output hatches from your inventory.",
-            )
-            toolTipFinisher()
-        }
+        return ImpactMultiblockTooltipBuilder(mName)
+            .useCompactStructure()
+            .addMachineType("ME System Provider")
+            .addInfo("Crafts ME components using stable Matrix Particles.")
+            .beginStructureBlock(6, 4, 4, false)
+            .addController("right edge of layer 2, 1 block behind the front edge")
+            .addStructureSection("Components")
+            .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.minimumCasings)
+            .addOtherStructurePart("I-Glass", "exactly 24; roof and front/back walls; any color")
+            .addStructureSection("Hatches and buses")
+            .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
+            .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+            .addHatchInfo("Input Buses", "optional, up to 2; casing positions")
+            .addHatchInfo("Output Buses", "optional, up to 2; casing positions")
+            .addHatchInfo("Matrix Particles Chamber", "exactly 1; casing positions")
+            .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+            .addHatchChannelInfo()
+            .toolTipFinisher()
     }
 
     override fun getRecipeMap(): GT_Recipe_Map {

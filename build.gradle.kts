@@ -34,18 +34,16 @@ dependencies {
     implementation("space.impact:Packet-network:1.1.8.dirty")
     implementation("space.impact:ImpactStructures:1.1.3:dev")
     implementation("space.impact:VirtualWorld:2.0.4:dev")
-    implementation("space.impact:gregtech-impact:5.09.37.6:dev") {
-        isTransitive = false
-    }
+    implementation("space.impact:gregtech-impact:5.09.37.8:dev") { isTransitive = false }
 
-    compileOnly("space.impact:ImpactBlueprints:0.0.6:dev") { isTransitive = false }
-    runtimeOnlyNonPublishable("space.impact:ImpactBlueprints:0.0.6:dev") { isTransitive = false }
-    testImplementation("space.impact:ImpactBlueprints:0.0.6:dev") { isTransitive = false }
+    val blueprints = "space.impact:ImpactBlueprints:0.0.6:dev"
+    compileOnly(blueprints) { isTransitive = false }
+    runtimeOnlyNonPublishable(blueprints) { isTransitive = false }
+    testImplementation(blueprints) { isTransitive = false }
 
     compileOnly("space.impact:OpenComputers:1.7.5.7-impact")
     runtimeOnlyNonPublishable("space.impact:GregTechBridge:1.0.2:dev") { isTransitive = false }
 
-    // maven impact
     api("com.github.GTNewHorizons:modularui:1.1.24:dev") { isTransitive = false }
     api("com.github.GTNewHorizons:ModularUI2:2.3.92-1.7.10:dev") {
         exclude(group = "com.github.GTNewHorizons", module = "ModularUI")
@@ -72,9 +70,7 @@ dependencies {
     testRuntimeOnly("it.unimi.dsi:fastutil:8.5.18")
     testRuntimeOnly("org.joml:joml:1.10.8")
     testRuntimeOnly("com.github.GTNewHorizons:lwjgl3ify:3.0.34:api") { isTransitive = false }
-    testRuntimeOnly("curse.maven:neverenoughanimation-1062347:7664003-sources-7663978") {
-        isTransitive = false
-    }
+    testRuntimeOnly("curse.maven:neverenoughanimation-1062347:7664003-sources-7663978") { isTransitive = false }
 }
 
 tasks.test {
@@ -94,6 +90,6 @@ tasks.test {
 }
 
 // Do not upload a release before its verification tasks have passed.
-tasks.withType<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>().configureEach {
+tasks.withType<AbstractPublishToMaven>().configureEach {
     dependsOn(tasks.check)
 }

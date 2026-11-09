@@ -226,9 +226,11 @@ public class ImpactCoreQaRegressionChecks {
             GT_OreDictUnificator.set(OrePrefixes.frameGt, mat, new ItemStack(machineItem, 1, fid));
         }
         Block tether = com.impact.common.block.blocks.Block_NqTether.INSTANCE;
-        int tid = blockId++;
-        Block.blockRegistry.addObject(tid, "fullqa:tether", tether);
-        Item.itemRegistry.addObject(tid, "fullqa:tether", new ItemBlock(tether));
+        if (Item.getItemFromBlock(tether) == null) {
+            int tid = blockId++;
+            Block.blockRegistry.addObject(tid, "fullqa:tether", tether);
+            Item.itemRegistry.addObject(tid, "fullqa:tether", new ItemBlock(tether));
+        }
         for (String name : names)
             for (Class<?> c = Class.forName(name); c != null; c = c.getSuperclass())
                 for (Field f : c.getDeclaredFields())
@@ -560,10 +562,18 @@ public class ImpactCoreQaRegressionChecks {
                         .newInstance(entry[1]);
                 String text = net.minecraft.util.EnumChatFormatting
                         .getTextWithoutFormattingCodes(String.join("\n", controller.getPrimaryDescription()) + "\n"
-                                + String.join("\n", controller.getSecondaryDescription()));
+                                + String.join("\n", controller.getSecondaryDescription()) + "\n"
+                                + String.join("\n", controller.getControlDescription()));
+                assertFalse(text.contains("%s"), entry[1] + " exposes a format placeholder");
                 for (String key : translations.stringPropertyNames()) {
                     if (key.startsWith("TileEntity_DESCRIPTION_" + entry[1] + "_")) {
-                        assertTrue(text.contains(translations.getProperty(key)),
+                        String template = net.minecraft.util.EnumChatFormatting
+                                .getTextWithoutFormattingCodes(translations.getProperty(key));
+                        String pattern = Arrays.stream(template.split("%s", -1))
+                                .map(java.util.regex.Pattern::quote)
+                                .collect(java.util.stream.Collectors.joining("[^\\n]+"));
+                        String ungrouped = text.replaceAll("(?<=\\d),(?=\\d)", "");
+                        assertTrue(java.util.regex.Pattern.compile(pattern).matcher(ungrouped).find(),
                                 language + " missing or misnumbered " + key);
                     }
                 }

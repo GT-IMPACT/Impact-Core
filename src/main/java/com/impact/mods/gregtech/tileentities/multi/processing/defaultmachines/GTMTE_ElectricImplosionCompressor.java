@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -26,7 +27,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GTMTE_ElectricImplosionCompressor> {
 
@@ -69,11 +69,11 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', Casings.SUPERCONDUCTING_COIL.asElement())
                     .addElement('D',
-                            withHint(GTStructureUtility.buildHatchAdder(GTMTE_ElectricImplosionCompressor.class)
+                            GTStructureUtility.buildHatchAdder(GTMTE_ElectricImplosionCompressor.class)
                                     .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                             HatchElement.Output)
                                     .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output)
-                                    .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                                    .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -95,26 +95,24 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Babah!")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Implosion Compressor")
                 .addInfo("Not used TNT!!!")
                 .addInfo("Energy consumption: (EU/t) = (NEI Recipe EU/t) * 1000")
-                .addInfo("Select machine type by clicking the controller with a screwdriver")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
                 .beginStructureBlock(7, 3, 3, false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 2")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Muffler Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 5")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(Casings.SUPERCONDUCTING_COIL, "Around the compression chamber, including the top and bottom faces", 16)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 20")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
+                .addController("front right edge, middle layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(Casings.SUPERCONDUCTING_COIL, "exactly 16; around the compression chamber, including its top and bottom")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 5; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

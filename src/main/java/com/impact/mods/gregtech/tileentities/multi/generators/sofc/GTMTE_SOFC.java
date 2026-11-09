@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.generators.sofc;
 import gregtech.api.logic.FuelProcessingLogic;
 import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
@@ -67,29 +68,27 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         int tier = getTier();
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-                .addMachineType("Generator")
-                .addMachineType("Steam Producer")
-                .addInfo("Steam production requires the SOFC to heat up completely first")
-                .addInfo("Oxygen consumption: " + OXYGEN_PER_SEC[tier] + " L/s")
-                .addInfo("Power output at full efficiency: " + EU_PER_TICK[tier] + " EU/t")
-                .addInfo((tier == 0 ? "Steam output after warm-up: " : "Superheated steam output after warm-up: ")
-                        + calculateSteamOutput() + " L/s")
-                .addSeparator()
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addInfo("Generates electricity from gas fuels without pollution.")
+                .addMachineType("Generator, Steam Producer")
+                .addInfo("Oxygen consumption: %s L/s.", OXYGEN_PER_SEC[tier])
+                .addInfo("Power output at full efficiency: %s EU/t.", EU_PER_TICK[tier])
+                .addInfo(tier == 0 ? "Steam output after full warmup: %s L/s." : "Superheated steam output after full warmup: %s L/s.", calculateSteamOutput())
                 .beginStructureBlock(3, 3, 5, false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Dynamo Hatch", "Rear end layer (lime); maximum 2 regular and 1 multi-amp hatch")
-                .addCasingInfoMin(CASINGS[tier], requirements().getMinimumCasings(), false)
-                .addOtherStructurePart("Input Hatch", "Casing positions; at least 2 fluid inputs for fuel and oxygen")
-                .addOtherStructurePart("Output Hatch", "Casing positions; steam output")
-                .addOtherStructurePart(new ItemStack(CeramicBlock, 1, tier), "Center 1x1x3", 3)
-                .addOtherStructurePart(6, "Reinforced Glass", "Along both sides of the electrolyte units")
-                .addOtherStructurePart("Maintenance Hatch", "Casing positions; exactly 1")
-                .addStructureHint("Casing, input/output hatch or maintenance hatch", HintColor.GREEN)
-                .addStructureHint("Casing, input/output hatch, maintenance hatch or dynamo hatch", HintColor.LIME)
-                .addStructureInfo("Hatches replacing casings: at most 17")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance and fluid inputs for fuel and oxygen, plus available fluid outputs and dynamos.")
+                .addController("front center of layer 2")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASINGS[tier], "%s+; fill unused casing positions", requirements().getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(CeramicBlock, 1, tier), "exactly 3; center of layer 2, between the front and rear walls")
+                .addOtherStructurePart(Ic2Items.reinforcedGlass, "exactly 6; on both sides of the ceramic units")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Input Hatches", "2+; casing positions; fuel and oxygen")
+                .addHatchInfo("Output Hatches", "optional; casing positions; steam output")
+                .addHatchInfo("Dynamo Hatches", "optional, up to 2 standard and 1 multi-amp; rear wall")
+                .addStructureHint("Casings or input/output/maintenance hatches", HintColor.GREEN)
+                .addStructureHint("Rear wall: casings or input/output/maintenance/dynamo hatches", HintColor.LIME)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

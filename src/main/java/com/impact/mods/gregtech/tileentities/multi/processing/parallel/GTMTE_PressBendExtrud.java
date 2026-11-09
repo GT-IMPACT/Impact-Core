@@ -5,6 +5,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ICasing;
@@ -24,7 +25,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_PressBendExtrud> {
 
@@ -47,25 +47,23 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Single-block machine equivalent")
-                .addInfo("Parallel points: base 1, maximum 256")
-                .addInfo("Pollution: 200 to 12800")
-                .addMachineType("Extruder, Bender, Presser")
-                .addInfo("Select machine type by clicking the controller with a screwdriver")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 20")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addOtherStructurePart("Muffler Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 30")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Extruder, Bending Machine, Forming Press")
+                .addParallelInfo()
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
+                .beginStructureBlock(3, 3, 5, false)
+                .addController("front center, middle layer")
+                .addStructureSection("Components")
+                .addOtherStructurePart(SHELL.getCasing(), "11+; fill unused casing positions")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 20; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 
@@ -92,11 +90,11 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
                             { "CCC", "CCC", "CCC" }
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_PressBendExtrud.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_PressBendExtrud.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;

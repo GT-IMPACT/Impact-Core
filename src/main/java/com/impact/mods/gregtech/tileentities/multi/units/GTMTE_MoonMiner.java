@@ -8,6 +8,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -80,14 +81,24 @@ public class GTMTE_MoonMiner extends GTMTE_Impact_BlockBase<GTMTE_MoonMiner> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo(EnumChatFormatting.RED + "MultiBlock in dev [WIP]")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Collision block or compatible hatch", HintColor.LIME)
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addStructureInfo("Hatches replacing casings: at most 17")
-                .addOtherStructurePart(new ItemStack(CollisionBlock, 1, 0), "See the structure hologram", 1)
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the miner casing.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addInfo(EnumChatFormatting.RED + "Work in progress: no mining output yet.")
+                .addMachineType("Moon Miner")
+                .addInfo("Requires the Moon; controller at Y 70 or lower.")
+                .addInfo("Consumes 200 L of Drilling Fluid per second.")
+                .beginStructureBlock(5, 3, 5, false)
+                .addController("center of the top layer, 1 block behind the front edge")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(CollisionBlock, 1, 0), "1 unless replaced by a hatch; bottom center")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions or bottom center")
+                .addHatchInfo("Input Hatch", "optional, up to 1; casing positions or bottom center")
+                .addHatchInfo("Energy Hatch", "optional, up to 1 total; casing positions or bottom center")
+                .addStructureHint("Casings or hatches", HintColor.GREEN)
+                .addStructureHint("Bottom center: collision block or hatches", HintColor.LIME)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

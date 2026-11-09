@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
@@ -27,7 +28,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_MultiDistillationTower
         extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_MultiDistillationTower> {
@@ -61,11 +61,11 @@ public class GTMTE_MultiDistillationTower
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('C', HeatingCoil.KANTHAL.asElement())
-                    .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MultiDistillationTower.class)
+                    .addElement('D', GTStructureUtility.buildHatchAdder(GTMTE_MultiDistillationTower.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -99,25 +99,25 @@ public class GTMTE_MultiDistillationTower
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("OMG!? Where Bart`s Big Tower?")
-                .addInfo("Single-block machine equivalent")
-                .addInfo("Parallel points: base 1, maximum 256")
-                .addMachineType("Multi Distillation Tower")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 9")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 66")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 6")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(HeatingCoil.KANTHAL, "inside the hollow", 48)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 90")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Distillation Tower")
+                .addParallelInfo()
+                .beginStructureBlock(5, 12, 5, false)
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(HeatingCoil.KANTHAL, "exactly 48; inner rings, layers 2-3, 6-7 and 10-11")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 6; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 9; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
+                .addHatchInfo("Output Hatches", "optional, up to 66; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

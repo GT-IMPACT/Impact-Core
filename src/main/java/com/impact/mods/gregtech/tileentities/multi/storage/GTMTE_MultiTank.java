@@ -11,6 +11,7 @@ import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.storage.hatch.GTMTE_TankHatch;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.fluid.IMultiFluidTank;
 import com.impact.util.fluid.MultiFluidHandler;
 import cpw.mods.fml.common.Optional;
@@ -266,27 +267,28 @@ public class GTMTE_MultiTank
      */
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Fluid Tank")
-                .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-                .addInfo("Right-Click to the controller with a screwdriver will turn on excess voiding.")
-                .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
-                .addInfo("If the integrity of Tank Storage is broken, the fluids are removed.")
-                .addInfo("Use a view cell in the gui to restrict fluids.")
-                .beginStructureBlock(5, 5, 9, false).addController("See the structure hologram")
-                .addOtherStructurePart("Tank Storage Block", "63 blocks in the inner 3x7x3 volume")
-                .addStructureInfo("Two 5x5 end layers; hatches may replace the inner casing positions")
-                .addOtherStructurePart("I-Glass", "28 fixed corner blocks; the other 84 side positions accept glass, casing or compatible hatches")
-                .addOtherStructurePart("Tank Input and Output Hatch", "Marked casing and side-wall positions; maximum 1 per structure")
-                .addInfo("Tank Input and Output Hatch provides information and connects to AE2 and OC systems")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Glass, casing or input, output or tank access hatch", HintColor.LIME)
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addStructureInfo("Hatches in the two end layers: at most 17")
+                .addInfo("Stores up to 25 fluids; capacity depends on the installed Tank Storage Blocks.")
+                .addInfo("Capacity is split equally across all 25 slots.")
+                .addInfo("Stored fluids are inaccessible while the structure is incomplete.")
+                .addInfo("A fluid container or configured AE2 cell in the controller slot filters accepted fluids.")
+                .beginStructureBlock(5, 5, 9, false)
+                .addController("center of the front end layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart("Tank Storage Blocks", "exactly 63; inner 3x3x7; tiers 1-8")
+                .addOtherStructurePart("I-Glass", "28 fixed corners; 84 side positions allow glass, casings or hatches; any color")
                 .addStructureInfo("Can be built horizontally or vertically; the long axis follows the controller facing.")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available fluid input, fluid output and tank access hatches in the tank walls.")
-                .addSubChannel(GTStructureChannels.TIER, "Selects the level of the 63 inner Tank Storage Blocks (1-8) for the hologram and automatic construction. Higher levels increase fluid capacity; installed blocks are kept.")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Input Hatches", "optional; inner end-layer or side-wall positions")
+                .addHatchInfo("Output Hatches", "optional; inner end-layer or side-wall positions")
+                .addHatchInfo("Tank Input and Output Hatch", "optional, up to 1; inner end-layer or side-wall positions; AE2 access")
+                .addStructureHint("End layers: casings or hatches", HintColor.GREEN)
+                .addStructureHint("Side walls: glass, casings or hatches", HintColor.LIME)
+                .addSubChannel(GTStructureChannels.TIER, "1-8: Tank Storage Block tier; default: stack size; installed blocks are kept.")
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

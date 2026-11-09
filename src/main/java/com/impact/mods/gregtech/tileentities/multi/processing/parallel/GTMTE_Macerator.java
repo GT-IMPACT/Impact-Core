@@ -4,6 +4,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ICasing;
@@ -21,7 +22,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_Macerator> {
 
@@ -65,11 +65,11 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                             { "CCC", "CCC", "CCC", "CCC", "CCC", "CCC" }
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Macerator.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_Macerator.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -88,23 +88,24 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Single-block machine equivalent")
-                .addInfo("Parallel points: base 1, maximum 256")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Macerator")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 16")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 4")
-                .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 24")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+                .addParallelInfo()
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
+                .beginStructureBlock(3, 6, 3, false)
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addOtherStructurePart(SHELL.getCasing(), "25+; fill unused casing positions")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 16; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 4; casing positions")
+                .addHatchInfo("Muffler Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

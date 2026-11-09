@@ -8,7 +8,9 @@ import java.util.Collections;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_Hatch_Output;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.IHatchElement;
@@ -20,6 +22,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
@@ -85,30 +88,29 @@ public class GTMTE_BasicWaterPump extends GTMTE_Impact_BlockBase<GTMTE_BasicWate
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Drilling water from ground")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Water Pump")
-                .addInfo("Water output depends on the hatch")
-                .addInfo("Pump Hatch: Biome Coefficient * 1")
-                .addInfo("ULV Output Hatch: Biome Coefficient * 2")
-                .addInfo("LV Output Hatch: Biome Coefficient * 3")
-                .addSeparator()
-                .addControlInfo("Biome Coefficient:")
-                .addControlInfo("   Ocean, River - 1000 L/s")
-                .addControlInfo("   Taiga - 175 L/s")
-                .addControlInfo("   Jungle - 350 L/s")
-                .addControlInfo("   Swampland - 800 L/s")
-                .addControlInfo("   Snow, Iceland - 300 L/s")
-                .addControlInfo("   Beach - 170 L/s")
-                .addControlInfo("   Plans, Forest - 250 L/s")
-                .addControlInfo("   Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
+                .addInfo("Pumps water from the ground; base output depends on the biome.")
+                .addInfo("Output multiplier: Pump Output Hatch 1x; ULV Output Hatch 2x; LV Output Hatch 3x.")
+                .addControlInfo("Biome base output (L/s; later matches take priority):")
+                .addControlInfo("Water: 1000")
+                .addControlInfo("Coniferous: 175")
+                .addControlInfo("Jungle: 350")
+                .addControlInfo("Swamp: 800")
+                .addControlInfo("Snowy: 300")
+                .addControlInfo("Beach: 170")
+                .addControlInfo("Plains or Forest: 250")
+                .addControlInfo("Hills, Mountains, Savanna, Sandy or Mesa: 100")
                 .beginStructureBlock(4, 3, 3, false)
-                .addController("See the structure hologram")
-                .addCasingInfoMin(CASING, 10, false)
-                .addStructureHint("Pump deck or output hatch", HintColor.ORANGE)
-                .addOtherStructurePart(10, "Wood Frame Box", "Support frame above the pump deck")
-                .addOtherStructurePart("Pump Output Hatch", "Center of the pump deck; maximum 1; accepts primitive, ULV or LV output hatches")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs a Pump Output Hatch from your inventory at the orange marker.")
+                .addController("front right corner of the bottom layer")
+                .addStructureSection("Components")
+                .addOtherStructurePart(CASING, "10 fixed; fill the output position if unused")
+                .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1), "exactly 10; support frame above the pump deck")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Pump Output Hatch or Output Hatch", "optional, up to 1 total; center-left of the bottom layer; Output Hatch: ULV or LV")
+                .addStructureHint("Output position: casing or output hatch", HintColor.ORANGE)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

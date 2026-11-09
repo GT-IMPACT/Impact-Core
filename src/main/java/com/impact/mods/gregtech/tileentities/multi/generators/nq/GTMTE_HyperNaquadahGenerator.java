@@ -6,7 +6,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_FuelGeneratorBase;
-import com.impact.util.string.Language;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3ic;
 import gregtech.api.enums.HatchElement;
@@ -36,7 +36,6 @@ import static gregtech.api.enums.GT_Values.RA;
 import static java.text.NumberFormat.getNumberInstance;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase<GTMTE_HyperNaquadahGenerator> {
 
@@ -73,12 +72,12 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase
                     })
                     .addElement('A', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('B', ofBlock(Block_NqTether.INSTANCE, 0))
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_HyperNaquadahGenerator.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_HyperNaquadahGenerator.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
                             .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
-                            .buildAndChain(HATCHES_C, t -> t.casingCount++), HintColor.GREEN))
+                            .buildAndChain(HATCHES_C, t -> t.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return STRUCTURE_DEFINITION;
@@ -177,20 +176,21 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Multi-Amperes generator")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Generator")
-                .addInfo(Language.langGetEUTick(getNumberInstance().format(EU_PER_TICK)))
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Dynamo Hatch", "Any casing")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 3")
-                .addCasingInfoMin(ImpactCasings.NQ_CASING, HATCHES_C.getMinimumCasings(), false)
-                .addOtherStructurePart("Tether Core", "32x, see the structure hologram")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 63")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available fuel inputs, energy inputs, dynamos, maintenance, muffler and output hatches around the generator ring.")
+                .addInfo("Maximum output after warmup: %s EU/t.", EU_PER_TICK)
+                .beginStructureBlock(15, 15, 3, false)
+                .addController("front center, layer 2 from the bottom")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+ total; 28 fixed in the inner ring, remaining in the outer rings", HATCHES_C.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(Block_NqTether.INSTANCE, 1, 0), "exactly 32; ring between the inner and outer casings")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "optional, up to 1; outer casing rings")
+                .addHatchInfo("Input Hatches", "optional, up to 3; outer casing rings")
+                .addHatchInfo("Dynamo Hatches", "optional; outer casing rings")
+                .addStructureHint("Outer rings: casings or hatches", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

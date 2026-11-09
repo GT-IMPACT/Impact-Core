@@ -5,6 +5,7 @@ import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.Utilits;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -98,15 +99,19 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Space Satellite")
-                .addInfo("Installation on the Space Station required")
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Communication Transmitter", "Any casing")
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 24")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Parallel Transmitter and available power and maintenance hatches from your inventory.")
+                .addInfo("Relays signals to linked Communication Towers.")
+                .addInfo("Requires low gravity.")
+                .beginStructureBlock(5, 4, 4, false)
+                .addController("center of layer 2, 1 block behind the front edge")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Communication Transmitters", "optional; casing positions")
+                .addStructureHint("Casings or Communication Transmitters", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

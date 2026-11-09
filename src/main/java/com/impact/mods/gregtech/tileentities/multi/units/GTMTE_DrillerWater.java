@@ -2,11 +2,13 @@ package com.impact.mods.gregtech.tileentities.multi.units;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,6 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -84,32 +87,34 @@ public class GTMTE_DrillerWater extends GTMTE_DrillerBase<GTMTE_DrillerWater> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Drilling water from Bedrock")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Water Pump")
-                .addInfo("Energy and fluid output hatches must share a tier of LV or higher")
-                .addInfo("When drilling it is necessary to consider the Biome Coefficient and tier Hatches")
-                .addInfo("Drilling Salt Water in Ocean")
-                .addSeparator()
-                .addControlInfo("Biome Coefficient:")
-                .addControlInfo("   River - 1000 L/s")
-                .addControlInfo("   Taiga - 175 L/s")
-                .addControlInfo("   Jungle - 350 L/s")
-                .addControlInfo("   Swampland - 800 L/s")
-                .addControlInfo("   Snow, Iceland - 300 L/s")
-                .addControlInfo("   Beach - 170 L/s")
-                .addControlInfo("   Plans, Forest - 250 L/s")
-                .addControlInfo("   Hills, Mountains, Savana, Desert, Mesa - 100 L/s")
-                .addControlInfo("   Ocean (Salt Water) - 20 L/s")
-                .addOtherStructurePart("Energy Hatch", "Any casing; 1-4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Hatch", "Any casing; 1-4")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(19, "Steel Frame Box", "Support frame shown in the hologram")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 16")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, matching-tier energy and water output hatches, and an input bus for mining pipes.")
+                .addInfo("Pumps water from bedrock; oceans produce Salt Water.")
+                .addInfo("Each hatch tier doubles output and quadruples EU/t; biome coefficients affect output.")
+                .addInfo("Mining pipes: controller or optional Input Bus.")
+                .addControlInfo("Biome coefficients (later matches take priority):")
+                .addControlInfo("Water: 1000")
+                .addControlInfo("Coniferous: 175")
+                .addControlInfo("Jungle: 350")
+                .addControlInfo("Swamp: 800")
+                .addControlInfo("Snowy: 300")
+                .addControlInfo("Beach: 170")
+                .addControlInfo("Plains or Forest: 250")
+                .addControlInfo("Hills, Mountains, Savanna, Sandy or Mesa: 100")
+                .addControlInfo("Ocean: 20; overrides all categories above")
+                .beginStructureBlock(5, 9, 5, false)
+                .addController("front center of layer 3")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1), "exactly 19; support frame and mast")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 standard, LV+; casing positions; same tier as Output Hatches")
+                .addHatchInfo("Output Hatches", "1-4; casing positions")
+                .addHatchInfo("Input Bus", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

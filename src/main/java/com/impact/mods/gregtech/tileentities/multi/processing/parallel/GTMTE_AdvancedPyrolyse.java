@@ -8,11 +8,13 @@ import gregtech.api.logic.IProcessingOutputSink;
 import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.GT_RecipeMaps;
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.ITexture;
@@ -21,6 +23,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
@@ -33,7 +36,6 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedPyrolyse> {
 
@@ -83,11 +85,11 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
                     .addElement('C', onElementPass(machine -> machine.casingCount++, CASING.asElement()))
                     .addElement('D', Casings.STEEL_PIPE.asElement())
                     .addElement('B', ofFrame(Materials.HSLA))
-                    .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvancedPyrolyse.class)
+                    .addElement('E', GTStructureUtility.buildHatchAdder(GTMTE_AdvancedPyrolyse.class)
                             .allow(HatchElement.Input, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -106,27 +108,27 @@ public class GTMTE_AdvancedPyrolyse extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addMachineType("Pyrolyse oven")
-                .addInfo("Converts hydrocarbons into gases, wood tar and solid fuels")
-                .addInfo("The process emits gases throughout the entire time:")
-                .addInfo("Input/output of products depends of energy hatch, time does not change")
-                .addInfo("Parallel recipes: 2x per energy hatch tier (LV - 2x, MV - 4x, HV - 6x and etc)")
-                .addInfo("Pollution per second: 100 x tier energy hatch")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Muffler Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(Casings.STEEL_PIPE, "Middle line", 4)
-                .addOtherStructurePart("HSLA Frame", "Bottom angles")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 7")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance, energy, input, output and muffler hatches from your inventory in the marked casing positions.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Pyrolyse Oven")
+                .addInfo("Maximum parallel recipes: 2 per standard Energy Hatch tier, minimum 2.")
+                .addInfo("Each standard Energy Hatch tier adds 50% of the base recipe EU/t; recipe time stays fixed.")
+                .addInfo("The first 4 fluid outputs are released at 7-second intervals; remaining products are output at completion.")
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
+                .beginStructureBlock(9, 3, 3, false)
+                .addController("front left edge, middle layer")
+                .addStructureSection("Components")
+                .addOtherStructurePart(CASING, "39+; fill unused positions; 5 fixed on the bottom center row at the right end")
+                .addOtherStructurePart(Casings.STEEL_PIPE, "exactly 4; middle layer, center row")
+                .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSLA, 1), "exactly 8; bottom supports")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; top and middle casing layers")
+                .addHatchInfo("Energy Hatch", "optional, up to 1; top and middle casing layers")
+                .addHatchInfo("Input Bus", "optional, up to 1; top and middle casing layers")
+                .addHatchInfo("Output Bus", "optional, up to 1; top and middle casing layers")
+                .addHatchInfo("Output Hatch", "optional, up to 1; top and middle casing layers")
+                .addStructureHint("Top and middle layers: casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

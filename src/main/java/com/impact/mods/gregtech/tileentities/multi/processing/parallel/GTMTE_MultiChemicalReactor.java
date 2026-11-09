@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
@@ -24,7 +25,6 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_MultiChemicalReactor> {
 
@@ -58,11 +58,11 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('G', ofBlockAnyMeta(IGlassBlock))
                     .addElement('C', Casings.PTFE_PIPE.asElement())
-                    .addElement('D', withHint(GTStructureUtility.buildHatchAdder(GTMTE_MultiChemicalReactor.class)
+                    .addElement('D', GTStructureUtility.buildHatchAdder(GTMTE_MultiChemicalReactor.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -102,25 +102,27 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Single-block machine equivalent")
-                .addInfo("Parallel points: base 1, maximum 256")
-                .addMachineType("Chemical Reactor")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 16")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 8")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 8")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart(Casings.PTFE_PIPE, "inside the hollow", 24)
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 32")
-                .addOtherStructurePart(12, "I-Glass", "Any color; see the structure hologram")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Large Chemical Reactor")
+                .addParallelInfo()
+                .addInfo("Accepts fluids instead of fluid cells.")
+                .beginStructureBlock(5, 5, 5, false)
+                .addController("roof center")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(Casings.PTFE_PIPE, "exactly 24; inner rings, layers 2-4")
+                .addOtherStructurePart("I-Glass", "exactly 12; walls of the middle three layers; any color")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 16; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
+                .addHatchInfo("Output Hatches", "optional, up to 8; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

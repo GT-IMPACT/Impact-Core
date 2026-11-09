@@ -4,6 +4,7 @@ import gregtech.api.logic.ProcessingLogic;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HatchElement;
@@ -118,29 +119,30 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addInfo("Small WORMHOLE on The Earth!!!")
                 .addMachineType("Wormhole")
-                .addSeparator()
-                .addController("See the structure hologram")
                 .beginStructureBlock(9, 9, 9, false)
-                .addOtherStructurePart("Input Hatch", "(UHV or better); maximum 1")
-                .addOtherStructurePart("Output Hatch", "(UHV or better); maximum 1")
-                .addOtherStructurePart("Input Bus", "(UHV or better); maximum 1")
-                .addOtherStructurePart("Output Bus", "(UHV or better); maximum 1")
-                .addOtherStructurePart("Energy Hatch", "(UHV or better); maximum 2")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(Casings.ROBUST_NAQUADAH_ALLOY, HATCHES_7.getMinimumCasings(), false)
-                .addCasingInfoMin(Casings.INTERMIX_CHAMBER, HATCHES_2.getMinimumCasings(), false)
-                .addCasingInfoMin(Casings.DYSON_RING, 24, false)
-                .addCasingInfoMin(Casings.FUSION_MK_II, 4, false)
-                .addCasingInfoMin(Casings.FUSION_COIL, 1, false)
-                .addCasingInfoMin(Casings.CORE_CHAMBER, 16, false)
-
-                .addStructureHint("Input Bus / Input Hatch or Intermix Chamber Casing", HintColor.BLUE)
-                .addStructureHint("Output Hatch / Output Bus / Maintenance Hatch or Robust Naquadah Alloy Machine Casing", HintColor.ORANGE)
-                .addStructureHint("Energy Hatch or Robust Naquadah Alloy Machine Casing", HintColor.YELLOW)
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs UHV-or-better inputs, outputs and energy hatches at their marked positions, plus a Maintenance Hatch.")
+                .addController("bottom layer, centered left to right, 3 blocks behind the front edge")
+                .addStructureSection("Components")
+                .addStructurePartInfo(Casings.ROBUST_NAQUADAH_ALLOY, "%s+; outer frame and unused bottom hatch positions", HATCHES_7.getMinimumCasings())
+                .addStructurePartInfo(Casings.INTERMIX_CHAMBER, "%s+; inner chamber and unused input positions", HATCHES_2.getMinimumCasings())
+                .addOtherStructurePart(Casings.DYSON_RING, "exactly 24; inner frame")
+                .addOtherStructurePart(Casings.FUSION_MK_II, "exactly 4; around the bottom-center fusion coil")
+                .addOtherStructurePart(Casings.FUSION_COIL, "exactly 1; center of layer 2")
+                .addOtherStructurePart(Casings.CORE_CHAMBER, "exactly 16; inner core")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Input Hatch", "optional, up to 1; UHV+; around the center of layer 7")
+                .addHatchInfo("Input Bus", "optional, up to 1; UHV+; around the center of layer 7")
+                .addHatchInfo("Output Hatch", "optional, up to 1; UHV+; central 3x3 of the bottom layer")
+                .addHatchInfo("Output Bus", "optional, up to 1; UHV+; central 3x3 of the bottom layer")
+                .addHatchInfo("Energy Hatches", "optional, up to 2 total; UHV+; middle of the bottom edges")
+                .addHatchInfo("Maintenance Hatch", "optional, up to 1; central 3x3 of the bottom layer")
+                .addStructureHint("Inner inputs: casings or input hatches/buses", HintColor.BLUE)
+                .addStructureHint("Bottom center: casings, output hatches/buses or Maintenance Hatch", HintColor.ORANGE)
+                .addStructureHint("Bottom edges: casings or energy hatches", HintColor.YELLOW)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

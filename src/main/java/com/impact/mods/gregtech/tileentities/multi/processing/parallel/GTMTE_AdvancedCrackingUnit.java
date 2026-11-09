@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import gregtech.api.enums.Casings;
@@ -26,7 +27,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_AdvancedCrackingUnit> {
 
@@ -63,16 +63,16 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                             { " AAA ", "ABBBA", " BBB ", " BBB ", " BBB ", "ABBBA", "AAAAA" },
                             { "     ", " AAA ", "  A  ", "  A  ", "  A  ", " AAA ", " AAA " }
                     })
-                    .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvancedCrackingUnit.class)
+                    .addElement('A', GTStructureUtility.buildHatchAdder(GTMTE_AdvancedCrackingUnit.class)
                             .allow(ImpactHatchElement.Parallel, HatchElement.Input, HatchElement.Output,
                                     HatchElement.Energy, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
                             .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, ImpactHatchElement.Parallel, HatchElement.Input, HatchElement.Output)
-                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .addElement('B', HeatingCoil.NAQUADAH.asElement())
                     .addElement('C', Casings.PTFE_PIPE.asElement())
                     .addElement('D',
-                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedCrackingUnit.class).hint(HintColor.ORANGE)
+                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedCrackingUnit.class).hint(CASING, HintColor.ORANGE)
                                     .build(MUFFLER_POSITION))
                     .build();
         }
@@ -112,27 +112,27 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Parallel points: base 1, maximum 256")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Cracking Unit")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 16")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 8")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 8")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Muffler Hatch", "Exactly 1 at the marked top position")
-                .addOtherStructurePart(HeatingCoil.NAQUADAH, "around Pipe Machine Casing", 40)
-                .addOtherStructurePart(Casings.PTFE_PIPE, "inside the hollow", 5)
-                .addCasingInfoMin(CASING, HATCHES_A.getMinimumCasings(), false)
-                .addStructureHint("Muffler Hatch", HintColor.ORANGE)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 32")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the top muffler, maintenance, energy, input and output hatches, and a parallel hatch.")
+                .addParallelInfo()
+                .beginStructureBlock(5, 7, 5, false)
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", HATCHES_A.getMinimumCasings())
+                .addOtherStructurePart(HeatingCoil.NAQUADAH, "exactly 40; around the pipe column, layers 2-6")
+                .addOtherStructurePart(Casings.PTFE_PIPE, "exactly 5; center column, layers 2-6")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 16; casing positions")
+                .addHatchInfo("Output Hatches", "optional, up to 8; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addHatchInfo("Muffler Hatch", "exactly 1; top center")
+                .addStructureHint("Top center: muffler", HintColor.ORANGE)
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

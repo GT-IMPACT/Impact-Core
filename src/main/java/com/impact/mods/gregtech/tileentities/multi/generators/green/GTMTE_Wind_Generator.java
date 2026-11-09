@@ -11,6 +11,7 @@ import com.impact.loader.ItemRegistery;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -372,13 +373,18 @@ public class GTMTE_Wind_Generator extends GTMTE_Impact_BlockBase<GTMTE_Wind_Gene
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Generator")
-                .addOtherStructurePart("Input Bus", "Exactly 1 in the two positions above the controller; put the rotor in its first slot")
-                .addOtherStructurePart("Dynamo Hatch", "Exactly 1 regular dynamo in the other position above the controller")
-                .addInfo("No maintenance hatch is required")
-                .addStructureHint("Rotor input bus or regular dynamo hatch", HintColor.GREEN)
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs one rotor input bus and one regular dynamo hatch above the controller.")
+                .addInfo("Output depends on wind speed and rotor tier.")
+                .addInfo("Keep the rotor position clear: 10 blocks above and 1 block in front of the controller.")
+                .beginStructureBlock(1, 3, 1, false)
+                .addController("bottom of the column")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Input Bus", "exactly 1; either position above the controller; rotor in the first slot")
+                .addHatchInfo("Dynamo Hatch", "exactly 1 standard; the other position above the controller")
+                .addStructureHint("Input Bus or standard Dynamo Hatch", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

@@ -6,7 +6,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_FuelGeneratorBase;
-import com.impact.util.string.Language;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -38,10 +38,8 @@ import space.impact.structures.structure.StructureDefinition;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static com.impact.loader.ItemRegistery.InsideBlock;
 import static gregtech.api.enums.GT_Values.RA;
-import static java.text.NumberFormat.getNumberInstance;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_FuelGeneratorBase<GTMTE_LiquidNqGenerator> {
 
@@ -92,15 +90,15 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_FuelGeneratorBase<GTMT
                     .addElement('G', ofBlockAnyMeta(IGlassBlock))
                     .addElement('C', ofBlock(Block_NqTether.INSTANCE, 0))
                     .addElement('D', ofBlock(InsideBlock, 0))
-                    .addElement('B', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
+                    .addElement('B', GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
                             .allow(ImpactHatchElement.FluidInput, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserOutput)
                             .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.FluidInput)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
-                    .addElement('E', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
+                    .addElement('E', GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
                             .allow(ImpactHatchElement.FluidInput)
                             .autoPlace(ImpactHatchElement.FluidInput)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.LIME))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.LIME))
                     .build();
         }
         return definition;
@@ -126,24 +124,24 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_FuelGeneratorBase<GTMT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Multi-Amperes generator")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Generator")
-                .addInfo(Language.langGetEUTick(getNumberInstance().format(EU_PER_TICK)))
-                .addSeparator()
+                .addInfo("Maximum output after warmup: %s EU/t.", EU_PER_TICK)
                 .beginStructureBlock(7, 7, 9, false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Dynamo Hatch", "Rear end layer (green hologram positions)")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 3")
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(new ItemStack(InsideBlock, 1, 0), "inside structure", 12)
-                .addOtherStructurePart("Tether Core", "2x, see the structure hologram")
-                .addStructureHint("Casing, fluid input hatch, maintenance hatch or dynamo hatch", HintColor.GREEN)
-                .addStructureHint("Casing, fluid input hatch or maintenance hatch", HintColor.LIME)
-                .addStructureInfo("Hatches replacing casings: at most 5")
-                .addOtherStructurePart(60, "I-Glass", "Any color; see the structure hologram")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Maintenance Hatch, a fuel input and a dynamo or laser output from your inventory.")
+                .addController("front center of layer 4")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(InsideBlock, 1, 0), "exactly 12; inner rings next to the front and rear walls")
+                .addOtherStructurePart(new ItemStack(Block_NqTether.INSTANCE, 1, 0), "exactly 2; centers of the inner rings")
+                .addOtherStructurePart("I-Glass", "exactly 60; side walls; any color")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
+                .addHatchInfo("Dynamo Hatch", "optional, up to 1; rear end layer")
+                .addStructureHint("Rear end: casings or input/maintenance/dynamo hatches", HintColor.GREEN)
+                .addStructureHint("Other casing positions: casings or input/maintenance hatches", HintColor.LIME)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

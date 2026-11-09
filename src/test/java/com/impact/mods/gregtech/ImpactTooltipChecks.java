@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import gregtech.api.util.GTStructureChannels;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
@@ -47,10 +48,10 @@ final class ImpactTooltipChecks {
             checkSeparators(machine);
         }
         String pump = plain(machine("units.GTMTE_BasicWaterPump").getSecondaryDescription());
-        assertTrue(pump.contains("10 Wood Frame Box"));
+        assertTrue(pump.contains("Wood Frame Box: exactly 10; support frame above the pump deck"), pump);
         assertTrue(pump.contains("Pump Output Hatch"));
         String miner = plain(machine("ores.GTMTE_AdvancedMiner").getSecondaryDescription());
-        assertTrue(miner.contains("1 Miner Drill Hatch:"));
+        assertTrue(miner.contains("Miner Drill Hatch: exactly 1;"), miner);
 
         String[] tiers = { "I", "II", "III" };
         int[] power = { 2048, 8192, 32768 };
@@ -60,13 +61,13 @@ final class ImpactTooltipChecks {
             GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class.forName(ROOT + "generators.sofc.GTMTE_SOFC_" + tiers[tier])
                     .getConstructor(String.class, int.class).newInstance("tooltip-review.sofc." + tier, tier);
             String info = plain(machine.getPrimaryDescription());
-            assertTrue(info.contains(power[tier] + " EU/t"), info);
-            assertTrue(info.contains(oxygen[tier] + " L/s"), info);
-            assertTrue(info.contains(steam[tier] + " L/s"), info);
+            assertTrue(info.contains(GT_Utility.formatNumbers(power[tier]) + " EU/t"), info);
+            assertTrue(info.contains(GT_Utility.formatNumbers(oxygen[tier]) + " L/s"), info);
+            assertTrue(info.contains(GT_Utility.formatNumbers(steam[tier]) + " L/s"), info);
             String structure = plain(machine.getSecondaryDescription());
             assertFalse(structure.contains("I/O Hatch:"));
             assertTrue(structure.contains("exactly 1"));
-            assertTrue(structure.contains("at least 2 fluid inputs"));
+            assertTrue(structure.contains("Input Hatches: 2+; casing positions; fuel and oxygen"), structure);
         }
         for (String tank : new String[] { "storage.GTMTE_SingleTank", "storage.GTMTE_MultiTank" }) {
             GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = machine(tank);
@@ -96,47 +97,50 @@ final class ImpactTooltipChecks {
                 assertEquals(1, Arrays.stream(lines)
                         .filter(line -> EnumChatFormatting.getTextWithoutFormattingCodes(line).equals(header)).count());
                 assertTrue(String.join("\n", lines).contains(EnumChatFormatting.AQUA
-                        + GTStructureChannels.getLabel(GTStructureChannels.TIER) + EnumChatFormatting.DARK_GRAY));
-                assertEquals(1, Arrays.stream(lines).filter(line -> line.contains("(tier)")).count());
-                for (int key = 1; key <= 3; key++) {
+                        + GTStructureChannels.getLabel(GTStructureChannels.TIER) + EnumChatFormatting.RESET));
+                assertFalse(description.contains("(tier)"));
+                for (int key = 0; key <= 2; key++) {
                     String text = StatCollector.translateToLocal("TileEntity_DESCRIPTION_impact.multimachine.supercapacitor_Channel_Index_" + key);
+                    if (key == 0) {
+                        text = String.format(text, StatCollector.translateToLocal("TileEntity_DESCRIPTION_impact.multimachine.supercapacitor_Formula_Index_0"));
+                    }
                     assertTrue(description.indexOf(text) > section, language + " misplaced " + key);
                 }
             }
             assertFalse(plain(lap.getPrimaryDescription()).contains(header));
             String capacitorDescription = plain(lap.getSecondaryDescription());
-            assertTrue(capacitorDescription.contains("5: IV"), language);
+            assertTrue(capacitorDescription.contains("5-10: IV-UEV"), language);
             assertFalse(capacitorDescription.contains("Ultimate"), language);
             for (String tank : new String[] { "Single", "Multi" }) {
                 String registeredName = "impact.multimachine." + tank.toLowerCase() + "fluidtank";
                 GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class
                         .forName(ROOT + "storage.GTMTE_" + tank + "Tank").getConstructor(String.class)
                         .newInstance(registeredName);
-                String key = "TileEntity_DESCRIPTION_" + registeredName + "_Channel_Index_1";
+                String key = "TileEntity_DESCRIPTION_" + registeredName + "_Channel_Index_0";
                 String dimensions = tank.equals("Single") ? "3 x 3 x 7" : "5 x 5 x 9";
                 assertTrue(plain(machine.getSecondaryDescription()).replace('×', 'x').contains(dimensions), "Tank dimensions " + tank);
                 assertTrue(StatCollector.canTranslate(key), language + " tank tier translation");
-                String hatchLimitKey = "TileEntity_DESCRIPTION_" + registeredName + "_Location_Index_3";
+                String hatchLimitKey = "TileEntity_DESCRIPTION_" + registeredName + "_Location_Index_5";
                 assertTrue(StatCollector.canTranslate(hatchLimitKey), language + " tank hatch limit translation");
                 assertTrue(plain(machine.getSecondaryDescription()).contains(StatCollector.translateToLocal(hatchLimitKey)));
                 for (String[] lines : new String[][] { machine.getSecondaryDescription(), machine.getStructureDescription(null) }) {
                     String description = plain(lines);
-                    assertTrue(description.contains("(tier)"));
+                    assertFalse(description.contains("(tier)"));
                     assertTrue(description.indexOf(StatCollector.translateToLocal(key)) > description.indexOf(header));
                 }
             }
             GT_MetaTileEntity_EnhancedMultiBlockBase<?> mill = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class
                     .forName(ROOT + "processing.defaultmachines.GTMTE_TheMill").getConstructor(String.class)
                     .newInstance("impact.multis.the_mill");
-            String clearanceKey = "TileEntity_DESCRIPTION_impact.multis.the_mill_Structure_Index_0";
+            String clearanceKey = "TileEntity_DESCRIPTION_impact.multis.the_mill_Location_Index_3";
             assertTrue(StatCollector.canTranslate(clearanceKey), language + " mill clearance translation");
             assertTrue(plain(mill.getSecondaryDescription()).contains(StatCollector.translateToLocal(clearanceKey)), language);
             GT_MetaTileEntity_EnhancedMultiBlockBase<?> computer = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class.forName(ROOT + "parallelsystem.GTMTE_ParallelComputer")
                     .getConstructor(String.class).newInstance("impact.multis.parallelcomputer");
             String computerStructure = plain(computer.getSecondaryDescription());
-            for (String section : new String[] { "Part", "Location", "Hint" }) {
-                int first = section.equals("Part") ? 2 : section.equals("Location") ? 3 : 1;
-                int last = section.equals("Part") ? 4 : section.equals("Location") ? 5 : 2;
+            for (String section : new String[] { "Location", "Hint", "Formula" }) {
+                int first = section.equals("Location") ? 2 : 0;
+                int last = section.equals("Location") ? 6 : section.equals("Hint") ? 2 : 1;
                 for (int index = first; index <= last; index++) {
                     String key = "TileEntity_DESCRIPTION_impact.multis.parallelcomputer_" + section + "_Index_" + index;
                     assertTrue(computerStructure.contains(StatCollector.translateToLocal(key)), language + " missing " + key);
@@ -170,12 +174,9 @@ final class ImpactTooltipChecks {
 
     private static void checkSeparators(GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine) {
         String[] info = machine.getPrimaryDescription();
-        boolean previousSeparator = false;
         for (String line : info) {
-            boolean separator = EnumChatFormatting.getTextWithoutFormattingCodes(line).matches("-{3,}");
-            assertFalse(separator && previousSeparator, "Repeated separator");
-            previousSeparator = separator;
+            assertFalse(EnumChatFormatting.getTextWithoutFormattingCodes(line).matches("-{3,}"),
+                    "Separators are not allowed");
         }
-        assertEquals(info.length, machine.getPrimaryDescription().length);
     }
 }

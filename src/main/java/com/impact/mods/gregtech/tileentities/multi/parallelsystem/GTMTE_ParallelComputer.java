@@ -11,6 +11,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ICasing;
@@ -201,26 +202,27 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Super Parallel Computer")
-                .addSeparator()
+                .addInfo("Distributes parallel points from Parallel Computer Racks through Parallel Transmitters.")
+                .addInfo("Requires a satellite network connection to supply parallel points.")
+                .addInfo("Power consumption: 8192 EU/t plus 1 EU/t per installed parallel point.")
                 .beginVariableStructureBlock(2, 2, 4, 4, 4, 18, false)
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Maintenance Hatch", "Front, top and bottom casings; exactly 1")
-                .addOtherStructurePart("Parallel Computer Rack",
-                        "Right inner column when facing the controller; replaces an Empty Rack Casing")
-                .addOtherStructurePart("Parallel Transmitter",
-                        "Left inner column when facing the controller; replaces an Empty Rack Casing")
-                .addOtherStructurePart("Empty Rack Casing",
-                        "Fills unused Parallel Computer Rack and Parallel Transmitter positions")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addSubChannel(GTStructureChannels.LENGTH, "Value: 1-15; rack layers = value + 1; total length = value + 3 (4-18 blocks)")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureHint("Parallel Transmitter or Empty Rack Casing", HintColor.PURPLE)
-                .addStructureHint("Parallel Computer Rack or Empty Rack Casing", HintColor.MAGENTA)
-                .addStructureInfo("Minimum casings: 8 + 2 per rack layer (12-40); at most 7 + 2 per rack layer hatches replacing casings (11-39)")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs maintenance and power hatches from your inventory. Fills the right inner column with Parallel Computer Racks and the left with Parallel Transmitters.")
+                .addController("front left of layer 2")
+                .addStructureSection("Components")
+                .addOtherStructurePart(CASING, "minimum %s; shell and rear ends of the 4 inner columns", "8 + 2 x rack layers")
+                .addOtherStructurePart(new ItemStack(InsideBlock, 1, 2), "fill unused inner rack/transmitter positions")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; front, top and bottom casings")
+                .addHatchInfo("Energy Hatch", "optional, up to 1 total; front, top and bottom casings")
+                .addHatchInfo("Parallel Computer Rack", "optional, up to 2 per rack layer; right inner column")
+                .addHatchInfo("Parallel Transmitter", "optional, up to 2 per rack layer; left inner column")
+                .addStructureHint("Casings or energy/maintenance hatches", HintColor.GREEN)
+                .addStructureHint("Empty Rack Casing or Parallel Transmitter", HintColor.PURPLE)
+                .addStructureHint("Empty Rack Casing or Parallel Computer Rack", HintColor.MAGENTA)
+                .addSubChannel(GTStructureChannels.LENGTH, "1-15; %s; default: stack size.", "rack layers = value + 1; length = value + 3")
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

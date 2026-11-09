@@ -17,6 +17,7 @@ import com.impact.mods.gregtech.blocks.ImpactCasings
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.hatches.GTMTEAerostatCargoHatch
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase
+import com.impact.util.ImpactMultiblockTooltipBuilder
 import com.impact.util.PositionObject
 import cpw.mods.fml.common.Optional
 import gregtech.api.enums.HatchElement
@@ -407,21 +408,22 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
     }
 
     public override fun createTooltip(): MultiblockTooltipBuilder {
-        return MultiblockTooltipBuilder(mName)
-            .addInfo("Moving over a distance by fuel")
-            .addInfo("Natural/Refinery Gas: 64 chunks or Any Burn Time Fuel: 16 chunks")
-            .addInfo("Minimum height (Y coord) for work: 60")
+        return ImpactMultiblockTooltipBuilder(mName)
+            .useCompactStructure()
             .addMachineType("Moving Machine")
-            .addController("See the structure hologram")
+            .addInfo("Travels between platforms with the same owner in the same dimension.")
+            .addInfo("Solid fuel: furnace fuels; range 16-256 blocks.")
+            .addInfo("Gas fuel: Natural Gas or Refinery Gas; range 16-1024 blocks.")
+            .addInfo("Requires an Aerostat controller in hand; controller height must be Y 60 or higher.")
             .beginStructureBlock(3, 1, 3, false)
-            .addRequirements(SHELL, "Any casing position")
-            .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-            .addStructureInfo("Hatches replacing casings: at most 4")
-            .addSubChannel(
-                GTStructureUtility.HATCH_CHANNEL,
-                "Installs the platform input and available output and cargo hatches from your " +
-                "inventory.",
-            )
+            .addController("center of the platform")
+            .addStructureSection("Components")
+            .addStructurePartInfo(CASING, "%s+; fill unused platform positions", SHELL.minimumCasings)
+            .addStructureSection("Hatches and buses")
+            .addHatchInfo("Input Bus or Input Hatch", "exactly 1 total; platform casings")
+            .addHatchInfo("Output Buses", "optional; platform casings; receives item cargo")
+            .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+            .addHatchChannelInfo()
             .toolTipFinisher()
     }
 

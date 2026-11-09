@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_PrimitiveBlockBase;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.enums.Casings;
@@ -24,7 +25,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
     private static final ICasing CASING = Casings.COKE_OVEN_BRICKS;
@@ -43,10 +43,10 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
                             { "CCC", "CCC", "CCC" },
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
-                    .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_CokeOven.class)
+                    .addElement('C', GTStructureUtility.buildHatchAdder(GTMTE_CokeOven.class)
                             .allow(ImpactHatchElement.PrimitiveInput, ImpactHatchElement.PrimitiveOutput)
                             .autoPlace(ImpactHatchElement.PrimitiveInput, ImpactHatchElement.PrimitiveOutput)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return STRUCTURE;
@@ -77,18 +77,21 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
     }
 
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Coke Oven")
-                .addPollutionAmount(25)
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart("Primitive Input Bus", "Maximum 1")
-                .addOtherStructurePart("Primitive Output Bus", "Maximum 1")
-                .addOtherStructurePart("Primitive Output Hatch", "Maximum 1")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 3")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available primitive input and output hatches in the coke oven walls.")
+                .addInfo("Pollution: 25 per second.")
+                .beginStructureBlock(3, 3, 3, false)
+                .addController("front center, middle layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addAir(1, "center of the structure")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Primitive Input Bus", "optional, up to 1; casing positions")
+                .addHatchInfo("Primitive Output Bus", "optional, up to 1; casing positions")
+                .addHatchInfo("Primitive Output Hatch", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

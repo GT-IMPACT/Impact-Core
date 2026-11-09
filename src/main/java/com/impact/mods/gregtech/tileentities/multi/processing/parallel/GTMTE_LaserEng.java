@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
@@ -24,7 +25,6 @@ import space.impact.structures.structure.StructureDefinition;
 import static com.impact.loader.ItemRegistery.IGlassBlock;
 import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_LaserEng> {
 
@@ -81,11 +81,11 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
                     .addElement('B', ofBlock(IGlassBlock, 11))
                     .addElement('E', ofBlock(IGlassBlock, 13))
                     .addElement('F', ofBlock(IGlassBlock, 14))
-                    .addElement('H', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LaserEng.class)
+                    .addElement('H', GTStructureUtility.buildHatchAdder(GTMTE_LaserEng.class)
                             .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.Parallel, HatchElement.Output)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, ImpactHatchElement.Parallel, HatchElement.Output)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
         return definition;
@@ -98,26 +98,27 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Single-block machine equivalent")
-                .addInfo("Parallel points: base 1, maximum 256")
-                .addMachineType("Laser Engraver")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 4")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing position; exactly 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 16")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 3")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 19")
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "See the structure hologram", 1)
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 11), "See the structure hologram", 3)
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 13), "See the structure hologram", 3)
-                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 14), "See the structure hologram", 3)
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Precision Laser Engraver")
+                .addParallelInfo()
+                .beginStructureBlock(3, 5, 5, false)
+                .addController("front center, layer 2 from the bottom")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+ total; roof center and unused hatch positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 0), "exactly 1; center, layer 4 from the bottom")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 11), "exactly 3; right row, layer 2 from the bottom")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 13), "exactly 3; center row, layer 2 from the bottom")
+                .addOtherStructurePart(new ItemStack(IGlassBlock, 1, 14), "exactly 3; left row, layer 2 from the bottom")
+                .addStructureSection("Hatches and buses")
+                .addStructureInfo("The 2 fixed roof casings cannot be replaced by hatches.")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 16; casing positions")
+                .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

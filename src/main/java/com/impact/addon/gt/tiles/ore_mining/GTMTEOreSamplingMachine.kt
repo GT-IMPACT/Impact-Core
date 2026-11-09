@@ -7,6 +7,7 @@ import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.enums.Texture
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase
 import com.impact.mods.gregtech.tileentities.multi.ores.hatches.GTMTE_OreHatch
+import com.impact.util.ImpactMultiblockTooltipBuilder
 import com.impact.util.multis.WorldProperties.chunk
 import gregtech.api.enums.Casings
 import gregtech.api.enums.GT_Values.RA
@@ -363,19 +364,21 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
     }
 
     public override fun createTooltip(): MultiblockTooltipBuilder {
-        return MultiblockTooltipBuilder(mName)
+        return ImpactMultiblockTooltipBuilder(mName)
+            .useCompactStructure()
             .addInfo("WHO are you, Mr.Ore??")
             .addMachineType("Ore Sampling")
-            .addInfo("Mining takes place in current Chunk by manually")
-            .addSeparator()
-            .addController("See the structure hologram")
+            .addInfo("Right-click the controller top to sample the current chunk; 1 sampler per chunk.")
+            .addInfo("Drops an ore sample after 30 seconds.")
+            .addInfo("Requires a drill head in the Miner Drill Hatch.")
             .beginStructureBlock(3, 3, 3, false)
-            .addOtherStructurePart("Steel Frame Box", "At least 8")
+            .addController("center of the top layer")
+            .addStructureSection("Components")
+            .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1,), "exactly 8; support frame below the controller")
+            .addStructureSection("Hatches and buses")
+            .addHatchInfo("Miner Drill Hatch", "exactly 1; directly below the controller; facing down")
             .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
-            .addSubChannel(
-                GTStructureUtility.HATCH_CHANNEL,
-                "Installs the ore sampling hatch from your inventory at its marked position.",
-            )
+            .addHatchChannelInfo()
             .toolTipFinisher()
     }
 

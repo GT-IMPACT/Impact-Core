@@ -3,6 +3,7 @@ package com.impact.mods.gregtech.tileentities.multi.processing.parallel;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoil;
@@ -21,7 +22,6 @@ import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
 
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_FlotationUnit> {
 
@@ -77,11 +77,11 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                             { "000", "2 2", "2 2", "000", },
                             { "000", "121", "121", "000", },
                     })
-                    .addElement('0', withHint(GTStructureUtility.buildHatchAdder(GTMTE_FlotationUnit.class)
+                    .addElement('0', GTStructureUtility.buildHatchAdder(GTMTE_FlotationUnit.class)
                             .allow(ImpactHatchElement.Parallel, HatchElement.Output, HatchElement.Energy,
                                     ImpactHatchElement.LaserInput, HatchElement.Input)
                             .autoPlace(ImpactHatchElement.PowerInput, ImpactHatchElement.Parallel, HatchElement.Output, HatchElement.Input)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .addElement('1', Casings.TITANIUM_PIPE.asElement())
                     .addElement('2', HeatingCoil.NICHROME.asElement())
                     .build();
@@ -91,27 +91,26 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Parallel points: base 1, maximum 256")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Flotation Unit")
-                .addInfo("Has the all recipes as the Ore Washer and Chemical Bath")
-                .addInfo("Configure input bus separation in the machine GUI")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 2")
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Muffler Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Bus", "Any casing; maximum 2")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 2")
-                .addOtherStructurePart("Parallel Hatch", "Any casing; maximum 1")
-                .addCasingInfoMin(Casings.STABLE_TITANIUM, SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart("Titanium Pipe Casing", "Any casing")
-                .addOtherStructurePart("Nichrome Coil", "Any casing")
-                .addStructureHint("Casing or compatible hatch", HintColor.GREEN)
-                .addStructureInfo("Hatches replacing casings: at most 11")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs available maintenance, power, input and output hatches, plus a parallel control hatch from your inventory.")
+                .addParallelInfo()
+                .beginStructureBlock(3, 4, 3, false)
+                .addController("front center of the bottom layer")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(Casings.TITANIUM_PIPE, "exactly 4; centers of front and back walls, layers 2 and 3")
+                .addOtherStructurePart(HeatingCoil.NICHROME, "exactly 12; side walls, layers 2 and 3")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to 2; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 2; casing positions")
+                .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
+                .addHatchInfo("Output Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
+                .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

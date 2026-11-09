@@ -8,6 +8,7 @@ import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.util.vector.Structure;
 import com.impact.util.vector.Vector3i;
 import com.impact.util.vector.Vector3ic;
@@ -119,24 +120,25 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Mega steam turbine!")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
                 .addMachineType("Generator")
-                .addInfo("The turbine operates at 100% efficiency")
-                .addInfo("Accepts both steam (2L = 1 EU/t)")
-                .addInfo("and superheated steam (1L = 1 EU/t)")
-                .addSeparator()
-                .addController("See the structure hologram")
-                .addOtherStructurePart("Dynamo Hatch", "Any casing back side; maximum 9")
-                .addOtherStructurePart("Maintenance Hatch", "Side casings; exactly 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 20")
-                .addCasingInfoMin(SHELL.getCasing(), SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(GEARBOX, "inside structure", 4)
-                .addStructureHint("Casing, fluid input hatch or maintenance hatch", HintColor.BLUE)
-                .addStructureHint("Casing or dynamo / laser output", HintColor.YELLOW)
-                .addStructureInfo("Hatches replacing casings: at most 56")
-                .addStructureInfo("The rotor appears automatically. Keep its marked central position clear.")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Maintenance Hatch, available steam inputs and energy outputs at their marked positions.")
+                .addInfo("At full efficiency: 2 L of steam or 1 L of superheated steam per EU.")
+                .addInfo("Output is halved below full efficiency.")
+                .addInfo("Steam above the dynamo output limit is consumed.")
+                .beginStructureBlock(5, 4, 8, false)
+                .addController("front center of layer 2")
+                .addStructureSection("Components")
+                .addStructurePartInfo(CASING, "%s+ total; front and upper cover are fixed", SHELL.getMinimumCasings())
+                .addOtherStructurePart(GEARBOX, "exactly 4; central shaft and above the rotor")
+                .addStructureInfo("The rotor appears automatically 4 blocks behind the controller; keep this position clear.")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; main body casings")
+                .addHatchInfo("Input Hatches", "optional, up to 20; main body casings")
+                .addHatchInfo("Dynamo Hatches", "optional, up to 9 total; rear wall")
+                .addStructureHint("Main body: casings or input/maintenance hatches", HintColor.BLUE)
+                .addStructureHint("Rear wall: casings or dynamo hatches", HintColor.YELLOW)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 

@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import com.impact.addon.vw.VirtualWorldScan;
 import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.util.ImpactMultiblockTooltipBuilder;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.enums.Texture;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
@@ -19,6 +20,7 @@ import gregtech.api.enums.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ICasing;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -29,6 +31,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -58,7 +61,6 @@ import space.impact.structures.structure.StructureDefinition;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static space.impact.structures.structure.StructureUtility.lazy;
-import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMiner> {
 
@@ -165,16 +167,16 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                     })
                     .addElement('B', lazy(t -> ofFrame(Materials.HSLA)))
                     .addElement('C',
-                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedMiner.class).hint(HintColor.GREEN)
+                            GTStructureUtility.buildHatchAdder(GTMTE_AdvancedMiner.class).hint(CASING, HintColor.GREEN)
                                     .build(StructureRequirements.builder(CASING, 0).atLeast(SpecialHatch.Ore).build()))
-                    .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AdvancedMiner.class)
+                    .addElement('A', GTStructureUtility.buildHatchAdder(GTMTE_AdvancedMiner.class)
                             .allow(HatchElement.Input, HatchElement.Output, HatchElement.Energy,
                                     HatchElement.Maintenance,
                                     ImpactHatchElement.Dynamo, ImpactHatchElement.Muffler,
                                     ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.LaserOutput, SpecialHatch.Enrichment)
                             .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler, SpecialHatch.Enrichment)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.LIME))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.LIME))
                     .build();
         }
         return definition;
@@ -356,27 +358,27 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder(mName)
-                .addInfo("Factorio Miner??")
-                .addMachineType("Miner")
-                .addInfo("Mining takes place in 16 (4x4 zone) Chunks (Full Vein)")
-                .addInfo("There is only ONE miner in one Chunk")
-                .addInfo("Use a screwdriver to change the Ore Layer (0-1)")
-                .addSeparator()
-                .addController("See the structure hologram")
+        return new ImpactMultiblockTooltipBuilder(mName)
+                .useCompactStructure()
+                .addMachineType("Advanced Electric Miner")
+                .addInfo("Mining area: 4x4 chunks (full vein).")
+                .addInfo("Consumes 50 L of Drilling Fluid per cycle; some veins require an additional fluid.")
+                .addInfo("Requires a drill head in the Miner Drill Hatch.")
                 .beginStructureBlock(7, 14, 7, false)
-                .addOtherStructurePart("Maintenance Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Output Bus", "Any casing; maximum 1")
-                .addOtherStructurePart("Input Hatch", "Any casing; maximum 1")
-                .addOtherStructurePart("Energy Hatch", "Any casing; maximum 2")
-                .addCasingInfoMin(CASING, SHELL.getMinimumCasings(), false)
-                .addOtherStructurePart(95, "HSLA Steel Frame Box", "Support frame; see the structure hologram")
-                .addOtherStructurePart("Miner Enrichment Unit", "Any casing")
-                .addOtherStructurePart(1, "Miner Drill Hatch", "Center of the casing platform (red hologram position)")
+                .addController("front center of the lower platform")
+                .addStructureSection("Components")
+                .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
+                .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSLA, 1), "exactly 95; support frame")
+                .addStructureSection("Hatches and buses")
+                .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
+                .addHatchInfo("Input Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
+                .addHatchInfo("Miner Drill Hatch", "exactly 1; center of the lower platform; facing down")
+                .addHatchInfo("Miner Enrichment Unit", "exactly 1; casing positions")
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
-                .addStructureHint("Casing or compatible hatch", HintColor.LIME)
-                .addStructureInfo("Hatches replacing casings: at most 15")
-                .addSubChannel(GTStructureUtility.HATCH_CHANNEL, "Installs the Miner Drill Hatch, enrichment unit and available power, input and output hatches from your inventory.")
+                .addStructureHint("Casings or hatches/buses", HintColor.LIME)
+                .addHatchChannelInfo()
                 .toolTipFinisher();
     }
 
