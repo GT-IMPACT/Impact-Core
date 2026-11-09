@@ -122,7 +122,10 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             CASING,
             39,
         )
-            .atLeast(MP_CHAMBER)
+            .atLeast(
+                MP_CHAMBER,
+                HatchElement.Maintenance,
+            )
             .build()
 
         private val DEFINITION: IStructureDefinition<GTMTEMESystemProvider> by lazy {
@@ -287,7 +290,7 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.minimumCasings)
             .addOtherStructurePart("I-Glass", "exactly 24; roof and front/back walls; any color")
             .addStructureSection("Hatches and buses")
-            .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
+            .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions",)
             .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
             .addHatchInfo("Input Buses", "optional, up to 2; casing positions")
             .addHatchInfo("Output Buses", "optional, up to 2; casing positions")

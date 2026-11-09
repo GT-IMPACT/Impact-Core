@@ -57,7 +57,8 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
 
     private int casingCount;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 28).build();
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 28)
+            .atLeast(HatchElement.Maintenance).build();
     private static final StructureRequirements OUTPUT = StructureRequirements.builder(CASING, 0)
             .atLeast(HatchElement.OutputBus).build();
     private static IStructureDefinition<GTMTE_MPContainment> definition;
@@ -144,7 +145,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 .addOtherStructurePart("I-Glass", "exactly 4; middle layer; any color")
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "exactly 1; middle layer, 1 block left and 2 blocks behind the controller")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addHatchInfo("Energy Hatches", "optional; casing positions")
                 .addHatchInfo("Input Buses", "optional; casing positions")
                 .addHatchInfo("Output Bus", "exactly 1; rear wall, directly behind the controller")
@@ -213,7 +214,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
             return false;
         }
         boolean formed = checkPiece(5, 1, 0)
-                && mMaintenanceHatches.size() <= 1 && SHELL.isSatisfied(this, casingCount);
+                && mMaintenanceHatches.size() == 1 && SHELL.isSatisfied(this, casingCount);
         if (formed) {
             int[] offset = new int[3];
             getExtendedFacing().getWorldOffset(new int[] { -1, 0, 2 }, offset);

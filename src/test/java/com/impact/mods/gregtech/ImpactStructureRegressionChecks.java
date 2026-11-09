@@ -52,7 +52,14 @@ final class ImpactStructureRegressionChecks {
         int[][] found = { null };
         machine.getStructureDefinition().iterate("main", machine.getBaseMetaTileEntity().getWorld(), machine.getExtendedFacing(),
                 0, 64, 0, horizontal, vertical, depth, (element, world, x, y, z, a, b, c) -> {
-                    if (element == target && found[0] == null) found[0] = new int[] { x, y, z };
+                    if (element == target && found[0] == null) {
+                        net.minecraft.tileentity.TileEntity tile = world.getTileEntity(x, y, z);
+                        IMetaTileEntity meta = tile instanceof IGregTechTileEntity
+                                ? ((IGregTechTileEntity) tile).getMetaTileEntity() : null;
+                        if (!(meta instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
+                            found[0] = new int[] { x, y, z };
+                        }
+                    }
                     return true;
                 });
         assertNotNull(found[0], "Structure symbol " + symbol);
@@ -72,6 +79,19 @@ final class ImpactStructureRegressionChecks {
                         TestWorld world = new TestWorld();
                         world.putTile(0, 64, 0, new TestTile(world, machine, facing));
                         machine.construct(new ItemStack(Items.stick), false);
+                        if (index < 2) {
+                            int[] maintenance = position(machine, index == 0 ? '7' : 'G',
+                                    origins[index][0], origins[index][1], origins[index][2]);
+                            GT_MetaTileEntity_Hatch_Maintenance hatch = new GT_MetaTileEntity_Hatch_Maintenance(
+                                    "maintenance",
+                                    1,
+                                    "",
+                                    new ITexture[0][][],
+                                    false
+                            );
+                            world.putTile(maintenance[0], maintenance[1], maintenance[2],
+                                    new TestTile(world, hatch, facing));
+                        }
                         assertTrue(recheck(machine), "Valid shell " + machine.getClass().getSimpleName());
                         MetaTileEntity hatch = kind == 0 ? new GT_MetaTileEntity_Hatch_EnergyMulti("tier-multi-energy", tier, 4, "", new ITexture[0][][])
                                 : kind == 1 ? new GTMTE_LaserEnergy_In("tier-laser", tier, 4, "", new ITexture[0][][])

@@ -42,7 +42,8 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
     private static final StructureRequirements HATCHES_2 = StructureRequirements.builder(Casings.INTERMIX_CHAMBER, 28)
             .build();
     private static final StructureRequirements HATCHES_7 = StructureRequirements
-            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 95).build();
+            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 95)
+            .atLeast(HatchElement.Maintenance).build();
     private static final StructureRequirements HATCHES_8 = StructureRequirements
             .builder(Casings.ROBUST_NAQUADAH_ALLOY, 0).build();
 
@@ -138,7 +139,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                 .addHatchInfo("Output Hatch", "optional, up to 1; UHV+; central 3x3 of the bottom layer")
                 .addHatchInfo("Output Bus", "optional, up to 1; UHV+; central 3x3 of the bottom layer")
                 .addHatchInfo("Energy Hatches", "optional, up to 2 total; UHV+; middle of the bottom edges")
-                .addHatchInfo("Maintenance Hatch", "optional, up to 1; central 3x3 of the bottom layer")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; central 3x3 of the bottom layer")
                 .addStructureHint("Inner inputs: casings or input hatches/buses", HintColor.BLUE)
                 .addStructureHint("Bottom center: casings, output hatches/buses or Maintenance Hatch", HintColor.RED)
                 .addStructureHint("Bottom edges: casings or energy hatches", HintColor.YELLOW)
@@ -204,7 +205,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
         boolean check = checkPiece(4, 8, 3)
                 && HATCHES_7.isSatisfied(this, casingCount)
                 && HATCHES_2.isSatisfied(this, intermixCount)
-                && mMaintenanceHatches.size() <= 1;
+                && mMaintenanceHatches.size() == 1;
 
         for (GT_MetaTileEntity_Hatch_Energy mEnergyHatch : this.mEnergyHatches) {
             if (mEnergyHatch.mTier < 9) {

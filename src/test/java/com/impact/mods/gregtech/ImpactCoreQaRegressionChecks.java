@@ -582,6 +582,81 @@ public class ImpactCoreQaRegressionChecks {
         assertTrue(com.impact.util.Utilits.isLowGravity(spaceTile), "Use the world's provider even outside DimensionManager");
     }
 
+    private static void checkMandatoryMaintenance(String name) throws Exception {
+        GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = machine(name);
+        assertTrue(machine.enabledMaintenance, name);
+        FullWorld world = new FullWorld();
+        if (name.endsWith("GTMTE_MPContainment") || name.endsWith("GTMTE_MPStabilizer")) {
+            world.provider.dimensionId = com.impact.addon.gc.DimensionsIDs.ORBIT_EARTH;
+        }
+        ForgeDirection facing = name.endsWith("GTMTE_BasicMiner") || name.endsWith("GTMTE_AdvancedMiner")
+                ? ForgeDirection.UP : ForgeDirection.NORTH;
+        ImpactConstructionChecks.TestTile controller = new ImpactConstructionChecks.TestTile(world, machine, facing);
+        world.putTile(0, 64, 0, controller);
+        ItemStack trigger = new ItemStack(Items.stick);
+        for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
+            ChannelDataAccessor.setChannelData(trigger, channel.getChannel(), channel.getMinimumValue());
+        }
+        ImpactConstructionChecks.Source source = inventory(false, false);
+        ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(
+                source, new ImpactConstructionChecks.TestPlayer(world));
+        for (int step = 0; step < 500 && !recheck(machine, controller); step++) {
+            ((ISurvivalConstructable) machine).survivalConstruct(trigger, 64, environment);
+        }
+        assertTrue(recheck(machine, controller), name + " must build with its required maintenance hatch");
+        assertEquals(1, machine.mMaintenanceHatches.size(), name);
+        gregtech.api.interfaces.tileentity.IGregTechTileEntity maintenance =
+                machine.mMaintenanceHatches.get(0).getBaseMetaTileEntity();
+        int x = maintenance.getXCoord();
+        int y = maintenance.getYCoord();
+        int z = maintenance.getZCoord();
+        String position = ImpactConstructionChecks.TestWorld.key(x, y, z);
+        ImpactConstructionChecks.TestTile original = world.tiles.get(position);
+        int originalMetadata = world.metadata.get(position);
+        world.setBlock(x, y, z, Blocks.air, 0, 0);
+        machine.construct(trigger, false);
+        Block casing = world.getBlock(x, y, z);
+        int casingMetadata = world.getBlockMetadata(x, y, z);
+        assertFalse(world.isAirBlock(x, y, z), name + " maintenance position must also allow a casing");
+        assertFalse(recheck(machine, controller), name + " must reject zero maintenance hatches");
+        world.putTile(x, y, z, original);
+        world.blocks.put(position, machineBlock);
+        world.metadata.put(position, originalMetadata);
+        assertTrue(recheck(machine, controller), name + " must form after restoring maintenance");
+        HatchElement optional = name.contains(".matrixsystem.") || name.contains(".generators.")
+                ? HatchElement.Energy : HatchElement.Output;
+        ImpactConstructionChecks.TestTile second = null;
+        for (ImpactConstructionChecks.TestTile tile : world.tiles.values()) {
+            if (tile != controller && optional.matches(tile.getMetaTileEntity())) {
+                second = tile;
+                break;
+            }
+        }
+        assertNotNull(second, name + " needs another valid maintenance position");
+        String secondPosition = ImpactConstructionChecks.TestWorld.key(second.xCoord, second.yCoord, second.zCoord);
+        int secondMetadata = world.metadata.get(secondPosition);
+        GT_MetaTileEntity_Hatch_Maintenance secondHatch = new GT_MetaTileEntity_Hatch_Maintenance(
+                "second-maintenance",
+                1,
+                "",
+                new ITexture[0][][],
+                false
+        );
+        world.putTile(second.xCoord, second.yCoord, second.zCoord,
+                new ImpactConstructionChecks.TestTile(world, secondHatch, facing));
+        world.blocks.put(secondPosition, machineBlock);
+        assertFalse(recheck(machine, controller), name + " must reject two maintenance hatches");
+        world.setBlock(x, y, z, casing, casingMetadata, 0);
+        assertTrue(recheck(machine, controller), name + " must allow the other maintenance position on its own");
+        world.putTile(x, y, z, original);
+        world.blocks.put(position, machineBlock);
+        world.metadata.put(position, originalMetadata);
+        world.putTile(second.xCoord, second.yCoord, second.zCoord, second);
+        world.blocks.put(secondPosition, machineBlock);
+        world.metadata.put(secondPosition, secondMetadata);
+        assertTrue(recheck(machine, controller), name + " must recover after repeated maintenance checks");
+    }
+
     public static void check() throws Exception {
         ImpactStructureMigrationTest.Scenarios.check();
         checkGravityRequirements();
@@ -593,13 +668,30 @@ public class ImpactCoreQaRegressionChecks {
                 "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider",
                 "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment",
                 "com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator");
+        List<String> maintenanceNames = Arrays.asList(
+                "com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner",
+                "com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner",
+                "com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Tesseract",
+                "com.impact.mods.gregtech.tileentities.multi.units.GTMTE_TinyWormHole",
+                "com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator",
+                "com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator",
+                "com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_Farm",
+                "com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler",
+                "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment",
+                "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer",
+                "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider");
+        List<String> preparedNames = new ArrayList<>(names);
+        preparedNames.addAll(maintenanceNames);
         StringWriter log = new StringWriter();
         report = new PrintWriter(log);
         try {
-            prepare(names);
+            prepare(preparedNames);
             for (String name : names)
                 for (String mode : new String[] { "FULL", "EMPTY", "LOW_TIER", "ITEM_FIRST" })
                     run(name, mode);
+            for (String name : maintenanceNames) {
+                checkMandatoryMaintenance(name);
+            }
             checkDedicatedRoles();
         } catch (Throwable error) {
             error.printStackTrace(report);

@@ -44,7 +44,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase
     private static final ICasing CASING = ImpactCasings.NQ_CASING;
 
     private static final StructureRequirements HATCHES_C = StructureRequirements.builder(ImpactCasings.NQ_CASING, 64)
-            .build();
+            .atLeast(HatchElement.Maintenance).build();
 
     public boolean Stuff;
     public int EU_PER_TICK = 134217728;
@@ -102,7 +102,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase
     public boolean machineStructure(IGregTechTileEntity iGregTechTileEntity) {
         casingCount = 0;
         boolean check = checkPiece(7, 13, 0)
-                && mMaintenanceHatches.size() <= 1 && HatchCounts.inputHatches(this) <= 3;
+                && mMaintenanceHatches.size() == 1 && HatchCounts.inputHatches(this) <= 3;
         if (!HATCHES_C.isSatisfied(this, casingCount))
             check = false;
         return check;
@@ -186,7 +186,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase
                 .addStructurePartInfo(CASING, "%s+ total; 28 fixed in the inner ring, remaining in the outer rings", HATCHES_C.getMinimumCasings())
                 .addOtherStructurePart(new ItemStack(Block_NqTether.INSTANCE, 1, 0), "exactly 32; ring between the inner and outer casings")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Maintenance Hatch", "optional, up to 1; outer casing rings")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; outer casing rings")
                 .addHatchInfo("Input Hatches", "optional, up to 3; outer casing rings")
                 .addHatchInfo("Dynamo Hatches", "optional; outer casing rings")
                 .addStructureHint("Outer rings: casings or hatches", HintColor.GREEN)

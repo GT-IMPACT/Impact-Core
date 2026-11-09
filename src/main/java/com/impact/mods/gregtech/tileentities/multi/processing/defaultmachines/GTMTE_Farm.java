@@ -37,7 +37,7 @@ public class GTMTE_Farm
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 64)
-            .atLeast(HatchElement.Energy).build();
+            .atLeast(HatchElement.Energy, HatchElement.Maintenance).build();
     private static IStructureDefinition<GTMTE_Farm> STRUCTURE;
 
     @Override
@@ -107,7 +107,7 @@ public class GTMTE_Farm
                 .addOtherStructurePart("Reinforced Glass", "exactly 9; roof center")
                 .addAir(27, "interior, above the farm casings")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Maintenance Hatch", "optional, up to 1; bottom edge")
+                .addHatchInfo("Maintenance Hatch", "exactly 1; bottom edge")
                 .addHatchInfo("Energy Hatches", "1-4 total; bottom edge")
                 .addHatchInfo("Input Buses", "optional, up to 3; bottom edge")
                 .addHatchInfo("Input Hatches", "optional, up to 3; bottom edge")
@@ -156,7 +156,7 @@ public class GTMTE_Farm
         casingCount = 0;
         return checkPiece("main", 2, 4, 0)
                 && SHELL.isSatisfied(this, casingCount)
-                && mMaintenanceHatches.size() <= 1
+                && mMaintenanceHatches.size() == 1
                 && HatchCounts.energyHatches(this) <= 4
                 && HatchCounts.inputBuses(this) <= 3
                 && HatchCounts.inputHatches(this) <= 3
