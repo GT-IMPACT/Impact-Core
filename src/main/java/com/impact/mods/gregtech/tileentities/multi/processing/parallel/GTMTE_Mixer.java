@@ -164,6 +164,6 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 200;
+        return 5;
     }
 }

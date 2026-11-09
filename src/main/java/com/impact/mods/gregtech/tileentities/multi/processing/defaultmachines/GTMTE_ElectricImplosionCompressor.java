@@ -158,6 +158,6 @@ public class GTMTE_ElectricImplosionCompressor extends GTMTE_Impact_BlockBase<GT
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 500;
+        return 20;
     }
 }

@@ -104,6 +104,9 @@ final class ImpactTooltipChecks {
         if (!plain(machine.getSecondaryDescription()).contains("Muffler Hatch")) {
             return;
         }
+        int pollutionPerTick = machine.getPollutionPerTick(null);
+        assertTrue(pollutionPerTick > 0 && pollutionPerTick <= 20,
+                machine.mName + " must emit between 1 and 400 pollution per second before muffler reduction");
         String[] info = machine.getPrimaryDescription();
         long pollutionRows = Arrays.stream(info)
                 .map(EnumChatFormatting::getTextWithoutFormattingCodes)

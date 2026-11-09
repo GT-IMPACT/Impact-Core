@@ -90,6 +90,11 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
     }
 
     @Override
+    public int getPollutionPerTick(ItemStack stack) {
+        return 10;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new ImpactMultiblockTooltipBuilder(mName)
                 .useCompactStructure()

@@ -38,11 +38,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ProcessingMultiBlockBase;
 import gregtech.api.util.GT_Recipe;
@@ -55,6 +60,7 @@ import ic2.core.init.InternalName;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -248,6 +254,7 @@ public class ImpactConstructionChecks {
             }
         }
         List<AssertionError> failures = new ArrayList<>();
+        int mufflerMachines = 0;
         for (String name : controllers) {
             try {
                 Class<?> type = Class.forName(name);
@@ -359,6 +366,9 @@ public class ImpactConstructionChecks {
                     }
                 }
                 assertTrue(orientations > 0, "No allowed orientations: " + name);
+                if (checkMufflerLimits(machine, hints)) {
+                    mufflerMachines++;
+                }
             } catch (Throwable failure) {
                 failures.add(new AssertionError("Hologram audit: " + name, failure));
             }
@@ -369,6 +379,83 @@ public class ImpactConstructionChecks {
             throw failure;
         }
         assertEquals(65, controllers.size());
+        assertEquals(16, mufflerMachines, "Every machine listing a muffler must enforce exactly one");
+    }
+
+    private static boolean checkMufflerLimits(GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine,
+            HintRecorder hints) throws Exception {
+        String description = net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(
+                String.join("\n", machine.getSecondaryDescription()));
+        if (!description.contains("Muffler Hatch")) {
+            return false;
+        }
+        String name = machine.getClass().getSimpleName();
+        TestWorld world = new TestWorld();
+        TestTile tile = new TestTile(world, machine, ForgeDirection.NORTH);
+        world.putTile(0, 64, 0, tile);
+        machine.setExtendedFacing(ExtendedFacing.of(ForgeDirection.NORTH));
+        ItemStack trigger = new ItemStack(Items.stick);
+        hints.clear();
+        world.isRemote = true;
+        machine.construct(trigger, true);
+        List<String> shell = new ArrayList<>();
+        List<String> top = new ArrayList<>();
+        hints.frames.forEach((position, color) -> {
+            if (color == HintColor.GREEN) {
+                shell.add(position);
+            } else if (color == HintColor.ORANGE) {
+                top.add(position);
+            }
+        });
+        assertTrue(shell.size() >= 3, name + " needs hatch positions for the boundary check");
+        world.isRemote = false;
+        machine.construct(trigger, false);
+        if (name.endsWith("Pyrolyse")) {
+            Materials material = name.equals("GTMTE_AdvancedPyrolyse") ? Materials.HSLA : Materials.Steel;
+            Object frameElement = ((StructureDefinition<?>) machine.getStructureDefinition()).getElements().get('B');
+            machine.getStructureDefinition().iterate("main", world, machine.getExtendedFacing(), 0, 64, 0, 0, 1, 0,
+                    (element, frameWorld, x, y, z, a, b, c) -> {
+                        if (element == frameElement) {
+                            IMetaTileEntity frame = new GT_MetaPipeEntity_Frame("frame", material);
+                            TestTile frameTile = new TestTile(world, new GT_MetaTileEntity_Hatch_Energy(
+                                    "frame-tile", 1, "", new ITexture[0][][]), ForgeDirection.NORTH) {
+                                @Override
+                                public IMetaTileEntity getMetaTileEntity() {
+                                    return frame;
+                                }
+                            };
+                            world.putTile(x, y, z, frameTile);
+                        }
+                        return true;
+                    });
+        }
+        putHatch(world, shell.get(0), new GT_MetaTileEntity_Hatch_Maintenance(
+                "maintenance", 1, "", new ITexture[0][][], false));
+        String mufflerPosition = top.isEmpty() ? shell.get(1) : top.get(0);
+        Block casing = world.blocks.getOrDefault(mufflerPosition, Blocks.air);
+        int metadata = world.metadata.getOrDefault(mufflerPosition, 0);
+        Method setup = GT_MetaTileEntity_MultiBlockBase.class.getDeclaredMethod(
+                "setupMachine", IGregTechTileEntity.class, ItemStack.class);
+        setup.setAccessible(true);
+        setup.invoke(machine, tile, null);
+        assertFalse(machine.mMachine, name + " must reject a missing muffler");
+        putHatch(world, mufflerPosition, new GT_MetaTileEntity_Hatch_Muffler(
+                "muffler", 1, "", new ITexture[0][][]));
+        setup.invoke(machine, tile, null);
+        assertTrue(machine.mMachine, name + " must form with one muffler");
+        assertEquals(1, machine.mMufflerHatches.size(), name);
+        setup.invoke(machine, tile, null);
+        assertTrue(machine.mMachine, name + " repeated checks must not accumulate mufflers");
+        putHatch(world, shell.get(2), new GT_MetaTileEntity_Hatch_Muffler(
+                "second-muffler", 1, "", new ITexture[0][][]));
+        setup.invoke(machine, tile, null);
+        assertFalse(machine.mMachine, name + " must reject a second muffler");
+        String[] point = mufflerPosition.split(":");
+        world.setBlock(Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(point[2]),
+                casing, metadata, 0);
+        setup.invoke(machine, tile, null);
+        assertEquals(top.isEmpty(), machine.mMachine, name + " must keep any dedicated muffler position");
+        return true;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

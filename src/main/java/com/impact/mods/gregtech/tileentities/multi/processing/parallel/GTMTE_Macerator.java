@@ -30,7 +30,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 25)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
     private static IStructureDefinition<GTMTE_Macerator> definition;
 
     public GTMTE_Macerator(int aID, String aNameRegional) {
@@ -102,7 +102,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 16; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 4; casing positions")
-                .addHatchInfo("Muffler Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Muffler Hatch", "exactly 1; casing positions")
                 .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
                 .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
                 .addHatchChannelInfo()
@@ -119,7 +119,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
     public boolean machineStructure(IGregTechTileEntity thisController) {
         casingCount = 0;
         boolean formationChecklist = checkPiece(1, 5, 0)
-                && mMufflerHatches.size() <= 1 && SHELL.isSatisfied(this, casingCount);
+                && mMufflerHatches.size() == 1 && SHELL.isSatisfied(this, casingCount);
 
         if (HatchCounts.inputBuses(this) > 16) {
             formationChecklist = false;
@@ -145,6 +145,6 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 200;
+        return 10;
     }
 }

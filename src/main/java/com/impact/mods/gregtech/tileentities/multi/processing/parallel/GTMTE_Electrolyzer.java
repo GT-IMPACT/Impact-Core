@@ -92,6 +92,11 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
     }
 
     @Override
+    public int getPollutionPerTick(ItemStack stack) {
+        return 5;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new ImpactMultiblockTooltipBuilder(mName)
                 .useCompactStructure()

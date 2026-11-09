@@ -139,6 +139,11 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 
 
     @Override
+    public int getPollutionPerTick(ItemStack stack) {
+        return 10;
+    }
+
+    @Override
     public GT_Recipe_Map getRecipeMap() {
         return GT_Recipe_Map.sCrakingRecipes;
     }
@@ -149,7 +154,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
 
         topMufflerPresent = false;
         boolean formationChecklist = checkPiece(2, 6, 0)
-                && mMufflerHatches.size() <= 1 && HATCHES_A.isSatisfied(this, casingCount);
+                && mMufflerHatches.size() == 1 && HATCHES_A.isSatisfied(this, casingCount);
 
         if (HatchCounts.inputBuses(this) > 8) {
             formationChecklist = false;

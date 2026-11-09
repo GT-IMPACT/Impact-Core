@@ -43,7 +43,7 @@ public class GTMTE_BlastSmelter
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 21)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
     private static IStructureDefinition<GTMTE_BlastSmelter> STRUCTURE;
     private HeatingCoil checkedCoil;
 
@@ -120,7 +120,7 @@ public class GTMTE_BlastSmelter
                 .addHatchInfo("Energy Hatches", "optional, up to 4 total; top and bottom layers")
                 .addHatchInfo("Input Buses", "optional, up to 5; top and bottom layers")
                 .addHatchInfo("Output Hatches", "optional, up to 5; top and bottom layers")
-                .addHatchInfo("Muffler Hatch", "optional, up to 1; top and bottom layers")
+                .addHatchInfo("Muffler Hatch", "exactly 1; top and bottom layers")
                 .addStructureHint("Top and bottom: casings or hatches/buses", HintColor.GREEN)
                 .addSubChannel(GTStructureChannels.COIL, "1-10; default: stack size; existing coils take priority.")
                 .addHatchChannelInfo()
@@ -174,7 +174,7 @@ public class GTMTE_BlastSmelter
         checkedCoil = null;
         mHeatingCapacity = 0;
         boolean formationChecklist = checkPiece("main", 2, 3, 0)
-                && mMufflerHatches.size() <= 1 && SHELL.isSatisfied(this, casingCount);
+                && mMufflerHatches.size() == 1 && SHELL.isSatisfied(this, casingCount);
         if (checkedCoil != null) {
             mHeatingCapacity = checkedCoil.getHeatCapacity();
         }
@@ -215,7 +215,7 @@ public class GTMTE_BlastSmelter
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 200;
+        return 20;
     }
 
     public int getDamageToComponent(ItemStack aStack) {

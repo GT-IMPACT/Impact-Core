@@ -1418,7 +1418,6 @@ TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_2=ров�
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_3=ровно 1; верхний и нижний слои
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_4=необязательно, до 4 суммарно; верхний и нижний слои
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_5=необязательно, до 5; верхний и нижний слои
-TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_6=необязательно, до 1; верхний и нижний слои
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Part_Index_0=Нагревательные катушки
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_StructureSection_Index_0=Компоненты
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_StructureSection_Index_1=Люки и шины

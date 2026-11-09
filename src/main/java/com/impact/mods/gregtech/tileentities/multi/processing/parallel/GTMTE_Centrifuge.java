@@ -172,6 +172,6 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase<G
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 200;
+        return 5;
     }
 }

@@ -160,6 +160,6 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 200;
+        return 5;
     }
 }

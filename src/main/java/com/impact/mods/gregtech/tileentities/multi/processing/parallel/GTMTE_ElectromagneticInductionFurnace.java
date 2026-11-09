@@ -167,6 +167,6 @@ public class GTMTE_ElectromagneticInductionFurnace
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 50;
+        return 20;
     }
 }

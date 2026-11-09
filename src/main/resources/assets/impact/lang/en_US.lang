@@ -1431,7 +1431,6 @@ TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_2=exactly
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_3=exactly 1; top and bottom layers
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_4=optional, up to 4 total; top and bottom layers
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_5=optional, up to 5; top and bottom layers
-TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Location_Index_6=optional, up to 1; top and bottom layers
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_Part_Index_0=Heating Coils
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_StructureSection_Index_0=Components
 TileEntity_DESCRIPTION_impact.multimachine.blastsmelter_StructureSection_Index_1=Hatches and buses

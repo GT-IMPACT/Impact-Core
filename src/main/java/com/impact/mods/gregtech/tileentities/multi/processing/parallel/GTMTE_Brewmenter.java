@@ -96,6 +96,11 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase<G
     }
 
     @Override
+    public int getPollutionPerTick(ItemStack stack) {
+        return 5;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new ImpactMultiblockTooltipBuilder(mName)
                 .useCompactStructure()

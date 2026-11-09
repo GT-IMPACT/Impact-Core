@@ -149,7 +149,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return 200;
+        return 5;
     }
 
     @NotNull
