@@ -95,6 +95,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                 .useCompactStructure()
                 .addMachineType("Flotation Unit")
                 .addParallelInfo()
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
                 .beginStructureBlock(3, 4, 3, false)
                 .addController("front center of the bottom layer")
                 .addStructureSection("Components")

@@ -116,6 +116,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                 .useCompactStructure()
                 .addMachineType("Cracking Unit")
                 .addParallelInfo()
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
                 .beginStructureBlock(5, 7, 5, false)
                 .addController("front center of the bottom layer")
                 .addStructureSection("Components")

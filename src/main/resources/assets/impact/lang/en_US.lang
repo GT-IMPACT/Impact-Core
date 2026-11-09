@@ -793,6 +793,7 @@ TileEntity_DESCRIPTION_impact.multimachine.centrifuge_Channel_Index_0=1: availab
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_MachineType_Index_0=Multiblock Electrolyzer
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Information_Index_0=Parallel points: base 1, maximum 256
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Information_Index_1=Accepts fluids instead of fluid cells.
+TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Information_Index_2=Pollution: %s per second before muffler reduction.
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Location_Index_0=front center, layer 2 from the bottom
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Location_Index_1=10+; fill unused casing positions
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Location_Index_2=exactly 9; roof center and upper side walls; any color
@@ -904,6 +905,7 @@ TileEntity_DESCRIPTION_impact.multimachine.cutting_Channel_Index_0=1: available 
 
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_MachineType_Index_0=Brewery, Fermenter
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Information_Index_0=Parallel points: base 1, maximum 256
+TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Information_Index_1=Pollution: %s per second before muffler reduction.
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Location_Index_0=front center of the bottom layer
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Location_Index_1=%s+; fill unused casing positions
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Location_Index_2=exactly 4; roof; any color
@@ -1051,6 +1053,7 @@ TileEntity_DESCRIPTION_impact.multimachine.extradifier_Channel_Index_0=1: availa
 
 TileEntity_DESCRIPTION_impact.multimachine.flotation_MachineType_Index_0=Flotation Unit
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Information_Index_0=Parallel points: base 1, maximum 256
+TileEntity_DESCRIPTION_impact.multimachine.flotation_Information_Index_1=Pollution: %s per second before muffler reduction.
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Location_Index_0=front center of the bottom layer
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Location_Index_1=%s+; fill unused casing positions
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Location_Index_2=exactly 4; centers of front and back walls, layers 2 and 3
@@ -1141,6 +1144,7 @@ TileEntity_DESCRIPTION_impact.multimachine.freezsolidifier_Channel_Index_0=1: av
 
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_MachineType_Index_0=Cracking Unit
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Information_Index_0=Parallel points: base 1, maximum 256
+TileEntity_DESCRIPTION_impact.multis.cracking_unit_Information_Index_1=Pollution: %s per second before muffler reduction.
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Location_Index_0=front center of the bottom layer
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Location_Index_1=%s+; fill unused casing positions
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Location_Index_2=exactly 40; around the pipe column, layers 2-6

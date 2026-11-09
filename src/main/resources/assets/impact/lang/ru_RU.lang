@@ -780,6 +780,7 @@ TileEntity_DESCRIPTION_impact.multimachine.centrifuge_Channel_Index_0=1: дос�
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_MachineType_Index_0=Мультиблочный электролизёр
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Information_Index_0=Очки параллелей: базово 1, максимум 256
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Information_Index_1=Принимает жидкости вместо капсул с жидкостями.
+TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Information_Index_2=Загрязнение: %s в секунду до снижения глушителем.
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Location_Index_0=спереди по центру, слой 2 снизу
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Location_Index_1=от 10; заполнение свободных позиций корпуса
 TileEntity_DESCRIPTION_impact.multimachine.electrolyzer_Location_Index_2=ровно 9; центр крыши и верхняя часть боковых стен; любой цвет
@@ -891,6 +892,7 @@ TileEntity_DESCRIPTION_impact.multimachine.cutting_Channel_Index_0=1: досту
 
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_MachineType_Index_0=Пивоварня, ферментер
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Information_Index_0=Очки параллелей: базово 1, максимум 256
+TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Information_Index_1=Загрязнение: %s в секунду до снижения глушителем.
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Location_Index_0=спереди по центру нижнего слоя
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Location_Index_1=от %s; заполнение свободных позиций корпуса
 TileEntity_DESCRIPTION_impact.multimachine.brewmenter_Location_Index_2=ровно 4; крыша; любой цвет
@@ -1038,6 +1040,7 @@ TileEntity_DESCRIPTION_impact.multimachine.extradifier_Channel_Index_0=1: дос
 
 TileEntity_DESCRIPTION_impact.multimachine.flotation_MachineType_Index_0=Флотационная установка
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Information_Index_0=Очки параллелей: базово 1, максимум 256
+TileEntity_DESCRIPTION_impact.multimachine.flotation_Information_Index_1=Загрязнение: %s в секунду до снижения глушителем.
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Location_Index_0=спереди по центру нижнего слоя
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Location_Index_1=от %s; заполнение свободных позиций корпуса
 TileEntity_DESCRIPTION_impact.multimachine.flotation_Location_Index_2=ровно 4; центры передней и задней стен, слои 2 и 3
@@ -1128,6 +1131,7 @@ TileEntity_DESCRIPTION_impact.multimachine.freezsolidifier_Channel_Index_0=1: д
 
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_MachineType_Index_0=Установка крекинга
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Information_Index_0=Очки параллелей: базово 1, максимум 256
+TileEntity_DESCRIPTION_impact.multis.cracking_unit_Information_Index_1=Загрязнение: %s в секунду до снижения глушителем.
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Location_Index_0=спереди по центру нижнего слоя
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Location_Index_1=от %s; заполнение свободных позиций корпуса
 TileEntity_DESCRIPTION_impact.multis.cracking_unit_Location_Index_2=ровно 40; вокруг столба труб, слои 2-6

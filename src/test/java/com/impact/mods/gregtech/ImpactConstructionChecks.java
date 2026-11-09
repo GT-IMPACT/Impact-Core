@@ -262,6 +262,7 @@ public class ImpactConstructionChecks {
                 }
                 checkNeiMaps((GT_MetaTileEntity_ProcessingMultiBlockBase<?>) machine);
                 ImpactCasingChecks.checkTooltip(machine);
+                ImpactTooltipChecks.checkMufflerPollution(machine);
                 String description = String.join("\n", machine.getSecondaryDescription());
                 String structureHints = String.join("\n", machine.getStructureDescription(null));
                 if (!name.endsWith("GTMTE_TheMill")) {

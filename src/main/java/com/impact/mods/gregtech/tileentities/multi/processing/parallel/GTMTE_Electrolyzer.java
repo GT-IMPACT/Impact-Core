@@ -98,6 +98,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                 .addMachineType("Multiblock Electrolyzer")
                 .addParallelInfo()
                 .addInfo("Accepts fluids instead of fluid cells.")
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
                 .beginStructureBlock(3, 4, 5, false)
                 .addController("front center, layer 2 from the bottom")
                 .addStructureSection("Components")

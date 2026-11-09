@@ -82,6 +82,20 @@ final class ImpactTooltipChecks {
                 .toLowerCase().contains("muffler"));
     }
 
+    static void checkMufflerPollution(GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine) {
+        if (!plain(machine.getSecondaryDescription()).contains("Muffler Hatch")) {
+            return;
+        }
+        String[] info = machine.getPrimaryDescription();
+        long pollutionRows = Arrays.stream(info)
+                .map(EnumChatFormatting::getTextWithoutFormattingCodes)
+                .filter(line -> line.trim().startsWith("Pollution:")).count();
+        assertEquals(1, pollutionRows, machine.mName + " must show pollution once");
+        String expected = "Pollution: " + GT_Utility.formatNumbers(machine.getPollutionPerTick(null) * 20)
+                + " per second before muffler reduction.";
+        assertTrue(plain(info).contains(expected), machine.mName + " must show actual pollution: " + expected);
+    }
+
     private static void checkChannelTranslations() throws Exception {
         GT_MetaTileEntity_EnhancedMultiBlockBase<?> lap = (GT_MetaTileEntity_EnhancedMultiBlockBase<?>) Class.forName(ROOT + "storage.GTMTE_LapPowerStation")
                 .getConstructor(String.class).newInstance("impact.multimachine.supercapacitor");
