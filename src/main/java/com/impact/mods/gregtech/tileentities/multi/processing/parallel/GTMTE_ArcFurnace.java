@@ -109,7 +109,6 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
                 .addHatchInfo("Input Buses", "optional, up to 6; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
-                .addHatchInfo("Output Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")
                 .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
                 .addHatchChannelInfo()

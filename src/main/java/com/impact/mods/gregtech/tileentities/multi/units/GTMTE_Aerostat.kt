@@ -421,7 +421,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
             .addStructurePartInfo(CASING, "%s+; fill unused platform positions", SHELL.minimumCasings)
             .addStructureSection("Hatches and buses")
             .addHatchInfo("Input Bus or Input Hatch", "exactly 1 total; platform casings")
-            .addHatchInfo("Output Buses", "optional; platform casings; receives item cargo")
+            .addHatchInfo("Output Buses", "optional; platform casings")
             .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
             .addHatchChannelInfo()
             .toolTipFinisher()

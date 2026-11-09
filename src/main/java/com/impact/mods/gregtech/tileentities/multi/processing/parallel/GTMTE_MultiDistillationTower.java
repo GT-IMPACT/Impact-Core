@@ -111,7 +111,6 @@ public class GTMTE_MultiDistillationTower
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
-                .addHatchInfo("Input Buses", "optional, up to 6; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 9; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
                 .addHatchInfo("Output Hatches", "optional, up to 66; casing positions")

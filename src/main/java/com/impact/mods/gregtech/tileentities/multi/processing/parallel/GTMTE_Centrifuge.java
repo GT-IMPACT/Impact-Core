@@ -100,6 +100,7 @@ public class GTMTE_Centrifuge extends GT_MetaTileEntity_MultiParallelBlockBase<G
                 .useCompactStructure()
                 .addMachineType("Large Centrifuge, Thermal Centrifuge")
                 .addParallelInfo()
+                .addInfo("Accepts fluids instead of fluid cells.")
                 .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
                 .beginStructureBlock(5, 4, 5, false)
                 .addController("front center of the bottom layer")

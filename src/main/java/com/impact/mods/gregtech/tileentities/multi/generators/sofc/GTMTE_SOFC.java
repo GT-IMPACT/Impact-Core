@@ -84,7 +84,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addHatchInfo("Input Hatches", "2+; casing positions; fuel and oxygen")
-                .addHatchInfo("Output Hatches", "optional; casing positions; steam output")
+                .addHatchInfo("Output Hatches", "optional, up to 2; casing positions; steam output")
                 .addHatchInfo("Dynamo Hatches", "optional, up to 2 standard and 1 multi-amp; rear wall")
                 .addStructureHint("Casings or input/output/maintenance hatches", HintColor.GREEN)
                 .addStructureHint("Rear wall: casings or input/output/maintenance/dynamo hatches", HintColor.BLUE)
@@ -218,6 +218,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
         return checkPiece("main", 1, 1, 0)
                 && requirements().isSatisfied(this, casingCount)
                 && mMaintenanceHatches.size() == 1
+                && mOutputHatches.size() <= 2
                 && mDynamoHatches.size() <= 2 && mDynamoHatchesMulti.size() <= 1;
     }
 

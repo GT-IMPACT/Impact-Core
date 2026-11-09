@@ -106,7 +106,6 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
         return new ImpactMultiblockTooltipBuilder(mName)
                 .useCompactStructure()
                 .addMachineType("Saw Mill")
-                .addInfo("After overclocking: 1/4 EU/t, 2x recipe time.")
                 .beginStructureBlock(3, 3, 5, false)
                 .addController("front left edge, middle layer")
                 .addStructureSection("Components")

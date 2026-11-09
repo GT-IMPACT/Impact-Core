@@ -185,7 +185,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
         boolean check = checkPiece(2, 9, 1)
                 && mMaintenanceHatches.size() <= 1
                 && mOutputBusses.size() <= 1
-                && HatchCounts.inputHatches(this) <= 1
+                && HatchCounts.inputHatches(this) <= 2
                 && HatchCounts.energyHatches(this) <= 2
                 && HATCHES_A.isSatisfied(this, casingCount);// TODO: 02.12.2021
         if (hatch.size() != 1)
@@ -291,6 +291,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addInfo("Mines the current chunk; only 1 of these miners per chunk.")
                 .addInfo("Consumes 50 L of Drilling Fluid per cycle; some veins require an additional fluid.")
                 .addInfo("Requires a drill head in the Miner Drill Hatch.")
+                .addInfo("Mines ore layer 0 or 1; right-click the controller with a screwdriver to switch.")
                 .beginStructureBlock(5, 12, 5, false)
                 .addController("front center of the lower platform")
                 .addStructureSection("Components")
@@ -300,7 +301,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addHatchInfo("Miner Drill Hatch", "exactly 1; center of the lower platform; facing down")
                 .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
                 .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
-                .addHatchInfo("Input Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 2; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
                 .addStructureHint("Casings or hatches/buses", HintColor.BLUE)

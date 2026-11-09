@@ -371,6 +371,7 @@ class GTMTEOreSamplingMachine : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEOr
             .addInfo("Right-click the controller top to sample the current chunk; 1 sampler per chunk.")
             .addInfo("Drops an ore sample after 30 seconds.")
             .addInfo("Requires a drill head in the Miner Drill Hatch.")
+            .addInfo("Surveys only ore layer 1.")
             .beginStructureBlock(3, 3, 3, false)
             .addController("center of the top layer")
             .addStructureSection("Components")

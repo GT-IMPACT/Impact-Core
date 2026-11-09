@@ -114,7 +114,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
     protected MultiblockTooltipBuilder createTooltip() {
         return new ImpactMultiblockTooltipBuilder(mName)
                 .useCompactStructure()
-                .addMachineType("Cracking Unit")
+                .addMachineType("Oil Cracking Unit")
                 .addParallelInfo()
                 .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
                 .beginStructureBlock(5, 7, 5, false)

@@ -90,7 +90,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 .addController("front center, layer 2 from the bottom")
                 .addStructureSection("Components")
                 .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
-                .addOtherStructurePart("IC2 Coolant fluid blocks", "exactly 7; internal coolant channel")
+                .addOtherStructurePart("IC2 Coolant fluid blocks", "exactly 7; fill the cavity inside the casing")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")

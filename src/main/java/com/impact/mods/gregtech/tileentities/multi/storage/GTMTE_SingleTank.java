@@ -266,7 +266,7 @@ public class GTMTE_SingleTank
                 .addMachineType("Fluid Tank")
                 .addInfo("Stores 1 fluid; capacity depends on the installed Tank Storage Blocks.")
                 .addInfo("Stored fluids are inaccessible while the structure is incomplete.")
-                .addInfo("A fluid container or configured AE2 cell in the controller slot filters accepted fluids.")
+                .addInfo("A fluid container or configured AE2 View Cell in the controller slot filters accepted fluids.")
                 .beginStructureBlock(3, 3, 7, false)
                 .addController("center of the front end layer")
                 .addStructureSection("Components")
@@ -275,8 +275,8 @@ public class GTMTE_SingleTank
                 .addOtherStructurePart("I-Glass", "20 fixed corner blocks; fill unused side-wall centers; any color")
                 .addStructureInfo("Can be built horizontally or vertically; the long axis follows the controller facing.")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Input Hatches", "optional; controller end or side-wall centers")
-                .addHatchInfo("Output Hatches", "optional; controller end or side-wall centers")
+                .addHatchInfo("Input Hatches", "optional, up to 4; controller end or side-wall centers")
+                .addHatchInfo("Output Hatches", "optional, up to 4; controller end or side-wall centers")
                 .addHatchInfo("Tank Input and Output Hatch", "optional, up to 1; controller end or side-wall centers; AE2 access")
                 .addStructureHint("Controller end: casings or hatches", HintColor.GREEN)
                 .addStructureHint("Side walls: glass or hatches", HintColor.BLUE)
@@ -470,7 +470,9 @@ public class GTMTE_SingleTank
         mEnergyHatches.clear();
         mEnergyHatchesMulti.clear();
         boolean formationChecklist = checkPiece("main", 1, 1, 0) && SHELL.isSatisfied(this, casingCount)
-                && tankHatchCount <= 1;
+                && tankHatchCount <= 1
+                && mInputHatches.size() <= 4
+                && mOutputHatches.size() <= 4;
 
         if (HatchCounts.energyHatches(this) > 0) {
             formationChecklist = false;

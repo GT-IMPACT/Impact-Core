@@ -205,7 +205,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
         boolean check = checkPiece(3, 10, 1)
                 && mMaintenanceHatches.size() <= 1
                 && mOutputBusses.size() <= 1
-                && HatchCounts.inputHatches(this) <= 1
+                && HatchCounts.inputHatches(this) <= 2
                 && HatchCounts.energyHatches(this) <= 2
                 && SHELL.isSatisfied(this, casingCount);
         if (hatch.size() != 1)
@@ -364,6 +364,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                 .addInfo("Mining area: 4x4 chunks (full vein).")
                 .addInfo("Consumes 50 L of Drilling Fluid per cycle; some veins require an additional fluid.")
                 .addInfo("Requires a drill head in the Miner Drill Hatch.")
+                .addInfo("Mines ore layer 0 or 1; right-click the controller with a screwdriver to switch.")
                 .beginStructureBlock(7, 14, 7, false)
                 .addController("front center of the lower platform")
                 .addStructureSection("Components")
@@ -372,7 +373,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "optional, up to 1; casing positions")
                 .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
-                .addHatchInfo("Input Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to 2; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
                 .addHatchInfo("Miner Drill Hatch", "exactly 1; center of the lower platform; facing down")
                 .addHatchInfo("Miner Enrichment Unit", "exactly 1; casing positions")

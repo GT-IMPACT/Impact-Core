@@ -344,6 +344,7 @@ public class GTMTE_Mining_Coal extends GTMTE_Impact_BlockBase<GTMTE_Mining_Coal>
                 .addInfo("Burns fuel in the controller to mine the current chunk.")
                 .addInfo("Only 1 of these miners per chunk; works in the Overworld.")
                 .addInfo("Requires a drill head in the Miner Drill Hatch.")
+                .addInfo("Mines only ore layer 0.")
                 .beginStructureBlock(5, 3, 5, false)
                 .addController("center of the top layer")
                 .addStructureSection("Components")

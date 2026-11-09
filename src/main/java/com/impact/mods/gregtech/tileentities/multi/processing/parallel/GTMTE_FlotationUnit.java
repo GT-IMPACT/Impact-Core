@@ -101,7 +101,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                 .addStructureSection("Components")
                 .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
                 .addOtherStructurePart(Casings.TITANIUM_PIPE, "exactly 4; centers of front and back walls, layers 2 and 3")
-                .addOtherStructurePart(HeatingCoil.NICHROME, "exactly 12; side walls, layers 2 and 3")
+                .addOtherStructurePart(HeatingCoil.NICHROME, "exactly 8; side walls, layers 2 and 3")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
                 .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")

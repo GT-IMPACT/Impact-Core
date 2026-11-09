@@ -119,8 +119,6 @@ public class GTMTE_BlastSmelter
                 .addHatchInfo("Maintenance Hatch", "exactly 1; top and bottom layers")
                 .addHatchInfo("Energy Hatches", "optional, up to 4 total; top and bottom layers")
                 .addHatchInfo("Input Buses", "optional, up to 5; top and bottom layers")
-                .addHatchInfo("Input Hatches", "optional; top and bottom layers")
-                .addHatchInfo("Output Buses", "optional; top and bottom layers")
                 .addHatchInfo("Output Hatches", "optional, up to 5; top and bottom layers")
                 .addHatchInfo("Muffler Hatch", "optional, up to 1; top and bottom layers")
                 .addStructureHint("Top and bottom: casings or hatches/buses", HintColor.GREEN)

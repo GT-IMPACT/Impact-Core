@@ -195,7 +195,7 @@ public class GTMTE_LapPowerStation extends
                 .addStructureSection("Components")
                 .addStructurePartInfo(CASING, "%s+; fill unused positions in the 2-layer base", SHELL.getMinimumCasings())
                 .addOtherStructurePart("Capacitors", "up to 9 per layer; central 3x3 above the base; mixed tiers allowed")
-                .addOtherStructurePart("I-Glass", "16 per layer and 25 in the roof; walls and roof must have the same color; may end capacitor columns")
+                .addOtherStructurePart("I-Glass", "16 per layer and 25 in the roof; walls and roof must have the same color; must end capacitor columns")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Energy Hatches", "optional; 2-layer base")
                 .addHatchInfo("Dynamo Hatches", "optional; 2-layer base")

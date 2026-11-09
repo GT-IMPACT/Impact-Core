@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.Casings;
@@ -35,7 +36,8 @@ public class GTMTE_Farm
     private static final ICasing CASING = Casings.SOLID_STEEL;
     private int casingCount;
 
-    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 64).build();
+    private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 64)
+            .atLeast(HatchElement.Energy).build();
     private static IStructureDefinition<GTMTE_Farm> STRUCTURE;
 
     @Override
@@ -106,10 +108,10 @@ public class GTMTE_Farm
                 .addAir(27, "interior, above the farm casings")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "optional, up to 1; bottom edge")
-                .addHatchInfo("Energy Hatches", "optional; bottom edge")
-                .addHatchInfo("Input Buses", "optional; bottom edge")
-                .addHatchInfo("Input Hatches", "optional; bottom edge")
-                .addHatchInfo("Output Buses", "optional; bottom edge")
+                .addHatchInfo("Energy Hatches", "1-4 total; bottom edge")
+                .addHatchInfo("Input Buses", "optional, up to 3; bottom edge")
+                .addHatchInfo("Input Hatches", "optional, up to 3; bottom edge")
+                .addHatchInfo("Output Buses", "optional, up to 3; bottom edge")
                 .addStructureHint("Bottom edge: casings or hatches/buses", HintColor.GREEN)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
@@ -152,7 +154,13 @@ public class GTMTE_Farm
 
     public boolean checkMachine(IGregTechTileEntity controller, ItemStack stack) {
         casingCount = 0;
-        return checkPiece("main", 2, 4, 0) && SHELL.isSatisfied(this, casingCount) && mMaintenanceHatches.size() <= 1;
+        return checkPiece("main", 2, 4, 0)
+                && SHELL.isSatisfied(this, casingCount)
+                && mMaintenanceHatches.size() <= 1
+                && HatchCounts.energyHatches(this) <= 4
+                && HatchCounts.inputBuses(this) <= 3
+                && HatchCounts.inputHatches(this) <= 3
+                && mOutputBusses.size() <= 3;
     }
 
     @Override

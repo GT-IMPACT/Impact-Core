@@ -124,7 +124,7 @@ public class GTMTE_HugeSteamTurbine extends GTMTE_Impact_BlockBase<GTMTE_HugeSte
                 .useCompactStructure()
                 .addMachineType("Generator")
                 .addInfo("At full efficiency: 2 L of steam or 1 L of superheated steam per EU.")
-                .addInfo("Output is halved below full efficiency.")
+                .addInfo("Maintenance problems halve output.")
                 .addInfo("Steam above the dynamo output limit is consumed.")
                 .beginStructureBlock(5, 4, 8, false)
                 .addController("front center of layer 2")

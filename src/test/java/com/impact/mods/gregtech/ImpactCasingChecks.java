@@ -195,8 +195,10 @@ final class ImpactCasingChecks {
                 hatch = maintenance();
             } else if (i <= 2) {
                 hatch = new GT_MetaTileEntity_Hatch_Input("input", 4, "", new ITexture[0][][]);
-            } else {
+            } else if (i <= 4) {
                 hatch = new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]);
+            } else {
+                hatch = new GT_MetaTileEntity_Hatch_Input("input", 4, "", new ITexture[0][][]);
             }
             put(world, positions.get(i), hatch);
         }
@@ -204,8 +206,17 @@ final class ImpactCasingChecks {
         assertTrue(machine.mMachine, name + " at its minimum of " + minimum);
         setup.invoke(machine, machine.getBaseMetaTileEntity(), null);
         assertTrue(machine.mMachine, name + " repeated minimum check");
+        if (sofc) {
+            assertEquals(2, machine.mOutputHatches.size());
+            put(world, positions.get(5), new GT_MetaTileEntity_Hatch_Output("third-output", 4, "", new ITexture[0][][]));
+            setup.invoke(machine, machine.getBaseMetaTileEntity(), null);
+            assertFalse(machine.mMachine, name + " rejects a third output hatch");
+            put(world, positions.get(5), new GT_MetaTileEntity_Hatch_Input("input", 4, "", new ITexture[0][][]));
+            setup.invoke(machine, machine.getBaseMetaTileEntity(), null);
+            assertTrue(machine.mMachine, name + " forms again with two output hatches");
+        }
         put(world, positions.get(limit), sofc
-                ? new GT_MetaTileEntity_Hatch_Output("excess", 4, "", new ITexture[0][][])
+                ? new GT_MetaTileEntity_Hatch_Input("excess", 4, "", new ITexture[0][][])
                 : new GT_MetaTileEntity_Hatch_Energy("excess", 4, "", new ITexture[0][][]));
         setup.invoke(machine, machine.getBaseMetaTileEntity(), null);
         assertFalse(machine.mMachine, name + " one casing below its minimum");
