@@ -34,7 +34,6 @@
 14046	com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator
 14047	com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_HeavyMetalCyclone
 14048	com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator
-14049	com.impact.mods.gregtech.tileentities.multi.units.GTMTE_MoonMiner
 14050	com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_AdvDDDPrinter
 14051	com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler
 14052	com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator
@@ -54,7 +53,6 @@
 14067	com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer
 14068	com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment
 14069	com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider
-14070	com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator
 14071	com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal
 14072	com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner
 14073	com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner

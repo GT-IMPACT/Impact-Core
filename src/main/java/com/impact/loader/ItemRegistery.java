@@ -34,7 +34,7 @@ public class ItemRegistery {
 	
 	public static Block lscLapotronicEnergyUnit, SawMillBlock, IGlassBlock, CoalBlock, UtilBlock,
 			NqTetherBlock, InsideBlock, FluidTankBlock, CeramicBlock, CollisionBlock,
-			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, Wind_rotor, TheWind, DryingRack;
+			SpaceElevatorBlock, placedItem, MPSystem, MPTransducer, TheWind, DryingRack;
 	public static Item maskVision;
 	
 	public static void run() {
@@ -125,7 +125,6 @@ public class ItemRegistery {
 		placedItem              = new PlacedItem();
 		MPSystem                = Block_MatrixSystem.registerBlock();
 		MPTransducer            = Block_MatrixTransducer.registerBlock();
-		Wind_rotor              = Block_Wind.registerBlock();
 		TheWind                 = Block_TheMill.registerBlock();
 		DryingRack              = Block_DryingRack.registerBlock();
 		maskVision              = MaskOfVision.registerItem();

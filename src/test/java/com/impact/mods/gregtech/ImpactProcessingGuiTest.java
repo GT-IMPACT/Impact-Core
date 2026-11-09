@@ -60,7 +60,6 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_MultiTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump;
-import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_MoonMiner;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_SpaceElevator;
 import com.impact.util.fluid.IMultiFluidTank;
 import com.impact.util.fluid.MultiFluidHandler;
@@ -346,8 +345,7 @@ class ImpactProcessingGuiTest {
             GT_MetaTileEntity_ProcessingMultiBlockBase<?>[] miners = {
                 new GTMTE_Mining_Coal("coal"),
                 new GTMTE_BasicMiner("basic"),
-                new GTMTE_AdvancedMiner("advanced"),
-                new GTMTE_MoonMiner("moon")
+                new GTMTE_AdvancedMiner("advanced")
             };
             for (GT_MetaTileEntity_ProcessingMultiBlockBase<?> miner : miners) {
                 boolean primitive = miner instanceof GTMTE_Mining_Coal;
@@ -597,7 +595,7 @@ class ImpactProcessingGuiTest {
                     count++;
                 }
             }
-            assertEquals(67, count);
+            assertEquals(65, count);
         }
 
         private static void inventory() throws Exception {

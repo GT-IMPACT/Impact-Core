@@ -21,7 +21,6 @@ public enum ImpactCasings implements ICasing {
     SAW_CASING(BlockSet.CASINGS_2, 9),
     NQ_CASING(BlockSet.CASINGS_2, 10),
     CYCLONE_CASING(BlockSet.CASINGS_2, 11),
-    MOON_MINER_CASING(BlockSet.CASINGS_2, 12),
     RAILASSEMBLER_CASING(BlockSet.CASINGS_2, 13),
     SPACE_ELEVATOR_CASING(BlockSet.CASINGS_2, 14),
     LAB_SAFELG_CASING(BlockSet.CASINGS_2, 15),

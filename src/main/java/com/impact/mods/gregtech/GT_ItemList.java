@@ -120,7 +120,7 @@ public enum GT_ItemList implements IItemContainer {
 	AdvVacuumFreezer, AdvCrackUnit, LapPowerStation, SawMill, Pyrolyse, AdvPyrolyse, Machine_FreezerSolidifier,
 	Machine_EIF, Machine_ChemicalReactor, Machine_DistTower, Machine_ElectricImplosion, Aerostate,
 	
-	Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched, Moon_Miner, Rail_Assembler, Space_Elevator,
+	Naquadah_multi, Naquadah_Liquid_multi, Heavy_Metal_Cyclone, Naquadah_Liquid_Enriched, Rail_Assembler, Space_Elevator,
 	Nuclear_Reactor_I, Nuclear_Reactor_II, Nuclear_Reactor_III, Huge_Steam_Turbine,
 	
 	Parallel_Computer, Communication_Tower, Space_Satellite,
@@ -131,7 +131,7 @@ public enum GT_ItemList implements IItemContainer {
 	CuttingCasing, MixingCasing,
 	
 	NukeTurbineCasing, ElectromagneticCasing, ExtradificationCasing, MacerationCasing, DDDPrinterCasing, DDDPrinterCasing3x3,
-	DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, NqCasing, CycloneCasing, MoonMinerCasing, RailAssemblerCasing,
+	DDDPrinterCasing4x4, PrimitiveWaterPumpCase, LSCC, SawCase, NqCasing, CycloneCasing, RailAssemblerCasing,
 	SpaceElevatorCasing, LabSafeLGCasing, MECasing, AerostateCasing, MillCasing,
 	
 	Casing_Farm, Huge_Casing_Turbine, Space_Satellite_Casing, Tower_Casing, Computer_Casing,
@@ -170,12 +170,11 @@ public enum GT_ItemList implements IItemContainer {
 	Mining_Enrich_HV,
 	RecipeEditor, RecipeEditorCrafting,
 	CoalMiner, BasicMiner, AdvancedMiner, OreSamplingMachine,
-	OilDrilling,
 	ProspectorLV, ProspectorMV, ProspectorHV, ProspectorEV, ProspectorIV,
 	
 	Maintenance,
 	
-	Wind_Generator, The_Mill,
+	The_Mill,
 	
 	end;
 	private ItemStack mStack;

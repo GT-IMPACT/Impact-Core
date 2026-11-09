@@ -348,12 +348,6 @@ public enum Core_List_Items {
     MPBufferEmpty(0, 4),
     MPBufferFull(1, 4),
 
-    LVRotor(0, 5),
-    MVRotor(1, 5),
-    HVRotor(2, 5),
-    EVRotor(3, 5),
-    IVRotor(4, 5),
-    
     AdvFluidCover(0, 6),
     AdvEnergyCover(1, 6),
     
@@ -462,8 +456,6 @@ public enum Core_List_Items {
                 return new ItemStack(FakeCircuits.getInstance(), amount, this.getMetaID());
             case 4:
                 return new ItemStack(Core_Items3.getInstance(), amount, this.getMetaID());
-            case 5:
-                return new ItemStack(KineticRotors.getInstance(), amount, this.getMetaID());
             case 6:
                 return new ItemStack(Covers.getInstance(), amount, this.getMetaID());
             default:

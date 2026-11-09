@@ -5,7 +5,6 @@ import com.impact.mods.gregtech.tileentities.multi.matrixsystem.*;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_AdvancedMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_BasicMiner;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
-import com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator;
@@ -27,7 +26,6 @@ import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.units.*;
 import gregtech.api.enums.ItemList;
 
-import static codechicken.nei.api.API.hideItem;
 import static com.impact.core.impactLog.INFO;
 import static com.impact.mods.gregtech.GT_ItemList.*;
 
@@ -81,8 +79,7 @@ public class Multi_Register {
 		Heavy_Metal_Cyclone.set(new GTMTE_HeavyMetalCyclone(ID++, "Heavy Metal Cyclone").get());
 		Naquadah_Liquid_Enriched.set(new GTMTE_LiquidEnrichedNqGenerator(ID++, "Liquid Enriched Naquadah Generator").getStackForm(1));
 
-		Moon_Miner.set(new GTMTE_MoonMiner(ID++, "Moon Miner").get());
-		hideItem(Moon_Miner.get(1));
+		ID++; // Reserve retired controller ID 14049 so later machine IDs stay unchanged.
 
 		Machine_AdvDDDPrinter.set(new GTMTE_AdvDDDPrinter(ID++, "Advanced 3D Printer").get());
 		Rail_Assembler.set(new GTMTE_RailAssembler(ID++, "Rail Assembler").get());
@@ -107,11 +104,9 @@ public class Multi_Register {
 		Parametric_Diffuser.set(new GTMTE_ParametricDiffuser(ID++, "Parametric Diffuser").get());
 		Matrix_Stabilizer.set(new GTMTE_MPStabilizer(ID++, "Matrix Particles Stabilizer").get());
 		Matrix_Containment.set(new GTMTE_MPContainment(ID++, "Matrix Particles Containment").get());
-//		ME_System_Provider.set(new GTMTE_MESystemProvider(ID++, "ME System Provider").get());
 		ME_System_Provider.set(new GTMTEMESystemProvider(ID++, "ME System Provider").get());
 
-		Wind_Generator.set(new GTMTE_Wind_Generator(ID++, /*"Wind Generator", */"[WIP]").get());
-		hideItem(Wind_Generator.get(1));
+		ID++;  // Reserve retired controller ID 14070 so later machine IDs stay unchanged.
 
 		CoalMiner.set(new GTMTE_Mining_Coal(ID++, "Primitive Miner").get());
 		BasicMiner.set(new GTMTE_BasicMiner(ID++, "Basic Electric Miner").get());
@@ -120,7 +115,8 @@ public class Multi_Register {
 		AdvCrackUnit.set(new GTMTE_AdvancedCrackingUnit(ID++, "Advanced Cracking Unit").get());
 		OreSamplingMachine.set(new GTMTEOreSamplingMachine(ID++, "Ore Sampling Machine").get());
 		GTMTEOreSamplingMachine.addRecipe();
-		ID++; // OilDrilling.set(new GTMTEOilDrilling(ID++, "Oil Drilling").get());
+
+		ID++; // Reserve retired controller ID 14077 so later machine IDs stay unchanged.
 
 		INFO("[IMPACT-CORE] FINISH ADDED MULTIS | LAST ID: " + ID);
 

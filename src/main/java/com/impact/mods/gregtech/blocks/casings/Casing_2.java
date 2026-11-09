@@ -45,8 +45,6 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
         GT_ItemList.NqCasing.set(BlockstackMeta(this, 10));
         addStringLocalization(getUnlocalizedName() + ".11.name", "Cyclone Casing");
         GT_ItemList.CycloneCasing.set(BlockstackMeta(this, 11));
-        addStringLocalization(getUnlocalizedName() + ".12.name", "Moon Miner Casing");
-        GT_ItemList.MoonMinerCasing.set(BlockstackMeta(this, 12));
         addStringLocalization(getUnlocalizedName() + ".13.name", "Rail Assembler Casing");
         GT_ItemList.RailAssemblerCasing.set(BlockstackMeta(this, 13));
         addStringLocalization(getUnlocalizedName() + ".14.name", "Space Elevator Casing");
@@ -83,8 +81,6 @@ public class Casing_2 extends GT_Block_Casings_Abstract {
             return CASING_NAQUADAH.getIcon();
         case 11:
             return CASING_CYCLONE.getIcon();
-        case 12:
-            return CASING_MOON_MINER.getIcon();
         case 13:
             return aSide <= 1 ? CASING_RAIL_ASSEMBLER_TOP.getIcon() : CASING_RAIL_ASSEMBLER_SIDE.getIcon();
         case 14:

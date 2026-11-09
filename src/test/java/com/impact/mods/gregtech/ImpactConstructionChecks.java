@@ -247,9 +247,6 @@ public class ImpactConstructionChecks {
                 controllers.add(line.split("\t")[1]);
             }
         }
-        // The oil rig is currently unregistered, but its hologram must follow the same
-        // contract.
-        controllers.add("com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOilDrilling");
         List<AssertionError> failures = new ArrayList<>();
         for (String name : controllers) {
             try {
@@ -369,7 +366,7 @@ public class ImpactConstructionChecks {
             failures.forEach(failure::addSuppressed);
             throw failure;
         }
-        assertEquals(68, controllers.size());
+        assertEquals(65, controllers.size());
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

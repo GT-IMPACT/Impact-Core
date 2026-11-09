@@ -67,7 +67,6 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TE_NqTether.class, new TESR_SETether());
         ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SpaceElevatorTether());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePlacedItem.class, new PlacedItemRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TE_WindMill.class, new TESR_WindMill());
         ClientRegistry.bindTileEntitySpecialRenderer(TE_TheMill.class, new TESR_TheMill());
         ClientRegistry.bindTileEntitySpecialRenderer(TE_DryingRack.class, new TESR_DryingRack());
 

@@ -421,13 +421,6 @@ public class ImpactCoreQaRegressionChecks {
             world.provider.dimensionId = orbit;
             assertTrue(recheck(machine, controller), "Containment must form again on Earth's orbit");
         }
-        if (name.equals("GTMTE_Wind_Generator")) {
-            assertEquals(1, machine.mInputBusses.size());
-            assertEquals(1, machine.mDynamoHatches.size());
-            assertTrue(machine.mMaintenanceHatches.isEmpty());
-            assertFalse(machine.enabledMaintenance);
-            assertEquals(machine.getIdealStatus(), machine.getRepairStatus());
-        }
         if (name.equals("GTMTE_AdvancedCrackingUnit"))
             assertEquals(1, machine.mMufflerHatches.size());
         if (name.equals("GTMTE_BasicWaterPump")) {
@@ -516,10 +509,6 @@ public class ImpactCoreQaRegressionChecks {
                 new GT_MetaTileEntity_Hatch_Energy("ulv", 0, "", new ITexture[0][][]), false);
         checkRole("units.GTMTE_DrillerWater", 'C',
                 new GT_MetaTileEntity_Hatch_Output("ulv", 0, "", new ITexture[0][][]), false);
-        checkRole("generators.green.GTMTE_Wind_Generator", 'C',
-                new GT_MetaTileEntity_Hatch_Energy("energy", 1, "", new ITexture[0][][]), false);
-        checkRole("generators.green.GTMTE_Wind_Generator", 'C',
-                instantiate(GT_MetaTileEntity_Hatch_DynamoMulti.class, 1), false);
         checkRole("processing.parallel.GTMTE_AdvancedCrackingUnit", 'A',
                 new GT_MetaTileEntity_Hatch_Muffler("muffler", 1, "", new ITexture[0][][]), false);
         checkRole("processing.parallel.GTMTE_AdvancedCrackingUnit", 'D',
@@ -532,19 +521,10 @@ public class ImpactCoreQaRegressionChecks {
                 new GT_MetaTileEntity_Hatch_Input("fluid", 1, "", new ITexture[0][][]), false);
         checkRole("matrixsystem.GTMTEMESystemProvider", 'A',
                 new GT_MetaTileEntity_Hatch_Output("fluid", 1, "", new ITexture[0][][]), false);
-        checkRole("ores.GTMTEOilDrilling", 'B',
-                new GT_MetaTileEntity_Hatch_Maintenance("maintenance", 1, "", new ITexture[0][][], false), false);
-        checkRole("ores.GTMTEOilDrilling", 'E', new GT_MetaTileEntity_Hatch_Input("input", 1, "", new ITexture[0][][]),
-                false);
-        checkRole("ores.GTMTEOilDrilling", 'C',
-                new GT_MetaTileEntity_Hatch_Output("output", 1, "", new ITexture[0][][]), false);
-        checkRole("ores.GTMTEOilDrilling", 'D',
-                new GT_MetaTileEntity_Hatch_Output("output", 1, "", new ITexture[0][][]), false);
     }
 
     static void checkTooltips() throws Exception {
-        String[][] machines = { { "generators.green.GTMTE_Wind_Generator", "impact.multis.generator.wind_generator" },
-                { "processing.parallel.GTMTE_AdvancedCrackingUnit", "impact.multis.cracking_unit" },
+        String[][] machines = { { "processing.parallel.GTMTE_AdvancedCrackingUnit", "impact.multis.cracking_unit" },
                 { "matrixsystem.GTMTE_MPContainment", "impact.multis.matrixcontainment" },
                 { "generators.nq.GTMTE_LiquidNqGenerator", "impact.multimachine.liquidnaqgen" },
                 { "units.GTMTE_DrillerWater", "impact.multimachine.waterdrill" } };
@@ -607,14 +587,12 @@ public class ImpactCoreQaRegressionChecks {
         checkGravityRequirements();
         checkTooltips();
         List<String> names = Arrays.asList(
-                "com.impact.mods.gregtech.tileentities.multi.generators.green.GTMTE_Wind_Generator",
                 "com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedCrackingUnit",
                 "com.impact.mods.gregtech.tileentities.multi.units.GTMTE_BasicWaterPump",
                 "com.impact.mods.gregtech.tileentities.multi.units.GTMTE_DrillerWater",
                 "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider",
                 "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment",
-                "com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator",
-                "com.impact.mods.gregtech.tileentities.multi.ores.GTMTEOilDrilling");
+                "com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidNqGenerator");
         StringWriter log = new StringWriter();
         report = new PrintWriter(log);
         try {
