@@ -45,7 +45,8 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
             .builder(Casings.ROBUST_NAQUADAH_ALLOY, 95)
             .atLeast(HatchElement.Maintenance).build();
     private static final StructureRequirements HATCHES_8 = StructureRequirements
-            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 0).build();
+            .builder(Casings.ROBUST_NAQUADAH_ALLOY, 0)
+            .atLeast(ImpactHatchElement.PowerInput).build();
 
     public GTMTE_Tesseract(int aID, String aNameRegional) {
         super(aID, "impact.multis.tesseract", aNameRegional);
@@ -138,7 +139,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                 .addHatchInfo("Input Bus", "optional, up to 1; UHV+; around the center of layer 7")
                 .addHatchInfo("Output Hatch", "optional, up to 1; UHV+; central 3x3 of the bottom layer")
                 .addHatchInfo("Output Bus", "optional, up to 1; UHV+; central 3x3 of the bottom layer")
-                .addHatchInfo("Energy Hatches", "optional, up to 2 total; UHV+; middle of the bottom edges")
+                .addHatchInfo("Energy Hatches", "1-4 total; UHV+; middle of the bottom edges")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; central 3x3 of the bottom layer")
                 .addStructureHint("Inner inputs: casings or input hatches/buses", HintColor.BLUE)
                 .addStructureHint("Bottom center: casings, output hatches/buses or Maintenance Hatch", HintColor.RED)
@@ -205,6 +206,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
         boolean check = checkPiece(4, 8, 3)
                 && HATCHES_7.isSatisfied(this, casingCount)
                 && HATCHES_2.isSatisfied(this, intermixCount)
+                && HATCHES_8.isSatisfied(this, 0)
                 && mMaintenanceHatches.size() == 1;
 
         for (GT_MetaTileEntity_Hatch_Energy mEnergyHatch : this.mEnergyHatches) {
@@ -250,8 +252,9 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
             check = false;
         if (mOutputBusses.size() > 1)
             check = false;
-        if (HatchCounts.energyHatches(this) > 2)
+        if (HatchCounts.energyHatches(this) > 4) {
             check = false;
+        }
 
         check &= HatchCounts.inputsAtLeastTier(this, 9);
 

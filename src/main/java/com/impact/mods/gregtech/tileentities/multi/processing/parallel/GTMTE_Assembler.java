@@ -37,7 +37,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 26)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Assembler> definition;
 
     @Override
@@ -53,7 +53,7 @@ public class GTMTE_Assembler extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addOtherStructurePart("I-Glass", "exactly 9; left side, upper two layers; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional; casing positions")
                 .addHatchInfo("Input Hatches", "optional; casing positions")
                 .addHatchInfo("Output Buses", "optional; casing positions")

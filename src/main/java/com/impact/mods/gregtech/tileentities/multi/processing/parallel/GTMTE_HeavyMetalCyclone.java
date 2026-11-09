@@ -33,7 +33,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 61)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_HeavyMetalCyclone> definition;
 
     public GTMTE_HeavyMetalCyclone(int aID, String aNameRegional) {
@@ -119,7 +119,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
                 .addOtherStructurePart("I-Glass", "exactly 12; tower walls, layers 3-6; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 3 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 4; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 6; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 4; casing positions")
@@ -158,7 +158,7 @@ public class GTMTE_HeavyMetalCyclone extends GT_MetaTileEntity_MultiParallelBloc
         if (this.mOutputHatches.size() > 4) {
             formationChecklist = false;
         }
-        if (HatchCounts.energyHatches(this) > 3) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {

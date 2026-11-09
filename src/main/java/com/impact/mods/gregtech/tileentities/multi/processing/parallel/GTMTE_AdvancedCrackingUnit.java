@@ -38,7 +38,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
     private boolean topMufflerPresent;
 
     private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 32)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
 
     private static IStructureDefinition<GTMTE_AdvancedCrackingUnit> definition;
 
@@ -125,7 +125,7 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
                 .addOtherStructurePart(Casings.PTFE_PIPE, "exactly 5; center column, layers 2-6")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 16; casing positions")
                 .addHatchInfo("Output Hatches", "optional, up to 8; casing positions")

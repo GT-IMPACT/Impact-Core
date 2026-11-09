@@ -51,7 +51,7 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 43)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.InputBus).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.InputBus, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_ParametricDiffuser> definition;
     public int mMPGenerate = 0;
     public boolean checkStabilizer = true;
@@ -140,7 +140,7 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addHatchInfo("Input Bus", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 7 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addStructureHint("Casings or hatches/buses", HintColor.BLUE)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
@@ -288,7 +288,9 @@ public class GTMTE_ParametricDiffuser extends GTMTE_Impact_BlockBase<GTMTE_Param
         casingCount = 0;
         return Utilits.isLowGravity(iAm) && checkPiece(0, 2, 1)
                 && SHELL.isSatisfied(this, casingCount)
-                && HatchCounts.inputBuses(this) == 1 && mMaintenanceHatches.size() == 1 && HatchCounts.energyHatches(this) < 8;
+                && HatchCounts.inputBuses(this) == 1
+                && mMaintenanceHatches.size() == 1
+                && HatchCounts.energyHatches(this) <= 4;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
 
     private static final StructureRequirements HATCHES_G = StructureRequirements
             .builder(Casings.ROBUST_NAQUADAH_ALLOY, 45)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static final StructureRequirements HATCHES_J = StructureRequirements.builder(Casings.INTERMIX_CHAMBER, 8)
             .build();
 
@@ -197,8 +197,9 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
             check = false;
         if (mOutputBusses.size() > 1)
             check = false;
-        if (HatchCounts.energyHatches(this) > 2)
+        if (HatchCounts.energyHatches(this) > 4) {
             check = false;
+        }
 
         check &= HatchCounts.inputsAtLeastTier(this, 8);
 
@@ -225,7 +226,7 @@ public class GTMTE_TinyWormHole extends GTMTE_Impact_BlockBase<GTMTE_TinyWormHol
                 .addHatchInfo("Input Bus", "optional, up to 1; UV+; bottom layer or side centers in layer 4")
                 .addHatchInfo("Output Hatch", "optional, up to 1; UV+; bottom layer")
                 .addHatchInfo("Output Bus", "optional, up to 1; UV+; bottom layer")
-                .addHatchInfo("Energy Hatches", "optional, up to 2 total; UV+; bottom layer")
+                .addHatchInfo("Energy Hatches", "1-4 total; UV+; bottom layer")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; bottom layer")
                 .addStructureHint("Bottom: casings or hatches/buses", HintColor.GREEN)
                 .addStructureHint("Side centers: casings or input hatches/buses", HintColor.BLUE)

@@ -63,7 +63,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
     private int casingCount;
 
     private static final StructureRequirements HATCHES_A = StructureRequirements.builder(Casings.SOLID_STEEL, 8)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
 
     private static IStructureDefinition<GTMTE_BasicMiner> definition;
     private final List<GTMTE_OreHatch> hatch = new ArrayList<>();
@@ -186,7 +186,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 && mMaintenanceHatches.size() == 1
                 && mOutputBusses.size() <= 1
                 && HatchCounts.inputHatches(this) <= 2
-                && HatchCounts.energyHatches(this) <= 2
+                && HatchCounts.energyHatches(this) <= 4
                 && HATCHES_A.isSatisfied(this, casingCount);// TODO: 02.12.2021
         if (hatch.size() != 1)
             check = false;
@@ -300,7 +300,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Miner Drill Hatch", "exactly 1; center of the lower platform; facing down")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 2; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)

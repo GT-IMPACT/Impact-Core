@@ -35,7 +35,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 40)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Utility> definition;
 
     public GTMTE_Utility(int aID, String aNameRegional) {
@@ -108,7 +108,7 @@ public class GTMTE_Utility extends GT_MetaTileEntity_MultiParallelBlockBase<GTMT
                 .addOtherStructurePart("I-Glass", "exactly 3; left wall, layer 2 from the bottom; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 6; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
                 .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")

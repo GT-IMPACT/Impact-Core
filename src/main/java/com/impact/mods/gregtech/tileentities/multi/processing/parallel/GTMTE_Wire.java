@@ -35,7 +35,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 15)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Wire> definition;
 
     public GTMTE_Wire(int aID, String aNameRegional) {
@@ -70,7 +70,7 @@ public class GTMTE_Wire extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_W
                 .addOtherStructurePart("I-Glass", "exactly 8; upper two layers; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 6; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")

@@ -34,7 +34,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 37)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_ArcFurnace> definition;
 
     public GTMTE_ArcFurnace(int aID, String aNameRegional) {
@@ -105,7 +105,7 @@ public class GTMTE_ArcFurnace extends GT_MetaTileEntity_MultiParallelBlockBase<G
                 .addOtherStructurePart(SHELL.getCasing(), "37+; fill unused casing positions")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 6; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")

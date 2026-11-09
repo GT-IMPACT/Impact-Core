@@ -34,7 +34,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 34)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_AdvancedVacuumFreezer> definition;
 
     public GTMTE_AdvancedVacuumFreezer(int aID, String aNameRegional) {
@@ -93,7 +93,7 @@ public class GTMTE_AdvancedVacuumFreezer extends GT_MetaTileEntity_MultiParallel
                 .addOtherStructurePart("IC2 Coolant fluid blocks", "exactly 7; fill the cavity inside the casing")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")

@@ -28,7 +28,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(Casings.STABLE_TITANIUM, 6)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
 
     private static IStructureDefinition<GTMTE_FlotationUnit> definition;
 
@@ -109,7 +109,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
                 .addOtherStructurePart(HeatingCoil.NICHROME, "exactly 8; side walls, layers 2 and 3")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 2; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 2; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
@@ -143,7 +143,7 @@ public class GTMTE_FlotationUnit extends GT_MetaTileEntity_MultiParallelBlockBas
         if (this.mOutputHatches.size() > 1) {
             check = false;
         }
-        if (HatchCounts.energyHatches(this) > 2) {
+        if (HatchCounts.energyHatches(this) > 4) {
             check = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {

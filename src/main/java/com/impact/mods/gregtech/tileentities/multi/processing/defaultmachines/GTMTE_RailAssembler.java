@@ -42,7 +42,7 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 9)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_RailAssembler> definition;
 
     public GTMTE_RailAssembler(int aID, String aNameRegional) {
@@ -78,7 +78,7 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
                 .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatch", "optional, up to 1; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 5; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
                 .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
@@ -108,7 +108,7 @@ public class GTMTE_RailAssembler extends GTMTE_Impact_BlockBase<GTMTE_RailAssemb
         if (this.mOutputBusses.size() > 1) {
             formationChecklist = false;
         }
-        if (HatchCounts.energyHatches(this) > 1) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {

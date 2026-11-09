@@ -36,7 +36,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase<G
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 50)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Brewmenter> definition;
 
     public GTMTE_Brewmenter(int aID, String aNameRegional) {
@@ -114,7 +114,7 @@ public class GTMTE_Brewmenter extends GT_MetaTileEntity_MultiParallelBlockBase<G
                 .addOtherStructurePart("I-Glass", "exactly 4; roof; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 3; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Output Hatches", "optional, up to 3; casing positions")

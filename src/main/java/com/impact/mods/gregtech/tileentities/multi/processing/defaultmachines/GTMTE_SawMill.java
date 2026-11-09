@@ -112,7 +112,7 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
                 .addStructurePartInfo(SHELL.getCasing(), "%s+; fill unused casing positions", SHELL.getMinimumCasings())
                 .addOtherStructurePart(new ItemStack(SawMillBlock, 1, 0), "exactly 5; center row of the bottom layer")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Energy Hatch", "exactly 1; casing positions; standard hatch only")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions; standard hatches only")
                 .addHatchInfo("Input Bus", "optional, up to 1; casing positions")
                 .addHatchInfo("Input Hatch", "optional, up to 1; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 2; casing positions")
@@ -143,7 +143,7 @@ public class GTMTE_SawMill extends GTMTE_Impact_BlockBase<GTMTE_SawMill> {
         if (this.mOutputBusses.size() > 2) {
             formationChecklist = false;
         }
-        if (HatchCounts.energyHatches(this) != 1) {
+        if (HatchCounts.energyHatches(this) > 4) {
             formationChecklist = false;
         }
         return formationChecklist;

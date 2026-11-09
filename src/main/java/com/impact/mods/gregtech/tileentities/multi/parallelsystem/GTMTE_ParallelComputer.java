@@ -55,7 +55,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 12)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static final StructureRequirements RACKS = StructureRequirements.builder(CASING, 0).build();
     private static IStructureDefinition<GTMTE_ParallelComputer> definition;
 
@@ -215,7 +215,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 .addOtherStructurePart(new ItemStack(InsideBlock, 1, 2), "fill unused inner rack/transmitter positions")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; front, top and bottom casings")
-                .addHatchInfo("Energy Hatch", "optional, up to 1 total; front, top and bottom casings")
+                .addHatchInfo("Energy Hatches", "1-4 total; front, top and bottom casings")
                 .addHatchInfo("Parallel Computer Rack", "optional, up to 2 per rack layer; right inner column")
                 .addHatchInfo("Parallel Transmitter", "optional, up to 2 per rack layer; left inner column")
                 .addStructureHint("Casings or energy/maintenance hatches", HintColor.GREEN)
@@ -356,7 +356,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 && SHELL.isSatisfied(this, casingCount)
                 && casingCount >= (12 + 4 * ends[1]) / 2
                 && mMaintenanceHatches.size() == 1
-                && HatchCounts.energyHatches(this) <= 1;
+                && HatchCounts.energyHatches(this) <= 4;
     }
 
     private boolean checkColumnPosition(String piece, int column, int row, int depth) {

@@ -32,7 +32,7 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 5)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Mixer> definition;
 
     public GTMTE_Mixer(int aID, String aNameRegional) {
@@ -90,7 +90,7 @@ public class GTMTE_Mixer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_
                 .addOtherStructurePart("I-Glass", "exactly 8; layers 2 and 3; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")

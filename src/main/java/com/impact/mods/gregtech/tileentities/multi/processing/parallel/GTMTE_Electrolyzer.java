@@ -32,7 +32,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 10)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Electrolyzer> definition;
 
     public GTMTE_Electrolyzer(int aID, String aNameRegional) {
@@ -111,7 +111,7 @@ public class GTMTE_Electrolyzer extends GT_MetaTileEntity_MultiParallelBlockBase
                 .addOtherStructurePart("I-Glass", "exactly 9; roof center and upper side walls; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 9; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 6; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")

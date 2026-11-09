@@ -125,6 +125,7 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             .atLeast(
                 MP_CHAMBER,
                 HatchElement.Maintenance,
+                ImpactHatchElement.PowerInput,
             )
             .build()
 
@@ -291,7 +292,7 @@ class GTMTEMESystemProvider : GT_MetaTileEntity_MultiParallelBlockBase<GTMTEMESy
             .addOtherStructurePart("I-Glass", "exactly 24; roof and front/back walls; any color")
             .addStructureSection("Hatches and buses")
             .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions",)
-            .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+            .addHatchInfo("Energy Hatches", "1-4 total; casing positions",)
             .addHatchInfo("Input Buses", "optional, up to 2; casing positions")
             .addHatchInfo("Output Buses", "optional, up to 2; casing positions")
             .addHatchInfo("Matrix Particles Chamber", "exactly 1; casing positions")

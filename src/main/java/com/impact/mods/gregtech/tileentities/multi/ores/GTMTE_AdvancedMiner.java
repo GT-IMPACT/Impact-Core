@@ -76,7 +76,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 16)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
 
     private GT_Recipe cashedMaceratorRecipe;
     private GT_Recipe cashedFlotationRecipe;
@@ -207,7 +207,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                 && mMaintenanceHatches.size() == 1
                 && mOutputBusses.size() <= 1
                 && HatchCounts.inputHatches(this) <= 2
-                && HatchCounts.energyHatches(this) <= 2
+                && HatchCounts.energyHatches(this) <= 4
                 && SHELL.isSatisfied(this, casingCount);
         if (hatch.size() != 1)
             check = false;
@@ -373,7 +373,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                 .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSLA, 1), "exactly 95; support frame")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 2 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 2; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
                 .addHatchInfo("Miner Drill Hatch", "exactly 1; center of the lower platform; facing down")

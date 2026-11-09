@@ -33,7 +33,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 19)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_LaserEng> definition;
 
     public GTMTE_LaserEng(int aID, String aNameRegional) {
@@ -113,7 +113,7 @@ public class GTMTE_LaserEng extends GT_MetaTileEntity_MultiParallelBlockBase<GTM
                 .addStructureSection("Hatches and buses")
                 .addStructureInfo("The 2 fixed roof casings cannot be replaced by hatches.")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 16; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
                 .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")

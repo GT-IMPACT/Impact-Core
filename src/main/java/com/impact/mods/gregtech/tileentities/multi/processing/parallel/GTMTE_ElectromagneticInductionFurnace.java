@@ -35,7 +35,7 @@ public class GTMTE_ElectromagneticInductionFurnace
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 24)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_ElectromagneticInductionFurnace> definition;
 
     public GTMTE_ElectromagneticInductionFurnace(int aID, String aNameRegional) {
@@ -113,7 +113,7 @@ public class GTMTE_ElectromagneticInductionFurnace
                 .addOtherStructurePart(new ItemStack(InsideBlock, 1, 5), "exactly 9; center of layer 3")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 8; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")

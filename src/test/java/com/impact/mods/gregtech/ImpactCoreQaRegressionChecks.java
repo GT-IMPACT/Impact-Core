@@ -1,5 +1,9 @@
 package com.impact.mods.gregtech;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
+import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
+import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.lang.reflect.*;
@@ -582,6 +586,162 @@ public class ImpactCoreQaRegressionChecks {
         assertTrue(com.impact.util.Utilits.isLowGravity(spaceTile), "Use the world's provider even outside DimensionManager");
     }
 
+    private static ImpactConstructionChecks.TestTile addEnergyHatch(
+            GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine, FullWorld world,
+            ImpactConstructionChecks.TestTile controller, String excludedPosition) throws Exception {
+        for (String position : new ArrayList<>(world.blocks.keySet())) {
+            if (world.tiles.containsKey(position) || position.equals(excludedPosition)) {
+                continue;
+            }
+            String[] point = position.split(":");
+            int x = Integer.parseInt(point[0]);
+            int y = Integer.parseInt(point[1]);
+            int z = Integer.parseInt(point[2]);
+            Block block = world.getBlock(x, y, z);
+            int metadata = world.getBlockMetadata(x, y, z);
+            ImpactConstructionChecks.TestTile hatch = new ImpactConstructionChecks.TestTile(world,
+                    new GT_MetaTileEntity_Hatch_Energy("extra-energy", 9, "", new ITexture[0][][]),
+                    ForgeDirection.NORTH);
+            world.putTile(x, y, z, hatch);
+            world.blocks.put(position, machineBlock);
+            if (recheck(machine, controller)) {
+                return hatch;
+            }
+            world.setBlock(x, y, z, block, metadata, 0);
+        }
+        return null;
+    }
+
+    private static void removeOptionalHatches(GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine,
+            FullWorld world, ImpactConstructionChecks.TestTile controller, ItemStack trigger) throws Exception {
+        for (String position : new ArrayList<>(world.tiles.keySet())) {
+            ImpactConstructionChecks.TestTile tile = world.tiles.get(position);
+            if (tile == controller || !(tile.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch)
+                    || HatchElement.Energy.matches(tile.getMetaTileEntity())) {
+                continue;
+            }
+            int metadata = world.metadata.get(position);
+            world.setBlock(tile.xCoord, tile.yCoord, tile.zCoord, Blocks.air, 0, 0);
+            machine.construct(trigger, false);
+            if (!recheck(machine, controller)) {
+                world.putTile(tile.xCoord, tile.yCoord, tile.zCoord, tile);
+                world.blocks.put(position, machineBlock);
+                world.metadata.put(position, metadata);
+            }
+        }
+        assertTrue(recheck(machine, controller), machine.mName + " must keep every required hatch");
+    }
+
+    private static void checkEnergyLimits(String name) throws Exception {
+        GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = machine(name);
+        FullWorld world = new FullWorld();
+        if (name.endsWith("GTMTE_MPContainment") || name.endsWith("GTMTE_MPStabilizer")
+                || name.endsWith("GTMTE_ParametricDiffuser")) {
+            world.provider.dimensionId = com.impact.addon.gc.DimensionsIDs.ORBIT_EARTH;
+        }
+        ForgeDirection facing = name.endsWith("GTMTE_BasicMiner") || name.endsWith("GTMTE_AdvancedMiner")
+                ? ForgeDirection.UP : ForgeDirection.NORTH;
+        ImpactConstructionChecks.TestTile controller = new ImpactConstructionChecks.TestTile(world, machine, facing);
+        world.putTile(0, 64, 0, controller);
+        ItemStack trigger = new ItemStack(Items.stick);
+        for (IChannelDefinition channel : machine.getStructureDefinition().getChannelDefinitions()) {
+            int value = name.endsWith("GTMTE_ParallelComputer")
+                    && channel.getChannel().equals(GTStructureChannels.LENGTH)
+                    ? 3 : channel.getMinimumValue();
+            ChannelDataAccessor.setChannelData(trigger, channel.getChannel(), value);
+        }
+        // Fluid blocks have no ItemBlock in this fixture; install those components before survival construction.
+        machine.construct(trigger, false);
+        for (String position : new ArrayList<>(world.blocks.keySet())) {
+            if (world.tiles.get(position) == controller) {
+                continue;
+            }
+            if (Item.getItemFromBlock(world.blocks.get(position)) == null && !world.tiles.containsKey(position)) {
+                continue;
+            }
+            String[] point = position.split(":");
+            world.setBlock(Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(point[2]),
+                    Blocks.air, 0, 0);
+        }
+        ImpactConstructionChecks.Source source = inventory(false, false);
+        ISurvivalBuildEnvironment environment = ISurvivalBuildEnvironment.create(
+                source, new ImpactConstructionChecks.TestPlayer(world));
+        for (int step = 0; step < 500 && !recheck(machine, controller); step++) {
+            ((ISurvivalConstructable) machine).survivalConstruct(trigger, 64, environment);
+        }
+        assertTrue(recheck(machine, controller), name + " must build with a required energy hatch");
+        assertEquals(1, HatchCounts.energyHatches(machine), name);
+        removeOptionalHatches(machine, world, controller, trigger);
+        gregtech.api.interfaces.tileentity.IGregTechTileEntity energy =
+                machine.mEnergyHatches.get(0).getBaseMetaTileEntity();
+        int x = energy.getXCoord();
+        int y = energy.getYCoord();
+        int z = energy.getZCoord();
+        String position = ImpactConstructionChecks.TestWorld.key(x, y, z);
+        ImpactConstructionChecks.TestTile original = world.tiles.get(position);
+        int originalMetadata = world.metadata.get(position);
+        world.setBlock(x, y, z, Blocks.air, 0, 0);
+        machine.construct(trigger, false);
+        Block casing = world.getBlock(x, y, z);
+        int casingMetadata = world.getBlockMetadata(x, y, z);
+        assertFalse(world.isAirBlock(x, y, z), name + " energy position must also allow a casing");
+        assertFalse(recheck(machine, controller), name + " must reject zero energy hatches");
+        world.putTile(x, y, z, original);
+        world.blocks.put(position, machineBlock);
+        world.metadata.put(position, originalMetadata);
+        assertTrue(recheck(machine, controller), name + " must accept one energy hatch");
+        boolean regularOnly = name.endsWith("GTMTE_SawMill") || name.endsWith("GTMTE_DrillerWater");
+        if (!regularOnly) {
+            world.putTile(x, y, z, new ImpactConstructionChecks.TestTile(world,
+                    new GT_MetaTileEntity_Hatch_EnergyMulti("multi-energy", 9, 4, "", new ITexture[0][][]),
+                    ForgeDirection.NORTH));
+            world.blocks.put(position, machineBlock);
+            assertTrue(recheck(machine, controller), name + " a multi-amp hatch must satisfy the minimum");
+            if (machine instanceof GTMTE_Impact_BlockBase) {
+                world.putTile(x, y, z, new ImpactConstructionChecks.TestTile(world,
+                        new GTMTE_LaserEnergy_In(
+                                "laser-energy", 9, 4, "", new ITexture[0][][]), ForgeDirection.NORTH));
+                world.blocks.put(position, machineBlock);
+                assertTrue(recheck(machine, controller), name + " a laser hatch must satisfy the minimum");
+            }
+            world.putTile(x, y, z, original);
+            world.blocks.put(position, machineBlock);
+            world.metadata.put(position, originalMetadata);
+        }
+        for (int count = 2; count <= 4; count++) {
+            ImpactConstructionChecks.TestTile added = addEnergyHatch(machine, world, controller, null);
+            assertNotNull(added, name + " must allow " + count + " energy hatches");
+            MetaTileEntity variant = null;
+            if (!regularOnly && count == 3) {
+                variant = new GT_MetaTileEntity_Hatch_EnergyMulti("mixed-energy", 9, 4, "", new ITexture[0][][]);
+            } else if (!regularOnly && count == 4
+                    && machine instanceof GTMTE_Impact_BlockBase) {
+                variant = new GTMTE_LaserEnergy_In(
+                        "mixed-laser", 9, 4, "", new ITexture[0][][]);
+            }
+            if (variant != null) {
+                world.putTile(added.xCoord, added.yCoord, added.zCoord,
+                        new ImpactConstructionChecks.TestTile(world, variant, ForgeDirection.NORTH));
+                world.blocks.put(ImpactConstructionChecks.TestWorld.key(added.xCoord, added.yCoord, added.zCoord),
+                        machineBlock);
+                assertTrue(recheck(machine, controller), name + " must accept mixed energy hatch variants");
+            }
+            assertEquals(count, HatchCounts.energyHatches(machine), name);
+        }
+        assertTrue(recheck(machine, controller), name + " must accept four energy hatches");
+        world.setBlock(x, y, z, casing, casingMetadata, 0);
+        assertTrue(recheck(machine, controller), name + " must still form with three energy hatches");
+        ImpactConstructionChecks.TestTile fifth = addEnergyHatch(machine, world, controller, position);
+        world.putTile(x, y, z, original);
+        world.blocks.put(position, machineBlock);
+        world.metadata.put(position, originalMetadata);
+        if (fifth != null) {
+            assertFalse(recheck(machine, controller), name + " must reject a fifth energy hatch");
+        } else {
+            assertTrue(recheck(machine, controller), name + " has only four physical energy positions");
+        }
+    }
+
     private static void checkMandatoryMaintenance(String name) throws Exception {
         GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine = machine(name);
         assertTrue(machine.enabledMaintenance, name);
@@ -625,6 +785,10 @@ public class ImpactCoreQaRegressionChecks {
         assertTrue(recheck(machine, controller), name + " must form after restoring maintenance");
         HatchElement optional = name.contains(".matrixsystem.") || name.contains(".generators.")
                 ? HatchElement.Energy : HatchElement.Output;
+        if (optional == HatchElement.Energy
+                && HatchCounts.energyHatches(machine) == 1) {
+            assertNotNull(addEnergyHatch(machine, world, controller, null), name + " needs power during maintenance checks");
+        }
         ImpactConstructionChecks.TestTile second = null;
         for (ImpactConstructionChecks.TestTile tile : world.tiles.values()) {
             if (tile != controller && optional.matches(tile.getMetaTileEntity())) {
@@ -680,8 +844,27 @@ public class ImpactCoreQaRegressionChecks {
                 "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPContainment",
                 "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTE_MPStabilizer",
                 "com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemProvider");
+        List<String> energyNames = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                ImpactCoreQaRegressionChecks.class.getResourceAsStream("/structures/controllers.tsv"),
+                StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String name = line.split("\\t")[1];
+                if (name.endsWith("GTMTE_LapPowerStation")) {
+                    continue;
+                }
+                String description = net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(
+                        String.join("\\n", machine(name).getSecondaryDescription()));
+                if (description.contains("Energy Hatch")) {
+                    energyNames.add(name);
+                }
+            }
+        }
+        assertEquals(43, energyNames.size());
         List<String> preparedNames = new ArrayList<>(names);
         preparedNames.addAll(maintenanceNames);
+        preparedNames.addAll(energyNames);
         StringWriter log = new StringWriter();
         report = new PrintWriter(log);
         try {
@@ -689,6 +872,9 @@ public class ImpactCoreQaRegressionChecks {
             for (String name : names)
                 for (String mode : new String[] { "FULL", "EMPTY", "LOW_TIER", "ITEM_FIRST" })
                     run(name, mode);
+            for (String name : energyNames) {
+                checkEnergyLimits(name);
+            }
             for (String name : maintenanceNames) {
                 checkMandatoryMaintenance(name);
             }

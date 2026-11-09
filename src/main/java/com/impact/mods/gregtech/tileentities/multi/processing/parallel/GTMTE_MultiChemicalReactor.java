@@ -33,7 +33,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 33)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_MultiChemicalReactor> definition;
 
     public GTMTE_MultiChemicalReactor(int aID, String aNameRegional) {
@@ -115,7 +115,7 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
                 .addOtherStructurePart("I-Glass", "exactly 12; walls of the middle three layers; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 16; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")

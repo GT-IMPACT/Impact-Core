@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.logic.ProcessingLogic;
@@ -59,7 +60,7 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 12)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_MPStabilizer> definition;
     public int mMPSummary = 0;
     public boolean mMPBeam = false;
@@ -108,7 +109,7 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPSystem, 1, 0), "exactly 11; inner frame")
                 .addOtherStructurePart("I-Glass", "exactly 2; left and right sides of layer 2; any color")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Energy Hatches", "optional; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addStructureHint("Casings or hatches", HintColor.BLUE)
                 .addHatchChannelInfo()
@@ -295,7 +296,8 @@ public class GTMTE_MPStabilizer extends GTMTE_Impact_BlockBase<GTMTE_MPStabilize
             return false;
         }
         boolean formed = checkPiece(2, 1, 0)
-                && mMaintenanceHatches.size() == 1 && SHELL.isSatisfied(this, casingCount);
+                && mMaintenanceHatches.size() == 1 && SHELL.isSatisfied(this, casingCount)
+                && HatchCounts.energyHatches(this) <= 4;
         return formed;
     }
 

@@ -407,7 +407,7 @@ public class ImpactConstructionChecks {
                 top.add(position);
             }
         });
-        assertTrue(shell.size() >= 3, name + " needs hatch positions for the boundary check");
+        assertTrue(shell.size() >= 4, name + " needs hatch positions for the boundary check");
         world.isRemote = false;
         machine.construct(trigger, false);
         if (name.endsWith("Pyrolyse")) {
@@ -431,6 +431,8 @@ public class ImpactConstructionChecks {
         }
         putHatch(world, shell.get(0), new GT_MetaTileEntity_Hatch_Maintenance(
                 "maintenance", 1, "", new ITexture[0][][], false));
+        putHatch(world, shell.get(3), new GT_MetaTileEntity_Hatch_Energy(
+                "energy", 9, "", new ITexture[0][][]));
         String mufflerPosition = top.isEmpty() ? shell.get(1) : top.get(0);
         Block casing = world.blocks.getOrDefault(mufflerPosition, Blocks.air);
         int metadata = world.metadata.getOrDefault(mufflerPosition, 0);
@@ -644,6 +646,10 @@ public class ImpactConstructionChecks {
             machine.construct(new ItemStack(Items.stick), false);
             for (String position : casings) {
                 String maintenance = casings.get(position.equals(casings.get(0)) ? 1 : 0);
+                String energy = casings.stream().filter(candidate -> !candidate.equals(position)
+                        && !candidate.equals(maintenance)).findFirst().get();
+                putHatch(world, energy, new GT_MetaTileEntity_Hatch_Energy(
+                        "energy", 4, "", new ITexture[0][][]));
                 putHatch(world, maintenance, new GT_MetaTileEntity_Hatch_Maintenance(
                         "maintenance", 1, "", new ITexture[0][][], false));
                 for (MetaTileEntity hatch : new MetaTileEntity[] {
@@ -653,7 +659,7 @@ public class ImpactConstructionChecks {
                     assertTrue(machine.recheck(), direction + " hatch at " + position);
                     assertTrue(machine.recheck(), "Repeated checks must not accumulate hatches");
                 }
-                for (String restore : new String[] { position, maintenance }) {
+                for (String restore : new String[] { position, maintenance, energy }) {
                     String[] coordinates = restore.split(":");
                     world.setBlock(Integer.parseInt(coordinates[0]), Integer.parseInt(coordinates[1]),
                             Integer.parseInt(coordinates[2]), ImpactCasings.ASSEMBLER_CASING.getBlock(),
@@ -901,7 +907,10 @@ public class ImpactConstructionChecks {
         world.blocks.put(casings.get(10), Blocks.bedrock);
         assertFalse(machine.recheck(), "Damaged shell with valid hatch counts");
         world.blocks.put(casings.get(10), ImpactCasings.LAB_SAFELG_CASING.getBlock());
-        for (int energy = 0; energy < 8; energy++) {
+        assertFalse(machine.recheck(), "An energy hatch is mandatory");
+        putHatch(world, casings.get(2), new GT_MetaTileEntity_Hatch_Energy(
+                "energy", 4, "", new ITexture[0][][]));
+        for (int energy = 1; energy <= 4; energy++) {
             assertTrue(machine.recheck(), "Allowed energy hatch count: " + energy);
             assertTrue(machine.recheck());
             assertEquals(1, machine.mMaintenanceHatches.size());
@@ -909,7 +918,7 @@ public class ImpactConstructionChecks {
             putHatch(world, casings.get(energy + 2), new GT_MetaTileEntity_Hatch_Energy(
                     "energy", 4, "", new ITexture[0][][]));
         }
-        assertFalse(machine.recheck(), "Eight energy hatches exceed the original limit");
+        assertFalse(machine.recheck(), "A fifth energy hatch exceeds the four-hatch limit");
         world.blocks.put(casings.get(10), Blocks.bedrock);
         assertFalse(machine.recheck(), "Damaged shell");
     }
@@ -1272,22 +1281,24 @@ public class ImpactConstructionChecks {
                     assertEquals(expected, actual, "Computer build and hologram must match");
                     putHatch(world, maintenance, new GT_MetaTileEntity_Hatch_Maintenance(
                             "maintenance", 1, "", new ITexture[0][][], false));
-                    assertTrue(machine.recheck(), "Computer length " + length + " facing " + direction);
-                    assertTrue(machine.recheck(), "Repeated computer check");
                     List<String> shell = new ArrayList<>();
                     hints.frames.forEach((position, color) -> {
                         if (color == HintColor.GREEN && !position.equals(maintenance)) {
                             shell.add(position);
                         }
                     });
+                    putHatch(world, shell.remove(0), new GT_MetaTileEntity_Hatch_Energy(
+                            "energy", 4, "", new ITexture[0][][]));
+                    assertTrue(machine.recheck(), "Computer length " + length + " facing " + direction);
+                    assertTrue(machine.recheck(), "Repeated computer check");
                     int hatchLimit = 7 + 2 * (length - 2);
-                    for (int i = 0; i < hatchLimit - 1; i++) {
+                    for (int i = 0; i < hatchLimit - 2; i++) {
                         putHatch(world, shell.get(i), new GT_MetaTileEntity_Hatch_Output(
                                 "output", 4, "", new ITexture[0][][]));
                     }
                     assertTrue(machine.recheck(), "Minimum casings for computer length " + length);
                     assertTrue(machine.recheck(), "Repeated minimum-casing check");
-                    putHatch(world, shell.get(hatchLimit - 1), new GT_MetaTileEntity_Hatch_Output(
+                    putHatch(world, shell.get(hatchLimit - 2), new GT_MetaTileEntity_Hatch_Output(
                             "output", 4, "", new ITexture[0][][]));
                     assertFalse(machine.recheck(), "One casing below minimum for computer length " + length);
                 }
@@ -1297,6 +1308,10 @@ public class ImpactConstructionChecks {
                 ParallelComputer machine = new ParallelComputer();
                 world.putTile(0, 64, 0, new TestTile(world, machine, direction));
                 machine.buildLayers(layers);
+                int[] energyOffset = new int[3];
+                ExtendedFacing.of(direction).getWorldOffset(new int[] { 0, 2, 0 }, energyOffset);
+                putHatch(world, TestWorld.key(energyOffset[0], 64 + energyOffset[1], energyOffset[2]),
+                        new GT_MetaTileEntity_Hatch_Energy("energy", 4, "", new ITexture[0][][]));
                 putHatch(world, maintenance, new GT_MetaTileEntity_Hatch_Maintenance(
                         "maintenance", 1, "", new ITexture[0][][], false));
                 assertFalse(machine.recheck(), "Invalid computer length " + (layers + 2));

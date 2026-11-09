@@ -30,7 +30,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 25)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Macerator> definition;
 
     public GTMTE_Macerator(int aID, String aNameRegional) {
@@ -99,7 +99,7 @@ public class GTMTE_Macerator extends GT_MetaTileEntity_MultiParallelBlockBase<GT
                 .addOtherStructurePart(SHELL.getCasing(), "25+; fill unused casing positions")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 16; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 4; casing positions")
                 .addHatchInfo("Muffler Hatch", "exactly 1; casing positions")

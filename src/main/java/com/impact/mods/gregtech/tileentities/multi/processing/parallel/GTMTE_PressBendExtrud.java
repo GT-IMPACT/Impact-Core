@@ -34,7 +34,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
 
     // 41 shell positions minus 20 input buses, 3 output buses, 4 energy and 3 service hatches.
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 11)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_PressBendExtrud> definition;
 
     public GTMTE_PressBendExtrud(int aID, String aNameRegional) {
@@ -58,7 +58,7 @@ public class GTMTE_PressBendExtrud extends GT_MetaTileEntity_MultiParallelBlockB
                 .addOtherStructurePart(SHELL.getCasing(), "11+; fill unused casing positions")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 20; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
                 .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")

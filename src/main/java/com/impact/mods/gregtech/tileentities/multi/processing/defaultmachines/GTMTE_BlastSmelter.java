@@ -43,7 +43,7 @@ public class GTMTE_BlastSmelter
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 21)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, HatchElement.Energy).build();
     private static IStructureDefinition<GTMTE_BlastSmelter> STRUCTURE;
     private HeatingCoil checkedCoil;
 
@@ -117,7 +117,7 @@ public class GTMTE_BlastSmelter
                 .addOtherStructurePart("Heating Coils", "exactly 24 of the same tier; layers 2 and 3")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; top and bottom layers")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; top and bottom layers")
+                .addHatchInfo("Energy Hatches", "1-4 total; top and bottom layers")
                 .addHatchInfo("Input Buses", "optional, up to 5; top and bottom layers")
                 .addHatchInfo("Output Hatches", "optional, up to 5; top and bottom layers")
                 .addHatchInfo("Muffler Hatch", "exactly 1; top and bottom layers")

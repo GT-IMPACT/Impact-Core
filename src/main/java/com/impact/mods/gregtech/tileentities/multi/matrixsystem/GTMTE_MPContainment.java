@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.matrixsystem;
 
+import com.impact.mods.gregtech.blocks.HatchCounts;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.logic.ProcessingLogic;
@@ -58,7 +59,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 28)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static final StructureRequirements OUTPUT = StructureRequirements.builder(CASING, 0)
             .atLeast(HatchElement.OutputBus).build();
     private static IStructureDefinition<GTMTE_MPContainment> definition;
@@ -146,7 +147,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 .addOtherStructurePart(new ItemStack(ItemRegistery.MPTransducer, 1, 0), "exactly 1; middle layer, 1 block left and 2 blocks behind the controller")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional; casing positions")
                 .addHatchInfo("Output Bus", "exactly 1; rear wall, directly behind the controller")
                 .addStructureHint("Output Bus", HintColor.ORANGE)
@@ -214,7 +215,8 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
             return false;
         }
         boolean formed = checkPiece(5, 1, 0)
-                && mMaintenanceHatches.size() == 1 && SHELL.isSatisfied(this, casingCount);
+                && mMaintenanceHatches.size() == 1 && SHELL.isSatisfied(this, casingCount)
+                && HatchCounts.energyHatches(this) <= 4;
         if (formed) {
             int[] offset = new int[3];
             getExtendedFacing().getWorldOffset(new int[] { -1, 0, 2 }, offset);

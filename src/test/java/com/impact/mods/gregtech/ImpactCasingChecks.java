@@ -83,7 +83,8 @@ final class ImpactCasingChecks {
         });
         assertEquals(61, positions.size());
         put(world, positions.get(0), maintenance());
-        for (int i = 1; i < 35; i++) {
+        put(world, positions.get(1), new GT_MetaTileEntity_Hatch_Energy("energy", 4, "", new ITexture[0][][]));
+        for (int i = 2; i < 35; i++) {
             put(world, positions.get(i), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
         }
         assertTrue(machine.recheck(), "26 casings and 35 hatches must form the assembler");
@@ -116,6 +117,7 @@ final class ImpactCasingChecks {
 
         restore(world, positions);
         put(world, positions.get(0), maintenance());
+        put(world, positions.get(32), new GT_MetaTileEntity_Hatch_Energy("energy", 4, "", new ITexture[0][][]));
         for (int i = 1; i <= 6; i++) {
             put(world, positions.get(i), new GTMTE_Multi_Hatch_Input(
                     "multi-fluid",
@@ -162,7 +164,8 @@ final class ImpactCasingChecks {
         assertEquals(41, positions.size());
         put(world, positions.get(0), maintenance());
         put(world, positions.get(1), new GT_MetaTileEntity_Hatch_Muffler("muffler", 4, "", new ITexture[0][][]));
-        for (int i = 2; i < 30; i++) {
+        put(world, positions.get(2), new GT_MetaTileEntity_Hatch_Energy("energy", 4, "", new ITexture[0][][]));
+        for (int i = 3; i < 30; i++) {
             put(world, positions.get(i), new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
         }
         assertTrue(machine.recheck(), "11 casings and 30 hatches must form the PBE");

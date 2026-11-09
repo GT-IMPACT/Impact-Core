@@ -33,7 +33,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 26)
-            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.Muffler, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_Siftarator> definition;
 
     public GTMTE_Siftarator(int aID, String aNameRegional) {
@@ -93,7 +93,7 @@ public class GTMTE_Siftarator extends GT_MetaTileEntity_MultiParallelBlockBase<G
                 .addOtherStructurePart(SHELL.getCasing(), "26+; fill unused casing positions")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional, up to 8; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
                 .addHatchInfo("Parallel Receiver", "optional, up to 1; casing positions")

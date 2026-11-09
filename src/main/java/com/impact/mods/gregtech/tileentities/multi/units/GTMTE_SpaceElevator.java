@@ -60,7 +60,8 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
 
     private int casingCount;
 
-    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 156).build();
+    private static final StructureRequirements HATCHES_A = StructureRequirements.builder(CASING, 156)
+            .atLeast(ImpactHatchElement.PowerInput).build();
 
     private static IStructureDefinition<GTMTE_SpaceElevator> STRUCTURE_DEFINITION;
     boolean isConnect = false;
@@ -234,7 +235,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
                 .addStructurePartInfo(CASING, "%s+; fill unused casing positions", HATCHES_A.getMinimumCasings())
                 .addOtherStructurePart(new ItemStack(SpaceElevatorBlock, 1, 0), "exactly 1; directly below the controller")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addStructureHint("Casings or energy hatches", HintColor.BLUE)
                 .addHatchChannelInfo()
                 .toolTipFinisher();

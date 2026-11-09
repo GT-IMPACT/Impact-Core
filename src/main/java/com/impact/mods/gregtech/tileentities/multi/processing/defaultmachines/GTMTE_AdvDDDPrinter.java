@@ -31,7 +31,7 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 30)
-            .atLeast(HatchElement.Maintenance).build();
+            .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
     private static IStructureDefinition<GTMTE_AdvDDDPrinter> definition;
 
     public GTMTE_AdvDDDPrinter(int aID, String aNameRegional) {
@@ -105,7 +105,7 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
                 .addOtherStructurePart("I-Glass", "exactly 32; roof and front/back of the middle layer; any color")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
-                .addHatchInfo("Energy Hatches", "optional, up to 4 total; casing positions")
+                .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
                 .addHatchInfo("Input Buses", "optional; casing positions")
                 .addHatchInfo("Input Hatches", "optional; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")

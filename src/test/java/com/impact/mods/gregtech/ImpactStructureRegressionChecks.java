@@ -56,7 +56,8 @@ final class ImpactStructureRegressionChecks {
                         net.minecraft.tileentity.TileEntity tile = world.getTileEntity(x, y, z);
                         IMetaTileEntity meta = tile instanceof IGregTechTileEntity
                                 ? ((IGregTechTileEntity) tile).getMetaTileEntity() : null;
-                        if (!(meta instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
+                        if (!(meta instanceof GT_MetaTileEntity_Hatch_Maintenance)
+                                && !(meta instanceof GT_MetaTileEntity_Hatch_Energy)) {
                             found[0] = new int[] { x, y, z };
                         }
                     }
@@ -91,6 +92,15 @@ final class ImpactStructureRegressionChecks {
                             );
                             world.putTile(maintenance[0], maintenance[1], maintenance[2],
                                     new TestTile(world, hatch, facing));
+                            int[] energy = position(machine, index == 0 ? '8' : 'G',
+                                    origins[index][0], origins[index][1], origins[index][2]);
+                            GT_MetaTileEntity_Hatch_Energy energyHatch = new GT_MetaTileEntity_Hatch_Energy(
+                                    "energy",
+                                    minimum,
+                                    "",
+                                    new ITexture[0][][]
+                            );
+                            world.putTile(energy[0], energy[1], energy[2], new TestTile(world, energyHatch, facing));
                         }
                         assertTrue(recheck(machine), "Valid shell " + machine.getClass().getSimpleName());
                         MetaTileEntity hatch = kind == 0 ? new GT_MetaTileEntity_Hatch_EnergyMulti("tier-multi-energy", tier, 4, "", new ITexture[0][][])
