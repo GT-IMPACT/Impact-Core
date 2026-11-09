@@ -53,8 +53,8 @@ final class ParallelComputerDisplay extends ProcessingMachineDisplay {
         font.drawString(text("capacity", format.format(capacity)), 10, 33, TEXT);
         font.drawString(text("free", format.format(free)), 10, 45, 0x69cbd4);
         Gui.drawRect(10, 57, 258, 61, 0xff26333c);
-        int width = capacity > 0 ? (int) (248L * (capacity - free) / capacity) : 0;
-        Gui.drawRect(10, 57, 10 + width, 61, 0xff69cbd4);
+        int width = capacity > 0 ? (int) (248L * free / capacity) : 0;
+        Gui.drawRect(258 - width, 57, 258, 61, 0xff69cbd4);
 
         int[] capacities = snapshot.getIntArray("rackCapacity");
         int[] states = snapshot.getIntArray("rackState");
