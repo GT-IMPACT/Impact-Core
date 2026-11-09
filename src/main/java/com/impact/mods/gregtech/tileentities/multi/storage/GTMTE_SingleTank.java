@@ -116,7 +116,7 @@ public class GTMTE_SingleTank
                             .buildAndChain(StructureRequirements.builder(CASING, 0).build(),
                                     ofBlockAnyMeta(IGlassBlock), t -> {
                                     }),
-                            HintColor.LIME))
+                            HintColor.BLUE))
                     .addElement('T', new TankStorageElement<GTMTE_SingleTank>(ofChain(
                             onElementPass(t -> t.fluidCapacityAcc += 16000000f, ofBlock(FluidTankBlock, 0)),
                             onElementPass(t -> t.fluidCapacityAcc += 32000000f, ofBlock(FluidTankBlock, 1)),
@@ -279,7 +279,7 @@ public class GTMTE_SingleTank
                 .addHatchInfo("Output Hatches", "optional; controller end or side-wall centers")
                 .addHatchInfo("Tank Input and Output Hatch", "optional, up to 1; controller end or side-wall centers; AE2 access")
                 .addStructureHint("Controller end: casings or hatches", HintColor.GREEN)
-                .addStructureHint("Side walls: glass or hatches", HintColor.LIME)
+                .addStructureHint("Side walls: glass or hatches", HintColor.BLUE)
                 .addSubChannel(GTStructureChannels.TIER, "1-6: Tank Storage Block tier; default: stack size; installed blocks are kept.")
                 .addHatchChannelInfo()
                 .toolTipFinisher();

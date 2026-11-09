@@ -119,7 +119,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                             .allow(ComputerHatch.Rack)
                             .autoPlace(Integer.MAX_VALUE, ComputerHatch.Rack)
                             .buildAndChain(RACKS, ofBlock(InsideBlock, 2), t -> {
-                            }), HintColor.MAGENTA))
+                            }), HintColor.ORANGE))
                     .build();
         }
         return definition;
@@ -220,7 +220,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 .addHatchInfo("Parallel Transmitter", "optional, up to 2 per rack layer; left inner column")
                 .addStructureHint("Casings or energy/maintenance hatches", HintColor.GREEN)
                 .addStructureHint("Empty Rack Casing or Parallel Transmitter", HintColor.PURPLE)
-                .addStructureHint("Empty Rack Casing or Parallel Computer Rack", HintColor.MAGENTA)
+                .addStructureHint("Empty Rack Casing or Parallel Computer Rack", HintColor.ORANGE)
                 .addSubChannel(GTStructureChannels.LENGTH, "1-15; %s; default: stack size.", "rack layers = value + 1; length = value + 3")
                 .addHatchChannelInfo()
                 .toolTipFinisher();

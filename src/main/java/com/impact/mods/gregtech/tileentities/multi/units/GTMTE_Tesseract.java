@@ -140,7 +140,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                 .addHatchInfo("Energy Hatches", "optional, up to 2 total; UHV+; middle of the bottom edges")
                 .addHatchInfo("Maintenance Hatch", "optional, up to 1; central 3x3 of the bottom layer")
                 .addStructureHint("Inner inputs: casings or input hatches/buses", HintColor.BLUE)
-                .addStructureHint("Bottom center: casings, output hatches/buses or Maintenance Hatch", HintColor.ORANGE)
+                .addStructureHint("Bottom center: casings, output hatches/buses or Maintenance Hatch", HintColor.RED)
                 .addStructureHint("Bottom edges: casings or energy hatches", HintColor.YELLOW)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
@@ -184,7 +184,7 @@ public class GTMTE_Tesseract extends GTMTE_Impact_BlockBase<GTMTE_Tesseract> {
                             .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
                                     || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
                                     || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 9)
-                            .buildAndChain(HATCHES_7, machine -> machine.casingCount++), HintColor.ORANGE))
+                            .buildAndChain(HATCHES_7, machine -> machine.casingCount++), HintColor.RED))
                     .addElement('8', withHint(GTStructureUtility.buildHatchAdder(GTMTE_Tesseract.class)
                             .allow(HatchElement.Energy, ImpactHatchElement.LaserInput)
                             .autoPlace(ImpactHatchElement.PowerInput)

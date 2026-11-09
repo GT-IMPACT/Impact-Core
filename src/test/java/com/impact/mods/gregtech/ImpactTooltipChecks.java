@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Set;
 import gregtech.api.util.GTStructureChannels;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
@@ -13,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumChatFormatting;
+import space.impact.structures.hint.HintColor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,6 +22,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class ImpactTooltipChecks {
     private static final String ROOT = "com.impact.mods.gregtech.tileentities.multi.";
+
+    private static final HintColor[][] SIMILAR_HINT_COLORS = {
+            { HintColor.GREEN, HintColor.LIME },
+            { HintColor.BLUE, HintColor.LIGHT_BLUE, HintColor.CYAN },
+            { HintColor.PURPLE, HintColor.MAGENTA, HintColor.PINK },
+            { HintColor.BLUE, HintColor.PURPLE },
+            { HintColor.ORANGE, HintColor.YELLOW },
+            { HintColor.ORANGE, HintColor.RED }
+    };
 
     static void check() throws Exception {
         checkChannelTranslations();
@@ -80,6 +91,13 @@ final class ImpactTooltipChecks {
                 .contains("Single-block machine equivalent"));
         assertFalse(plain(machine("generators.nq.GTMTE_LiquidNqGenerator").getSecondaryDescription())
                 .toLowerCase().contains("muffler"));
+    }
+
+    static void checkHintContrast(Set<HintColor> colors, String machine) {
+        for (HintColor[] similarColors : SIMILAR_HINT_COLORS) {
+            long used = Arrays.stream(similarColors).filter(colors::contains).count();
+            assertTrue(used <= 1, machine + " uses similar hint colors: " + Arrays.toString(similarColors));
+        }
     }
 
     static void checkMufflerPollution(GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine) {

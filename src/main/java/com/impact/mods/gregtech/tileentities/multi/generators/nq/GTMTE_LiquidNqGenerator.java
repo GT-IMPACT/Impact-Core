@@ -98,7 +98,7 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_FuelGeneratorBase<GTMT
                     .addElement('E', GTStructureUtility.buildHatchAdder(GTMTE_LiquidNqGenerator.class)
                             .allow(ImpactHatchElement.FluidInput)
                             .autoPlace(ImpactHatchElement.FluidInput)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.LIME))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.BLUE))
                     .build();
         }
         return definition;
@@ -140,7 +140,7 @@ public class GTMTE_LiquidNqGenerator extends GTMTE_Impact_FuelGeneratorBase<GTMT
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Dynamo Hatch", "optional, up to 1; rear end layer")
                 .addStructureHint("Rear end: casings or input/maintenance/dynamo hatches", HintColor.GREEN)
-                .addStructureHint("Other casing positions: casings or input/maintenance hatches", HintColor.LIME)
+                .addStructureHint("Other casing positions: casings or input/maintenance hatches", HintColor.BLUE)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
     }

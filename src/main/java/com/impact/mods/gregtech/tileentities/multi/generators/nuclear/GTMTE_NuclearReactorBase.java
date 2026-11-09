@@ -132,8 +132,8 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
                 .addHatchInfo("Nuclear Rod Hatch", tier == 1 ? "exactly 1; roof center; facing up" : "optional, up to " + AMOUNT_NUCLEAR_HATCHES[tier - 1] + "; center " + (2 * tier - 1) + "x" + (2 * tier - 1) + " of the roof; facing up")
                 .addHatchInfo("Input Hatches", "optional, up to " + AMOUNT_INPUT_HATCHES[tier - 1] + "; casing positions")
                 .addHatchInfo("Output Hatches", "optional, up to " + AMOUNT_OUTPUT_HATCHES[tier - 1] + "; casing positions")
-                .addStructureHint("Casings or input/output hatches", HintColor.LIME)
-                .addStructureHint("Bottom: casings, input/output hatches or Machine Hull", HintColor.CYAN)
+                .addStructureHint("Casings or input/output hatches", HintColor.BLUE)
+                .addStructureHint("Bottom: casings, input/output hatches or Machine Hull", HintColor.ORANGE)
                 .addStructureHint(tier == 1 ? "Nuclear Rod Hatch" : "Casings or Nuclear Rod Hatches", HintColor.GREEN)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
@@ -374,7 +374,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         if (acceptsHull) {
             builder.allow(ReactorHatch.Hull).autoPlace(ReactorHatch.Hull);
         }
-        return withHint(builder.buildAndChain(shellRequirements(), machine -> machine.casingCount++), acceptsHull ? HintColor.CYAN : HintColor.LIME);
+        return withHint(builder.buildAndChain(shellRequirements(), machine -> machine.casingCount++), acceptsHull ? HintColor.ORANGE : HintColor.BLUE);
     }
 
     protected enum ReactorHatch implements IHatchElement {

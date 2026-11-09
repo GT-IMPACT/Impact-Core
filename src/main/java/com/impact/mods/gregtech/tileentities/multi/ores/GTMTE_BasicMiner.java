@@ -152,7 +152,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                                     HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
                                     ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
                             .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
-                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++).withHint(HintColor.LIME))
+                            .buildAndChain(HATCHES_A, machine -> machine.casingCount++).withHint(HintColor.BLUE))
                     .build();
         }
         return definition;
@@ -303,7 +303,7 @@ public class GTMTE_BasicMiner extends GTMTE_Impact_BlockBase<GTMTE_BasicMiner> {
                 .addHatchInfo("Input Hatch", "optional, up to 1; casing positions")
                 .addHatchInfo("Output Bus", "optional, up to 1; casing positions")
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
-                .addStructureHint("Casings or hatches/buses", HintColor.LIME)
+                .addStructureHint("Casings or hatches/buses", HintColor.BLUE)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
     }

@@ -89,7 +89,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                             .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.InputBus)
                             .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Maintenance, ImpactHatchElement.InputBus)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.BLUE))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.LIGHT_BLUE))
                     .addElement('R', ofBlock(ItemRegistery.MPSystem, 0))
                     .addElement('G', ofBlockAnyMeta(ItemRegistery.IGlassBlock))
                     .addElement('T', withHint(ofBlock(ItemRegistery.MPTransducer, 0), HintColor.PURPLE))
@@ -150,7 +150,7 @@ public class GTMTE_MPContainment extends GTMTE_Impact_BlockBase<GTMTE_MPContainm
                 .addHatchInfo("Output Bus", "exactly 1; rear wall, directly behind the controller")
                 .addStructureHint("Output Bus", HintColor.ORANGE)
                 .addStructureHint("Matrix Transducer", HintColor.PURPLE)
-                .addStructureHint("Casings or hatches/buses", HintColor.BLUE)
+                .addStructureHint("Casings or hatches/buses", HintColor.LIGHT_BLUE)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
     }

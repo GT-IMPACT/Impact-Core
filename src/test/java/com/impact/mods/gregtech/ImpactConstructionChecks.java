@@ -177,7 +177,7 @@ public class ImpactConstructionChecks {
             List<String> positions = new ArrayList<>();
             boolean sofc = index >= 2;
             hints.frames.forEach((position, color) -> {
-                if (sofc || color == HintColor.LIME || color == HintColor.CYAN) {
+                if (sofc || color == HintColor.BLUE || color == HintColor.ORANGE) {
                     positions.add(position);
                 }
             });
@@ -332,6 +332,7 @@ public class ImpactConstructionChecks {
                                 usedColors.add(HintColor.fromMetadata(hints.metadata.get(position)));
                             }
                         });
+                        ImpactTooltipChecks.checkHintContrast(usedColors, name);
                         if (machine instanceof GTMTE_TheMill) {
                             assertEquals(Collections.singleton(HintColor.GREEN), usedColors);
                             assertEquals(1, hints.frames.size(), "Only the rotor needs a colored frame");
@@ -981,8 +982,8 @@ public class ImpactConstructionChecks {
                     Set<String> expectedBlocks = new HashSet<>(hints.positions);
                     assertEquals(multi ? 224 : 62, expectedBlocks.size());
                     assertEquals(multi ? 101 : 28, hints.frames.size());
-                    assertEquals(new HashSet<>(Arrays.asList(HintColor.GREEN, HintColor.LIME)),
-                            new HashSet<>(hints.frames.values()), "Tank I/O groups use distinct green hints");
+                    assertEquals(new HashSet<>(Arrays.asList(HintColor.GREEN, HintColor.BLUE)),
+                            new HashSet<>(hints.frames.values()), "Tank I/O groups use contrasting colors");
                     assertEquals(1, world.blocks.size(), "Holograms must not place blocks");
                     world.isRemote = false;
                     if (survival) {

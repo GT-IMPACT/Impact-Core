@@ -267,14 +267,14 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                             .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
                                     || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
                                     || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
-                            .buildAndChain(HATCHES_K), HintColor.ORANGE))
+                            .buildAndChain(HATCHES_K), HintColor.RED))
                     .addElement('L', withHint(GTStructureUtility.buildHatchAdder(GTMTE_AntimatterReactor.class)
                             .allow(HatchElement.Output)
                             .autoPlace(HatchElement.Output)
                             .onlyAcceptIf(hatch -> !(hatch instanceof GT_MetaTileEntity_TieredMachineBlock)
                                     || HatchElement.Maintenance.matches(hatch) || ImpactHatchElement.Muffler.matches(hatch)
                                     || ((GT_MetaTileEntity_TieredMachineBlock) hatch).mTier >= 8)
-                            .buildAndChain(HATCHES_L), HintColor.ORANGE))
+                            .buildAndChain(HATCHES_L), HintColor.RED))
                     .build();
 
         }
@@ -306,7 +306,7 @@ public class GTMTE_AntimatterReactor extends GTMTE_Impact_BlockBase<GTMTE_Antima
                 .addHatchInfo("Output Bus", "optional, up to 1; UV+; right of the controller or core")
                 .addHatchInfo("Dynamo Hatch", "optional, up to 1; ZPM+; rear center of layer 8")
                 .addStructureHint("Left: casings or input hatches/buses", HintColor.BLUE)
-                .addStructureHint("Right: casings or output hatches/buses", HintColor.ORANGE)
+                .addStructureHint("Right: casings or output hatches/buses", HintColor.RED)
                 .addStructureHint("Rear center: casing or Dynamo Hatch", HintColor.YELLOW)
                 .addHatchChannelInfo()
                 .toolTipFinisher();

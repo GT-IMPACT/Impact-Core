@@ -120,7 +120,7 @@ public class GTMTE_MultiTank
                                             CASING.asElement())),
                                     t -> {
                                     }),
-                            HintColor.LIME))
+                            HintColor.BLUE))
                     .addElement('T', new TankStorageElement<GTMTE_MultiTank>(ofChain(
                             onElementPass(t -> t.fluidCapacityAcc += 6349206.3f, ofBlock(FluidTankBlock, 0)),
                             onElementPass(t -> t.fluidCapacityAcc += 12698412.6f, ofBlock(FluidTankBlock, 1)),
@@ -286,7 +286,7 @@ public class GTMTE_MultiTank
                 .addHatchInfo("Output Hatches", "optional; inner end-layer or side-wall positions")
                 .addHatchInfo("Tank Input and Output Hatch", "optional, up to 1; inner end-layer or side-wall positions; AE2 access")
                 .addStructureHint("End layers: casings or hatches", HintColor.GREEN)
-                .addStructureHint("Side walls: glass, casings or hatches", HintColor.LIME)
+                .addStructureHint("Side walls: glass, casings or hatches", HintColor.BLUE)
                 .addSubChannel(GTStructureChannels.TIER, "1-8: Tank Storage Block tier; default: stack size; installed blocks are kept.")
                 .addHatchChannelInfo()
                 .toolTipFinisher();

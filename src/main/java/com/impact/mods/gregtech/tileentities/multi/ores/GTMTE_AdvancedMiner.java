@@ -176,7 +176,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                                     ImpactHatchElement.LaserInput,
                                     ImpactHatchElement.LaserOutput, SpecialHatch.Enrichment)
                             .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler, SpecialHatch.Enrichment)
-                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.LIME))
+                            .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.BLUE))
                     .build();
         }
         return definition;
@@ -377,7 +377,7 @@ public class GTMTE_AdvancedMiner extends GTMTE_Impact_BlockBase<GTMTE_AdvancedMi
                 .addHatchInfo("Miner Drill Hatch", "exactly 1; center of the lower platform; facing down")
                 .addHatchInfo("Miner Enrichment Unit", "exactly 1; casing positions")
                 .addStructureHint("Miner Drill Hatch", HintColor.GREEN)
-                .addStructureHint("Casings or hatches/buses", HintColor.LIME)
+                .addStructureHint("Casings or hatches/buses", HintColor.BLUE)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
     }

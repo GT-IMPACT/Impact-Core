@@ -87,7 +87,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                 .addHatchInfo("Output Hatches", "optional; casing positions; steam output")
                 .addHatchInfo("Dynamo Hatches", "optional, up to 2 standard and 1 multi-amp; rear wall")
                 .addStructureHint("Casings or input/output/maintenance hatches", HintColor.GREEN)
-                .addStructureHint("Rear wall: casings or input/output/maintenance/dynamo hatches", HintColor.LIME)
+                .addStructureHint("Rear wall: casings or input/output/maintenance/dynamo hatches", HintColor.BLUE)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
     }
@@ -190,7 +190,7 @@ abstract class GTMTE_SOFC<T extends GTMTE_SOFC<T>>
                             HintColor.GREEN))
                     .addElement('D', withHint(new HatchElementBuilder<T>()
                             .allow(HatchElement.Input, HatchElement.Output, ImpactHatchElement.Dynamo).autoPlace(ImpactHatchElement.FluidInput, ImpactHatchElement.FluidOutput, ImpactHatchElement.Dynamo)
-                            .buildAndChain(requirements(), machine -> machine.casingCount++), HintColor.LIME))
+                            .buildAndChain(requirements(), machine -> machine.casingCount++), HintColor.BLUE))
                     .addElement('E', ceramicElement())
                     .addElement('G', ofBlockAnyMeta(StackUtil.getBlock(Ic2Items.reinforcedGlass)))
                     .build();
