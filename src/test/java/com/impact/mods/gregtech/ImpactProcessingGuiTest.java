@@ -87,6 +87,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.multiblock.ProcessingGuiControls;
 import gregtech.common.modularui2.widget.CoverTabButton;
 import io.netty.buffer.ByteBuf;
+import cpw.mods.fml.common.registry.GameRegistry;
 import io.netty.buffer.Unpooled;
 import java.io.BufferedReader;
 import java.io.File;
@@ -112,6 +113,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -1409,6 +1411,15 @@ class ImpactProcessingGuiTest {
             assertEquals(2, bus.mInventory[1].stackSize);
             source.refuel();
             assertEquals(2, bus.mInventory[1].stackSize);
+
+            GameRegistry.registerFuelHandler(stack -> stack.getItem() == Items.brick ? 160_000 : 0);
+            bus.mInventory[1] = new ItemStack(Items.brick, 2);
+            assertEquals(160_000, TileEntityFurnace.getItemBurnTime(bus.mInventory[1]));
+            source.curBuffer = 0;
+            source.refuel();
+            assertEquals(0, source.curBuffer);
+            assertEquals(2, bus.mInventory[1].stackSize);
+
             Fluid natural = new Fluid("aerostat_natural_gas");
             Fluid refinery = new Fluid("aerostat_refinery_gas");
             FluidRegistry.registerFluid(natural);

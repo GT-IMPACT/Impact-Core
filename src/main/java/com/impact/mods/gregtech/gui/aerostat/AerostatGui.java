@@ -205,9 +205,9 @@ public final class AerostatGui {
         panel.child(IKey.dynamic(() -> text("stations_count", filteredStations().size(), allStations().tagCount()))
                 .asWidget().color(MUTED).shadow(false).pos(22, 89).size(140, 9));
         panel.child(IKey.lang("impact.aerostat.distance_label").asWidget()
-                .color(MUTED).shadow(false).textAlign(Alignment.CenterRight).pos(166, 89).size(52, 9));
+                .color(MUTED).shadow(false).textAlign(Alignment.CenterRight).pos(160, 89).size(52, 9));
         panel.child(IKey.lang("impact.aerostat.fuel_label").asWidget()
-                .color(MUTED).shadow(false).textAlign(Alignment.CenterRight).pos(234, 89).size(42, 9));
+                .color(MUTED).shadow(false).textAlign(Alignment.CenterRight).pos(213, 89).size(63, 9));
         panel.child(new Widget<>().pos(12, 100).size(276, 94)
                 .background((context, x, y, width, height, theme) -> {
                     DARK_EDGE.draw(context, x, y, width, height, theme);
@@ -251,10 +251,10 @@ public final class AerostatGui {
         content.child(new ScrollingTextWidget(IKey.str(station.getString("name")))
                 .color(TEXT).shadow(false).textAlign(Alignment.CenterLeft).pos(12, 0).size(142, 18));
         content.child(IKey.str(text("distance", station.getInteger("distance"))).asWidget()
-                .color(LIST_MUTED).shadow(false).textAlign(Alignment.CenterRight).pos(164, 0).size(41, 18));
-        content.child(IKey.dynamic(() -> numbers.format(station.getInteger("cost"))).asWidget()
+                .color(LIST_MUTED).shadow(false).textAlign(Alignment.CenterRight).pos(158, 0).size(41, 18));
+        content.child(IKey.str(numbers.format(station.getInteger("cost"))).asWidget()
                 .color(() -> station.getInteger("cost") > fuel() ? 0xD3987B : TEXT)
-                .shadow(false).textAlign(Alignment.CenterRight).pos(210, 0).size(53, 18));
+                .shadow(false).textAlign(Alignment.CenterRight).pos(202, 0).size(61, 18));
         return new ButtonWidget<>().name("aerostat_station_" + id)
                 .background(new DynamicDrawable(() -> id.equals(selected.getStringValue())
                         ? ROW_SELECTED : IDrawable.NONE))

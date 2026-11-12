@@ -5,11 +5,13 @@ import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
+import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
 import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
 import com.impact.util.fluid.MultiFluidHandler;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.GTWaila;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -23,8 +25,10 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -83,6 +87,11 @@ class WailaIntegrationTest {
     @Test
     void minerShowsOreRemainingOnlyWhenStructureIsComplete() throws Throwable {
         check("minerShowsOreRemainingOnlyWhenStructureIsComplete");
+    }
+
+    @Test
+    void aerostatKeepsStationDetailsWithoutMachineProgress() throws Throwable {
+        check("aerostatKeepsStationDetailsWithoutMachineProgress");
     }
 
     @Test
@@ -154,9 +163,35 @@ class WailaIntegrationTest {
         }
 
         private IWailaConfigHandler config() {
+            return config(false);
+        }
+
+        private IWailaConfigHandler config(boolean showMultiblock) {
             return (IWailaConfigHandler) Proxy.newProxyInstance(
                     IWailaConfigHandler.class.getClassLoader(), new Class<?>[] { IWailaConfigHandler.class },
-                    (proxy, method, args) -> false);
+                    (proxy, method, args) -> showMultiblock && method.getName().equals("getConfig")
+                            && "gregtech.multiblock".equals(args[0]));
+        }
+
+        public void aerostatKeepsStationDetailsWithoutMachineProgress() {
+            GTMTE_Aerostat station = new GTMTE_Aerostat("test-aerostat");
+            ItemStack displayedStack = new ItemStack(Blocks.stone);
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("aerostatName", "Harbor");
+            tag.setString("aerostatOwner", "Builder");
+            tag.setBoolean("incompleteStructure", true);
+            String incomplete = StatCollector.translateToLocal("GT5U.waila.multiblock.incomplete_structure");
+            for (boolean allowedToWork : new boolean[] {false, true}) {
+                tag.setBoolean("isAllowedToWork", allowedToWork);
+                String progress = GTWaila.getMachineProgressString(false, allowedToWork, 0, 0);
+                List<String> tooltip = new ArrayList<>(Collections.singletonList(progress));
+                station.getWailaBody(displayedStack, tooltip, accessor(tag), config(true));
+                assertEquals(1, Collections.frequency(tooltip, progress));
+                assertEquals(progress, tooltip.get(0));
+                assertTrue(tooltip.stream().anyMatch(line -> line.contains(incomplete)));
+                assertTrue(tooltip.stream().anyMatch(line -> line.contains("Harbor")));
+                assertTrue(tooltip.stream().anyMatch(line -> line.contains("Builder")));
+            }
         }
 
         public void minerShowsOreRemainingOnlyWhenStructureIsComplete() throws Exception {

@@ -31,6 +31,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.render.TextureFactory
 import gregtech.api.modularui2.GTGuis
 import gregtech.api.util.GTStructureUtility
+import gregtech.api.util.GTWaila
 import gregtech.api.util.MultiblockTooltipBuilder
 import gregtech.api.util.StructureRequirements
 import java.util.Arrays
@@ -64,6 +65,7 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
         accessor: IWailaDataAccessor,
         config: IWailaConfigHandler,
     ) {
+        val inheritedLinesStart = tooltip.size
         super.getWailaBody(
             stack,
             tooltip,
@@ -71,6 +73,23 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
             config,
         )
         val tag = accessor.nbtData
+        val showMultiblock = config.getConfig(
+            "gregtech.multiblock",
+            true,
+        )
+        if (showMultiblock) {
+            val progressLine = GTWaila.getMachineProgressString(
+                tag.getBoolean("isActive"),
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress"),
+            )
+            tooltip.subList(
+                inheritedLinesStart,
+                tooltip.size,
+            ).remove(progressLine)
+        }
+
         val stationName = tag.getString("aerostatName")
         if (stationName.isNotEmpty()) {
             tooltip.add(
@@ -412,7 +431,10 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
             .useCompactStructure()
             .addMachineType("Moving Machine")
             .addInfo("Travels between platforms with the same owner in the same dimension.")
-            .addInfo("Solid fuel: furnace fuels; range 16-256 blocks.")
+            .addInfo(
+                "Solid fuel: burn ticks must fit available capacity (%,d fuel units max). Range: 16-256 blocks.",
+                MAX_BUFFER,
+            )
             .addInfo("Gas fuel: Natural Gas or Refinery Gas; range 16-1024 blocks.")
             .addInfo("Requires an Aerostat controller in hand; controller height must be Y 60 or higher.")
             .beginStructureBlock(3, 1, 3, false)
@@ -435,6 +457,37 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
         return mMachine && hasAerostat(player)
     }
 
+    public override fun getInfoData(): Array<String> {
+        val lines = arrayListOf(
+            translateToLocalFormatted(
+                "impact.waila.aerostat.namestation",
+                name.ifBlank {
+                    defaultStationName
+                },
+            ),
+            translateToLocalFormatted(
+                "impact.waila.aerostat.owner",
+                owner,
+            ),
+            translateToLocalFormatted(
+                "impact.aerostat.fuel",
+                curBuffer,
+                MAX_BUFFER,
+            ),
+        )
+        if (mMachine) {
+            lines.add(
+                translateToLocalFormatted(
+                    "impact.aerostat.range",
+                    travelRange,
+                ),
+            )
+        } else {
+            lines.add(translateToLocal("impact.waila.multis.incomplete"))
+        }
+        return lines.toTypedArray()
+    }
+
     public override fun buildUI(
         data: PosGuiData,
         sync: PanelSyncManager,
@@ -452,12 +505,14 @@ class GTMTE_Aerostat : GTMTE_Impact_BlockBase<GTMTE_Aerostat>, IAeroStat {
         aBaseMetaTileEntity: IGregTechTileEntity,
         aPlayer: EntityPlayer,
     ): Boolean {
+        if (aBaseMetaTileEntity.isClientSide) {
+            // GregTech consumes clicks without access before calling this method on the server.
+            return true
+        }
         if (!mMachine || !hasAerostat(aPlayer)) {
             return false
         }
-        if (aBaseMetaTileEntity.isServerSide) {
-            openStationGui(aPlayer)
-        }
+        openStationGui(aPlayer)
         return true
     }
 
