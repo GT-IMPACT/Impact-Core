@@ -102,7 +102,14 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase
     public boolean machineStructure(IGregTechTileEntity iGregTechTileEntity) {
         casingCount = 0;
         boolean check = checkPiece(7, 13, 0)
-                && mMaintenanceHatches.size() == 1 && HatchCounts.inputHatches(this) <= 3;
+                && mMaintenanceHatches.size() == 1
+                && mInputHatches.size() <= 3
+                && HatchCounts.inputBuses(this) <= 4
+                && mOutputBusses.size() <= 4
+                && mOutputHatches.size() <= 4
+                && HatchCounts.energyHatches(this) <= 4
+                && mMufflerHatches.size() <= 4
+                && HatchCounts.dynamoHatches(this) <= 1;
         if (!HATCHES_C.isSatisfied(this, casingCount))
             check = false;
         return check;
@@ -188,7 +195,7 @@ public class GTMTE_HyperNaquadahGenerator extends GTMTE_Impact_FuelGeneratorBase
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; outer casing rings")
                 .addHatchInfo("Input Hatches", "optional, up to 3; outer casing rings")
-                .addHatchInfo("Dynamo Hatches", "optional; outer casing rings")
+                .addHatchInfo("Dynamo Hatch", "optional, up to 1; outer casing rings")
                 .addStructureHint("Outer rings: casings or hatches", HintColor.GREEN)
                 .addHatchChannelInfo()
                 .toolTipFinisher();

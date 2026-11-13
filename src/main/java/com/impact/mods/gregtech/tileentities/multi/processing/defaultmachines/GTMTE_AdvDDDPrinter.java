@@ -28,6 +28,8 @@ import static space.impact.structures.structure.StructureUtility.ofBlockAnyMeta;
 public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrinter> {
 
     private static final ICasing CASING = ImpactCasings.DDD_PRINTER_CASING;
+    private static final int MAX_INPUT_BUSES = 10;
+    private static final int MAX_INPUT_HATCHES = 10;
     private int casingCount;
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 30)
@@ -72,9 +74,8 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
                     .addElement('G', ofBlockAnyMeta(IGlassBlock))
                     .addElement('C', ImpactCasings.DDD_PRINTER_CASING4X4.asElement())
                     .addElement('D', GTStructureUtility.buildHatchAdder(GTMTE_AdvDDDPrinter.class)
-                            .allow(HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Energy,
-                                    ImpactHatchElement.LaserInput, HatchElement.Output)
-                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, ImpactHatchElement.Muffler, HatchElement.Output)
+                            .allow(HatchElement.Energy, ImpactHatchElement.LaserInput)
+                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.OutputBus)
                             .buildAndChain(SHELL, machine -> machine.casingCount++).withHint(HintColor.GREEN))
                     .build();
         }
@@ -106,8 +107,8 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addHatchInfo("Energy Hatches", "1-4 total; casing positions")
-                .addHatchInfo("Input Buses", "optional; casing positions")
-                .addHatchInfo("Input Hatches", "optional; casing positions")
+                .addHatchInfo("Input Buses", "optional, up to " + MAX_INPUT_BUSES + "; casing positions")
+                .addHatchInfo("Input Hatches", "optional, up to " + MAX_INPUT_HATCHES + "; casing positions")
                 .addHatchInfo("Output Buses", "optional, up to 3; casing positions")
                 .addStructureHint("Casings or hatches/buses", HintColor.GREEN)
                 .addHatchChannelInfo()
@@ -129,7 +130,7 @@ public class GTMTE_AdvDDDPrinter extends GTMTE_Impact_BlockBase<GTMTE_AdvDDDPrin
         casingCount = 0;
         boolean formationChecklist = checkPiece(0, 1, 0) && SHELL.isSatisfied(this, casingCount);
 
-        if (HatchCounts.inputBuses(this) > 30) {
+        if (HatchCounts.inputBuses(this) > MAX_INPUT_BUSES || mInputHatches.size() > MAX_INPUT_HATCHES) {
             formationChecklist = false;
         }
         if (this.mOutputBusses.size() > 3) {

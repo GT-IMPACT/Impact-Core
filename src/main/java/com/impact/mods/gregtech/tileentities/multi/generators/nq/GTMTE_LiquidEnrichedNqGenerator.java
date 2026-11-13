@@ -112,7 +112,14 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_FuelGeneratorB
     public boolean machineStructure(IGregTechTileEntity iGregTechTileEntity) {
         casingCount = 0;
         boolean check = checkPiece(5, 12, 0)
-                && mMaintenanceHatches.size() == 1 && HatchCounts.inputHatches(this) <= 3;
+                && mMaintenanceHatches.size() == 1
+                && mInputHatches.size() <= 3
+                && HatchCounts.inputBuses(this) <= 4
+                && mOutputBusses.size() <= 4
+                && mOutputHatches.size() <= 4
+                && HatchCounts.energyHatches(this) <= 4
+                && mMufflerHatches.size() <= 4
+                && HatchCounts.dynamoHatches(this) <= 1;
         if (!HATCHES_A.isSatisfied(this, casingCount))
             check = false;
         return check;
@@ -198,7 +205,7 @@ public class GTMTE_LiquidEnrichedNqGenerator extends GTMTE_Impact_FuelGeneratorB
                 .addOtherStructurePart(new ItemStack(InsideBlock, 1, 0), "exactly 13; center of layers 1-3")
                 .addOtherStructurePart(new ItemStack(Block_NqTether.INSTANCE, 1, 0), "exactly 1; center of layer 13")
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Dynamo Hatches", "optional; casing positions")
+                .addHatchInfo("Dynamo Hatch", "optional, up to 1; casing positions")
                 .addHatchInfo("Input Hatches", "optional, up to 3; casing positions")
                 .addHatchInfo("Maintenance Hatch", "exactly 1; casing positions")
                 .addStructureHint("Casings or hatches", HintColor.GREEN)

@@ -2,6 +2,7 @@ package com.impact.mods.gregtech;
 
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
+import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_Out;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
 
 import java.io.*;
@@ -531,6 +532,8 @@ public class ImpactCoreQaRegressionChecks {
         String[][] machines = { { "processing.parallel.GTMTE_AdvancedCrackingUnit", "impact.multis.cracking_unit" },
                 { "matrixsystem.GTMTE_MPContainment", "impact.multis.matrixcontainment" },
                 { "generators.nq.GTMTE_LiquidNqGenerator", "impact.multimachine.liquidnaqgen" },
+                { "generators.nq.GTMTE_LiquidEnrichedNqGenerator", "impact.multimachine.liquidenrichednqgenerator" },
+                { "generators.nq.GTMTE_HyperNaquadahGenerator", "impact.multimachine.naqgen" },
                 { "units.GTMTE_DrillerWater", "impact.multimachine.waterdrill" } };
         for (String language : new String[] { "ru_RU", "en_US" }) {
             Properties translations = new Properties();
@@ -708,6 +711,11 @@ public class ImpactCoreQaRegressionChecks {
             world.blocks.put(position, machineBlock);
             world.metadata.put(position, originalMetadata);
         }
+        if (name.endsWith("Pyrolyse")) {
+            assertNull(addEnergyHatch(machine, world, controller, null), name + " must reject a second energy hatch");
+            assertTrue(recheck(machine, controller), name + " must form again with one energy hatch");
+            return;
+        }
         for (int count = 2; count <= 4; count++) {
             ImpactConstructionChecks.TestTile added = addEnergyHatch(machine, world, controller, null);
             assertNotNull(added, name + " must allow " + count + " energy hatches");
@@ -740,6 +748,62 @@ public class ImpactCoreQaRegressionChecks {
         } else {
             assertTrue(recheck(machine, controller), name + " has only four physical energy positions");
         }
+        if (name.endsWith("DDDPrinter")) {
+            if (fifth != null) {
+                world.setBlock(fifth.xCoord, fifth.yCoord, fifth.zCoord, casing, casingMetadata, 0);
+            }
+            int inputLimit = name.endsWith("GTMTE_AdvDDDPrinter") ? 10 : 7;
+            checkPrinterInputs(machine, world, controller, casing, casingMetadata, inputLimit);
+        }
+    }
+
+    private static void checkPrinterInputs(
+            GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine,
+            FullWorld world,
+            ImpactConstructionChecks.TestTile controller,
+            Block casing,
+            int casingMetadata,
+            int inputLimit
+    ) throws Exception {
+        List<String> positions = new ArrayList<>();
+        world.blocks.forEach((position, block) -> {
+            if (block == casing && world.metadata.get(position) == casingMetadata && !world.tiles.containsKey(position)) {
+                positions.add(position);
+            }
+        });
+        assertTrue(positions.size() >= 2 * inputLimit + 3);
+        for (int index = 0; index < inputLimit; index++) {
+            putHatch(world, positions.get(index),
+                    new GTMTE_BusHatch_Input("combined", 4, new String[0], new ITexture[0][][], 16000));
+            putHatch(world, positions.get(inputLimit + index),
+                    new GT_MetaTileEntity_Hatch_Input("input", 4, "", new ITexture[0][][]));
+        }
+        for (int index = 0; index < 3; index++) {
+            putHatch(world, positions.get(2 * inputLimit + index),
+                    new GT_MetaTileEntity_Hatch_OutputBus("output", 4, "", new ITexture[0][][]));
+        }
+        assertTrue(recheck(machine, controller), machine.mName + " must accept all hatch limits at once");
+        assertEquals(inputLimit, HatchCounts.inputBuses(machine));
+        assertEquals(inputLimit, machine.mInputHatches.size());
+
+        String busPosition = positions.get(0);
+        String hatchPosition = positions.get(inputLimit);
+        ImpactConstructionChecks.TestTile originalBus = world.tiles.get(busPosition);
+        putHatch(world, busPosition, new GT_MetaTileEntity_Hatch_Input("extra-input", 4, "", new ITexture[0][][]));
+        assertFalse(recheck(machine, controller), machine.mName + " must reject an extra input hatch");
+        world.tiles.put(busPosition, originalBus);
+        putHatch(world, hatchPosition,
+                new GT_MetaTileEntity_Hatch_InputBus("extra-bus", 4, "", new ITexture[0][][]));
+        assertFalse(recheck(machine, controller), machine.mName + " must reject an extra input bus");
+        putHatch(world, hatchPosition, new GT_MetaTileEntity_Hatch_Output("output", 4, "", new ITexture[0][][]));
+        assertFalse(recheck(machine, controller), machine.mName + " must reject output hatches");
+        putHatch(world, hatchPosition, new GT_MetaTileEntity_Hatch_Muffler("muffler", 4, "", new ITexture[0][][]));
+        assertFalse(recheck(machine, controller), machine.mName + " must reject mufflers");
+    }
+
+    private static void putHatch(FullWorld world, String position, MetaTileEntity hatch) {
+        String[] point = position.split(":");
+        putCandidate(world, Integer.parseInt(point[0]), Integer.parseInt(point[1]), Integer.parseInt(point[2]), hatch, 31800);
     }
 
     private static void checkMandatoryMaintenance(String name) throws Exception {
@@ -819,6 +883,69 @@ public class ImpactCoreQaRegressionChecks {
         world.blocks.put(secondPosition, machineBlock);
         world.metadata.put(secondPosition, secondMetadata);
         assertTrue(recheck(machine, controller), name + " must recover after repeated maintenance checks");
+        if (name.contains(".generators.nq.")) {
+            char shell = name.endsWith("GTMTE_HyperNaquadahGenerator") ? 'C' : 'A';
+            checkNaquadahHatchLimits(machine, world, controller, trigger, shell);
+        }
+    }
+
+    private static void checkNaquadahHatchLimits(
+            GT_MetaTileEntity_EnhancedMultiBlockBase<?> machine,
+            FullWorld world,
+            ImpactConstructionChecks.TestTile controller,
+            ItemStack trigger,
+            char shell
+    ) throws Exception {
+        List<String> positions = new ArrayList<>();
+        Object shellElement = ((StructureDefinition<?>) machine.getStructureDefinition()).getElements().get(shell);
+        machine.getStructureDefinition().iterate("main", world, machine.getExtendedFacing(), 0, 64, 0,
+                shell == 'C' ? 7 : 5, shell == 'C' ? 13 : 12, 0, (element, ignored, x, y, z, a, b, c) -> {
+                    String position = ImpactConstructionChecks.TestWorld.key(x, y, z);
+                    ImpactConstructionChecks.TestTile tile = world.tiles.get(position);
+                    if (element == shellElement && (tile == null || !HatchElement.Maintenance.matches(tile.getMetaTileEntity()))) {
+                        positions.add(position);
+                        world.setBlock(x, y, z, Blocks.air, 0, 0);
+                    }
+                    return true;
+                });
+        machine.construct(trigger, false);
+        assertTrue(recheck(machine, controller), machine.mName + " must form with only maintenance");
+
+        ITexture[][][] textures = new ITexture[0][][];
+        List<Supplier<? extends MetaTileEntity>> hatches = Arrays.asList(
+                () -> new GT_MetaTileEntity_Hatch_Input("input", 4, "", textures),
+                () -> new GTMTE_BusHatch_Input("combined", 4, new String[0], textures, 16000),
+                () -> new GT_MetaTileEntity_Hatch_OutputBus("output-bus", 4, "", textures),
+                () -> new GT_MetaTileEntity_Hatch_Output("output", 4, "", textures),
+                () -> new GT_MetaTileEntity_Hatch_Energy("energy", 4, "", textures),
+                () -> new GT_MetaTileEntity_Hatch_Muffler("muffler", 4, "", textures),
+                () -> new GT_MetaTileEntity_Hatch_Dynamo("dynamo", 4, "", textures)
+        );
+        int[] limits = { 3, 4, 4, 4, 4, 4, 1 };
+        int next = 0;
+        for (int type = 0; type < limits.length; type++) {
+            for (int count = 0; count < limits[type]; count++) {
+                putHatch(world, positions.get(next++), hatches.get(type).get());
+            }
+        }
+        assertTrue(recheck(machine, controller), machine.mName + " must accept all hatch limits at once");
+
+        String extra = positions.get(next);
+        String[] point = extra.split(":");
+        int x = Integer.parseInt(point[0]);
+        int y = Integer.parseInt(point[1]);
+        int z = Integer.parseInt(point[2]);
+        Block casing = world.getBlock(x, y, z);
+        int metadata = world.getBlockMetadata(x, y, z);
+        for (Supplier<? extends MetaTileEntity> hatch : hatches) {
+            MetaTileEntity candidate = hatch.get();
+            putHatch(world, extra, candidate);
+            assertFalse(recheck(machine, controller),
+                    machine.mName + " must reject an extra " + candidate.getClass().getSimpleName());
+            world.setBlock(x, y, z, casing, metadata, 0);
+        }
+        putHatch(world, extra, new GTMTE_LaserEnergy_Out("laser", 4, 4, "", textures));
+        assertFalse(recheck(machine, controller), machine.mName + " must count laser and standard dynamos together");
     }
 
     public static void check() throws Exception {

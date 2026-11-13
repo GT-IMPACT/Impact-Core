@@ -121,7 +121,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
                 .addOtherStructurePart(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1), "exactly 8; bottom supports")
                 .addStructureSection("Hatches and buses")
                 .addHatchInfo("Maintenance and Muffler Hatches", "exactly 1 each; top and middle casing layers")
-                .addHatchInfo("Energy Hatches", "1-4 total; top and middle casing layers")
+                .addHatchInfo("Energy Hatch", "exactly 1; top and middle casing layers")
                 .addHatchInfo("Input Bus", "optional, up to 1; top and middle casing layers")
                 .addHatchInfo("Output Bus", "optional, up to 1; top and middle casing layers")
                 .addHatchInfo("Output Hatch", "optional, up to 1; top and middle casing layers")
@@ -219,7 +219,7 @@ public class GTMTE_Pyrolyse extends GTMTE_Impact_BlockBase<GTMTE_Pyrolyse> {
         if (this.mOutputBusses.size() > 1) {
             formationChecklist = false;
         }
-        if (HatchCounts.energyHatches(this) > 4) {
+        if (HatchCounts.energyHatches(this) != 1) {
             formationChecklist = false;
         }
         if (this.mMaintenanceHatches.size() != 1) {
