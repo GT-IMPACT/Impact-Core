@@ -171,7 +171,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                 .addMachineType("Communication Tower")
                 .addInfo("Connects nearby machines to the satellite network.")
                 .addInfo("Coverage: 17x17 chunks, centered on the tower's chunk.")
-                .addInfo("Select a satellite in the tower GUI to link all four Communication Receivers.")
+                .addInfo("Select a satellite in the tower controller GUI to link all four Communication Receivers.")
                 .beginStructureBlock(7, 19, 7, false)
                 .addController("center of layer 2")
                 .addStructureSection("Components")
