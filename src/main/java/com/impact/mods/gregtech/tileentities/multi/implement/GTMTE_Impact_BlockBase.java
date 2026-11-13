@@ -2,6 +2,7 @@ package com.impact.mods.gregtech.tileentities.multi.implement;
 
 import net.minecraft.util.StatCollector;
 import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
+import com.impact.addon.gt.api.parallel_system.INetworkMachine;
 import com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -520,7 +521,8 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
             World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        if (this instanceof IHandledNetworkNode) {
+        if (this instanceof IHandledNetworkNode
+                && (!(this instanceof INetworkMachine) || ((INetworkMachine) this).hasShowConnect())) {
             NetworkDiagnostics.write(tag, (IHandledNetworkNode) this);
         }
         GT_Recipe.GT_Recipe_Map map = getRecipeMap();

@@ -1,8 +1,12 @@
 package com.impact.addon.waila;
 
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
+import com.impact.addon.gt.api.parallel_system.NetworkStatus;
 import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
+import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_SingleTank;
 import com.impact.mods.gregtech.tileentities.multi.storage.GTMTE_LapPowerStation;
 import com.impact.mods.gregtech.tileentities.multi.units.GTMTE_Aerostat;
@@ -99,7 +103,35 @@ class WailaIntegrationTest {
         check("supercapacitorShowsMinuteAveragesInsteadOfInstantFlow");
     }
 
+    @Test
+    void onlyNetworkMachinesShowMissingTowerCoverage() throws Throwable {
+        check("onlyNetworkMachinesShowMissingTowerCoverage");
+    }
+
     public static class Scenarios {
+        public void onlyNetworkMachinesShowMissingTowerCoverage() {
+            GTMTE_AdvancedPyrolyse standalone = new GTMTE_AdvancedPyrolyse("waila-pyrolyse");
+            GTMTE_Mixer networkedMachine = new GTMTE_Mixer("waila-mixer");
+            String coverageKey = NetworkStatus.NO_COVERAGE.getTranslationKey();
+            String coverageError = EnumChatFormatting.RED + StatCollector.translateToLocal(coverageKey);
+
+            NBTTagCompound standaloneTag = new NBTTagCompound();
+            standalone.getWailaNBTData(null, null, standaloneTag, null, 0, 0, 0);
+            assertFalse(standaloneTag.hasKey(NetworkDiagnostics.STATUS_TAG));
+            standaloneTag.removeTag("recipe_map_switch");
+            List<String> standaloneTooltip = new ArrayList<>();
+            standalone.getWailaBody(null, standaloneTooltip, accessor(standaloneTag), config());
+            assertFalse(standaloneTooltip.contains(coverageError));
+
+            NBTTagCompound networkTag = new NBTTagCompound();
+            networkedMachine.getWailaNBTData(null, null, networkTag, null, 0, 0, 0);
+            assertEquals(coverageKey, networkTag.getString(NetworkDiagnostics.STATUS_TAG));
+            networkTag.removeTag("recipe_map_switch");
+            List<String> networkTooltip = new ArrayList<>();
+            networkedMachine.getWailaBody(null, networkTooltip, accessor(networkTag), config());
+            assertEquals(1, Collections.frequency(networkTooltip, coverageError));
+        }
+
         public void supercapacitorShowsMinuteAveragesInsteadOfInstantFlow() throws Exception {
             GTMTE_LapPowerStation battery = new GTMTE_LapPowerStation("waila-battery");
             Field historyField = GTMTE_LapPowerStation.class.getDeclaredField("flowHistory");
