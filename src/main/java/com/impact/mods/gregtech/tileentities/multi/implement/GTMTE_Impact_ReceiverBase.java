@@ -1,72 +1,62 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
+import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
 import com.impact.addon.gt.api.parallel_system.INetworkMachine;
-import com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic;
+import com.impact.addon.gt.api.parallel_system.MachineNetworkHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.item.ItemStack;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_ReceiverBase<MULTIS>> extends GTMTE_Impact_BlockBase<MULTIS> implements INetworkMachine {
-	
-	protected boolean isSatelliteConnected;
+public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_ReceiverBase<MULTIS>>
+        extends GTMTE_Impact_BlockBase<MULTIS> implements INetworkMachine, IHandledNetworkNode {
 
-	public GTMTE_Impact_ReceiverBase(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional);
-	}
-	
-	public GTMTE_Impact_ReceiverBase(int aID, String aName, String aNameRegional, int slots) {
-		super(aID, aName, aNameRegional, slots);
-	}
-	
-	public GTMTE_Impact_ReceiverBase(String aName, int slots) {
-		super(aName, slots);
-	}
-	
-	public GTMTE_Impact_ReceiverBase(String aName) {
-		super(aName);
-	}
-	
-	@Override
-	public void inValidate() {
-		if (getBaseMetaTileEntity().isServerSide()) removeConnect();
-		super.inValidate();
-	}
+    private final MachineNetworkHandler networkHandler = new MachineNetworkHandler(this);
 
-	@Override
-	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-		super.onFirstTick(aBaseMetaTileEntity);
-		if (aBaseMetaTileEntity.isServerSide()) createConnect();
-	}
+    public GTMTE_Impact_ReceiverBase(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
 
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		super.saveNBTData(aNBT);
-		aNBT.setBoolean("isConnected", isSatelliteConnected);
-	}
-	
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
-		isSatelliteConnected = aNBT.getBoolean("isConnected");
-	}
+    public GTMTE_Impact_ReceiverBase(int aID, String aName, String aNameRegional, int slots) {
+        super(aID, aName, aNameRegional, slots);
+    }
 
-	@Override
-	public boolean isSatelliteConnected() {
-		return isSatelliteConnected;
-	}
+    public GTMTE_Impact_ReceiverBase(String aName, int slots) {
+        super(aName, slots);
+    }
 
-	@Override
-	public boolean hasShowConnect() {
-		return true;
-	}
+    public GTMTE_Impact_ReceiverBase(String aName) {
+        super(aName);
+    }
 
-	@Override
-	public void setSatelliteConnected(boolean connect) {
-		isSatelliteConnected = connect;
-	}
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("isConnected", isSatelliteConnected());
+    }
 
-	public abstract boolean hasConnectForce();
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        networkHandler.setConnected(false);
+    }
+
+    @Override
+    public boolean isSatelliteConnected() {
+        return networkHandler.isConnected();
+    }
+
+    @Override
+    public boolean hasShowConnect() {
+        return true;
+    }
+
+    @Override
+    public void setSatelliteConnected(boolean connect) {
+        networkHandler.setConnected(connect);
+    }
+
+    public abstract boolean hasConnectForce();
 
     @Override
     protected CheckRecipeResult validateProcessing() {
@@ -76,25 +66,30 @@ public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_Rece
         return super.validateProcessing();
     }
 
-	
-	@Override
-	public boolean onRunningTick(ItemStack aStack) {
-		if (hasConnectForce() && !isSatelliteConnected()) {
-			IGregTechTileEntity te = getBaseMetaTileEntity();
-			if (te != null) {
-				te.disableWorking();
-			}
-		}
-		return super.onRunningTick(aStack);
-	}
 
-	@Override
-	public void createConnect() {
-		SatelliteNetworkLogic.INSTANCE.reloadNetwork();
-	}
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (hasConnectForce() && !isSatelliteConnected()) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            if (te != null) {
+                te.disableWorking();
+            }
+        }
+        return super.onRunningTick(aStack);
+    }
 
-	@Override
-	public void removeConnect() {
-		SatelliteNetworkLogic.INSTANCE.reloadNetwork();
-	}
+    @Override
+    public MachineNetworkHandler getNetworkHandler() {
+        return networkHandler;
+    }
+
+    @Override
+    public void createConnect() {
+        com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle.load(this);
+    }
+
+    @Override
+    public void removeConnect() {
+        com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle.unload(this);
+    }
 }

@@ -1,6 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
 import net.minecraft.util.StatCollector;
+import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.impact.addon.gt.api.multis.IMachineRecipe;
@@ -33,6 +35,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -293,10 +296,22 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
     @Override
     public void onFirstTick(IGregTechTileEntity base) {
         super.onFirstTick(base);
+        if (base.isServerSide() && this instanceof IHandledNetworkNode) {
+            NetworkNodeLifecycle.load((IHandledNetworkNode) this);
+        }
         if (legacyRecipeMapToRestore != null) {
             setActiveRecipeMap(legacyRecipeMapToRestore);
             legacyRecipeMapToRestore = null;
         }
+    }
+
+    @Override
+    public void inValidate() {
+        if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isServerSide()
+                && this instanceof IHandledNetworkNode) {
+            NetworkNodeLifecycle.unload((IHandledNetworkNode) this);
+        }
+        super.inValidate();
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
@@ -491,6 +506,7 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
             IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
+        NetworkDiagnostics.append(tag, tooltip);
         String map = tag.getString("recipe_map_switch");
         if (!map.isEmpty()) {
             tooltip.add(translateToLocalFormatted("impact.waila.recipe_map",
@@ -504,6 +520,9 @@ public abstract class GTMTE_Impact_BlockBase<MULTIS extends GTMTE_Impact_BlockBa
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
             World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (this instanceof IHandledNetworkNode) {
+            NetworkDiagnostics.write(tag, (IHandledNetworkNode) this);
+        }
         GT_Recipe.GT_Recipe_Map map = getRecipeMap();
         tag.setString("recipe_map_switch", map == null ? "" : map.mUnlocalizedName);
 

@@ -6,6 +6,8 @@ import static com.impact.mods.gregtech.enums.Texture.Icons.*;
 import com.impact.mods.gregtech.gui.parallelcomputer.GT_Container_Rack;
 import com.impact.mods.gregtech.gui.parallelcomputer.GT_GUIContainer_Rack;
 import com.impact.util.Utilits;
+import com.impact.addon.gt.api.parallel_system.IParallelRack;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeAccess;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -21,10 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 
-public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
+public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch implements IParallelRack {
 
   public static Map<String, Components> mMapItem = new HashMap<>();
-  public int mCapacityP = 0;
+  private int mCapacityP = 0;
 
   public GTMTE_ComputerRack(int aID, String aName, String aNameRegional) {
     super(aID, aName, aNameRegional, 5, 4, new String[]{
@@ -37,6 +39,23 @@ public class GTMTE_ComputerRack extends GT_MetaTileEntity_Hatch {
   public GTMTE_ComputerRack(String aName, String[] aDescription, ITexture[][][] aTextures) {
     super(aName, 5, 4, aDescription, aTextures);
   }
+
+    @Override
+    public int getCapacityPoints() {
+        return mCapacityP;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return NetworkNodeAccess.isLoaded(this);
+    }
+
+    @Override
+    public void setNetworkActive(boolean active) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(active);
+        }
+    }
 
   public static void run() {
     new Components(UpgradeCasingT1.get(1), 1);

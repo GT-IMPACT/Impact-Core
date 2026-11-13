@@ -8,6 +8,7 @@ import com.impact.core.SaveManager;
 import com.impact.debug.recipes.DebugRecipes;
 import com.impact.events.EventDropBlock;
 import com.impact.events.TickHandler;
+import com.impact.events.NetworkNodeEvents;
 import com.impact.events.impactEvents;
 import com.impact.loader.MainLoader;
 import com.impact.mods.gregtech.enums.IRecipeAdder;
@@ -102,6 +103,7 @@ public class impact {
 		
 		CommonProxy.register_event(new impactEvents());
 		CommonProxy.register_event(new TickHandler());
+        CommonProxy.register_event(new NetworkNodeEvents());
 		CommonProxy.register_event(new EventDropBlock());
 		
 		proxy.preInit();
@@ -121,6 +123,7 @@ public class impact {
 	
 	@Mod.EventHandler
 	public void serverAboutToStart(final FMLServerAboutToStartEvent event) {
+		proxy.onServerAboutToStart();
 		SaveManager.onServerAboutToStart();
 	}
 	

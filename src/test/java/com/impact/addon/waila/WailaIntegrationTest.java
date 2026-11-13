@@ -238,13 +238,15 @@ class WailaIntegrationTest {
         public void hatchKeepsInheritedAndImpactData() {
             GTMTE_ParallelHatch_Input hatch = new GTMTE_ParallelHatch_Input("test", 5, new String[0], null, 4);
             hatch.idHatch = 7;
-            hatch.machineName = "Test machine";
-            hatch.address = "12:64:34";
-            hatch.isConnected = true;
+            hatch.setMachineName("Test machine");
+            hatch.setMachineAddress("12:64:34");
+            hatch.updateParallelAmount(4);
+            hatch.updateConnectionStatus(true);
             NBTTagCompound tag = new NBTTagCompound();
             hatch.getWailaNBTData(null, null, tag, null, 0, 0, 0);
             assertEquals(7, tag.getInteger("hatchId"));
             assertTrue(tag.getBoolean("isParallelIN"));
+            assertEquals(4, tag.getInteger("ppAllocated"));
             List<String> tooltip = new ArrayList<>();
             hatch.getWailaBody(null, tooltip, accessor(tag), config());
             assertTrue(tooltip.stream().anyMatch(line -> line.contains("ID: 7")));

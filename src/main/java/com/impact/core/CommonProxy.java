@@ -1,6 +1,7 @@
 package com.impact.core;
 
 import com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle;
 import com.impact.addon.gt.api.satellite.SatelliteNetworkManager;
 import com.impact.common.managers.AeroStateNetworkManager;
 import com.impact.impact;
@@ -137,16 +138,24 @@ public class CommonProxy implements IGuiHandler {
 		return false;
 	}
 	
-	public void onServerStarted() {
-		SatelliteNetworkLogic.INSTANCE.onStartServer();
-		Impact_API.sSpaceSatellite.clear();
-		Impact_API.sElevatorSpace.clear();
-		Impact_API.sCommunicationTower.clear();
-		AeroStateNetworkManager.onClear();
-		SatelliteNetworkManager.INSTANCE.reload();
-		JsonWorld.load();
-	}
-	
+    public void onServerAboutToStart() {
+        NetworkNodeLifecycle.startServer();
+    }
+
+    public void onServerStarted() {
+        Impact_API.sSpaceSatellite.clear();
+        Impact_API.sElevatorSpace.clear();
+        Impact_API.sCommunicationTower.clear();
+        AeroStateNetworkManager.onClear();
+        JsonWorld.load();
+        MinecraftServer server = MinecraftServer.getServer();
+        if (server != null && server.worldServers != null) {
+            for (WorldServer world : server.worldServers) {
+                NetworkNodeLifecycle.loadWorld(world);
+            }
+        }
+    }
+
 	public void onServerStopping() {
 		JsonWorld.save();
 		Impact_API.sSpaceSatellite.clear();
@@ -154,7 +163,8 @@ public class CommonProxy implements IGuiHandler {
 		Impact_API.sCommunicationTower.clear();
 		AeroStateNetworkManager.onClear();
 		SatelliteNetworkManager.INSTANCE.reload();
-		SatelliteNetworkLogic.INSTANCE.onStopServer();
+		NetworkNodeLifecycle.clear();
+        SatelliteNetworkLogic.INSTANCE.onStopServer();
 	}
 	
 	public void addChatFromServer(String text) {

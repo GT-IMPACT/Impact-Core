@@ -15,13 +15,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 
 import java.util.List;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 
 final class CommunicationTowerDisplay extends ProcessingMachineDisplay {
 
     private static final int TEXT = 0xe4eaf0;
-    private static final int MUTED = 0x8999aa;
-    private static final int CONNECTED = 0x73ce8d;
-    private static final int DISCONNECTED = 0xef6b62;
+    static final int MUTED = 0x8999aa;
+    static final int CONNECTED = 0x73ce8d;
+    static final int DISCONNECTED = 0xef6b62;
     private final GTMTE_TowerCommunication machine;
     private final GenericSyncValue<NBTTagCompound, ?> readings;
 
@@ -63,6 +64,10 @@ final class CommunicationTowerDisplay extends ProcessingMachineDisplay {
                     Integer.toString(index + 1),
                     color
             );
+        }
+        if (!uplink) {
+            font.drawString(StatCollector.translateToLocal(snapshot.getString(NetworkDiagnostics.STATUS_TAG)),
+                    10, 56, MUTED);
         }
         font.drawString(text("connections", snapshot.getInteger("connected"), snapshot.getInteger("total")),
                 10, 67, TEXT);

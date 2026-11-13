@@ -310,6 +310,11 @@ class ImpactProcessingMigrationTest {
         run("gregTechOverclockMatrix");
     }
 
+    @Test
+    void recipeUsesGrantedPointsRatherThanReceiverTier() throws Throwable {
+        run("allocatedParallelContract");
+    }
+
     public static final class Scenarios {
 
         public static void initialize() throws Exception {
@@ -396,7 +401,7 @@ class ImpactProcessingMigrationTest {
                     for (int fluidOperations : new int[] { 0, 1, limit - 1, limit, limit * 4 }) {
                         TestMixer machine = machine();
                         machine.amperage = 256;
-                        GTMTE_ParallelHatch_Input parallel = hatch(machine);
+                        TestParallelHatch parallel = hatch(machine);
                         parallel.isDebug = true;
                         parallel.mMaxParallel = limit;
                         machine.setProcessingModes(batch ? ProcessingLogic.BATCH : 0);
@@ -431,7 +436,7 @@ class ImpactProcessingMigrationTest {
             for (int limit : new int[] { 1, 16, 64, 256 }) {
                 TestMixer machine = machine();
                 machine.amperage = 256;
-                GTMTE_ParallelHatch_Input parallel = hatch(machine);
+                TestParallelHatch parallel = hatch(machine);
                 parallel.isDebug = true;
                 parallel.mMaxParallel = limit;
                 ItemStack input = new ItemStack(Items.iron_ingot, limit * 2);
@@ -482,7 +487,7 @@ class ImpactProcessingMigrationTest {
                         TestMixer machine = machine();
                         machine.realInputs = true;
                         machine.amperage = 256;
-                        GTMTE_ParallelHatch_Input parallel = hatch(machine);
+                        TestParallelHatch parallel = hatch(machine);
                         parallel.isDebug = true;
                         parallel.mMaxParallel = limit;
                         machine.setProcessingModes(separated ? ProcessingLogic.SEPARATE_INPUTS : 0);
@@ -553,8 +558,9 @@ class ImpactProcessingMigrationTest {
                             TestMixer machine = machine();
                             machine.requireNetwork = required;
                             machine.setSatelliteConnected(satellite);
-                            GTMTE_ParallelHatch_Input parallel = hatch(machine);
-                            parallel.isConnected = connected;
+                            TestParallelHatch parallel = hatch(machine);
+                            parallel.updateParallelAmount(connected ? parallel.getParallel() : 0);
+                            parallel.updateConnectionStatus(connected);
                             parallel.isDebug = debug;
                             ItemStack input = new ItemStack(Items.iron_ingot, 64);
                             machine.inputs.add(input);
@@ -820,7 +826,7 @@ class ImpactProcessingMigrationTest {
                     for (boolean batch : new boolean[] { false, true }) {
                         TestMixer machine = machine();
                         machine.amperage = 256;
-                        GTMTE_ParallelHatch_Input hatch = hatch(machine);
+                        TestParallelHatch hatch = hatch(machine);
                         hatch.isDebug = true;
                         hatch.mMaxParallel = limit;
                         machine.setProcessingModes(batch ? ProcessingLogic.BATCH : 0);
@@ -855,7 +861,7 @@ class ImpactProcessingMigrationTest {
                             machine.overclock = true;
                             machine.perfect = perfect;
                             machine.bypass = bypass;
-                            GTMTE_ParallelHatch_Input hatch = hatch(machine);
+                            TestParallelHatch hatch = hatch(machine);
                             hatch.isDebug = true;
                             hatch.mMaxParallel = limits[index];
                             machine.setProcessingModes(batch ? ProcessingLogic.BATCH : 0);
@@ -885,6 +891,7 @@ class ImpactProcessingMigrationTest {
         }
 
         public static void towerConnections() {
+            com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic.INSTANCE.onStartServer();
             ImpactConstructionChecks.TestWorld world = new ImpactConstructionChecks.TestWorld() {
                 @Override
                 public Chunk getChunkFromChunkCoords(int x, int z) {
@@ -914,6 +921,12 @@ class ImpactProcessingMigrationTest {
             world.putTile(64, 64, 0, new ImpactConstructionChecks.TestTile(world, normalPyrolyse, ForgeDirection.NORTH));
             pyrolyse.setSatelliteConnected(true);
             provider.setSatelliteConnected(true);
+            tower.createTower();
+            mixer.createConnect();
+            computer.createConnect();
+            pyrolyse.createConnect();
+            provider.createConnect();
+            outside.createConnect();
             tower.setSatelliteConnected(true);
             tower.onUpdateConnections();
             assertEquals(2, tower.getConnections().size());
@@ -928,6 +941,7 @@ class ImpactProcessingMigrationTest {
             tower.updateStatusConnections();
             assertFalse(mixer.isSatelliteConnected());
             assertFalse(computer.isSatelliteConnected());
+            com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic.INSTANCE.onStopServer();
         }
 
         public static void nuclearOutputCapacity() {
@@ -1079,7 +1093,7 @@ class ImpactProcessingMigrationTest {
                         for (int powered : new int[] { 1, limit }) {
                             TestMixer machine = machine();
                             machine.amperage = powered;
-                            GTMTE_ParallelHatch_Input hatch = hatch(machine);
+                            TestParallelHatch hatch = hatch(machine);
                             hatch.isDebug = true;
                             hatch.mMaxParallel = limit;
                             machine.setProcessingModes(batch ? ProcessingLogic.BATCH : 0);
@@ -1124,7 +1138,7 @@ class ImpactProcessingMigrationTest {
                                     machine.overclock = true;
                                     machine.perfect = perfect;
                                     addEnergyHatch(machine, tier, amps, kind);
-                                    GTMTE_ParallelHatch_Input parallelHatch = hatch(machine);
+                                    TestParallelHatch parallelHatch = hatch(machine);
                                     parallelHatch.isDebug = true;
                                     parallelHatch.mMaxParallel = limit;
                                     ItemStack input = new ItemStack(Items.iron_ingot, limit * 2);
@@ -1226,7 +1240,7 @@ class ImpactProcessingMigrationTest {
             for (int limit : new int[] { 1, 16, 64, 256 }) {
                 for (int failure = 0; failure < 6; failure++) {
                     TestMixer machine = machine();
-                    GTMTE_ParallelHatch_Input parallel = hatch(machine);
+                    TestParallelHatch parallel = hatch(machine);
                     parallel.isDebug = true;
                     parallel.mMaxParallel = limit;
                     ItemStack input = new ItemStack(Items.iron_ingot, 64);
@@ -1276,20 +1290,22 @@ class ImpactProcessingMigrationTest {
             TestMixer machine = machine();
             machine.requireNetwork = true;
             machine.setSatelliteConnected(true);
-            GTMTE_ParallelHatch_Input parallel = hatch(machine);
-            parallel.isConnected = true;
+            TestParallelHatch parallel = hatch(machine);
+            parallel.updateParallelAmount(parallel.getParallel());
+            parallel.updateConnectionStatus(true);
             ItemStack input = new ItemStack(Items.iron_ingot, 64);
             machine.inputs.add(input);
             assertTrue(machine.checkRecipe(null));
             machine.setSatelliteConnected(false);
-            parallel.isConnected = false;
+            parallel.updateConnectionStatus(false);
             assertEquals(16, machine.getCurrentParallel());
             assertEquals(48, input.stackSize);
             machine.finish();
             assertFalse(machine.checkRecipe(null));
             assertEquals(48, input.stackSize);
             machine.setSatelliteConnected(true);
-            parallel.isConnected = true;
+            parallel.updateParallelAmount(parallel.getParallel());
+            parallel.updateConnectionStatus(true);
             assertTrue(machine.checkRecipe(null));
             assertEquals(32, input.stackSize);
         }
@@ -1376,7 +1392,7 @@ class ImpactProcessingMigrationTest {
                         attach(machine);
                         addLaser(machine, 1, 256);
                         GT_MetaTileEntity_Hatch_InputBus bus = addInput(machine, 128);
-                        GTMTE_ParallelHatch_Input parallel = new GTMTE_ParallelHatch_Input(
+                        TestParallelHatch parallel = new TestParallelHatch(
                                 "parallel", 6, new String[0], new ITexture[0][][], limit);
                         attach(parallel);
                         parallel.isDebug = true;
@@ -1640,7 +1656,7 @@ class ImpactProcessingMigrationTest {
             assertEquals(80, machine.mMaxProgresstime);
             machine.finish();
 
-            GTMTE_ParallelHatch_Input hatch = hatch(machine);
+            TestParallelHatch hatch = hatch(machine);
             hatch.isDebug = true;
             assertTrue(machine.checkRecipe(null));
             assertEquals(16, machine.getCurrentParallel());
@@ -1737,6 +1753,24 @@ class ImpactProcessingMigrationTest {
             assertEquals(500, finalOutputs[0].amount);
         }
 
+        public static void allocatedParallelContract() {
+            TestMixer machine = machine();
+            recipe(machine);
+            TestParallelHatch hatch = hatch(machine);
+            hatch.updateParallelAmount(4);
+            hatch.updateConnectionStatus(true);
+            machine.setSatelliteConnected(true);
+            machine.inputs.add(new ItemStack(Items.iron_ingot, 16));
+            assertTrue(machine.checkRecipe(null));
+            assertEquals(16, hatch.getParallel());
+            assertEquals(4, hatch.getAllocatedParallel());
+            assertEquals(4, machine.getCurrentParallel());
+            assertEquals(4, machine.mOutputItems[0].stackSize);
+            hatch.updateConnectionStatus(false);
+            assertEquals(0, hatch.getAllocatedParallel());
+            assertEquals(4, machine.getCurrentParallel(), "An active recipe keeps its committed operation count");
+        }
+
         private static FluidStack water(int amount) {
             return new FluidStack(FluidRegistry.WATER, amount);
         }
@@ -1750,8 +1784,8 @@ class ImpactProcessingMigrationTest {
             return machine;
         }
 
-        private static GTMTE_ParallelHatch_Input hatch(TestMixer machine) {
-            GTMTE_ParallelHatch_Input hatch = new GTMTE_ParallelHatch_Input(
+        private static TestParallelHatch hatch(TestMixer machine) {
+            TestParallelHatch hatch = new TestParallelHatch(
                     "parallel-test", 6, new String[0], new ITexture[0][][], 16);
             new ImpactConstructionChecks.TestTile(machine.getBaseMetaTileEntity().getWorld(), hatch,
                     ForgeDirection.NORTH);
@@ -1765,6 +1799,33 @@ class ImpactProcessingMigrationTest {
                     new ItemStack[] { new ItemStack(Items.gold_ingot) }, null, new int[] { 10000 },
                     null, null, 80, 24, 0);
             assertTrue(recipe != null);
+        }
+    }
+
+    public static final class TestParallelHatch extends GTMTE_ParallelHatch_Input {
+
+        public int mMaxParallel;
+        public boolean isDebug;
+
+        public TestParallelHatch(
+                String name,
+                int tier,
+                String[] description,
+                ITexture[][][] textures,
+                int limit
+        ) {
+            super(name, tier, description, textures, limit);
+            mMaxParallel = limit;
+        }
+
+        @Override
+        public int getParallel() {
+            return mMaxParallel;
+        }
+
+        @Override
+        public boolean isDebugReceiver() {
+            return isDebug;
         }
     }
 

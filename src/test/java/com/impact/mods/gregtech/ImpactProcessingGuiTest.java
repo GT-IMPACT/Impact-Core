@@ -1,5 +1,9 @@
 package com.impact.mods.gregtech;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.impact.addon.gt.api.satellite.SatelliteDirectory;
+import com.impact.util.PositionObject;
 import com.cleanroommc.modularui.api.RecipeViewerSettings;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
@@ -24,6 +28,7 @@ import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widget.sizer.ResizeNode;
 import com.cleanroommc.modularui.widget.sizer.StaticResizer;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -87,6 +92,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.multiblock.ProcessingGuiControls;
 import gregtech.common.modularui2.widget.CoverTabButton;
 import io.netty.buffer.ByteBuf;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import io.netty.buffer.Unpooled;
 import java.io.BufferedReader;
@@ -125,6 +131,8 @@ import static gregtech.api.gui.GT_Container_ProcessingMachine.BATCH_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.LOCK_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.NEI_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.POWER_SLOT;
+import static gregtech.api.gui.GT_Container_ProcessingMachine.PLAYER_INVENTORY_Y;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.RECIPE_MAP_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.SEPARATION_SLOT;
 import static gregtech.api.gui.GT_Container_ProcessingMachine.VOIDING_SLOT;
@@ -884,25 +892,27 @@ class ImpactProcessingGuiTest {
             Fixture fixture = new Fixture(tower);
             tower.mMachine = true;
             tower.setSatelliteConnected(true);
+            java.util.Set<com.impact.addon.gt.api.parallel_system.INetworkMachine> detected = new java.util.HashSet<>();
             for (int index = 69; index >= 0; index--) {
                 GTMTE_Mixer machine = new GTMTE_Mixer("machine-" + index);
                 ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
                         fixture.world, machine, ForgeDirection.NORTH);
                 tile.xCoord = index;
                 machine.setSatelliteConnected(index % 2 == 0);
-                tower.getConnections().add(machine);
+                detected.add(machine);
             }
             GTMTE_AdvancedPyrolyse unsupported = new GTMTE_AdvancedPyrolyse("unsupported");
             new ImpactConstructionChecks.TestTile(fixture.world, unsupported, ForgeDirection.NORTH);
-            tower.getConnections().add(unsupported);
-            tower.getConnections().add(new GTMTE_Mixer("detached"));
+            detected.add(unsupported);
+            detected.add(new GTMTE_Mixer("detached"));
+            tower.replaceConnections(detected);
             for (int index = 3; index >= 0; index--) {
                 GTMTE_CommunicationTower_Receiver receiver = new GTMTE_CommunicationTower_Receiver(
                         "receiver-" + index, new String[0], new ITexture[0][][]);
                 ImpactConstructionChecks.TestTile tile = new ImpactConstructionChecks.TestTile(
                         fixture.world, receiver, ForgeDirection.NORTH);
                 tile.xCoord = index;
-                receiver.isConnected = index != 2;
+                receiver.updateConnectionStatus(index != 2);
                 tile.setActive(true);
                 tower.sCommunReceiver.add(receiver);
             }
@@ -919,30 +929,30 @@ class ImpactProcessingGuiTest {
             assertArrayEquals(new int[] { 1, 1, 0, 1 }, snapshot.getIntArray("receivers"));
             assertEquals(32, snapshot.getTagList("nodes", 10).tagCount());
             assertEquals(0, snapshot.getTagList("nodes", 10).getCompoundTagAt(0).getInteger("x"));
-            fixture.press("tower_next", false);
+            fixture.sendAction("tower_next");
             state.updateCacheFromSource(false);
             snapshot = (NBTTagCompound) state.getValue();
             assertEquals(1, snapshot.getInteger("page"));
             assertEquals(32, snapshot.getTagList("nodes", 10).getCompoundTagAt(0).getInteger("x"));
-            fixture.press("tower_next", false);
+            fixture.sendAction("tower_next");
             state.updateCacheFromSource(false);
             snapshot = (NBTTagCompound) state.getValue();
             assertEquals(2, snapshot.getInteger("page"));
             assertEquals(6, snapshot.getTagList("nodes", 10).tagCount());
-            fixture.press("tower_next", false);
+            fixture.sendAction("tower_next");
             state.updateCacheFromSource(false);
             assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
             fixture.player.setPosition(100, 64, 100);
-            fixture.press("tower_previous", false);
+            fixture.sendAction("tower_previous");
             state.updateCacheFromSource(false);
             assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
             fixture.player.setPosition(0.5, 64.5, 0.5);
             fixture.player.openContainer = fixture.player.inventoryContainer;
-            fixture.press("tower_previous", false);
+            fixture.sendAction("tower_previous");
             state.updateCacheFromSource(false);
             assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
             fixture.player.openContainer = fixture.container;
-            fixture.press("tower_previous", false);
+            fixture.sendAction("tower_previous");
             state.updateCacheFromSource(false);
             assertEquals(1, ((NBTTagCompound) state.getValue()).getInteger("page"));
             initializeResizers(fixture.panel, new Viewport());
@@ -970,13 +980,121 @@ class ImpactProcessingGuiTest {
                 assertTrue(x + area.width <= 262);
                 assertTrue(y + area.height <= 148);
             }
-            tower.getConnections().clear();
+            tower.replaceConnections(java.util.Collections.emptySet());
             state.updateCacheFromSource(false);
             snapshot = (NBTTagCompound) state.getValue();
             assertEquals(0, snapshot.getInteger("total"));
             assertEquals(0, snapshot.getInteger("page"));
             assertEquals(1, snapshot.getInteger("pages"));
             assertEquals(0, snapshot.getTagList("nodes", 10).tagCount());
+
+            Area pickerButton = fixture.find("impact_tower_choose_satellite").getArea();
+            int pickerX = pickerButton.x - fixture.panel.getArea().x;
+            assertTrue(pickerX >= 192 && pickerX + pickerButton.width <= 268);
+            NBTTagList satellites = new NBTTagList();
+            for (int satelliteX : new int[] { -16, 0, 16 }) {
+                NBTTagCompound satellite = new PositionObject(satelliteX, 64, 0, 7).saveToNBT();
+                satellite.setString("owner", fixture.player.getUniqueID().toString());
+                satellites.appendTag(satellite);
+            }
+            NBTTagCompound foreign = new PositionObject(32, 64, 0, 7).saveToNBT();
+            foreign.setString("owner", new ImpactConstructionChecks.TestPlayer(fixture.world).getUniqueID().toString());
+            satellites.appendTag(foreign);
+            satellites.appendTag(new PositionObject(48, 64, 0, 7).saveToNBT());
+            NBTTagCompound directory = new NBTTagCompound();
+            directory.setTag("satellites", satellites);
+            SatelliteDirectory.get(fixture.world).readFromNBT(directory);
+
+            PanelSyncHandler picker = (PanelSyncHandler) fixture.handlers
+                    .findPanelHandlerNullable("impact_tower_satellites");
+            assertNotNull(picker);
+            picker.openPanel();
+            Field syncField = PanelSyncHandler.class.getDeclaredField("syncManager");
+            syncField.setAccessible(true);
+            PanelSyncManager pickerSync = (PanelSyncManager) syncField.get(picker);
+            PanelSyncManager layoutSync = new PanelSyncManager(fixture.handlers.getModularSyncManager(), false);
+            ModularPanel popup = picker.createUI(layoutSync);
+            assertFalse(popup.disablePanelsBelow());
+            ParentWidget<?> cards = (ParentWidget<?>) popup.getChildren().stream()
+                    .filter(widget -> widget.isName("impact_satellite_cards"))
+                    .findFirst().orElseThrow(AssertionError::new);
+            assertTrue(cards.getChildren().isEmpty());
+            GenericSyncValue<?, ?> catalog = layoutSync.findSyncHandler("satellites", GenericSyncValue.class);
+            catalog.updateCacheFromSource(false);
+            cards.onUpdate();
+            assertEquals(3, cards.getChildren().size());
+            ButtonWidget<?> card = (ButtonWidget<?>) cards.getChildren().get(0);
+            initializeResizers(popup, new Viewport());
+            WidgetTree.resizeInternal(popup.resizer(), false);
+            assertEquals(108, card.getArea().width);
+            assertEquals(33, card.getArea().height);
+            assertEquals(8, card.getArea().x - popup.getArea().x);
+            assertEquals(19, card.getArea().y - popup.getArea().y);
+            assertEquals(116, cards.getChildren().get(1).getArea().x - card.getArea().x);
+            assertEquals(36, cards.getChildren().get(2).getArea().y - card.getArea().y);
+            assertTrue(popup.getArea().y >= pickerButton.y + pickerButton.height);
+            assertTrue(popup.getArea().y + popup.getArea().height <= fixture.panel.getArea().y + PLAYER_INVENTORY_Y);
+            ButtonWidget<?> next = (ButtonWidget<?>) fixture.find("impact_tower_next");
+            assertTrue(popup.getArea().y + popup.getArea().height <= next.getArea().y);
+            for (String direction : new String[] { "previous", "next" }) {
+                ButtonWidget<?> arrow = (ButtonWidget<?>) popup.getChildren().stream()
+                        .filter(widget -> widget.isName("impact_satellite_" + direction))
+                        .findFirst().orElseThrow(AssertionError::new);
+                assertSame(IDrawable.EMPTY, ((DynamicDrawable) arrow.getBackground()).getSupplier().get());
+                assertSame(IDrawable.EMPTY, ((DynamicDrawable) arrow.getOverlay()).getSupplier().get());
+            }
+            assertEquals(Interactable.Result.SUCCESS, card.onMousePressed(0));
+            assertFalse(card.onMouseRelease(0));
+            assertTrue(tower.getNetworkHandler().getSatelliteId().isEmpty());
+
+            sendSatelliteChoice(pickerSync, "unknown");
+            assertTrue(tower.getNetworkHandler().getSatelliteId().isEmpty());
+            sendSatelliteChoice(pickerSync, "7:32:64:0");
+            assertTrue(tower.getNetworkHandler().getSatelliteId().isEmpty());
+            sendSatelliteChoice(pickerSync, "7:48:64:0");
+            assertTrue(tower.getNetworkHandler().getSatelliteId().isEmpty());
+            fixture.player.setPosition(100, 64, 100);
+            sendSatelliteChoice(pickerSync, "7:-16:64:0");
+            assertTrue(tower.getNetworkHandler().getSatelliteId().isEmpty());
+            fixture.player.setPosition(0.5, 64.5, 0.5);
+            sendSatelliteChoice(pickerSync, "7:-16:64:0");
+            assertEquals("7:-16:64:0", tower.getNetworkHandler().getSatelliteId());
+            catalog.updateCacheFromSource(false);
+            ButtonWidget<?> secondCard = (ButtonWidget<?>) cards.getChildren().get(1);
+            card.playClickSound(false);
+            secondCard.playClickSound(false);
+            assertEquals(Interactable.Result.SUCCESS, secondCard.onMouseTapped(0));
+            assertEquals("7:0:64:0", tower.getNetworkHandler().getSatelliteId());
+            assertEquals("7:-16:64:0", ((NBTTagCompound) catalog.getValue()).getString("selected"));
+            assertEquals(Interactable.Result.SUCCESS, card.onMouseTapped(0));
+            assertEquals("7:-16:64:0", tower.getNetworkHandler().getSatelliteId());
+            assertTrue(picker.isPanelOpen());
+
+            tower.replaceConnections(detected);
+            state.updateCacheFromSource(false);
+            fixture.sendAction("tower_next");
+            state.updateCacheFromSource(false);
+            assertEquals(1, ((NBTTagCompound) state.getValue()).getInteger("page"));
+            picker.closePanelInternal();
+            assertFalse(picker.isPanelOpen());
+            next.onUpdate();
+            assertTrue(next.isEnabled());
+            next.playClickSound(false);
+            assertEquals(Interactable.Result.SUCCESS, next.onMousePressed(0));
+            state.updateCacheFromSource(false);
+            snapshot = (NBTTagCompound) state.getValue();
+            assertEquals(2, snapshot.getInteger("page"));
+            assertEquals(6, snapshot.getTagList("nodes", 10).tagCount());
+        }
+
+        private static void sendSatelliteChoice(PanelSyncManager sync, String id) throws Exception {
+            PacketBuffer packet = new PacketBuffer(Unpooled.buffer());
+            try {
+                ByteBufUtils.writeUTF8String(packet, id);
+                sync.receiveWidgetUpdate("satelliteChoice", true, 0, packet);
+            } finally {
+                packet.release();
+            }
         }
 
         private static void parallelComputer() throws Exception {
@@ -993,11 +1111,13 @@ class ImpactProcessingGuiTest {
                 tile.xCoord = -1;
                 tile.yCoord = 65 - index / 16;
                 tile.zCoord = index % 16 + 1;
-                rack.mCapacityP = index % 3 == 0 ? 0 : index * 64;
+                NBTTagCompound rackTag = new NBTTagCompound();
+                rackTag.setInteger("mCapacityP", index % 3 == 0 ? 0 : index * 64);
+                rack.loadNBTData(rackTag);
                 tile.setActive(index % 3 == 2);
-                capacities[index] = rack.mCapacityP;
+                capacities[index] = rack.getCapacityPoints();
                 states[index] = index % 3;
-                total += rack.mCapacityP;
+                total += rack.getCapacityPoints();
                 machine.sComputerRack.add(rack);
             }
             machine.sComputerRack.add(new GTMTE_ComputerRack("detached", new String[0], new ITexture[0][][]));
@@ -1759,6 +1879,15 @@ class ImpactProcessingGuiTest {
                 new MouseData(Side.CLIENT, 0, shift, false, false).writeToPacket(packet);
                 container.getSyncManager().receiveWidgetUpdate(
                         handler.getSyncManager().getPanelName(), handler.getKey(), false, 1, packet);
+            } finally {
+                packet.release();
+            }
+        }
+
+        private void sendAction(String name) throws Exception {
+            PacketBuffer packet = new PacketBuffer(Unpooled.buffer(0));
+            try {
+                container.getSyncManager().receiveWidgetUpdate(panel.getName(), name, true, 0, packet);
             } finally {
                 packet.release();
             }

@@ -4,6 +4,7 @@ import com.impact.network.NetworkPackets.LaserPushPacket
 import com.impact.network.NetworkPackets.MetaBlockGlassPacket
 import com.impact.network.NetworkPackets.PlacedItemsPacket
 import com.impact.network.NetworkPackets.StreamPacket
+import com.impact.network.special.TowerConnectionsPacket
 import space.impact.packet_network.network.registerPacket
 
 object RegisterPackets {
@@ -13,6 +14,7 @@ object RegisterPackets {
         registerPacket(MetaBlockGlassPacket)
         registerPacket(StreamPacket)
         registerPacket(LaserPushPacket)
+        registerPacket(TowerConnectionsPacket.TYPE)
 //        registerPacket(RecipeToolPacket)
     }
 }

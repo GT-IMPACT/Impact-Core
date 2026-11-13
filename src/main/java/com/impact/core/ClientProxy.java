@@ -5,6 +5,7 @@ import com.impact.addon.nei.impactplugin.RecipeCatalystRegister;
 import com.impact.addon.nei.impactplugin.RecipeProcessorRegister;
 import com.impact.client.key.KeyBindings;
 import com.impact.client.render.MatrixTransducerRenderer;
+import com.impact.client.render.TowerConnectionRenderer;
 import com.impact.client.render.fx.*;
 import com.impact.client.render.models.Model_DryingRack;
 import com.impact.client.render.tesr.*;
@@ -71,6 +72,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TE_DryingRack.class, new TESR_DryingRack());
 
         register_event(new ClientEvent());
+        register_event(TowerConnectionRenderer.INSTANCE);
     }
 
     public void addClientSideChatMessages(String... messages) {

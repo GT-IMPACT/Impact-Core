@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
 import java.util.Arrays;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 
 public final class ParallelComputerGui {
 
@@ -89,6 +90,7 @@ public final class ParallelComputerGui {
         snapshot.setInteger("errors", tile.getErrorDisplayID());
         snapshot.setInteger("capacity", machine.getMaxCapacityPP());
         snapshot.setInteger("free", machine.getCurrentCapacityPP());
+        NetworkDiagnostics.write(snapshot, machine);
         long runningEUt = machine.getRunningEUt();
         long consumption = tile.isActive() && runningEUt < 0
                 ? ProcessingLogic.efficiencyAdjustedEUt(-runningEUt, machine.mEfficiency) : 0;
@@ -114,7 +116,7 @@ public final class ParallelComputerGui {
             }
             // Top row first, front to back; keep gaps instead of shifting later racks.
             int index = (local[1] + 1) * (MAX_RACKS / 2) + local[2] - 1;
-            capacity[index] = Math.max(0, rack.mCapacityP);
+            capacity[index] = Math.max(0, rack.getCapacityPoints());
             states[index] = capacity[index] == 0 ? 0 : rackTile.isActive() ? 2 : 1;
             count = Math.max(count, index + 1);
         }

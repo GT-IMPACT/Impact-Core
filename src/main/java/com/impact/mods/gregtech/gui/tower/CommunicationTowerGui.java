@@ -6,11 +6,12 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.impact.addon.gt.api.parallel_system.INetworkMachine;
+import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_CommunicationTower_Receiver;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -36,6 +37,7 @@ public final class CommunicationTowerGui {
     static final int PITCH_Y = 12;
     static final int WIDTH = 28;
     static final int HEIGHT = 11;
+    static final int PAGE_BUTTON_Y = 133;
 
     private CommunicationTowerGui() {
     }
@@ -54,6 +56,7 @@ public final class CommunicationTowerGui {
         sync.syncValue("communicationTowerState", readings);
         ModularPanel panel = new MTEProcessingMultiBlockGui(machine).build(data, sync, settings,
                 state -> new CommunicationTowerDisplay(machine, state, readings));
+        TowerSatellitePanel.addTo(machine, panel, sync);
         for (int index = 0; index < PAGE_SIZE; index++) {
             final int connection = index;
             panel.child(new Widget<>()
@@ -75,6 +78,9 @@ public final class CommunicationTowerGui {
                                     node.getInteger("z")
                             ));
                             tooltip.addLine(StatCollector.translateToLocal(stateKey(node.getBoolean("connected"))));
+                            if (!node.getBoolean("connected")) {
+                                tooltip.addLine(StatCollector.translateToLocal(node.getString(NetworkDiagnostics.STATUS_TAG)));
+                            }
                         }
                     })
                     .tooltipAutoUpdate(true));
@@ -115,26 +121,31 @@ public final class CommunicationTowerGui {
             int direction
     ) {
         String name = direction < 0 ? "tower_previous" : "tower_next";
-        InteractionSyncHandler click = new InteractionSyncHandler().setOnMousePressed(mouse -> {
-            if (!mouse.isClient() && mouse.mouseButton == 0 && canInteract(machine, sync)) {
+        sync.registerServerSyncedAction(name, packet -> {
+            if (canInteract(machine, sync) && showConnections(readings.getValue())) {
                 int lastPage = Math.max(0, readings.getValue().getInteger("pages") - 1);
                 page[0] = Math.max(0, Math.min(lastPage, page[0] + direction));
             }
         });
-        sync.syncValue(name, click);
         panel.child(new ButtonWidget<>()
                 .name("impact_" + name)
-                .syncHandler(click)
                 .background(GTGuiTextures.BUTTON_STANDARD)
                 .overlay(IKey.str(direction < 0 ? "<" : ">"))
-                .pos(direction < 0 ? 198 : 246, 133)
+                .pos(direction < 0 ? 198 : 246, PAGE_BUTTON_Y)
                 .size(12, 11)
                 .setEnabledIf(widget -> showConnections(readings.getValue())
                         && (direction < 0 ? readings.getValue().getInteger("page") > 0
-                        : readings.getValue().getInteger("page") + 1 < readings.getValue().getInteger("pages"))));
+                        : readings.getValue().getInteger("page") + 1 < readings.getValue().getInteger("pages")))
+                .onMousePressed(button -> {
+                    if (button != 0) {
+                        return false;
+                    }
+                    sync.callSyncedAction(name);
+                    return true;
+                }));
     }
 
-    private static boolean canInteract(GTMTE_TowerCommunication machine, PanelSyncManager sync) {
+    static boolean canInteract(GTMTE_TowerCommunication machine, PanelSyncManager sync) {
         EntityPlayer player = sync.getPlayer();
         IGregTechTileEntity tile = machine.getBaseMetaTileEntity();
         return player != null && player.openContainer == sync.getContainer()
@@ -151,6 +162,7 @@ public final class CommunicationTowerGui {
         snapshot.setBoolean("formed", machine.mMachine);
         snapshot.setInteger("errors", tile.getErrorDisplayID());
         snapshot.setBoolean("uplink", machine.isSatelliteConnected());
+        NetworkDiagnostics.write(snapshot, machine);
         ArrayList<INetworkMachine> connections = new ArrayList<>();
         int connected = 0;
         for (INetworkMachine node : machine.getConnections()) {
@@ -182,6 +194,9 @@ public final class CommunicationTowerGui {
             entry.setInteger("y", nodeTile.yCoord);
             entry.setInteger("z", nodeTile.zCoord);
             entry.setBoolean("connected", node.isSatelliteConnected());
+            if (node instanceof IHandledNetworkNode) {
+                NetworkDiagnostics.write(entry, (IHandledNetworkNode) node);
+            }
             nodes.appendTag(entry);
         }
         snapshot.setTag("nodes", nodes);

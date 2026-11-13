@@ -1,6 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.implement;
 
-import net.minecraft.util.StatCollector;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -11,9 +11,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.impact.addon.gt.api.multis.IMachineParallelRecipe;
 import com.impact.core.Config;
@@ -39,8 +37,8 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     public final HashSet<GTMTE_ParallelHatch_Input> sParallHatchesIn = new HashSet<>();
     public final HashSet<GTMTE_ParallelHatch_Output> sParallHatchesOut = new HashSet<>();
 
-    public boolean isConnectParallel = false;
-    public int mParallel = 0;
+    private boolean isConnectParallel = false;
+    protected int mParallel = 0;
 
     public GT_MetaTileEntity_MultiParallelBlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -161,10 +159,10 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
             if (!isValidMetaTileEntity(hatch)) {
                 continue;
             }
-            hatch.machineName = getLocalName();
-            isConnectParallel = hatch.isConnected || hatch.isDebug;
-            if (hatch.isDebug || isConnectParallel && isSatelliteConnected()) {
-                available = Math.max(1, hatch.getParallel());
+            hatch.setMachineName(getLocalName());
+            isConnectParallel = hatch.getConnectionStatus() || hatch.isDebugReceiver();
+            if (hatch.isDebugReceiver() || isConnectParallel && isSatelliteConnected()) {
+                available = Math.max(1, hatch.getAllocatedParallel());
             }
         }
         setParallel(available);
@@ -229,10 +227,9 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("hasShowConnect")) {
-            String str = tag.getBoolean("connectWithTower")
-                    ? EnumChatFormatting.GREEN + translateToLocal("impact.waila.connect.yes")
-                    : EnumChatFormatting.RED + translateToLocal("impact.waila.connect.no");
-            tooltip.add(str);
+            if (!NetworkDiagnostics.hasFailure(tag)) {
+                NetworkDiagnostics.appendConnection(tag, tooltip, tag.getBoolean("connectWithTower"));
+            }
 
             if (!(this instanceof GTMTE_ParallelComputer)) {
                 tooltip.add(translateToLocalFormatted("impact.waila.parallel.progress",

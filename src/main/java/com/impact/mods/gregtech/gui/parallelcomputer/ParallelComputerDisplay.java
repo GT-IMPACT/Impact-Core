@@ -15,6 +15,8 @@ import net.minecraft.util.StatCollector;
 
 import java.text.NumberFormat;
 import java.util.List;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
+import com.impact.addon.gt.api.parallel_system.NetworkStatus;
 
 final class ParallelComputerDisplay extends ProcessingMachineDisplay {
 
@@ -45,7 +47,10 @@ final class ParallelComputerDisplay extends ProcessingMachineDisplay {
         FontRenderer font = Minecraft.getMinecraft().fontRenderer;
         font.drawString(machine.getLocalName(), 10, 8, MUTED);
         List<String> status = statusLines();
-        if (!status.isEmpty()) {
+        String network = snapshot.getString(NetworkDiagnostics.STATUS_TAG);
+        if (!network.isEmpty() && !network.equals(NetworkStatus.CONNECTED.getTranslationKey())) {
+            font.drawString(StatCollector.translateToLocal(network), 10, 18, TEXT);
+        } else if (!status.isEmpty()) {
             font.drawString(status.get(status.size() - 1), 10, 18, TEXT);
         }
         int capacity = Math.max(0, snapshot.getInteger("capacity"));

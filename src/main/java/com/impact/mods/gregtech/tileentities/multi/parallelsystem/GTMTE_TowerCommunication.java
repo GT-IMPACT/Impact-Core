@@ -1,5 +1,6 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -8,18 +9,17 @@ import com.impact.mods.gregtech.gui.tower.CommunicationTowerGui;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.addon.gt.api.parallel_system.INetworkMachine;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeAccess;
+import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
+import com.impact.addon.gt.api.parallel_system.TowerNetworkHandler;
 import com.impact.addon.gt.api.parallel_system.INetworkTower;
 import com.impact.addon.gt.api.parallel_system.SatelliteNetworkLogic;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
 import com.impact.mods.gregtech.tileentities.multi.implement.GTMTE_Impact_BlockBase;
-import com.impact.network.GTNetworkHandler;
-import com.impact.network.NetworkPackets;
-import com.impact.network.special.LaserPushPacket;
+import com.impact.network.special.TowerConnectionsPacket;
 import com.impact.util.ImpactMultiblockTooltipBuilder;
-import com.impact.util.PositionObject;
 import cpw.mods.fml.common.Optional;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -35,9 +35,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -46,25 +46,23 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.NotNull;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
 import space.impact.structures.structure.StructureDefinition;
+import space.impact.packet_network.network.NetworkHandler;
 
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY;
 import static com.impact.mods.gregtech.enums.Texture.Icons.TOWER_OVERLAY_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static space.impact.structures.structure.StructureUtility.lazy;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
 public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_TowerCommunication>
-        implements INetworkTower {
+        implements INetworkTower, IHandledNetworkNode {
 
     private static final ICasing CASING = ImpactCasings.TOWER_CASING;
 
@@ -74,8 +72,12 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     private static IStructureDefinition<GTMTE_TowerCommunication> STRUCTURE_DEFINITION;
 
-    private final HashSet<INetworkMachine> connections = new HashSet<>();
     public final HashSet<GTMTE_CommunicationTower_Receiver> sCommunReceiver = new HashSet<>();
+    private final TowerNetworkHandler networkHandler = new TowerNetworkHandler(
+            this,
+            () -> mMachine && getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isActive(),
+            () -> sCommunReceiver
+    );
     private boolean isShowConnections = false;
 
     public GTMTE_TowerCommunication(int aID, String aNameRegional) {
@@ -113,11 +115,20 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     }
 
     @Override
-    public void onNotePadRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        isShowConnections = !isShowConnections;
+    public void onNotePadRightClick(
+            byte side,
+            EntityPlayer player,
+            float hitX,
+            float hitY,
+            float hitZ
+    ) {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile != null && tile.isServerSide()) {
+            isShowConnections = !isShowConnections;
+            sendConnectionOverlay(tile);
+        }
     }
 
-    private boolean isConnected;
 
 
     @Override
@@ -142,8 +153,15 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     @Override
     public void clearHatches() {
-        sCommunReceiver.clear();
+        detachReceivers();
         super.clearHatches();
+    }
+
+    private void detachReceivers() {
+        for (GTMTE_CommunicationTower_Receiver receiver : sCommunReceiver) {
+            receiver.connectToTower(null);
+        }
+        sCommunReceiver.clear();
     }
 
     @Override
@@ -153,7 +171,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                 .addMachineType("Communication Tower")
                 .addInfo("Connects nearby machines to the satellite network.")
                 .addInfo("Coverage: 17x17 chunks, centered on the tower's chunk.")
-                .addInfo("All 4 Communication Receivers must be connected and active.")
+                .addInfo("Select a satellite in the tower GUI to link all four Communication Receivers.")
                 .beginStructureBlock(7, 19, 7, false)
                 .addController("center of layer 2")
                 .addStructureSection("Components")
@@ -202,10 +220,10 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     public String[] getInfoData() {
 
         List<String> list = new ArrayList<>();
-        list.add("Connection: " + (isConnected ? "YES" : "NO"));
+        list.add("Connection: " + (isSatelliteConnected() ? "YES" : "NO"));
 
         int index = 0;
-        for (INetworkMachine receiver : connections) {
+        for (INetworkMachine receiver : getConnections()) {
             if (receiver instanceof IMetaTileEntity) {
                 index++;
                 IMetaTileEntity mte = (IMetaTileEntity) receiver;
@@ -236,141 +254,88 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("isConnected", isConnected);
+        aNBT.setBoolean("isConnected", isSatelliteConnected());
+        networkHandler.save(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isConnected = aNBT.getBoolean("isConnected");
+        networkHandler.load(aNBT);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
-        if (iAm.isServerSide()) {
-            if (isShowConnections && aTick % 20 == 5) {
-                for (INetworkMachine connection : connections) {
-                    if (connection instanceof IMetaTileEntity) {
-                        IMetaTileEntity mte = (IMetaTileEntity) connection;
-                        IGregTechTileEntity gte = mte.getBaseMetaTileEntity();
+        if (iAm.isServerSide() && isShowConnections && aTick % 20 == 5) {
+            sendConnectionOverlay(iAm);
+        }
+    }
 
-                        Dyes color = Dyes.dyeBlack;
+    private void sendConnectionOverlay(IGregTechTileEntity tower) {
+        World world = tower.getWorld();
+        if (world == null) {
+            return;
+        }
+        TowerConnectionsPacket packet = isShowConnections && isSatelliteConnected()
+                ? captureConnections(world) : TowerConnectionsPacket.empty();
+        NetworkHandler.sendToAllAround(
+                world,
+                packet,
+                tower.getXCoord(),
+                tower.getYCoord(),
+                tower.getZCoord(),
+                TowerConnectionsPacket.RANGE
+        );
+    }
 
-                        if (gte.isActive())
-                            color = Dyes.dyeWhite;
-
-                        short[] c = color.mRGBa;
-                        int colorHash = new Color(c[0], c[1], c[2]).hashCode();
-
-                        PositionObject start = connection instanceof GTMTE_ParallelComputer
-                                ? new PositionObject(iAm.getXCoord(), iAm.getYCoord() + 13, iAm.getZCoord())
-                                : new PositionObject(gte);
-                        PositionObject end = connection instanceof GTMTE_ParallelComputer ? new PositionObject(gte)
-                                : new PositionObject(iAm.getXCoord(), iAm.getYCoord() + 13, iAm.getZCoord());
-
-                        LaserPushPacket packet = NetworkPackets.LaserPushPacket.transaction(
-                                iAm.getWorld().provider.dimensionId,
-                                start.toVec3i(),
-                                end.toVec3i(),
-                                colorHash,
-                                1,
-                                20,
-                                3,
-                                1);
-                        GTNetworkHandler.sendToAllAround(iAm, packet, 512);
-                    }
-                }
+    private TowerConnectionsPacket captureConnections(World world) {
+        Set<INetworkMachine> connections = getConnections();
+        int capacity = Math.min(connections.size(), TowerConnectionsPacket.MAX_LINKS);
+        int[] links = new int[capacity * TowerConnectionsPacket.LINK_SIZE];
+        int count = 0;
+        for (INetworkMachine connection : connections) {
+            if (!(connection instanceof IMetaTileEntity) || !connection.isSatelliteConnected()
+                    || NetworkNodeAccess.worldOf(connection) != world || !NetworkNodeAccess.isLoaded(connection)) {
+                continue;
+            }
+            IGregTechTileEntity target = ((IMetaTileEntity) connection).getBaseMetaTileEntity();
+            int offset = count * TowerConnectionsPacket.LINK_SIZE;
+            links[offset] = target.getXCoord();
+            links[offset + 1] = target.getYCoord();
+            links[offset + 2] = target.getZCoord();
+            links[offset + 3] = target.isActive() ? 1 : 0;
+            if (++count == capacity) {
+                break;
             }
         }
+        return TowerConnectionsPacket.snapshot(links, count);
     }
 
     public void receiversUpdate() {
-        IGregTechTileEntity iAm = getBaseMetaTileEntity();
-        ArrayList<Boolean> checker = new ArrayList<>();
-        for (GTMTE_CommunicationTower_Receiver ph : sCommunReceiver) {
-            checker.add(ph.hasConnected() && ph.getBaseMetaTileEntity().isActive());
-        }
-        boolean isConnect = checker.stream().filter(b -> b).count() == 4 && iAm.isActive();
-        if (isConnect != isConnected) {
-            isConnected = isConnect;
-            updateStatusConnections();
-        }
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        createTower();
-        checkZoneAndNotify();
+        networkHandler.update();
     }
 
     @Override
     public void inValidate() {
-        for (GTMTE_CommunicationTower_Receiver receiver : sCommunReceiver) {
-            receiver.connectToTower(null);
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (isShowConnections && tile != null && tile.getWorld() != null && tile.isServerSide()) {
+            isShowConnections = false;
+            sendConnectionOverlay(tile);
         }
-        removeTower();
+        detachReceivers();
         super.inValidate();
-    }
-
-    private void checkZoneAndNotify() {
-        IGregTechTileEntity te = getBaseMetaTileEntity();
-
-        if (te != null) {
-            World w = te.getWorld();
-            Chunk ch = w.getChunkFromBlockCoords(te.getXCoord(), te.getZCoord());
-
-            int xChunk = ch.xPosition;
-            int zChunk = ch.zPosition;
-
-            connections.clear();
-
-            for (int x = -8; x <= 8; x++) {
-                for (int z = -8; z <= 8; z++) {
-                    ch = w.getChunkFromChunkCoords(xChunk + x, zChunk + z);
-                    for (Object value : ch.chunkTileEntityMap.values()) {
-                        TileEntity tile = (TileEntity) value;
-
-                        if (tile.isInvalid())
-                            continue;
-
-                        if (tile instanceof IGregTechTileEntity) {
-                            IGregTechTileEntity gte = (IGregTechTileEntity) tile;
-                            if (!gte.isDead() && gte.getMetaTileEntity() != null
-                                    && gte.getMetaTileEntity() instanceof INetworkMachine
-                                    && gte.getMetaTileEntity() != this) {
-                                INetworkMachine receiver = (INetworkMachine) gte.getMetaTileEntity();
-                                addConnection(receiver);
-                            }
-                        }
-
-                        if (tile instanceof INetworkMachine) {
-                            INetworkMachine receiver = (INetworkMachine) tile;
-                            addConnection(receiver);
-                        }
-                    }
-                }
-            }
-        }
-        updateStatusConnections();
-    }
-
-    private void addConnection(INetworkMachine receiver) {
-        if (receiver == this) {
-            return;
-        }
-        if (receiver.hasShowConnect()) {
-            connections.add(receiver);
-        } else {
-            receiver.setSatelliteConnected(false);
-        }
     }
 
     @NotNull
     @Override
-    public HashSet<INetworkMachine> getConnections() {
-        return connections;
+    public Set<INetworkMachine> getConnections() {
+        return networkHandler.getConnections();
+    }
+
+    @Override
+    public void replaceConnections(Set<? extends INetworkMachine> machines) {
+        networkHandler.replaceConnections(machines);
     }
 
     @Override
@@ -380,17 +345,17 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     @Override
     public boolean isSatelliteConnected() {
-        return isConnected;
+        return networkHandler.isConnected();
     }
 
     @Override
     public void setSatelliteConnected(boolean b) {
-        isConnected = b;
+        networkHandler.setConnected(b);
     }
 
     @Override
     public void onUpdateConnections() {
-        checkZoneAndNotify();
+        networkHandler.refreshCoverage();
     }
 
     @Override
@@ -400,9 +365,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
 
     @Override
     public void updateStatusConnections() {
-        for (INetworkMachine connection : connections) {
-            connection.setSatelliteConnected(isSatelliteConnected());
-        }
+        SatelliteNetworkLogic.INSTANCE.updateStatusConnections(this);
     }
 
     @Override
@@ -411,13 +374,18 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     }
 
     @Override
+    public TowerNetworkHandler getNetworkHandler() {
+        return networkHandler;
+    }
+
+    @Override
     public void createTower() {
-        SatelliteNetworkLogic.INSTANCE.createTower(this);
+        networkHandler.onLoad();
     }
 
     @Override
     public void removeTower() {
-        SatelliteNetworkLogic.INSTANCE.removeTower(this);
+        networkHandler.onUnload();
     }
 
     @Override
@@ -434,10 +402,9 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
             IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        String str = tag.getBoolean("towerCommunicationConnect")
-                ? EnumChatFormatting.GREEN + translateToLocal("impact.waila.connect.yes")
-                : EnumChatFormatting.RED + translateToLocal("impact.waila.connect.no");
-        tooltip.add(str);
+        if (!NetworkDiagnostics.hasFailure(tag)) {
+            NetworkDiagnostics.appendConnection(tag, tooltip, tag.getBoolean("towerCommunicationConnect"));
+        }
     }
 
     @Override

@@ -79,8 +79,8 @@ class ParallelHatchConnectionTest {
                 @Override
                 public IPosition getPosition() { return new PositionObject(x, 64, 1); }
             };
-            input.machineName = "machine_" + x;
-            input.address = "address_" + x;
+            input.setMachineName("machine_" + x);
+            input.setMachineAddress("address_" + x);
             return input;
         }
 
@@ -91,18 +91,18 @@ class ParallelHatchConnectionTest {
             output.onConnect(first);
             output.updateStatus(true);
             output.changeCurrentParallel(4);
-            assertTrue(first.isConnected);
+            assertTrue(first.getConnectionStatus());
             output.onConnect(second);
-            assertFalse(first.isConnected);
-            assertEquals(1, first.mCurrentParallelIn);
-            assertNull(first.pout);
-            assertSame(second, output.pin);
-            assertSame(output, second.pout);
-            assertTrue(second.isConnected);
-            assertEquals(second.address, output.address);
+            assertFalse(first.getConnectionStatus());
+            assertEquals(0, first.getAllocatedParallel());
+            assertNull(first.getTransmitter());
+            assertSame(second, output.getReceiver());
+            assertSame(output, second.getTransmitter());
+            assertTrue(second.getConnectionStatus());
+            assertEquals(second.getMachineAddress(), output.getMachineAddress());
             output.updateStatus(false);
-            assertFalse(first.isConnected);
-            assertFalse(second.isConnected);
+            assertFalse(first.getConnectionStatus());
+            assertFalse(second.getConnectionStatus());
         }
 
         public void switchingTransmitterReleasesOldTransmitter() {
@@ -113,15 +113,15 @@ class ParallelHatchConnectionTest {
             first.updateStatus(true);
             second.onConnect(input);
             second.updateStatus(true);
-            assertNull(first.pin);
-            assertNull(first.pinPos);
-            assertSame(second, input.pout);
+            assertNull(first.getReceiver());
+            assertNull(first.getReceiverPosition());
+            assertSame(second, input.getTransmitter());
             first.updateStatus(false);
-            assertTrue(input.isConnected);
+            assertTrue(input.getConnectionStatus());
             input.onDisconnect();
-            assertNull(second.pin);
-            assertNotNull(second.pinPos);
-            assertFalse(input.isConnected);
+            assertNull(second.getReceiver());
+            assertNotNull(second.getReceiverPosition());
+            assertFalse(input.getConnectionStatus());
         }
 
         public void disconnectedReceiverCannotDisableNewReceiver() {
@@ -132,11 +132,11 @@ class ParallelHatchConnectionTest {
             output.onConnect(second);
             output.updateStatus(true);
             // Also tolerate a stale back-reference from an old connection.
-            first.pout = output;
+            first.onConnect(output);
             first.onDisconnect();
-            assertSame(second, output.pin);
-            assertTrue(second.isConnected);
-            assertTrue(output.isConnected);
+            assertSame(second, output.getReceiver());
+            assertTrue(second.getConnectionStatus());
+            assertTrue(output.getConnectionStatus());
         }
 
         public void transmitterInvalidationClearsBothRuntimeLinks() {
@@ -145,12 +145,12 @@ class ParallelHatchConnectionTest {
             output.onConnect(input);
             output.updateStatus(true);
             output.onPostDisconnect();
-            assertNull(output.pin);
-            assertNull(input.pout);
-            assertFalse(input.isConnected);
-            assertFalse(output.isConnected);
+            assertNull(output.getReceiver());
+            assertNull(input.getTransmitter());
+            assertFalse(input.getConnectionStatus());
+            assertFalse(output.getConnectionStatus());
             // Keep the position for restoring the link after chunk reload.
-            assertNotNull(output.pinPos);
+            assertNotNull(output.getReceiverPosition());
         }
 
         public void savedReceiverStatusDoesNotCreatePhantomConnection() {
@@ -160,8 +160,8 @@ class ParallelHatchConnectionTest {
             saved.setInteger("mCurrentParallelIn", 4);
             input.loadNBTData(saved);
             assertFalse(input.getConnectionStatus());
-            assertEquals(1, input.mCurrentParallelIn);
-            assertNull(input.pout);
+            assertEquals(0, input.getAllocatedParallel());
+            assertNull(input.getTransmitter());
         }
 
         public void savedTransmitterRestoresReciprocalConnection() {
@@ -176,11 +176,19 @@ class ParallelHatchConnectionTest {
                         if (method.getName().equals("getMetaTileEntity")) return input;
                         throw new AssertionError("Unexpected target call: " + method.getName());
                     });
+            net.minecraft.world.World world = new gregtech.common.GT_DummyWorld() {
+                @Override
+                public boolean blockExists(int x, int y, int z) {
+                    return true;
+                }
+            };
             IGregTechTileEntity base = (IGregTechTileEntity) Proxy.newProxyInstance(
                     IGregTechTileEntity.class.getClassLoader(), new Class<?>[]{IGregTechTileEntity.class},
                     (proxy, method, args) -> {
                         switch (method.getName()) {
                             case "isServerSide": return true;
+                            case "getWorld":
+                                return world;
                             case "getIGregTechTileEntity": return target;
                             case "setMetaTileEntity":
                             case "markDirty":
@@ -189,13 +197,15 @@ class ParallelHatchConnectionTest {
                         }
                     });
             output.setBaseMetaTileEntity(base);
-            output.onFirstTick(base);
-            assertSame(input, output.pin);
-            assertSame(output, input.pout);
+            output.getNetworkHandler().onLoad();
+            assertSame(input, output.getReceiver());
+            assertSame(output, input.getTransmitter());
             output.updateStatus(true);
-            assertTrue(input.isConnected);
+            assertTrue(input.getConnectionStatus());
             output.loadNBTData(new NBTTagCompound());
-            assertNull(output.pinPos);
+            assertNull(output.getReceiverPosition());
+            assertNull(input.getTransmitter());
+            assertFalse(input.getConnectionStatus());
         }
     }
 }

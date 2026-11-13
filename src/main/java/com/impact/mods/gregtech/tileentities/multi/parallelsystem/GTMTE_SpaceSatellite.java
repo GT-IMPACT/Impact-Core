@@ -1,6 +1,8 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import gregtech.api.logic.ProcessingLogic;
+import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
+import com.impact.addon.gt.api.satellite.SatelliteControllerHandler;
 import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
@@ -29,9 +31,16 @@ import space.impact.structures.structure.StructureDefinition;
 
 import static space.impact.structures.structure.StructureUtility.withHint;
 
-public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSatellite> {
+public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSatellite>
+        implements IHandledNetworkNode {
 
     public final HashSet<GTMTE_SpaceSatellite_Transmitter> sCommunTransmitter = new HashSet<>();
+    private final SatelliteControllerHandler networkHandler = new SatelliteControllerHandler(
+            this,
+            () -> mMachine,
+            () -> mMachine && getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isActive(),
+            () -> sCommunTransmitter
+    );
 
     private static final ICasing CASING = ImpactCasings.SPACE_SATELLITE_CASING;
 
@@ -109,7 +118,7 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
                 .addStructureSection("Components")
                 .addStructurePartInfo(CASING, "%s+; fill unused casing positions", SHELL.getMinimumCasings())
                 .addStructureSection("Hatches and buses")
-                .addHatchInfo("Communication Transmitters", "optional; casing positions")
+                .addHatchInfo("Communication Transmitter", "at least one for the satellite network; casing positions")
                 .addStructureHint("Casings or Communication Transmitters", HintColor.GREEN)
                 .addHatchChannelInfo()
                 .toolTipFinisher();
@@ -121,25 +130,30 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity iAm, long aTick) {
-        super.onPostTick(iAm, aTick);
-        if (iAm.isServerSide()) {
-            if (aTick % 100 == 0) {
-                for (GTMTE_SpaceSatellite_Transmitter th : sCommunTransmitter) {
-                    th.updateConnectionStatus(iAm.isActive());
-                }
-            }
-        }
+    public SatelliteControllerHandler getNetworkHandler() {
+        return networkHandler;
     }
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
         casingCount = 0;
-        return Utilits.isLowGravity(thisController) && checkPiece(2, 2, 1) && SHELL.isSatisfied(this, casingCount);
+        boolean formed = Utilits.isLowGravity(thisController) && checkPiece(2, 2, 1)
+                && SHELL.isSatisfied(this, casingCount);
+        if (formed) {
+            networkHandler.register();
+        }
+        return formed;
+    }
+
+    @Override
+    public void onRemoval() {
+        networkHandler.remove();
+        super.onRemoval();
     }
 
     @Override
     public void clearHatches() {
+        networkHandler.deactivate();
         super.clearHatches();
         sCommunTransmitter.clear();
     }

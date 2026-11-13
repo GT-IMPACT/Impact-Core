@@ -26,14 +26,22 @@ public class GTMTE_ParallelHatch_Debug extends GTMTE_ParallelHatch_Input {
 	
 	public GTMTE_ParallelHatch_Debug(int aID, String aName, String aNameRegional, int aTier, int aMaxParallel) {
 		super(aID, aName, aNameRegional, aTier, 256);
-		isDebug = true;
 	}
 	
 	public GTMTE_ParallelHatch_Debug(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aMaxParallel) {
 		super(aName, aTier, aDescription, aTextures, 256);
-		isDebug = true;
 	}
 	
+    @Override
+    public boolean isDebugReceiver() {
+        return true;
+    }
+
+    @Override
+    public int getParallel() {
+        return 1 << (2 * debugParallel);
+    }
+
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture, TextureFactory.of(PRL_HATCH_YELLOW, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),};
@@ -61,8 +69,7 @@ public class GTMTE_ParallelHatch_Debug extends GTMTE_ParallelHatch_Input {
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-		isDebug = true;
-		return new GTMTE_ParallelHatch_Debug(mName, mTier, mDescriptionArray, mTextures, mMaxParallel);
+		return new GTMTE_ParallelHatch_Debug(mName, mTier, mDescriptionArray, mTextures, getParallel());
 	}
 	
 	@Override
@@ -130,7 +137,6 @@ public class GTMTE_ParallelHatch_Debug extends GTMTE_ParallelHatch_Input {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide()) {
 //			setTrueRecipe(true);
-			mMaxParallel = (int) Math.pow(4, debugParallel);
 			aBaseMetaTileEntity.setActive(true);
 		}
 	}

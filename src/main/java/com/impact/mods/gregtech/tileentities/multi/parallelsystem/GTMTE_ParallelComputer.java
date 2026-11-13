@@ -4,12 +4,16 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.impact.mods.gregtech.gui.parallelcomputer.ParallelComputerGui;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.TimedProcessingLogic;
+import com.impact.addon.gt.api.parallel_system.INetworkNodeHandler;
+import com.impact.addon.gt.api.parallel_system.IParallelComputer;
+import com.impact.addon.gt.api.parallel_system.IParallelTransmitter;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeAccess;
+import com.impact.addon.gt.api.parallel_system.NetworkStatus;
+import com.impact.addon.gt.api.parallel_system.ParallelComputerHandler;
 import com.impact.mods.gregtech.blocks.HatchCounts;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
+import com.impact.mods.gregtech.gui.parallelcomputer.ParallelComputerGui;
 import com.impact.mods.gregtech.tileentities.multi.implement.GT_MetaTileEntity_MultiParallelBlockBase;
 import com.impact.util.ImpactMultiblockTooltipBuilder;
 import gregtech.api.enums.HatchElement;
@@ -19,13 +23,19 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.TimedProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTStructureChannels;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -44,15 +54,16 @@ import static space.impact.structures.structure.StructureUtility.ofBlock;
 import static space.impact.structures.structure.StructureUtility.onElementPass;
 import static space.impact.structures.structure.StructureUtility.withHint;
 
-public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ParallelComputer> {
+public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlockBase<GTMTE_ParallelComputer>
+        implements IParallelComputer {
 
     private static final ICasing CASING = ImpactCasings.COMPUTER_CASING;
     private static final int MIN_RACK_LAYERS = 2;
     private static final int MAX_RACK_LAYERS = 16;
 
-    public int mMaxCapacityPP = 0;
-    public int mCurrentCapacityPP = 0;
     private int casingCount;
+    private long structureRevision;
+    private final ParallelComputerHandler parallelHandler = new ParallelComputerHandler(this);
 
     private static final StructureRequirements SHELL = StructureRequirements.builder(CASING, 12)
             .atLeast(HatchElement.Maintenance, ImpactHatchElement.PowerInput).build();
@@ -60,6 +71,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     private static IStructureDefinition<GTMTE_ParallelComputer> definition;
 
     public final HashSet<GTMTE_ComputerRack> sComputerRack = new HashSet<>();
+    private final Set<GTMTE_ComputerRack> rackView = Collections.unmodifiableSet(sComputerRack);
+    private final Set<GTMTE_ParallelHatch_Output> transmitterView = Collections.unmodifiableSet(sParallHatchesOut);
 
     private int constructionLayers(ItemStack trigger) {
         return Math.max(MIN_RACK_LAYERS, Math.min(MAX_RACK_LAYERS,
@@ -228,61 +241,96 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public void onPostTick(IGregTechTileEntity te, long aTick) {
-        super.onPostTick(te, aTick);
-        if (te.isServerSide() && aTick % 100 == 0) {
-            updateStatusParallelHatches(te);
+        if (te.isServerSide()) {
+            parallelHandler.updateCapacity();
         }
+        super.onPostTick(te, aTick);
     }
 
-    private void updateStatusParallelHatches(IGregTechTileEntity te) {
-        int maxCurrentParallel = 0;
+    public ParallelComputerHandler getParallelHandler() {
+        return parallelHandler;
+    }
 
-        boolean isActiveRack = false;
-        for (GTMTE_ComputerRack rack : sComputerRack) {
-            if (te.isActive()) {
-                maxCurrentParallel += rack.mCapacityP;
-                isActiveRack = true;
-            }
-            rack.getBaseMetaTileEntity().setActive(isActiveRack);
+    @Override
+    public Collection<? extends INetworkNodeHandler> getNetworkHandlers() {
+        return Arrays.asList(getNetworkHandler(), parallelHandler);
+    }
+
+    @Override
+    public Collection<GTMTE_ComputerRack> getParallelRacks() {
+        return rackView;
+    }
+
+    @Override
+    public Collection<GTMTE_ParallelHatch_Output> getParallelTransmitters() {
+        return transmitterView;
+    }
+
+    @Override
+    public int getTransmitterOrder(IParallelTransmitter transmitter) {
+        IGregTechTileEntity tile = ((GTMTE_ParallelHatch_Output) transmitter).getBaseMetaTileEntity();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (tile == null || base == null) {
+            return Integer.MAX_VALUE;
         }
+        int[] local = new int[3];
+        getExtendedFacing().getOffsetABC(new int[] {
+                tile.getXCoord() - base.getXCoord(), tile.getYCoord() - base.getYCoord(),
+                tile.getZCoord() - base.getZCoord()
+        }, local);
+        return local[2] * 2 - local[1];
+    }
 
-        setMaxCapacityPP(maxCurrentParallel);
+    @Override
+    public long getStructureRevision() {
+        return structureRevision;
+    }
 
-        for (GTMTE_ParallelHatch_Output ph : sParallHatchesOut) {
+    @Override
+    public void onFacingChange() {
+        super.onFacingChange();
+        structureRevision++;
+    }
 
-            int currentParallel = ph.getParallel();
-            boolean checkSum = mCurrentCapacityPP - currentParallel >= 0;
-            boolean parallelIsDone = false;
+    @Override
+    public NetworkStatus getParallelSupplyStatus() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (!NetworkNodeAccess.isLoaded(this)) {
+            return NetworkStatus.UNLOADED;
+        }
+        if (!mMachine || !tile.isActive()) {
+            return NetworkStatus.MACHINE_OFFLINE;
+        }
+        return isSatelliteConnected() ? NetworkStatus.CONNECTED : getNetworkHandler().getStatus();
+    }
 
-            if (checkSum && ph.getBaseMetaTileEntity().isAllowedToWork()) {
-                mCurrentCapacityPP -= currentParallel;
-                parallelIsDone = isSatelliteConnected && te.isActive();
-            }
-            ph.updateStatus(parallelIsDone);
+    @Override
+    public void setSatelliteConnected(boolean connected) {
+        super.setSatelliteConnected(connected);
+        if (!connected) {
+            parallelHandler.deactivate();
         }
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new TimedProcessingLogic(() -> 8192L + mMaxCapacityPP, () -> 10);
+        return new TimedProcessingLogic(() -> 8192L + getMaxCapacityPP(), () -> 10);
     }
 
     public int getCurrentCapacityPP() {
-        return mCurrentCapacityPP;
+        return parallelHandler.getFreeCapacity();
     }
 
     public void setCurrentCapacityPP(int curCaPP) {
-        mCurrentCapacityPP = curCaPP;
+        parallelHandler.setFreeCapacity(curCaPP);
     }
 
     public int getMaxCapacityPP() {
-        return mMaxCapacityPP;
+        return parallelHandler.getCapacity();
     }
 
     public void setMaxCapacityPP(int setMax) {
-        setCurrentCapacityPP(setMax);
-        mMaxCapacityPP = setMax;
-        mParallel = setMax;
+        parallelHandler.setCapacity(setMax);
     }
 
     public boolean addRackHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -294,7 +342,11 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 return false;
             } else if (aMetaTileEntity instanceof GTMTE_ComputerRack) {
                 ((GTMTE_ComputerRack) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return sComputerRack.add((GTMTE_ComputerRack) aMetaTileEntity);
+                boolean added = sComputerRack.add((GTMTE_ComputerRack) aMetaTileEntity);
+                if (added) {
+                    structureRevision++;
+                }
+                return added;
             } else {
                 return false;
             }
@@ -310,7 +362,11 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
                 return false;
             } else if (aMetaTileEntity instanceof GTMTE_ParallelHatch_Output) {
                 ((GTMTE_ParallelHatch_Output) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return sParallHatchesOut.add((GTMTE_ParallelHatch_Output) aMetaTileEntity);
+                boolean added = sParallHatchesOut.add((GTMTE_ParallelHatch_Output) aMetaTileEntity);
+                if (added) {
+                    structureRevision++;
+                }
+                return added;
             } else {
                 return false;
             }
@@ -319,6 +375,8 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
 
     @Override
     public void clearHatches() {
+        structureRevision++;
+        parallelHandler.deactivate();
         sComputerRack.clear();
         sParallHatchesOut.clear();
         super.clearHatches();
@@ -375,23 +433,14 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mMaxCapacityPP", mMaxCapacityPP);
-        aNBT.setInteger("mCurrentCapacityPP", mCurrentCapacityPP);
+        aNBT.setInteger("mMaxCapacityPP", getMaxCapacityPP());
+        aNBT.setInteger("mCurrentCapacityPP", getCurrentCapacityPP());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mMaxCapacityPP = aNBT.getInteger("mMaxCapacityPP");
-        mCurrentCapacityPP = aNBT.getInteger("mCurrentCapacityPP");
-    }
-
-    @Override
-    public int getCurrentParallel() {
-        if (getMaxCapacityPP() < 4) {
-            return -1;
-        }
-        return getMaxCapacityPP();
+        parallelHandler.setCapacity(0);
     }
 
     @Override
@@ -413,7 +462,7 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     public String[] getProcessingInfo() {
         return new String[] {
                 StatCollector.translateToLocalFormatted("impact.processing.parallel_capacity",
-                        mCurrentCapacityPP, mMaxCapacityPP)
+                        getCurrentCapacityPP(), getMaxCapacityPP())
         };
     }
 
