@@ -578,6 +578,10 @@ impact.structure.hatch.computer_rack=Стойка параллельного к�
 
 impact.structure.hatch.parallel_output=Передатчик параллельных вычислений
 
+impact.hatch.primitive_output.description=Вывод жидкостей из коксовой печи
+impact.hatch.pump_output.description=Вывод жидкости из водяной помпы
+gt.blockmachines.impact.hatch.laser.multi.dynamo.a536870912.13.name=Лазерный динамо-люк UXV (537M A)
+
 impact.processing.rods_up=Поднять все стержни на 10%
 impact.processing.rods_down=Опустить все стержни на 10%
 impact.processing.hold_temperature=Удерживать температуру

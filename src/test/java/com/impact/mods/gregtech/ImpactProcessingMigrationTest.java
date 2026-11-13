@@ -3,6 +3,7 @@ package com.impact.mods.gregtech;
 import com.impact.addon.gt.api.recipe.ContinuousFluidOutputs;
 import com.impact.addon.gt.api.recipe.StagedFluidOutputs;
 import com.impact.core.Config;
+import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
@@ -14,6 +15,7 @@ import com.impact.mods.gregtech.tileentities.multi.matrixsystem.GTMTEMESystemPro
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_TowerCommunication;
+import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_CokeOven;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_Pyrolyse;
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_SawMill;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
@@ -30,6 +32,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.IProcessingOutputSink;
 import gregtech.api.logic.ProcessingInputs;
 import gregtech.api.logic.ProcessingLogic;
@@ -306,6 +309,11 @@ class ImpactProcessingMigrationTest {
     }
 
     @Test
+    void cokeOvenPausesAndResumesItsCurrentRecipe() throws Throwable {
+        run("cokeOvenPause");
+    }
+
+    @Test
     void everyTierAndEnergyHatchUsesTheCurrentGregTechOverclockCalculator() throws Throwable {
         run("gregTechOverclockMatrix");
     }
@@ -359,6 +367,52 @@ class ImpactProcessingMigrationTest {
                 map.clear();
             }
             Config.MAX_TICK_RATE = 2;
+        }
+
+        public static void cokeOvenPause() {
+            GTMTE_CokeOven oven = new GTMTE_CokeOven("coke-oven");
+            attach(oven);
+            oven.mMachine = true;
+            oven.mStartUpCheck = -1;
+            GT_MetaTileEntity_Primitive_OutputBus output = new GT_MetaTileEntity_Primitive_OutputBus(
+                    "coke-output", 0, "", new ITexture[0][][]);
+            attach(output);
+            oven.mOutputBusses1.add(output);
+            oven.getRecipeMap().addRecipe(false, new ItemStack[] { new ItemStack(Items.coal) },
+                    new ItemStack[] { new ItemStack(Items.gold_ingot) }, null, null, null, null, 20, 0, 0);
+            oven.mInventory[1] = new ItemStack(Items.coal, 2);
+            IGregTechTileEntity tile = oven.getBaseMetaTileEntity();
+            tile.enableWorking();
+            oven.onPostTick(tile, 100);
+            oven.onPostTick(tile, 101);
+            int duration = oven.mMaxProgresstime;
+            assertTrue(duration > 1);
+            assertTrue(tile.isActive());
+            assertEquals(1, oven.mProgresstime);
+            assertEquals(1, oven.mInventory[1].stackSize);
+
+            tile.disableWorking();
+            for (int tick = 0; tick < duration; tick++) {
+                oven.onPostTick(tile, 102L + tick);
+            }
+            NBTTagCompound status = new NBTTagCompound();
+            oven.getWailaNBTData(null, null, status, null, 0, 0, 0);
+            assertFalse(status.getBoolean("isAllowedToWork"));
+            assertFalse(status.getBoolean("isActive"));
+            assertEquals(1, status.getInteger("progress"));
+            assertEquals(duration, status.getInteger("maxProgress"));
+            assertNull(output.mInventory[0]);
+
+            tile.enableWorking();
+            oven.onPostTick(tile, 102L + duration);
+            assertTrue(tile.isActive());
+            assertEquals(2, oven.mProgresstime);
+            assertEquals(1, oven.mInventory[1].stackSize);
+            for (int tick = 2; tick < duration; tick++) {
+                oven.onPostTick(tile, 101L + duration + tick);
+            }
+            assertSame(Items.gold_ingot, output.mInventory[0].getItem());
+            assertEquals(1, output.mInventory[0].stackSize);
         }
 
         public static void coalIntermediateOutput() throws Exception {

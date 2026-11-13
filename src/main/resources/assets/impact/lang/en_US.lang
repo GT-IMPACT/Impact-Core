@@ -591,6 +591,9 @@ impact.structure.hatch.computer_rack=Parallel Computer Rack
 
 impact.structure.hatch.parallel_output=Parallel Transmitter
 
+impact.hatch.primitive_output.description=Fluid output for the Coke Oven
+impact.hatch.pump_output.description=Fluid output for the Water Pump
+
 impact.processing.rods_up=Raise all rods by 10%
 impact.processing.rods_down=Lower all rods by 10%
 impact.processing.hold_temperature=Toggle temperature hold

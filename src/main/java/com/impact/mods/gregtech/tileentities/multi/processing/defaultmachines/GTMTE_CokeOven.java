@@ -142,14 +142,25 @@ public class GTMTE_CokeOven extends GTMTE_PrimitiveBlockBase<GTMTE_CokeOven> {
         return true;
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity tile, long tick) {
+        super.onPostTick(tile, tick);
+        if (tile.isServerSide() && !tile.isAllowedToWork()) {
+            tile.setActive(false);
+        }
+    }
+
     @SuppressWarnings({ "deprecation" })
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mMaxProgresstime > 0 && (getBaseMetaTileEntity().getTimer() % 20L == 0L)) {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (!tile.isAllowedToWork()) {
+            return false;
+        }
+        if (mMaxProgresstime > 0 && tile.getTimer() % 20L == 0L) {
             GT_Pollution.addPollution(
-                    this.getBaseMetaTileEntity().getWorld(),
-                    new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(),
-                            this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()),
+                    tile.getWorld(),
+                    new ChunkPosition(tile.getXCoord(), tile.getYCoord(), tile.getZCoord()),
                     25);
         }
         return super.onRunningTick(aStack);

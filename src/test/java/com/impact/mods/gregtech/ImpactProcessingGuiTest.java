@@ -1701,7 +1701,11 @@ class ImpactProcessingGuiTest {
             assertEquals("0, 64, 0", machine.getName());
             AeroStateNetworkManager.onClear();
             Fixture elevator = new Fixture(new GTMTE_SpaceElevator("elevator"));
-            assertNotNull(elevator.find("impact_travel"));
+            elevator.checkLayout();
+            Area power = elevator.find("processing_control_" + POWER_SLOT).getArea();
+            Area travel = elevator.find("impact_travel").getArea();
+            assertEquals(power.x, travel.x);
+            assertEquals(power.y + power.height, travel.y);
         }
     }
 

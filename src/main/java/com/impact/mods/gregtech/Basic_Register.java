@@ -334,7 +334,9 @@ public class Basic_Register {
 		DynamoTunnel6_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 262144 A/t Laser Source (Output) Hatch", 13, 262144).getStackForm(1L));
 		DynamoTunnel7_UXV.set(new GTMTE_LaserEnergy_Out(ID2++,  "UXV 1048576 A/t Laser Source (Output) Hatch", 13, 1048576).getStackForm(1L));
 		
-		DynamoTunnel9001 .set(new GTMTE_LaserEnergy_Out(ID2++,  "Legendary Laser Source (Output) Hatch", 13, (int) V[13]).getStackForm(1L));
+        DynamoTunnel9001.set(new GTMTE_LaserEnergy_Out(
+                ID2++, "UXV Laser Dynamo Hatch (537M A)", 13, (int) V[13]
+        ).getStackForm(1L));
 		
 		Mining_Hatch_ULV.set(new GTMTE_OreHatch(ID2++, "Miner Drill Hatch", 0).getStackForm(1));
 		Mining_Enrich_HV.set(new GTMTE_EnrichmentUnit(ID2++, "Miner Enrichment Unit", 3).getStackForm(1));

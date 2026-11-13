@@ -13,6 +13,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -28,15 +29,28 @@ public class GT_MetaTileEntity_Primitive_Hatch_Output extends GT_MetaTileEntity_
   private int mTypeHatch = 0;
 
 
-  public GT_MetaTileEntity_Primitive_Hatch_Output(int aID, String aName, String aNameRegional, int aTier, int aType) {
-    super(aID, aName, aNameRegional, aTier, 3, new String[]{
-            String.format(Language.transDesc("basic.hatch.primitive.fluid.out.0", "Primitive Fluid Output %s for "), aType == 0
-                    ? Language.translate("multi.name.coke_oven","Coke Oven")
-                    : Language.translate("multi.name.water_pump","Water Pump")),
-            String.format(Language.transDesc("basic.hatch.primitive.fluid.out.1", "Capacity: %s L"), 1000)
-    });
-    this.mTypeHatch = aType;
-  }
+    public GT_MetaTileEntity_Primitive_Hatch_Output(
+            int aID,
+            String aName,
+            String aNameRegional,
+            int aTier,
+            int aType
+    ) {
+        super(aID, aName, aNameRegional, aTier, 3, new String[] {
+                aType == 0 ? "impact.hatch.primitive_output.description" : "impact.hatch.pump_output.description",
+                String.format(Language.transDesc("basic.hatch.primitive.fluid.out.1", "Capacity: %s L"), 1000)
+        });
+        this.mTypeHatch = aType;
+    }
+
+    @Override
+    public String[] getDescription() {
+        String[] description = super.getDescription().clone();
+        if (description.length > 0 && description[0] != null) {
+            description[0] = StatCollector.translateToLocal(description[0]);
+        }
+        return description;
+    }
 
   public GT_MetaTileEntity_Primitive_Hatch_Output(String aName, int aTier, String aDescription,
       ITexture[][][] aTextures, int aType) {

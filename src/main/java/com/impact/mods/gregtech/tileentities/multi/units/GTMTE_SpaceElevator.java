@@ -335,7 +335,7 @@ public class GTMTE_SpaceElevator extends GTMTE_Impact_TargetBase<GTMTE_SpaceElev
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager sync, UISettings settings) {
         ModularPanel panel = super.buildUI(data, sync, settings);
-        new ImpactProcessingGui(this, panel, sync).addAction("travel", -1, 1,
+        new ImpactProcessingGui(this, panel, sync).addAction("travel", 0, 1,
                 GTGuiTextures.OVERLAY_BUTTON_SIDE_SELECTION_UP, "impact.processing.travel",
                 (player, shift) -> teleportEntity(player));
         return panel;
