@@ -728,6 +728,22 @@ public class ImpactConstructionChecks {
                 assertEquals(1, computer.mEnergyHatches.size());
                 assertEquals(4, computer.sComputerRack.size());
                 assertEquals(4, computer.sParallHatchesOut.size());
+                PreviewElementRecorder recorder = new PreviewElementRecorder(world);
+                MinecraftForge.EVENT_BUS.register(recorder);
+                try {
+                    ImpactStructures.enableInstrument(recorder);
+                    try {
+                        assertTrue(computer.recheck(), "Instrumented computer check");
+                    } finally {
+                        ImpactStructures.disableInstrument();
+                    }
+                } finally {
+                    MinecraftForge.EVENT_BUS.unregister(recorder);
+                }
+                Set<String> expectedPositions = new HashSet<>(world.blocks.keySet());
+                expectedPositions.remove(TestWorld.key(0, 64, 0));
+                assertEquals(expectedPositions, recorder.elements.keySet(),
+                        "Structure check must visit the shell, racks, transmitters and terminators");
                 int consumed = source.consumed;
                 computer.survivalConstruct(trigger, 8, environment);
                 assertEquals(consumed, source.consumed, "Finished computer must keep its hatches");

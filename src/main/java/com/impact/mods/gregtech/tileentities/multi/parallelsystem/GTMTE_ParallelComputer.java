@@ -425,9 +425,11 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
         int x = base.getXCoord() + offset[0];
         int y = base.getYCoord() + offset[1];
         int z = base.getZCoord() + offset[2];
-        // These single-block probes try different elements at one position, not construction alternatives.
+
+        // Construction rechecks the machine, so failed probes must not claim preview positions.
         return world.blockExists(x, y, z)
-                && getStructureDefinition().getStructureFor(piece)[0].check(this, world, x, y, z);
+                && getStructureDefinition().getStructureFor(piece)[0].couldBeValid(this, world, x, y, z, null)
+                && checkPiece(piece, -column, row, -depth);
     }
 
     @Override

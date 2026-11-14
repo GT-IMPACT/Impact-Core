@@ -11,6 +11,7 @@ public class ImpactCoreQaRegressionTest {
         try (LaunchClassLoader loader = new LaunchClassLoader(
                 ((URLClassLoader) getClass().getClassLoader()).getURLs())) {
             loader.addClassLoaderExclusion("org.junit.");
+            loader.registerTransformer("cpw.mods.fml.common.asm.transformers.EventSubscriptionTransformer");
             try {
                 loader.loadClass("com.impact.mods.gregtech.ImpactCoreQaRegressionChecks").getMethod("check")
                         .invoke(null);
