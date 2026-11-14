@@ -28,9 +28,8 @@ Maven использует `IMPACT_MAVEN_USER` и `IMPACT_MAVEN_PASSWORD`.
 
 Блок хранит обработчик в поле и реализует `IHandledNetworkNode.getNetworkHandler()`.
 Если обработчиков несколько, `getNetworkHandlers()` возвращает их коллекцию.
-`GTMTE_Impact_BlockBase` автоматически регистрирует их на первом серверном тике
-и удаляет при `inValidate()`. Для люков эти два вызова выполняются через
-`NetworkNodeLifecycle.load(this)` / `unload(this)`. Общий `NetworkNodeEvents`
+Сетевые контроллеры и люки вызывают `NetworkNodeLifecycle.load(this)` на первом
+серверном тике и `NetworkNodeLifecycle.unload(this)` при `inValidate()`. Общий `NetworkNodeEvents`
 обрабатывает загрузку и выгрузку чанков и миров.
 Реестры очищаются в `ServerAboutToStart`, до загрузки чанков. `ServerStarted`
 добавляет уже загруженные узлы, сохраняя регистрации, созданные событиями чанков.

@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -311,6 +312,14 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (base.isServerSide()) {
+            NetworkNodeLifecycle.load(this);
+        }
+    }
+
+    @Override
     public void inValidate() {
         IGregTechTileEntity tile = getBaseMetaTileEntity();
         if (connectionOverlayEnabled && tile != null && tile.getWorld() != null && tile.isServerSide()) {
@@ -318,6 +327,9 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
             sendConnectionOverlay(tile);
         }
         detachReceivers();
+        if (tile != null && tile.isServerSide()) {
+            NetworkNodeLifecycle.unload(this);
+        }
         super.inValidate();
     }
 
@@ -396,9 +408,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
             IWailaConfigHandler config) {
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-        if (!NetworkDiagnostics.hasFailure(tag)) {
-            NetworkDiagnostics.appendConnection(tag, tooltip, tag.getBoolean("towerCommunicationConnect"));
-        }
+        NetworkDiagnostics.appendConnection(tag, tooltip, tag.getBoolean("towerCommunicationConnect"));
     }
 
     @Override
@@ -406,6 +416,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
             World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        NetworkDiagnostics.write(tag, this);
         tag.setBoolean("towerCommunicationConnect", isSatelliteConnected());
     }
 

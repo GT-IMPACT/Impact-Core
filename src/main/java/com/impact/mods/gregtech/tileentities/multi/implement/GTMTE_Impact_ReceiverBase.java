@@ -3,10 +3,19 @@ package com.impact.mods.gregtech.tileentities.multi.implement;
 import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
 import com.impact.addon.gt.api.parallel_system.INetworkMachine;
 import com.impact.addon.gt.api.parallel_system.MachineNetworkHandler;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_ReceiverBase<MULTIS>>
         extends GTMTE_Impact_BlockBase<MULTIS> implements INetworkMachine, IHandledNetworkNode {
@@ -84,12 +93,57 @@ public abstract class GTMTE_Impact_ReceiverBase<MULTIS extends GTMTE_Impact_Rece
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (base.isServerSide()) {
+            NetworkNodeLifecycle.load(this);
+        }
+    }
+
+    @Override
+    public void inValidate() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && base.isServerSide()) {
+            NetworkNodeLifecycle.unload(this);
+        }
+        super.inValidate();
+    }
+
+    @Override
     public void createConnect() {
-        com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle.load(this);
+        NetworkNodeLifecycle.load(this);
     }
 
     @Override
     public void removeConnect() {
-        com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle.unload(this);
+        NetworkNodeLifecycle.unload(this);
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NetworkDiagnostics.append(accessor.getNBTData(), tooltip);
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(
+            EntityPlayerMP player,
+            TileEntity tile,
+            NBTTagCompound tag,
+            World world,
+            int x,
+            int y,
+            int z
+    ) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (showsNetworkStatusInWaila()) {
+            NetworkDiagnostics.write(tag, this);
+        }
+    }
+
+    protected boolean showsNetworkStatusInWaila() {
+        return hasShowConnect();
     }
 }

@@ -293,6 +293,16 @@ public class GTMTE_ParallelComputer extends GT_MetaTileEntity_MultiParallelBlock
     }
 
     @Override
+    protected boolean showsNetworkStatusInWaila() {
+        return hasShowConnect();
+    }
+
+    @Override
+    protected boolean showsParallelProgressInWaila() {
+        return false;
+    }
+
+    @Override
     public NetworkStatus getParallelSupplyStatus() {
         IGregTechTileEntity tile = getBaseMetaTileEntity();
         if (!NetworkNodeAccess.isLoaded(this)) {

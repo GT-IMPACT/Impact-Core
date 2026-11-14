@@ -4,6 +4,7 @@ import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 import com.impact.addon.gt.api.parallel_system.NetworkStatus;
 import com.impact.common.te.TE_DryingRack;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
+import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_AdvancedPyrolyse;
 import com.impact.mods.gregtech.tileentities.multi.processing.parallel.GTMTE_Mixer;
@@ -14,6 +15,7 @@ import com.impact.mods.gregtech.gui.lap.LapFlowHistory;
 import com.impact.util.fluid.MultiFluidHandler;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GTWaila;
 import java.io.File;
@@ -125,11 +127,34 @@ class WailaIntegrationTest {
 
             NBTTagCompound networkTag = new NBTTagCompound();
             networkedMachine.getWailaNBTData(null, null, networkTag, null, 0, 0, 0);
-            assertEquals(coverageKey, networkTag.getString(NetworkDiagnostics.STATUS_TAG));
+            assertFalse(networkTag.hasKey(NetworkDiagnostics.STATUS_TAG));
             networkTag.removeTag("recipe_map_switch");
             List<String> networkTooltip = new ArrayList<>();
             networkedMachine.getWailaBody(null, networkTooltip, accessor(networkTag), config());
+            assertFalse(networkTooltip.contains(coverageError));
+            assertFalse(networkTooltip.contains(EnumChatFormatting.RED
+                    + StatCollector.translateToLocal("impact.waila.connect.no")));
+
+            GTMTE_ParallelHatch_Input receiver = new GTMTE_ParallelHatch_Input(
+                    "waila-receiver", 5, new String[0], null, 4);
+            BaseMetaTileEntity receiverTile = new BaseMetaTileEntity();
+            receiver.setBaseMetaTileEntity(receiverTile);
+            assertTrue(networkedMachine.addParallHatchToMachineList(receiverTile, 0));
+
+            networkTag = new NBTTagCompound();
+            networkedMachine.getWailaNBTData(null, null, networkTag, null, 0, 0, 0);
+            assertEquals(coverageKey, networkTag.getString(NetworkDiagnostics.STATUS_TAG));
+            networkTag.removeTag("recipe_map_switch");
+            networkTooltip.clear();
+            networkedMachine.getWailaBody(null, networkTooltip, accessor(networkTag), config());
             assertEquals(1, Collections.frequency(networkTooltip, coverageError));
+
+            GTMTE_ParallelComputer computer = new GTMTE_ParallelComputer("waila-computer");
+            NBTTagCompound computerTag = new NBTTagCompound();
+            computer.getWailaNBTData(null, null, computerTag, null, 0, 0, 0);
+            assertEquals(NetworkStatus.UNLOADED.getTranslationKey(), computerTag.getString(NetworkDiagnostics.STATUS_TAG));
+            assertFalse(computerTag.hasKey("Parallel"));
+            assertFalse(computerTag.hasKey("currentParallel"));
         }
 
         public void supercapacitorShowsMinuteAveragesInsteadOfInstantFlow() throws Exception {

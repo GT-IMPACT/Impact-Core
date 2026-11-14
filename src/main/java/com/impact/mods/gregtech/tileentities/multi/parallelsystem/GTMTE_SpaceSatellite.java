@@ -2,7 +2,10 @@ package com.impact.mods.gregtech.tileentities.multi.parallelsystem;
 
 import gregtech.api.logic.ProcessingLogic;
 import com.impact.addon.gt.api.parallel_system.IHandledNetworkNode;
+import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
+import com.impact.addon.gt.api.parallel_system.NetworkNodeLifecycle;
 import com.impact.addon.gt.api.satellite.SatelliteControllerHandler;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.logic.TimedProcessingLogic;
 import com.impact.mods.gregtech.blocks.ImpactCasings;
 import com.impact.mods.gregtech.blocks.ImpactHatchElement;
@@ -22,8 +25,15 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StructureRequirements;
 import java.util.HashSet;
+import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import space.impact.structures.hint.HintColor;
 import space.impact.structures.structure.IStructureDefinition;
 import space.impact.structures.structure.ISurvivalBuildEnvironment;
@@ -132,6 +142,45 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
     @Override
     public SatelliteControllerHandler getNetworkHandler() {
         return networkHandler;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (base.isServerSide()) {
+            NetworkNodeLifecycle.load(this);
+        }
+    }
+
+    @Override
+    public void inValidate() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && base.isServerSide()) {
+            NetworkNodeLifecycle.unload(this);
+        }
+        super.inValidate();
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaBody(ItemStack stack, List<String> tooltip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(stack, tooltip, accessor, config);
+        NetworkDiagnostics.append(accessor.getNBTData(), tooltip);
+    }
+
+    @Override
+    @Optional.Method(modid = "Waila")
+    public void getWailaNBTData(
+            EntityPlayerMP player,
+            TileEntity tile,
+            NBTTagCompound tag,
+            World world,
+            int x,
+            int y,
+            int z
+    ) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        NetworkDiagnostics.write(tag, this);
     }
 
     @Override

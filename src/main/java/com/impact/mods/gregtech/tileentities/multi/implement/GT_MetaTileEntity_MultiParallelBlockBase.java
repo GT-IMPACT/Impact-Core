@@ -5,7 +5,6 @@ import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import cpw.mods.fml.common.Optional;
-import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -227,11 +226,11 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
         super.getWailaBody(stack, tooltip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("hasShowConnect")) {
-            if (!NetworkDiagnostics.hasFailure(tag)) {
+            if (tag.hasKey(NetworkDiagnostics.STATUS_TAG) && !NetworkDiagnostics.hasFailure(tag)) {
                 NetworkDiagnostics.appendConnection(tag, tooltip, tag.getBoolean("connectWithTower"));
             }
 
-            if (!(this instanceof GTMTE_ParallelComputer)) {
+            if (showsParallelProgressInWaila()) {
                 tooltip.add(translateToLocalFormatted("impact.waila.parallel.progress",
                         tag.getInteger("currentParallel"), tag.getInteger("Parallel")));
             }
@@ -239,11 +238,28 @@ public abstract class GT_MetaTileEntity_MultiParallelBlockBase<MULTIS extends GT
     }
 
     @Override
+    protected boolean showsNetworkStatusInWaila() {
+        if (!super.showsNetworkStatusInWaila()) {
+            return false;
+        }
+        for (GTMTE_ParallelHatch_Input receiver : sParallHatchesIn) {
+            if (isValidMetaTileEntity(receiver)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean showsParallelProgressInWaila() {
+        return true;
+    }
+
+    @Override
     @Optional.Method(modid = "Waila")
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag,
                                 World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        if (!(this instanceof GTMTE_ParallelComputer)) {
+        if (showsParallelProgressInWaila()) {
             final int Parallel = mParallel;
             tag.setInteger("Parallel", Parallel);
             tag.setInteger("currentParallel", getCurrentParallel());
