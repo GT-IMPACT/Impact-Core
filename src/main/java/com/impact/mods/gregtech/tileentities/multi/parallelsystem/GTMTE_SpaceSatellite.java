@@ -92,9 +92,8 @@ public class GTMTE_SpaceSatellite extends GTMTE_Impact_BlockBase<GTMTE_SpaceSate
                     })
                     .addChannel(GTStructureUtility.HATCH_CHANNEL, 1, 1)
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_SpaceSatellite.class)
-                            .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.LaserInput,
-                                    Transmitter.INSTANCE)
-                            .autoPlace(ImpactHatchElement.PowerInput, HatchElement.Maintenance, Transmitter.INSTANCE)
+                            .allow(HatchElement.Energy, ImpactHatchElement.LaserInput, Transmitter.INSTANCE)
+                            .autoPlace(ImpactHatchElement.PowerInput, Transmitter.INSTANCE)
                             .buildAndChain(SHELL, machine -> machine.casingCount++), HintColor.GREEN))
                     .build();
         }

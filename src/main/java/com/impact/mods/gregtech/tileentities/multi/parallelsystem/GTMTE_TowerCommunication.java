@@ -196,10 +196,20 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                             { "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", "       ", " EEEEE ", "EE   EE", "E     E", "E     E", "E     E" }
                     })
                     .addElement('A', withHint(GTStructureUtility.buildHatchAdder(GTMTE_TowerCommunication.class)
-                            .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance,
-                                    HatchElement.Energy, ImpactHatchElement.Muffler, ImpactHatchElement.Dynamo,
-                                    ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput)
-                            .autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler)
+                            .allow(
+                                    HatchElement.Input,
+                                    HatchElement.Output,
+                                    HatchElement.Energy,
+                                    ImpactHatchElement.Muffler,
+                                    ImpactHatchElement.Dynamo,
+                                    ImpactHatchElement.LaserInput,
+                                    ImpactHatchElement.LaserOutput)
+                            .autoPlace(
+                                    ImpactHatchElement.PowerOutput,
+                                    ImpactHatchElement.PowerInput,
+                                    HatchElement.Input,
+                                    HatchElement.Output,
+                                    ImpactHatchElement.Muffler)
                             .buildAndChain(HATCHES_A, machine -> machine.casingCount++), HintColor.GREEN))
                     .addElement('D',
                             GTStructureUtility.buildHatchAdder(GTMTE_TowerCommunication.class).hint(HintColor.PURPLE)

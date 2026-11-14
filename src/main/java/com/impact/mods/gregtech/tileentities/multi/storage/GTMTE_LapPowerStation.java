@@ -104,9 +104,9 @@ public class GTMTE_LapPowerStation extends
                             new String[][] { { "GGGGG" }, { "GGGGG" }, { "GGGGG" }, { "GGGGG" }, { "GGGGG" } })
                     .addShape("roofProbe", new String[][] { { "P" } })
                     .addElement('C', withHint(GTStructureUtility.buildHatchAdder(GTMTE_LapPowerStation.class)
-                            .allow(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.Dynamo,
-                                    LaserHatch.Input, LaserHatch.Output)
-                            .autoPlace(HatchElement.Maintenance, HatchElement.Energy, ImpactHatchElement.Dynamo, LaserHatch.Input, LaserHatch.Output)
+                            .allow(HatchElement.Energy, ImpactHatchElement.Dynamo, LaserHatch.Input, LaserHatch.Output)
+                            .autoPlace(
+                                    HatchElement.Energy, ImpactHatchElement.Dynamo, LaserHatch.Input, LaserHatch.Output)
                             .buildAndChain(SHELL, t -> t.casingCount++), HintColor.GREEN))
                     .addElement('E', capacitorElement())
                     .addElement('G', glassElement())

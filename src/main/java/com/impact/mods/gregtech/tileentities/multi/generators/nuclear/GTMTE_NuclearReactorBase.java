@@ -368,9 +368,20 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 
     protected IStructureElement<GTMTE_NuclearReactorBase<T>> shellElement(boolean acceptsHull) {
         HatchElementBuilder<GTMTE_NuclearReactorBase<T>> builder = new HatchElementBuilder<GTMTE_NuclearReactorBase<T>>()
-                .allow(HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, HatchElement.Energy,
-                        ImpactHatchElement.Dynamo, ImpactHatchElement.Muffler,
-                        ImpactHatchElement.LaserInput, ImpactHatchElement.LaserOutput).autoPlace(ImpactHatchElement.PowerOutput, ImpactHatchElement.PowerInput, HatchElement.Input, HatchElement.Output, HatchElement.Maintenance, ImpactHatchElement.Muffler);
+                .allow(
+                        HatchElement.Input,
+                        HatchElement.Output,
+                        HatchElement.Energy,
+                        ImpactHatchElement.Dynamo,
+                        ImpactHatchElement.Muffler,
+                        ImpactHatchElement.LaserInput,
+                        ImpactHatchElement.LaserOutput)
+                .autoPlace(
+                        ImpactHatchElement.PowerOutput,
+                        ImpactHatchElement.PowerInput,
+                        HatchElement.Input,
+                        HatchElement.Output,
+                        ImpactHatchElement.Muffler);
         if (acceptsHull) {
             builder.allow(ReactorHatch.Hull).autoPlace(ReactorHatch.Hull);
         }
