@@ -1,6 +1,7 @@
 package com.impact.mods.gregtech.gui.tower;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -26,6 +27,8 @@ import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+
+import static gregtech.api.gui.GT_Container_ProcessingMachine.GUI_WIDTH;
 
 public final class CommunicationTowerGui {
 
@@ -57,6 +60,7 @@ public final class CommunicationTowerGui {
         ModularPanel panel = new MTEProcessingMultiBlockGui(machine).build(data, sync, settings,
                 state -> new CommunicationTowerDisplay(machine, state, readings));
         TowerSatellitePanel.addTo(machine, panel, sync);
+        addConnectionOverlayButton(machine, panel, sync, readings);
         for (int index = 0; index < PAGE_SIZE; index++) {
             final int connection = index;
             panel.child(new Widget<>()
@@ -112,6 +116,38 @@ public final class CommunicationTowerGui {
         return "impact.tower." + (connected ? "connected" : "disconnected");
     }
 
+    private static void addConnectionOverlayButton(
+            GTMTE_TowerCommunication machine,
+            ModularPanel panel,
+            PanelSyncManager sync,
+            GenericSyncValue<NBTTagCompound, ?> readings
+    ) {
+        String action = "tower_toggle_connection_overlay";
+        sync.registerServerSyncedAction(action, packet -> {
+            if (canInteract(machine, sync)) {
+                machine.toggleConnectionOverlay();
+            }
+        });
+        panel.child(new ButtonWidget<>()
+                .name("impact_" + action)
+                .background(GTGuiTextures.BUTTON_STANDARD)
+                .overlay(new DynamicDrawable(() -> readings.getValue().getBoolean("connectionOverlay")
+                        ? GTGuiTextures.OVERLAY_BUTTON_CHECKMARK : GTGuiTextures.OVERLAY_BUTTON_CROSS))
+                .pos(GUI_WIDTH - 26, 24).size(16)
+                .tooltipBuilder(tooltip -> {
+                    tooltip.addLine(StatCollector.translateToLocal(readings.getValue().getBoolean("connectionOverlay")
+                            ? "impact.tower.overlay_hide" : "impact.tower.overlay_show"));
+                })
+                .tooltipAutoUpdate(true)
+                .onMousePressed(button -> {
+                    if (button != 0) {
+                        return false;
+                    }
+                    sync.callSyncedAction(action);
+                    return true;
+                }));
+    }
+
     private static void addPageButton(
             GTMTE_TowerCommunication machine,
             ModularPanel panel,
@@ -162,6 +198,7 @@ public final class CommunicationTowerGui {
         snapshot.setBoolean("formed", machine.mMachine);
         snapshot.setInteger("errors", tile.getErrorDisplayID());
         snapshot.setBoolean("uplink", machine.isSatelliteConnected());
+        snapshot.setBoolean("connectionOverlay", machine.isConnectionOverlayEnabled());
         NetworkDiagnostics.write(snapshot, machine);
         ArrayList<INetworkMachine> connections = new ArrayList<>();
         int connected = 0;

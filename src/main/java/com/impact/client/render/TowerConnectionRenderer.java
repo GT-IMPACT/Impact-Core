@@ -1,16 +1,11 @@
 package com.impact.client.render;
 
-import baubles.api.BaublesApi;
-import com.impact.common.armor.MaskOfVision;
 import com.impact.network.special.TowerConnectionsPacket;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -35,7 +30,6 @@ public final class TowerConnectionRenderer {
     private final Map<ChunkPosition, TowerOverlay> towers = new HashMap<>();
     private World world;
     private long clientTick;
-    private boolean wearingMask;
 
     private TowerConnectionRenderer() {
     }
@@ -69,7 +63,6 @@ public final class TowerConnectionRenderer {
         if (!towers.isEmpty()) {
             towers.values().removeIf(overlay -> overlay.expiresAt <= clientTick);
         }
-        wearingMask = !towers.isEmpty() && hasMask(minecraft.thePlayer);
     }
 
     private void updateWorld(World nextWorld) {
@@ -77,37 +70,14 @@ public final class TowerConnectionRenderer {
             world = nextWorld;
             towers.clear();
             clientTick = 0;
-            wearingMask = false;
         }
-    }
-
-    private static boolean hasMask(EntityPlayer player) {
-        if (player == null) {
-            return false;
-        }
-        if (isMask(player.getCurrentArmor(3))) {
-            return true;
-        }
-        IInventory baubles = BaublesApi.getBaubles(player);
-        if (baubles != null) {
-            for (int slot = 0; slot < baubles.getSizeInventory(); slot++) {
-                if (isMask(baubles.getStackInSlot(slot))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean isMask(ItemStack stack) {
-        return stack != null && stack.getItem() instanceof MaskOfVision;
     }
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         Minecraft minecraft = Minecraft.getMinecraft();
         Entity camera = minecraft.renderViewEntity;
-        if (!wearingMask || towers.isEmpty() || world != minecraft.theWorld || camera == null) {
+        if (towers.isEmpty() || world != minecraft.theWorld || camera == null) {
             return;
         }
         double cameraX = camera.lastTickPosX + (camera.posX - camera.lastTickPosX) * event.partialTicks;

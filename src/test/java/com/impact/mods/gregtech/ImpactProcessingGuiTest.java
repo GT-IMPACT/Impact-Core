@@ -926,6 +926,9 @@ class ImpactProcessingGuiTest {
             assertEquals(35, snapshot.getInteger("connected"));
             assertEquals(3, snapshot.getInteger("pages"));
             assertTrue(snapshot.getBoolean("uplink"));
+            assertFalse(snapshot.getBoolean("connectionOverlay"));
+            tower.onNotePadRightClick((byte) 0, fixture.player, 0, 0, 0);
+            assertFalse(tower.isConnectionOverlayEnabled());
             assertArrayEquals(new int[] { 1, 1, 0, 1 }, snapshot.getIntArray("receivers"));
             assertEquals(32, snapshot.getTagList("nodes", 10).tagCount());
             assertEquals(0, snapshot.getTagList("nodes", 10).getCompoundTagAt(0).getInteger("x"));
@@ -943,6 +946,8 @@ class ImpactProcessingGuiTest {
             state.updateCacheFromSource(false);
             assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
             fixture.player.setPosition(100, 64, 100);
+            fixture.sendAction("tower_toggle_connection_overlay");
+            assertFalse(tower.isConnectionOverlayEnabled());
             fixture.sendAction("tower_previous");
             state.updateCacheFromSource(false);
             assertEquals(2, ((NBTTagCompound) state.getValue()).getInteger("page"));
@@ -991,6 +996,11 @@ class ImpactProcessingGuiTest {
             Area pickerButton = fixture.find("impact_tower_choose_satellite").getArea();
             int pickerX = pickerButton.x - fixture.panel.getArea().x;
             assertTrue(pickerX >= 192 && pickerX + pickerButton.width <= 268);
+            Area overlayButton = fixture.find("impact_tower_toggle_connection_overlay").getArea();
+            assertEquals(pickerButton.x + pickerButton.width, overlayButton.x + overlayButton.width);
+            assertEquals(16, overlayButton.width);
+            assertTrue(overlayButton.y >= pickerButton.y + pickerButton.height);
+            assertTrue(overlayButton.y + overlayButton.height <= fixture.panel.getArea().y + 43);
             NBTTagList satellites = new NBTTagList();
             for (int satelliteX : new int[] { -16, 0, 16 }) {
                 NBTTagCompound satellite = new PositionObject(satelliteX, 64, 0, 7).saveToNBT();

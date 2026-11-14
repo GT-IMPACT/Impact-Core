@@ -41,7 +41,6 @@ import java.util.Set;
 import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -78,7 +77,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
             () -> mMachine && getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isActive(),
             () -> sCommunReceiver
     );
-    private boolean isShowConnections = false;
+    private boolean connectionOverlayEnabled;
 
     public GTMTE_TowerCommunication(int aID, String aNameRegional) {
         super(aID, "impact.multis.communicationtower", aNameRegional);
@@ -114,22 +113,17 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
                 : new ITexture[] { CASING.getTexture() };
     }
 
-    @Override
-    public void onNotePadRightClick(
-            byte side,
-            EntityPlayer player,
-            float hitX,
-            float hitY,
-            float hitZ
-    ) {
+    public boolean isConnectionOverlayEnabled() {
+        return connectionOverlayEnabled;
+    }
+
+    public void toggleConnectionOverlay() {
         IGregTechTileEntity tile = getBaseMetaTileEntity();
         if (tile != null && tile.isServerSide()) {
-            isShowConnections = !isShowConnections;
+            connectionOverlayEnabled = !connectionOverlayEnabled;
             sendConnectionOverlay(tile);
         }
     }
-
-
 
     @Override
     public boolean machineStructure(IGregTechTileEntity thisController) {
@@ -267,7 +261,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     @Override
     public void onPostTick(IGregTechTileEntity iAm, long aTick) {
         super.onPostTick(iAm, aTick);
-        if (iAm.isServerSide() && isShowConnections && aTick % 20 == 5) {
+        if (iAm.isServerSide() && connectionOverlayEnabled && aTick % 20 == 5) {
             sendConnectionOverlay(iAm);
         }
     }
@@ -277,7 +271,7 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
         if (world == null) {
             return;
         }
-        TowerConnectionsPacket packet = isShowConnections && isSatelliteConnected()
+        TowerConnectionsPacket packet = connectionOverlayEnabled && isSatelliteConnected()
                 ? captureConnections(world) : TowerConnectionsPacket.empty();
         NetworkHandler.sendToAllAround(
                 world,
@@ -319,8 +313,8 @@ public class GTMTE_TowerCommunication extends GTMTE_Impact_BlockBase<GTMTE_Tower
     @Override
     public void inValidate() {
         IGregTechTileEntity tile = getBaseMetaTileEntity();
-        if (isShowConnections && tile != null && tile.getWorld() != null && tile.isServerSide()) {
-            isShowConnections = false;
+        if (connectionOverlayEnabled && tile != null && tile.getWorld() != null && tile.isServerSide()) {
+            connectionOverlayEnabled = false;
             sendConnectionOverlay(tile);
         }
         detachReceivers();
