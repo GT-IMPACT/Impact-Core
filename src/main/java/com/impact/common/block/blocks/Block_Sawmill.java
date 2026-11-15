@@ -183,11 +183,12 @@ public class Block_Sawmill extends gtUpdateBlockAPI {
     sideConv = par1IconRegister.registerIcon(Refstrings.MODID + ":sawmill/conveyor_side");
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int getRenderBlockPass() {
-    return 1;
-  }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getRenderBlockPass() {
+        // The conveyor uses cutout transparency and must write depth for its solid pixels.
+        return 0;
+    }
 
   @Override
   public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
