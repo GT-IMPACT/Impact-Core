@@ -63,6 +63,7 @@ import static space.impact.structures.structure.StructureUtility.withHint;
 public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase<GTMTE_NuclearReactorBase<T>> {
 
     private static final int SPEED_DECAY = 5;
+    private static final String DISTILLED_WATER = "ic2distilledwater";
     private final int[] AMOUNT_NUCLEAR_HATCHES = { 1, 9, 25 };
     private final int[] AMOUNT_INPUT_HATCHES = { 2, 3, 6 };
     private final int[] AMOUNT_OUTPUT_HATCHES = { 6, 12, 24 };
@@ -118,10 +119,11 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
                 .useCompactStructure()
                 .addInfo("Radiation!")
                 .addMachineType("Steam Producer")
-                .addInfo("Default mode: water to steam.")
-                .addInfo("MOX fuel: water to superheated steam; all loaded fuel rods must be MOX.")
+                .addInfo("Default mode turns water or distilled water into steam.")
+                .addInfo("MOX fuel produces superheated steam. All loaded fuel rods must be MOX.")
                 .addInfo("Fast decay mode: coolant to hot coolant; fuel rods deplete 5x faster.")
-                .addInfo("A hot reactor needs water or coolant even when stopped; a shortage causes Nuclear Rod Hatches to explode.")
+                .addInfo("A hot reactor still needs its cooling fluid when stopped. A shortage causes Nuclear Rod Hatches to explode.")
+                .addInfo("Pollution: %s per second before muffler reduction.", getPollutionPerTick(null) * 20)
                 .beginStructureBlock(3 + 2 * tier, tier == 1 ? 4 : 6, 3 + 2 * tier, false)
                 .addController("front center of the bottom layer")
                 .addStructureSection("Components")
@@ -153,12 +155,14 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
 
     private final ContinuousFluidOutputs continuousOutputs = new ContinuousFluidOutputs();
     private boolean protectThermalOutput;
+    private boolean usingDistilledWater;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         continuousOutputs.save(aNBT);
         aNBT.setBoolean("protectThermalOutput", protectThermalOutput);
+        aNBT.setBoolean("usingDistilledWater", usingDistilledWater);
         aNBT.setFloat("mCurrentTemp", mCurrentTemp);
         aNBT.setDouble("mCurrentOutput", mCurrentOutput);
         aNBT.setDouble("mCurrentInput", mCurrentInput);
@@ -173,6 +177,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         super.loadNBTData(aNBT);
         continuousOutputs.load(aNBT);
         protectThermalOutput = aNBT.getBoolean("protectThermalOutput");
+        usingDistilledWater = aNBT.getBoolean("usingDistilledWater");
         this.mCurrentTemp = aNBT.getFloat("mCurrentTemp");
         this.mCurrentOutput = aNBT.getDouble("mCurrentOutput");
         this.mCurrentInput = aNBT.getDouble("mCurrentInput");
@@ -279,7 +284,9 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
             int temperature = (int) Math.min(((100 * tScale)), 100);
 
             if (aTick % 2 == 0 && temperature > 0) {
-                if (!depleteInput(getInputFluid())) {
+                int amount = (int) Math.ceil(mCurrentInput);
+                boolean cooled = isFastDecay ? depleteInput(getFluidStack("ic2coolant", amount)) : depleteWater(amount);
+                if (!cooled) {
                     for (GTMTE_Reactor_Rod_Hatch rod_hatch : mRodHatches) {
                         rod_hatch.getBaseMetaTileEntity().doExplosion(Long.MAX_VALUE);
                     }
@@ -311,8 +318,7 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
     }
 
     public void toggleFastDecay(EntityPlayer player) {
-        if (mCurrentTemp <= 10
-                && depleteInput(!isFastDecay ? getFluidStack("ic2coolant", 1) : Materials.Water.getFluid(1))) {
+        if (mCurrentTemp <= 10 && (isFastDecay ? depleteWater(1) : depleteInput(getFluidStack("ic2coolant", 1)))) {
             isFastDecay = !isFastDecay;
             markDirty();
             GT_Utility.sendChatToPlayer(player, "Fast Decay Mode " + (isFastDecay ? "Enabled" : "Disabled"));
@@ -353,9 +359,31 @@ public abstract class GTMTE_NuclearReactorBase<T> extends GTMTE_Impact_BlockBase
         }
     }
 
+    private boolean depleteWater(int amount) {
+        if (depleteInput(Materials.Water.getFluid(amount))) {
+            usingDistilledWater = false;
+            return true;
+        }
+        FluidStack distilledWater = getFluidStack(DISTILLED_WATER, amount);
+        if (distilledWater != null && depleteInput(distilledWater)) {
+            usingDistilledWater = true;
+            return true;
+        }
+        return false;
+    }
+
     public FluidStack getInputFluid() {
-        int in = (int) Math.ceil(mCurrentInput);
-        return isFastDecay ? getFluidStack("ic2coolant", in) : Materials.Water.getFluid(in);
+        int amount = (int) Math.ceil(mCurrentInput);
+        if (isFastDecay) {
+            return getFluidStack("ic2coolant", amount);
+        }
+        if (usingDistilledWater) {
+            FluidStack distilledWater = getFluidStack(DISTILLED_WATER, amount);
+            if (distilledWater != null) {
+                return distilledWater;
+            }
+        }
+        return Materials.Water.getFluid(amount);
     }
 
     public FluidStack getOutputFluid() {

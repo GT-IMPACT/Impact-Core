@@ -31,6 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.IProcessingOutputSink;
@@ -74,6 +75,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -291,6 +293,11 @@ class ImpactProcessingMigrationTest {
     @Test
     void nuclearProtectionChecksAvailableCapacityInsteadOfRequiringEmptyHatches() throws Throwable {
         run("nuclearOutputCapacity");
+    }
+
+    @Test
+    void nuclearCoolingAcceptsDistilledWaterIncludingWhenStopped() throws Throwable {
+        run("nuclearDistilledWater");
     }
 
     @Test
@@ -1031,6 +1038,48 @@ class ImpactProcessingMigrationTest {
             output.mFluid = water(231);
             assertTrue(machine.checkRecipe(null));
             assertEquals(231, output.mFluid.amount);
+        }
+
+        public static void nuclearDistilledWater() {
+            FluidRegistry.registerFluid(new Fluid("ic2distilledwater"));
+            FluidRegistry.registerFluid(new Fluid("ic2coolant"));
+            Fluid plainWater = Materials.Water.mFluid;
+            Materials.Water.mFluid = FluidRegistry.WATER;
+            try {
+                TestNuclearReactor machine = new TestNuclearReactor();
+                attach(machine);
+                machine.mCurrentTemp = machine.maxTemperature();
+                FluidStack distilledWater = FluidRegistry.getFluidStack("ic2distilledwater", 5);
+                GT_MetaTileEntity_Hatch_Input distilledInput = fluidInput(machine, 5);
+                distilledInput.mFluid = distilledWater;
+                GT_MetaTileEntity_Hatch_Input waterInput = fluidInput(machine, 1);
+                IGregTechTileEntity tile = machine.getBaseMetaTileEntity();
+                assertFalse(tile.isAllowedToWork());
+
+                machine.onPostTick(tile, 102);
+                assertNull(waterInput.mFluid);
+                assertEquals(5, distilledInput.mFluid.amount);
+                assertSame(FluidRegistry.WATER, machine.getInputFluid().getFluid());
+
+                machine.onPostTick(tile, 104);
+                assertEquals(4, distilledInput.mFluid.amount);
+                assertSame(distilledWater.getFluid(), machine.getInputFluid().getFluid());
+
+                machine.setFastDecayMode(true);
+                waterInput.mFluid = FluidRegistry.getFluidStack("ic2coolant", 2);
+                machine.onPostTick(tile, 106);
+                assertEquals(1, waterInput.mFluid.amount);
+                assertEquals(4, distilledInput.mFluid.amount);
+
+                machine.mCurrentTemp = 10;
+                ImpactConstructionChecks.TestWorld world = new ImpactConstructionChecks.TestWorld();
+                machine.toggleFastDecay(new ImpactConstructionChecks.TestPlayer(world));
+                assertFalse(machine.isFastDecay);
+                assertEquals(3, distilledInput.mFluid.amount);
+                assertEquals(1, waterInput.mFluid.amount);
+            } finally {
+                Materials.Water.mFluid = plainWater;
+            }
         }
 
         public static void antimatterBurn() throws Exception {
