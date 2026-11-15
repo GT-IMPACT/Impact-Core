@@ -5,7 +5,6 @@ import com.impact.mods.gregtech.GT_ItemList
 import com.impact.mods.gregtech.GT_RecipeMaps
 import com.impact.mods.gregtech.tileentities.multi.processing.defaultmachines.GTMTE_RailAssembler
 import gregtech.api.enums.ItemList
-import gregtech.api.util.GT_ModHandler
 import gregtech.api.util.GT_Recipe
 
 object RecipeCatalystRegister {
@@ -68,6 +67,31 @@ object RecipeCatalystRegister {
             GT_ItemList.Generator_Semi_Turbine_EV,
         ).forEach {
             API.addRecipeCatalyst(it.get(1), GT_Recipe.GT_Recipe_Map.sSemifluidFuels.mUnlocalizedName)
+        }
+
+        listOf(
+            ItemList.Machine_Multi_LargeBoiler_Bronze,
+            ItemList.Machine_Multi_LargeBoiler_Steel,
+            ItemList.Machine_Multi_LargeBoiler_Titanium,
+            ItemList.Machine_Multi_LargeBoiler_TungstenSteel,
+        ).forEach { item ->
+            API.addRecipeCatalyst(
+                item.get(1),
+                GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mUnlocalizedName,
+            )
+        }
+
+        listOf(
+            ItemList.Machine_LV_Disassembler,
+            ItemList.Machine_MV_Disassembler,
+            ItemList.Machine_HV_Disassembler,
+            ItemList.Machine_EV_Disassembler,
+            ItemList.Machine_IV_Disassembler,
+        ).forEach { item ->
+            API.addRecipeCatalyst(
+                item.get(1),
+                GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.mUnlocalizedName,
+            )
         }
 
         listOf(

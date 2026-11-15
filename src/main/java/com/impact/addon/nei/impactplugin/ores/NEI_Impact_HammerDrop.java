@@ -2,6 +2,7 @@ package com.impact.addon.nei.impactplugin.ores;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.API;
 import codechicken.nei.recipe.*;
 import com.impact.core.Refstrings;
 import com.impact.impact;
@@ -37,6 +38,16 @@ public class NEI_Impact_HammerDrop extends TemplateRecipeHandler {
 			FMLInterModComms.sendRuntimeMessage(impact.instance, "NEIPlugins", "register-crafting-handler", "impact@" + getRecipeName() + "@" + getOverlayIdentifier());
 			GuiCraftingRecipe.craftinghandlers.add(this);
 			GuiUsageRecipe.usagehandlers.add(this);
+            API.addRecipeCatalyst(
+                GTMG_Tool_WorkRadius.INSTANCE.getToolWithStats(
+                    GTMG_Tool_WorkRadius.FORGE_HAMMER,
+                    1,
+                    Materials.Flint,
+                    Materials.Wood,
+                    null
+                ),
+                this
+            );
 		}
 		
 		HandlerInfo handlerInfo = new HandlerInfo.Builder(getOverlayIdentifier(), "Impact-Core", Refstrings.MODID)

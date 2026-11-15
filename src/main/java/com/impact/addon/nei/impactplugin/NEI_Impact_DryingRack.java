@@ -2,8 +2,10 @@ package com.impact.addon.nei.impactplugin;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.API;
 import codechicken.nei.recipe.*;
 import com.impact.addon.nei.impactplugin.util.FixedPositionedStack;
+import com.impact.common.block.blocks.Block_DryingRack;
 import com.impact.common.te.TE_DryingRack;
 import com.impact.core.Refstrings;
 import com.impact.impact;
@@ -34,6 +36,7 @@ public class NEI_Impact_DryingRack extends TemplateRecipeHandler {
 			FMLInterModComms.sendRuntimeMessage(impact.instance, "NEIPlugins", "register-crafting-handler", "impact@" + getRecipeName() + "@" + getOverlayIdentifier());
 			GuiCraftingRecipe.craftinghandlers.add(this);
 			GuiUsageRecipe.usagehandlers.add(this);
+            API.addRecipeCatalyst(new ItemStack(Block_DryingRack.instance), this);
 		}
 		
 		HandlerInfo handlerInfo = new HandlerInfo.Builder(getOverlayIdentifier(), "Impact-Core", Refstrings.MODID)
