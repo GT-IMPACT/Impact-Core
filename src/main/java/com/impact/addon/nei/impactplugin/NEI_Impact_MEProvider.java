@@ -3,6 +3,7 @@ package com.impact.addon.nei.impactplugin;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import com.impact.addon.nei.impactplugin.util.FluidRecipeLookup;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
@@ -10,8 +11,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
 import java.text.NumberFormat;
@@ -64,16 +63,7 @@ public class NEI_Impact_MEProvider extends NEI_Impact_Default {
 				tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
 			}
 		}
-		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
-		if (tFluid != null) {
-			tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
-					.getRegisteredFluidContainerData()) {
-				if (tData.fluid.isFluidEqual(tFluid)) {
-					tResults.add(GT_Utility.copy(tData.filledContainer));
-				}
-			}
-		}
+        FluidRecipeLookup.addFluidStacks(aResult, tResults);
 		for (GT_Recipe tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
 				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
@@ -159,16 +149,7 @@ public class NEI_Impact_MEProvider extends NEI_Impact_Default {
 				tInputs.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
 			}
 		}
-		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
-		if (tFluid != null) {
-			tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
-					.getRegisteredFluidContainerData()) {
-				if (tData.fluid.isFluidEqual(tFluid)) {
-					tInputs.add(GT_Utility.copy(tData.filledContainer));
-				}
-			}
-		}
+        FluidRecipeLookup.addFluidStacks(aInput, tInputs);
 		for (GT_Recipe tRecipe : getSortedRecipes()) {
 			if (!tRecipe.mHidden) {
 				CachedDefaultRecipe tNEIRecipe = new CachedDefaultRecipe(tRecipe);
