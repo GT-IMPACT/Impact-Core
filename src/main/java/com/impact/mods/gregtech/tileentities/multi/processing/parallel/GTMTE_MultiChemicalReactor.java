@@ -37,11 +37,21 @@ public class GTMTE_MultiChemicalReactor extends GT_MetaTileEntity_MultiParallelB
     private static IStructureDefinition<GTMTE_MultiChemicalReactor> definition;
 
     public GTMTE_MultiChemicalReactor(int aID, String aNameRegional) {
-        super(aID, "impact.multis.chemicalreactor", aNameRegional);
+        super(aID, "impact.multis.chemicalreactor", aNameRegional, 3);
     }
 
     public GTMTE_MultiChemicalReactor(String aName) {
-        super(aName);
+        super(aName, 3);
+    }
+
+    @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
+
+    @Override
+    public int getCircuitSlot() {
+        return 2;
     }
 
     @Override

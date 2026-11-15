@@ -43,11 +43,21 @@ public class GTMTE_AdvancedCrackingUnit extends GT_MetaTileEntity_MultiParallelB
     private static IStructureDefinition<GTMTE_AdvancedCrackingUnit> definition;
 
     public GTMTE_AdvancedCrackingUnit(int aID, String aNameRegional) {
-        super(aID, "impact.multis.cracking_unit", aNameRegional);
+        super(aID, "impact.multis.cracking_unit", aNameRegional, 3);
     }
 
     public GTMTE_AdvancedCrackingUnit(String aName) {
-        super(aName);
+        super(aName, 3);
+    }
+
+    @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
+
+    @Override
+    public int getCircuitSlot() {
+        return 2;
     }
 
     @Override
