@@ -106,6 +106,7 @@ import space.impact.structures.ImpactStructures;
 import space.impact.structures.StructureEvent;
 import space.impact.structures.alignment.constructable.ISurvivalConstructable;
 import space.impact.structures.alignment.constructable.ChannelDataAccessor;
+import space.impact.structures.structure.AutoPlaceEnvironment;
 import space.impact.structures.structure.IChannelDefinition;
 import space.impact.structures.structure.IStructureElement;
 import space.impact.structures.structure.StructureDefinition;
@@ -791,6 +792,15 @@ public class ImpactConstructionChecks {
                         20, 64, 20, trigger, space.impact.structures.structure.AutoPlaceEnvironment.fromLegacy(portSource, player, player::addChatMessage)));
                 assertEquals(1, wrongBus.stackSize, "A fluid machine must not consume an item bus instead of a fluid hatch");
                 assertEquals(0, fluidPort.stackSize);
+                if (index == 3) {
+                    ItemStack outputHatch = new ItemStack(machineItem, 1, 31908);
+                    Source outputSource = new Source(outputHatch);
+                    AutoPlaceEnvironment outputEnvironment = AutoPlaceEnvironment.fromLegacy(
+                            outputSource, player, player::addChatMessage);
+                    assertEquals(IStructureElement.PlaceResult.ACCEPT_STOP,
+                            element.survivalPlaceBlock(machine, portWorld, 21, 64, 20, trigger, outputEnvironment));
+                    assertEquals(0, outputHatch.stackSize);
+                }
             }
             for (boolean multi : new boolean[] { false, true }) {
                 for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {

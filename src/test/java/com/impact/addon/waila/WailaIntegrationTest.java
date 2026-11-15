@@ -3,6 +3,7 @@ package com.impact.addon.waila;
 import com.impact.addon.gt.api.parallel_system.NetworkDiagnostics;
 import com.impact.addon.gt.api.parallel_system.NetworkStatus;
 import com.impact.common.te.TE_DryingRack;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
 import com.impact.mods.gregtech.tileentities.multi.ores.GTMTE_Mining_Coal;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelComputer;
 import com.impact.mods.gregtech.tileentities.multi.parallelsystem.GTMTE_ParallelHatch_Input;
@@ -23,6 +24,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.net.URLClassLoader;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -110,7 +112,30 @@ class WailaIntegrationTest {
         check("onlyNetworkMachinesShowMissingTowerCoverage");
     }
 
+    @Test
+    void turbineShowsOnlyTheSteamTypesBeingConsumed() throws Throwable {
+        check("turbineShowsOnlyTheSteamTypesBeingConsumed");
+    }
+
     public static class Scenarios {
+        public void turbineShowsOnlyTheSteamTypesBeingConsumed() {
+            GTMTE_HugeSteamTurbine turbine = new GTMTE_HugeSteamTurbine("waila-turbine");
+            String steamLine = "Steam consumption: 32 L/t";
+            String superheatedLine = "Superheated steam consumption: "
+                    + NumberFormat.getNumberInstance().format(0.5) + " L/t";
+            for (int fuels = 0; fuels < 4; fuels++) {
+                boolean usesSteam = (fuels & 1) != 0;
+                boolean usesSuperheatedSteam = (fuels & 2) != 0;
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setDouble("steamPerTick", usesSteam ? 32 : 0);
+                tag.setDouble("superheatedSteamPerTick", usesSuperheatedSteam ? 0.5 : 0);
+                List<String> tooltip = new ArrayList<>();
+                turbine.getWailaBody(null, tooltip, accessor(tag), config(true));
+                assertEquals(usesSteam, tooltip.contains(steamLine));
+                assertEquals(usesSuperheatedSteam, tooltip.contains(superheatedLine));
+            }
+        }
+
         public void onlyNetworkMachinesShowMissingTowerCoverage() {
             GTMTE_AdvancedPyrolyse standalone = new GTMTE_AdvancedPyrolyse("waila-pyrolyse");
             GTMTE_Mixer networkedMachine = new GTMTE_Mixer("waila-mixer");

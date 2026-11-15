@@ -186,7 +186,7 @@ public class GTMTE_Reactor_Rod_Hatch extends GT_MetaTileEntity_Hatch {
 				mDurability = rod.getMaxDamageEx();
 				if (mStartReactor && mDownRod > 0) {
 					if (rod.sHeat > 0) {
-						mCoefficientFuelRod = ((rod.sHeat + 1) * (rod.sMox ? 4 : 1) * rod.numberOfCells) * mDownRod;
+                        mCoefficientFuelRod = (rod.sHeat + 1) * rod.numberOfCells * mDownRod;
 						setMoxFuel(rod.sMox);
 						rod.setDamageForStack(is, getDurabilityOfStack(is) + (mDownRod * mSpeedDecay));
 						if (getDurabilityOfStack(is) >= rod.getMaxDamageEx()) {

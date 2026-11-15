@@ -5,6 +5,7 @@ import com.impact.addon.gt.api.recipe.StagedFluidOutputs;
 import com.impact.core.Config;
 import com.impact.mods.gregtech.tileentities.hatches.GT_MetaTileEntity_Primitive_OutputBus;
 import com.impact.mods.gregtech.tileentities.hatches.lasers.GTMTE_LaserEnergy_In;
+import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_HugeSteamTurbine;
 import com.impact.mods.gregtech.tileentities.multi.generators.nuclear.GTMTE_NuclearReactorII;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_HyperNaquadahGenerator;
 import com.impact.mods.gregtech.tileentities.multi.generators.nq.GTMTE_LiquidEnrichedNqGenerator;
@@ -41,6 +42,7 @@ import gregtech.api.logic.ProcessingOutputAccess;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GTMTE_BusHatch_Input;
 import gregtech.api.metatileentity.implementations.GTMTE_Multi_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_EnergyMulti;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -298,6 +300,16 @@ class ImpactProcessingMigrationTest {
     @Test
     void nuclearCoolingAcceptsDistilledWaterIncludingWhenStopped() throws Throwable {
         run("nuclearDistilledWater");
+    }
+
+    @Test
+    void hugeSteamTurbineCondensesBothFuelsAndRetainsRemainderAcrossReload() throws Throwable {
+        run("hugeSteamTurbineCondensation");
+    }
+
+    @Test
+    void hugeSteamTurbineUsesBothFuelsWithoutExceedingDynamoLimit() throws Throwable {
+        run("hugeSteamTurbineFuelLimit");
     }
 
     @Test
@@ -1080,6 +1092,144 @@ class ImpactProcessingMigrationTest {
             } finally {
                 Materials.Water.mFluid = plainWater;
             }
+        }
+
+        public static void hugeSteamTurbineCondensation() throws Exception {
+            FluidRegistry.registerFluid(new Fluid("steam"));
+            Fluid steam = FluidRegistry.getFluid("steam");
+            Fluid mfrSteam = new Fluid("impact_test_mfr_steam").setUnlocalizedName("mfr.steam.still.name");
+            Fluid superheatedSteam = superheatedSteam();
+            FluidRegistry.registerFluid(mfrSteam);
+            FluidRegistry.registerFluid(new Fluid("ic2distilledwater"));
+
+            GTMTE_HugeSteamTurbine turbine = new GTMTE_HugeSteamTurbine("turbine");
+            attach(turbine);
+            addTurbineDynamo(turbine);
+            turbine.setProcessingModes(ProcessingLogic.PROTECT_FLUIDS);
+            GT_MetaTileEntity_Hatch_Input input = fluidInput(turbine, 320);
+            input.mFluid = new FluidStack(steam, 320);
+            GT_MetaTileEntity_Hatch_Output output = fluidOutput(turbine);
+            assertTrue(turbine.checkRecipe(null));
+            finish(turbine);
+            assertNull(output.mFluid);
+
+            NBTTagCompound saved = new NBTTagCompound();
+            turbine.saveNBTData(saved);
+            GTMTE_HugeSteamTurbine restored = new GTMTE_HugeSteamTurbine("restored-turbine");
+            attach(restored);
+            restored.loadNBTData(saved);
+            addTurbineDynamo(restored);
+            input = fluidInput(restored, 40);
+            input.mFluid = new FluidStack(mfrSteam, 40);
+            GT_MetaTileEntity_Hatch_Input hotInput = fluidInput(restored, 40);
+            hotInput.mFluid = new FluidStack(superheatedSteam, 40);
+            output = fluidOutput(restored);
+            output.mFluid = new FluidStack(FluidRegistry.LAVA, output.getCapacity());
+            assertFalse(restored.checkRecipe(null));
+            assertEquals(CheckRecipeResult.FLUID_OUTPUT_FULL, restored.getProcessingResult());
+            assertEquals(40, input.mFluid.amount);
+            assertEquals(40, hotInput.mFluid.amount);
+
+            output.mFluid = null;
+            assertTrue(restored.checkRecipe(null));
+            assertEquals(1, restored.mOutputFluids.length);
+            finish(restored);
+            assertSame(FluidRegistry.getFluid("ic2distilledwater"), output.mFluid.getFluid());
+            assertEquals(1, output.mFluid.amount);
+
+            restored.mOutputHatches.clear();
+            input.mFluid = new FluidStack(steam, 400);
+            assertTrue(restored.checkRecipe(null));
+            assertEquals(0, restored.mOutputFluids.length);
+        }
+
+        public static void hugeSteamTurbineFuelLimit() throws Exception {
+            FluidRegistry.registerFluid(new Fluid("steam"));
+            FluidRegistry.registerFluid(new Fluid("ic2distilledwater"));
+            Fluid steam = FluidRegistry.getFluid("steam");
+            Fluid superheatedSteam = superheatedSteam();
+            GTMTE_HugeSteamTurbine turbine = new GTMTE_HugeSteamTurbine("mixed-fuel-turbine");
+            attach(turbine);
+            GT_MetaTileEntity_Hatch_Output condensate = fluidOutput(turbine);
+            GT_MetaTileEntity_Hatch_Input input = fluidInput(turbine, 1000);
+            input.mFluid = new FluidStack(steam, 1000);
+            GT_MetaTileEntity_Hatch_Input hotInput = fluidInput(turbine, 1000);
+            hotInput.mFluid = new FluidStack(superheatedSteam, 1000);
+
+            assertFalse(turbine.checkRecipe(null));
+            assertEquals(1000, input.mFluid.amount);
+            assertEquals(1000, hotInput.mFluid.amount);
+
+            IGregTechTileEntity dynamo = addTurbineDynamo(turbine);
+            assertEquals(32, turbine.getMaxOutputVoltage());
+            assertTrue(turbine.checkRecipe(null));
+            assertEquals(360, input.mFluid.amount);
+            assertEquals(786, hotInput.mFluid.amount);
+            turbine.getBaseMetaTileEntity().setActive(true);
+            NBTTagCompound waila = new NBTTagCompound();
+            turbine.getWailaNBTData(null, null, waila, null, 0, 0, 0);
+            assertEquals(32.0, waila.getDouble("steamPerTick"));
+            assertEquals(10.7, waila.getDouble("superheatedSteamPerTick"));
+            assertTrue(turbine.onRunningTick(null));
+            assertEquals(32, dynamo.getStoredEU());
+            finish(turbine);
+            turbine.getWailaNBTData(null, null, waila, null, 0, 0, 0);
+            assertEquals(0.0, waila.getDouble("steamPerTick"));
+            assertEquals(0.0, waila.getDouble("superheatedSteamPerTick"));
+            assertSame(FluidRegistry.getFluid("ic2distilledwater"), condensate.mFluid.getFluid());
+            assertEquals(2, condensate.mFluid.amount);
+
+            input.mFluid = new FluidStack(steam, 1000);
+            hotInput.mFluid = new FluidStack(superheatedSteam, 1000);
+            turbine.mWrench = false;
+            assertTrue(turbine.checkRecipe(null));
+            assertEquals(0, input.getFluidAmount());
+            assertEquals(480, hotInput.mFluid.amount);
+            assertTrue(turbine.onRunningTick(null));
+            assertEquals(64, dynamo.getStoredEU());
+
+            GTMTE_HugeSteamTurbine hotTurbine = new GTMTE_HugeSteamTurbine("superheated-fuel-turbine");
+            attach(hotTurbine);
+            IGregTechTileEntity hotDynamo = addTurbineDynamo(hotTurbine);
+            GT_MetaTileEntity_Hatch_Input hotOnlyInput = fluidInput(hotTurbine, 400);
+            hotOnlyInput.mFluid = new FluidStack(superheatedSteam, 400);
+            GT_MetaTileEntity_Hatch_Output hotCondensate = fluidOutput(hotTurbine);
+            assertTrue(hotTurbine.checkRecipe(null));
+            assertEquals(0, hotOnlyInput.getFluidAmount());
+            assertTrue(hotTurbine.onRunningTick(null));
+            assertEquals(30, hotDynamo.getStoredEU());
+            finish(hotTurbine);
+            assertEquals(1, hotCondensate.mFluid.amount);
+
+            hotOnlyInput.mFluid = new FluidStack(superheatedSteam, 1000);
+            assertTrue(hotTurbine.checkRecipe(null));
+            assertEquals(573, hotOnlyInput.mFluid.amount);
+            assertTrue(hotTurbine.onRunningTick(null));
+            assertEquals(62, hotDynamo.getStoredEU());
+            finish(hotTurbine);
+
+            hotOnlyInput.mFluid = new FluidStack(superheatedSteam, 13);
+            assertFalse(hotTurbine.checkRecipe(null));
+            assertEquals(13, hotOnlyInput.mFluid.amount);
+        }
+
+        private static Fluid superheatedSteam() {
+            String name = "impact_test_superheated_steam";
+            FluidRegistry.registerFluid(new Fluid(name) {
+                @Override
+                public String getUnlocalizedName() {
+                    return "ic2.fluidSuperheatedSteam";
+                }
+            });
+            return FluidRegistry.getFluid(name);
+        }
+
+        private static IGregTechTileEntity addTurbineDynamo(GTMTE_HugeSteamTurbine turbine) {
+            GT_MetaTileEntity_Hatch_Dynamo dynamo = new GT_MetaTileEntity_Hatch_Dynamo(
+                    "turbine-dynamo", 1, "", new ITexture[0][][]);
+            attach(dynamo);
+            turbine.mDynamoHatches.add(dynamo);
+            return dynamo.getBaseMetaTileEntity();
         }
 
         public static void antimatterBurn() throws Exception {
